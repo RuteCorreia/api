@@ -1,6 +1,7 @@
 ﻿using Domain.Entidades.User;
 using Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Service.Validators;
 
 namespace HudAsp.Controllers.API
@@ -52,7 +53,16 @@ namespace HudAsp.Controllers.API
         [HttpGet]
         public IActionResult Get()
         {
-            return Execute(() => _baseUserService.Listar());
+            try
+            {
+                return Execute(() => _baseUserService.Listar());
+
+            }
+            catch(Exception ex)
+            {
+                var json = JsonConvert.SerializeObject(ex)!;
+                return NotFound();
+            }
         }
 
         [HttpGet("{id}")]
