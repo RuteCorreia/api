@@ -1,0 +1,45 @@
+﻿using Data.Context;
+using Domain.Entidades.Base;
+using Domain.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Data.Repository
+{
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity>
+        where TEntity : BaseEntity
+    {
+        protected readonly DataContext _context;
+
+        public BaseRepository(DataContext context)
+        {
+            _context = context;
+        }
+
+        public void Inserir(TEntity obj)
+        {
+            _context.Set<TEntity>().Add(obj);
+            _context.SaveChanges();
+        }
+
+        public void Atualizar(TEntity obj)
+        {
+            _context.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Remover(int id)
+        {
+            _context.Set<TEntity>().Remove(BuscarPorId(id));
+        }
+
+        public IList<TEntity> ListarTodos() =>
+            _context.Set<TEntity>().ToList();
+
+        public TEntity BuscarPorId(int id) =>
+            _context.Set<TEntity>().Find(id);
+    }
+}

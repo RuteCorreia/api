@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "wF9ihk9ek1ubTMg6iibmxeatoBM4VfGa/u0mHNujOB3FkHUZRgEs8M51VkZsR6DqgALbgQwBc+Fzfk5uYCGErA==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Service\\Service.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Raphael\\.nuget\\packages\\fluentvalidation\\11.7.1\\fluentvalidation.11.7.1.nupkg.sha512"
+  ],
+  "logs": []
+}
