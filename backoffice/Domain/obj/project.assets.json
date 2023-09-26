@@ -14,6 +14,16 @@
             "related": ".xml"
           }
         }
+      },
+      "Entities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "compile": {
+          "bin/placeholder/Entities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Entities.dll": {}
+        }
       }
     }
   },
@@ -40,10 +50,16 @@
         "lib/netstandard2.1/FluentValidation.dll",
         "lib/netstandard2.1/FluentValidation.xml"
       ]
+    },
+    "Entities/1.0.0": {
+      "type": "project",
+      "path": "../Entities/Entities.csproj",
+      "msbuildProject": "../Entities/Entities.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
+      "Entities >= 1.0.0",
       "FluentValidation >= 11.7.1"
     ]
   },
@@ -78,7 +94,11 @@
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

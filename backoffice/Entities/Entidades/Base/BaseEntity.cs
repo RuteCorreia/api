@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades.Base
+namespace Entities.Entidades.Base
 {
     public abstract class BaseEntity
     {

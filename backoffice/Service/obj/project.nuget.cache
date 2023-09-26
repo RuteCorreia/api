@@ -1,10 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "wF9ihk9ek1ubTMg6iibmxeatoBM4VfGa/u0mHNujOB3FkHUZRgEs8M51VkZsR6DqgALbgQwBc+Fzfk5uYCGErA==",
-  "success": true,
+  "dgSpecHash": "k6Vd3inMmOkw7of12Gn41wD6k6OraLTPI/kFWrzyt3JUr3+mD+TwIrHTyE9dzqI2TsqspmsMoSrgwkNlv88cYQ==",
+  "success": false,
   "projectFilePath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Service\\Service.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Raphael\\.nuget\\packages\\fluentvalidation\\11.7.1\\fluentvalidation.11.7.1.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Não é possível encontrar o projeto 'C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj'. Verifique se a referência do projeto é válida e se o arquivo de projeto existe.",
+      "libraryId": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

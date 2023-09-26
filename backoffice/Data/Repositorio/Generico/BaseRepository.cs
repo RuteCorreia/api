@@ -1,6 +1,6 @@
 ﻿using Data.Context;
-using Domain.Entidades.Base;
 using Domain.Interfaces;
+using Entities.Entidades.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

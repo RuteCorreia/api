@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using HudAsp.Data;
 using Domain.Interfaces;
 using Service.Services;
-using Domain.Entidades.User;
 using Data.Context;
 using System.Text.Json.Serialization;
 using Data.Repositorio.Generico;
+using Entities.Entidades.User;
 
 var builder = WebApplication.CreateBuilder(args);
 

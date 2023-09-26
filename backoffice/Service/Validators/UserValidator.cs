@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.User;
+﻿using Entities.Entidades.User;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

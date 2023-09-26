@@ -1,11 +1,11 @@
-﻿using Domain.Entidades.Base;
+﻿using Entities.Entidades.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades.User
+namespace Entities.Entidades.User
 {
     public class User : BaseEntity
     {

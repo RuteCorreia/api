@@ -1,5 +1,5 @@
-﻿using Domain.Entidades.Base;
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
+using Entities.Entidades.Base;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
