@@ -13,3 +13,5 @@ C:\Users\Raphael\source\repos\flytec\backoffice\Service\obj\Debug\net7.0\Service
 C:\Users\Raphael\source\repos\flytec\backoffice\Service\obj\Debug\net7.0\refint\Service.dll
 C:\Users\Raphael\source\repos\flytec\backoffice\Service\obj\Debug\net7.0\Service.pdb
 C:\Users\Raphael\source\repos\flytec\backoffice\Service\obj\Debug\net7.0\ref\Service.dll
+C:\Users\Raphael\source\repos\flytec\backoffice\Service\bin\Debug\net7.0\Entities.dll
+C:\Users\Raphael\source\repos\flytec\backoffice\Service\bin\Debug\net7.0\Entities.pdb

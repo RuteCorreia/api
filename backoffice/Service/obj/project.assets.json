@@ -78,7 +78,6 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj",
       "Domain >= 1.0.0",
       "Entities >= 1.0.0",
       "FluentValidation >= 11.7.1"
@@ -118,9 +117,6 @@
           "projectReferences": {
             "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
               "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
-            },
-            "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj": {
-              "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj"
             },
             "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {
               "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj"
@@ -162,16 +158,5 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "NU1104",
-      "level": "Error",
-      "message": "Não é possível encontrar o projeto 'C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj'. Verifique se a referência do projeto é válida e se o arquivo de projeto existe.",
-      "libraryId": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entidades\\Entities.csproj",
-      "targetGraphs": [
-        "net7.0"
-      ]
-    }
-  ]
+  }
 }

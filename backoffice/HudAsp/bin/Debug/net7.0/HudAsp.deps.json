@@ -10,6 +10,7 @@
         "dependencies": {
           "Data": "1.0.0",
           "Domain": "1.0.0",
+          "Entities": "1.0.0",
           "FluentValidation": "11.7.1",
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": "7.0.8",
           "Microsoft.AspNetCore.Http": "2.2.2",
@@ -2828,6 +2829,7 @@
       "Data/1.0.0": {
         "dependencies": {
           "Domain": "1.0.0",
+          "Entities": "1.0.0",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.8",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.8"
         },
@@ -2837,15 +2839,22 @@
       },
       "Domain/1.0.0": {
         "dependencies": {
+          "Entities": "1.0.0",
           "FluentValidation": "11.7.1"
         },
         "runtime": {
           "Domain.dll": {}
         }
       },
+      "Entities/1.0.0": {
+        "runtime": {
+          "Entities.dll": {}
+        }
+      },
       "Service/1.0.0": {
         "dependencies": {
           "Domain": "1.0.0",
+          "Entities": "1.0.0",
           "FluentValidation": "11.7.1"
         },
         "runtime": {
@@ -4588,6 +4597,11 @@
       "sha512": ""
     },
     "Domain/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Entities/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
