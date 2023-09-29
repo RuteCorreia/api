@@ -9,6 +9,7 @@ namespace Entities.Entidades.Cadastros.Cliente
 {
     public class Cliente
     {
+        [Key]
         public int IdCliente { get; set; }
         public string NomeCliente { get; set; }
         public int? IdTipoCliente { get; set; }

@@ -9,6 +9,7 @@ namespace Entities.Entidades.Cadastros.Empresa
 {
     public class Empresa
     {
+        [Key]
         public int IdEmpresa { get; set; }
 
         [Required]

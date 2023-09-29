@@ -11,6 +11,7 @@ namespace Entities.Entidades.Cadastros.Engenheiros
 {
     public class Engenheiro
     {
+        [Key]
         public int IdEngenheiro { get; set; }
 
         [ForeignKey("Empresa")]

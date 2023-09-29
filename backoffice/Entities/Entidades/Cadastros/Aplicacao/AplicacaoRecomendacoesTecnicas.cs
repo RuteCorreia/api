@@ -3,6 +3,7 @@ using Entities.Entidades.Cadastros.Altura_Voo;
 using Entities.Entidades.Cadastros.Tipo_Produto;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,7 @@ namespace Entities.Entidades.Cadastros.Aplicacao
 {
     public class AplicacaoRecomendacoesTecnicas
     {
+        [Key]
         public int Id { get; set; }
 
         [ForeignKey("Aplicacao")]

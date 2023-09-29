@@ -12,6 +12,7 @@ namespace Entities.Entidades.Cadastros.Pilotos
 {
     public class Piloto
     {
+        [Key]
         public int IdPiloto { get; set; }
 
         [ForeignKey("Empresa")]

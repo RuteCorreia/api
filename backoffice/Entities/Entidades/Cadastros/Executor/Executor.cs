@@ -12,6 +12,7 @@ namespace Entities.Entidades.Cadastros.Executores
 {
     public class Executor
     {
+        [Key]
         public int IdExecutor { get; set; }
 
         [ForeignKey("Empresa")]

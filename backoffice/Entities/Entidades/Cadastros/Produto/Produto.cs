@@ -1,6 +1,7 @@
 ﻿using Entities.Entidades.Cadastros.Cultura;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Entities.Entidades.Cadastros.Produtos
 {
     public class Produto
     {
+        [Key]
         public int Id { get; set; }
 
         [ForeignKey("Cultura")]

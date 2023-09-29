@@ -2,6 +2,7 @@
 using Entities.Entidades.Cadastros.Pilotos;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Entities.Entidades.Cadastros.Controle_De_Frota
 {
     public class ControleDeFrota
     {
+        [Key]
         public int Id { get; set; }
         public string? Observacao { get; set; }
         public DateTime? Data { get; set; }

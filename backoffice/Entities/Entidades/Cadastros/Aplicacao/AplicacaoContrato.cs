@@ -2,6 +2,7 @@
 using Entities.Entidades.Cadastros.Estados;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,6 +12,7 @@ namespace Entities.Entidades.Cadastros.Aplicacao
 {
     public class AplicacaoContrato
     {
+        [Key]
         public int Id { get; set; }
 
         [ForeignKey("Aplicacao")]
