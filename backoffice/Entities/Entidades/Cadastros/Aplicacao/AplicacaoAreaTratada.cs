@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Entidades.Cadastros.Estados;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,11 +14,16 @@ namespace Entities.Entidades.Cadastros.Aplicacao
 
         [ForeignKey("Aplicacao")]
         public int? IdAplicacao { get; set; }
-        public string Estado { get; set; }
-        public string Cidade { get; set; }
+
+        [ForeignKey("Estado")]
+        public int? IdEstado { get; set; }
+
+        [ForeignKey("Cidade")]
+        public int? IdCidade { get; set; }
         public string Localizacao { get; set; }
         public decimal? Extensao { get; set; }
         public virtual Aplicacao Aplicacao { get; set; }
-
+        public virtual Estados.Estados Estado { get; set; }
+        public virtual Cidades.Cidades Cidade { get; set; }
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Entities.Entidades.Cadastros.Empresa;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +13,8 @@ namespace Entities.Entidades.Cadastros.Pilotos
     public class Piloto
     {
         public int IdPiloto { get; set; }
+
+        [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
 
         [Required]
@@ -32,5 +36,7 @@ namespace Entities.Entidades.Cadastros.Pilotos
 
         [Required]
         public string PorcentagemComissao { get; set; }
+
+        public virtual Empresa.Empresa Empresa { get; set; }
     }
 }

@@ -13,10 +13,10 @@ namespace Entities.Entidades.Cadastros.Aeronaves
 
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
-        public string Prefixo { get; set; }
-        public string Combustivel { get; set; }
+        public string? Prefixo { get; set; }
+        public string? Combustivel { get; set; }
         public int? CapacidadeDeCarga { get; set; }
-        public string Horimetro { get; set; }
+        public string? Horimetro { get; set; }
 
         public virtual Empresa.Empresa Empresa { get; set; }
     }
