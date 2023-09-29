@@ -21,6 +21,8 @@ namespace Entities.Entidades.Cadastros.Cliente
         [Required]
         public string Telefone1 { get; set; }
         public string Telefone2 { get; set; }
+
+        [EmailAddress]
         public string Email { get; set; }
         public string Precificacao { get; set; }
     }
