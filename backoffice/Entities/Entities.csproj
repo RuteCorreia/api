@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Entidades\Cadastros\Cliente\" />
+    <Folder Include="Entidades\Cadastros\Pilotos\" />
+    <Folder Include="Entidades\Cadastros\Pilotos\" />
+  </ItemGroup>
+
 </Project>
