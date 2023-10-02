@@ -1,6 +1,7 @@
 using Data.Context;
 using Data.Repositorio.Cadastros.Bula;
 using Data.Repositorio.Cadastros.Cliente;
+using Data.Repositorio.Cadastros.Cultura;
 using Data.Repositorio.Cadastros.Empresa;
 using Data.Repositorio.Cadastros.Engenheiro;
 using Data.Repositorio.Cadastros.Executor;
@@ -10,6 +11,7 @@ using Data.Repositorio.Generico;
 using Domain.Interfaces;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.Cliente;
+using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Executor;
@@ -18,6 +20,7 @@ using Domain.Interfaces.Cadastros.PlanoContrato;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Cadastros.Bula;
 using Domain.Servicos.Cadastros.Cliente;
+using Domain.Servicos.Cadastros.Cultura;
 using Domain.Servicos.Cadastros.Empresa;
 using Domain.Servicos.Cadastros.Engenheiro;
 using Domain.Servicos.Cadastros.Executor;
@@ -25,6 +28,7 @@ using Domain.Servicos.Cadastros.Piloto;
 using Domain.Servicos.Cadastros.PlanoContrato;
 using Domain.Servicos.Genericos;
 using Entities.Entidades.Cadastros.Cliente;
+using Entities.Entidades.Cadastros.Cultura;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Engenheiros;
 using Entities.Entidades.Cadastros.Executores;
@@ -62,6 +66,8 @@ builder.Services.AddTransient<IBaseRepository<Piloto>, BaseRepository<Piloto>>()
 builder.Services.AddTransient<IBaseService<Piloto>, BaseService<Piloto>>();
 builder.Services.AddTransient<IBaseRepository<PlanoDeContrato>, BaseRepository<PlanoDeContrato>>();
 builder.Services.AddTransient<IBaseService<PlanoDeContrato>, BaseService<PlanoDeContrato>>();
+builder.Services.AddTransient<IBaseRepository<Cultura>, BaseRepository<Cultura>>();
+builder.Services.AddTransient<IBaseService<Cultura>, BaseService<Cultura>>();
 
 #endregion
 
@@ -80,6 +86,8 @@ builder.Services.AddTransient<IPilotoRepository, PilotoRepository>();
 builder.Services.AddTransient<IPilotoService, PilotoService>();
 builder.Services.AddTransient<IPlanoContratoRepository, PlanoContratoRepository>();
 builder.Services.AddTransient<IPlanoContratoService, PlanoContratoService>();
+builder.Services.AddTransient<ICulturaRepository, CulturaRepository>();
+builder.Services.AddTransient<ICulturaService, CulturaService>();
 
 #endregion
 
