@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Repositorio.Generico
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity>
-        where TEntity : BaseEntity
+        where TEntity : class
     {
         protected readonly DataContext _context;
 

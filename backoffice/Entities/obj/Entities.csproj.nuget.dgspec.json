@@ -11,7 +11,7 @@
         "projectName": "Entities",
         "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\Raphael\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Raphael\\Source\\Repos\\flytec\\backoffice\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
