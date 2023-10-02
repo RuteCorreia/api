@@ -6,6 +6,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.Engenheiro
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class EngenheiroController : ControllerBase
     {
         private IEngenheiroService _baseEngenheiroService;

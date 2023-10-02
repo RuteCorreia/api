@@ -8,6 +8,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.Piloto
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PilotoController : ControllerBase
     {
         private IPilotoService _basePilotoService;
@@ -36,7 +38,7 @@ namespace WebApp.Controllers.Piloto
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Remover(int id)
+        public IActionResult RemoverEngenheiro(int id)
         {
             if (id == 0)
                 return NotFound();

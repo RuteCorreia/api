@@ -6,6 +6,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.Executor
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ExecutorController : ControllerBase
     {
         private IExecutorService _baseExecutorService;

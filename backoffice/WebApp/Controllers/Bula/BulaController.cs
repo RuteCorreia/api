@@ -7,6 +7,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.Bula
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class BulaController : ControllerBase
     {
         private IBulaService _baseBulaService;

@@ -7,6 +7,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.Cliente
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class ClienteController : ControllerBase
     {
         private IClienteService _baseClienteService;

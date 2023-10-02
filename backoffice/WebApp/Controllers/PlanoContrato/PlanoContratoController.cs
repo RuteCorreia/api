@@ -7,6 +7,8 @@ using Service.Validators;
 
 namespace WebApp.Controllers.PlanoContrato
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class PlanoContratoController : ControllerBase
     {
         private IPlanoContratoService _basePlanoContratoService;
