@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces;
+using Domain.Interfaces.Genericos;
 using Entities.Entidades.Base;
 using FluentValidation;
 using System;

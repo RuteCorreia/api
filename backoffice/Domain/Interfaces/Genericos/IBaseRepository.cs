@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Genericos
 {
     public interface IBaseRepository<TEntity> where TEntity : class
     {

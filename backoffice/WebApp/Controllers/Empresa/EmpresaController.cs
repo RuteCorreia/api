@@ -1,5 +1,5 @@
 ﻿using Domain.Interfaces;
-using Domain.Interfaces.Empresa;
+using Domain.Interfaces.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.User;
 using Microsoft.AspNetCore.Mvc;

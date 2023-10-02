@@ -1,5 +1,5 @@
 ﻿using Data.Context;
-using Domain.Interfaces;
+using Domain.Interfaces.Genericos;
 using Entities.Entidades.Base;
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,7 @@ namespace Data.Repositorio.Generico
         public void Remover(int id)
         {
             _context.Set<TEntity>().Remove(BuscarPorId(id));
+            _context.SaveChanges();
         }
 
         public IList<TEntity> ListarTodos() =>

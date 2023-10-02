@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Empresa
+namespace Domain.Interfaces.Cadastros.PlanoContrato
 {
-    public interface IEmpresaRepository : IBaseRepository<Entities.Entidades.Cadastros.Empresa.Empresa>
+    public interface IPlanoContratoService : IBaseService<PlanoDeContrato>
     {
+
     }
 }

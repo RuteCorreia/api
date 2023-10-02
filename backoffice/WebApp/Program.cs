@@ -1,9 +1,10 @@
 using Data.Context;
-using Data.Repositorio.Empresa;
+using Data.Repositorio.Cadastros.Empresa;
 using Data.Repositorio.Generico;
 using Domain.Interfaces;
-using Domain.Interfaces.Empresa;
-using Domain.Servicos.Empresa;
+using Domain.Interfaces.Cadastros.Empresa;
+using Domain.Interfaces.Genericos;
+using Domain.Servicos.Cadastros.Empresa;
 using Domain.Servicos.Genericos;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.User;
