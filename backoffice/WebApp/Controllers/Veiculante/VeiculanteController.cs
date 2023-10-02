@@ -1,40 +1,38 @@
 ﻿using Domain.Interfaces.Cadastros.Piloto;
-using Domain.Interfaces.Cadastros.PlanoContrato;
-using Entities.Entidades.Cadastros.Empresa;
-using Entities.Entidades.Cadastros.Pilotos;
+using Domain.Interfaces.Cadastros.Veiculante;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
 
-namespace WebApp.Controllers.Piloto
+namespace WebApp.Controllers.Veiculante
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PilotoController : ControllerBase
+    public class VeiculanteController : ControllerBase
     {
-        private IPilotoService _basePilotoService;
+        private IVeiculanteService _baseVeiculanteService;
 
-        public PilotoController(IPilotoService basePilotoService)
+        public VeiculanteController(IVeiculanteService baseVeiculanteService)
         {
-            _basePilotoService = basePilotoService;
+            _baseVeiculanteService = baseVeiculanteService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Veiculante.Veiculante veiculante)
         {
-            if (piloto == null)
+            if (veiculante == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Inserir<PilotoValidator>(piloto).IdPiloto);
+            return Execute(() => _baseVeiculanteService.Inserir<VeiculanteValidator>(veiculante).IdVeiculante);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Veiculante.Veiculante veiculante)
         {
-            if (piloto == null)
+            if (veiculante == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Atualizar<PilotoValidator>(piloto));
+            return Execute(() => _baseVeiculanteService.Atualizar<VeiculanteValidator>(veiculante));
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +43,7 @@ namespace WebApp.Controllers.Piloto
 
             Execute(() =>
             {
-                _basePilotoService.Remover(id);
+                _baseVeiculanteService.Remover(id);
                 return true;
             });
 
@@ -57,7 +55,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _baseVeiculanteService.Listar());
 
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace WebApp.Controllers.Piloto
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.BuscarPorId(id));
+            return Execute(() => _baseVeiculanteService.BuscarPorId(id));
         }
 
         private IActionResult Execute(Func<object> func)

@@ -1,40 +1,38 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
-using Domain.Interfaces.Cadastros.PlanoContrato;
-using Entities.Entidades.Cadastros.Empresa;
-using Entities.Entidades.Cadastros.Pilotos;
+﻿using Domain.Interfaces.Cadastros.Combustivel;
+using Domain.Interfaces.Cadastros.Engenheiro;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
 
-namespace WebApp.Controllers.Piloto
+namespace WebApp.Controllers.Combustivel
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PilotoController : ControllerBase
+    public class CombustivelController : ControllerBase
     {
-        private IPilotoService _basePilotoService;
+        private ICombustivelService _baseCombustivelService;
 
-        public PilotoController(IPilotoService basePilotoService)
+        public CombustivelController(ICombustivelService baseCombustivelService)
         {
-            _basePilotoService = basePilotoService;
+            _baseCombustivelService = baseCombustivelService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Combustivel.Combustivel combustivel)
         {
-            if (piloto == null)
+            if (combustivel == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Inserir<PilotoValidator>(piloto).IdPiloto);
+            return Execute(() => _baseCombustivelService.Inserir<CombustivelValidator>(combustivel).Id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Combustivel.Combustivel combustivel)
         {
-            if (piloto == null)
+            if (combustivel == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Atualizar<PilotoValidator>(piloto));
+            return Execute(() => _baseCombustivelService.Atualizar<CombustivelValidator>(combustivel));
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +43,7 @@ namespace WebApp.Controllers.Piloto
 
             Execute(() =>
             {
-                _basePilotoService.Remover(id);
+                _baseCombustivelService.Remover(id);
                 return true;
             });
 
@@ -57,7 +55,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _baseCombustivelService.Listar());
 
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace WebApp.Controllers.Piloto
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.BuscarPorId(id));
+            return Execute(() => _baseCombustivelService.BuscarPorId(id));
         }
 
         private IActionResult Execute(Func<object> func)

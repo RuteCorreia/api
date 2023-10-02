@@ -1,40 +1,38 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
-using Domain.Interfaces.Cadastros.PlanoContrato;
-using Entities.Entidades.Cadastros.Empresa;
-using Entities.Entidades.Cadastros.Pilotos;
+﻿using Domain.Interfaces.Cadastros.Engenheiro;
+using Domain.Interfaces.Cadastros.Precificacao;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
 
-namespace WebApp.Controllers.Piloto
+namespace WebApp.Controllers.Precificacao
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PilotoController : ControllerBase
+    public class PrecificacaoController : ControllerBase
     {
-        private IPilotoService _basePilotoService;
+        private IPrecificacaoService _basePrecificacaoService;
 
-        public PilotoController(IPilotoService basePilotoService)
+        public PrecificacaoController(IPrecificacaoService basePrecificacaoService)
         {
-            _basePilotoService = basePilotoService;
+            _basePrecificacaoService = basePrecificacaoService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Precificacao.Precificacao precificacao)
         {
-            if (piloto == null)
+            if (precificacao == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Inserir<PilotoValidator>(piloto).IdPiloto);
+            return Execute(() => _basePrecificacaoService.Inserir<PrecificacaoValidator>(precificacao).Id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Precificacao.Precificacao precificacao)
         {
-            if (piloto == null)
+            if (precificacao == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Atualizar<PilotoValidator>(piloto));
+            return Execute(() => _basePrecificacaoService.Atualizar<PrecificacaoValidator>(precificacao));
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +43,7 @@ namespace WebApp.Controllers.Piloto
 
             Execute(() =>
             {
-                _basePilotoService.Remover(id);
+                _basePrecificacaoService.Remover(id);
                 return true;
             });
 
@@ -57,7 +55,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _basePrecificacaoService.Listar());
 
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace WebApp.Controllers.Piloto
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.BuscarPorId(id));
+            return Execute(() => _basePrecificacaoService.BuscarPorId(id));
         }
 
         private IActionResult Execute(Func<object> func)

@@ -1,40 +1,38 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
-using Domain.Interfaces.Cadastros.PlanoContrato;
-using Entities.Entidades.Cadastros.Empresa;
-using Entities.Entidades.Cadastros.Pilotos;
+﻿using Domain.Interfaces.Cadastros.Pista;
+using Domain.Interfaces.Cadastros.Precificacao;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
 
-namespace WebApp.Controllers.Piloto
+namespace WebApp.Controllers.Pistas
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PilotoController : ControllerBase
+    public class PistaController : ControllerBase
     {
-        private IPilotoService _basePilotoService;
+        private IPistaService _basePistaService;
 
-        public PilotoController(IPilotoService basePilotoService)
+        public PistaController(IPistaService basePistaService)
         {
-            _basePilotoService = basePilotoService;
+            _basePistaService = basePistaService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pistas.Pista pista)
         {
-            if (piloto == null)
+            if (pista == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Inserir<PilotoValidator>(piloto).IdPiloto);
+            return Execute(() => _basePistaService.Inserir<PistaValidator>(pista).Id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pistas.Pista pista)
         {
-            if (piloto == null)
+            if (pista == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Atualizar<PilotoValidator>(piloto));
+            return Execute(() => _basePistaService.Atualizar<PistaValidator>(pista));
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +43,7 @@ namespace WebApp.Controllers.Piloto
 
             Execute(() =>
             {
-                _basePilotoService.Remover(id);
+                _basePistaService.Remover(id);
                 return true;
             });
 
@@ -57,7 +55,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _basePistaService.Listar());
 
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace WebApp.Controllers.Piloto
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.BuscarPorId(id));
+            return Execute(() => _basePistaService.BuscarPorId(id));
         }
 
         private IActionResult Execute(Func<object> func)

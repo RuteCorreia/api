@@ -1,38 +1,58 @@
 using Data.Context;
+using Data.Repositorio.Cadastros.AlvoBiologico;
 using Data.Repositorio.Cadastros.Bula;
 using Data.Repositorio.Cadastros.Cliente;
+using Data.Repositorio.Cadastros.Combustivel;
 using Data.Repositorio.Cadastros.Cultura;
 using Data.Repositorio.Cadastros.Empresa;
 using Data.Repositorio.Cadastros.Engenheiro;
 using Data.Repositorio.Cadastros.Executor;
 using Data.Repositorio.Cadastros.Piloto;
+using Data.Repositorio.Cadastros.Pista;
 using Data.Repositorio.Cadastros.PlanoContrato;
+using Data.Repositorio.Cadastros.Produto;
+using Data.Repositorio.Cadastros.Veiculante;
 using Data.Repositorio.Generico;
 using Domain.Interfaces;
+using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.Cliente;
+using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Piloto;
+using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.PlanoContrato;
+using Domain.Interfaces.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Genericos;
+using Domain.Servicos.Cadastros.AlvoBiologico;
 using Domain.Servicos.Cadastros.Bula;
 using Domain.Servicos.Cadastros.Cliente;
+using Domain.Servicos.Cadastros.Combustivel;
 using Domain.Servicos.Cadastros.Cultura;
 using Domain.Servicos.Cadastros.Empresa;
 using Domain.Servicos.Cadastros.Engenheiro;
 using Domain.Servicos.Cadastros.Executor;
 using Domain.Servicos.Cadastros.Piloto;
+using Domain.Servicos.Cadastros.Pista;
 using Domain.Servicos.Cadastros.PlanoContrato;
+using Domain.Servicos.Cadastros.Produto;
+using Domain.Servicos.Cadastros.Veiculante;
 using Domain.Servicos.Genericos;
+using Entities.Entidades.Cadastros.Alvo_Biologico;
 using Entities.Entidades.Cadastros.Cliente;
+using Entities.Entidades.Cadastros.Combustivel;
 using Entities.Entidades.Cadastros.Cultura;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Engenheiros;
 using Entities.Entidades.Cadastros.Executores;
 using Entities.Entidades.Cadastros.Pilotos;
+using Entities.Entidades.Cadastros.Pistas;
+using Entities.Entidades.Cadastros.Produtos;
+using Entities.Entidades.Cadastros.Veiculante;
 using Entities.Entidades.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +88,16 @@ builder.Services.AddTransient<IBaseRepository<PlanoDeContrato>, BaseRepository<P
 builder.Services.AddTransient<IBaseService<PlanoDeContrato>, BaseService<PlanoDeContrato>>();
 builder.Services.AddTransient<IBaseRepository<Cultura>, BaseRepository<Cultura>>();
 builder.Services.AddTransient<IBaseService<Cultura>, BaseService<Cultura>>();
+builder.Services.AddTransient<IBaseRepository<Veiculante>, BaseRepository<Veiculante>>();
+builder.Services.AddTransient<IBaseService<Veiculante>, BaseService<Veiculante>>();
+builder.Services.AddTransient<IBaseRepository<Combustivel>, BaseRepository<Combustivel>>();
+builder.Services.AddTransient<IBaseService<Combustivel>, BaseService<Combustivel>>();
+builder.Services.AddTransient<IBaseRepository<Pista>, BaseRepository<Pista>>();
+builder.Services.AddTransient<IBaseService<Pista>, BaseService<Pista>>();
+builder.Services.AddTransient<IBaseRepository<Produto>, BaseRepository<Produto>>();
+builder.Services.AddTransient<IBaseService<Produto>, BaseService<Produto>>();
+builder.Services.AddTransient<IBaseRepository<AlvoBiologico>, BaseRepository<AlvoBiologico>>();
+builder.Services.AddTransient<IBaseService<AlvoBiologico>, BaseService<AlvoBiologico>>();
 
 #endregion
 
@@ -88,6 +118,16 @@ builder.Services.AddTransient<IPlanoContratoRepository, PlanoContratoRepository>
 builder.Services.AddTransient<IPlanoContratoService, PlanoContratoService>();
 builder.Services.AddTransient<ICulturaRepository, CulturaRepository>();
 builder.Services.AddTransient<ICulturaService, CulturaService>();
+builder.Services.AddTransient<IVeiculanteRepository, VeiculanteRepository>();
+builder.Services.AddTransient<IVeiculanteService, VeiculanteService>();
+builder.Services.AddTransient<ICombustivelRepository, CombustivelRepository>();
+builder.Services.AddTransient<ICombustivelService, CombustivelService>();
+builder.Services.AddTransient<IPistaRepository, PistaRepository>();
+builder.Services.AddTransient<IPistaService, PistaService>();
+builder.Services.AddTransient<IProdutoRepository, ProdutoRepository>();
+builder.Services.AddTransient<IProdutoService, ProdutoService>();
+builder.Services.AddTransient<IAlvoBiologicoRepository, AlvoBiologicoRepository>();
+builder.Services.AddTransient<IAlvoBiologicoService, AlvoBiologicoService>();
 
 #endregion
 

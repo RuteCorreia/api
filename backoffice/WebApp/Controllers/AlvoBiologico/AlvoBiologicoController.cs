@@ -1,40 +1,38 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
-using Domain.Interfaces.Cadastros.PlanoContrato;
-using Entities.Entidades.Cadastros.Empresa;
-using Entities.Entidades.Cadastros.Pilotos;
+﻿using Domain.Interfaces.Cadastros.AlvoBiologico;
+using Domain.Interfaces.Cadastros.Bula;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
 
-namespace WebApp.Controllers.Piloto
+namespace WebApp.Controllers.AlvoBiologico
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PilotoController : ControllerBase
+    public class AlvoBiologicoController : ControllerBase
     {
-        private IPilotoService _basePilotoService;
+        private IAlvoBiologicoService _baseAlvoBiologicoService;
 
-        public PilotoController(IPilotoService basePilotoService)
+        public AlvoBiologicoController(IAlvoBiologicoService baseAlvoBiologicoService)
         {
-            _basePilotoService = basePilotoService;
+            _baseAlvoBiologicoService = baseAlvoBiologicoService;
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Create([FromBody] Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico alvoBiologico)
         {
-            if (piloto == null)
+            if (alvoBiologico == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Inserir<PilotoValidator>(piloto).IdPiloto);
+            return Execute(() => _baseAlvoBiologicoService.Inserir<AlvoBiologicoValidator>(alvoBiologico).Id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Pilotos.Piloto piloto)
+        public IActionResult Edit([FromBody] Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico alvoBiologico)
         {
-            if (piloto == null)
+            if (alvoBiologico == null)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.Atualizar<PilotoValidator>(piloto));
+            return Execute(() => _baseAlvoBiologicoService.Atualizar<AlvoBiologicoValidator>(alvoBiologico));
         }
 
         [HttpDelete("{id}")]
@@ -45,7 +43,7 @@ namespace WebApp.Controllers.Piloto
 
             Execute(() =>
             {
-                _basePilotoService.Remover(id);
+                _baseAlvoBiologicoService.Remover(id);
                 return true;
             });
 
@@ -57,7 +55,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _baseAlvoBiologicoService.Listar());
 
             }
             catch (Exception ex)
@@ -73,7 +71,7 @@ namespace WebApp.Controllers.Piloto
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _basePilotoService.BuscarPorId(id));
+            return Execute(() => _baseAlvoBiologicoService.BuscarPorId(id));
         }
 
         private IActionResult Execute(Func<object> func)
