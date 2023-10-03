@@ -9,5 +9,6 @@ namespace Domain.Interfaces.Cadastros.Aeronave
 {
     public interface IAeronaveRepository : IBaseRepository<Entities.Entidades.Cadastros.Aeronaves.Aeronave>
     {
+        Entities.Entidades.Cadastros.Empresa.Empresa BuscarEmpresaPorId(int? Id);
     }
 }

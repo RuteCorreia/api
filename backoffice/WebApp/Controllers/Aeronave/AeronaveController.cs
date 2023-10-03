@@ -71,7 +71,11 @@ namespace WebApp.Controllers.Aeronave
             if (id == 0)
                 return NotFound();
 
-            return Execute(() => _baseAeronaveService.BuscarPorId(id));
+            var buscaAeronave = _baseAeronaveService.BuscarPorId(id);
+
+            var teste = Execute(() => _baseAeronaveService.BuscarEmpresaPorId(buscaAeronave.IdEmpresa));
+
+            return Ok(buscaAeronave);
         }
 
         private IActionResult Execute(Func<object> func)

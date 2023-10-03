@@ -12,8 +12,17 @@ namespace Data.Repositorio.Cadastros.Aeronave
 {
     public class AeronaveRepository : BaseRepository<Entities.Entidades.Cadastros.Aeronaves.Aeronave>, IAeronaveRepository
     {
+        protected readonly DataContext _context;
+
         public AeronaveRepository(DataContext context) : base(context)
         {
+            _context = context;
+        }
+
+        public Entities.Entidades.Cadastros.Empresa.Empresa BuscarEmpresaPorId(int? Id)
+        {
+            var obj = _context.Empresa.Where(x => x.IdEmpresa == Id).FirstOrDefault();
+            return obj;
         }
     }
 }
