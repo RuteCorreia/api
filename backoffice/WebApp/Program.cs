@@ -118,6 +118,7 @@ using Entities.Entidades.Cadastros.Controle_De_Frota;
 using Entities.Entidades.Cadastros.Cultura;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Engenheiros;
+using Entities.Entidades.Cadastros.Equipamento;
 using Entities.Entidades.Cadastros.Estados;
 using Entities.Entidades.Cadastros.Executores;
 using Entities.Entidades.Cadastros.Frota;
@@ -211,6 +212,8 @@ builder.Services.AddTransient<IBaseRepository<Estados>, BaseRepository<Estados>>
 builder.Services.AddTransient<IBaseService<Estados>, BaseService<Estados>>();
 builder.Services.AddTransient<IBaseRepository<Cidades>, BaseRepository<Cidades>>();
 builder.Services.AddTransient<IBaseService<Cidades>, BaseService<Cidades>>();
+builder.Services.AddTransient<IBaseRepository<Equipamento>, BaseRepository<Equipamento>>();
+builder.Services.AddTransient<IBaseService<Equipamento>, BaseService<Equipamento>>();
 #endregion
 
 #region Repository & Services

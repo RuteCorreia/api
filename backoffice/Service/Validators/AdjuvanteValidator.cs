@@ -17,6 +17,5 @@ namespace Service.Validators
                 .NotEmpty().WithMessage("Insira um Nome")
                 .NotNull().WithMessage("Insira um Nome");
         }
-    {
     }
 }

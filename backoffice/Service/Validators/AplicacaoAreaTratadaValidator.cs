@@ -17,6 +17,5 @@ namespace Service.Validators
                 .NotEmpty().WithMessage("Insira uma Localização")
                 .NotNull().WithMessage("Insira uma Localização");
         }
-    {
     }
 }

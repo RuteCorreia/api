@@ -9,6 +9,5 @@ namespace Domain.Interfaces.Cadastros.Aplicacao
 {
     public interface IAplicacaoRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.Aplicacao>
     {
-    {
     }
 }

@@ -17,6 +17,5 @@ namespace Service.Validators
                 .NotEmpty().WithMessage("Insira uma quantidade de veiculantes")
                 .NotNull().WithMessage("Insira uma quantidade de veiculantes");
         }
-    {
     }
 }
