@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Frota
@@ -20,6 +21,8 @@ namespace Entities.Entidades.Cadastros.Frota
         public string Placa { get; set; }
         public string Combustivel { get; set; }
         public string Hodometro { get; set; }
-        public virtual Empresa.Empresa Empresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -26,8 +27,12 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public string? NomeCliente { get; set; }
         public string? CPFCliente { get; set; }
         public string? Assinatura { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
-        public virtual Estados.Estados Estado { get; set; }
-        public virtual Cidades.Cidades Cidade { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
+        [JsonIgnore]
+        public virtual Estados.Estados? Estado { get; set; }
+        [JsonIgnore]
+        public virtual Cidades.Cidades? Cidade { get; set; }
     }
 }

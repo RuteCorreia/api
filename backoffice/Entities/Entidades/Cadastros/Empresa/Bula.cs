@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Empresa
@@ -28,7 +29,10 @@ namespace Entities.Entidades.Cadastros.Empresa
         public int? DoseProdutoComercial { get; set; }
         public string Adjuvante { get; set; }
         public int? IdTipoDeServico { get; set; }
-        public virtual Cultura.Cultura Cultura { get; set; }
-        public virtual AlvoBiologico AlvoBiologico { get; set; }
+
+        [JsonIgnore]
+        public virtual Cultura.Cultura? Cultura { get; set; }
+        [JsonIgnore]
+        public virtual AlvoBiologico? AlvoBiologico { get; set; }
     }
 }

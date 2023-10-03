@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -24,7 +25,10 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public int? VolumeAplicacao { get; set; }
         public decimal? TotalAreaAplicada { get; set; }
         public string Alteracoes_Observacoes { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
-        public virtual Pista Pista { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
+        [JsonIgnore]
+        public virtual Pista? Pista { get; set; }
     }
 }

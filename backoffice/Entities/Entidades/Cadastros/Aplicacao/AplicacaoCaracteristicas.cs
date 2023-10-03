@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -23,8 +24,12 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         [ForeignKey("Adjuvante")]
         public int? IdAdjuvante { get; set; }
         public string TipoDeServico { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
-        public virtual Produto Produto { get; set; }
-        public virtual Adjuvante.Adjuvante Adjuvante { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
+        [JsonIgnore]
+        public virtual Produto? Produto { get; set; }
+        [JsonIgnore]
+        public virtual Adjuvante.Adjuvante? Adjuvante { get; set; }
     }
 }

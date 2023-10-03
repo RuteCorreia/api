@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Controle_De_Frota
@@ -35,8 +36,12 @@ namespace Entities.Entidades.Cadastros.Controle_De_Frota
 
         [ForeignKey("Piloto")]
         public int? IdPiloto { get; set; }
-        public virtual Frota.Frota Frota { get; set; }
-        public virtual Aeronave Aeronave { get; set; }
-        public virtual Piloto Piloto { get; set; }
+
+        [JsonIgnore]
+        public virtual Frota.Frota? Frota { get; set; }
+        [JsonIgnore]
+        public virtual Aeronave? Aeronave { get; set; }
+        [JsonIgnore]
+        public virtual Piloto? Piloto { get; set; }
     }
 }

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -18,6 +19,8 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public DateTime? Data { get; set; }
         public string? Nome { get; set; }
         public string? Descricao { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
     }
 }

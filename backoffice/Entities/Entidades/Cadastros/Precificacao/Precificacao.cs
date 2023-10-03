@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Precificacao
@@ -18,7 +19,9 @@ namespace Entities.Entidades.Cadastros.Precificacao
         public int? IdEmpresa { get; set; }
         public string DistanciaPista { get; set; }
         public decimal? PrecoHA { get; set; }
-        public virtual Empresa.Empresa Empresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
 
     }
 }

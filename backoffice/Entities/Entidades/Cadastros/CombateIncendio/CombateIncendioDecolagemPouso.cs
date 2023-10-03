@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.CombateIncendio
@@ -19,6 +20,8 @@ namespace Entities.Entidades.Cadastros.CombateIncendio
         public string? DecolagemHorimetro { get; set; }
         public DateTime? PousoHorario { get; set; }
         public string? PousoHorimetro { get; set; }
-        public virtual CombateIncendio CombateIncendio { get; set; }
+
+        [JsonIgnore]
+        public virtual CombateIncendio? CombateIncendio { get; set; }
     }
 }

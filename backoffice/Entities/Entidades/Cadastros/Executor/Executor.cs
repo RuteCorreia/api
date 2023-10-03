@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Executores
@@ -33,6 +34,8 @@ namespace Entities.Entidades.Cadastros.Executores
         public string CFTA { get; set; }
 
         public byte[] Assinatura { get; set; }
-        public virtual Empresa.Empresa Empresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
     }
 }

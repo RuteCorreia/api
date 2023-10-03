@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -41,12 +42,18 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         [ForeignKey("Equipamento")]
         public int? IdEquipamento { get; set; }
         public int? Angulo { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
-        public virtual Veiculante.Veiculante Veiculante { get; set; }
-        public virtual Aeronave Aeronave { get; set; }
-        public virtual AlturaVoo AlturaVoo { get; set; }
-        public virtual TipoProduto TipoProduto { get; set; }
-        public virtual Equipamento.Equipamento Equipamento { get; set; }
 
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
+        [JsonIgnore]
+        public virtual Veiculante.Veiculante? Veiculante { get; set; }
+        [JsonIgnore]
+        public virtual Aeronave? Aeronave { get; set; }
+        [JsonIgnore]
+        public virtual AlturaVoo? AlturaVoo { get; set; }
+        [JsonIgnore]
+        public virtual TipoProduto? TipoProduto { get; set; }
+        [JsonIgnore]
+        public virtual Equipamento.Equipamento? Equipamento { get; set; }
     }
 }

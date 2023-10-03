@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -33,11 +34,16 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         [ForeignKey("Cultura")]
         public int? IdCultura { get; set; }
 
-        public virtual Empresa.Empresa Empresa { get; set; }
-        public virtual Piloto Piloto { get; set; }
-        public virtual Executor Executor { get; set; }
-        public virtual Cliente.Cliente Cliente { get; set; }
-        public virtual Cultura.Cultura Cultura { get; set; }
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+        [JsonIgnore]
+        public virtual Piloto? Piloto { get; set; }
+        [JsonIgnore]
+        public virtual Executor? Executor { get; set; }
+        [JsonIgnore]
+        public virtual Cliente.Cliente? Cliente { get; set; }
+        [JsonIgnore]
+        public virtual Cultura.Cultura? Cultura { get; set; }
 
     }
 }

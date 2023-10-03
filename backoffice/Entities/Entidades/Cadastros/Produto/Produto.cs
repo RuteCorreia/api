@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Produtos
@@ -21,6 +22,7 @@ namespace Entities.Entidades.Cadastros.Produtos
         public string Classe { get; set; }
         public string TipoDeFormulacao { get; set; }
         public string TipoServico { get; set; }
-        public virtual Cultura.Cultura Cultura { get; set; }
+        [JsonIgnore]
+        public virtual Cultura.Cultura? Cultura { get; set; }
     }
 }

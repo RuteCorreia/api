@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aeronaves
@@ -19,7 +20,7 @@ namespace Entities.Entidades.Cadastros.Aeronaves
         public string? Combustivel { get; set; }
         public int? CapacidadeDeCarga { get; set; }
         public string? Horimetro { get; set; }
-
-        public virtual Empresa.Empresa Empresa { get; set; }
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
     }
 }

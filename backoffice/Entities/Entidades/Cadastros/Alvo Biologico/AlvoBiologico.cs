@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Alvo_Biologico
@@ -17,6 +18,7 @@ namespace Entities.Entidades.Cadastros.Alvo_Biologico
         public int? IdProduto { get; set; }
         public string Nome { get; set; }
         public string DoseProdutoPorHectare { get; set; }
-        public virtual Produtos.Produto Produto { get; set; }
+        [JsonIgnore]
+        public virtual Produtos.Produto? Produto { get; set; }
     }
 }

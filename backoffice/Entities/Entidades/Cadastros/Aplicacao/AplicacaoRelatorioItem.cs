@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -26,6 +27,8 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public string? VentoInicial { get; set; }
         public string? VentoFinal { get; set; }
         public string? ImagemDadosClimaticos { get; set; }
-        public virtual AplicacaoRelatorio AplicacaoRelatorio { get; set; }
+
+        [JsonIgnore]
+        public virtual AplicacaoRelatorio? AplicacaoRelatorio { get; set; }
     }
 }

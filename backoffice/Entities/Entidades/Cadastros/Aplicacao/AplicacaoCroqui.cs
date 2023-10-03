@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.Aplicacao
@@ -19,6 +20,8 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public int? IdMapa { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
-        public virtual Aplicacao Aplicacao { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao? Aplicacao { get; set; }
     }
 }

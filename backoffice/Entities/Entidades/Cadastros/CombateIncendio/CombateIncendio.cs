@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Entities.Entidades.Cadastros.CombateIncendio
@@ -51,9 +52,14 @@ namespace Entities.Entidades.Cadastros.CombateIncendio
         public string? ResponsavelOcorrenciaPosto { get; set; }
         public string? ResponsavelOcorrenciaRE { get; set; }
         public string? ResponsavelOcorrenciaAssinatura { get; set; }
-        public virtual Empresa.Empresa Empresa { get; set; }
-        public virtual Executor Executor { get; set; }
-        public virtual Aeronave Aeronave { get; set; }
-        public virtual Pista Pista { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+        [JsonIgnore]
+        public virtual Executor? Executor { get; set; }
+        [JsonIgnore]
+        public virtual Aeronave? Aeronave { get; set; }
+        [JsonIgnore]
+        public virtual Pista? Pista { get; set; }
     }
 }
