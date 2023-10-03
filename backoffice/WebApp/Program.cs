@@ -5,7 +5,11 @@ using Data.Repositorio.Cadastros.AlturaVoo;
 using Data.Repositorio.Cadastros.AlvoBiologico;
 using Data.Repositorio.Cadastros.Aplicacao;
 using Data.Repositorio.Cadastros.AplicacaoAreaTratada;
+using Data.Repositorio.Cadastros.AplicacaoCaracteristicas;
 using Data.Repositorio.Cadastros.AplicacaoCroqui;
+using Data.Repositorio.Cadastros.AplicacaoCroquiImportacao;
+using Data.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas;
+using Data.Repositorio.Cadastros.AplicacaoRelatorio;
 using Data.Repositorio.Cadastros.Bula;
 using Data.Repositorio.Cadastros.Cliente;
 using Data.Repositorio.Cadastros.Combustivel;
@@ -29,7 +33,11 @@ using Domain.Interfaces.Cadastros.AlturaVoo;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.Aplicacao;
 using Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
+using Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
 using Domain.Interfaces.Cadastros.AplicacaoCroqui;
+using Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
+using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.Combustivel;
@@ -52,7 +60,11 @@ using Domain.Servicos.Cadastros.AlturaVoo;
 using Domain.Servicos.Cadastros.AlvoBiologico;
 using Domain.Servicos.Cadastros.Aplicacao;
 using Domain.Servicos.Cadastros.AplicacaoAreaTratada;
+using Domain.Servicos.Cadastros.AplicacaoCaracteristicas;
 using Domain.Servicos.Cadastros.AplicacaoCroqui;
+using Domain.Servicos.Cadastros.AplicacaoCroquiImportacao;
+using Domain.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
+using Domain.Servicos.Cadastros.AplicacaoRelatorio;
 using Domain.Servicos.Cadastros.Bula;
 using Domain.Servicos.Cadastros.Cliente;
 using Domain.Servicos.Cadastros.Combustivel;
@@ -147,6 +159,14 @@ builder.Services.AddTransient<IBaseRepository<AplicacaoAreaTratada>, BaseReposit
 builder.Services.AddTransient<IBaseService<AplicacaoAreaTratada>, BaseService<AplicacaoAreaTratada>>();
 builder.Services.AddTransient<IBaseRepository<AplicacaoCroqui>, BaseRepository<AplicacaoCroqui>>();
 builder.Services.AddTransient<IBaseService<AplicacaoCroqui>, BaseService<AplicacaoCroqui>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoCroquiImportacao>, BaseRepository<AplicacaoCroquiImportacao>>();
+builder.Services.AddTransient<IBaseService<AplicacaoCroquiImportacao>, BaseService<AplicacaoCroquiImportacao>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoCaracteristicas>, BaseRepository<AplicacaoCaracteristicas>>();
+builder.Services.AddTransient<IBaseService<AplicacaoCaracteristicas>, BaseService<AplicacaoCaracteristicas>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoRecomendacoesTecnicas>, BaseRepository<AplicacaoRecomendacoesTecnicas>>();
+builder.Services.AddTransient<IBaseService<AplicacaoRecomendacoesTecnicas>, BaseService<AplicacaoRecomendacoesTecnicas>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoRelatorio>, BaseRepository<AplicacaoRelatorio>>();
+builder.Services.AddTransient<IBaseService<AplicacaoRelatorio>, BaseService<AplicacaoRelatorio>>();
 #endregion
 
 #region Repository & Services
@@ -194,6 +214,14 @@ builder.Services.AddTransient<IAplicacaoAreaTratadaRepository, AplicacaoAreaTrat
 builder.Services.AddTransient<IAplicacaoAreaTratadaService, AplicacaoAreaTratadaService>();
 builder.Services.AddTransient<IAplicacaoCroquiRepository, AplicacaoCroquiRepository>();
 builder.Services.AddTransient<IAplicacaoCroquiService, AplicacaoCroquiService>();
+builder.Services.AddTransient<IAplicacaoCroquiImportacaoRepository, AplicacaoCroquiImportacaoRepository>();
+builder.Services.AddTransient<IAplicacaoCroquiImportacaoService, AplicacaoCroquiImportacaoService>();
+builder.Services.AddTransient<IAplicacaoCaracteristicasRepository, AplicacaoCaracteristicasRepository>();
+builder.Services.AddTransient<IAplicacaoCaracteristicasService, AplicacaoCaracteristicasService>();
+builder.Services.AddTransient<IAplicacaoRecomendacoesTecnicasRepository, AplicacaoRecomendacoesTecnicasRepository>();
+builder.Services.AddTransient<IAplicacaoRecomendacoesTecnicasService, AplicacaoRecomendacoesTecnicasService>();
+builder.Services.AddTransient<IAplicacaoRelatorioRepository, AplicacaoRelatorioRepository>();
+builder.Services.AddTransient<IAplicacaoRelatorioService, AplicacaoRelatorioService>();
 
 #endregion
 
