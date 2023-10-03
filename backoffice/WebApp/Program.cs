@@ -6,10 +6,13 @@ using Data.Repositorio.Cadastros.AlvoBiologico;
 using Data.Repositorio.Cadastros.Aplicacao;
 using Data.Repositorio.Cadastros.AplicacaoAreaTratada;
 using Data.Repositorio.Cadastros.AplicacaoCaracteristicas;
+using Data.Repositorio.Cadastros.AplicacaoContrato;
 using Data.Repositorio.Cadastros.AplicacaoCroqui;
 using Data.Repositorio.Cadastros.AplicacaoCroquiImportacao;
+using Data.Repositorio.Cadastros.AplicacaoLog;
 using Data.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Data.Repositorio.Cadastros.AplicacaoRelatorio;
+using Data.Repositorio.Cadastros.AplicacaoRelatorioItem;
 using Data.Repositorio.Cadastros.Bula;
 using Data.Repositorio.Cadastros.Cliente;
 using Data.Repositorio.Cadastros.Combustivel;
@@ -34,10 +37,13 @@ using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.Aplicacao;
 using Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
 using Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
+using Domain.Interfaces.Cadastros.AplicacaoContrato;
 using Domain.Interfaces.Cadastros.AplicacaoCroqui;
 using Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
+using Domain.Interfaces.Cadastros.AplicacaoLog;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.Combustivel;
@@ -61,10 +67,13 @@ using Domain.Servicos.Cadastros.AlvoBiologico;
 using Domain.Servicos.Cadastros.Aplicacao;
 using Domain.Servicos.Cadastros.AplicacaoAreaTratada;
 using Domain.Servicos.Cadastros.AplicacaoCaracteristicas;
+using Domain.Servicos.Cadastros.AplicacaoContrato;
 using Domain.Servicos.Cadastros.AplicacaoCroqui;
 using Domain.Servicos.Cadastros.AplicacaoCroquiImportacao;
+using Domain.Servicos.Cadastros.AplicacaoLog;
 using Domain.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Servicos.Cadastros.AplicacaoRelatorio;
+using Domain.Servicos.Cadastros.AplicacaoRelatorioItem;
 using Domain.Servicos.Cadastros.Bula;
 using Domain.Servicos.Cadastros.Cliente;
 using Domain.Servicos.Cadastros.Combustivel;
@@ -167,6 +176,12 @@ builder.Services.AddTransient<IBaseRepository<AplicacaoRecomendacoesTecnicas>, B
 builder.Services.AddTransient<IBaseService<AplicacaoRecomendacoesTecnicas>, BaseService<AplicacaoRecomendacoesTecnicas>>();
 builder.Services.AddTransient<IBaseRepository<AplicacaoRelatorio>, BaseRepository<AplicacaoRelatorio>>();
 builder.Services.AddTransient<IBaseService<AplicacaoRelatorio>, BaseService<AplicacaoRelatorio>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoRelatorioItem>, BaseRepository<AplicacaoRelatorioItem>>();
+builder.Services.AddTransient<IBaseService<AplicacaoRelatorioItem>, BaseService<AplicacaoRelatorioItem>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoLog>, BaseRepository<AplicacaoLog>>();
+builder.Services.AddTransient<IBaseService<AplicacaoLog>, BaseService<AplicacaoLog>>();
+builder.Services.AddTransient<IBaseRepository<AplicacaoContrato>, BaseRepository<AplicacaoContrato>>();
+builder.Services.AddTransient<IBaseService<AplicacaoContrato>, BaseService<AplicacaoContrato>>();
 #endregion
 
 #region Repository & Services
@@ -222,6 +237,12 @@ builder.Services.AddTransient<IAplicacaoRecomendacoesTecnicasRepository, Aplicac
 builder.Services.AddTransient<IAplicacaoRecomendacoesTecnicasService, AplicacaoRecomendacoesTecnicasService>();
 builder.Services.AddTransient<IAplicacaoRelatorioRepository, AplicacaoRelatorioRepository>();
 builder.Services.AddTransient<IAplicacaoRelatorioService, AplicacaoRelatorioService>();
+builder.Services.AddTransient<IAplicacaoRelatorioItemRepository, AplicacaoRelatorioItemRepository>();
+builder.Services.AddTransient<IAplicacaoRelatorioItemService, AplicacaoRelatorioItemService>();
+builder.Services.AddTransient<IAplicacaoLogRepository, AplicacaoLogRepository>();
+builder.Services.AddTransient<IAplicacaoLogService, AplicacaoLogService>();
+builder.Services.AddTransient<IAplicacaoContratoRepository, AplicacaoContratoRepository>();
+builder.Services.AddTransient<IAplicacaoContratoService, AplicacaoContratoService>();
 
 #endregion
 
