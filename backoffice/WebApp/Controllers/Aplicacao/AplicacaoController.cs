@@ -55,7 +55,7 @@ namespace WebApp.Controllers.Aplicacao
         {
             try
             {
-                return Execute(() => _baseAplicacaoService.Listar());
+                return Execute(() => _baseAplicacaoService.ListarTodosAlvosBiologicos());
 
             }
             catch (Exception ex)

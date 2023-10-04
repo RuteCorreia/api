@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoCaracteristicas
         {
             try
             {
-                return Execute(() => _baseAplicacaoCaracteristicasService.Listar());
+                return Execute(() => _baseAplicacaoCaracteristicasService.ListarTodasAplicacoesCaracteristicas());
 
             }
             catch (Exception ex)

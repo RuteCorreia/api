@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoCroquiImportacao
         {
             try
             {
-                return Execute(() => _baseAplicacaoCroquiImportacaoService.Listar());
+                return Execute(() => _baseAplicacaoCroquiImportacaoService.ListarTodasAplicacoesCroquiImportacoes());
 
             }
             catch (Exception ex)

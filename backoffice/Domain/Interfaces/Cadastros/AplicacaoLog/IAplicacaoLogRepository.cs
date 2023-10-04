@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoLog
 {
     public interface IAplicacaoLogRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog();
     }
 }

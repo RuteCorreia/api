@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoAreaTratada
 {
     public class AplicacaoAreaTratadaService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>, IAplicacaoAreaTratadaService
     {
-        public AplicacaoAreaTratadaService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoAreaTratadaRepository _aplicacaoAreaTratadaRepository;
+
+        public AplicacaoAreaTratadaService(IAplicacaoAreaTratadaRepository aplicacaoAreaTratadaRepository) : base(aplicacaoAreaTratadaRepository)
         {
+            _aplicacaoAreaTratadaRepository = aplicacaoAreaTratadaRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoAreaTratadaRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas()
+        {
+            var obj = _aplicacaoAreaTratadaRepository.ListarTodasAplicacoesAreaTratadas();
+            return obj;
         }
     }
 }

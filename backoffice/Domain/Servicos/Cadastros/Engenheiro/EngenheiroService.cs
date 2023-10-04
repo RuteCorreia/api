@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Engenheiro;
+﻿using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
@@ -12,8 +13,23 @@ namespace Domain.Servicos.Cadastros.Engenheiro
 {
     public class EngenheiroService : BaseService<Entities.Entidades.Cadastros.Engenheiros.Engenheiro>, IEngenheiroService
     {
-        public EngenheiroService(IBaseRepository<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> baseRepository) : base(baseRepository)
+        private readonly IEngenheiroRepository _engenheiroRepository;
+
+        public EngenheiroService(IEngenheiroRepository engenheiroRepository) : base(engenheiroRepository)
         {
+            _engenheiroRepository = engenheiroRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Engenheiros.Engenheiro BuscarPorId(int? Id)
+        {
+            var obj = _engenheiroRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> ListarTodosEngenheiros()
+        {
+            var obj = _engenheiroRepository.ListarTodosEngenheiros();
+            return obj;
         }
     }
 }

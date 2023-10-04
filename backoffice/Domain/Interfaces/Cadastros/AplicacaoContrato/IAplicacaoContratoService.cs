@@ -8,5 +8,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoContrato
 {
     public interface IAplicacaoContratoService : IBaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato();
     }
 }

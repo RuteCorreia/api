@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.Produto
 {
     public interface IProdutoRepository : IBaseRepository<Entities.Entidades.Cadastros.Produtos.Produto>
     {
+        Entities.Entidades.Cadastros.Produtos.Produto BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Produtos.Produto> ListarProdutos();
     }
 }

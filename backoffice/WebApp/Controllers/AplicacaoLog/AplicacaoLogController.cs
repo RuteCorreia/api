@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoLog
         {
             try
             {
-                return Execute(() => _baseAplicacaoLogService.Listar());
+                return Execute(() => _baseAplicacaoLogService.ListarTodasAplicacoesLog());
 
             }
             catch (Exception ex)

@@ -8,5 +8,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoRelatorioItem
 {
     public interface IAplicacaoRelatorioItemService : IBaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> ListarTodasAplicacoesRelatorioItem();
     }
 }

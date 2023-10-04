@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.Precificacao
 {
     public class PrecificacaoService : BaseService<Entities.Entidades.Cadastros.Precificacao.Precificacao>, IPrecificacaoService
     {
-        public PrecificacaoService(IBaseRepository<Entities.Entidades.Cadastros.Precificacao.Precificacao> baseRepository) : base(baseRepository)
+        private readonly IPrecificacaoRepository _precificacaoRepository;
+
+        public PrecificacaoService(IPrecificacaoRepository precificacaoRepository) : base(precificacaoRepository)
         {
+            _precificacaoRepository = precificacaoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id)
+        {
+            var obj = _precificacaoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes()
+        {
+            var obj = _precificacaoRepository.ListarPrecificacoes();
+            return obj;
         }
     }
 }

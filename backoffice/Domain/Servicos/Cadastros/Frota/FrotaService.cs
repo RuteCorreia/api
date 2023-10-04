@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.Frota
 {
     public class FrotaService : BaseService<Entities.Entidades.Cadastros.Frota.Frota>, IFrotaService
     {
-        public FrotaService(IBaseRepository<Entities.Entidades.Cadastros.Frota.Frota> baseRepository) : base(baseRepository)
+        private readonly IFrotaRepository _frotaRepository;
+
+        public FrotaService(IFrotaRepository frotaRepository) : base(frotaRepository)
         {
+            _frotaRepository = frotaRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id)
+        {
+            var obj = _frotaRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Frota.Frota> ListarFrotas()
+        {
+            var obj = _frotaRepository.ListarFrotas();
+            return obj;
         }
     }
 }

@@ -8,5 +8,7 @@ namespace Domain.Interfaces.Cadastros.Executor
 {
     public interface IExecutorService : IBaseService<Entities.Entidades.Cadastros.Executores.Executor>
     {
+        Entities.Entidades.Cadastros.Executores.Executor BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Executores.Executor> ListarTodosExecutores();
     }
 }

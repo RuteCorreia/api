@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.Frota
 {
     public interface IFrotaRepository : IBaseRepository<Entities.Entidades.Cadastros.Frota.Frota>
     {
+        Entities.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Frota.Frota> ListarFrotas();
     }
 }

@@ -57,7 +57,7 @@ namespace WebApp.Controllers.Piloto
         {
             try
             {
-                return Execute(() => _basePilotoService.Listar());
+                return Execute(() => _basePilotoService.ListarPilotos());
 
             }
             catch (Exception ex)

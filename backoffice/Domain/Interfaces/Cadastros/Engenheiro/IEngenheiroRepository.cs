@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.Engenheiro
 {
     public interface IEngenheiroRepository : IBaseRepository<Entities.Entidades.Cadastros.Engenheiros.Engenheiro>
     {
+        Entities.Entidades.Cadastros.Engenheiros.Engenheiro BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> ListarTodosEngenheiros();
     }
 }

@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoAreaTratada
         {
             try
             {
-                return Execute(() => _baseAplicacaoAreaTratadaService.Listar());
+                return Execute(() => _baseAplicacaoAreaTratadaService.ListarTodasAplicacoesAreaTratadas());
 
             }
             catch (Exception ex)

@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoRecomendacoesTecnicas
         {
             try
             {
-                return Execute(() => _baseAplicacaoRecomendacoesTecnicasService.Listar());
+                return Execute(() => _baseAplicacaoRecomendacoesTecnicasService.ListarTodasAplicacoesRecomendacoesTecnicas());
 
             }
             catch (Exception ex)

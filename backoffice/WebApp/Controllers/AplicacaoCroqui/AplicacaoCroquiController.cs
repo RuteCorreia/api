@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoCroqui
         {
             try
             {
-                return Execute(() => _baseAplicacaoCroquiService.Listar());
+                return Execute(() => _baseAplicacaoCroquiService.ListarTodasAplicacoesCroqui());
 
             }
             catch (Exception ex)

@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoContrato
 {
     public class AplicacaoContratoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato>, IAplicacaoContratoService
     {
-        public AplicacaoContratoService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoContratoRepository _aplicacaoContratoRepository;
+
+        public AplicacaoContratoService(IAplicacaoContratoRepository aplicacaoContratoRepository) : base(aplicacaoContratoRepository)
         {
+            _aplicacaoContratoRepository = aplicacaoContratoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoContratoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato()
+        {
+            var obj = _aplicacaoContratoRepository.ListarTodasAplicacoesContrato();
+            return obj;
         }
     }
 }

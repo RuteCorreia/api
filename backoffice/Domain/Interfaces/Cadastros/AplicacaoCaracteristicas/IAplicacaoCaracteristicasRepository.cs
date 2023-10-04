@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoCaracteristicas
 {
     public interface IAplicacaoCaracteristicasRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas();
     }
 }

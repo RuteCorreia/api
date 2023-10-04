@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoRelatorio
         {
             try
             {
-                return Execute(() => _baseAplicacaoRelatorioService.Listar());
+                return Execute(() => _baseAplicacaoRelatorioService.ListarTodasAplicacoesRelatorio());
 
             }
             catch (Exception ex)

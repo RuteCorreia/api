@@ -8,5 +8,7 @@ namespace Domain.Interfaces.Cadastros.Precificacao
 {
     public interface IPrecificacaoService : IBaseService<Entities.Entidades.Cadastros.Precificacao.Precificacao>
     {
+        Entities.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes();
     }
 }

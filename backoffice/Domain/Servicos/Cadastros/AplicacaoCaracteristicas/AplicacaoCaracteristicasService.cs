@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoCaracteristicas
 {
     public class AplicacaoCaracteristicasService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>, IAplicacaoCaracteristicasService
     {
-        public AplicacaoCaracteristicasService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoCaracteristicasRepository _aplicacaoCaracteristicasRepository;
+
+        public AplicacaoCaracteristicasService(IAplicacaoCaracteristicasRepository aplicacaoCaracteristicasRepository) : base(aplicacaoCaracteristicasRepository)
         {
+            _aplicacaoCaracteristicasRepository = aplicacaoCaracteristicasRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoCaracteristicasRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas()
+        {
+            var obj = _aplicacaoCaracteristicasRepository.ListarTodasAplicacoesCaracteristicas();
+            return obj;
         }
     }
 }

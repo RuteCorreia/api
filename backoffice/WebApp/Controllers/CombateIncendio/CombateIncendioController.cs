@@ -55,7 +55,7 @@ namespace WebApp.Controllers.CombateIncendio
         {
             try
             {
-                return Execute(() => _baseCombateIncendioService.Listar());
+                return Execute(() => _baseCombateIncendioService.ListarTodosCombatesIncendio());
 
             }
             catch (Exception ex)

@@ -28,7 +28,7 @@ namespace Data.Repositorio.Cadastros.Aplicacao
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodosAlvosBiologicos()
+        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes()
         {
             var obj = _context.Aplicacao.Include("Empresa").Include("Piloto")
                                                     .Include("Executor").Include("Cliente")

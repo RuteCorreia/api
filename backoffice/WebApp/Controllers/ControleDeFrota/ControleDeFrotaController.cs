@@ -55,7 +55,7 @@ namespace WebApp.Controllers.ControleDeFrota
         {
             try
             {
-                return Execute(() => _baseControleDeFrotaService.Listar());
+                return Execute(() => _baseControleDeFrotaService.ListarTodosControlesDeFrota());
 
             }
             catch (Exception ex)

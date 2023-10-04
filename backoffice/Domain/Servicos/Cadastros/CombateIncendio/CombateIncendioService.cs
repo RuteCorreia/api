@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Cliente;
+﻿using Domain.Interfaces.Cadastros.Bula;
+using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
@@ -12,8 +13,24 @@ namespace Domain.Servicos.Cadastros.CombateIncendio
 {
     public class CombateIncendioService : BaseService<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio>, ICombateIncendioService
     {
-        public CombateIncendioService(IBaseRepository<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio> baseRepository) : base(baseRepository)
+        private readonly ICombateIncendioRepository _combateIncendioRepository;
+
+        public CombateIncendioService(ICombateIncendioRepository combateIncendioRepository) : base(combateIncendioRepository)
         {
+            _combateIncendioRepository = combateIncendioRepository;
+
+        }
+
+        public Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio BuscarPorId(int? Id)
+        {
+            var obj = _combateIncendioRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio> ListarTodosCombatesIncendio()
+        {
+            var obj = _combateIncendioRepository.ListarTodosCombatesIncendio();
+            return obj;
         }
     }
 }

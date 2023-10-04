@@ -55,7 +55,7 @@ namespace WebApp.Controllers.Executor
         {
             try
             {
-                return Execute(() => _baseExecutorService.Listar());
+                return Execute(() => _baseExecutorService.ListarTodosExecutores());
 
             }
             catch (Exception ex)

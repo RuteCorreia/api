@@ -10,6 +10,6 @@ namespace Domain.Interfaces.Cadastros.Aplicacao
     public interface IAplicacaoRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.Aplicacao>
     {
         Entities.Entidades.Cadastros.Aplicacao.Aplicacao BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodosAlvosBiologicos();
+        List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes();
     }
 }

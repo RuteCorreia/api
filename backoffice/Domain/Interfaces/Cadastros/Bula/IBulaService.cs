@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.Bula
 {
     public interface IBulaService : IBaseService<Entities.Entidades.Cadastros.Empresa.Bula>
     {
+        Entities.Entidades.Cadastros.Empresa.Bula BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Empresa.Bula> ListarTodasBulas();
     }
 }

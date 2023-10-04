@@ -55,7 +55,7 @@ namespace WebApp.Controllers.Engenheiro
         {
             try
             {
-                return Execute(() => _baseEngenheiroService.Listar());
+                return Execute(() => _baseEngenheiroService.ListarTodosEngenheiros());
 
             }
             catch (Exception ex)

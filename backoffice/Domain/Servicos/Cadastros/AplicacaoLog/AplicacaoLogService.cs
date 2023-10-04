@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoLog
 {
     public class AplicacaoLogService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog>, IAplicacaoLogService
     {
-        public AplicacaoLogService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoLogRepository _aplicacaoLogRepository;
+
+        public AplicacaoLogService(IAplicacaoLogRepository aplicacaoLogRepository) : base(aplicacaoLogRepository)
         {
+            _aplicacaoLogRepository = aplicacaoLogRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoLogRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog()
+        {
+            var obj = _aplicacaoLogRepository.ListarTodasAplicacoesLog();
+            return obj;
         }
     }
 }

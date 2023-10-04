@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas
 {
     public interface IAplicacaoRecomendacoesTecnicasRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas();
     }
 }

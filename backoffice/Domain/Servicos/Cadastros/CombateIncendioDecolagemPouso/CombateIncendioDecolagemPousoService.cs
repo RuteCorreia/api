@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.CombateIncendioDecolagemPouso
 {
     public class CombateIncendioDecolagemPousoService : BaseService<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>, ICombateIncendioDecolagemPousoService
     {
-        public CombateIncendioDecolagemPousoService(IBaseRepository<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> baseRepository) : base(baseRepository)
+        private readonly ICombateIncendioDecolagemPousoRepository _combateIncendioDecolagemPouso;
+
+        public CombateIncendioDecolagemPousoService(ICombateIncendioDecolagemPousoRepository combateIncendioDecolagemPousoRepository) : base(combateIncendioDecolagemPousoRepository)
         {
+            _combateIncendioDecolagemPouso = combateIncendioDecolagemPousoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id)
+        {
+            var obj = _combateIncendioDecolagemPouso.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso()
+        {
+            var obj = _combateIncendioDecolagemPouso.ListarTodosCombatesIncendioDecolagemPouso();
+            return obj;
         }
     }
 }

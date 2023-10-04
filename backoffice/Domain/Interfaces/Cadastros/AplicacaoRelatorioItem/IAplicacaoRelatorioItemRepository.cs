@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoRelatorioItem
 {
     public interface IAplicacaoRelatorioItemRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> ListarTodasAplicacoesRelatorioItem();
     }
 }

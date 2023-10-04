@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoCroquiImportacao
 {
     public class AplicacaoCroquiImportacaoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>, IAplicacaoCroquiImportacaoService
     {
-        public AplicacaoCroquiImportacaoService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoCroquiImportacaoRepository _aplicacaoCroquiImportacaoRepository;
+
+        public AplicacaoCroquiImportacaoService(IAplicacaoCroquiImportacaoRepository aplicacaoCroquiImportacaoRepository) : base(aplicacaoCroquiImportacaoRepository)
         {
+            _aplicacaoCroquiImportacaoRepository = aplicacaoCroquiImportacaoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoCroquiImportacaoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes()
+        {
+            var obj = _aplicacaoCroquiImportacaoRepository.ListarTodasAplicacoesCroquiImportacoes();
+            return obj;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace WebApp.Controllers.Bula
         {
             try
             {
-                return Execute(() => _baseBulaService.Listar());
+                return Execute(() => _baseBulaService.ListarTodasBulas());
 
             }
             catch (Exception ex)

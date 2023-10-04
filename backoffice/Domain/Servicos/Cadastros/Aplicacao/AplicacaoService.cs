@@ -25,9 +25,9 @@ namespace Domain.Servicos.Cadastros.Aplicacao
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodosAlvosBiologicos()
+        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes()
         {
-            var obj = _aplicacaoRepository.ListarTodosAlvosBiologicos();
+            var obj = _aplicacaoRepository.ListarTodasAplicacoes();
             return obj;
         }
     }

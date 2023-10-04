@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.AplicacaoRelatorioItem
 {
     public class AplicacaoRelatorioItemService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>, IAplicacaoRelatorioItemService
     {
-        public AplicacaoRelatorioItemService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
+
+        public AplicacaoRelatorioItemService(IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository) : base(aplicacaoRelatorioItemRepository)
         {
+            _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoRelatorioItemRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> ListarTodasAplicacoesRelatorioItem()
+        {
+            var obj = _aplicacaoRelatorioItemRepository.ListarTodasAplicacoesRelatorioItem();
+            return obj;
         }
     }
 }

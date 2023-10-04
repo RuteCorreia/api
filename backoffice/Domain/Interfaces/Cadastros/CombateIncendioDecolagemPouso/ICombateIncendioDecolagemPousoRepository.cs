@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso
 {
     public interface ICombateIncendioDecolagemPousoRepository : IBaseRepository<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>
     {
+        Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso();
     }
 }

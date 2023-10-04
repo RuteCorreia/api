@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.Piloto
 {
     public interface IPilotoService : IBaseService<Entities.Entidades.Cadastros.Pilotos.Piloto>
     {
+        Entities.Entidades.Cadastros.Pilotos.Piloto BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Pilotos.Piloto> ListarPilotos();
     }
 }

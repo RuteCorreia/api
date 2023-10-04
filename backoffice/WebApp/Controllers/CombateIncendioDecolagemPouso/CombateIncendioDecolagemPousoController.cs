@@ -55,7 +55,7 @@ namespace WebApp.Controllers.CombateIncendioDecolagemPouso
         {
             try
             {
-                return Execute(() => _baseCombateIncendioDecolagemPousoService.Listar());
+                return Execute(() => _baseCombateIncendioDecolagemPousoService.ListarTodosCombatesIncendioDecolagemPouso());
 
             }
             catch (Exception ex)

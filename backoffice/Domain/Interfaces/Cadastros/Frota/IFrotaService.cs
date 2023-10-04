@@ -8,5 +8,7 @@ namespace Domain.Interfaces.Cadastros.Frota
 {
     public interface IFrotaService : IBaseService<Entities.Entidades.Cadastros.Frota.Frota>
     {
+        Entities.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Frota.Frota> ListarFrotas();
     }
 }

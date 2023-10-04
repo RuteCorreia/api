@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
+﻿using Domain.Interfaces.Cadastros.Frota;
+using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
 using System;
@@ -11,8 +12,23 @@ namespace Domain.Servicos.Cadastros.Piloto
 {
     public class PilotoService : BaseService<Entities.Entidades.Cadastros.Pilotos.Piloto>, IPilotoService
     {
-        public PilotoService(IBaseRepository<Entities.Entidades.Cadastros.Pilotos.Piloto> baseRepository) : base(baseRepository)
+        private readonly IPilotoRepository _pilotoRepository;
+
+        public PilotoService(IPilotoRepository pilotoRepository) : base(pilotoRepository)
         {
+            _pilotoRepository = pilotoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Pilotos.Piloto BuscarPorId(int? Id)
+        {
+            var obj = _pilotoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Pilotos.Piloto> ListarPilotos()
+        {
+            var obj = _pilotoRepository.ListarPilotos();
+            return obj;
         }
     }
 }

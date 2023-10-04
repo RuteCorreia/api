@@ -9,5 +9,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoAreaTratada
 {
     public interface IAplicacaoAreaTratadaRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>
     {
+        Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas();
     }
 }

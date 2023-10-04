@@ -55,7 +55,7 @@ namespace WebApp.Controllers.AplicacaoContrato
         {
             try
             {
-                return Execute(() => _baseAplicacaoContratoService.Listar());
+                return Execute(() => _baseAplicacaoContratoService.ListarTodasAplicacoesContrato());
 
             }
             catch (Exception ex)
