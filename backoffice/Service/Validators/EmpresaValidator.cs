@@ -16,6 +16,12 @@ namespace Service.Validators
             RuleFor(c => c.Nome)
                 .NotEmpty().WithMessage("Insira um Nome")
                 .NotNull().WithMessage("Insira um Nome");
+            RuleFor(c => c.Imagem)
+                .NotEmpty().WithMessage("Insira uma Imagem")
+                .NotNull().WithMessage("Insira uma Imagem");
+            RuleFor(c => c.Imagem)
+                .NotEmpty().WithMessage("Informe o plano contratado")
+                .NotNull().WithMessage("Informe o plano contratado");
         }
     }
 }

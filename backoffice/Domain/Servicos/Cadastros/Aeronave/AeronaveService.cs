@@ -25,9 +25,15 @@ namespace Domain.Servicos.Cadastros.Aeronave
         }
 
 
-        public Entities.Entidades.Cadastros.Empresa.Empresa BuscarEmpresaPorId(int? Id)
+        public Entities.Entidades.Cadastros.Aeronaves.Aeronave BuscarPorId(int? Id)
         {
-            var obj = _aeronaveRepository.BuscarEmpresaPorId(Id);
+            var obj = _aeronaveRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aeronaves.Aeronave> ListarTodasAeronaves()
+        {
+            var obj = _aeronaveRepository.ListarTodasAeronaves();
             return obj;
         }
     }

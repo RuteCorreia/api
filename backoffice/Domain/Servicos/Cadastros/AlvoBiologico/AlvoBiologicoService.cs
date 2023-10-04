@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.AlvoBiologico;
+﻿using Domain.Interfaces.Cadastros.Aeronave;
+using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
@@ -12,8 +13,23 @@ namespace Domain.Servicos.Cadastros.AlvoBiologico
 {
     public class AlvoBiologicoService : BaseService<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>, IAlvoBiologicoService
     {
-        public AlvoBiologicoService(IBaseRepository<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> baseRepository) : base(baseRepository)
+        private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
+
+        public AlvoBiologicoService(IAlvoBiologicoRepository alvoBiologicoRepository) : base(alvoBiologicoRepository)
         {
+            _alvoBiologicoRepository = alvoBiologicoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id)
+        {
+            var obj = _alvoBiologicoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos()
+        {
+            var obj = _alvoBiologicoRepository.ListarTodosAlvosBiologicos();
+            return obj;
         }
     }
 }

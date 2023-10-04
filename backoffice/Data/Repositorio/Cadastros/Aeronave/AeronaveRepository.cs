@@ -2,6 +2,7 @@
 using Data.Repositorio.Generico;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,9 +20,15 @@ namespace Data.Repositorio.Cadastros.Aeronave
             _context = context;
         }
 
-        public Entities.Entidades.Cadastros.Empresa.Empresa BuscarEmpresaPorId(int? Id)
+        public Entities.Entidades.Cadastros.Aeronaves.Aeronave BuscarPorId(int? Id)
         {
-            var obj = _context.Empresa.Where(x => x.IdEmpresa == Id).FirstOrDefault();
+            var obj = _context.Aeronave.Where(x => x.Id == Id).Include("Empresa").FirstOrDefault();
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aeronaves.Aeronave> ListarTodasAeronaves()
+        {
+            var obj = _context.Aeronave.Include("Empresa").ToList();
             return obj;
         }
     }

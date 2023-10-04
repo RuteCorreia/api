@@ -16,6 +16,18 @@ namespace Service.Validators
             RuleFor(c => c.Nome)
                 .NotEmpty().WithMessage("Insira um Nome")
                 .NotNull().WithMessage("Insira um Nome");
+            RuleFor(c => c.Email)
+                .NotEmpty().WithMessage("Insira um email")
+                .NotNull().WithMessage("Insira um email");
+            RuleFor(c => c.Senha)
+                .NotEmpty().WithMessage("Insira uma senha")
+                .NotNull().WithMessage("Insira uma senha");
+            RuleFor(c => c.CFTA)
+                .NotEmpty().WithMessage("Insira um CFTA")
+                .NotNull().WithMessage("Insira um CFTA");
+            RuleFor(c => c.Assinatura)
+                .NotEmpty().WithMessage("Insira uma assinatura")
+                .NotNull().WithMessage("Insira uma assinatura");
         }
     }
 }

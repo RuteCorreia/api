@@ -9,6 +9,7 @@ namespace Domain.Interfaces.Cadastros.Aeronave
 {
     public interface IAeronaveService : IBaseService<Entities.Entidades.Cadastros.Aeronaves.Aeronave>
     {
-        Entities.Entidades.Cadastros.Empresa.Empresa BuscarEmpresaPorId(int? Id);
+        Entities.Entidades.Cadastros.Aeronaves.Aeronave BuscarPorId(int? Id);
+        List<Entities.Entidades.Cadastros.Aeronaves.Aeronave> ListarTodasAeronaves();
     }
 }

@@ -12,8 +12,23 @@ namespace Domain.Servicos.Cadastros.Aplicacao
 {
     public class AplicacaoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.Aplicacao>, IAplicacaoService
     {
-        public AplicacaoService(IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> baseRepository) : base(baseRepository)
+        private readonly IAplicacaoRepository _aplicacaoRepository;
+
+        public AplicacaoService(IAplicacaoRepository aplicacaoRepository) : base(aplicacaoRepository)
         {
+            _aplicacaoRepository = aplicacaoRepository;
+        }
+
+        public Entities.Entidades.Cadastros.Aplicacao.Aplicacao BuscarPorId(int? Id)
+        {
+            var obj = _aplicacaoRepository.BuscarPorId(Id);
+            return obj;
+        }
+
+        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodosAlvosBiologicos()
+        {
+            var obj = _aplicacaoRepository.ListarTodosAlvosBiologicos();
+            return obj;
         }
     }
 }

@@ -55,7 +55,7 @@ namespace WebApp.Controllers.Aeronave
         {
             try
             {
-                return Execute(() => _baseAeronaveService.Listar());
+                return Execute(() => _baseAeronaveService.ListarTodasAeronaves());
 
             }
             catch (Exception ex)
@@ -72,8 +72,6 @@ namespace WebApp.Controllers.Aeronave
                 return NotFound();
 
             var buscaAeronave = _baseAeronaveService.BuscarPorId(id);
-
-            var teste = Execute(() => _baseAeronaveService.BuscarEmpresaPorId(buscaAeronave.IdEmpresa));
 
             return Ok(buscaAeronave);
         }
