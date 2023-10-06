@@ -10,7 +10,7 @@ namespace WebApp.Controllers.Cliente
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin, ResponsavelEmpresa")]
     public class ClienteController : ControllerBase
     {
         private IClienteService _baseClienteService;

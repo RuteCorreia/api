@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.AlturaVoo;
+using Entities.Entidades.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
