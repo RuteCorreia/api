@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoProduto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.TipoProduto
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TipoProdutoController : ControllerBase
     {
         private ITipoProdutoService _baseTipoProdutoService;

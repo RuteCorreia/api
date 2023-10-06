@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
 using Domain.Interfaces.Cadastros.AplicacaoLog;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.AplicacaoLog
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoLogController : ControllerBase
     {
         private IAplicacaoLogService _baseAplicacaoLogService;

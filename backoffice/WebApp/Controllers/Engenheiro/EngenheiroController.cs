@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Piloto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Engenheiro
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EngenheiroController : ControllerBase
     {
         private IEngenheiroService _baseEngenheiroService;

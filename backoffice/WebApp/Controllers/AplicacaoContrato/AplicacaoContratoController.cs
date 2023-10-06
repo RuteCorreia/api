@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
 using Domain.Interfaces.Cadastros.AplicacaoContrato;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.AplicacaoContrato
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoContratoController : ControllerBase
     {
         private IAplicacaoContratoService _baseAplicacaoContratoService;

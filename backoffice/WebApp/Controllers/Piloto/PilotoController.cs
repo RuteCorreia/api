@@ -2,6 +2,7 @@
 using Domain.Interfaces.Cadastros.PlanoContrato;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Pilotos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -10,6 +11,7 @@ namespace WebApp.Controllers.Piloto
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PilotoController : ControllerBase
     {
         private IPilotoService _basePilotoService;

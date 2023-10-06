@@ -20,8 +20,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<DataContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
-builder.Services.AddTransient<IBaseService<User>, BaseService<User>>();
 
 // Add Sidebar menu json file
 builder.Configuration.AddJsonFile("sidebar.json", optional: true, reloadOnChange: true);

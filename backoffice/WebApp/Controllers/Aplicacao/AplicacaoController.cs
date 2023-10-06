@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.Aplicacao;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Aplicacao
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoController : ControllerBase
     {
         private IAplicacaoService _baseAplicacaoService;

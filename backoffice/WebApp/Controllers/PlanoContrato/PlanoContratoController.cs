@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.PlanoContrato;
 using Entities.Entidades.Cadastros.Empresa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -9,6 +10,7 @@ namespace WebApp.Controllers.PlanoContrato
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PlanoContratoController : ControllerBase
     {
         private IPlanoContratoService _basePlanoContratoService;

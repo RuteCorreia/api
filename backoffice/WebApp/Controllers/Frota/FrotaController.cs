@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Frota;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Frota
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class FrotaController : ControllerBase
     {
         private IFrotaService _baseFrotaService;

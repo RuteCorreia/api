@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Cadastros.Veiculante;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Veiculante
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class VeiculanteController : ControllerBase
     {
         private IVeiculanteService _baseVeiculanteService;

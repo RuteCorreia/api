@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.Precificacao;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Pistas
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PistaController : ControllerBase
     {
         private IPistaService _basePistaService;

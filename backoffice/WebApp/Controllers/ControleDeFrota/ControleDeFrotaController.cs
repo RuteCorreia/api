@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.ControleDeFrota
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ControleDeFrotaController : ControllerBase
     {
         private IControleDeFrotaService _baseControleDeFrotaService;

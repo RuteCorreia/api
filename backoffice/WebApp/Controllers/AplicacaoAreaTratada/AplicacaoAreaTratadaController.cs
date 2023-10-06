@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Aplicacao;
 using Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.AplicacaoAreaTratada
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoAreaTratadaController : ControllerBase
     {
         private IAplicacaoAreaTratadaService _baseAplicacaoAreaTratadaService;

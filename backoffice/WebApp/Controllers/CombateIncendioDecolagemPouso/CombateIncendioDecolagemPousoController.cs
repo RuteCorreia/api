@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.CombateIncendioDecolagemPouso
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CombateIncendioDecolagemPousoController : ControllerBase
     {
         private ICombateIncendioDecolagemPousoService _baseCombateIncendioDecolagemPousoService;

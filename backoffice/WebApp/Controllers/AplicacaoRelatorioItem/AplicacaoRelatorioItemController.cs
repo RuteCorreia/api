@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.AplicacaoRelatorioItem
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoRelatorioItemController : ControllerBase
     {
         private IAplicacaoRelatorioItemService _baseAplicacaoRelatorioItemService;

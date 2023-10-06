@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Executor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Executor
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExecutorController : ControllerBase
     {
         private IExecutorService _baseExecutorService;

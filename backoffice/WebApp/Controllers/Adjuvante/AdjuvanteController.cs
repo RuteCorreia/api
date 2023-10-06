@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Adjuvante
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AdjuvanteController : ControllerBase
     {
         private IAdjuvanteService _baseAdjuvanteService;

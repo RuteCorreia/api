@@ -39,7 +39,7 @@ namespace WebApp.Controllers.Autenticacao
         }
 
         [HttpPost]
-        [Route("registeration")]
+        [Route("register")]
         public async Task<IActionResult> Register(RegistrationModel model)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
 using Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.AplicacaoCaracteristicas
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AplicacaoCaracteristicasController : ControllerBase
     {
         private IAplicacaoCaracteristicasService _baseAplicacaoCaracteristicasService;

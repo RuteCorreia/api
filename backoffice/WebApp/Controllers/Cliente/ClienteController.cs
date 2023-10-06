@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces.Cadastros.Cliente;
 using Entities.Entidades.Cadastros.Cliente;
 using Entities.Entidades.Cadastros.Empresa;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -9,6 +10,7 @@ namespace WebApp.Controllers.Cliente
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ClienteController : ControllerBase
     {
         private IClienteService _baseClienteService;

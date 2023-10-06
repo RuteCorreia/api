@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Executor;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Cultura
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CulturaController : ControllerBase
     {
         private ICulturaService _baseCulturaService;

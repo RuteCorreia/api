@@ -2,6 +2,7 @@
 using Domain.Interfaces.Cadastros.Empresa;
 using Entities.Entidades.Cadastros.Empresa;
 using Entities.Entidades.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -10,6 +11,7 @@ namespace WebApp.Controllers.Empresa
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class EmpresaController : ControllerBase
     {
         private IEmpresaService _baseEmpresaService;

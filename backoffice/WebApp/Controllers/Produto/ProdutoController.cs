@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.Produto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Produto
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProdutoController : ControllerBase
     {
         private IProdutoService _baseProdutoService;

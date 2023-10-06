@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Equipamento;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Equipamento
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class EquipamentoController : ControllerBase
     {
         private IEquipamentoService _baseEquipamentoService;

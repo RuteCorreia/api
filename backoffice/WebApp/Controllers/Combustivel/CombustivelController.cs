@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.Engenheiro;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;
@@ -8,6 +9,7 @@ namespace WebApp.Controllers.Combustivel
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CombustivelController : ControllerBase
     {
         private ICombustivelService _baseCombustivelService;
