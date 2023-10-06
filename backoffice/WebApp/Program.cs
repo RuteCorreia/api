@@ -70,6 +70,7 @@ using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Genericos;
+using Domain.Interfaces.User;
 using Domain.Servicos.Cadastros.Adjuvante;
 using Domain.Servicos.Cadastros.Aeronave;
 using Domain.Servicos.Cadastros.AlturaVoo;
@@ -105,6 +106,7 @@ using Domain.Servicos.Cadastros.Produto;
 using Domain.Servicos.Cadastros.TipoProduto;
 using Domain.Servicos.Cadastros.Veiculante;
 using Domain.Servicos.Genericos;
+using Domain.Servicos.User;
 using Entities.Entidades.Cadastros.Adjuvante;
 using Entities.Entidades.Cadastros.Aeronaves;
 using Entities.Entidades.Cadastros.Altura_Voo;
@@ -128,20 +130,49 @@ using Entities.Entidades.Cadastros.Produtos;
 using Entities.Entidades.Cadastros.Tipo_Produto;
 using Entities.Entidades.Cadastros.Veiculante;
 using Entities.Entidades.User;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Conexão Banco de Dados
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DataContext>();
+//Identity
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<DataContext>()
+                .AddDefaultTokenProviders();
+
+//Autenticação
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(options =>
+{
+    options.SaveToken = true;
+    options.RequireHttpsMetadata = false;
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWTKey:ValidAudience"],
+        ValidIssuer = builder.Configuration["JWTKey:ValidIssuer"],
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]))
+    };
+});
+
+
 builder.Services.AddControllers().AddNewtonsoftJson(x =>
  x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
@@ -287,6 +318,7 @@ builder.Services.AddTransient<IEstadosRepository, EstadosRepository>();
 builder.Services.AddTransient<IEstadosService, EstadosService>();
 builder.Services.AddTransient<ICidadeRepository, CidadesRepository>();
 builder.Services.AddTransient<ICidadeService, CidadesService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 
 #endregion
 

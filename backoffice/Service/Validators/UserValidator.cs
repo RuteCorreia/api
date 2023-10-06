@@ -12,17 +12,9 @@ namespace Service.Validators
     {
         public UserValidator()
         {
-            RuleFor(c => c.Nome)
+            RuleFor(c => c.Username)
                 .NotEmpty().WithMessage("Insira um Nome")
                 .NotNull().WithMessage("Insira um Nome");
-
-            RuleFor(c => c.Email)
-                .NotEmpty().WithMessage("Insira um email.")
-                .NotNull().WithMessage("Insira um email.");
-
-            RuleFor(c => c.Senha)
-                .NotEmpty().WithMessage("Insira uma senha valida.")
-                .NotNull().WithMessage("Insira uma senha valida.");
         }
     }
 }
