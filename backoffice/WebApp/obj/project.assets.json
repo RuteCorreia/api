@@ -1783,22 +1783,6 @@
           }
         }
       },
-      "Data/1.0.0": {
-        "type": "project",
-        "framework": ".NETCoreApp,Version=v7.0",
-        "dependencies": {
-          "Domain": "1.0.0",
-          "Entities": "1.0.0",
-          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "7.0.8",
-          "Microsoft.EntityFrameworkCore.SqlServer": "7.0.8"
-        },
-        "compile": {
-          "bin/placeholder/Data.dll": {}
-        },
-        "runtime": {
-          "bin/placeholder/Data.dll": {}
-        }
-      },
       "Domain/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
@@ -4744,11 +4728,6 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Data/1.0.0": {
-      "type": "project",
-      "path": "../Data/Data.csproj",
-      "msbuildProject": "../Data/Data.csproj"
-    },
     "Domain/1.0.0": {
       "type": "project",
       "path": "../Domain/Domain.csproj",
@@ -4767,7 +4746,7 @@
   },
   "projectFileDependencyGroups": {
     "net7.0": [
-      "Data >= 1.0.0",
+      "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Data\\Data.csproj",
       "FluentValidation >= 11.7.1",
       "Microsoft.AspNetCore.Authentication >= 2.2.0",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 7.0.11",
@@ -4786,23 +4765,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Raphael\\.nuget\\packages\\": {},
+    "C:\\Users\\GAMER ZONE RYZEN\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\WebApp\\WebApp.csproj",
+      "projectUniqueName": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\WebApp\\WebApp.csproj",
       "projectName": "WebApp",
-      "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\WebApp\\WebApp.csproj",
-      "packagesPath": "C:\\Users\\Raphael\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\WebApp\\obj\\",
+      "projectPath": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\WebApp\\WebApp.csproj",
+      "packagesPath": "C:\\Users\\GAMER ZONE RYZEN\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\WebApp\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\Raphael\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\GAMER ZONE RYZEN\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -4811,17 +4790,19 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "C:\\Program Files\\dotnet\\sdk\\7.0.304\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Data\\Data.csproj": {
-              "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Data\\Data.csproj"
+            "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Data\\Data.csproj": {
+              "projectPath": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Data\\Data.csproj"
             },
-            "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Service\\Service.csproj": {
-              "projectPath": "C:\\Users\\Raphael\\source\\repos\\flytec\\backoffice\\Service\\Service.csproj"
+            "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Service\\Service.csproj": {
+              "projectPath": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Service\\Service.csproj"
             }
           }
         }
@@ -4916,8 +4897,19 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1104",
+      "level": "Error",
+      "message": "Não é possível encontrar o projeto 'C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Data\\Data.csproj'. Verifique se a referência do projeto é válida e se o arquivo de projeto existe.",
+      "libraryId": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Data\\Data.csproj",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }
