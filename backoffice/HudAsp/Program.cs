@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using HudAsp.Data;
 using Domain.Interfaces;
 using Service.Services;
-using Domain.Entidades.User;
 using Data.Context;
 using System.Text.Json.Serialization;
 using Data.Repositorio.Generico;
+using Entities.Entidades.User;
+using Domain.Interfaces.Genericos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +20,6 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<DataContext>();
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IBaseRepository<User>, BaseRepository<User>>();
-builder.Services.AddTransient<IBaseService<User>, BaseService<User>>();
 
 // Add Sidebar menu json file
 builder.Configuration.AddJsonFile("sidebar.json", optional: true, reloadOnChange: true);

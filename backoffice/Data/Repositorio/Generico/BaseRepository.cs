@@ -1,6 +1,6 @@
 ﻿using Data.Context;
-using Domain.Entidades.Base;
-using Domain.Interfaces;
+using Domain.Interfaces.Genericos;
+using Entities.Entidades.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Data.Repositorio.Generico
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity>
-        where TEntity : BaseEntity
+        where TEntity : class
     {
         protected readonly DataContext _context;
 
@@ -34,6 +34,7 @@ namespace Data.Repositorio.Generico
         public void Remover(int id)
         {
             _context.Set<TEntity>().Remove(BuscarPorId(id));
+            _context.SaveChanges();
         }
 
         public IList<TEntity> ListarTodos() =>

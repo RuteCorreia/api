@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.Base;
+﻿using Entities.Entidades.Base;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IBaseService<TEntity> where TEntity : BaseEntity
+    public interface IBaseService<TEntity> where TEntity : class
     {
         TEntity Inserir<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
 
