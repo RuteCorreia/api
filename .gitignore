@@ -51,3 +51,4 @@ Thumbs.db
 /backoffice/HudAsp/obj
 /backoffice/.vs/HudAsp/FileContentIndex/2486b5a1-f384-482b-82f5-1bc4db545910.vsidx
 /backoffice/.vs/HudAsp/FileContentIndex/fc3a7f7c-5d40-48b5-82c9-928402e193ac.vsidx
+*.vsidx
