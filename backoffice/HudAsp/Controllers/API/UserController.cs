@@ -1,8 +1,9 @@
 ﻿using Domain.Entidades.User;
 using Domain.Interfaces.Genericos;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Service.Validators;
 
 namespace HudAsp.Controllers.API
 {
@@ -23,7 +24,8 @@ namespace HudAsp.Controllers.API
             if (user == null)
                 return NotFound();
 
-            return Execute(() => _baseUserService.Inserir<UserValidator>(user).Id);
+            //return Execute(() => _baseUserService.Inserir<UserValidator>(user).Id); //descomentar aqui para corrigir 
+            return Ok();
         }
 
         [HttpPut]
@@ -32,7 +34,8 @@ namespace HudAsp.Controllers.API
             if (user == null)
                 return NotFound();
 
-            return Execute(() => _baseUserService.Atualizar<UserValidator>(user));
+            //return Execute(() => _baseUserService.Atualizar<UserValidator<User>>(user)); //descomentar aqui para corrigir 
+            return Ok();
         }
 
         [HttpDelete("{id}")]
