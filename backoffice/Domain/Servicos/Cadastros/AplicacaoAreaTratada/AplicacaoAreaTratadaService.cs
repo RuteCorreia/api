@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoAreaTratada
 {
-    public class AplicacaoAreaTratadaService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>, IAplicacaoAreaTratadaService
+    public class AplicacaoAreaTratadaService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>, IAplicacaoAreaTratadaService
     {
         private readonly IAplicacaoAreaTratadaRepository _aplicacaoAreaTratadaRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoAreaTratada
             _aplicacaoAreaTratadaRepository = aplicacaoAreaTratadaRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id)
         {
             var obj = _aplicacaoAreaTratadaRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas()
         {
             var obj = _aplicacaoAreaTratadaRepository.ListarTodasAplicacoesAreaTratadas();
             return obj;

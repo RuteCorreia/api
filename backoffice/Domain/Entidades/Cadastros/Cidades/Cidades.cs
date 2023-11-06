@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Entidades.Cadastros.Cidades
+namespace Domain.Entidades.Cadastros.Cidades;
+
+public class Cidades
 {
-    public class Cidades
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string Sigla { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+    public string Nome { get; set; }
+    public string Sigla { get; set; }
 }

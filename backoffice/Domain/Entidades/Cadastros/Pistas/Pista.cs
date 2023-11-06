@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Entidades.Cadastros.Pistas
+namespace Domain.Entidades.Cadastros.Pistas;
+
+public class Pista
 {
-    public class Pista
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Nome { get; set; }
-        public string LAT { get; set; }
-        public string LONG { get; set;}
-    }
+    [Key]
+    public int Id { get; set; }
+    public string Nome { get; set; }
+    public string LAT { get; set; }
+    public string LONG { get; set;}
 }

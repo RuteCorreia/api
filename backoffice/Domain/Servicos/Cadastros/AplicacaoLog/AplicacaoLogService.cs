@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoLog
 {
-    public class AplicacaoLogService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog>, IAplicacaoLogService
+    public class AplicacaoLogService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog>, IAplicacaoLogService
     {
         private readonly IAplicacaoLogRepository _aplicacaoLogRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoLog
             _aplicacaoLogRepository = aplicacaoLogRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id)
         {
             var obj = _aplicacaoLogRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog()
         {
             var obj = _aplicacaoLogRepository.ListarTodasAplicacoesLog();
             return obj;

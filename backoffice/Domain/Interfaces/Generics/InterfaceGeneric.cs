@@ -1,11 +1,10 @@
-﻿namespace Domain.Interfaces.Generics
+﻿namespace Domain.Interfaces.Generics;
+
+public interface InterfaceGeneric<T> where T : class
 {
-    public interface InterfaceGeneric<T> where T : class
-    {
-        Task Add(T Objeto);
-        Task Update(T Objeto);
-        Task Delete(T Objeto);
-        Task<T> GetEntityById(int Id);
-        Task<List<T>> List();
-    }
+    Task AddAsync(T Objeto);
+    Task UpdateAsync(T Objeto);
+    Task DeleteAsync(T Objeto);
+    Task<T> GetEntityByIdAsync(int Id);
+    Task<List<T>> ListAsync();
 }

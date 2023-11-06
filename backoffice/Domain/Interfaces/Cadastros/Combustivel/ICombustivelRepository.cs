@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Combustivel
 {
-    public interface ICombustivelRepository : IBaseRepository<Entities.Entidades.Cadastros.Combustivel.Combustivel>
+    public interface ICombustivelRepository : IBaseRepository<Domain.Entidades.Cadastros.Combustivel.Combustivel>
     {
     }
 }

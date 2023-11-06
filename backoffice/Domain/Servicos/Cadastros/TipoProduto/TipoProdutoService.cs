@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.TipoProduto
 {
-    public class TipoProdutoService : BaseService<Entities.Entidades.Cadastros.Tipo_Produto.TipoProduto>, ITipoProdutoService
+    public class TipoProdutoService : BaseService<Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto>, ITipoProdutoService
     {
-        public TipoProdutoService(IBaseRepository<Entities.Entidades.Cadastros.Tipo_Produto.TipoProduto> baseRepository) : base(baseRepository)
+        public TipoProdutoService(IBaseRepository<Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto> baseRepository) : base(baseRepository)
         {
         }
     }

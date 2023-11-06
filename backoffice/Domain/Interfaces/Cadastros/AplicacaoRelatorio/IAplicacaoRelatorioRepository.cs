@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.AplicacaoRelatorio
 {
-    public interface IAplicacaoRelatorioRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>
+    public interface IAplicacaoRelatorioRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>
     {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> ListarTodasAplicacoesRelatorio();
+        Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio BuscarPorId(int? Id);
+        List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> ListarTodasAplicacoesRelatorio();
     }
 }

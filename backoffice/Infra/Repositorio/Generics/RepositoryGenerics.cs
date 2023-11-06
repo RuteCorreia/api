@@ -1,4 +1,6 @@
-﻿using Infra.Configuracao;
+﻿using Domain.Interfaces.Generics;
+using Infra.Configuracao;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using System.Runtime.InteropServices;
 
@@ -14,7 +16,7 @@ namespace Infra.Repositorio.Generics
             _OptionsBuilder = new DbContextOptions<ContextBase>();
         }
 
-        public async Task Add(T Objeto)
+        public async Task AddAsync(T Objeto)
         {
             using (var data = new ContextBase(_OptionsBuilder))
             {
@@ -23,7 +25,7 @@ namespace Infra.Repositorio.Generics
             }
         }
 
-        public async Task Delete(T Objeto)
+        public async Task DeleteAsync(T Objeto)
         {
             using (var data = new ContextBase(_OptionsBuilder))
             {
@@ -32,7 +34,7 @@ namespace Infra.Repositorio.Generics
             }
         }
 
-        public async Task<T> GetEntityById(int Id)
+        public async Task<T> GetEntityByIdAsync(int Id)
         {
             using (var data = new ContextBase(_OptionsBuilder))
             {
@@ -40,7 +42,7 @@ namespace Infra.Repositorio.Generics
             }
         }
 
-        public async Task<List<T>> List()
+        public async Task<List<T>> ListAsync()
         {
             using (var data = new ContextBase(_OptionsBuilder))
             {
@@ -48,7 +50,7 @@ namespace Infra.Repositorio.Generics
             }
         }
 
-        public async Task Update(T Objeto)
+        public async Task UpdateAsync(T Objeto)
         {
             using (var data = new ContextBase(_OptionsBuilder))
             {

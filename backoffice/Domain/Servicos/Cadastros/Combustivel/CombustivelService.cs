@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Combustivel
 {
-    public class CombustivelService : BaseService<Entities.Entidades.Cadastros.Combustivel.Combustivel>, ICombustivelService
+    public class CombustivelService : BaseService<Domain.Entidades.Cadastros.Combustivel.Combustivel>, ICombustivelService
     {
-        public CombustivelService(IBaseRepository<Entities.Entidades.Cadastros.Combustivel.Combustivel> baseRepository) : base(baseRepository)
+        public CombustivelService(IBaseRepository<Domain.Entidades.Cadastros.Combustivel.Combustivel> baseRepository) : base(baseRepository)
         {
         }
     }

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.CombateIncendio
 {
-    public class CombateIncendioService : BaseService<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio>, ICombateIncendioService
+    public class CombateIncendioService : BaseService<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>, ICombateIncendioService
     {
         private readonly ICombateIncendioRepository _combateIncendioRepository;
 
@@ -21,13 +21,13 @@ namespace Domain.Servicos.Cadastros.CombateIncendio
 
         }
 
-        public Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio BuscarPorId(int? Id)
         {
             var obj = _combateIncendioRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendio> ListarTodosCombatesIncendio()
+        public List<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ListarTodosCombatesIncendio()
         {
             var obj = _combateIncendioRepository.ListarTodosCombatesIncendio();
             return obj;

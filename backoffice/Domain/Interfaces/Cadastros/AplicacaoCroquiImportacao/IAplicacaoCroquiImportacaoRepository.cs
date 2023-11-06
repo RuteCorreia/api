@@ -1,15 +1,9 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao
+namespace Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
+
+public interface IAplicacaoCroquiImportacaoRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>
 {
-    public interface IAplicacaoCroquiImportacaoRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes();
-    }
+    Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id);
+    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes();
 }

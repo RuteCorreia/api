@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoContrato
 {
-    public class AplicacaoContratoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato>, IAplicacaoContratoService
+    public class AplicacaoContratoService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato>, IAplicacaoContratoService
     {
         private readonly IAplicacaoContratoRepository _aplicacaoContratoRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoContrato
             _aplicacaoContratoRepository = aplicacaoContratoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id)
         {
             var obj = _aplicacaoContratoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato()
         {
             var obj = _aplicacaoContratoRepository.ListarTodasAplicacoesContrato();
             return obj;

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Produto
 {
-    public class ProdutoService : BaseService<Entities.Entidades.Cadastros.Produtos.Produto>, IProdutoService
+    public class ProdutoService : BaseService<Entidades.Cadastros.Produto.Produto>, IProdutoService
     {
         private readonly IProdutoRepository _produtoRepository;
 
@@ -20,13 +20,13 @@ namespace Domain.Servicos.Cadastros.Produto
             _produtoRepository = produtoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Produtos.Produto BuscarPorId(int? Id)
+        public Entidades.Cadastros.Produto.Produto BuscarPorId(int? Id)
         {
             var obj = _produtoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Produtos.Produto> ListarProdutos()
+        public List<Entidades.Cadastros.Produto.Produto> ListarProdutos()
         {
             var obj = _produtoRepository.ListarProdutos();
             return obj;

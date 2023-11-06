@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Cidades
 {
-    public class CidadesService : BaseService<Entities.Entidades.Cadastros.Cidades.Cidades>, ICidadeService
+    public class CidadesService : BaseService<Domain.Entidades.Cadastros.Cidades.Cidades>, ICidadeService
     {
-        public CidadesService(IBaseRepository<Entities.Entidades.Cadastros.Cidades.Cidades> baseRepository) : base(baseRepository)
+        public CidadesService(IBaseRepository<Domain.Entidades.Cadastros.Cidades.Cidades> baseRepository) : base(baseRepository)
         {
         }
     }

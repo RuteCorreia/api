@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Precificacao
 {
-    public class PrecificacaoService : BaseService<Entities.Entidades.Cadastros.Precificacao.Precificacao>, IPrecificacaoService
+    public class PrecificacaoService : BaseService<Domain.Entidades.Cadastros.Precificacao.Precificacao>, IPrecificacaoService
     {
         private readonly IPrecificacaoRepository _precificacaoRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.Precificacao
             _precificacaoRepository = precificacaoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id)
         {
             var obj = _precificacaoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes()
+        public List<Domain.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes()
         {
             var obj = _precificacaoRepository.ListarPrecificacoes();
             return obj;

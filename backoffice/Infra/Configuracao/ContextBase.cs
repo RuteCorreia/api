@@ -1,4 +1,4 @@
-﻿using Entities.Entidades;
+﻿using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

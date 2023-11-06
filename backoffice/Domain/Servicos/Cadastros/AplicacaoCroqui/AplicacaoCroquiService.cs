@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoCroqui
 {
-    public class AplicacaoCroquiService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>, IAplicacaoCroquiService
+    public class AplicacaoCroquiService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>, IAplicacaoCroquiService
     {
         private readonly IAplicacaoCroquiRepository _aplicacaoCroquiRepository;
 
@@ -20,13 +20,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoCroqui
             _aplicacaoCroquiRepository = aplicacaoCroquiRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui BuscarPorId(int? Id)
         {
             var obj = _aplicacaoCroquiRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui> ListarTodasAplicacoesCroqui()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui> ListarTodasAplicacoesCroqui()
         {
             var obj = _aplicacaoCroquiRepository.ListarTodasAplicacoesCroqui();
             return obj;

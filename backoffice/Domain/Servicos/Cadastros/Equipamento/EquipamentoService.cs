@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Equipamento
 {
-    public class EquipamentoService : BaseService<Entities.Entidades.Cadastros.Equipamento.Equipamento>, IEquipamentoService
+    public class EquipamentoService : BaseService<Domain.Entidades.Cadastros.Equipamento.Equipamento>, IEquipamentoService
     {
-        public EquipamentoService(IBaseRepository<Entities.Entidades.Cadastros.Equipamento.Equipamento> baseRepository) : base(baseRepository)
+        public EquipamentoService(IBaseRepository<Domain.Entidades.Cadastros.Equipamento.Equipamento> baseRepository) : base(baseRepository)
         {
         }
     }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Cultura
 {
-    public interface ICulturaRepository : IBaseRepository<Entities.Entidades.Cadastros.Cultura.Cultura>
+    public interface ICulturaRepository : IBaseRepository<Entidades.Cadastros.Cultura.Cultura>
     {
     }
 }

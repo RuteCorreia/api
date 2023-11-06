@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoRelatorio
 {
-    public class AplicacaoRelatorioService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>, IAplicacaoRelatorioService
+    public class AplicacaoRelatorioService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>, IAplicacaoRelatorioService
     {
         private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoRelatorio
             _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio BuscarPorId(int? Id)
         {
             var obj = _aplicacaoRelatorioRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> ListarTodasAplicacoesRelatorio()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> ListarTodasAplicacoesRelatorio()
         {
             var obj = _aplicacaoRelatorioRepository.ListarTodasAplicacoesRelatorio();
             return obj;

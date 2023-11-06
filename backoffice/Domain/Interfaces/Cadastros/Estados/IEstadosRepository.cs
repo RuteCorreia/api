@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Estados
 {
-    public interface IEstadosRepository : IBaseRepository<Entities.Entidades.Cadastros.Estados.Estados>
+    public interface IEstadosRepository : IBaseRepository<Domain.Entidades.Cadastros.Estados.Estados>
     {
     }
 }

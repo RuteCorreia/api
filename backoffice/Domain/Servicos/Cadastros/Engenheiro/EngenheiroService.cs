@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Engenheiro
 {
-    public class EngenheiroService : BaseService<Entities.Entidades.Cadastros.Engenheiros.Engenheiro>, IEngenheiroService
+    public class EngenheiroService : BaseService<Entidades.Cadastros.Engenheiro.Engenheiro>, IEngenheiroService
     {
         private readonly IEngenheiroRepository _engenheiroRepository;
 
@@ -20,13 +20,13 @@ namespace Domain.Servicos.Cadastros.Engenheiro
             _engenheiroRepository = engenheiroRepository;
         }
 
-        public Entities.Entidades.Cadastros.Engenheiros.Engenheiro BuscarPorId(int? Id)
+        public Entidades.Cadastros.Engenheiro.Engenheiro BuscarPorId(int? Id)
         {
             var obj = _engenheiroRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> ListarTodosEngenheiros()
+        public List<Entidades.Cadastros.Engenheiro.Engenheiro> ListarTodosEngenheiros()
         {
             var obj = _engenheiroRepository.ListarTodosEngenheiros();
             return obj;

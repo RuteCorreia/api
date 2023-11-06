@@ -2,7 +2,7 @@
 using Domain.Interfaces.Cadastros.PlanoContrato;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
-using Entities.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Empresa;
 using System;
 using System.Collections.Generic;
 using System.Linq;

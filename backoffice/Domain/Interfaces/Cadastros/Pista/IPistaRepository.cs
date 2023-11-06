@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Pista
 {
-    public interface IPistaRepository : IBaseRepository<Entities.Entidades.Cadastros.Pistas.Pista>
+    public interface IPistaRepository : IBaseRepository<Domain.Entidades.Cadastros.Pistas.Pista>
     {
     }
 }

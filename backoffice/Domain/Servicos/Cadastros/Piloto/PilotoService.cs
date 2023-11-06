@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Piloto
 {
-    public class PilotoService : BaseService<Entities.Entidades.Cadastros.Pilotos.Piloto>, IPilotoService
+    public class PilotoService : BaseService<Domain.Entidades.Cadastros.Pilotos.Piloto>, IPilotoService
     {
         private readonly IPilotoRepository _pilotoRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.Piloto
             _pilotoRepository = pilotoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Pilotos.Piloto BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Pilotos.Piloto BuscarPorId(int? Id)
         {
             var obj = _pilotoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Pilotos.Piloto> ListarPilotos()
+        public List<Domain.Entidades.Cadastros.Pilotos.Piloto> ListarPilotos()
         {
             var obj = _pilotoRepository.ListarPilotos();
             return obj;

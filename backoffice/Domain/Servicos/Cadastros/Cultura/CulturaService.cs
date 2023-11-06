@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Cultura
 {
-    public class CulturaService : BaseService<Entities.Entidades.Cadastros.Cultura.Cultura>, ICulturaService
+    public class CulturaService : BaseService<Entidades.Cadastros.Cultura.Cultura>, ICulturaService
     {
-        public CulturaService(IBaseRepository<Entities.Entidades.Cadastros.Cultura.Cultura> baseRepository) : base(baseRepository)
+        public CulturaService(IBaseRepository<Entidades.Cadastros.Cultura.Cultura> baseRepository) : base(baseRepository)
         {
         }
     }

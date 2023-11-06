@@ -1,15 +1,12 @@
-﻿using Domain.Interfaces.User;
-using Entities.Entidades.User;
-using Microsoft.AspNetCore.Identity;
+﻿using Domain.Entidades.User;
+using Domain.Interfaces.User;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Servicos.User
 {
@@ -25,7 +22,7 @@ namespace Domain.Servicos.User
             _configuration = configuration;
 
         }
-        public async Task<(int, string)> Register(RegistrationModel model, string role)
+        public async Task<(int, string)> RegisterAsync(RegistrationModel model, string role)
         {
             var userExists = await userManager.FindByNameAsync(model.Username);
             if (userExists != null)
@@ -46,12 +43,12 @@ namespace Domain.Servicos.User
                 await roleManager.CreateAsync(new IdentityRole(role));
 
             if (await roleManager.RoleExistsAsync(role))
-                await userManager.AddToRoleAsync(user, role);
+                await userManager.AddToRoleAsync(user.SecurityStamp, role); //verificar se o SecurityStamp está correto como argumento
 
             return (1, "User created successfully!");
         }
 
-        public async Task<(int, string)> Login(LoginModel model)
+        public async Task<(int, string)> LoginAsync(LoginModel model)
         {
             var user = await userManager.FindByNameAsync(model.Username);
             if (user == null)
@@ -59,7 +56,7 @@ namespace Domain.Servicos.User
             if (!await userManager.CheckPasswordAsync(user, model.Senha))
                 return (0, "Invalid password");
 
-            var userRoles = await userManager.GetRolesAsync(user);
+            var userRoles = await userManager.GetRolesAsync(user.SecurityStamp); //verificar se o SecurityStamp está correto como argumento
             var authClaims = new List<Claim>
             {
                new Claim(ClaimTypes.Name, user.UserName),

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Aplicacao
 {
-    public class AplicacaoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.Aplicacao>, IAplicacaoService
+    public class AplicacaoService : BaseService<Domain.Entidades.Cadastros.Aplicacao.Aplicacao>, IAplicacaoService
     {
         private readonly IAplicacaoRepository _aplicacaoRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.Aplicacao
             _aplicacaoRepository = aplicacaoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.Aplicacao BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.Aplicacao BuscarPorId(int? Id)
         {
             var obj = _aplicacaoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes()
+        public List<Domain.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes()
         {
             var obj = _aplicacaoRepository.ListarTodasAplicacoes();
             return obj;

@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Empresa
 {
-    public class EmpresaService : BaseService<Entities.Entidades.Cadastros.Empresa.Empresa>, IEmpresaService
+    public class EmpresaService : BaseService<Domain.Entidades.Cadastros.Empresa.Empresa>, IEmpresaService
     {
-        public EmpresaService(IBaseRepository<Entities.Entidades.Cadastros.Empresa.Empresa> baseRepository) : base(baseRepository)
+        public EmpresaService(IBaseRepository<Domain.Entidades.Cadastros.Empresa.Empresa> baseRepository) : base(baseRepository)
         {
         }
     }

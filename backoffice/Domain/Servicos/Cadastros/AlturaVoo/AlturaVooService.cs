@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AlturaVoo
 {
-    public class AlturaVooService : BaseService<Entities.Entidades.Cadastros.Altura_Voo.AlturaVoo>, IAlturaVooService
+    public class AlturaVooService : BaseService<Domain.Entidades.Cadastros.Altura_Voo.AlturaVoo>, IAlturaVooService
     {
-        public AlturaVooService(IBaseRepository<Entities.Entidades.Cadastros.Altura_Voo.AlturaVoo> baseRepository) : base(baseRepository)
+        public AlturaVooService(IBaseRepository<Domain.Entidades.Cadastros.Altura_Voo.AlturaVoo> baseRepository) : base(baseRepository)
         {
         }
     }

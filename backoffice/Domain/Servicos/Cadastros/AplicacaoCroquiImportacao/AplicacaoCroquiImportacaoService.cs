@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoCroquiImportacao
 {
-    public class AplicacaoCroquiImportacaoService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>, IAplicacaoCroquiImportacaoService
+    public class AplicacaoCroquiImportacaoService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>, IAplicacaoCroquiImportacaoService
     {
         private readonly IAplicacaoCroquiImportacaoRepository _aplicacaoCroquiImportacaoRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoCroquiImportacao
             _aplicacaoCroquiImportacaoRepository = aplicacaoCroquiImportacaoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id)
         {
             var obj = _aplicacaoCroquiImportacaoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes()
         {
             var obj = _aplicacaoCroquiImportacaoRepository.ListarTodasAplicacoesCroquiImportacoes();
             return obj;

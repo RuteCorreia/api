@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas
 {
-    public class AplicacaoRecomendacoesTecnicasService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>, IAplicacaoRecomendacoesTecnicasService
+    public class AplicacaoRecomendacoesTecnicasService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>, IAplicacaoRecomendacoesTecnicasService
     {
         private readonly IAplicacaoRecomendacoesTecnicasRepository _aplicacaoRecomendacoesTecnicasRepository;
 
@@ -21,13 +21,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas
 
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas BuscarPorId(int? Id)
         {
             var obj = _aplicacaoRecomendacoesTecnicasRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas()
         {
             var obj = _aplicacaoRecomendacoesTecnicasRepository.ListarTodasAplicacoesRecomendacoesTecnicas();
             return obj;

@@ -1,5 +1,5 @@
-﻿using Domain.Interfaces;
-using Entities.Entidades.User;
+﻿using Domain.Entidades.User;
+using Domain.Interfaces.Genericos;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Service.Validators;

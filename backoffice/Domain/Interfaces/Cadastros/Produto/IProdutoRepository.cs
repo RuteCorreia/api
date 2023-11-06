@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Produto
 {
-    public interface IProdutoRepository : IBaseRepository<Entities.Entidades.Cadastros.Produtos.Produto>
+    public interface IProdutoRepository : IBaseRepository<Entidades.Cadastros.Produto.Produto>
     {
-        Entities.Entidades.Cadastros.Produtos.Produto BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Produtos.Produto> ListarProdutos();
+        Entidades.Cadastros.Produto.Produto BuscarPorId(int? Id);
+        List<Entidades.Cadastros.Produto.Produto> ListarProdutos();
     }
 }

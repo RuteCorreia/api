@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace Entities.Entidades.Cadastros.Veiculante
+namespace Domain.Entidades.Cadastros.Veiculante;
+
+public class Veiculante
 {
-    public class Veiculante
-    {
-        [Key]
-        public int IdVeiculante { get; set; }
-        public string Nome { get; set; }
-    }
+    [Key]
+    public int IdVeiculante { get; set; }
+    public string Nome { get; set; }
 }

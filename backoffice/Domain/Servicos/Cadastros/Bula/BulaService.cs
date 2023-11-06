@@ -3,7 +3,7 @@ using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.PlanoContrato;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
-using Entities.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Empresa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Bula
 {
-    public class BulaService : BaseService<Entities.Entidades.Cadastros.Empresa.Bula>, IBulaService
+    public class BulaService : BaseService<Domain.Entidades.Cadastros.Empresa.Bula>, IBulaService
     {
         private readonly IBulaRepository _bulaRepository;
 
@@ -21,13 +21,13 @@ namespace Domain.Servicos.Cadastros.Bula
             _bulaRepository = bulaRepository;
         }
 
-        public Entities.Entidades.Cadastros.Empresa.Bula BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Empresa.Bula BuscarPorId(int? Id)
         {
             var obj = _bulaRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Empresa.Bula> ListarTodasBulas()
+        public List<Domain.Entidades.Cadastros.Empresa.Bula> ListarTodasBulas()
         {
             var obj = _bulaRepository.ListarTodasBulas();
             return obj;

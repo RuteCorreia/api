@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AplicacaoCaracteristicas
 {
-    public class AplicacaoCaracteristicasService : BaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>, IAplicacaoCaracteristicasService
+    public class AplicacaoCaracteristicasService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>, IAplicacaoCaracteristicasService
     {
         private readonly IAplicacaoCaracteristicasRepository _aplicacaoCaracteristicasRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.AplicacaoCaracteristicas
             _aplicacaoCaracteristicasRepository = aplicacaoCaracteristicasRepository;
         }
 
-        public Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id)
         {
             var obj = _aplicacaoCaracteristicasRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas()
+        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas()
         {
             var obj = _aplicacaoCaracteristicasRepository.ListarTodasAplicacoesCaracteristicas();
             return obj;

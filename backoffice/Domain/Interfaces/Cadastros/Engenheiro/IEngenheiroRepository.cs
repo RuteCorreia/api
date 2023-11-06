@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Engenheiro
 {
-    public interface IEngenheiroRepository : IBaseRepository<Entities.Entidades.Cadastros.Engenheiros.Engenheiro>
+    public interface IEngenheiroRepository : IBaseRepository<Entidades.Cadastros.Engenheiro.Engenheiro>
     {
-        Entities.Entidades.Cadastros.Engenheiros.Engenheiro BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> ListarTodosEngenheiros();
+        Entidades.Cadastros.Engenheiro.Engenheiro BuscarPorId(int? Id);
+        List<Entidades.Cadastros.Engenheiro.Engenheiro> ListarTodosEngenheiros();
     }
 }

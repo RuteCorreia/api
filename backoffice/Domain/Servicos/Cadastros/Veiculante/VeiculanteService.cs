@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Veiculante
 {
-    public class VeiculanteService : BaseService<Entities.Entidades.Cadastros.Veiculante.Veiculante>, IVeiculanteService
+    public class VeiculanteService : BaseService<Domain.Entidades.Cadastros.Veiculante.Veiculante>, IVeiculanteService
     {
-        public VeiculanteService(IBaseRepository<Entities.Entidades.Cadastros.Veiculante.Veiculante> baseRepository) : base(baseRepository)
+        public VeiculanteService(IBaseRepository<Domain.Entidades.Cadastros.Veiculante.Veiculante> baseRepository) : base(baseRepository)
         {
         }
     }

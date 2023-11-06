@@ -2,7 +2,6 @@
 using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Genericos;
 using Domain.Servicos.Genericos;
-using Entities.Entidades.Cadastros.Aeronaves;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Aeronave
 {
-    public class AeronaveService : BaseService<Entities.Entidades.Cadastros.Aeronaves.Aeronave>, IAeronaveService
+    public class AeronaveService : BaseService<Entidades.Cadastros.Aeronave.Aeronave>, IAeronaveService
     {
         private readonly IAeronaveRepository _aeronaveRepository;
 
@@ -25,13 +24,13 @@ namespace Domain.Servicos.Cadastros.Aeronave
         }
 
 
-        public Entities.Entidades.Cadastros.Aeronaves.Aeronave BuscarPorId(int? Id)
+        public Entidades.Cadastros.Aeronave.Aeronave BuscarPorId(int? Id)
         {
             var obj = _aeronaveRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Aeronaves.Aeronave> ListarTodasAeronaves()
+        public List<Entidades.Cadastros.Aeronave.Aeronave> ListarTodasAeronaves()
         {
             var obj = _aeronaveRepository.ListarTodasAeronaves();
             return obj;

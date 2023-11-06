@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Adjuvante
 {
-    public class AdjuvanteService : BaseService<Entities.Entidades.Cadastros.Adjuvante.Adjuvante>, IAdjuvanteService
+    public class AdjuvanteService : BaseService<Entidades.Cadastros.Adjuvante.Adjuvante>, IAdjuvanteService
     {
-        public AdjuvanteService(IBaseRepository<Entities.Entidades.Cadastros.Adjuvante.Adjuvante> baseRepository) : base(baseRepository)
+        public AdjuvanteService(IBaseRepository<Entidades.Cadastros.Adjuvante.Adjuvante> baseRepository) : base(baseRepository)
         {
         }
     }

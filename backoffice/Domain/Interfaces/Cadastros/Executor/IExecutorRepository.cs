@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Executor
 {
-    public interface IExecutorRepository : IBaseRepository<Entities.Entidades.Cadastros.Executores.Executor>
+    public interface IExecutorRepository : IBaseRepository<Entidades.Cadastros.Executor.Executor>
     {
-        Entities.Entidades.Cadastros.Executores.Executor BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Executores.Executor> ListarTodosExecutores();
+        Entidades.Cadastros.Executor.Executor BuscarPorId(int? Id);
+        List<Entidades.Cadastros.Executor.Executor> ListarTodosExecutores();
     }
 }

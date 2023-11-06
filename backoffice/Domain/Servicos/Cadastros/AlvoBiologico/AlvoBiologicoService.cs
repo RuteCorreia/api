@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.AlvoBiologico
 {
-    public class AlvoBiologicoService : BaseService<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>, IAlvoBiologicoService
+    public class AlvoBiologicoService : BaseService<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>, IAlvoBiologicoService
     {
         private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
 
@@ -20,13 +20,13 @@ namespace Domain.Servicos.Cadastros.AlvoBiologico
             _alvoBiologicoRepository = alvoBiologicoRepository;
         }
 
-        public Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id)
         {
             var obj = _alvoBiologicoRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos()
+        public List<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos()
         {
             var obj = _alvoBiologicoRepository.ListarTodosAlvosBiologicos();
             return obj;

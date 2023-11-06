@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Equipamento
 {
-    public interface IEquipamentoRepository : IBaseRepository<Entities.Entidades.Cadastros.Equipamento.Equipamento>
+    public interface IEquipamentoRepository : IBaseRepository<Domain.Entidades.Cadastros.Equipamento.Equipamento>
     {
     }
 }

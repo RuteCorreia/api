@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso
 {
-    public interface ICombateIncendioDecolagemPousoRepository : IBaseRepository<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>
+    public interface ICombateIncendioDecolagemPousoRepository : IBaseRepository<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>
     {
-        Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso();
+        Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id);
+        List<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso();
     }
 }

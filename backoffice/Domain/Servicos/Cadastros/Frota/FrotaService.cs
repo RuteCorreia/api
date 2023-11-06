@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Frota
 {
-    public class FrotaService : BaseService<Entities.Entidades.Cadastros.Frota.Frota>, IFrotaService
+    public class FrotaService : BaseService<Domain.Entidades.Cadastros.Frota.Frota>, IFrotaService
     {
         private readonly IFrotaRepository _frotaRepository;
 
@@ -19,13 +19,13 @@ namespace Domain.Servicos.Cadastros.Frota
             _frotaRepository = frotaRepository;
         }
 
-        public Entities.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id)
+        public Domain.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id)
         {
             var obj = _frotaRepository.BuscarPorId(Id);
             return obj;
         }
 
-        public List<Entities.Entidades.Cadastros.Frota.Frota> ListarFrotas()
+        public List<Domain.Entidades.Cadastros.Frota.Frota> ListarFrotas()
         {
             var obj = _frotaRepository.ListarFrotas();
             return obj;

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Interfaces.Genericos;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoContrato
+namespace Domain.Interfaces.Cadastros.AplicacaoContrato;
+
+public interface IAplicacaoContratoService : IBaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato>
 {
-    public interface IAplicacaoContratoService : IBaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato();
-    }
+    Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id);
+    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato();
 }

@@ -6,7 +6,7 @@ using Service.Services;
 using Data.Context;
 using System.Text.Json.Serialization;
 using Data.Repositorio.Generico;
-using Entities.Entidades.User;
+using Domain.Entidades.User;
 using Domain.Interfaces.Genericos;
 
 var builder = WebApplication.CreateBuilder(args);

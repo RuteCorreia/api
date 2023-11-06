@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Servicos.Cadastros.Pista
 {
-    public class PistaService : BaseService<Entities.Entidades.Cadastros.Pistas.Pista>, IPistaService
+    public class PistaService : BaseService<Domain.Entidades.Cadastros.Pistas.Pista>, IPistaService
     {
-        public PistaService(IBaseRepository<Entities.Entidades.Cadastros.Pistas.Pista> baseRepository) : base(baseRepository)
+        public PistaService(IBaseRepository<Domain.Entidades.Cadastros.Pistas.Pista> baseRepository) : base(baseRepository)
         {
         }
     }
