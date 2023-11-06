@@ -3,8 +3,18 @@ C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfoInputs.cache
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfo.cs
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.CoreCompileInputs.cache
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\bin\Debug\net7.0\Infra.deps.json
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\bin\Debug\net7.0\Infra.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\bin\Debug\net7.0\Infra.pdb
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\bin\Debug\net7.0\Domain.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\bin\Debug\net7.0\Domain.pdb
 C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.AssemblyReference.cache
 C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfoInputs.cache
 C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfo.cs
 C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.CoreCompileInputs.cache
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.CopyComplete
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\refint\Infra.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.pdb
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Infra\obj\Debug\net7.0\ref\Infra.dll

@@ -42,7 +42,7 @@ namespace Domain.Servicos.User
                 await roleManager.CreateAsync(new IdentityRole(role));
 
             if (await roleManager.RoleExistsAsync(role))
-                await userManager.AddToRoleAsync(user.SecurityStamp, role); //verificar se o SecurityStamp está correto como argumento
+                await userManager.AddToRoleAsync(user, role); //verificar se o SecurityStamp está correto como argumento
 
             return (1, "User created successfully!");
         }
@@ -55,7 +55,7 @@ namespace Domain.Servicos.User
             if (!await userManager.CheckPasswordAsync(user, model.Senha))
                 return (0, "Invalid password");
 
-            var userRoles = await userManager.GetRolesAsync(user.SecurityStamp); //verificar se o SecurityStamp está correto como argumento
+            var userRoles = await userManager.GetRolesAsync(user); //verificar se o SecurityStamp está correto como argumento
             var authClaims = new List<Claim>
             {
                new Claim(ClaimTypes.Name, user.UserName),
