@@ -7,6 +7,9 @@ namespace Infra.Configuracao;
 
 public class ContextBase : IdentityDbContext<ApplicationUser>
 {
+
+    public ContextBase() {  }
+
     public ContextBase(DbContextOptions<ContextBase> options) : base(options)
     {
     }

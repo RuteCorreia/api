@@ -40,7 +40,12 @@ public class CombustivelController : ControllerBase
         try
         {
             var combustivel = await _combustivelService.GetByIdAsync(id);
-            return Ok(combustivel);
+            if (!ObjectNullValidation.IsObjectNull(combustivel))
+            {
+                return Ok(combustivel);
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
         }
         catch(Exception ex)
         {
@@ -75,7 +80,7 @@ public class CombustivelController : ControllerBase
             if (ModelState.IsValid)
             {
                 var objeto = _combustivelService.GetByIdAsync(id);
-                if (ObjectNullValidation.IsObjectNull(objeto))
+                if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
                     await _combustivelService.AddAsync(obj);
                     return Ok("Sucesso");
