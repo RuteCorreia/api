@@ -55,4 +55,4 @@ Thumbs.db
 *.AssemblyReference
 *.bin
 
-/backoffice/WebApi/bin
+backoffice/WebApi/bin
