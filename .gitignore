@@ -50,9 +50,17 @@ Thumbs.db
 
 
 *.vsidx
-*.suo
 *.AssemblyInfoInputs
 *.AssemblyReference
 *.bin
+*.suo
 
 backoffice/WebApi/bin
+backoffice/WebApi/obj/Debug
+backoffice/Infra/bin
+backoffice/Infra/obj/Debug
+backoffice/HudAsp/obj/Debug
+backoffice/Domain/obj/Debug
+backoffice/Application/obj/Debug
+backoffice/Application/bin
+
