@@ -1,24 +1,17 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using HudAsp.Data;
-using Domain.Interfaces;
-using Service.Services;
-using Data.Context;
-using System.Text.Json.Serialization;
-using Data.Repositorio.Generico;
-using Entities.Entidades.User;
-using Domain.Interfaces.Genericos;
+using Infra.Configuracao;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<DataContext>(options =>
+builder.Services.AddDbContext<ContextBase>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<DataContext>();
+    .AddEntityFrameworkStores<ContextBase>();
 builder.Services.AddControllersWithViews();
 
 // Add Sidebar menu json file

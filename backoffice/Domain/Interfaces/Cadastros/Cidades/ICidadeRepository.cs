@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Cidades
 {
-    public interface ICidadeRepository : IBaseRepository<Entities.Entidades.Cadastros.Cidades.Cidades>
+    public interface ICidadeRepository : IBaseRepository<Domain.Entidades.Cadastros.Cidades.Cidades>
     {
     }
 }

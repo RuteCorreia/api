@@ -1,4 +1,5 @@
-﻿using Entities.Entidades.Cadastros.Empresa;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Genericos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

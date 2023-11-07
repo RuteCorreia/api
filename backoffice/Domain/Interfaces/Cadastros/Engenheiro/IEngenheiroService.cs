@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Interfaces.Genericos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Engenheiro
 {
-    public interface IEngenheiroService : IBaseService<Entities.Entidades.Cadastros.Engenheiros.Engenheiro>
+    public interface IEngenheiroService : IBaseService<Entidades.Cadastros.Engenheiro.Engenheiro>
     {
-        Entities.Entidades.Cadastros.Engenheiros.Engenheiro BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Engenheiros.Engenheiro> ListarTodosEngenheiros();
+        Entidades.Cadastros.Engenheiro.Engenheiro BuscarPorId(int? Id);
+        List<Entidades.Cadastros.Engenheiro.Engenheiro> ListarTodosEngenheiros();
     }
 }

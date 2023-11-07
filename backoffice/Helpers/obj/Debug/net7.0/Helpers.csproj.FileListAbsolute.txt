@@ -10,3 +10,15 @@ C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Helpers\obj\Debug\net
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Helpers\obj\Debug\net7.0\refint\Helpers.dll
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.pdb
 C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Helpers\obj\Debug\net7.0\ref\Helpers.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\bin\Debug\net7.0\Helpers.deps.json
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\bin\Debug\net7.0\Helpers.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\bin\Debug\net7.0\Helpers.pdb
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.csproj.AssemblyReference.cache
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.AssemblyInfoInputs.cache
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.AssemblyInfo.cs
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.csproj.CoreCompileInputs.cache
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\refint\Helpers.dll
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\Helpers.pdb
+C:\Users\jping\OneDrive\Documents\repos\flytec\backoffice\Helpers\obj\Debug\net7.0\ref\Helpers.dll

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Precificacao
 {
-    public interface IPrecificacaoRepository : IBaseRepository<Entities.Entidades.Cadastros.Precificacao.Precificacao>
+    public interface IPrecificacaoRepository : IBaseRepository<Domain.Entidades.Cadastros.Precificacao.Precificacao>
     {
-        Entities.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes();
+        Domain.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id);
+        List<Domain.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes();
     }
 }

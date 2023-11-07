@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.TipoProduto
 {
-    public interface ITipoProdutoRepository : IBaseRepository<Entities.Entidades.Cadastros.Tipo_Produto.TipoProduto>
+    public interface ITipoProdutoRepository : IBaseRepository<Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto>
     {
     }
 }

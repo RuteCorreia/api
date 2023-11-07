@@ -1,15 +1,9 @@
-﻿using Entities.Entidades.User;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Entidades.User;
 
-namespace Domain.Interfaces.User
+namespace Domain.Interfaces.User;
+
+public interface IAuthService
 {
-    public interface IAuthService
-    {
-        Task<(int, string)> Register(RegistrationModel model, string role);
-        Task<(int, string)> Login(LoginModel model);
-    }
+    Task<(int, string)> RegisterAsync(RegistrationModel model, string role);
+    Task<(int, string)> LoginAsync(LoginModel model);
 }

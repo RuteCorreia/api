@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Interfaces.Genericos;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoAreaTratada
+namespace Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
+
+public interface IAplicacaoAreaTratadaService : IBaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>
 {
-    public interface IAplicacaoAreaTratadaService : IBaseService<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas();
-    }
+    Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id);
+    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas();
 }

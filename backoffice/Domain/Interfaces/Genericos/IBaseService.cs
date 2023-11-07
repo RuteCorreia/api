@@ -1,23 +1,16 @@
-﻿using Entities.Entidades.Base;
-using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces.Genericos;
+
+public interface IBaseService<TEntity> where TEntity : class
 {
-    public interface IBaseService<TEntity> where TEntity : class
-    {
-        TEntity Inserir<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
+    Task<TEntity> Inserir<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
 
-        void Remover(int id);
+    Task Remover(int id);
 
-        IList<TEntity> Listar();
+    Task<IEnumerable<TEntity>> Listar();
 
-        TEntity BuscarPorId(int id);
+    Task<TEntity> BuscarPorId(int id);
 
-        TEntity Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
-    }
+    Task<TEntity> Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>;
 }

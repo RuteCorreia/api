@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Veiculante
 {
-    public interface IVeiculanteRepository : IBaseRepository<Entities.Entidades.Cadastros.Veiculante.Veiculante>
+    public interface IVeiculanteRepository : IBaseRepository<Domain.Entidades.Cadastros.Veiculante.Veiculante>
     {
     }
 }
