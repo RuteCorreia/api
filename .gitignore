@@ -52,4 +52,7 @@ Thumbs.db
 *.vsidx
 *.suo
 *.AssemblyInfoInputs
+*.AssemblyReference
 *.bin
+
+/backoffice/WebApi/bin
