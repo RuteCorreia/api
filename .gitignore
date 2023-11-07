@@ -66,3 +66,6 @@ backoffice/Application/bin
 
 backoffice/.vs/Flytec/v17
 *.v2
+backoffice/MS_Teste/bin
+backoffice/MS_Teste/obj/Debug
+backoffice/HudAsp/bin
