@@ -1,13 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "/a3kE7T7MuMmATXrkkMVvvNJyIdYM7iPaW6YPA3hna2xdWIMmJDRcuFC0vIIWBj1DxKydYaCPwxFHWnPaS3/ZQ==",
+  "dgSpecHash": "CPAkVYQI8jTKSE7M752sYaa87ukDtSYIYPJpFlu8ybwqriTGArdC5OgTdFBFoXlc/z6ReWyYgGiUqDksJfxhBA==",
   "success": true,
   "projectFilePath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\jping\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\fluentvalidation\\11.7.1\\fluentvalidation.11.7.1.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.13\\microsoft.aspnetcore.cryptography.internal.7.0.13.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.13\\microsoft.aspnetcore.cryptography.keyderivation.7.0.13.nupkg.sha512",
-    "C:\\Users\\jping\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\jping\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\jping\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",

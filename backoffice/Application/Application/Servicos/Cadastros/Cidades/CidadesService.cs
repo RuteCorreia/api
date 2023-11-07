@@ -1,13 +1,24 @@
 ﻿using Application.Application.Servicos.Genericos;
+using Application.DTOs.Cadastros.Cidades.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Cidades;
 using Domain.Interfaces.Genericos;
 
 namespace Application.Application.Servicos.Cadastros.Cidades
 {
-    public class CidadesService : BaseService<Domain.Entidades.Cadastros.Cidades.Cidades>, ICidadeService
+    public class CidadesService : ICidadeService
     {
-        public CidadesService(IBaseRepository<Domain.Entidades.Cadastros.Cidades.Cidades> baseRepository) : base(baseRepository)
+        private readonly ICidadeRepository _cidadeRepository;
+        private readonly IMapper _mapper;
+        public CidadesService(ICidadeRepository cidadeRepository, IMapper mapper) 
         {
+            _cidadeRepository = cidadeRepository;
+            _mapper = mapper;
+        }
+
+        public Task<IEnumerable<CidadeViewModel>> GetAllAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }

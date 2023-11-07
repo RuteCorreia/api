@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Combustivel
+namespace Domain.Interfaces.Cadastros.Combustivel;
+
+public interface ICombustivelRepository 
 {
-    public interface ICombustivelRepository : IBaseRepository<Domain.Entidades.Cadastros.Combustivel.Combustivel>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Combustivel.Combustivel obj);
+    Task UpdateAsync(Entidades.Cadastros.Combustivel.Combustivel obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Combustivel.Combustivel>> GetAllAsync();
+    Task<Entidades.Cadastros.Combustivel.Combustivel> GetByIdAsync(int id);
 }

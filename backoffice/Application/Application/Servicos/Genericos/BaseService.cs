@@ -12,23 +12,23 @@ namespace Application.Application.Servicos.Genericos
             _baseRepository = baseRepository;
         }
 
-        public TEntity Inserir<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public async Task<TEntity> Inserir<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {
             Validate(obj, Activator.CreateInstance<TValidator>());
-            _baseRepository.Inserir(obj);
+            await _baseRepository.AddAsync(obj);
             return obj;
         }
 
-        public void Remover(int id) => _baseRepository.Remover(id);
+        public async Task Remover(int id) => await _baseRepository.DeleteAsync(id);
 
-        public IList<TEntity> Listar() => _baseRepository.ListarTodos();
+        public async Task<IEnumerable<TEntity>> Listar() => await _baseRepository.GetAllAsync();
 
-        public TEntity BuscarPorId(int id) => _baseRepository.BuscarPorId(id);
+        public async Task<TEntity> BuscarPorId(int id) => await _baseRepository.GetByIdAsync(id);
 
-        public TEntity Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
+        public async Task<TEntity> Atualizar<TValidator>(TEntity obj) where TValidator : AbstractValidator<TEntity>
         {
             Validate(obj, Activator.CreateInstance<TValidator>());
-            _baseRepository.Atualizar(obj);
+            await _baseRepository.UpdateAsync(obj);
             return obj;
         }
 
