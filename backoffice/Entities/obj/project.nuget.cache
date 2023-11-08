@@ -1,8 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "FxzNycebu0EzIPiPi3yj4KD6H7KNLZAwFGRUx6TyAgaYbfuFFVtj1zFgdKC6223P5/MY/GcvlRbqrqzbnfvzvw==",
+  "dgSpecHash": "FqMNn/pH2JGCI0EvLY6fVVhkkFRbc+MfZPNMov6T7kwy60zuPwcr1ywnZthv0pK7OwNKv22GMbR/AqG4zPO9TA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\GAMER ZONE RYZEN\\Desktop\\Clones\\flytec\\backoffice\\Entities\\Entities.csproj",
+  "projectFilePath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\Entities.csproj",
   "expectedPackageFiles": [],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
+    }
+  ]
 }
