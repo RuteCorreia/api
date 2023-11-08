@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {}
+    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\obj\\",
+        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
@@ -29,6 +27,7 @@
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "C:\\Program Files\\dotnet\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -62,7 +61,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }

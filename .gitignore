@@ -54,6 +54,7 @@ Thumbs.db
 *.AssemblyReference
 *.suo
 *.bin
+*.v2
 
 backoffice/WebApi/bin
 backoffice/WebApi/obj/Debug
@@ -63,9 +64,7 @@ backoffice/HudAsp/obj/Debug
 backoffice/Domain/obj/Debug
 backoffice/Application/obj/Debug
 backoffice/Application/bin
-
 backoffice/.vs/Flytec/v17
-*.v2
 backoffice/MS_Teste/bin
 backoffice/MS_Teste/obj/Debug
 backoffice/HudAsp/bin
