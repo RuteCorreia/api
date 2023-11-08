@@ -1,4 +1,5 @@
-﻿using Domain.Entidades.Cadastros.Combustivel;
+﻿using Domain.Entidades.Cadastros.Cidades;
+using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     {
     }
 
+    public DbSet<Cidades> Cidades { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

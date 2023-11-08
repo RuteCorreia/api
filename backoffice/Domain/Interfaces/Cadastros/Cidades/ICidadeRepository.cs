@@ -1,13 +1,13 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.Cidades
 {
-    public interface ICidadeRepository : IBaseRepository<Domain.Entidades.Cadastros.Cidades.Cidades>
+    public interface ICidadeRepository
     {
+        Task AddAsync(Entidades.Cadastros.Cidades.Cidades obj);
+        Task UpdateAsync(Entidades.Cadastros.Cidades.Cidades obj);
+        Task DeleteAsync(int id);
+        Task<IEnumerable<Entidades.Cadastros.Cidades.Cidades>> GetAllAsync();
+        Task<Entidades.Cadastros.Cidades.Cidades> GetByIdAsync(int id);
     }
 }

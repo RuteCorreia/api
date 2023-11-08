@@ -1,42 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\WebApi\\WebApi.csproj": {}
+    "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Application\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               }
             }
           }
@@ -72,35 +66,29 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -152,35 +140,29 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -214,46 +196,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\Infra.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
         "projectName": "Infra",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\Infra.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Infra\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj"
               }
             }
           }
@@ -303,50 +279,43 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\WebApi\\WebApi.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\WebApi\\WebApi.csproj",
-        "packagesPath": "C:\\Users\\jping\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\WebApi\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
-        ],
         "configFilePaths": [
-          "C:\\Users\\jping\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
-          "C:\\Program Files\\dotnet\\sdk\\7.0.306\\Sdks\\Microsoft.NET.Sdk.Web\\library-packs": {},
+          "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Application\\Application.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj"
               },
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\Infra.csproj": {
-                "projectPath": "C:\\Users\\jping\\OneDrive\\Documents\\repos\\flytec\\backoffice\\Infra\\Infra.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj"
               }
             }
           }
@@ -393,7 +362,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.403\\RuntimeIdentifierGraph.json"
         }
       }
     }
