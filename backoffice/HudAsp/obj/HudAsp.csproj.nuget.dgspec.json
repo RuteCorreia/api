@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\HudAsp\\HudAsp.csproj": {}
+    "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -26,7 +22,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -83,21 +78,17 @@
         }
       }
     },
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -105,7 +96,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -144,21 +134,17 @@
         }
       }
     },
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\HudAsp\\HudAsp.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
         "projectName": "HudAsp",
-        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\HudAsp\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\HudAsp\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -166,7 +152,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -174,11 +159,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\Infra.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\Infra.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj"
               }
             }
           }
@@ -259,21 +244,17 @@
         }
       }
     },
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\Infra.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
         "projectName": "Infra",
-        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\Infra.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Infra\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Infra\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -281,7 +262,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
           "https://api.nuget.org/v3/index.json": {}
         },
@@ -289,11 +269,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
-                "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Helpers\\Helpers.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj"
               }
             }
           }
