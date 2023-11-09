@@ -36,6 +36,6 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
 
     public string ObterStringConexao()
     {
-        return "Data Source=NBQSP-FC693;Initial Catalog=Flytec;Integrated Security=False;User ID=sa;Password=kl@123KL;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        return "Data Source=198.38.83.200;Initial Catalog=Flytec;Integrated Security=False;User ID=keltec_user_dev_kel;Password=kel@123KL!#;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
     }
 }
