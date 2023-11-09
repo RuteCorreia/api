@@ -1,4 +1,5 @@
-﻿using Domain.Entidades.Cadastros.Cidades;
+﻿using Domain.Entidades.Cadastros.Adjuvante;
+using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -15,6 +16,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     {
     }
 
+    public DbSet<Adjuvante> Adjuvante { get; set; }
     public DbSet<Cidades> Cidades { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
 
