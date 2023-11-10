@@ -1,32 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Aeronave.Interface;
+using Application.DTOs.Cadastros.Aeronave.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Aeronave;
 
-namespace Application.Application.Servicos.Cadastros.Aeronave
+namespace Application.Application.Servicos.Cadastros.Aeronave;
+
+public class AeronaveService : IAeronaveService
 {
-    public class AeronaveService : BaseService<Domain.Entidades.Cadastros.Aeronave.Aeronave>, IAeronaveService
+    private readonly IAeronaveRepository _aeronaveRepository;
+    private readonly IMapper _mapper;
+
+    public AeronaveService(IMapper mapper, IAeronaveRepository aeronaveRepository)
     {
-        private readonly IAeronaveRepository _aeronaveRepository;
+        _aeronaveRepository = aeronaveRepository;
+        _mapper = mapper;
+    }
 
-        //public AeronaveService(IBaseRepository<Entities.Entidades.Cadastros.Aeronaves.Aeronave> baseRepository) : base(baseRepository)
-        //{
-        //}
+    public async Task<IEnumerable<AeronaveViewModel>> GetAllAsync()
+    {
+        var list = await _aeronaveRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
+    }
 
-        public AeronaveService(IAeronaveRepository aeronaveRepository) : base(aeronaveRepository)
-        {
-            _aeronaveRepository = aeronaveRepository;
-        }
+    public async Task<AeronaveViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aeronaveRepository.GetByIdAsync(id);
+        return _mapper.Map<AeronaveViewModel>(obj);
+    }
 
+    public async Task AddAsync(AeronaveViewModel obj)
+    {
+        var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
+        await _aeronaveRepository.AddAsync(mapAeronave);
+    }
 
-        public Domain.Entidades.Cadastros.Aeronave.Aeronave BuscarPorId(int? Id)
-        {
-            var obj = _aeronaveRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task UpdateAsync(AeronaveViewModel obj)
+    {
+        var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
+        await _aeronaveRepository.UpdateAsync(mapAeronave);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aeronave.Aeronave> ListarTodasAeronaves()
-        {
-            var obj = _aeronaveRepository.ListarTodasAeronaves();
-            return obj;
-        }
+    public async Task DeleteAsync(int id)
+    {
+        await _aeronaveRepository.DeleteAsync(id);
     }
 }
