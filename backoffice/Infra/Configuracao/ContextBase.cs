@@ -1,6 +1,7 @@
 ﻿using Domain.Entidades.Cadastros.Adjuvante;
 using Domain.Entidades.Cadastros.Aeronave;
 using Domain.Entidades.Cadastros.Altura_Voo;
+using Domain.Entidades.Cadastros.Alvo_Biologico;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
@@ -21,6 +22,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Adjuvante> Adjuvante { get; set; }
     public DbSet<Aeronave> Aeronave { get; set; }
     public DbSet<AlturaVoo> AlturaVoo { get; set; }
+    public DbSet<AlvoBiologico> AlvoBiologico { get; set; }
     public DbSet<Cidades> Cidades { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
 

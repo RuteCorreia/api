@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AlvoBiologico;
 
-public interface IAlvoBiologicoRepository : IBaseRepository<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>
+public interface IAlvoBiologicoRepository
 {
-    Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos();
+    Task AddAsync(Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj);
+    Task UpdateAsync(Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync();
+    Task<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int id);
 }

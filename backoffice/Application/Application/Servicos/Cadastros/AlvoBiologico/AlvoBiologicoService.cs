@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.AlvoBiologico.Interface;
+using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
 
-namespace Application.Application.Servicos.Cadastros.AlvoBiologico
+namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
+
+public class AlvoBiologicoService : IAlvoBiologicoService
 {
-    public class AlvoBiologicoService : BaseService<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>, IAlvoBiologicoService
+    private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
+    private readonly IMapper _mapper;
+
+    public AlvoBiologicoService(IMapper mapper, IAlvoBiologicoRepository alvoBiologicoRepository)
     {
-        private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
+        _alvoBiologicoRepository = alvoBiologicoRepository;
+        _mapper = mapper;
+    }
 
-        public AlvoBiologicoService(IAlvoBiologicoRepository alvoBiologicoRepository) : base(alvoBiologicoRepository)
-        {
-            _alvoBiologicoRepository = alvoBiologicoRepository;
-        }
+    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync()
+    {
+        var list = await _alvoBiologicoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id)
-        {
-            var obj = _alvoBiologicoRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<AlvoBiologicoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _alvoBiologicoRepository.GetByIdAsync(id);
+        return _mapper.Map<AlvoBiologicoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos()
-        {
-            var obj = _alvoBiologicoRepository.ListarTodosAlvosBiologicos();
-            return obj;
-        }
+    public async Task AddAsync(AlvoBiologicoViewModel obj)
+    {
+        var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
+        await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
+    }
+
+    public async Task UpdateAsync(AlvoBiologicoViewModel obj)
+    {
+        var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
+        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _alvoBiologicoRepository.DeleteAsync(id);
     }
 }
