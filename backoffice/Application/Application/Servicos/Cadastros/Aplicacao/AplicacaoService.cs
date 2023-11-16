@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Aplicacao.Interface;
+using Application.DTOs.Cadastros.Aplicacao.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Aplicacao;
 
-namespace Application.Application.Servicos.Cadastros.Aplicacao
+namespace Application.Application.Servicos.Cadastros.Aplicacao;
+
+public class AplicacaoService : IAplicacaoService
 {
-    public class AplicacaoService : BaseService<Domain.Entidades.Cadastros.Aplicacao.Aplicacao>, IAplicacaoService
+    private readonly IAplicacaoRepository _aplicacaoRepository;
+    private readonly IMapper _mapper;
+
+    public AplicacaoService(IMapper mapper, IAplicacaoRepository aplicacaoRepository)
     {
-        private readonly IAplicacaoRepository _aplicacaoRepository;
+        _aplicacaoRepository = aplicacaoRepository;
+        _mapper = mapper;
+    }
 
-        public AplicacaoService(IAplicacaoRepository aplicacaoRepository) : base(aplicacaoRepository)
-        {
-            _aplicacaoRepository = aplicacaoRepository;
-        }
+    public async Task<IEnumerable<AplicacaoViewModel>> GetAllAsync()
+    {
+        var list = await _aplicacaoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AplicacaoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Aplicacao.Aplicacao BuscarPorId(int? Id)
-        {
-            var obj = _aplicacaoRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<AplicacaoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aplicacaoRepository.GetByIdAsync(id);
+        return _mapper.Map<AplicacaoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aplicacao.Aplicacao> ListarTodasAplicacoes()
-        {
-            var obj = _aplicacaoRepository.ListarTodasAplicacoes();
-            return obj;
-        }
+    public async Task AddAsync(AplicacaoViewModel obj)
+    {
+        var mapAplicacao = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.Aplicacao>(obj);
+        await _aplicacaoRepository.AddAsync(mapAplicacao);
+    }
+
+    public async Task UpdateAsync(AplicacaoViewModel obj)
+    {
+        var mapAplicacao = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.Aplicacao>(obj);
+        await _aplicacaoRepository.UpdateAsync(mapAplicacao);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _aplicacaoRepository.DeleteAsync(id);
     }
 }

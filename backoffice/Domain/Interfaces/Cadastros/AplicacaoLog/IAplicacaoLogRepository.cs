@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AplicacaoLog;
 
-public interface IAplicacaoLogRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog>
+public interface IAplicacaoLogRepository
 {
-    Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog();
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoLog obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoLog obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoLog>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoLog> GetByIdAsync(int id);
 }

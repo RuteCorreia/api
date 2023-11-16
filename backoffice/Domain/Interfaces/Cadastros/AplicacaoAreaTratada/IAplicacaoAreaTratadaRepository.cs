@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AplicacaoAreaTratada;
 
-public interface IAplicacaoAreaTratadaRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>
+public interface IAplicacaoAreaTratadaRepository
 {
-    Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> ListarTodasAplicacoesAreaTratadas();
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada> GetByIdAsync(int id);
 }

@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
 
-public interface IAplicacaoCroquiImportacaoRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>
+public interface IAplicacaoCroquiImportacaoRepository
 {
-    Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes();
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> GetByIdAsync(int id);
 }

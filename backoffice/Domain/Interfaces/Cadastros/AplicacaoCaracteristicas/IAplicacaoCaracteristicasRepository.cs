@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
 
-public interface IAplicacaoCaracteristicasRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>
+public interface IAplicacaoCaracteristicasRepository
 {
-    Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas();
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> GetByIdAsync(int id);
 }

@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.AplicacaoCroquiImportacao.Interface;
+using Application.DTOs.Cadastros.AplicacaoCroquiImportacao.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoCroquiImportacao;
 
-namespace Application.Application.Servicos.Cadastros.AplicacaoCroquiImportacao
+namespace Application.Application.Servicos.Cadastros.AplicacaoCroquiImportacao;
+
+public class AplicacaoCroquiImportacaoService : IAplicacaoCroquiImportacaoService
 {
-    public class AplicacaoCroquiImportacaoService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>, IAplicacaoCroquiImportacaoService
+    private readonly IAplicacaoCroquiImportacaoRepository _aplicacaoCroquiImportacaoRepository;
+    private readonly IMapper _mapper;
+
+    public AplicacaoCroquiImportacaoService(IMapper mapper, IAplicacaoCroquiImportacaoRepository aplicacaoCroquiImportacaoRepository)
     {
-        private readonly IAplicacaoCroquiImportacaoRepository _aplicacaoCroquiImportacaoRepository;
+        _aplicacaoCroquiImportacaoRepository = aplicacaoCroquiImportacaoRepository;
+        _mapper = mapper;
+    }
 
-        public AplicacaoCroquiImportacaoService(IAplicacaoCroquiImportacaoRepository aplicacaoCroquiImportacaoRepository) : base(aplicacaoCroquiImportacaoRepository)
-        {
-            _aplicacaoCroquiImportacaoRepository = aplicacaoCroquiImportacaoRepository;
-        }
+    public async Task<IEnumerable<AplicacaoCroquiImportacaoViewModel>> GetAllAsync()
+    {
+        var list = await _aplicacaoCroquiImportacaoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AplicacaoCroquiImportacaoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao BuscarPorId(int? Id)
-        {
-            var obj = _aplicacaoCroquiImportacaoRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<AplicacaoCroquiImportacaoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aplicacaoCroquiImportacaoRepository.GetByIdAsync(id);
+        return _mapper.Map<AplicacaoCroquiImportacaoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao> ListarTodasAplicacoesCroquiImportacoes()
-        {
-            var obj = _aplicacaoCroquiImportacaoRepository.ListarTodasAplicacoesCroquiImportacoes();
-            return obj;
-        }
+    public async Task AddAsync(AplicacaoCroquiImportacaoViewModel obj)
+    {
+        var mapAplicacaoCroquiImportacao = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>(obj);
+        await _aplicacaoCroquiImportacaoRepository.AddAsync(mapAplicacaoCroquiImportacao);
+    }
+
+    public async Task UpdateAsync(AplicacaoCroquiImportacaoViewModel obj)
+    {
+        var mapAplicacaoCroquiImportacao = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroquiImportacao>(obj);
+        await _aplicacaoCroquiImportacaoRepository.UpdateAsync(mapAplicacaoCroquiImportacao);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _aplicacaoCroquiImportacaoRepository.DeleteAsync(id);
     }
 }

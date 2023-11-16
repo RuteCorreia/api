@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 
-namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorioItem
+namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorioItem;
+
+public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
 {
-    public class AplicacaoRelatorioItemService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>, IAplicacaoRelatorioItemService
+    private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
+    private readonly IMapper _mapper;
+
+    public AplicacaoRelatorioItemService(IMapper mapper, IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository)
     {
-        private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
+        _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
+        _mapper = mapper;
+    }
 
-        public AplicacaoRelatorioItemService(IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository) : base(aplicacaoRelatorioItemRepository)
-        {
-            _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
-        }
+    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync()
+    {
+        var list = await _aplicacaoRelatorioItemRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem BuscarPorId(int? Id)
-        {
-            var obj = _aplicacaoRelatorioItemRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<AplicacaoRelatorioItemViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aplicacaoRelatorioItemRepository.GetByIdAsync(id);
+        return _mapper.Map<AplicacaoRelatorioItemViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> ListarTodasAplicacoesRelatorioItem()
-        {
-            var obj = _aplicacaoRelatorioItemRepository.ListarTodasAplicacoesRelatorioItem();
-            return obj;
-        }
+    public async Task AddAsync(AplicacaoRelatorioItemViewModel obj)
+    {
+        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
+        await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
+    }
+
+    public async Task UpdateAsync(AplicacaoRelatorioItemViewModel obj)
+    {
+        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
+        await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _aplicacaoRelatorioItemRepository.DeleteAsync(id);
     }
 }

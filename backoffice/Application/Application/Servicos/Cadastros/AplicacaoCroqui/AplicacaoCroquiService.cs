@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.AplicacaoCroqui.Interface;
+using Application.DTOs.Cadastros.AplicacaoCroqui.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoCroqui;
 
-namespace Application.Application.Servicos.Cadastros.AplicacaoCroqui
+namespace Application.Application.Servicos.Cadastros.AplicacaoCroqui;
+
+public class AplicacaoCroquiService : IAplicacaoCroquiService
 {
-    public class AplicacaoCroquiService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>, IAplicacaoCroquiService
+    private readonly IAplicacaoCroquiRepository _aplicacaoCroquiRepository;
+    private readonly IMapper _mapper;
+
+    public AplicacaoCroquiService(IMapper mapper, IAplicacaoCroquiRepository aplicacaoCroquiRepository)
     {
-        private readonly IAplicacaoCroquiRepository _aplicacaoCroquiRepository;
+        _aplicacaoCroquiRepository = aplicacaoCroquiRepository;
+        _mapper = mapper;
+    }
 
-        public AplicacaoCroquiService(IAplicacaoCroquiRepository aplicacaoCroquiRepository) : base(aplicacaoCroquiRepository)
-        {
-            _aplicacaoCroquiRepository = aplicacaoCroquiRepository;
-        }
+    public async Task<IEnumerable<AplicacaoCroquiViewModel>> GetAllAsync()
+    {
+        var list = await _aplicacaoCroquiRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AplicacaoCroquiViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui BuscarPorId(int? Id)
-        {
-            var obj = _aplicacaoCroquiRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<AplicacaoCroquiViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aplicacaoCroquiRepository.GetByIdAsync(id);
+        return _mapper.Map<AplicacaoCroquiViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui> ListarTodasAplicacoesCroqui()
-        {
-            var obj = _aplicacaoCroquiRepository.ListarTodasAplicacoesCroqui();
-            return obj;
-        }
+    public async Task AddAsync(AplicacaoCroquiViewModel obj)
+    {
+        var mapAplicacaoCroqui = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>(obj);
+        await _aplicacaoCroquiRepository.AddAsync(mapAplicacaoCroqui);
+    }
+
+    public async Task UpdateAsync(AplicacaoCroquiViewModel obj)
+    {
+        var mapAplicacaoCroqui = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>(obj);
+        await _aplicacaoCroquiRepository.UpdateAsync(mapAplicacaoCroqui);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _aplicacaoCroquiRepository.DeleteAsync(id);
     }
 }

@@ -2,6 +2,7 @@
 using Domain.Entidades.Cadastros.Aeronave;
 using Domain.Entidades.Cadastros.Altura_Voo;
 using Domain.Entidades.Cadastros.Alvo_Biologico;
+using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
@@ -23,6 +24,16 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Aeronave> Aeronave { get; set; }
     public DbSet<AlturaVoo> AlturaVoo { get; set; }
     public DbSet<AlvoBiologico> AlvoBiologico { get; set; }
+    public DbSet<Aplicacao> Aplicacao { get; set; }
+    public DbSet<AplicacaoAreaTratada> AplicacaoAreaTratada { get; set; }
+    public DbSet<AplicacaoCaracteristicas> AplicacaoCaracteristicas { get; set; }
+    public DbSet<AplicacaoContrato> AplicacaoContrato { get; set; }
+    public DbSet<AplicacaoCroqui> AplicacaoCroqui { get; set; }
+    public DbSet<AplicacaoCroquiImportacao> AplicacaoCroquiImportacao { get; set; }
+    public DbSet<AplicacaoLog> AplicacaoLog { get; set; }
+    public DbSet<AplicacaoRecomendacoesTecnicas> AplicacaoRecomendacoesTecnicas { get; set; }
+    public DbSet<AplicacaoRelatorio> AplicacaoRelatorio { get; set; }
+    public DbSet<AplicacaoRelatorioItem> AplicacaoRelatorioItem { get; set; }
     public DbSet<Cidades> Cidades { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
 

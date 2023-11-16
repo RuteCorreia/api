@@ -2,8 +2,11 @@
 
 namespace Domain.Interfaces.Cadastros.AplicacaoContrato;
 
-public interface IAplicacaoContratoRepository : IBaseRepository<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato>
+public interface IAplicacaoContratoRepository
 {
-    Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id);
-    List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato();
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoContrato obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoContrato obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoContrato>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoContrato> GetByIdAsync(int id);
 }

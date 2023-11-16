@@ -1,28 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 
-namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas
+namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
+
+public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecnicasService
 {
-    public class AplicacaoRecomendacoesTecnicasService : BaseService<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>, IAplicacaoRecomendacoesTecnicasService
+    private readonly IAplicacaoRecomendacoesTecnicasRepository _aplicacaoRecomendacoesTecnicasRepository;
+    private readonly IMapper _mapper;
+
+    public AplicacaoRecomendacoesTecnicasService(IMapper mapper, IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository)
     {
-        private readonly IAplicacaoRecomendacoesTecnicasRepository _aplicacaoRecomendacoesTecnicasRepository;
+        _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
+        _mapper = mapper;
+    }
 
-        public AplicacaoRecomendacoesTecnicasService(IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository) : base(aplicacaoRecomendacoesTecnicasRepository)
-        {
-            _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
+    public async Task<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>> GetAllAsync()
+    {
+        var list = await _aplicacaoRecomendacoesTecnicasRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
+    }
 
-        }
+    public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
+        return _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+    }
 
-        public Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas BuscarPorId(int? Id)
-        {
-            var obj = _aplicacaoRecomendacoesTecnicasRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj)
+    {
+        var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
+        await _aplicacaoRecomendacoesTecnicasRepository.AddAsync(mapAplicacaoRecomendacoesTecnicas);
+    }
 
-        public List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas()
-        {
-            var obj = _aplicacaoRecomendacoesTecnicasRepository.ListarTodasAplicacoesRecomendacoesTecnicas();
-            return obj;
-        }
+    public async Task UpdateAsync(AplicacaoRecomendacoesTecnicasViewModel obj)
+    {
+        var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
+        await _aplicacaoRecomendacoesTecnicasRepository.UpdateAsync(mapAplicacaoRecomendacoesTecnicas);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _aplicacaoRecomendacoesTecnicasRepository.DeleteAsync(id);
     }
 }
