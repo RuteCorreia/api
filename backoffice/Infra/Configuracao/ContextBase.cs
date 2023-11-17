@@ -8,6 +8,7 @@ using Domain.Entidades.Cadastros.Cliente;
 using Domain.Entidades.Cadastros.CombateIncendio;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.Cadastros.Controle_De_Frota;
+using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<CombateIncendioDecolagemPouso> CombateIncendioDecolagemPouso { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
     public DbSet<ControleDeFrota> ControleDeFrota { get; set; }
+    public DbSet<Cultura> Cultura { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

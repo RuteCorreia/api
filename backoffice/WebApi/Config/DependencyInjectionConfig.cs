@@ -18,6 +18,7 @@ using Application.Application.Servicos.Cadastros.CombateIncendio;
 using Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
 using Application.Application.Servicos.Cadastros.Combustivel;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
+using Application.Application.Servicos.Cadastros.Cultura;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.AlturaVoo.Interface;
@@ -38,6 +39,7 @@ using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+using Application.DTOs.Cadastros.Cultura.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlturaVoo;
@@ -58,6 +60,7 @@ using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Domain.Interfaces.Cadastros.Cultura;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
 using Infra.Repositorio.Cadastros.Aeronave;
@@ -79,6 +82,7 @@ using Infra.Repositorio.Cadastros.CombateIncendio;
 using Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
 using Infra.Repositorio.Cadastros.Combustivel;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
+using Infra.Repositorio.Cadastros.Cultura;
 
 namespace WebApi.Config;
 
@@ -111,6 +115,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICombateIncendioDecolagemPousoService, CombateIncendioDecolagemPousoService>();
         services.AddScoped<ICombustivelService, CombustivelService>();
         services.AddScoped<IControleDeFrotaService, ControleDeFrotaService>();
+        services.AddScoped<ICulturaService, CulturaService>();
 
         #endregion
 
@@ -136,6 +141,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICombateIncendioDecolagemPousoRepository, CombateIncendioDecolagemPousoRepository>();
         services.AddScoped<ICombustivelRepository, CombustivelRepository>();
         services.AddScoped<IControleDeFrotaRepository, ControleDeFrotaRepository>();
+        services.AddScoped<ICulturaRepository, CulturaRepository>();
 
         #endregion
 
