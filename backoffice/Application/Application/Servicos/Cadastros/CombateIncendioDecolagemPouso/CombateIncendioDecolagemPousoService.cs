@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
+using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 
-namespace Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso
+namespace Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
+
+public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPousoService
 {
-    public class CombateIncendioDecolagemPousoService : BaseService<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>, ICombateIncendioDecolagemPousoService
+    private readonly ICombateIncendioDecolagemPousoRepository _combateIncendioDecolagemPousoRepository;
+    private readonly IMapper _mapper;
+
+    public CombateIncendioDecolagemPousoService(IMapper mapper, ICombateIncendioDecolagemPousoRepository combateIncendioDecolagemPousoRepository)
     {
-        private readonly ICombateIncendioDecolagemPousoRepository _combateIncendioDecolagemPouso;
+        _combateIncendioDecolagemPousoRepository = combateIncendioDecolagemPousoRepository;
+        _mapper = mapper;
+    }
 
-        public CombateIncendioDecolagemPousoService(ICombateIncendioDecolagemPousoRepository combateIncendioDecolagemPousoRepository) : base(combateIncendioDecolagemPousoRepository)
-        {
-            _combateIncendioDecolagemPouso = combateIncendioDecolagemPousoRepository;
-        }
+    public async Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync()
+    {
+        var list = await _combateIncendioDecolagemPousoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<CombateIncendioDecolagemPousoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id)
-        {
-            var obj = _combateIncendioDecolagemPouso.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<CombateIncendioDecolagemPousoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _combateIncendioDecolagemPousoRepository.GetByIdAsync(id);
+        return _mapper.Map<CombateIncendioDecolagemPousoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso()
-        {
-            var obj = _combateIncendioDecolagemPouso.ListarTodosCombatesIncendioDecolagemPouso();
-            return obj;
-        }
+    public async Task AddAsync(CombateIncendioDecolagemPousoViewModel obj)
+    {
+        var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
+        await _combateIncendioDecolagemPousoRepository.AddAsync(mapCombateIncendioDecolagemPouso);
+    }
+
+    public async Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj)
+    {
+        var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
+        await _combateIncendioDecolagemPousoRepository.UpdateAsync(mapCombateIncendioDecolagemPouso);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _combateIncendioDecolagemPousoRepository.DeleteAsync(id);
     }
 }

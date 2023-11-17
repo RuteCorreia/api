@@ -5,6 +5,7 @@ using Domain.Entidades.Cadastros.Alvo_Biologico;
 using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cliente;
+using Domain.Entidades.Cadastros.CombateIncendio;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -37,6 +38,8 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<AplicacaoRelatorioItem> AplicacaoRelatorioItem { get; set; }
     public DbSet<Cidades> Cidades { get; set; }
     public DbSet<Cliente> Cliente { get; set; }
+    public DbSet<CombateIncendio> CombateIncendio { get; set; }
+    public DbSet<CombateIncendioDecolagemPouso> CombateIncendioDecolagemPouso { get; set; }
     public DbSet<Combustivel> Combustivel { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
