@@ -13,6 +13,7 @@ using Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 using Application.Application.Servicos.Cadastros.AplicacaoRelatorioItem;
 using Application.Application.Servicos.Cadastros.Cidades;
+using Application.Application.Servicos.Cadastros.Cliente;
 using Application.Application.Servicos.Cadastros.Combustivel;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
@@ -29,6 +30,7 @@ using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.Cidades.Interface;
+using Application.DTOs.Cadastros.Cliente.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
@@ -45,6 +47,7 @@ using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.Cidades;
+using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.Combustivel;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
@@ -62,6 +65,7 @@ using Infra.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Infra.Repositorio.Cadastros.AplicacaoRelatorio;
 using Infra.Repositorio.Cadastros.AplicacaoRelatorioItem;
 using Infra.Repositorio.Cadastros.Cidades;
+using Infra.Repositorio.Cadastros.Cliente;
 using Infra.Repositorio.Cadastros.Combustivel;
 
 namespace WebApi.Config;
@@ -90,6 +94,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAplicacaoRelatorioService, AplicacaoRelatorioService>();
         services.AddScoped<IAplicacaoRelatorioItemService, AplicacaoRelatorioItemService>();
         services.AddScoped<ICidadeService, CidadesService>();
+        services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<ICombustivelService, CombustivelService>();
 
         #endregion
@@ -111,6 +116,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAplicacaoRelatorioRepository, AplicacaoRelatorioRepository>();
         services.AddScoped<IAplicacaoRelatorioItemRepository, AplicacaoRelatorioItemRepository>();
         services.AddScoped<ICidadeRepository, CidadesRepository>();
+        services.AddScoped<IClienteRepository, ClienteRepository>();
         services.AddScoped<ICombustivelRepository, CombustivelRepository>();
 
         #endregion
