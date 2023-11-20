@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\DEV\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {}
+    "C:\\DEV\\dev-flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {}
   },
   "projects": {
-    "C:\\DEV\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {
+    "C:\\DEV\\dev-flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
+        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
         "projectName": "MS_Teste",
-        "projectPath": "C:\\DEV\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
-        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\flytec\\backoffice\\MS_Teste\\obj\\",
+        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
+        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\MS_Teste\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
