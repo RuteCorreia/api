@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Executor.Interface;
+using Application.DTOs.Cadastros.Executor.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Executor;
 
-namespace Application.Application.Servicos.Cadastros.Executor
+namespace Application.Application.Servicos.Cadastros.Executor;
+
+public class ExecutorService : IExecutorService
 {
-    public class ExecutorService : BaseService<Domain.Entidades.Cadastros.Executor.Executor>, IExecutorService
+    private readonly IExecutorRepository _executorRepository;
+    private readonly IMapper _mapper;
+
+    public ExecutorService(IMapper mapper, IExecutorRepository executorRepository)
     {
-        private readonly IExecutorRepository _executorRepository;
+        _executorRepository = executorRepository;
+        _mapper = mapper;
+    }
 
-        public ExecutorService(IExecutorRepository executorRepository) : base(executorRepository)
-        {
-            _executorRepository = executorRepository;
-        }
+    public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync()
+    {
+        var list = await _executorRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<ExecutorViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Executor.Executor BuscarPorId(int? Id)
-        {
-            var obj = _executorRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<ExecutorViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _executorRepository.GetByIdAsync(id);
+        return _mapper.Map<ExecutorViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Executor.Executor> ListarTodosExecutores()
-        {
-            var obj = _executorRepository.ListarTodosExecutores();
-            return obj;
-        }
+    public async Task AddAsync(ExecutorViewModel obj)
+    {
+        var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
+        await _executorRepository.AddAsync(mapExecutor);
+    }
+
+    public async Task UpdateAsync(ExecutorViewModel obj)
+    {
+        var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
+        await _executorRepository.UpdateAsync(mapExecutor);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _executorRepository.DeleteAsync(id);
     }
 }

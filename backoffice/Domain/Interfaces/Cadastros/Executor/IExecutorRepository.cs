@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Executor
+namespace Domain.Interfaces.Cadastros.Executor;
+
+public interface IExecutorRepository
 {
-    public interface IExecutorRepository : IBaseRepository<Entidades.Cadastros.Executor.Executor>
-    {
-        Entidades.Cadastros.Executor.Executor BuscarPorId(int? Id);
-        List<Entidades.Cadastros.Executor.Executor> ListarTodosExecutores();
-    }
+    Task AddAsync(Entidades.Cadastros.Executor.Executor obj);
+    Task UpdateAsync(Entidades.Cadastros.Executor.Executor obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Executor.Executor>> GetAllAsync();
+    Task<Entidades.Cadastros.Executor.Executor> GetByIdAsync(int id);
 }

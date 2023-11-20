@@ -13,6 +13,7 @@ using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Engenheiro;
 using Domain.Entidades.Cadastros.Equipamento;
 using Domain.Entidades.Cadastros.Estados;
+using Domain.Entidades.Cadastros.Executor;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Engenheiro> Engenheiro { get; set; }
     public DbSet<Equipamento> Equipamento { get; set; }
     public DbSet<Estados> Estados { get; set; }
+    public DbSet<Executor> Executor { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
