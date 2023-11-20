@@ -30,6 +30,7 @@ using Application.Application.Servicos.Cadastros.Piloto;
 using Application.Application.Servicos.Cadastros.Pista;
 using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.Application.Servicos.Cadastros.Precificacao;
+using Application.Application.Servicos.Cadastros.Produto;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.AlturaVoo.Interface;
@@ -62,6 +63,7 @@ using Application.DTOs.Cadastros.Piloto.Interface;
 using Application.DTOs.Cadastros.Pistas.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Application.DTOs.Cadastros.Precificacao.Interface;
+using Application.DTOs.Cadastros.Produto.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlturaVoo;
@@ -94,6 +96,7 @@ using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Domain.Interfaces.Cadastros.Precificacao;
+using Domain.Interfaces.Cadastros.Produto;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
 using Infra.Repositorio.Cadastros.Aeronave;
@@ -127,6 +130,7 @@ using Infra.Repositorio.Cadastros.Piloto;
 using Infra.Repositorio.Cadastros.Pistas;
 using Infra.Repositorio.Cadastros.PlanoDeContrato;
 using Infra.Repositorio.Cadastros.Precificacao;
+using Infra.Repositorio.Cadastros.Produto;
 
 namespace WebApi.Config;
 
@@ -171,6 +175,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPilotoService, PilotoService>();
         services.AddScoped<IPistaService, PistaService>();
         services.AddScoped<IPrecificacaoService, PrecificacaoService>();
+        services.AddScoped<IProdutoService, ProdutoService>();
 
         #endregion
 
@@ -208,6 +213,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPilotoRepository, PilotoRepository>();
         services.AddScoped<IPistaRepository, PistaRepository>();
         services.AddScoped<IPrecificacaoRepository, PrecificacaoRepository>();
+        services.AddScoped<IProdutoRepository, ProdutoRepository>();
 
         #endregion
 
