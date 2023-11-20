@@ -17,6 +17,7 @@ using Domain.Entidades.Cadastros.Executor;
 using Domain.Entidades.Cadastros.Frota;
 using Domain.Entidades.Cadastros.Piloto;
 using Domain.Entidades.Cadastros.Pistas;
+using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -63,6 +64,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Frota> Frota { get; set; }
     public DbSet<Piloto> Piloto { get; set; }
     public DbSet<Pista> Pista { get; set; }
+    public DbSet<Precificacao> Precificacao { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
