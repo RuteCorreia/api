@@ -1,16 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using Domain.Entidades.Cadastros.Pilotos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Piloto
+namespace Domain.Interfaces.Cadastros.Piloto;
+
+public interface IPilotoRepository
 {
-    public interface IPilotoRepository : IBaseRepository<Domain.Entidades.Cadastros.Pilotos.Piloto>
-    {
-        Domain.Entidades.Cadastros.Pilotos.Piloto BuscarPorId(int? Id);
-        List<Domain.Entidades.Cadastros.Pilotos.Piloto> ListarPilotos();
-    }
+    Task AddAsync(Entidades.Cadastros.Piloto.Piloto obj);
+    Task UpdateAsync(Entidades.Cadastros.Piloto.Piloto obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Piloto.Piloto>> GetAllAsync();
+    Task<Entidades.Cadastros.Piloto.Piloto> GetByIdAsync(int id);
 }
