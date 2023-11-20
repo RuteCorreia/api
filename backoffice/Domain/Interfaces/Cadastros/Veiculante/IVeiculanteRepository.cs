@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Veiculante
+namespace Domain.Interfaces.Cadastros.Veiculante;
+
+public interface IVeiculanteRepository
 {
-    public interface IVeiculanteRepository : IBaseRepository<Domain.Entidades.Cadastros.Veiculante.Veiculante>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Veiculante.Veiculante obj);
+    Task UpdateAsync(Entidades.Cadastros.Veiculante.Veiculante obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Veiculante.Veiculante>> GetAllAsync();
+    Task<Entidades.Cadastros.Veiculante.Veiculante> GetByIdAsync(int id);
 }

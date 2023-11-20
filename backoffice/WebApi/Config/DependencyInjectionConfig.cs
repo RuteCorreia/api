@@ -32,6 +32,7 @@ using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.Application.Servicos.Cadastros.Precificacao;
 using Application.Application.Servicos.Cadastros.Produto;
 using Application.Application.Servicos.Cadastros.TipoProduto;
+using Application.Application.Servicos.Cadastros.Veiculante;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.AlturaVoo.Interface;
@@ -66,6 +67,7 @@ using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Application.DTOs.Cadastros.Precificacao.Interface;
 using Application.DTOs.Cadastros.Produto.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
+using Application.DTOs.Cadastros.Veiculante.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlturaVoo;
@@ -100,6 +102,7 @@ using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Domain.Interfaces.Cadastros.Precificacao;
 using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoProduto;
+using Domain.Interfaces.Cadastros.Veiculante;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
 using Infra.Repositorio.Cadastros.Aeronave;
@@ -135,6 +138,7 @@ using Infra.Repositorio.Cadastros.PlanoDeContrato;
 using Infra.Repositorio.Cadastros.Precificacao;
 using Infra.Repositorio.Cadastros.Produto;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
+using Infra.Repositorio.Cadastros.Veiculante;
 
 namespace WebApi.Config;
 
@@ -181,6 +185,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPrecificacaoService, PrecificacaoService>();
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<ITipoProdutoService, TipoProdutoService>();
+        services.AddScoped<IVeiculanteService, VeiculanteService>();
 
         #endregion
 
@@ -220,6 +225,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IPrecificacaoRepository, PrecificacaoRepository>();
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
         services.AddScoped<ITipoProdutoRepository, TipoProdutoRepository>();
+        services.AddScoped<IVeiculanteRepository, VeiculanteRepository>();
 
         #endregion
 

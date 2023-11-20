@@ -20,6 +20,7 @@ using Domain.Entidades.Cadastros.Pistas;
 using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Entidades.Cadastros.Tipo_Produto;
+using Domain.Entidades.Cadastros.Veiculante;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +70,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Precificacao> Precificacao { get; set; }
     public DbSet<Produto> Produto { get; set; }
     public DbSet<TipoProduto> TipoProduto { get; set; }
+    public DbSet<Veiculante> Veiculante { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
