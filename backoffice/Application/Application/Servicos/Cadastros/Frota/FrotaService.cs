@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Frota.Interface;
+using Application.DTOs.Cadastros.Frota.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Frota;
 
-namespace Application.Application.Servicos.Cadastros.Frota
+namespace Application.Application.Servicos.Cadastros.Frota;
+
+public class FrotaService : IFrotaService
 {
-    public class FrotaService : BaseService<Domain.Entidades.Cadastros.Frota.Frota>, IFrotaService
+    private readonly IFrotaRepository _frotaRepository;
+    private readonly IMapper _mapper;
+
+    public FrotaService(IMapper mapper, IFrotaRepository frotaRepository)
     {
-        private readonly IFrotaRepository _frotaRepository;
+        _frotaRepository = frotaRepository;
+        _mapper = mapper;
+    }
 
-        public FrotaService(IFrotaRepository frotaRepository) : base(frotaRepository)
-        {
-            _frotaRepository = frotaRepository;
-        }
+    public async Task<IEnumerable<FrotaViewModel>> GetAllAsync()
+    {
+        var list = await _frotaRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<FrotaViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id)
-        {
-            var obj = _frotaRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<FrotaViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _frotaRepository.GetByIdAsync(id);
+        return _mapper.Map<FrotaViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Frota.Frota> ListarFrotas()
-        {
-            var obj = _frotaRepository.ListarFrotas();
-            return obj;
-        }
+    public async Task AddAsync(FrotaViewModel obj)
+    {
+        var mapFrota = _mapper.Map<Domain.Entidades.Cadastros.Frota.Frota>(obj);
+        await _frotaRepository.AddAsync(mapFrota);
+    }
+
+    public async Task UpdateAsync(FrotaViewModel obj)
+    {
+        var mapFrota = _mapper.Map<Domain.Entidades.Cadastros.Frota.Frota>(obj);
+        await _frotaRepository.UpdateAsync(mapFrota);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _frotaRepository.DeleteAsync(id);
     }
 }
