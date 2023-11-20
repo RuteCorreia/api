@@ -27,6 +27,7 @@ using Application.Application.Servicos.Cadastros.Estados;
 using Application.Application.Servicos.Cadastros.Executor;
 using Application.Application.Servicos.Cadastros.Frota;
 using Application.Application.Servicos.Cadastros.Piloto;
+using Application.Application.Servicos.Cadastros.Pista;
 using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
@@ -57,6 +58,7 @@ using Application.DTOs.Cadastros.Estados.Interface;
 using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Frota.Interface;
 using Application.DTOs.Cadastros.Piloto.Interface;
+using Application.DTOs.Cadastros.Pistas.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
@@ -87,6 +89,7 @@ using Domain.Interfaces.Cadastros.Estados;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Frota;
 using Domain.Interfaces.Cadastros.Piloto;
+using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
@@ -118,6 +121,7 @@ using Infra.Repositorio.Cadastros.Estados;
 using Infra.Repositorio.Cadastros.Executor;
 using Infra.Repositorio.Cadastros.Frota;
 using Infra.Repositorio.Cadastros.Piloto;
+using Infra.Repositorio.Cadastros.Pistas;
 using Infra.Repositorio.Cadastros.PlanoDeContrato;
 
 namespace WebApi.Config;
@@ -161,6 +165,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IExecutorService, ExecutorService>();
         services.AddScoped<IFrotaService, FrotaService>();
         services.AddScoped<IPilotoService, PilotoService>();
+        services.AddScoped<IPistaService, PistaService>();
 
         #endregion
 
@@ -196,6 +201,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IExecutorRepository, ExecutorRepository>();
         services.AddScoped<IFrotaRepository, FrotaRepository>();
         services.AddScoped<IPilotoRepository, PilotoRepository>();
+        services.AddScoped<IPistaRepository, PistaRepository>();
 
         #endregion
 

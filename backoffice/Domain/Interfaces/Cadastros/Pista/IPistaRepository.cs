@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Pista
+namespace Domain.Interfaces.Cadastros.Pista;
+
+public interface IPistaRepository
 {
-    public interface IPistaRepository : IBaseRepository<Domain.Entidades.Cadastros.Pistas.Pista>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Pistas.Pista obj);
+    Task UpdateAsync(Entidades.Cadastros.Pistas.Pista obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetAllAsync();
+    Task<Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id);
 }
