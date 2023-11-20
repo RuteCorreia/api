@@ -12,6 +12,7 @@ using Application.Application.Servicos.Cadastros.AplicacaoLog;
 using Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 using Application.Application.Servicos.Cadastros.AplicacaoRelatorioItem;
+using Application.Application.Servicos.Cadastros.Bula;
 using Application.Application.Servicos.Cadastros.Cidades;
 using Application.Application.Servicos.Cadastros.Cliente;
 using Application.Application.Servicos.Cadastros.CombateIncendio;
@@ -19,6 +20,8 @@ using Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
 using Application.Application.Servicos.Cadastros.Combustivel;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
+using Application.Application.Servicos.Cadastros.Empresa;
+using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.AlturaVoo.Interface;
@@ -33,6 +36,7 @@ using Application.DTOs.Cadastros.AplicacaoLog.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
+using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.Cidades.Interface;
 using Application.DTOs.Cadastros.Cliente.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
@@ -40,6 +44,8 @@ using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
+using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlturaVoo;
@@ -54,6 +60,7 @@ using Domain.Interfaces.Cadastros.AplicacaoLog;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
+using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.Cidades;
 using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.CombateIncendio;
@@ -61,6 +68,8 @@ using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
+using Domain.Interfaces.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
 using Infra.Repositorio.Cadastros.Aeronave;
@@ -76,6 +85,7 @@ using Infra.Repositorio.Cadastros.AplicacaoLog;
 using Infra.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Infra.Repositorio.Cadastros.AplicacaoRelatorio;
 using Infra.Repositorio.Cadastros.AplicacaoRelatorioItem;
+using Infra.Repositorio.Cadastros.Bula;
 using Infra.Repositorio.Cadastros.Cidades;
 using Infra.Repositorio.Cadastros.Cliente;
 using Infra.Repositorio.Cadastros.CombateIncendio;
@@ -83,6 +93,8 @@ using Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
 using Infra.Repositorio.Cadastros.Combustivel;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
+using Infra.Repositorio.Cadastros.Empresa;
+using Infra.Repositorio.Cadastros.PlanoDeContrato;
 
 namespace WebApi.Config;
 
@@ -116,6 +128,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICombustivelService, CombustivelService>();
         services.AddScoped<IControleDeFrotaService, ControleDeFrotaService>();
         services.AddScoped<ICulturaService, CulturaService>();
+        services.AddScoped<IEmpresaService, EmpresaService>();
+        services.AddScoped<IBulaService, BulaService>();
+        services.AddScoped<IPlanoDeContratoService, PlanoDeContratoService>();
 
         #endregion
 
@@ -142,6 +157,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICombustivelRepository, CombustivelRepository>();
         services.AddScoped<IControleDeFrotaRepository, ControleDeFrotaRepository>();
         services.AddScoped<ICulturaRepository, CulturaRepository>();
+        services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+        services.AddScoped<IBulaRepository, BulaRepository>();
+        services.AddScoped<IPlanoDeContratoRepository, PlanoDeContratoRepository>();
 
         #endregion
 
