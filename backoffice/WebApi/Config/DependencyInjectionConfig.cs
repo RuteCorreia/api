@@ -22,6 +22,7 @@ using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
 using Application.Application.Servicos.Cadastros.Empresa;
 using Application.Application.Servicos.Cadastros.Engenheiro;
+using Application.Application.Servicos.Cadastros.Equipamento;
 using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
@@ -47,6 +48,7 @@ using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
 using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Engenheiro.Interface;
+using Application.DTOs.Cadastros.Equipamento.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
@@ -72,6 +74,7 @@ using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Engenheiro;
+using Domain.Interfaces.Cadastros.Equipamento;
 using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
@@ -98,6 +101,7 @@ using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
 using Infra.Repositorio.Cadastros.Empresa;
 using Infra.Repositorio.Cadastros.Engenheiro;
+using Infra.Repositorio.Cadastros.Equipamento;
 using Infra.Repositorio.Cadastros.PlanoDeContrato;
 
 namespace WebApi.Config;
@@ -136,6 +140,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IBulaService, BulaService>();
         services.AddScoped<IPlanoDeContratoService, PlanoDeContratoService>();
         services.AddScoped<IEngenheiroService, EngenheiroService>();
+        services.AddScoped<IEquipamentoService, EquipamentoService>();
 
         #endregion
 
@@ -166,6 +171,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IBulaRepository, BulaRepository>();
         services.AddScoped<IPlanoDeContratoRepository, PlanoDeContratoRepository>();
         services.AddScoped<IEngenheiroRepository, EngenheiroRepository>();
+        services.AddScoped<IEquipamentoRepository, EquipamentoRepository>();
 
         #endregion
 
