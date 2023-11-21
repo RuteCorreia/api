@@ -1218,19 +1218,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ccost\\.nuget\\packages\\": {}
+    "C:\\Users\\55169\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-      "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\obj\\",
+      "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+      "outputPath": "C:\\DEV\\flytec\\backoffice\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1299,7 +1299,7 @@
       "code": "NU1803",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
     }
   ]
 }

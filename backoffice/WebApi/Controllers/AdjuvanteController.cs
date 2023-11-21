@@ -82,7 +82,7 @@ public class AdjuvanteController : ControllerBase
                 var objeto = _adjuvanteService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _adjuvanteService.AddAsync(obj);
+                    await _adjuvanteService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

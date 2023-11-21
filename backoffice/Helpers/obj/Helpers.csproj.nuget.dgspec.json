@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj": {}
+    "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {}
   },
   "projects": {
-    "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [

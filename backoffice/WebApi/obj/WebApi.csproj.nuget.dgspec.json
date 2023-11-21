@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\DEV\\dev-flytec\\backoffice\\WebApi\\WebApi.csproj": {}
+    "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj": {}
   },
   "projects": {
-    "C:\\DEV\\dev-flytec\\backoffice\\Application\\Application.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Application\\Application.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj",
         "projectName": "Application",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Application\\Application.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Application\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -29,8 +29,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               }
             }
           }
@@ -70,17 +70,17 @@
         }
       }
     },
-    "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -144,17 +144,17 @@
         }
       }
     },
-    "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -200,17 +200,17 @@
         }
       }
     },
-    "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
         "projectName": "Infra",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\Infra\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\Infra\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -225,11 +225,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj"
               }
             }
           }
@@ -283,17 +283,17 @@
         }
       }
     },
-    "C:\\DEV\\dev-flytec\\backoffice\\WebApi\\WebApi.csproj": {
+    "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\WebApi\\WebApi.csproj",
+        "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj",
         "projectName": "WebApi",
-        "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\WebApi\\WebApi.csproj",
-        "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-        "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\WebApi\\obj\\",
+        "projectPath": "C:\\DEV\\flytec\\backoffice\\WebApi\\WebApi.csproj",
+        "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+        "outputPath": "C:\\DEV\\flytec\\backoffice\\WebApi\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -308,14 +308,14 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\DEV\\dev-flytec\\backoffice\\Application\\Application.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Application\\Application.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Application\\Application.csproj"
               },
-              "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj": {
-                "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj"
+              "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
+                "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj"
               }
             }
           }

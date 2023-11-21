@@ -12387,19 +12387,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\ccost\\.nuget\\packages\\": {}
+    "C:\\Users\\55169\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\DEV\\dev-flytec\\backoffice\\HudAsp\\HudAsp.csproj",
+      "projectUniqueName": "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
       "projectName": "HudAsp",
-      "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\HudAsp\\HudAsp.csproj",
-      "packagesPath": "C:\\Users\\ccost\\.nuget\\packages\\",
-      "outputPath": "C:\\DEV\\dev-flytec\\backoffice\\HudAsp\\obj\\",
+      "projectPath": "C:\\DEV\\flytec\\backoffice\\HudAsp\\HudAsp.csproj",
+      "packagesPath": "C:\\Users\\55169\\.nuget\\packages\\",
+      "outputPath": "C:\\DEV\\flytec\\backoffice\\HudAsp\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ccost\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\55169\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -12414,11 +12414,11 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Domain\\Domain.csproj"
+            "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\DEV\\flytec\\backoffice\\Domain\\Domain.csproj"
             },
-            "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj": {
-              "projectPath": "C:\\DEV\\dev-flytec\\backoffice\\Infra\\Infra.csproj"
+            "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj": {
+              "projectPath": "C:\\DEV\\flytec\\backoffice\\Infra\\Infra.csproj"
             }
           }
         }
@@ -12504,7 +12504,7 @@
       "code": "NU1803",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
     }
   ]
 }

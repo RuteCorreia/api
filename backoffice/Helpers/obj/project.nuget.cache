@@ -1,15 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "33ZwZTOt7XV7CjjSNa48x1gvQNETIS2y4aZS0gui3t3fyoYV9aHROUPjAnhdIWqPnAG7jl3tm99hEaidilARRg==",
+  "dgSpecHash": "9deSxwwyq4q+ki94/SA8t+P5Y1F36CcNPGdtA6HEdTB0kzp13HQul/RPbUN1AC8ros4v5LMKayBHN2aMoZwiNA==",
   "success": true,
-  "projectFilePath": "C:\\DEV\\dev-flytec\\backoffice\\Helpers\\Helpers.csproj",
+  "projectFilePath": "C:\\DEV\\flytec\\backoffice\\Helpers\\Helpers.csproj",
   "expectedPackageFiles": [],
   "logs": [
     {
       "code": "NU1803",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
     }
   ]
 }
