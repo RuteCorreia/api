@@ -79,10 +79,12 @@ public class FrotaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _frotaService.GetByIdAsync(id);
+                var objeto = await _frotaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _frotaService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _frotaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

@@ -79,10 +79,12 @@ public class PilotoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _pilotoService.GetByIdAsync(id);
+                var objeto = await _pilotoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _pilotoService.AddAsync(obj);
+                    obj.IdPiloto = objeto.IdPiloto;
+
+                    await _pilotoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

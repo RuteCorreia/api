@@ -22,8 +22,8 @@ public class CulturaRepository : ICulturaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,11 @@ public class CulturaRepository : ICulturaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Cultura.Cultura obj)
     {
-        _contextBase.Cultura.Update(obj);
+        var objeto = await _contextBase.Cultura.FindAsync(obj.IdCultura);
+        objeto.Nome = obj.Nome;
+        objeto.AlvoBiologico = obj.AlvoBiologico;
+
+        _contextBase.Cultura.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

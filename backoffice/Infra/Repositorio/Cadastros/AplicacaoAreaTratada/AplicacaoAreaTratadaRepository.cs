@@ -22,8 +22,8 @@ public class AplicacaoAreaTratadaRepository : IAplicacaoAreaTratadaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,14 @@ public class AplicacaoAreaTratadaRepository : IAplicacaoAreaTratadaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada obj)
     {
-        _contextBase.AplicacaoAreaTratada.Update(obj);
+        var objeto = await _contextBase.AplicacaoAreaTratada.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.IdEstado = obj.IdEstado;
+        objeto.IdCidade = obj.IdCidade;
+        objeto.Localizacao = obj.Localizacao;
+        objeto.Extensao = obj.Extensao;
+
+        _contextBase.AplicacaoAreaTratada.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

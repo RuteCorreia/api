@@ -79,10 +79,12 @@ public class PlanoDeContratoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _planoDeContratoService.GetByIdAsync(id);
+                var objeto = await _planoDeContratoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _planoDeContratoService.AddAsync(obj);
+                    obj.IdPlano = objeto.IdPlano;
+
+                    await _planoDeContratoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

@@ -79,10 +79,12 @@ public class AplicacaoRecomendacoesTecnicasController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoRecomendacoesTecnicasService.GetByIdAsync(id);
+                var objeto = await _aplicacaoRecomendacoesTecnicasService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoRecomendacoesTecnicasService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoRecomendacoesTecnicasService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

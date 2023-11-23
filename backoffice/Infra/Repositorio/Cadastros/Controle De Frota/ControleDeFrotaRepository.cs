@@ -22,8 +22,8 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,24 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
     {
-        _contextBase.ControleDeFrota.Update(obj);
+        var objeto = await _contextBase.ControleDeFrota.FindAsync(obj.Id);
+        objeto.Observacao = obj.Observacao;
+        objeto.Data = obj.Data;
+        objeto.IdFrota = obj.IdFrota;
+        objeto.IdAeronave = obj.IdAeronave;
+        objeto.KmInicial = obj.KmInicial;
+        objeto.LocalInicial = obj.LocalInicial;
+        objeto.LocalizacaoPistaLat = obj.LocalizacaoPistaLat;
+        objeto.LocalizacaoPistaLon = obj.LocalizacaoPistaLon;
+        objeto.KmFinal = obj.KmFinal;
+        objeto.HorimetroInicial = obj.HorimetroInicial;
+        objeto.HorimetroFinal = obj.HorimetroFinal;
+        objeto.Combustivel = obj.Combustivel;
+        objeto.QtdeCombustivel = obj.QtdeCombustivel;
+        objeto.QtdeHectare = obj.QtdeHectare;
+        objeto.IdPiloto = obj.IdPiloto;
+
+        _contextBase.ControleDeFrota.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

@@ -79,10 +79,12 @@ public class EquipamentoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _equipamentoService.GetByIdAsync(id);
+                var objeto = await _equipamentoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _equipamentoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _equipamentoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

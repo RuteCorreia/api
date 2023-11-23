@@ -22,8 +22,8 @@ public class PlanoDeContratoRepository : IPlanoDeContratoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,10 @@ public class PlanoDeContratoRepository : IPlanoDeContratoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.PlanoDeContrato obj)
     {
-        _contextBase.PlanoDeContrato.Update(obj);
+        var objeto = await _contextBase.PlanoDeContrato.FindAsync(obj.IdPlano);
+        objeto.NomeDoPlano = obj.NomeDoPlano;
+
+        _contextBase.PlanoDeContrato.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

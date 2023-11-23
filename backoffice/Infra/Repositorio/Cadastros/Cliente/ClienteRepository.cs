@@ -22,8 +22,8 @@ public class ClienteRepository : IClienteRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,20 @@ public class ClienteRepository : IClienteRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Cliente.Cliente obj)
     {
-        _contextBase.Cliente.Update(obj);
+        var objeto = await _contextBase.Cliente.FindAsync(obj.IdCliente);
+        objeto.NomeCliente = obj.NomeCliente;
+        objeto.IdTipoCliente = obj.IdTipoCliente;
+        objeto.CPF = obj.CPF;
+        objeto.RG = obj.RG;
+        objeto.CNPJ = obj.CNPJ;
+        objeto.InscricaoEstadual = obj.InscricaoEstadual;
+        objeto.Endereco = obj.Endereco;
+        objeto.Telefone1 = obj.Telefone1;
+        objeto.Telefone2 = obj.Telefone2;
+        objeto.Email = obj.Email;
+        objeto.Precificacao = obj.Precificacao;
+
+        _contextBase.Cliente.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

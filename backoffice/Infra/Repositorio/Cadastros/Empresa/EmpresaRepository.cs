@@ -22,8 +22,8 @@ public class EmpresaRepository : IEmpresaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,12 @@ public class EmpresaRepository : IEmpresaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Empresa obj)
     {
-        _contextBase.Empresa.Update(obj);
+        var objeto = await _contextBase.Empresa.FindAsync(obj.IdEmpresa);
+        objeto.Nome = obj.Nome;
+        objeto.Imagem = obj.Imagem;
+        objeto.PlanoContratado = obj.PlanoContratado;
+
+        _contextBase.Empresa.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

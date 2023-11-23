@@ -79,10 +79,12 @@ public class AplicacaoCroquiImportacaoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoCroquiImportacaoService.GetByIdAsync(id);
+                var objeto = await _aplicacaoCroquiImportacaoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoCroquiImportacaoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoCroquiImportacaoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

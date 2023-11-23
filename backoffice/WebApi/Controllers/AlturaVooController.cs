@@ -79,10 +79,12 @@ public class AlturaVooController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _alturaVooService.GetByIdAsync(id);
+                var objeto = await _alturaVooService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _alturaVooService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _alturaVooService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

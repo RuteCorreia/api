@@ -79,10 +79,12 @@ public class AeronaveController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aeronaveService.GetByIdAsync(id);
+                var objeto = await _aeronaveService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aeronaveService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aeronaveService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

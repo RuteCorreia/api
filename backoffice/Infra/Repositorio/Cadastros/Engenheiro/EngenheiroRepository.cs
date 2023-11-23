@@ -22,8 +22,8 @@ public class EngenheiroRepository : IEngenheiroRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,15 @@ public class EngenheiroRepository : IEngenheiroRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Engenheiro.Engenheiro obj)
     {
-        _contextBase.Engenheiro.Update(obj);
+        var objeto = await _contextBase.Engenheiro.FindAsync(obj.IdEngenheiro);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.Nome = obj.Nome;
+        objeto.Email = obj.Email;
+        objeto.Senha = obj.Senha;
+        objeto.CREA = obj.CREA;
+        objeto.Assinatura = obj.Assinatura;
+
+        _contextBase.Engenheiro.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

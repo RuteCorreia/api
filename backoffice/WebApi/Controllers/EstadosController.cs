@@ -79,10 +79,12 @@ public class EstadosController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _estadosService.GetByIdAsync(id);
+                var objeto = await _estadosService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _estadosService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _estadosService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

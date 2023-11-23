@@ -79,10 +79,12 @@ public class CulturaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _culturaService.GetByIdAsync(id);
+                var objeto = await _culturaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _culturaService.AddAsync(obj);
+                    obj.IdCultura = objeto.IdCultura;
+
+                    await _culturaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

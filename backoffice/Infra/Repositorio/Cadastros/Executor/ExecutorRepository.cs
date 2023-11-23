@@ -22,8 +22,8 @@ public class ExecutorRepository : IExecutorRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,15 @@ public class ExecutorRepository : IExecutorRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Executor.Executor obj)
     {
-        _contextBase.Executor.Update(obj);
+        var objeto = await _contextBase.Executor.FindAsync(obj.IdExecutor);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.Nome = obj.Nome;
+        objeto.Email = obj.Email;
+        objeto.Senha = obj.Senha;
+        objeto.CFTA = obj.CFTA;
+        objeto.Assinatura = obj.Assinatura;
+
+        _contextBase.Executor.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

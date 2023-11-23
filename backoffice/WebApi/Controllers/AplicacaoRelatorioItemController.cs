@@ -79,10 +79,12 @@ public class AplicacaoRelatorioItemController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoRelatorioItemService.GetByIdAsync(id);
+                var objeto = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoRelatorioItemService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoRelatorioItemService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

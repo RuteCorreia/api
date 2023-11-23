@@ -79,10 +79,12 @@ public class ExecutorController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _executorService.GetByIdAsync(id);
+                var objeto = await _executorService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _executorService.AddAsync(obj);
+                    obj.IdExecutor = objeto.IdExecutor;
+
+                    await _executorService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

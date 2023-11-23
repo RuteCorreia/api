@@ -16,8 +16,8 @@ public class ControleDeFrotaViewModel
     public int? KmFinal { get; set; }
     public int? HorimetroInicial { get; set; }
     public int? HorimetroFinal { get; set; }
-    public string? ControleDeFrota { get; set; }
-    public int? QtdeControleDeFrota { get; set; }
+    public string? Combustivel { get; set; }
+    public int? QtdeCombustivel { get; set; }
     public int? QtdeHectare { get; set; }
     public int? IdPiloto { get; set; }
 }

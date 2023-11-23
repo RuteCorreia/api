@@ -22,8 +22,8 @@ public class BulaRepository : IBulaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,18 @@ public class BulaRepository : IBulaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
-        _contextBase.Bula.Update(obj);
+        var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
+        objeto.NomeProduto = obj.NomeProduto;
+        objeto.IdCultura = obj.IdCultura;
+        objeto.IdClassificacaoToxicologica = obj.IdClassificacaoToxicologica;
+        objeto.Classe = obj.Classe;
+        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
+        objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
+        objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
+        objeto.Adjuvante = obj.Adjuvante;
+        objeto.IdTipoDeServico = obj.IdTipoDeServico;
+
+        _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

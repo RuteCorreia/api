@@ -79,10 +79,12 @@ public class PrecificacaoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _precificacaoService.GetByIdAsync(id);
+                var objeto = await _precificacaoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _precificacaoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _precificacaoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

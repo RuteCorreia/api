@@ -79,10 +79,12 @@ public class CidadesController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _cidadeService.GetByIdAsync(id);
+                var objeto = await _cidadeService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _cidadeService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _cidadeService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

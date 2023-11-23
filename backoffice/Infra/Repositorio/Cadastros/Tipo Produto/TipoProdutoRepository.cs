@@ -22,8 +22,8 @@ public class TipoProdutoRepository : ITipoProdutoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,10 @@ public class TipoProdutoRepository : ITipoProdutoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto obj)
     {
-        _contextBase.TipoProduto.Update(obj);
+        var objeto = await _contextBase.TipoProduto.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
+
+        _contextBase.TipoProduto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

@@ -79,10 +79,12 @@ public class AplicacaoLogController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoLogService.GetByIdAsync(id);
+                var objeto = await _aplicacaoLogService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoLogService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoLogService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

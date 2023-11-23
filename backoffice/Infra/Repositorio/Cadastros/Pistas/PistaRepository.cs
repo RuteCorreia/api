@@ -22,8 +22,8 @@ public class PistaRepository : IPistaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,12 @@ public class PistaRepository : IPistaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Pistas.Pista obj)
     {
-        _contextBase.Pista.Update(obj);
+        var objeto = await _contextBase.Pista.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
+        objeto.LAT = obj.LAT;
+        objeto.LONG = obj.LONG;
+
+        _contextBase.Pista.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

@@ -79,10 +79,12 @@ public class AplicacaoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoService.GetByIdAsync(id);
+                var objeto = await _aplicacaoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

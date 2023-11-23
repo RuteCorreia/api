@@ -79,10 +79,12 @@ public class AlvoBiologicoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _alvoBiologicoService.GetByIdAsync(id);
+                var objeto = await _alvoBiologicoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _alvoBiologicoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _alvoBiologicoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

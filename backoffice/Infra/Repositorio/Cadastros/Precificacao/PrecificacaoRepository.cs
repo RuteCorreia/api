@@ -22,8 +22,8 @@ public class PrecificacaoRepository : IPrecificacaoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,12 @@ public class PrecificacaoRepository : IPrecificacaoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Precificacao.Precificacao obj)
     {
-        _contextBase.Precificacao.Update(obj);
+        var objeto = await _contextBase.Precificacao.FindAsync(obj.Id);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.DistanciaPista = obj.DistanciaPista;
+        objeto.PrecoHA = obj.PrecoHA;
+
+        _contextBase.Precificacao.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }
