@@ -22,8 +22,8 @@ public class ProdutoRepository : IProdutoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,15 @@ public class ProdutoRepository : IProdutoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Produto.Produto obj)
     {
-        _contextBase.Produto.Update(obj);
+        var objeto = await _contextBase.Produto.FindAsync(obj.Id);
+        objeto.IdCultura = obj.IdCultura;
+        objeto.Nome = obj.Nome;
+        objeto.ClassificacaoToxicologica = obj.ClassificacaoToxicologica;
+        objeto.Classe = obj.Classe;
+        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
+        objeto.TipoServico = obj.TipoServico;
+
+        _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

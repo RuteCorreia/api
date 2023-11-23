@@ -8,6 +8,6 @@ public class FrotaViewModel
     public int? IdEmpresa { get; set; }
     public string NomeVeiculo { get; set; }
     public string Placa { get; set; }
-    public string Frota { get; set; }
+    public string Combustivel { get; set; }
     public string Hodometro { get; set; }
 }

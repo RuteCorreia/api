@@ -22,8 +22,8 @@ public class AplicacaoContratoRepository : IAplicacaoContratoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,15 @@ public class AplicacaoContratoRepository : IAplicacaoContratoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoContrato obj)
     {
-        _contextBase.AplicacaoContrato.Update(obj);
+        var objeto = await _contextBase.AplicacaoContrato.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.IdUF = obj.IdUF;
+        objeto.IdCidade = obj.IdCidade;
+        objeto.NomeCliente = obj.NomeCliente;
+        objeto.CPFCliente = obj.CPFCliente;
+        objeto.Assinatura = obj.Assinatura;
+
+        _contextBase.AplicacaoContrato.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

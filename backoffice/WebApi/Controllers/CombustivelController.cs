@@ -79,10 +79,12 @@ public class CombustivelController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _combustivelService.GetByIdAsync(id);
+                var objeto = await _combustivelService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _combustivelService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _combustivelService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

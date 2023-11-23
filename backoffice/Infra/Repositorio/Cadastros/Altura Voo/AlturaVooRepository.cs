@@ -22,8 +22,8 @@ public class AlturaVooRepository : IAlturaVooRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,10 @@ public class AlturaVooRepository : IAlturaVooRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Altura_Voo.AlturaVoo obj)
     {
-        _contextBase.AlturaVoo.Update(obj);
+        var objeto = await _contextBase.AlturaVoo.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
+
+        _contextBase.AlturaVoo.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

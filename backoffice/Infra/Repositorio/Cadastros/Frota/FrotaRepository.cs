@@ -22,8 +22,8 @@ public class FrotaRepository : IFrotaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,14 @@ public class FrotaRepository : IFrotaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Frota.Frota obj)
     {
-        _contextBase.Frota.Update(obj);
+        var objeto = await _contextBase.Frota.FindAsync(obj.Id);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.NomeVeiculo = obj.NomeVeiculo;
+        objeto.Placa = obj.Placa;
+        objeto.Combustivel = obj.Combustivel;
+        objeto.Hodometro = obj.Hodometro;
+
+        _contextBase.Frota.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

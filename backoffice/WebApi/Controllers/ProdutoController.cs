@@ -79,10 +79,12 @@ public class ProdutoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _produtoService.GetByIdAsync(id);
+                var objeto = await _produtoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _produtoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _produtoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

@@ -79,10 +79,12 @@ public class VeiculanteController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _veiculanteService.GetByIdAsync(id);
+                var objeto = await _veiculanteService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _veiculanteService.AddAsync(obj);
+                    obj.IdVeiculante = objeto.IdVeiculante;
+
+                    await _veiculanteService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

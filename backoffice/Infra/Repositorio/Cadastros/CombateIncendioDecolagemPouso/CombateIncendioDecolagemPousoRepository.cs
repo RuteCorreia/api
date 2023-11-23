@@ -22,8 +22,8 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,14 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj)
     {
-        _contextBase.CombateIncendioDecolagemPouso.Update(obj);
+        var objeto = await _contextBase.CombateIncendioDecolagemPouso.FindAsync(obj.Id);
+        objeto.IdCombateIncendio = obj.IdCombateIncendio;
+        objeto.DecolagemHorario = obj.DecolagemHorario;
+        objeto.DecolagemHorimetro = obj.DecolagemHorimetro;
+        objeto.PousoHorario = obj.PousoHorario;
+        objeto.PousoHorimetro = obj.PousoHorimetro;
+
+        _contextBase.CombateIncendioDecolagemPouso.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

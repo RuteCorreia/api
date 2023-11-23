@@ -79,10 +79,12 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _combateIncendioDecolagemPousoService.GetByIdAsync(id);
+                var objeto = await _combateIncendioDecolagemPousoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _combateIncendioDecolagemPousoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _combateIncendioDecolagemPousoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

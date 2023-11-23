@@ -79,10 +79,12 @@ public class ControleDeFrotaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _controleDeFrotaService.GetByIdAsync(id);
+                var objeto = await _controleDeFrotaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _controleDeFrotaService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _controleDeFrotaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

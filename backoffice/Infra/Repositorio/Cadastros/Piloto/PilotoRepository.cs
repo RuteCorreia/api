@@ -22,8 +22,8 @@ public class PilotoRepository : IPilotoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,16 @@ public class PilotoRepository : IPilotoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Piloto.Piloto obj)
     {
-        _contextBase.Piloto.Update(obj);
+        var objeto = await _contextBase.Piloto.FindAsync(obj.IdPiloto);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.NomePiloto = obj.NomePiloto;
+        objeto.Email = obj.Email;
+        objeto.Senha = obj.Senha;
+        objeto.CDAC = obj.CDAC;
+        objeto.Assinatura = obj.Assinatura;
+        objeto.PorcentagemComissao = obj.PorcentagemComissao;
+
+        _contextBase.Piloto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

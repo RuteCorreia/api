@@ -79,10 +79,12 @@ public class ClienteController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _clienteService.GetByIdAsync(id);
+                var objeto = await _clienteService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _clienteService.AddAsync(obj);
+                    obj.IdCliente = objeto.IdCliente;
+
+                    await _clienteService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

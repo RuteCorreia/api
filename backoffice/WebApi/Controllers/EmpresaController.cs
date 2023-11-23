@@ -79,10 +79,12 @@ public class EmpresaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _empresaService.GetByIdAsync(id);
+                var objeto = await _empresaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _empresaService.AddAsync(obj);
+                    obj.IdEmpresa = objeto.IdEmpresa;
+
+                    await _empresaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

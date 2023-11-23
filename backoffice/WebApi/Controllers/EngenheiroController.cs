@@ -79,10 +79,12 @@ public class EngenheiroController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _engenheiroService.GetByIdAsync(id);
+                var objeto = await _engenheiroService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _engenheiroService.AddAsync(obj);
+                    obj.IdEngenheiro = objeto.IdEngenheiro;
+
+                    await _engenheiroService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

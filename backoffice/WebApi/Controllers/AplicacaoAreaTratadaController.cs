@@ -79,10 +79,12 @@ public class AplicacaoAreaTratadaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _aplicacaoAreaTratadaService.GetByIdAsync(id);
+                var objeto = await _aplicacaoAreaTratadaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _aplicacaoAreaTratadaService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _aplicacaoAreaTratadaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

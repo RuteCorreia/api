@@ -79,10 +79,12 @@ public class BulaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _bulaService.GetByIdAsync(id);
+                var objeto = await _bulaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _bulaService.AddAsync(obj);
+                    obj.IdBula = objeto.IdBula;
+
+                    await _bulaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

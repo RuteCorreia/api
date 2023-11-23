@@ -22,8 +22,8 @@ public class CombustivelRepository : ICombustivelRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,10 @@ public class CombustivelRepository : ICombustivelRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Combustivel.Combustivel obj)
     {
-        _contextBase.Combustivel.Update(obj);
+        var objeto = await _contextBase.Combustivel.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
+
+        _contextBase.Combustivel.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

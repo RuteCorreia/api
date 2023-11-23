@@ -79,10 +79,12 @@ public class PistaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _pistaService.GetByIdAsync(id);
+                var objeto = await _pistaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _pistaService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _pistaService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

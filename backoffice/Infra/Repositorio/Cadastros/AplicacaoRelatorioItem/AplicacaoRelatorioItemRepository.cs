@@ -22,8 +22,8 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,21 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem obj)
     {
-        _contextBase.AplicacaoRelatorioItem.Update(obj);
+        var objeto = await _contextBase.AplicacaoRelatorioItem.FindAsync(obj.Id);
+        objeto.IdAplicacaoRelatorio = obj.IdAplicacaoRelatorio;
+        objeto.HoraInicio = obj.HoraInicio;
+        objeto.HorimetroInicial = obj.HorimetroInicial;
+        objeto.HoraTermino = obj.HoraTermino;
+        objeto.HorimetroTermino = obj.HorimetroTermino;
+        objeto.TemperaturaInicial = obj.TemperaturaInicial;
+        objeto.TemperaturaFinal = obj.TemperaturaFinal;
+        objeto.UrInicial = obj.UrInicial;
+        objeto.UrFinal = obj.UrFinal;
+        objeto.VentoInicial = obj.VentoInicial;
+        objeto.VentoFinal = obj.VentoFinal;
+        objeto.ImagemDadosClimaticos = obj.ImagemDadosClimaticos;
+
+        _contextBase.AplicacaoRelatorioItem.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

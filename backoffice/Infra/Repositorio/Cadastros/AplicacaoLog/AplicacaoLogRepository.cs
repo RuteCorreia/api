@@ -22,8 +22,8 @@ public class AplicacaoLogRepository : IAplicacaoLogRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,13 @@ public class AplicacaoLogRepository : IAplicacaoLogRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoLog obj)
     {
-        _contextBase.AplicacaoLog.Update(obj);
+        var objeto = await _contextBase.AplicacaoLog.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.Data = obj.Data;
+        objeto.Nome = obj.Nome;
+        objeto.Descricao = obj.Descricao;
+
+        _contextBase.AplicacaoLog.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

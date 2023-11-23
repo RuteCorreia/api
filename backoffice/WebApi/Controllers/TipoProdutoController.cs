@@ -79,10 +79,12 @@ public class TipoProdutoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _tipoProdutoService.GetByIdAsync(id);
+                var objeto = await _tipoProdutoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _tipoProdutoService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _tipoProdutoService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else

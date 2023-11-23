@@ -22,8 +22,8 @@ public class VeiculanteRepository : IVeiculanteRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,10 @@ public class VeiculanteRepository : IVeiculanteRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Veiculante.Veiculante obj)
     {
-        _contextBase.Veiculante.Update(obj);
+        var objeto = await _contextBase.Veiculante.FindAsync(obj.IdVeiculante);
+        objeto.Nome = obj.Nome;
+
+        _contextBase.Veiculante.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

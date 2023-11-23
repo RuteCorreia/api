@@ -79,10 +79,12 @@ public class CombateIncendioController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = _combateIncendioService.GetByIdAsync(id);
+                var objeto = await _combateIncendioService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _combateIncendioService.AddAsync(obj);
+                    obj.Id = objeto.Id;
+
+                    await _combateIncendioService.UpdateAsync(obj);
                     return Ok("Sucesso");
                 }
                 else
