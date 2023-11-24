@@ -1,4 +1,0 @@
-@@{
-  ViewData["AppClass"] = "app-footer-fixed";
-  ViewData["AppFooter"] = true;
-}
