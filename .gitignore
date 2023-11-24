@@ -108,3 +108,14 @@ backoffice/Helpers/obj
 /backoffice/WebApi/obj/project.nuget.cache
 /backoffice/WebApi/obj/WebApi.csproj.nuget.dgspec.json
 /backoffice/WebApi/obj/WebApi.csproj.nuget.g.props
+/backoffice/Backoffice/bin/Debug/net7.0/Backoffice.dll
+/backoffice/Backoffice/bin/Debug/net7.0/Backoffice.pdb
+/backoffice/Backoffice/obj/Debug/net7.0/Backoffice.csproj.AssemblyReference.cache
+/backoffice/Backoffice/obj/Debug/net7.0/Backoffice.csproj.FileListAbsolute.txt
+/backoffice/Backoffice/obj/Debug/net7.0/Backoffice.dll
+/backoffice/Backoffice/obj/Debug/net7.0/Backoffice.genruntimeconfig.cache
+/backoffice/Backoffice/obj/Debug/net7.0/Backoffice.pdb
+/backoffice/Backoffice/obj
+/backoffice/Backoffice/obj/
+/backoffice/Backoffice/bin
+/backoffice/Backoffice/bin/
