@@ -28,6 +28,12 @@ public class EngenheiroService : IEngenheiroService
         return _mapper.Map<EngenheiroViewModel>(obj);
     }
 
+    public async Task<EngenheiroViewModel> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _engenheiroRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<EngenheiroViewModel>(obj);
+    }
+
     public async Task AddAsync(EngenheiroViewModel obj)
     {
         var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);

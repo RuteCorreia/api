@@ -27,6 +27,12 @@ public class ClienteService : IClienteService
         var obj = await _clienteRepository.GetByIdAsync(id);
         return _mapper.Map<ClienteViewModel>(obj);
     }
+    
+    public async Task<ClienteViewModel> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _clienteRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<ClienteViewModel>(obj);
+    }
 
     public async Task AddAsync(ClienteViewModel obj)
     {

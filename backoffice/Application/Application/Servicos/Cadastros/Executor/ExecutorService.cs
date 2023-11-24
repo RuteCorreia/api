@@ -28,6 +28,12 @@ public class ExecutorService : IExecutorService
         return _mapper.Map<ExecutorViewModel>(obj);
     }
 
+    public async Task<ExecutorViewModel> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _executorRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<ExecutorViewModel>(obj);
+    }
+
     public async Task AddAsync(ExecutorViewModel obj)
     {
         var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);

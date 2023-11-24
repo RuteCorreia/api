@@ -15,5 +15,8 @@ public class ClienteViewModel
     public string Telefone1 { get; set; }
     public string Telefone2 { get; set; }
     public string Email { get; set; }
+    public string Senha { get; set; }
     public string Precificacao { get; set; }
+
+    public bool Admin { get; set; }
 }

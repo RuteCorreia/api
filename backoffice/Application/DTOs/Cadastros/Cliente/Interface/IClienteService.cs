@@ -8,6 +8,8 @@ public interface IClienteService
 
     Task<ClienteViewModel> GetByIdAsync(int id);
 
+    Task<ClienteViewModel> GetByLoginAsync(string email, string password);
+
     Task AddAsync(ClienteViewModel obj);
 
     Task UpdateAsync(ClienteViewModel obj);

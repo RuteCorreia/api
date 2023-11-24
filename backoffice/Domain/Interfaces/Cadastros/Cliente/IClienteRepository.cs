@@ -9,4 +9,5 @@ public interface IClienteRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetAllAsync();
     Task<Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Cliente.Cliente> GetByLoginAsync(string email, string password);
 }

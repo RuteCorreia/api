@@ -9,4 +9,5 @@ public interface IEngenheiroRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Engenheiro.Engenheiro>> GetAllAsync();
     Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password);
 }

@@ -2,6 +2,7 @@
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Mail;
 
 namespace Infra.Repositorio.Cadastros.Cliente;
 
@@ -39,6 +40,12 @@ public class ClienteRepository : IClienteRepository
     public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id)
     {
         var obj = await _contextBase.Cliente.FindAsync(id);
+        return obj;
+    }
+    
+    public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _contextBase.Cliente.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
         return obj;
     }
 

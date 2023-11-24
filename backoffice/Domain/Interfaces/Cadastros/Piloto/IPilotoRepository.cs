@@ -9,4 +9,5 @@ public interface IPilotoRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Piloto.Piloto>> GetAllAsync();
     Task<Entidades.Cadastros.Piloto.Piloto> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Piloto.Piloto> GetByLoginAsync(string email, string password);
 }

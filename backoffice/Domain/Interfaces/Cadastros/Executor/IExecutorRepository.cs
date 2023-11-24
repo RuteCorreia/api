@@ -9,4 +9,5 @@ public interface IExecutorRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Executor.Executor>> GetAllAsync();
     Task<Entidades.Cadastros.Executor.Executor> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Executor.Executor> GetByLoginAsync(string email, string password);
 }

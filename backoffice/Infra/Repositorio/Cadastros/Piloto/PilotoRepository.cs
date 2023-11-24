@@ -42,6 +42,12 @@ public class PilotoRepository : IPilotoRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Piloto.Piloto> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _contextBase.Piloto.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Piloto.Piloto obj)
     {
         var objeto = await _contextBase.Piloto.FindAsync(obj.IdPiloto);

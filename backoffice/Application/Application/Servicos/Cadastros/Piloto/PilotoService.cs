@@ -28,6 +28,12 @@ public class PilotoService : IPilotoService
         return _mapper.Map<PilotoViewModel>(obj);
     }
 
+    public async Task<PilotoViewModel> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _pilotoRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<PilotoViewModel>(obj);
+    }
+
     public async Task AddAsync(PilotoViewModel obj)
     {
         var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);

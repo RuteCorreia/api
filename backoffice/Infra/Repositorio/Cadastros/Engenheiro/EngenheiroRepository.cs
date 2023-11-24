@@ -42,6 +42,12 @@ public class EngenheiroRepository : IEngenheiroRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _contextBase.Engenheiro.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Engenheiro.Engenheiro obj)
     {
         var objeto = await _contextBase.Engenheiro.FindAsync(obj.IdEngenheiro);

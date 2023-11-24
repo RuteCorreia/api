@@ -42,6 +42,12 @@ public class ExecutorRepository : IExecutorRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Executor.Executor> GetByLoginAsync(string email, string password)
+    {
+        var obj = await _contextBase.Executor.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Executor.Executor obj)
     {
         var objeto = await _contextBase.Executor.FindAsync(obj.IdExecutor);

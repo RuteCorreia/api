@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Infra.Configuracao;
+using Backoffice.Config;
+using WebApi.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +15,10 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ContextBase>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddDbContext<ContextBase>();
+builder.Services.AddDependencyInjection(builder.Configuration);
+builder.Services.AddAutoMapperConfig();
 
 // Add Sidebar menu json file
 builder.Configuration.AddJsonFile("sidebar.json", optional: true, reloadOnChange: true);
