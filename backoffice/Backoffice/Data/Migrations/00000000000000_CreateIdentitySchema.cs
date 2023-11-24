@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace HudAsp.Data.Migrations
+namespace Backoffice.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

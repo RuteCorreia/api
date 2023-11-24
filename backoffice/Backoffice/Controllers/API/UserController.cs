@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace HudAsp.Controllers.API
+namespace Backoffice.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]

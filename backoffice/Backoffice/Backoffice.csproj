@@ -4,7 +4,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-HudAsp-2DDF673C-4D2B-425C-B19A-27799FE1B261</UserSecretsId>
+    <UserSecretsId>aspnet-Backoffice-2DDF673C-4D2B-425C-B19A-27799FE1B261</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

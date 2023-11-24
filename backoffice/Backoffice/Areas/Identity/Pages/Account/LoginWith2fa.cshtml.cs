@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace HudAsp.Areas.Identity.Pages.Account
+namespace Backoffice.Areas.Identity.Pages.Account
 {
     public class LoginWith2faModel : PageModel
     {

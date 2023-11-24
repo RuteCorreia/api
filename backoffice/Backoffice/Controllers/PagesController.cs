@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using HudAsp.Models;
+using Backoffice.Models;
 
-namespace HudAsp.Controllers;
+namespace Backoffice.Controllers;
 
 public class PagesController : Controller
 {

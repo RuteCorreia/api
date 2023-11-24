@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace HudAsp.Data;
+namespace Backoffice.Data;
 
 public class ApplicationDbContext : IdentityDbContext
 {

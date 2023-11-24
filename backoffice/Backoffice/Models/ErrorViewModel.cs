@@ -1,4 +1,4 @@
-﻿namespace HudAsp.Models;
+﻿namespace Backoffice.Models;
 
 public class ErrorViewModel
 {
