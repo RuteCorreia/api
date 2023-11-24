@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HudAsp", "HudAsp\HudAsp.csproj", "{05EA29EA-F3BF-4631-8EA5-0405146AB401}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backoffice", "HudAsp\Backoffice.csproj", "{05EA29EA-F3BF-4631-8EA5-0405146AB401}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Apresentação", "1 - Apresentação", "{4054774F-F500-4132-8917-BF64D94C697F}"
 EndProject
