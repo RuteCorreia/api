@@ -1,0 +1,75 @@
+﻿@model Domain.Entidades.Cadastros.Empresa.Bula
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Edit", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Editar</h1>
+
+<h4>Bula</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdBula" />
+            <div class="form-group">
+                <label asp-for="NomeProduto" class="control-label"></label>
+                <input asp-for="NomeProduto" class="form-control" />
+                <span asp-validation-for="NomeProduto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCultura" class="control-label"></label>
+                <select asp-for="IdCultura" class="form-control" asp-items="ViewBag.IdCultura"></select>
+                <span asp-validation-for="IdCultura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdClassificacaoToxicologica" class="control-label"></label>
+                <input asp-for="IdClassificacaoToxicologica" class="form-control" />
+                <span asp-validation-for="IdClassificacaoToxicologica" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Classe" class="control-label"></label>
+                <input asp-for="Classe" class="form-control" />
+                <span asp-validation-for="Classe" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TipoDeFormulacao" class="control-label"></label>
+                <input asp-for="TipoDeFormulacao" class="form-control" />
+                <span asp-validation-for="TipoDeFormulacao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdAlvoBiologico" class="control-label"></label>
+                <select asp-for="IdAlvoBiologico" class="form-control" asp-items="ViewBag.IdAlvoBiologico"></select>
+                <span asp-validation-for="IdAlvoBiologico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DoseProdutoComercial" class="control-label"></label>
+                <input asp-for="DoseProdutoComercial" class="form-control" />
+                <span asp-validation-for="DoseProdutoComercial" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Adjuvante" class="control-label"></label>
+                <input asp-for="Adjuvante" class="form-control" />
+                <span asp-validation-for="Adjuvante" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdTipoDeServico" class="control-label"></label>
+                <input asp-for="IdTipoDeServico" class="form-control" />
+                <span asp-validation-for="IdTipoDeServico" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar a Lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

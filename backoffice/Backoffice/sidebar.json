@@ -11,23 +11,168 @@
       "text": "Inicio"
     },
     {
-      "controller": "Home",
-      "action": "Index",
+      "controller": "",
       "icon": "bi bi-cpu",
-      "text": "Empresa"
+      "text": "Geral",
+      "children": [
+        {
+          "controller": "Empresas",
+          "action": "Index",
+          "text": "Empresas"
+        },
+        {
+          "controller": "Clientes",
+          "action": "Index",
+          "text": "Clientes"
+        },
+        {
+          "controller": "Cidades",
+          "action": "Index",
+          "text": "Cidades"
+        },
+        {
+          "controller": "Estados",
+          "action": "Index",
+          "text": "Estados"
+        },
+        {
+          "controller": "TipoProdutos",
+          "action": "Index",
+          "text": "Tipo de Produtos"
+        },
+        {
+          "controller": "Produtos",
+          "action": "Index",
+          "text": "Produtos"
+        },
+        {
+          "controller": "Combustiveis",
+          "action": "Index",
+          "text": "Combustivel"
+        },
+        {
+          "controller": "Pistas",
+          "action": "Index",
+          "text": "Pistas"
+        },
+        {
+          "controller": "Veiculantes",
+          "action": "Index",
+          "text": "Veiculantes"
+        },
+        {
+          "controller": "PlanodeContratos",
+          "action": "Index",
+          "text": "Plano de Contratos"
+        },
+        {
+          "controller": "Adjuvante",
+          "action": "Index",
+          "text": "Adjuvante"
+        },
+        {
+          "controller": "Bulas",
+          "action": "Index",
+          "text": "Bula"
+        },
+        {
+          "controller": "Equipamentos",
+          "action": "Index",
+          "text": "Equipamentos"
+        },
+        {
+          "controller": "Culturas",
+          "action": "Index",
+          "text": "Culturas"
+        }
+      ]
     },
     {
-      "controller": "Home",
-      "action": "Index",
+      "controller": "",
       "icon": "bi bi-cpu",
-      "text": "Cliente"
+      "text": "Empresa",
+      "children": [
+        {
+          "controller": "Aeronaves",
+          "action": "Index",
+          "text": "Aeronaves"
+        },
+        {
+          "controller": "Pilotos",
+          "action": "Index",
+          "text": "Pilotos"
+        },
+        {
+          "controller": "Engenheiros",
+          "action": "Index",
+          "text": "Engenheiros"
+        },
+        {
+          "controller": "Executores",
+          "action": "Index",
+          "text": "Executores"
+        },
+        {
+          "controller": "Frotas",
+          "action": "Index",
+          "text": "Frotas"
+        },
+        {
+          "controller": "Precificacao",
+          "action": "Index",
+          "text": "Precificacao"
+        }
+      ]
     },
     {
-      "controller": "Home",
+      "controller": "Aplicacao",
       "action": "Index",
       "icon": "bi bi-cpu",
-      "text": "Piloto"
+      "text": "Aplicacao"
     }
+
+    //{
+    //  "controller": "Empresas",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Empresas"
+    //},
+    //{
+    //  "controller": "Aeronaves",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Aeronaves"
+    //},
+    //{
+    //  "controller": "Clientes",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Cliente"
+    //},
+    //{
+    //  "controller": "Pilotos",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Pilotos"
+    //},
+    //{
+    //  "controller": "Bulas",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Bulas"
+    //},
+    //{
+    //  "controller": "Adjuvante",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Adjuvantes"
+    //},
+    //{
+    //  "controller": "Cidades",
+    //  "action": "Index",
+    //  "icon": "bi bi-cpu",
+    //  "text": "Cidades"
+    //}
     //{
     //  "controller": "Analytics",
     //  "action": "Index",

@@ -1,0 +1,54 @@
+﻿@model Domain.Entidades.Cadastros.Aplicacao.Aplicacao
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Create", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>Aplicacao</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdEmpresa" class="control-label"></label>
+                <select asp-for="IdEmpresa" class ="form-control" asp-items="ViewBag.IdEmpresa"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusEnvio" class="control-label"></label>
+                <input asp-for="StatusEnvio" class="form-control" />
+                <span asp-validation-for="StatusEnvio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdPiloto" class="control-label"></label>
+                <select asp-for="IdPiloto" class ="form-control" asp-items="ViewBag.IdPiloto"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdExecutor" class="control-label"></label>
+                <select asp-for="IdExecutor" class ="form-control" asp-items="ViewBag.IdExecutor"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCliente" class="control-label"></label>
+                <select asp-for="IdCliente" class ="form-control" asp-items="ViewBag.IdCliente"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="IdCultura" class="control-label"></label>
+                <select asp-for="IdCultura" class ="form-control" asp-items="ViewBag.IdCultura"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar a Lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

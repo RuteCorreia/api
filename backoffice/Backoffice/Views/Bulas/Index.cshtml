@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Index", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a asp-action="Create">Adicionar Item</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.NomeProduto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdClassificacaoToxicologica)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Classe)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TipoDeFormulacao)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DoseProdutoComercial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Adjuvante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdTipoDeServico)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cultura)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AlvoBiologico)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.NomeProduto)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdClassificacaoToxicologica)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoDeFormulacao)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DoseProdutoComercial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Adjuvante)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdTipoDeServico)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cultura.IdCultura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AlvoBiologico.DoseProdutoPorHectare)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdBula">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.IdBula">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdBula">Deletar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

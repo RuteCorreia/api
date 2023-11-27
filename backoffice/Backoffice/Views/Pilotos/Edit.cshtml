@@ -1,0 +1,65 @@
+﻿@model Domain.Entidades.Cadastros.Piloto.Piloto
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Edit", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Editar</h1>
+
+<h4>Piloto</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IdPiloto" />
+            <div class="form-group">
+                <label asp-for="IdEmpresa" class="control-label"></label>
+                <select asp-for="IdEmpresa" class="form-control" asp-items="ViewBag.IdEmpresa"></select>
+                <span asp-validation-for="IdEmpresa" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomePiloto" class="control-label"></label>
+                <input asp-for="NomePiloto" class="form-control" />
+                <span asp-validation-for="NomePiloto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Senha" class="control-label"></label>
+                <input asp-for="Senha" class="form-control" />
+                <span asp-validation-for="Senha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CDAC" class="control-label"></label>
+                <input asp-for="CDAC" class="form-control" />
+                <span asp-validation-for="CDAC" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Assinatura" class="control-label"></label>
+                <input asp-for="Assinatura" class="form-control" />
+                <span asp-validation-for="Assinatura" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PorcentagemComissao" class="control-label"></label>
+                <input asp-for="PorcentagemComissao" class="form-control" />
+                <span asp-validation-for="PorcentagemComissao" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar a Lista</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

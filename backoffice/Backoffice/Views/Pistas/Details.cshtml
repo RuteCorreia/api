@@ -1,0 +1,37 @@
+﻿@model Domain.Entidades.Cadastros.Pistas.Pista
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Details", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detalhes</h1>
+
+<div>
+    <h4>Pista</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LAT)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LAT)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LONG)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LONG)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Editar</a> |
+    <a asp-action="Index">Voltar a Lista</a>
+</div>
