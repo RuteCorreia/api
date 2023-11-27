@@ -1,6 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Http
 
 @{
+    Context.Request.Cookies.TryGetValue("login-usuario", out string loginUsuario);
+    if (string.IsNullOrEmpty(loginUsuario))
+    {
+        if (!Context.Request.Path.Value.ToLower().Contains("login")) {
+            Context.Response.Redirect("/login/entrar", true);
+        }
+    }
+
 	string appMode = "dark";
 	if (Context.Request.Cookies.TryGetValue("app-theme-mode", out string appModeValue))
 	{
@@ -75,7 +83,7 @@
             <partial name="_Footer" />
         }
         
-        <partial name="_ThemePanel" />
+        @* <partial name="_ThemePanel" /> *@
     </div>
     <!-- END #app -->
 

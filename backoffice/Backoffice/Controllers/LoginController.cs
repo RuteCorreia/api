@@ -7,12 +7,14 @@ using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Piloto.Interface;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Backoffice.Controllers;
 
 public class LoginController : Controller
 {
+    private readonly string CookieLogin = "login-usuario";
     private readonly IClienteService _clienteService;
     private readonly IEngenheiroService _engenheiroService;
     private readonly IExecutorService _executorService;
@@ -28,6 +30,7 @@ public class LoginController : Controller
 
     public IActionResult Entrar()
     {
+        Response.Cookies.Delete(CookieLogin);
         return View();
     }
 
@@ -37,47 +40,43 @@ public class LoginController : Controller
         var cliente = await _clienteService.GetByLoginAsync(request.Username, request.Password);
         if (cliente != null)
         {
-            var user = new User()
-            {
-                Username = cliente.NomeCliente,
-                Role = "CLIENTE"
-            };
-            return Ok(user);
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(7);
+            var cookie = "cliente-" + cliente.IdCliente + "-" + cliente.NomeCliente;
+            Response.Cookies.Append(CookieLogin, cookie, options);
+
+            return Redirect("/");
         }
 
         var engenheiro = await _engenheiroService.GetByLoginAsync(request.Username, request.Password);
         if (engenheiro != null)
         {
-            var user = new User()
-            {
-                Username = engenheiro.Nome,
-                Role = "ENGENHEIRO"
-            };
-            return Ok(user);
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(7);
+            var cookie = "engenheiro-" + engenheiro.IdEngenheiro + "-" + engenheiro.Nome;
+            Response.Cookies.Append(CookieLogin, cookie, options);
+
+            return Redirect("/");
         }
 
         var executor = await _executorService.GetByLoginAsync(request.Username, request.Password);
         if (executor != null)
         {
-            var user = new User()
-            {
-                Username = executor.Nome,
-                Role = "EXECUTOR"
-            };
-            return Ok(user);
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(7);
+            var cookie = "executor-" + executor.IdExecutor + "-" + executor.Nome;
+            Response.Cookies.Append(CookieLogin, cookie, options);
         }
 
         var piloto = await _pilotoService.GetByLoginAsync(request.Username, request.Password);
         if (piloto != null)
         {
-            var user = new User()
-            {
-                Username = piloto.NomePiloto,
-                Role = "PILOTO"
-            };
-            return Ok(user);
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(7);
+            var cookie = "piloto-" + piloto.IdPiloto + "-" + piloto.NomePiloto;
+            Response.Cookies.Append(CookieLogin, cookie, options);
         }
 
-        return new User();
+        return Redirect("/");
     }
 }
