@@ -27,7 +27,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Configuracao;
 
-public class ContextBase : IdentityDbContext<ApplicationUser>
+public class ContextBase : IdentityDbContext
 {
 
     public ContextBase() {  }
@@ -71,6 +71,7 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
     public DbSet<Produto> Produto { get; set; }
     public DbSet<TipoProduto> TipoProduto { get; set; }
     public DbSet<Veiculante> Veiculante { get; set; }
+    public DbSet<Usuario> Usuario { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -83,8 +84,6 @@ public class ContextBase : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<ApplicationUser>().ToTable("AspNetUsers").HasKey(t => t.Id);
-
         base.OnModelCreating(builder);
     }
 

@@ -33,6 +33,7 @@ using Application.Application.Servicos.Cadastros.Precificacao;
 using Application.Application.Servicos.Cadastros.Produto;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
+using Application.Application.Servicos.User;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.AlturaVoo.Interface;
@@ -68,6 +69,7 @@ using Application.DTOs.Cadastros.Precificacao.Interface;
 using Application.DTOs.Cadastros.Produto.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
+using Application.DTOs.Users.Interface;
 using Domain.Interfaces.Cadastros.Adjuvante;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.AlturaVoo;
@@ -103,6 +105,7 @@ using Domain.Interfaces.Cadastros.Precificacao;
 using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
+using Domain.Interfaces.User;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
 using Infra.Repositorio.Cadastros.Aeronave;
@@ -139,6 +142,7 @@ using Infra.Repositorio.Cadastros.Precificacao;
 using Infra.Repositorio.Cadastros.Produto;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
+using Infra.Repositorio.User;
 
 namespace WebApi.Config;
 
@@ -151,6 +155,7 @@ public static class DependencyInjectionConfig
 
         #region Services (AddScoped)
 
+        services.AddScoped<IUserAuthService, UserAuthService>();
         services.AddScoped<IAdjuvanteService, AdjuvanteService>();
         services.AddScoped<IAeronaveService, AeronaveService>();
         services.AddScoped<IAlturaVooService, AlturaVooService>();
@@ -191,6 +196,7 @@ public static class DependencyInjectionConfig
 
         #region Repositories (AddScoped)
 
+        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IAdjuvanteRepository, AdjuvanteRepository>();
         services.AddScoped<IAeronaveRepository, AeronaveRepository>();
         services.AddScoped<IAlturaVooRepository, AlturaVooRepository>();

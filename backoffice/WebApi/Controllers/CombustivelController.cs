@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Combustivel.ViewModel;
 using Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
