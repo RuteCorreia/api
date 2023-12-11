@@ -7,6 +7,8 @@ namespace WebApi.Controllers.Auth;
 
 [Route("api/v1/[controller]")]
 [ApiController]
+[ProducesResponseType(StatusCodes.Status200OK)]
+[ProducesResponseType(StatusCodes.Status400BadRequest)]
 public class AuthController : ControllerBase
 {
     private readonly IUserAuthService _authService;
@@ -15,27 +17,7 @@ public class AuthController : ControllerBase
     {
         _authService = authService;
     }
-
-    #region TESTES
-    //DESCOMENTAR PRA TESTE
-    //[HttpGet("anonimo")]
-    //[AllowAnonymous]
-    //public async Task<string> Anonimo() => "anonimo lixo";
-
-    //[HttpGet("authorized")]
-    //[Authorize]
-    //public async Task<string> Authorize() => "autorizado";
-
-    //[HttpGet("authorizedWithClientRole")]
-    //[Authorize(Roles = "Client")]
-    //public async Task<string> AuthorizeClient() => "cliente autorizado";
-
-    //[HttpGet("authorizedWithAdminRole")]
-    //[Authorize(Roles = "Admin")]
-    //public async Task<string> AuthorizeAdm() => "admin autorizado";
-
-    #endregion
-
+   
     [HttpPost("registerUser")]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegisterViewModel user)
     {
@@ -56,13 +38,15 @@ public class AuthController : ControllerBase
         if (ModelState.IsValid)
         {
             var result = await _authService.LoginAsync(user);
-            if (result)
+            if (result.Item1)
             {
-                var tokenString = _authService.GenerateTokenString(user);
-                return Ok(tokenString);
+                var tokenString = _authService.GenerateTokenString(user, result.Item2);
+                return Ok(new { success = true,  token = tokenString });
             }
+
+            return BadRequest(result.Item2);
         }
 
-        return BadRequest();
+        return BadRequest("Campos de login inválidos");
     }
 }

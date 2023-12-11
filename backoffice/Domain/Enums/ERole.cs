@@ -2,6 +2,6 @@
 
 public enum ERole
 {
-    Admin = 1,
-    Client = 2
+    Piloto = 1,
+    Executor = 2
 }

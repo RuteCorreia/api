@@ -26,19 +26,20 @@ public class UserAuthService : IUserAuthService
         _usuarioRepository = usuarioRepository;
     }
 
-    public async Task<bool> LoginAsync(UserLoginViewModel user)
+    public async Task<(bool, string)> LoginAsync(UserLoginViewModel user)
     {
+        var resultError = "login inválido";
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if(identityUser is not null)
         {
+            var roles = await _userManager.GetRolesAsync(identityUser);
             var usuario = await _usuarioRepository.GetByUserIdAsync(identityUser.Id);
-            if(usuario is not null)
+            if(usuario is not null && roles.Any())
             {
-                return !usuario.Removido ? await _userManager.CheckPasswordAsync(identityUser, user.Password) : false;
+                return !usuario.Removido ? (await _userManager.CheckPasswordAsync(identityUser, user.Password), roles.First()) : (false, resultError);
             }
-            
         }
-        return false;
+        return (false, resultError);
     }
 
     public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request)
@@ -61,14 +62,14 @@ public class UserAuthService : IUserAuthService
             return !string.IsNullOrEmpty(errors) ?  (false,  errors) : (false, "Erro na criação de novo usuário");
         }
 
-        var roleExists = await _roleManager.RoleExistsAsync(ERole.Client.ToString());
+        var roleExists = await _roleManager.RoleExistsAsync(request.Role.ToString());
         if (!roleExists)
         {
-            var role = new IdentityRole(ERole.Client.ToString());
+            var role = new IdentityRole(request.Role.ToString());
             await _roleManager.CreateAsync(role);
         }
 
-        var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, ERole.Client.ToString());
+        var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, request.Role.ToString());
         if (!identityRoleResult.Succeeded)
         {
             var errors = identityRoleResult.Errors
@@ -91,7 +92,7 @@ public class UserAuthService : IUserAuthService
         await _usuarioRepository.AddAsync(usuario);
     }
 
-    public string GenerateTokenString(UserLoginViewModel user)
+    public string GenerateTokenString(UserLoginViewModel user, string role)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Secret").Value);
@@ -101,7 +102,7 @@ public class UserAuthService : IUserAuthService
             Subject = new ClaimsIdentity(new[]
             {
                 new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, "Client")
+                new Claim(ClaimTypes.Role, role)
             }),
             Issuer = _config.GetSection("Jwt:Issuer").Value,
             Audience = _config.GetSection("Jwt:Audience").Value,
