@@ -30,11 +30,15 @@ public class UsuarioRepository : IUsuarioRepository
         throw new NotImplementedException();
     }
 
-    public async Task<Usuario> GetByUserIdAsync(string id)
-    {
-        var usuario = await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
-        return usuario;
-    }
+    public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
+    
+
+    public async Task<Usuario> GetLastAsync() => await _contextBase.Usuario
+        .AsNoTracking()
+        .Where(x => !x.Removido)
+        .OrderBy(x => x.NrUsuario)
+        .LastOrDefaultAsync();
+    
 
     public async Task UpdateAsync(Usuario obj)
     {

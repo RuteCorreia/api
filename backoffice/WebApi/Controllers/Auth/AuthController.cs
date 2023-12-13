@@ -40,8 +40,7 @@ public class AuthController : ControllerBase
             var result = await _authService.LoginAsync(user);
             if (result.Item1)
             {
-                var tokenString = _authService.GenerateTokenString(user, result.Item2);
-                return Ok(new { success = true,  token = tokenString });
+                return Ok(new { success = true,  token = result.Item2 });
             }
 
             return BadRequest(result.Item2);

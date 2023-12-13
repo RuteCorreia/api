@@ -4,7 +4,7 @@ namespace Domain.Entidades.User;
 
 public class Usuario
 {
-    public Usuario(string email, string nome, string userId)
+    public Usuario(string email, string nome, string userId, int nrUsuario)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -12,6 +12,7 @@ public class Usuario
         UserId = userId;
         Removido = false;
         DataCriacao = DateTime.Now;
+        NrUsuario = nrUsuario;
     }
 
     [Key]
@@ -21,4 +22,5 @@ public class Usuario
     public string Email { get; private set; }
     public DateTime DataCriacao { get; private set; }
     public bool Removido { get; set; }
+    public int NrUsuario { get; private set; }
 }

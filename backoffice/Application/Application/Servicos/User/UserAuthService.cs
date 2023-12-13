@@ -1,7 +1,6 @@
 ﻿using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using Domain.Entidades.User;
-using Domain.Enums;
 using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -31,12 +30,16 @@ public class UserAuthService : IUserAuthService
         var resultError = "login inválido";
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if(identityUser is not null)
-        {
-            var roles = await _userManager.GetRolesAsync(identityUser);
+        {            
             var usuario = await _usuarioRepository.GetByUserIdAsync(identityUser.Id);
-            if(usuario is not null && roles.Any())
+            if(usuario is not null)
             {
-                return !usuario.Removido ? (await _userManager.CheckPasswordAsync(identityUser, user.Password), roles.First()) : (false, resultError);
+                var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
+                if (passwordCheck)
+                {
+                    var token = await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario);
+                    return (true, token);
+                }
             }
         }
         return (false, resultError);
@@ -81,36 +84,63 @@ public class UserAuthService : IUserAuthService
             return !string.IsNullOrEmpty(errors) ? (false, errors) : (false, "Erro na criação de novo usuário");
         }
 
-        var cliente = CreateUser(request, identityUser);
+       await CreateUser(request, identityUser);
 
         return (true, "Usuário criado com sucesso");
     }
 
     private async Task CreateUser(UserRegisterViewModel request, IdentityUser user)
     {
-        var usuario = new Usuario(request.Email, request.Name, user.Id);
+        var nrUsuarioOrdem = await _usuarioRepository.GetLastAsync();
+        var usuario = new Usuario(request.Email, request.Name, user.Id, nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1);
         await _usuarioRepository.AddAsync(usuario);
     }
 
-    public string GenerateTokenString(UserLoginViewModel user, string role)
+    private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
+    {
+        var claims = await GetUserClaims(user, userName, nrUsuario);
+        var identityClaims = new ClaimsIdentity(claims);
+        return WriteToken(identityClaims);
+    }
+
+    private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser user, string userName, int nrUsuario)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        var claims = new List<Claim>
+        {
+            new("NrUsuario", nrUsuario.ToString()),
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Name, userName),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()),
+            new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
+        };
+
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        return claims;
+    }
+
+    private string WriteToken(ClaimsIdentity identityClaims)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Secret").Value);
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("Jwt:Secret").Value));
+        var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
         var expiresInHours = Convert.ToDouble(_config.GetSection("Jwt:ExpirationInHours").Value);
-        var tokenDescriptor = new SecurityTokenDescriptor
+
+        var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[]
-            {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, role)
-            }),
+            Subject = identityClaims,
             Issuer = _config.GetSection("Jwt:Issuer").Value,
             Audience = _config.GetSection("Jwt:Audience").Value,
             Expires = DateTime.UtcNow.AddHours(expiresInHours),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
+            SigningCredentials = signingCredentials
+        });
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
     }
+
+    private long ToUnixEpochDate(DateTime date)
+        => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
+            .TotalSeconds);
 }
