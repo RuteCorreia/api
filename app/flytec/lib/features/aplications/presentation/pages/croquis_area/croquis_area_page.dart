@@ -34,7 +34,8 @@ class DMS {
 }
 
 class CroquisAreaCliente extends StatelessWidget {
-  const CroquisAreaCliente({super.key});
+  const CroquisAreaCliente({super.key, required this.updateImagePathMap});
+  final void Function(String path)? updateImagePathMap;
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +74,13 @@ class CroquisAreaCliente extends StatelessWidget {
                 ),
                 CustomCardButton(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return UplodadFotos();
-                    }));
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return UplodadFotos(
+                          updateImagePathMap: updateImagePathMap,
+                        );
+                      },
+                    ));
                   },
                   title: "Foto do Mapa",
                 ),
@@ -102,9 +106,14 @@ class CroquisAreaCliente extends StatelessWidget {
 }
 
 class UplodadFotos extends StatelessWidget {
-  UplodadFotos({super.key});
+  UplodadFotos({super.key, required this.updateImagePathMap});
   final ImagePicker picker = ImagePicker();
+  final void Function(String path)? updateImagePathMap;
 
+  SnackBar _indicationImageUpload(String? text, Color? color) => SnackBar(
+        content: Text(text!),
+        backgroundColor: color,
+      );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,8 +132,19 @@ class UplodadFotos extends StatelessWidget {
             Center(
               child: InkWell(
                 onTap: () async {
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  try {
+                    final XFile? image =
+                        await picker.pickImage(source: ImageSource.gallery);
+                    updateImagePathMap!(image!.path);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        _indicationImageUpload('Imagem adicionada com sucesso',
+                            const Color(0xFF00B45D)));
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                        _indicationImageUpload(
+                            'Não foi possível adicionar a imagem. Por Favor, tente novamente',
+                            Colors.red));
+                  }
                 },
                 child: const Icon(
                   Icons.photo_camera_outlined,

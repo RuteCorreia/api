@@ -1,7 +1,8 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
@@ -16,6 +17,14 @@ class IdentificacaoAreaTratamento extends StatefulWidget {
 
 class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
+  
+  String _imagePath = '';
+
+  void _updateImagePath(String path) {
+    setState(() {
+      _imagePath = path;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,9 +145,51 @@ class _IdentificacaoAreaTratamentoState
                       )),
                 ),
               ),
-              CroquiButton(
+              _imagePath.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: CustomText(text: 'Imagem Selecionada'),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CroquisAreaCliente(
+                                            updateImagePathMap:
+                                                _updateImagePath,
+                                          )));
+                            },
+                            child: Container(
+                              height: 200,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                      colorFilter: ColorFilter.mode(
+                                          Colors.black.withOpacity(0.2),
+                                          BlendMode.darken),
+                                      image: FileImage(File(_imagePath)),
+                                      fit: BoxFit.fill)),
+                              child: const Icon(
+                                Icons.camera_alt,
+                                color: Colors.white,
+                                size: 40,
+                              ),
+                            ),
+                          )
+                        ])
+                  : CroquiButton(
                 onPressed: () {
-                  context.push("/croquisarea");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CroquisAreaCliente(
+                                      updateImagePathMap: _updateImagePath,
+                                    )));
+                 
                 },
               ),
               const SizedBox(height: 14),
@@ -159,7 +210,6 @@ class _IdentificacaoAreaTratamentoState
 class CroquiButton extends StatelessWidget {
   const CroquiButton({super.key, required this.onPressed});
   final VoidCallback? onPressed;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -254,6 +304,7 @@ class CroquiButton extends StatelessWidget {
                         ),
                       ),
                     ),
+                  
                   ],
                 ),
               ),
