@@ -18,13 +18,17 @@ class IdentificacaoAreaTratamento extends StatefulWidget {
 class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
   
-  String _imagePath = '';
+  String _imagePathMap = '';
 
-  void _updateImagePath(String path) {
-    setState(() {
-      _imagePath = path;
-    });
+  void _updateImagePathMap(String path) {
+    _imagePathMap = path;
+    setState(() {});
   }
+
+  SnackBar _indicationImageUpload(String? text, Color? color) => SnackBar(
+        content: Text(text!),
+        backgroundColor: color,
+      );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,7 +149,7 @@ class _IdentificacaoAreaTratamentoState
                       )),
                 ),
               ),
-              _imagePath.isNotEmpty
+              _imagePathMap.isNotEmpty
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -160,7 +164,7 @@ class _IdentificacaoAreaTratamentoState
                                   MaterialPageRoute(
                                       builder: (context) => CroquisAreaCliente(
                                             updateImagePathMap:
-                                                _updateImagePath,
+                                                _updateImagePathMap,
                                           )));
                             },
                             child: Container(
@@ -171,7 +175,7 @@ class _IdentificacaoAreaTratamentoState
                                       colorFilter: ColorFilter.mode(
                                           Colors.black.withOpacity(0.2),
                                           BlendMode.darken),
-                                      image: FileImage(File(_imagePath)),
+                                      image: FileImage(File(_imagePathMap)),
                                       fit: BoxFit.fill)),
                               child: const Icon(
                                 Icons.camera_alt,
@@ -187,7 +191,7 @@ class _IdentificacaoAreaTratamentoState
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CroquisAreaCliente(
-                                      updateImagePathMap: _updateImagePath,
+                                      updateImagePathMap: _updateImagePathMap,
                                     )));
                  
                 },
@@ -196,7 +200,16 @@ class _IdentificacaoAreaTratamentoState
               Center(
                 child: CustomButton(
                   title: "OK",
-                  onClick: () {},
+                  onClick: () {
+                    if (_imagePathMap.isNotEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          _indicationImageUpload(
+                              'Identificação Enviada com Sucesso!',
+                              const Color(0xFF00B45D)));
+                      _imagePathMap = '';
+                      setState(() {});
+                    }
+                  },
                 ),
               ),
             ],
