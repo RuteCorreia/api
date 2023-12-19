@@ -1,7 +1,8 @@
 import 'dart:io';
-import 'package:estados_municipios/estados_municipios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
 
@@ -18,10 +19,10 @@ class IdentificacaoAreaTratamento extends StatefulWidget {
 
 class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
-  
+  final MapsInformationsController _mapsInformationsController =
+      MapsInformationsControllerBrazil();
   String _imagePathMap = '';
 
-  final _controllerMapStates = EstadosMunicipiosController();
   List<String> _statesOfBrazil = [];
   List<String> _citiesNamesUfBrazil = ['Selecione'];
   void _updateImagePathMap(String path) {
@@ -34,9 +35,8 @@ class _IdentificacaoAreaTratamentoState
         backgroundColor: color,
       );
   
-  Future<void> _obtainStatesBrazil() async {
-    List<Estado> states = await _controllerMapStates.buscaTodosEstados();
-    _statesOfBrazil = states.map((e) => e.sigla).toList();
+  Future<void> _obtainStatesOfBrazil() async {
+    _statesOfBrazil = await _mapsInformationsController.getUfBrazil();
     setState(() {});
   }
 
@@ -45,16 +45,16 @@ class _IdentificacaoAreaTratamentoState
     _citiesNamesUfBrazil = ['Selecione'];
     _cityOfUf = 'Selecione';
     setState(() {});
-    List<Municipio> cities =
-        await _controllerMapStates.buscaMunicipiosPorEstado(uf);
-    _citiesNamesUfBrazil.addAll(cities.map((e) => e.nome).toList());
+    List<String> cities =
+        await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
+    _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
-    _obtainStatesBrazil();
+    _obtainStatesOfBrazil();
     _obtainCitiesOfUfBrazil('SP');
   }
 
@@ -298,10 +298,7 @@ class _IdentificacaoAreaTratamentoState
                   title: "OK",
                   onClick: () {
                     if (_imagePathMap.isNotEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          _indicationImageMapUpload(
-                              'Identificação Enviada com Sucesso!',
-                              const Color(0xFF00B45D)));
+                      Util.toastSucesso('Identificação Enviada com Sucesso!');
                       _imagePathMap = '';
                       setState(() {});
                     }

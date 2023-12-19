@@ -8,6 +8,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -136,14 +137,11 @@ class UplodadFotos extends StatelessWidget {
                     final XFile? image =
                         await picker.pickImage(source: ImageSource.gallery);
                     updateImagePathMap!(image!.path);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        _indicationImageUpload('Imagem adicionada com sucesso',
-                            const Color(0xFF00B45D)));
+                    Util.toastSucesso('Imagem adicionada com sucesso');
+                  
                   } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        _indicationImageUpload(
-                            'Não foi possível adicionar a imagem. Por Favor, tente novamente',
-                            Colors.red));
+                    Util.toastErro(
+                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
                   }
                 },
                 child: const Icon(
