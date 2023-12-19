@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:estados_municipios/estados_municipios.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
@@ -20,15 +21,46 @@ class _IdentificacaoAreaTratamentoState
   
   String _imagePathMap = '';
 
+  final _controllerMapStates = EstadosMunicipiosController();
+  List<String> _statesOfBrazil = [];
+  List<String> _citiesNamesUfBrazil = ['Selecione'];
   void _updateImagePathMap(String path) {
     _imagePathMap = path;
     setState(() {});
   }
 
-  SnackBar _indicationImageUpload(String? text, Color? color) => SnackBar(
+  SnackBar _indicationImageMapUpload(String? text, Color? color) => SnackBar(
         content: Text(text!),
         backgroundColor: color,
       );
+  
+  Future<void> _obtainStatesBrazil() async {
+    List<Estado> states = await _controllerMapStates.buscaTodosEstados();
+    _statesOfBrazil = states.map((e) => e.sigla).toList();
+    setState(() {});
+  }
+
+  Future<void> _obtainCitiesOfUfBrazil(String uf) async {
+    _citiesNamesUfBrazil.clear();
+    _citiesNamesUfBrazil = ['Selecione'];
+    _cityOfUf = 'Selecione';
+    setState(() {});
+    List<Municipio> cities =
+        await _controllerMapStates.buscaMunicipiosPorEstado(uf);
+    _citiesNamesUfBrazil.addAll(cities.map((e) => e.nome).toList());
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _obtainStatesBrazil();
+    _obtainCitiesOfUfBrazil('SP');
+  }
+
+  String _uf = 'SP';
+  String _cityOfUf = 'Selecione';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,12 +86,42 @@ class _IdentificacaoAreaTratamentoState
                     children: [
                       const CustomText(text: "UF"),
                       const SizedBox(height: 10),
-                      SizedBox(
-                          width: 150,
-                          child: CustomCombo(
-                            selectedName: "Selecione",
-                            onTap: () {},
-                          )),
+                      Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: const Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          alignment: Alignment.center,
+                          width: 100,
+                          height: 40,
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: DropdownButton<String>(
+                            onChanged: (regiaoSelecionada) async {
+                              _uf = regiaoSelecionada!;
+                              await _obtainCitiesOfUfBrazil(regiaoSelecionada);
+                              setState(() {});
+                            },
+                            alignment: Alignment.center,
+                            disabledHint: const SizedBox.shrink(),
+                            underline: const SizedBox.shrink(),
+                            value: _uf,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black,
+                            ),
+                            items: _statesOfBrazil.map((String regiao) {
+                              return DropdownMenuItem(
+                                value: regiao,
+                                child: Text(
+                                  regiao,
+                                  style:
+                                      const TextStyle(color: Color(0xFF636363)),
+                                ),
+                              );
+                            }).toList(),
+                          ))
+                    
                     ],
                   ),
                   Column(
@@ -67,12 +129,46 @@ class _IdentificacaoAreaTratamentoState
                     children: [
                       const CustomText(text: "Cidade"),
                       const SizedBox(height: 10),
-                      SizedBox(
-                          width: 150,
-                          child: CustomCombo(
-                            selectedName: "Selecione",
-                            onTap: () {},
-                          )),
+                      Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: const Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          width: 200,
+                          height: 40,
+                          alignment: Alignment.center,
+                          child: DropdownButton<String>(
+                            onChanged: (city) {
+                              _cityOfUf = city!;
+                              setState(() {});
+                            },
+                            alignment: Alignment.center,
+                            disabledHint: const SizedBox.shrink(),
+                            underline: const SizedBox.shrink(),
+                            value: _cityOfUf,
+                            icon: const Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.black,
+                            ),
+                            items: _citiesNamesUfBrazil.map((String city) {
+                              return DropdownMenuItem(
+                                value: city,
+                                child: SizedBox(
+                                  width: 150,
+                                  child: Text(
+                                    city,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                    style: const TextStyle(
+                                        color: Color(0xFF636363)),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ))
+                   
                     ],
                   )
                 ],
@@ -203,7 +299,7 @@ class _IdentificacaoAreaTratamentoState
                   onClick: () {
                     if (_imagePathMap.isNotEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                          _indicationImageUpload(
+                          _indicationImageMapUpload(
                               'Identificação Enviada com Sucesso!',
                               const Color(0xFF00B45D)));
                       _imagePathMap = '';
