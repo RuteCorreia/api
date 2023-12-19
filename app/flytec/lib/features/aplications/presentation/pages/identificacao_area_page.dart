@@ -21,25 +21,20 @@ class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
+      
   String _imagePathMap = '';
-
-  List<String> _statesOfBrazil = [];
-  List<String> _citiesNamesUfBrazil = ['Selecione'];
   void _updateImagePathMap(String path) {
     _imagePathMap = path;
     setState(() {});
   }
 
-  SnackBar _indicationImageMapUpload(String? text, Color? color) => SnackBar(
-        content: Text(text!),
-        backgroundColor: color,
-      );
-  
+  List<String> _statesOfBrazil = [];
   Future<void> _obtainStatesOfBrazil() async {
     _statesOfBrazil = await _mapsInformationsController.getUfBrazil();
     setState(() {});
   }
 
+  List<String> _citiesNamesUfBrazil = ['Selecione'];
   Future<void> _obtainCitiesOfUfBrazil(String uf) async {
     _citiesNamesUfBrazil.clear();
     _citiesNamesUfBrazil = ['Selecione'];
