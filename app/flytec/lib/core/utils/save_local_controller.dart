@@ -3,8 +3,10 @@ import 'dart:convert';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
+import 'package:flytec/features/weather/data/models/weather_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/aplications/data/models/clientes_model.dart';
@@ -21,6 +23,8 @@ class SaveLocalDataController {
           clientesPreloadModelToJson(getIt<GlobalConfigVars>().clientes),
       "token": Util.Token,
       "executores": executorModelToJson(getIt<GlobalConfigVars>().executores),
+      "weather": weatherModelToJson(getIt<GlobalConfigVars>().weather),
+      "culturas": culturaModelToJson(getIt<GlobalConfigVars>().culturas),
       "pilotos": pilotoModelToJson(getIt<GlobalConfigVars>().pilotos)
     };
     return preloadData;

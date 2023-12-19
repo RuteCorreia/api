@@ -43,7 +43,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
               child: CustomCombo(
                 selectedName:
                     getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                        ? getIt<GlobalConfigVars>().userPayload.uniqueName!
+                        ? getIt<GlobalConfigVars>().userPayload.name!
                         : selectedPilot.isEmpty
                             ? "Selecione o piloto"
                             : selectedPilot,
@@ -119,7 +119,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
               child: CustomCombo(
                 selectedName:
                     getIt<GlobalConfigVars>().userPayload.role == "Executor"
-                        ? getIt<GlobalConfigVars>().userPayload.uniqueName!
+                        ? getIt<GlobalConfigVars>().userPayload.name!
                         : selectedExecutor.isEmpty
                             ? "Selecione o executor"
                             : selectedExecutor,
@@ -267,7 +267,7 @@ class CustomCombo extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 40,
+        height: 50,
         padding: const EdgeInsets.all(8),
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(

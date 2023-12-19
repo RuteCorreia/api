@@ -1,7 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -33,13 +33,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'N° 1758',
+                    'N° ${getIt<GlobalConfigVars>().userPayload.nrUsuario}1',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',

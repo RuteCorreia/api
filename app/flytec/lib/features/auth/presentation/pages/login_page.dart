@@ -4,14 +4,21 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/save_local_controller.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
+import 'package:flytec/features/cultura/data/models/cultura_model.dart';
+import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/executor/domain/repositories/executor_repository.dart';
 import 'package:flytec/features/executor/domain/usecases/authentication_usecase.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/domain/usecases/get_piloto_usecase.dart';
+import 'package:flytec/features/weather/data/models/weather_model.dart';
+import 'package:flytec/features/weather/domain/repositories/weather_repository.dart';
+import 'package:flytec/features/weather/domain/usecases/get_current_weather_usecase.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:location/location.dart' as lct;
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../../../aplications/data/datasource/clientes_datasource.dart';
@@ -22,11 +29,40 @@ import '../widgets/custom_login_button.dart';
 import '../widgets/custom_recover_password_button.dart';
 import '../widgets/custom_text_login.dart';
 
-class LoginPage extends StatelessWidget {
-  LoginPage({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController _editingControllerEmail = TextEditingController();
+
   final TextEditingController _editingControllerPassword =
       TextEditingController();
+
+  double currentLatitude = 0;
+  double currentLongitude = 0;
+  @override
+  void initState() {
+    super.initState();
+    CheckPermissionLocation(
+      context,
+      () {
+        lct.Location local = lct.Location();
+        local.getLocation().then((lc) async {
+          print("============LATITUDE=========== ${lc.latitude}");
+          print("============LONGITUDE=========== ${lc.longitude}");
+          setState(() {
+            currentLatitude = lc.latitude!;
+            currentLongitude = lc.longitude!;
+          });
+        });
+      },
+    ).getPermission();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +98,24 @@ class LoginPage extends StatelessWidget {
                 }, (right) {
                   final pilotos = right as List<PilotoModel>;
                   getIt<GlobalConfigVars>().setPilotos(pilotosData: pilotos);
+                });
+              }),
+              getIt<GetCurrentWeather>()
+                  .call(WeatherParams(
+                lat: currentLatitude,
+                long: currentLongitude,
+              ))
+                  .then((value) {
+                value.fold((l) {}, (r) {
+                  final weatherData = r as WeatherModel;
+                  getIt<GlobalConfigVars>()
+                      .setWeatherData(weatherData: weatherData);
+                });
+              }),
+              getIt<GetCulturasUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final culturas = r as List<CulturaModel>;
+                  getIt<GlobalConfigVars>().setCulturas(culturaData: culturas);
                 });
               })
             ]);

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../../../../core/injections/get_it.dart';
 
 class AplicationSecondStep extends StatefulWidget {
   const AplicationSecondStep({super.key});
@@ -35,10 +38,10 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'N° 1758',
+                  Text(
+                    'N° ${getIt<GlobalConfigVars>().userPayload.nrUsuario}1',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',

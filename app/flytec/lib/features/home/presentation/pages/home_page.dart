@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -170,7 +171,7 @@ class HomePaga extends StatelessWidget {
                         'Dashboard',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 121, 118, 118),
+                          color: Color.fromARGB(255, 12, 6, 6),
                           fontSize: 20,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
@@ -185,10 +186,10 @@ class HomePaga extends StatelessWidget {
             const SizedBox(height: 26),
             GestureDetector(
               onTap: () async {
-                print(getIt<GlobalConfigVars>().userPayload.role.toString());
+                print(getIt<GlobalConfigVars>().culturas);
               },
-              child: const WelcomeText(
-                userName: "Rodrigo",
+              child: WelcomeText(
+                userName: "${getIt<GlobalConfigVars>().userPayload.name}",
               ),
             ),
             Container(
@@ -251,7 +252,7 @@ class HomePaga extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Container(
-                                    child: const Column(
+                                    child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -261,8 +262,8 @@ class HomePaga extends StatelessWidget {
                                         SizedBox(
                                           width: double.infinity,
                                           child: Text(
-                                            'Tempo Limpo',
-                                            style: TextStyle(
+                                            '${getIt<GlobalConfigVars>().weather.weather![0].description}',
+                                            style: const TextStyle(
                                               color: Color.fromARGB(
                                                   255, 121, 118, 118),
                                               fontSize: 16,
@@ -272,15 +273,20 @@ class HomePaga extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 30),
+                                        const SizedBox(height: 30),
                                         SizedBox(
                                           width: double.infinity,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: '19º',
-                                                  style: TextStyle(
+                                                  text:
+                                                      getIt<GlobalConfigVars>()
+                                                          .weather
+                                                          .main!
+                                                          .temp!
+                                                          .toStringAsFixed(0),
+                                                  style: const TextStyle(
                                                     color: Color(0xFF00B45D),
                                                     fontSize: 32,
                                                     fontFamily: 'Inter',
@@ -288,8 +294,8 @@ class HomePaga extends StatelessWidget {
                                                     height: 0.05,
                                                   ),
                                                 ),
-                                                TextSpan(
-                                                  text: 'c',
+                                                const TextSpan(
+                                                  text: '°C',
                                                   style: TextStyle(
                                                     color: Color(0xFF00B45D),
                                                     fontSize: 20,
@@ -367,14 +373,14 @@ class HomePaga extends StatelessWidget {
                               children: [
                                 Expanded(
                                   child: Container(
-                                    child: const Column(
+                                    child: Column(
                                       mainAxisSize: MainAxisSize.min,
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.center,
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           width: double.infinity,
                                           child: Text(
                                             'Direção e velocidade do vento',
@@ -388,15 +394,20 @@ class HomePaga extends StatelessWidget {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 30),
+                                        const SizedBox(height: 30),
                                         SizedBox(
                                           width: double.infinity,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 TextSpan(
-                                                  text: '24',
-                                                  style: TextStyle(
+                                                  text: Util.converterMetrosPorSegundoParaKmPorHora(
+                                                          getIt<GlobalConfigVars>()
+                                                              .weather
+                                                              .wind!
+                                                              .speed!)
+                                                      .toStringAsFixed(0),
+                                                  style: const TextStyle(
                                                     color: Color(0xFF00B45D),
                                                     fontSize: 32,
                                                     fontFamily: 'Inter',
@@ -404,7 +415,7 @@ class HomePaga extends StatelessWidget {
                                                     height: 0.05,
                                                   ),
                                                 ),
-                                                TextSpan(
+                                                const TextSpan(
                                                   text: ' km/h',
                                                   style: TextStyle(
                                                     color: Color(0xFF00B45D),

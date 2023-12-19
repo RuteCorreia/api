@@ -11,41 +11,57 @@ String userPayloadModelToJson(UserPayloadModel data) =>
     json.encode(data.toJson());
 
 class UserPayloadModel {
-  final String? uniqueName;
-  final String? role;
+  final String? nrUsuario;
+  final String? sub;
+  final String? name;
+  final String? email;
+  final String? jti;
   final int? nbf;
-  final int? exp;
   final int? iat;
+  final String? role;
+  final int? exp;
   final String? iss;
   final String? aud;
 
   UserPayloadModel({
-    this.uniqueName,
-    this.role,
+    this.nrUsuario,
+    this.sub,
+    this.name,
+    this.email,
+    this.jti,
     this.nbf,
-    this.exp,
     this.iat,
+    this.role,
+    this.exp,
     this.iss,
     this.aud,
   });
 
   factory UserPayloadModel.fromJson(Map<String, dynamic> json) =>
       UserPayloadModel(
-        uniqueName: json["unique_name"],
-        role: json["role"],
+        nrUsuario: json["NrUsuario"],
+        sub: json["sub"],
+        name: json["name"],
+        email: json["email"],
+        jti: json["jti"],
         nbf: json["nbf"],
-        exp: json["exp"],
         iat: json["iat"],
+        role: json["role"],
+        exp: json["exp"],
         iss: json["iss"],
         aud: json["aud"],
       );
 
   Map<String, dynamic> toJson() => {
-        "unique_name": uniqueName,
-        "role": role,
+        "NrUsuario": nrUsuario,
+        "sub": sub,
+        "name": name,
+        "email": email,
+        "jti": jti,
         "nbf": nbf,
-        "exp": exp,
         "iat": iat,
+        "role": role,
+        "exp": exp,
         "iss": iss,
         "aud": aud,
       };

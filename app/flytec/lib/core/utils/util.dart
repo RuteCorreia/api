@@ -37,6 +37,11 @@ class Util {
     );
   }
 
+  static double converterMetrosPorSegundoParaKmPorHora(
+      double velocidadeEmMetrosPorSegundo) {
+    return velocidadeEmMetrosPorSegundo * 3.6;
+  }
+
   static toastAlerta(txt) {
     return Fluttertoast.showToast(
       msg: txt,

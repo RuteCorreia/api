@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
 import 'package:go_router/go_router.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
@@ -16,6 +19,7 @@ class IdentificacaoAreaTratamento extends StatefulWidget {
 
 class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
+  String selectedCultura = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,8 +108,60 @@ class _IdentificacaoAreaTratamentoState
               ),
               const SizedBox(height: 14),
               CustomCombo(
-                selectedName: "Selecione",
-                onTap: () {},
+                selectedName:
+                    selectedCultura.isEmpty ? "Selecione" : selectedCultura,
+                onTap: () {
+                  showMaterialModalBottomSheet(
+                    context: context,
+                    builder: (context) => SingleChildScrollView(
+                      controller: ModalScrollController.of(context),
+                      child: Container(
+                        height: 400,
+                        color: Colors.white,
+                        child: Padding(
+                          padding: const EdgeInsets.all(0.0),
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  height: 500,
+                                  child: ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      itemCount: getIt<GlobalConfigVars>()
+                                          .culturas
+                                          .length,
+                                      itemBuilder: (ctx, index) {
+                                        final cultura =
+                                            getIt<GlobalConfigVars>()
+                                                .culturas[index];
+                                        return Container(
+                                          margin:
+                                              const EdgeInsets.only(bottom: 2),
+                                          decoration: BoxDecoration(
+                                            color: Colors.grey.withOpacity(0.1),
+                                          ),
+                                          child: ListTile(
+                                            onTap: () {
+                                              setState(() {
+                                                selectedCultura = cultura.nome!;
+                                              });
+                                              context.pop();
+                                            },
+                                            style: ListTileStyle.drawer,
+                                            title: Text("${cultura.nome}"),
+                                          ),
+                                        );
+                                      }),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 14),
               const CustomText(text: 'Extensão(ha)'),
@@ -165,7 +221,7 @@ class CroquiButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: 328,
+        width: double.infinity,
         height: 50,
         padding: const EdgeInsets.all(10),
         decoration: ShapeDecoration(
