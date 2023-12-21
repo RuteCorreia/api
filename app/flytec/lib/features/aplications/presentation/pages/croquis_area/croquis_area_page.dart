@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -111,10 +112,6 @@ class UplodadFotos extends StatelessWidget {
   final ImagePicker picker = ImagePicker();
   final void Function(String path)? updateImagePathMap;
 
-  SnackBar _indicationImageUpload(String? text, Color? color) => SnackBar(
-        content: Text(text!),
-        backgroundColor: color,
-      );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,16 +130,72 @@ class UplodadFotos extends StatelessWidget {
             Center(
               child: InkWell(
                 onTap: () async {
-                  try {
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.gallery);
-                    updateImagePathMap!(image!.path);
-                    Util.toastSucesso('Imagem adicionada com sucesso');
+                  showAdaptiveDialog<String>(
+                    context: context,
+                    useSafeArea: true,
+                    builder: (BuildContext context) => AlertDialog.adaptive(
+                      insetPadding: const EdgeInsets.all(32),
+                      title: const SizedBox(
+                        width: 244,
+                        height: 30,
+                        child: Text(
+                          'Selecione de onde vem a imagem',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Color.fromARGB(255, 121, 118, 118),
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                            height: 0.09,
+                          ),
+                        ),
+                      ),
+                      content: SizedBox(
+                        height: 200,
+                        child: Column(
+                          children: [
+                            CustomDialogButton(
+                              text: "Galeria",
+                              icon: Icons.image,
+                              onClick: () async {
+                                try {
+                                  final XFile? image = await picker.pickImage(
+                                      source: ImageSource.gallery);
+                                  updateImagePathMap!(image!.path);
+                                  Navigator.pop(context);
+                                  Util.toastSucesso(
+                                      'Imagem adicionada com sucesso');
+                                } catch (e) {
+                                  Util.toastErro(
+                                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                                }
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            CustomDialogButton(
+                              icon: Icons.camera_alt_outlined,
+                              onClick: () async {
+                                try {
+                                  final XFile? image = await picker.pickImage(
+                                      source: ImageSource.camera);
+                                  updateImagePathMap!(image!.path);
+                                  Navigator.pop(context);
+                                  Util.toastSucesso(
+                                      'Imagem adicionada com sucesso');
+                                } catch (e) {
+                                  Util.toastErro(
+                                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                                }
+                              },
+                              text: "Câmera",
+                            )
+                          ],
+                        ),
+                      ),
+                      actions: const <Widget>[],
+                    ),
+                  );
                   
-                  } catch (e) {
-                    Util.toastErro(
-                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
-                  }
                 },
                 child: const Icon(
                   Icons.photo_camera_outlined,
@@ -164,6 +217,7 @@ class UplodadFotos extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 120),
+            
             Center(
               child: InkWell(
                 onTap: () {

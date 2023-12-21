@@ -5,8 +5,9 @@ class CustomDialogButton extends StatelessWidget {
   const CustomDialogButton(
       {super.key,
       required this.onClick,
-      required this.leftIcon,
+      this.leftIcon,
       required this.text,
+      this.icon = Icons.add,
       this.showLeftIcon = true,
       this.showRightcon = true});
   final String? leftIcon;
@@ -14,6 +15,7 @@ class CustomDialogButton extends StatelessWidget {
   final String? text;
   final bool? showLeftIcon;
   final bool? showRightcon;
+  final IconData? icon;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -41,7 +43,14 @@ class CustomDialogButton extends StatelessWidget {
                     height: 24,
                     clipBehavior: Clip.antiAlias,
                     decoration: const BoxDecoration(),
-                    child: Stack(children: [SvgPicture.asset(leftIcon!)]),
+                    child: Stack(children: [
+                      leftIcon != null
+                          ? SvgPicture.asset(leftIcon!)
+                          : Icon(
+                              icon,
+                              color: Colors.green,
+                            )
+                    ]),
                   )
                 : const SizedBox(),
             const SizedBox(width: 8),
