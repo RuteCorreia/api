@@ -107,11 +107,15 @@ class CroquisAreaCliente extends StatelessWidget {
   }
 }
 
-class UplodadFotos extends StatelessWidget {
-  UplodadFotos({super.key, required this.updateImagePathMap});
-  final ImagePicker picker = ImagePicker();
+class UplodadFotos extends StatefulWidget {
+  const UplodadFotos({super.key, required this.updateImagePathMap});
   final void Function(String path)? updateImagePathMap;
 
+  @override
+  State<UplodadFotos> createState() => _UplodadFotosState();
+}
+
+class _UplodadFotosState extends State<UplodadFotos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,72 +134,9 @@ class UplodadFotos extends StatelessWidget {
             Center(
               child: InkWell(
                 onTap: () async {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      title: const SizedBox(
-                        width: 244,
-                        height: 30,
-                        child: Text(
-                          'Selecione de onde vem a imagem',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 121, 118, 118),
-                            fontSize: 16,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w500,
-                            height: 0.09,
-                          ),
-                        ),
-                      ),
-                      content: SizedBox(
-                        height: 200,
-                        child: Column(
-                          children: [
-                            CustomDialogButton(
-                              text: "Galeria",
-                              icon: Icons.image,
-                              onClick: () async {
-                                try {
-                                  final XFile? image = await picker.pickImage(
-                                      source: ImageSource.gallery);
-                                  updateImagePathMap!(image!.path);
-                                  Navigator.pop(context);
-                                  Util.toastSucesso(
-                                      'Imagem adicionada com sucesso');
-                                } catch (e) {
-                                  Util.toastErro(
-                                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
-                                }
-                              },
-                            ),
-                            const SizedBox(height: 10),
-                            CustomDialogButton(
-                              icon: Icons.camera_alt_outlined,
-                              onClick: () async {
-                                try {
-                                  final XFile? image = await picker.pickImage(
-                                      source: ImageSource.camera);
-                                  updateImagePathMap!(image!.path);
-                                  Navigator.pop(context);
-                                  Util.toastSucesso(
-                                      'Imagem adicionada com sucesso');
-                                } catch (e) {
-                                  Util.toastErro(
-                                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
-                                }
-                              },
-                              text: "Câmera",
-                            )
-                          ],
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                  
+                  final imagePath = await Util.obtainImagePathMaps(context);
+                  widget.updateImagePathMap!(imagePath);
+                  setState(() {});
                 },
                 child: const Icon(
                   Icons.photo_camera_outlined,
