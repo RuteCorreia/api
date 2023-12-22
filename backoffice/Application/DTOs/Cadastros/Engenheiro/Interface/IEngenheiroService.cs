@@ -1,0 +1,19 @@
+﻿using Application.DTOs.Cadastros.Cliente.ViewModel;
+using Application.DTOs.Cadastros.Engenheiro.ViewModel;
+
+namespace Application.DTOs.Cadastros.Engenheiro.Interface;
+
+public interface IEngenheiroService 
+{
+    Task<IEnumerable<EngenheiroViewModel>> GetAllAsync();
+
+    Task<EngenheiroViewModel> GetByIdAsync(int id);
+
+    Task<EngenheiroViewModel> GetByLoginAsync(string email, string password);
+
+    Task AddAsync(EngenheiroViewModel obj);
+
+    Task UpdateAsync(EngenheiroViewModel obj);
+
+    Task DeleteAsync(int id);
+}

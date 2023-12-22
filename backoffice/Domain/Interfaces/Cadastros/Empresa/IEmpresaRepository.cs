@@ -1,14 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using Entities.Entidades.Cadastros.Empresa;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Empresa
+namespace Domain.Interfaces.Cadastros.Empresa;
+
+public interface IEmpresaRepository
 {
-    public interface IEmpresaRepository : IBaseRepository<Entities.Entidades.Cadastros.Empresa.Empresa>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Empresa.Empresa obj);
+    Task UpdateAsync(Entidades.Cadastros.Empresa.Empresa obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Empresa.Empresa>> GetAllAsync();
+    Task<Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int id);
 }

@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AlturaVoo
+namespace Domain.Interfaces.Cadastros.AlturaVoo;
+
+public interface IAlturaVooRepository
 {
-    public interface IAlturaVooRepository : IBaseRepository<Entities.Entidades.Cadastros.Altura_Voo.AlturaVoo>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Altura_Voo.AlturaVoo obj);
+    Task UpdateAsync(Entidades.Cadastros.Altura_Voo.AlturaVoo obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Altura_Voo.AlturaVoo>> GetAllAsync();
+    Task<Entidades.Cadastros.Altura_Voo.AlturaVoo> GetByIdAsync(int id);
 }

@@ -1,0 +1,25 @@
+﻿@model Domain.Entidades.Cadastros.Empresa.PlanoDeContrato
+
+@{
+    ViewData["Title"] = GetType().Name.Replace("Views_", "").Replace("_Details", "");
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detalhes</h1>
+
+<div>
+    <h4>PlanoDeContrato</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NomeDoPlano)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NomeDoPlano)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.IdPlano">Editar</a> |
+    <a asp-action="Index">Voltar a Lista</a>
+</div>

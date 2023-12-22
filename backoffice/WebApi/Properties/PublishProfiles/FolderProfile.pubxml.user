@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121.
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Deploy\FLYTEC-API-3</_PublishTargetUrl>
+    <History>True|2023-12-11T20:45:50.6448253Z;True|2023-12-11T17:42:52.2970941-03:00;True|2023-12-11T17:33:42.7029331-03:00;False|2023-12-11T17:32:55.5521028-03:00;True|2023-12-11T17:04:31.4027577-03:00;True|2023-12-11T17:02:10.8835510-03:00;True|2023-12-11T16:58:47.8488069-03:00;True|2023-12-11T16:49:56.8614972-03:00;True|2023-12-11T16:24:04.9640888-03:00;True|2023-12-11T16:22:38.4620691-03:00;True|2023-12-01T12:32:12.7431712-03:00;True|2023-12-01T12:25:45.2797002-03:00;True|2023-12-01T12:15:58.2419494-03:00;True|2023-12-01T12:13:23.1456748-03:00;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas
+namespace Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
+
+public interface IAplicacaoRecomendacoesTecnicasRepository
 {
-    public interface IAplicacaoRecomendacoesTecnicasRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas();
-    }
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetByIdAsync(int id);
 }

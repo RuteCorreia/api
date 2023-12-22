@@ -1,16 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Aeronave
+namespace Domain.Interfaces.Cadastros.Aeronave;
+
+public interface IAeronaveRepository
 {
-    public interface IAeronaveRepository : IBaseRepository<Entities.Entidades.Cadastros.Aeronaves.Aeronave>
-    {
-        Entities.Entidades.Cadastros.Aeronaves.Aeronave BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aeronaves.Aeronave> ListarTodasAeronaves();
-
-    }
+    Task AddAsync(Entidades.Cadastros.Aeronave.Aeronave obj);
+    Task UpdateAsync(Entidades.Cadastros.Aeronave.Aeronave obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync();
+    Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int id);
 }

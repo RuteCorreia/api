@@ -1,0 +1,17 @@
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+
+namespace Backoffice.Controllers;
+
+public class TablesController : Controller
+{
+		public IActionResult TableElements()
+		{
+				return View();
+		}
+
+		public IActionResult TablePlugins()
+		{
+				return View();
+		}
+}

@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoContrato
+namespace Domain.Interfaces.Cadastros.AplicacaoContrato;
+
+public interface IAplicacaoContratoRepository
 {
-    public interface IAplicacaoContratoRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoContrato> ListarTodasAplicacoesContrato();
-    }
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoContrato obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoContrato obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoContrato>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoContrato> GetByIdAsync(int id);
 }

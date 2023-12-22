@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AlvoBiologico
+namespace Domain.Interfaces.Cadastros.AlvoBiologico;
+
+public interface IAlvoBiologicoRepository
 {
-    public interface IAlvoBiologicoRepository : IBaseRepository<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>
-    {
-        Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> ListarTodosAlvosBiologicos();
-    }
+    Task AddAsync(Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj);
+    Task UpdateAsync(Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync();
+    Task<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int id);
 }

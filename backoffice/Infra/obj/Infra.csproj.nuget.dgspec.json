@@ -4,14 +4,14 @@
     "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\Infra.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj",
-        "projectName": "Entities",
-        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectName": "Domain",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -44,11 +44,82 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "FluentValidation": {
+              "target": "Package",
+              "version": "[11.7.1, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
             "Microsoft.Extensions.Identity.Stores": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[7.0.13, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[6.24.0, )"
             }
           },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectName": "Helpers",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\rapha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
           "imports": [
             "net461",
             "net462",
@@ -97,8 +168,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj"
+              "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
+              },
+              "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+                "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj"
               }
             }
           }
@@ -118,6 +192,16 @@
               "version": "[7.0.8, )"
             },
             "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.8, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[7.0.8, )"
             }

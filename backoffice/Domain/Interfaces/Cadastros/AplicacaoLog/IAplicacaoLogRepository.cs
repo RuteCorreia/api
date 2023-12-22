@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoLog
+namespace Domain.Interfaces.Cadastros.AplicacaoLog;
+
+public interface IAplicacaoLogRepository
 {
-    public interface IAplicacaoLogRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoLog> ListarTodasAplicacoesLog();
-    }
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoLog obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoLog obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoLog>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoLog> GetByIdAsync(int id);
 }

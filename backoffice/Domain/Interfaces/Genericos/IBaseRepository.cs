@@ -1,22 +1,14 @@
-﻿using Entities.Entidades.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Domain.Interfaces.Genericos;
 
-namespace Domain.Interfaces.Genericos
+public interface IBaseRepository<TEntity> where TEntity : class
 {
-    public interface IBaseRepository<TEntity> where TEntity : class
-    {
-        void Inserir(TEntity obj);
+    Task AddAsync(TEntity obj);
 
-        void Atualizar(TEntity obj);
+    Task UpdateAsync(TEntity obj);
 
-        void Remover(int id);
+    Task DeleteAsync(int id);
 
-        IList<TEntity> ListarTodos();
+    Task<IEnumerable<TEntity>> GetAllAsync();
 
-        TEntity BuscarPorId(int id);
-    }
+    Task<TEntity> GetByIdAsync(int id);
 }

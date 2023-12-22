@@ -1,4 +1,0 @@
-@@{
-  ViewData["AppClass"] = "app-content-full-width";
-  ViewData["AppSidebarNone"] = true;
-}

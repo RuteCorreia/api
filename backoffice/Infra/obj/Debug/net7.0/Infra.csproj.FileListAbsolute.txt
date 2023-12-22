@@ -1,5 +1,0 @@
-C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.AssemblyReference.cache
-C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfoInputs.cache
-C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.AssemblyInfo.cs
-C:\Users\GAMER ZONE RYZEN\Desktop\Clones\flytec\backoffice\Infra\obj\Debug\net7.0\Infra.csproj.CoreCompileInputs.cache

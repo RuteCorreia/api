@@ -1,14 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using Entities.Entidades.Cadastros.Empresa;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.PlanoContrato
+namespace Domain.Interfaces.Cadastros.PlanoDeContrato;
+
+public interface IPlanoDeContratoRepository
 {
-    public interface IPlanoContratoRepository : IBaseRepository<PlanoDeContrato>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Empresa.PlanoDeContrato obj);
+    Task UpdateAsync(Entidades.Cadastros.Empresa.PlanoDeContrato obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Empresa.PlanoDeContrato>> GetAllAsync();
+    Task<Entidades.Cadastros.Empresa.PlanoDeContrato> GetByIdAsync(int id);
 }

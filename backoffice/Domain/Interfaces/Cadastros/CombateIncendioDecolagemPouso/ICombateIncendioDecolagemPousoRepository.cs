@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso
+namespace Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+
+public interface ICombateIncendioDecolagemPousoRepository
 {
-    public interface ICombateIncendioDecolagemPousoRepository : IBaseRepository<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>
-    {
-        Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> ListarTodosCombatesIncendioDecolagemPouso();
-    }
+    Task AddAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
+    Task UpdateAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetAllAsync();
+    Task<Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> GetByIdAsync(int id);
 }

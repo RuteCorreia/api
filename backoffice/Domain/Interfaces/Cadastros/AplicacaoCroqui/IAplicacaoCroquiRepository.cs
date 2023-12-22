@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoCroqui
+namespace Domain.Interfaces.Cadastros.AplicacaoCroqui;
+
+public interface IAplicacaoCroquiRepository
 {
-    public interface IAplicacaoCroquiRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCroqui> ListarTodasAplicacoesCroqui();
-    }
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoCroqui obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoCroqui obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoCroqui>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoCroqui> GetByIdAsync(int id);
 }

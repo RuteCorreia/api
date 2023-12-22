@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.AplicacaoCaracteristicas
+namespace Domain.Interfaces.Cadastros.AplicacaoCaracteristicas;
+
+public interface IAplicacaoCaracteristicasRepository
 {
-    public interface IAplicacaoCaracteristicasRepository : IBaseRepository<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>
-    {
-        Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> ListarTodasAplicacoesCaracteristicas();
-    }
+    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas obj);
+    Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas>> GetAllAsync();
+    Task<Entidades.Cadastros.Aplicacao.AplicacaoCaracteristicas> GetByIdAsync(int id);
 }

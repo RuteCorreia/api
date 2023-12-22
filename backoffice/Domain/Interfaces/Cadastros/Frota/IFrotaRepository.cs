@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Frota
+namespace Domain.Interfaces.Cadastros.Frota;
+
+public interface IFrotaRepository
 {
-    public interface IFrotaRepository : IBaseRepository<Entities.Entidades.Cadastros.Frota.Frota>
-    {
-        Entities.Entidades.Cadastros.Frota.Frota BuscarPorId(int? Id);
-        List<Entities.Entidades.Cadastros.Frota.Frota> ListarFrotas();
-    }
+    Task AddAsync(Entidades.Cadastros.Frota.Frota obj);
+    Task UpdateAsync(Entidades.Cadastros.Frota.Frota obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Frota.Frota>> GetAllAsync();
+    Task<Entidades.Cadastros.Frota.Frota> GetByIdAsync(int id);
 }

@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Estados
+namespace Domain.Interfaces.Cadastros.Estados;
+
+public interface IEstadosRepository
 {
-    public interface IEstadosRepository : IBaseRepository<Entities.Entidades.Cadastros.Estados.Estados>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Estados.Estados obj);
+    Task UpdateAsync(Entidades.Cadastros.Estados.Estados obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Estados.Estados>> GetAllAsync();
+    Task<Entidades.Cadastros.Estados.Estados> GetByIdAsync(int id);
 }
