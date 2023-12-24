@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
@@ -6,9 +7,19 @@ import 'my_activity_page.dart';
 import 'relatorio_aplicacao_page.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AplicacoesPage extends StatelessWidget {
-  AplicacoesPage({super.key});
+class AplicacoesPage extends StatefulWidget {
+  const AplicacoesPage({super.key});
+
+  @override
+  State<AplicacoesPage> createState() => _AplicacoesPageState();
+}
+
+class _AplicacoesPageState extends State<AplicacoesPage> {
   final ImagePicker picker = ImagePicker();
+
+  String _humiditySelectedInitial = 'Selecione';
+
+  String _humiditySelectedFinal = 'Selecione';
 
   @override
   Widget build(BuildContext context) {
@@ -100,23 +111,54 @@ class AplicacoesPage extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 30),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedInitial = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child:
+                              ComboBox(selectedName: _humiditySelectedInitial))
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedFinal = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child: ComboBox(selectedName: _humiditySelectedFinal))
                     ],
                   )
                 ],
