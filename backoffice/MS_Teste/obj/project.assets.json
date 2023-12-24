@@ -2303,23 +2303,39 @@
     ]
   },
   "packageFolders": {
+<<<<<<< HEAD
     "C:\\Users\\rapha\\.nuget\\packages\\": {},
+=======
+    "C:\\Users\\User\\.nuget\\packages\\": {},
+>>>>>>> master
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
+<<<<<<< HEAD
       "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
       "projectName": "MS_Teste",
       "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
       "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\obj\\",
+=======
+      "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
+      "projectName": "MS_Teste",
+      "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
+      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\MS_Teste\\obj\\",
+>>>>>>> master
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
+<<<<<<< HEAD
         "C:\\Users\\rapha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+=======
+        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
+>>>>>>> master
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2328,6 +2344,11 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+<<<<<<< HEAD
+=======
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc": {},
+>>>>>>> master
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -2382,5 +2403,23 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
       }
     }
+<<<<<<< HEAD
   }
+=======
+  },
+  "logs": [
+    {
+      "code": "Undefined",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Problema ao ler o arquivo de cache C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\MS_Teste\\obj\\project.nuget.cache: Invalid property identifier character: <. Path 'version', line 3, position 0."
+    },
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "Você está executando a operação 'restore' com uma fonte 'HTTP', 'http://nuget.syncfusion.com/nuget_aspnetmvc/nuget/getsyncfusionpackages/aspnetmvc'. O acesso não HTTPS será removido em uma versão futura. Considere migrar para uma fonte 'HTTPS'."
+    }
+  ]
+>>>>>>> master
 }
