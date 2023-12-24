@@ -64,6 +64,11 @@ class AplicacoesPage extends StatelessWidget {
                   },
                   child: const UploadButton()),
               const SizedBox(height: 24),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [],
+              ),
+             
               const Center(
                 child: Text(
                   'Condições climáticas durante a aplicação',
@@ -82,21 +87,33 @@ class AplicacoesPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      CustomText(text: "INICIAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 40),
+                          CustomText(text: "Temperatura (°C)"),
+                          SizedBox(height: 12),
+                          ComboBox(selectedName: "Selecione")
+                        ],
+                      ),
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      CustomText(text: "FINAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 40),
+                          CustomText(text: "Temperatura (°C)"),
+                          SizedBox(height: 12),
+                          ComboBox(selectedName: "Selecione")
+                        ],
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
