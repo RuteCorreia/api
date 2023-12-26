@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/widgets/degree_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,6 +16,7 @@ enum Unidade { KG, L, NENHUM }
 
 class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   Unidade _unidade = Unidade.NENHUM;
+  String _degree = "Selecione";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,7 +196,21 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Ângulo'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: DegreeSelect(onChangeDegree: (value) {
+                              setState(() {
+                                _degree = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _degree)),
             Center(
               child: CustomButton(
                 title: "OK",
