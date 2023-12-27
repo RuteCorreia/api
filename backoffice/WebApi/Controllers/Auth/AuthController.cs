@@ -1,5 +1,7 @@
 ﻿using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
+using Domain.Entidades.User;
+using Domain.Interfaces.Genericos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,5 +49,17 @@ public class AuthController : ControllerBase
         }
 
         return BadRequest("Campos de login inválidos");
+    }
+
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUsers()
+    {
+            var result = await _authService.GetUsers();
+            if (result.Any())
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
     }
 }

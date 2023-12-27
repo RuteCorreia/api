@@ -27,7 +27,7 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task<IEnumerable<Usuario>> GetAllAsync()
     {
-        throw new NotImplementedException();
+       return _contextBase.Usuario.ToList();
     }
 
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));

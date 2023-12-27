@@ -25,8 +25,11 @@ import { MatTableModule } from '@angular/material/table';
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Ação</th>
           <td mat-cell *matCellDef="let user">
-            <button mat-icon-button color="accent">
-              <mat-icon>search</mat-icon>
+            <button mat-icon-button color="accent" onclick="remove()">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" onclick="remove()">
+              <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>
@@ -67,9 +70,9 @@ import { MatTableModule } from '@angular/material/table';
   ],
 })
 export class UsersListComponent {
-  public displayedColumns = ['id', 'name', 'email'];
+  public displayedColumns = ['id', 'nome', 'email'];
 
-  public fullColumns = ['id', 'name', 'email', 'action'];
+  public fullColumns = ['id', 'nome', 'email', 'action'];
 
   public userService = inject(UserService);
 

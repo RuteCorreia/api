@@ -96,6 +96,12 @@ public class UserAuthService : IUserAuthService
         await _usuarioRepository.AddAsync(usuario);
     }
 
+    private async Task<IEnumerable<Usuario>> GetUsers()
+    {
+        var users = await _usuarioRepository.GetAllAsync();
+        return users;
+    }
+
     private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
     {
         var claims = await GetUserClaims(user, userName, nrUsuario);
@@ -143,4 +149,10 @@ public class UserAuthService : IUserAuthService
     private long ToUnixEpochDate(DateTime date)
         => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
             .TotalSeconds);
+
+    Task<IEnumerable<Usuario>> IUserAuthService.GetUsers()
+    {
+        var users = _usuarioRepository.GetAllAsync();
+        return users;
+    }
 }
