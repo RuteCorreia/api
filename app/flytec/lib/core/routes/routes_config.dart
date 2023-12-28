@@ -37,7 +37,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
-            return LoginPage();
+            return const LoginPage();
           },
         ),
         GoRoute(
@@ -157,7 +157,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplicacoes',
           builder: (BuildContext context, GoRouterState state) {
-            return AplicacoesPage();
+            return const AplicacoesPage();
           },
         ),
         GoRoute(

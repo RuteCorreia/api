@@ -4,6 +4,10 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/save_local_controller.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
+import 'package:flytec/features/aeronave/domain/usecases/get_veiculante_usecase.dart';
+import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
+import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
@@ -13,6 +17,10 @@ import 'package:flytec/features/executor/domain/repositories/executor_repository
 import 'package:flytec/features/executor/domain/usecases/authentication_usecase.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/domain/usecases/get_piloto_usecase.dart';
+import 'package:flytec/features/produto/data/models/produto_model.dart';
+import 'package:flytec/features/produto/domain/usecases/get_produtos_usecase.dart';
+import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
+import 'package:flytec/features/veiculante/domain/usecases/get_veiculante_usecase.dart';
 import 'package:flytec/features/weather/data/models/weather_model.dart';
 import 'package:flytec/features/weather/domain/repositories/weather_repository.dart';
 import 'package:flytec/features/weather/domain/usecases/get_current_weather_usecase.dart';
@@ -44,6 +52,7 @@ class _LoginPageState extends State<LoginPage> {
 
   double currentLatitude = 0;
   double currentLongitude = 0;
+  bool isLoading = false;
   @override
   void initState() {
     super.initState();
@@ -71,6 +80,9 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           if (state is AuthenticationValidatorState) {
             Util.toastErro(state.message);
+            setState(() {
+              isLoading = false;
+            });
           }
           if (state is AuthenticationSuccessState) {
             Util.Token = state.authModel!.token!;
@@ -117,7 +129,32 @@ class _LoginPageState extends State<LoginPage> {
                   final culturas = r as List<CulturaModel>;
                   getIt<GlobalConfigVars>().setCulturas(culturaData: culturas);
                 });
-              })
+              }),
+              getIt<GetProdutosUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final produtos = r as List<ProdutoModel>;
+                  getIt<GlobalConfigVars>().setProdutos(produtosData: produtos);
+                });
+              }),
+              getIt<GetAlvoBiologicoUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final alvosBiologicos = r as List<AlvoBiologicoModel>;
+                  getIt<GlobalConfigVars>()
+                      .setAlvosBilogicos(alvosBilogicosData: alvosBiologicos);
+                });
+              }),
+              getIt<GetVeiculanteUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final veculantes = r as List<VeiculanteModel>;
+                  getIt<GlobalConfigVars>().setVeiculantes(data: veculantes);
+                });
+              }),
+              getIt<GetAeroNaveUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final aeronaves = r as List<AeroNaveModel>;
+                  getIt<GlobalConfigVars>().setAeroNaves(data: aeronaves);
+                });
+              }),
             ]);
 
             response.whenComplete(() {
@@ -130,6 +167,9 @@ class _LoginPageState extends State<LoginPage> {
                   "SAVED PRELOAD CACHE  ${value.toString()} ",
                 );
               });
+              setState(() {
+                isLoading = false;
+              });
               Future.delayed(const Duration(seconds: 1), () {
                 context.push("/home");
               });
@@ -137,11 +177,14 @@ class _LoginPageState extends State<LoginPage> {
           }
           if (state is AuthenticationError) {
             Util.toastErro(state.message);
+            setState(() {
+              isLoading = false;
+            });
           }
         },
         builder: (context, state) {
           return ModalProgressHUD(
-            inAsyncCall: state is AuthenticationLoadingState,
+            inAsyncCall: isLoading, //state is AuthenticationLoadingState,
             progressIndicator: const CircularProgressIndicator.adaptive(
               valueColor: AlwaysStoppedAnimation(Colors.green),
             ),
@@ -218,6 +261,9 @@ class _LoginPageState extends State<LoginPage> {
                             context: context,
                           ),
                         );
+                        setState(() {
+                          isLoading = true;
+                        });
                       },
                     ),
                     const SizedBox(height: 25),

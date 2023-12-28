@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
-
-import 'my_activity_page.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RecomendacoesTecnicas extends StatefulWidget {
   const RecomendacoesTecnicas({super.key});
@@ -15,6 +18,10 @@ enum Unidade { KG, L, NENHUM }
 
 class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   Unidade _unidade = Unidade.NENHUM;
+
+  String veiculanteSelecionado = "";
+  String aeronaveSelecionada = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,12 +41,72 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: 'Veiculante'),
-                    SizedBox(height: 14),
-                    ComboBox(selectedName: "Selecione"),
+                    const CustomText(text: 'Veiculante'),
+                    const SizedBox(height: 14),
+                    CustomComboBox(
+                      selectedName: veiculanteSelecionado.isEmpty
+                          ? "Selecione"
+                          : veiculanteSelecionado,
+                      onTap: () {
+                        showMaterialModalBottomSheet(
+                          context: context,
+                          builder: (context) => SingleChildScrollView(
+                            controller: ModalScrollController.of(context),
+                            child: Container(
+                              height: 400,
+                              color: Colors.white,
+                              child: Padding(
+                                padding: const EdgeInsets.all(0.0),
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 500,
+                                        child: ListView.builder(
+                                            padding: EdgeInsets.zero,
+                                            itemCount: getIt<GlobalConfigVars>()
+                                                .veiculantes
+                                                .length,
+                                            itemBuilder: (ctx, index) {
+                                              final veiculante =
+                                                  getIt<GlobalConfigVars>()
+                                                      .veiculantes[index];
+                                              return Container(
+                                                margin: const EdgeInsets.only(
+                                                    bottom: 2),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.grey
+                                                      .withOpacity(0.1),
+                                                ),
+                                                child: ListTile(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      veiculanteSelecionado =
+                                                          veiculante.nome!;
+                                                    });
+                                                    context.pop();
+                                                  },
+                                                  style: ListTileStyle.drawer,
+                                                  title: Text(
+                                                      "${veiculante.nome}"),
+                                                ),
+                                              );
+                                            }),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
                 Column(
@@ -151,7 +218,63 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 20),
             const CustomText(text: 'Aeronave'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBox(
+              selectedName: aeronaveSelecionada.isEmpty
+                  ? "Selecione"
+                  : aeronaveSelecionada,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .aeronaves
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final aeronave = getIt<GlobalConfigVars>()
+                                          .aeronaves[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              aeronaveSelecionada =
+                                                  aeronave.prefixo!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${aeronave.prefixo}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 10),
             const SizedBox(height: 14),
             const CustomText(text: 'Altura do voo (m)'),

@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
+import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
+import 'package:flytec/features/produto/data/models/produto_model.dart';
+import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/weather/data/models/weather_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -25,7 +29,13 @@ class SaveLocalDataController {
       "executores": executorModelToJson(getIt<GlobalConfigVars>().executores),
       "weather": weatherModelToJson(getIt<GlobalConfigVars>().weather),
       "culturas": culturaModelToJson(getIt<GlobalConfigVars>().culturas),
-      "pilotos": pilotoModelToJson(getIt<GlobalConfigVars>().pilotos)
+      "produtos": produtoModelToJson(getIt<GlobalConfigVars>().produtos),
+      "pilotos": pilotoModelToJson(getIt<GlobalConfigVars>().pilotos),
+      "aeronaves": aeroNaveModelToJson(getIt<GlobalConfigVars>().aeronaves),
+      "veiculantes":
+          veiculanteModelToJson(getIt<GlobalConfigVars>().veiculantes),
+      "alvosBiologicos":
+          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos)
     };
     return preloadData;
   }

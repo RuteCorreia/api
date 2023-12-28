@@ -7,7 +7,6 @@ import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
-import 'steps/aplication_first_step.dart';
 
 class IdentificacaoAreaTratamento extends StatefulWidget {
   const IdentificacaoAreaTratamento({super.key});
@@ -47,7 +46,7 @@ class _IdentificacaoAreaTratamentoState
                       const SizedBox(height: 10),
                       SizedBox(
                           width: 150,
-                          child: CustomCombo(
+                          child: CustomComboBox(
                             selectedName: "Selecione",
                             onTap: () {},
                           )),
@@ -60,7 +59,7 @@ class _IdentificacaoAreaTratamentoState
                       const SizedBox(height: 10),
                       SizedBox(
                           width: 150,
-                          child: CustomCombo(
+                          child: CustomComboBox(
                             selectedName: "Selecione",
                             onTap: () {},
                           )),
@@ -107,7 +106,7 @@ class _IdentificacaoAreaTratamentoState
                 ),
               ),
               const SizedBox(height: 14),
-              CustomCombo(
+              CustomComboBox(
                 selectedName:
                     selectedCultura.isEmpty ? "Selecione" : selectedCultura,
                 onTap: () {
