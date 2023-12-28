@@ -23,9 +23,9 @@ export class UserService extends ResourceService<User>{
   public selectedUserId = signal(0);
   public router = inject(Router);
 
-  deletePost(id: number): Observable<User> {
+  deletePost(id: number): Observable<string> {
     return this.http
-      .delete<User>(`https://localhost:7221/api/v1/auth/removeUser/${id}`)
+      .delete<string>(`https://localhost:7221/api/v1/auth/removeUser?userId=` + id)
       .pipe(tap(() => this.removeResource(id)));
   }
 

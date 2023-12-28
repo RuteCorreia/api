@@ -63,6 +63,23 @@ public class AuthController : ControllerBase
             return BadRequest(result);
     }
 
+    //[HttpPost("UpdateUser")]
+    //public async Task<IActionResult> UpdateUser([FromBody] UserLoginViewModel user)
+    //{
+    //    if (ModelState.IsValid)
+    //    {
+    //        var result = await _authService.LoginAsync(user);
+    //        if (result.Item1)
+    //        {
+    //            return Ok(new { success = true, token = result.Item2 });
+    //        }
+
+    //        return BadRequest(result.Item2);
+    //    }
+
+    //    return BadRequest("Campos de login inválidos");
+    //}
+
     [HttpDelete("RemoveUser")]
     public async Task<IActionResult> RemoveUser(string userId)
     {
