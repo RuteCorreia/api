@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:go_router/go_router.dart';
@@ -17,7 +18,8 @@ class AplicacoesPage extends StatefulWidget {
 
 class _AplicacoesPageState extends State<AplicacoesPage> {
   final ImagePicker picker = ImagePicker();
-
+  String _temperatureSelectedInitial = "Selecione";
+  String _temperatureSelectedFinal = "Selecione";
   String _imageMapsPath = "";
 
   @override
@@ -73,7 +75,6 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                     setState(() {});
                   },
                   child: const UploadButton()),
-              
               _imageMapsPath.isNotEmpty
                   ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,23 +104,55 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 ),
               ),
               const SizedBox(height: 40),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "Temperatura (°C)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: TemperatureSelect(
+                                          onChangedTemperature: (value) {
+                                        setState(() {
+                                          _temperatureSelectedInitial = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child: ComboBox(
+                              selectedName: _temperatureSelectedInitial))
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "Temperatura (°C)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: TemperatureSelect(
+                                          onChangedTemperature: (value) {
+                                        setState(() {
+                                          _temperatureSelectedFinal = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child:
+                              ComboBox(selectedName: _temperatureSelectedFinal))
                     ],
                   )
                 ],
