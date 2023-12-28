@@ -13,7 +13,8 @@ class MyActivityPage extends StatefulWidget {
 }
 
 class _AddFireFightingSecondStepState extends State<MyActivityPage> {
-  late DateTime? dataSelecionada = DateTime.now();
+  late DateTime? dataInicialSelecionada = DateTime.now();
+  late DateTime? dataFinalSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
 
@@ -71,10 +72,10 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                           ),
                           const SizedBox(height: 20),
                           CustomComboBox(
-                            selectedName: dataSelecionada == null
+                            selectedName: dataInicialSelecionada == null
                                 ? "Selecione"
                                 : DateFormat('dd/MM/yyyy')
-                                    .format(dataSelecionada!),
+                                    .format(dataInicialSelecionada!),
                             onTap: () async {
                               final data = await showDatePicker(
                                 confirmText: "Selecionar data",
@@ -86,7 +87,7 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                                 lastDate: DateTime(2024),
                               );
                               setState(() {
-                                dataSelecionada = data;
+                                dataInicialSelecionada = data;
                               });
                             },
                           ),
@@ -206,9 +207,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
               const CustomText(text: 'Selecione a data inicial'),
               const SizedBox(height: 14),
               CustomComboBox(
-                selectedName: dataSelecionada == null
+                selectedName: dataInicialSelecionada == null
                     ? "Selecione"
-                    : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+                    : DateFormat('dd/MM/yyyy').format(dataInicialSelecionada!),
                 onTap: () async {
                   final data = await showDatePicker(
                     confirmText: "Selecionar data",
@@ -220,7 +221,7 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                     lastDate: DateTime(2024),
                   );
                   setState(() {
-                    dataSelecionada = data;
+                    dataInicialSelecionada = data;
                   });
                 },
               ),
@@ -228,9 +229,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
               const CustomText(text: 'Selecione a data final'),
               const SizedBox(height: 14),
               CustomComboBox(
-                selectedName: dataSelecionada == null
+                selectedName: dataFinalSelecionada == null
                     ? "Selecione"
-                    : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+                    : DateFormat('dd/MM/yyyy').format(dataFinalSelecionada!),
                 onTap: () async {
                   final data = await showDatePicker(
                     confirmText: "Selecionar data",
@@ -239,10 +240,10 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    lastDate: DateTime.now(),
                   );
                   setState(() {
-                    dataSelecionada = data;
+                    dataFinalSelecionada = data;
                   });
                 },
               ),
