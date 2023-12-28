@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/widgets/observations_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart' as lct;
@@ -22,6 +24,11 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+
+  final List<String> _observations = [];
+  final List<int> _observationsIndex = [];
+  TextEditingController _observationTextField = TextEditingController();
+  String _selectedObservation = "Selecione";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -265,10 +272,24 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const TextField(
+              child: TextField(
                 minLines: 4,
                 maxLines: 4,
-                decoration: InputDecoration(
+                controller: _observationTextField,
+                textInputAction: TextInputAction.done,
+                onSubmitted: (value) {
+                  if (_observationTextField.text.isEmpty) return;
+                  try {
+                    _observations.add(_observationTextField.text);
+                    _observationsIndex.add(_observations.length);
+                    _observationTextField.clear();
+                    setState(() {});
+                    Util.toastSucesso("Observação adicionada com sucesso!");
+                  } catch (e) {
+                    Util.toastErro("Observação não foi adicionada");
+                  }
+                },
+                decoration: const InputDecoration(
                     hintText: "-",
                     border: InputBorder.none,
                     hintStyle: TextStyle(
@@ -284,89 +305,109 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 20, right: 24, bottom: 8),
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side:
-                          const BorderSide(width: 2, color: Color(0xFFC21B43)),
-                      borderRadius: BorderRadius.circular(10),
+                InkWell(
+                  onTap: () {
+                    _observationTextField.clear();
+                    setState(() {});
+                  },
+                  child: Container(
+                    height: 40,
+                    padding: const EdgeInsets.only(
+                        top: 8, left: 20, right: 24, bottom: 8),
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFFC21B43)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(),
-                        child: Stack(children: [
-                          SvgPicture.asset(
-                            "assets/images/error_icon.svg",
-                          )
-                        ]),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'LIMPAR',
-                        style: TextStyle(
-                          color: Color(0xFF636363),
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0.11,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(),
+                          child: Stack(children: [
+                            SvgPicture.asset(
+                              "assets/images/error_icon.svg",
+                            )
+                          ]),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        const Text(
+                          'LIMPAR',
+                          style: TextStyle(
+                            color: Color(0xFF636363),
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            height: 0.11,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Container(
-                  height: 40,
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 20, right: 24, bottom: 8),
-                  decoration: ShapeDecoration(
-                    color: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.green,
-                      ),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(),
-                        child: Stack(children: [
-                          SvgPicture.asset(
-                            "assets/images/checkbox.svg",
-                          )
-                        ]),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'SALVAR',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0.11,
+                InkWell(
+                  onTap: () {
+                    if (_observationTextField.text.isEmpty) return;
+                    try {
+                      _observations.add(_observationTextField.text);
+                      _observationsIndex.add(_observations.length);
+                      _observationTextField.clear();
+                      setState(() {});
+                      Util.toastSucesso("Observação adicionada com sucesso!");
+                    } catch (e) {
+                      Util.toastErro("Observação não foi adicionada");
+                    }
+                  },
+                  child: Container(
+                    height: 40,
+                    padding: const EdgeInsets.only(
+                        top: 8, left: 20, right: 24, bottom: 8),
+                    decoration: ShapeDecoration(
+                      color: Colors.green,
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                          width: 2,
+                          color: Colors.green,
                         ),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                    ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 24,
+                          height: 24,
+                          clipBehavior: Clip.antiAlias,
+                          decoration: const BoxDecoration(),
+                          child: Stack(children: [
+                            SvgPicture.asset(
+                              "assets/images/checkbox.svg",
+                            )
+                          ]),
+                        ),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'SALVAR',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w700,
+                            height: 0.11,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 )
               ],
@@ -376,7 +417,41 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
               text: "Relatório do DGPS (Log’s)",
             ),
             const SizedBox(height: 13),
-            const ComboBox(selectedName: "Selecionar Log"),
+            InkWell(
+                onTap: () async {
+                  if (_observationsIndex.isEmpty) return;
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: ObservationsSelect(
+                              findObservation: (find) {
+                                try {
+                                  final observationSelect =
+                                      _observations[find - 1];
+                                  _selectedObservation =
+                                      'LOG ${find.toString().padLeft(3, '0')}';
+                                  _observationTextField = TextEditingController(
+                                      text: observationSelect);
+                                  setState(() {});
+                                  Util.toastSucesso("Observação encontrada");
+                                } catch (e) {
+                                  Util.toastErro("Observação não encontrada");
+                                }
+                              },
+                              observationsIndex: _observationsIndex,
+                              onChangedObservations: (value, index) {
+                                _selectedObservation = value;
+                                _observationTextField = TextEditingController(
+                                    text: _observations[index]);
+                                setState(() {});
+                              },
+                            ));
+                      });
+                },
+                child: ComboBox(selectedName: _selectedObservation)),
+            
             Center(
               child: CustomButton(
                 title: "APLICAÇÕES",
