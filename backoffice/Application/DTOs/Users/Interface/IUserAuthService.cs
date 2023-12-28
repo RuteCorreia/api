@@ -8,4 +8,5 @@ public interface IUserAuthService
     Task<(bool, string)> LoginAsync(UserLoginViewModel user);
     Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user);
     Task<IEnumerable<Usuario>> GetUsers();
+    Task RemoveUser(string id);
 }

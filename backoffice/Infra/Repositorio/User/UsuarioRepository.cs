@@ -22,7 +22,8 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var usuario = await _contextBase.Usuario.FindAsync(id);
+        _contextBase.Usuario.Remove(usuario);
     }
 
     public async Task<IEnumerable<Usuario>> GetAllAsync()

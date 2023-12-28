@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'mod', component: BoardModeratorComponent },
   { path: 'admin', component: BoardAdminComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'usuarios', component: UsersListComponent }
+  { path: 'usuarios', component: UsersListComponent },
 ];
 
 @NgModule({

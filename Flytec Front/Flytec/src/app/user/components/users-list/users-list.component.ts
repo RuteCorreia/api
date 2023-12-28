@@ -4,11 +4,13 @@ import { UserService } from '../../user.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import { Router, RouterLink } from '@angular/router';
+import { take } from 'rxjs';
 // *ngIf="users().length"
 @Component({
   selector: 'app-users-list',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatTableModule, MatButtonModule,RouterLink, MatIconModule],
   template: `
     <section class="container" >
       <div class="container__header">
@@ -25,10 +27,12 @@ import { MatTableModule } from '@angular/material/table';
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Ação</th>
           <td mat-cell *matCellDef="let user">
-            <button mat-icon-button color="accent" onclick="remove()">
+            <button mat-icon-button color="accent">
               <mat-icon>edit</mat-icon>
             </button>
-            <button mat-icon-button color="accent" onclick="remove()">
+            <button mat-icon-button color="accent"
+            (click)="deleteTodo(user.id)"
+>
               <mat-icon>delete</mat-icon>
             </button>
           </td>
@@ -77,4 +81,10 @@ export class UsersListComponent {
   public userService = inject(UserService);
 
   public users = this.userService.users;
+  public router = inject(Router);
+
+  deleteTodo(todoId: number | undefined) {
+    if (!todoId) return;
+    this.userService.deletePost(todoId).pipe(take(1)).subscribe();
+  }
 }

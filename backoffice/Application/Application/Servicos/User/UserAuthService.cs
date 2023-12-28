@@ -155,4 +155,15 @@ public class UserAuthService : IUserAuthService
         var users = _usuarioRepository.GetAllAsync();
         return users;
     }
+
+    public async Task RemoveUser(string id)
+    {
+        var user = _usuarioRepository.DeleteAsync(id);
+        return;
+    }
+
+    public Task RemoveUser()
+    {
+        throw new NotImplementedException();
+    }
 }

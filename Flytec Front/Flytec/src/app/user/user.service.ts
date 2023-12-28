@@ -1,14 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { User } from './userModel';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
+import { Observable, tap } from 'rxjs';
+import { ResourceService } from '../resource/resource.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
 
-  public http = inject(HttpClient);
+export class UserService extends ResourceService<User>{
 
   public userUrl = 'https://localhost:7221/api/v1/auth/users';
   public removeUrl = 'https://localhost:7221/api/v1/auth/removeUser';
@@ -17,5 +20,17 @@ export class UserService {
 
   public users = toSignal(this.users$, { initialValue: [] as User[] });
 
-  public remove = this.http.delete(this.removeUrl);
+  public selectedUserId = signal(0);
+  public router = inject(Router);
+
+  deletePost(id: number): Observable<User> {
+    return this.http
+      .delete<User>(`https://localhost:7221/api/v1/auth/removeUser/${id}`)
+      .pipe(tap(() => this.removeResource(id)));
+  }
+
+  public setSelectedUserId(id: number): void {
+    this.selectedUserId.set(id);
+    this.router.navigateByUrl(`https://localhost:7221/api/v1/auth/removeUser/${id}`);
+  }
 }

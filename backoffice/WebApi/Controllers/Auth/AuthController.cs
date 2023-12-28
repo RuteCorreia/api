@@ -62,4 +62,16 @@ public class AuthController : ControllerBase
 
             return BadRequest(result);
     }
+
+    [HttpDelete("RemoveUser")]
+    public async Task<IActionResult> RemoveUser(string userId)
+    {
+        var result = _authService.RemoveUser(userId);
+        if (result != null)
+        {
+            return Ok();
+        }
+
+        return BadRequest(result);
+    }
 }
