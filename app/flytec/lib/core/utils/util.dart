@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Util {
   static String Token = "";
   static final ImagePicker _imagePicker = ImagePicker();
-
 
   static String getTodayDate() {
     final now = DateTime.now();
@@ -50,7 +50,9 @@ class Util {
                   try {
                     final XFile? image = await _imagePicker.pickImage(
                         source: ImageSource.gallery);
-                    pathImage = image!.path;
+                    final cropper = await ImageCropper.platform
+                        .cropImage(sourcePath: image!.path);
+                    pathImage = cropper!.path;
                     Navigator.pop(context);
                     Util.toastSucesso('Imagem adicionada com sucesso');
                   } catch (e) {
@@ -66,7 +68,9 @@ class Util {
                   try {
                     final XFile? image = await _imagePicker.pickImage(
                         source: ImageSource.camera);
-                    pathImage = image!.path;
+                    final cropper = await ImageCropper.platform
+                        .cropImage(sourcePath: image!.path);
+                    pathImage = cropper!.path;
                     Navigator.pop(context);
                     Util.toastSucesso('Imagem adicionada com sucesso');
                   } catch (e) {
