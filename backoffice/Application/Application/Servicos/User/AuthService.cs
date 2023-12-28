@@ -89,5 +89,12 @@ namespace Application.Application.Servicos.User
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public List<ApplicationUser> GetUsersAsync()
+        {
+            var user =  userManager.Users.ToList();
+
+            return user;
+        }
     }
 }

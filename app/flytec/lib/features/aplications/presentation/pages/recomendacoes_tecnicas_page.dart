@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +18,8 @@ enum Unidade { KG, L, NENHUM }
 class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   Unidade _unidade = Unidade.NENHUM;
   String _humiditySelected = 'Selecione';
+  String _temperatureSelected = "Selecione";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -163,12 +166,27 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: 'Temperatura (ºC)'),
-                    SizedBox(height: 14),
-                    ComboBox(selectedName: "Selecione"),
+                    const CustomText(text: 'Temperatura (ºC)'),
+                    const SizedBox(height: 14),
+                    InkWell(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.grey[100],
+                                    content: TemperatureSelect(
+                                        onChangedTemperature: (value) {
+                                      setState(() {
+                                        _temperatureSelected = value;
+                                      });
+                                    }));
+                              });
+                        },
+                        child: ComboBox(selectedName: _temperatureSelected))
                   ],
                 ),
                 Column(
