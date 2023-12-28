@@ -90,6 +90,10 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                     )
                   : const SizedBox.shrink(),
               const SizedBox(height: 24),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [],
+              ),
               const Center(
                 child: Text(
                   'Condições climáticas durante a aplicação',
@@ -108,53 +112,66 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomText(text: "Temperatura (°C)"),
-                      const SizedBox(height: 12),
-                      InkWell(
-                          onTap: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      backgroundColor: Colors.grey[100],
-                                      content: TemperatureSelect(
-                                          onChangedTemperature: (value) {
-                                        setState(() {
-                                          _temperatureSelectedInitial = value;
-                                        });
-                                      }));
-                                });
-                          },
-                          child: ComboBox(
-                              selectedName: _temperatureSelectedInitial))
+                      const CustomText(text: "INICIAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 40),
+                          const CustomText(text: "Temperatura (°C)"),
+                          const SizedBox(height: 12),
+                          InkWell(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          backgroundColor: Colors.grey[100],
+                                          content: TemperatureSelect(
+                                              onChangedTemperature: (value) {
+                                            setState(() {
+                                              _temperatureSelectedInitial =
+                                                  value;
+                                            });
+                                          }));
+                                    });
+                              },
+                              child: ComboBox(
+                                  selectedName: _temperatureSelectedInitial))
+                        ],
+                      ),
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomText(text: "Temperatura (°C)"),
-                      const SizedBox(height: 12),
-                      InkWell(
-                          onTap: () async {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      backgroundColor: Colors.grey[100],
-                                      content: TemperatureSelect(
-                                          onChangedTemperature: (value) {
-                                        setState(() {
-                                          _temperatureSelectedFinal = value;
-                                        });
-                                      }));
-                                });
-                          },
-                          child:
-                              ComboBox(selectedName: _temperatureSelectedFinal))
+                      const CustomText(text: "FINAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 40),
+                          const CustomText(text: "Temperatura (°C)"),
+                          const SizedBox(height: 12),
+                          InkWell(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          backgroundColor: Colors.grey[100],
+                                          content: TemperatureSelect(
+                                              onChangedTemperature: (value) {
+                                            setState(() {
+                                              _temperatureSelectedFinal = value;
+                                            });
+                                          }));
+                                    });
+                              },
+                              child: ComboBox(
+                                  selectedName: _temperatureSelectedFinal))
+                        ],
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
