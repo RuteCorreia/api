@@ -1,41 +1,23 @@
 {
   "format": 1,
   "restore": {
-<<<<<<< HEAD
-    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {}
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj": {
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj",
-        "projectName": "Entities",
-        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
+        "projectName": "MS_Teste",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\MS_Teste.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Entities\\obj\\",
-=======
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\Entities.csproj": {}
-  },
-  "projects": {
-    "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\Entities.csproj": {
-      "version": "1.0.0",
-      "restore": {
-        "projectUniqueName": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\Entities.csproj",
-        "projectName": "Entities",
-        "projectPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\User\\Desktop\\clones\\K\\flytec\\backoffice\\Entities\\obj\\",
->>>>>>> db29f5ed9683db1985a10ac0883465868f83787b
+        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\MS_Teste\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-<<<<<<< HEAD
           "C:\\Users\\rapha\\AppData\\Roaming\\NuGet\\NuGet.Config",
-=======
-          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config",
->>>>>>> db29f5ed9683db1985a10ac0883465868f83787b
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -62,9 +44,21 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
-            "Microsoft.Extensions.Identity.Stores": {
+            "MSTest.TestAdapter": {
               "target": "Package",
-              "version": "[7.0.11, )"
+              "version": "[2.2.10, )"
+            },
+            "MSTest.TestFramework": {
+              "target": "Package",
+              "version": "[2.2.10, )"
+            },
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[17.5.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.2.0, )"
             }
           },
           "imports": [
@@ -83,11 +77,7 @@
               "privateAssets": "all"
             }
           },
-<<<<<<< HEAD
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100\\RuntimeIdentifierGraph.json"
-=======
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
->>>>>>> db29f5ed9683db1985a10ac0883465868f83787b
         }
       }
     }
