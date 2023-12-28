@@ -10,6 +10,15 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = WebApi
 build_property.RootNamespace = WebApi
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> QA
+>>>>>>> QA
+>>>>>>> QA
 build_property.ProjectDir = C:\Users\rapha\source\repos\flytec\backoffice\WebApi\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
@@ -17,6 +26,13 @@ build_property.RazorLangVersion = 7.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\rapha\source\repos\flytec\backoffice\WebApi
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> QA
+>>>>>>> QA
 =======
 build_property.ProjectDir = C:\Users\User\Desktop\clones\K\flytec\backoffice\WebApi\
 build_property.RazorLangVersion = 7.0
@@ -24,4 +40,12 @@ build_property.SupportLocalizedComponentNames =
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
 build_property.MSBuildProjectDirectory = C:\Users\User\Desktop\clones\K\flytec\backoffice\WebApi
 >>>>>>> master
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> QA
+>>>>>>> QA
+>>>>>>> QA
 build_property._RazorSourceGeneratorDebug = 

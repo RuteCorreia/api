@@ -13,6 +13,8 @@ import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardModeratorComponent } from './board-moderator/board-moderator.component';
 import { BoardUserComponent } from './board-user/board-user.component';
 import { httpInterceptorProviders } from './helpers/http.interceptor';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UsersListComponent } from './user/components/users-list/users-list.component';
 
 
 @NgModule({
@@ -24,13 +26,14 @@ import { httpInterceptorProviders } from './helpers/http.interceptor';
     ProfileComponent,
     BoardAdminComponent,
     BoardModeratorComponent,
-    BoardUserComponent
+    BoardUserComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]

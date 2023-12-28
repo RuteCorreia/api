@@ -8,6 +8,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -34,7 +36,8 @@ class DMS {
 }
 
 class CroquisAreaCliente extends StatelessWidget {
-  const CroquisAreaCliente({super.key});
+  const CroquisAreaCliente({super.key, required this.updateImagePathMap});
+  final void Function(String path)? updateImagePathMap;
 
   @override
   Widget build(BuildContext context) {
@@ -73,10 +76,13 @@ class CroquisAreaCliente extends StatelessWidget {
                 ),
                 CustomCardButton(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return UplodadFotos();
-                    }));
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return UplodadFotos(
+                          updateImagePathMap: updateImagePathMap,
+                        );
+                      },
+                    ));
                   },
                   title: "Foto do Mapa",
                 ),
@@ -101,10 +107,15 @@ class CroquisAreaCliente extends StatelessWidget {
   }
 }
 
-class UplodadFotos extends StatelessWidget {
-  UplodadFotos({super.key});
-  final ImagePicker picker = ImagePicker();
+class UplodadFotos extends StatefulWidget {
+  const UplodadFotos({super.key, required this.updateImagePathMap});
+  final void Function(String path)? updateImagePathMap;
 
+  @override
+  State<UplodadFotos> createState() => _UplodadFotosState();
+}
+
+class _UplodadFotosState extends State<UplodadFotos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,8 +134,9 @@ class UplodadFotos extends StatelessWidget {
             Center(
               child: InkWell(
                 onTap: () async {
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  final imagePath = await Util.obtainImagePathMaps(context);
+                  widget.updateImagePathMap!(imagePath);
+                  setState(() {});
                 },
                 child: const Icon(
                   Icons.photo_camera_outlined,
@@ -146,6 +158,7 @@ class UplodadFotos extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 120),
+            
             Center(
               child: InkWell(
                 onTap: () {
