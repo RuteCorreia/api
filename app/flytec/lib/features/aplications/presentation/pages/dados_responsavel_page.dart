@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'my_activity_page.dart';
 
@@ -101,6 +103,18 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
             const SizedBox(height: 14),
             const CustomTextField(
               text: "Digite aqui",
+            ),
+            const SizedBox(height: 14),
+            const CustomText(text: 'Telefone'),
+            const SizedBox(height: 14),
+            CustomTextField(
+              text: "Digite aqui",
+              inputFormatters: [
+                MaskTextInputFormatter(
+                  mask: '(##) #####-####',
+                  filter: {"#": RegExp(r'[0-9]')},
+                )
+              ],
             ),
             const SizedBox(height: 14),
             AssignmentButton(
@@ -301,9 +315,10 @@ class AssignmentButton extends StatelessWidget {
 }
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key, this.text = "Digite aqui"});
+  const CustomTextField(
+      {super.key, this.text = "Digite aqui", this.inputFormatters});
   final String text;
-
+  final List<TextInputFormatter>? inputFormatters;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -318,6 +333,7 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
       child: TextField(
+        inputFormatters: inputFormatters ?? [],
         decoration: InputDecoration(
             hintText: text,
             border: InputBorder.none,
