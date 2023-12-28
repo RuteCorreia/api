@@ -366,60 +366,59 @@ class HomePaga extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: Container(
-                                    child: const Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            'Direção e velocidade do vento',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 121, 118, 118),
-                                              fontSize: 16,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700,
-                                              height: 0.09,
-                                            ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        child: const Text(
+                                          'Direção e velocidade do vento',
+                                          maxLines: 2,
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 121, 118, 118),
+                                            fontSize: 16,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w700,
+                                          
                                           ),
                                         ),
-                                        SizedBox(height: 30),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: '24',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 32,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.05,
-                                                  ),
+                                      ),
+                                      const SizedBox(height: 20),
+                                      const SizedBox(
+                                        width: double.infinity,
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: '24',
+                                                style: TextStyle(
+                                                  color: Color(0xFF00B45D),
+                                                  fontSize: 32,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                  height: 0.05,
                                                 ),
-                                                TextSpan(
-                                                  text: ' km/h',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 20,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.07,
-                                                  ),
+                                              ),
+                                              TextSpan(
+                                                text: ' km/h',
+                                                style: TextStyle(
+                                                  color: Color(0xFF00B45D),
+                                                  fontSize: 20,
+                                                  fontFamily: 'Inter',
+                                                  fontWeight: FontWeight.w700,
+                                                  height: 0.07,
                                                 ),
-                                              ],
-                                            ),
+                                              ),
+                                            ],
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

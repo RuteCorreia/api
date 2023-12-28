@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/datasource/clientes_datasource.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -19,6 +20,8 @@ enum TipoPessoa { FISICA, JURIDICA }
 
 class _AddContratanteState extends State<AddContratante> {
   TipoPessoa tipoPessoa = TipoPessoa.FISICA;
+  final MapsInformationsController _mapsInformationsController =
+      MapsInformationsControllerBrazil();
   final TextEditingController _nomeClienteController = TextEditingController();
   final TextEditingController _cnpjController = TextEditingController();
   final TextEditingController _inscricaoEstadualController =
@@ -27,6 +30,33 @@ class _AddContratanteState extends State<AddContratante> {
   final TextEditingController _municipioController = TextEditingController();
   final TextEditingController _ufController = TextEditingController();
   bool isPageLoading = false;
+  List<String> _statesOfBrazil = [];
+  Future<void> _obtainStatesOfBrazil() async {
+    _statesOfBrazil = await _mapsInformationsController.getUfBrazil();
+    setState(() {});
+  }
+
+  List<String> _citiesNamesUfBrazil = ['Selecione'];
+  Future<void> _obtainCitiesOfUfBrazil(String uf) async {
+    _citiesNamesUfBrazil.clear();
+    _citiesNamesUfBrazil = ['Selecione'];
+    _cityOfUf = 'Selecione';
+    setState(() {});
+    List<String> cities =
+        await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
+    _citiesNamesUfBrazil.addAll(cities);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _obtainStatesOfBrazil();
+    _obtainCitiesOfUfBrazil('SP');
+  }
+
+  String _uf = 'SP';
+  String _cityOfUf = 'Selecione';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,16 +134,107 @@ class _AddContratanteState extends State<AddContratante> {
                           CustomTextField(
                             textEditingController: _enderecoController,
                           ),
-                          const CustomText(text: 'Município'),
-                          const SizedBox(height: 14),
-                          CustomTextField(
-                            textEditingController: _municipioController,
-                          ),
-                          const CustomText(text: 'UF'),
-                          const SizedBox(height: 14),
-                          CustomTextField(
-                            textInputType: TextInputType.number,
-                            textEditingController: _ufController,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CustomText(text: "UF"),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xFF636363)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 40,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: DropdownButton<String>(
+                                        onChanged: (regiaoSelecionada) async {
+                                          _uf = regiaoSelecionada!;
+                                          await _obtainCitiesOfUfBrazil(
+                                              regiaoSelecionada);
+                                          setState(() {});
+                                        },
+                                        alignment: Alignment.center,
+                                        disabledHint: const SizedBox.shrink(),
+                                        underline: const SizedBox.shrink(),
+                                        value: _uf,
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.black,
+                                        ),
+                                        items: _statesOfBrazil
+                                            .map((String regiao) {
+                                          return DropdownMenuItem(
+                                            value: regiao,
+                                            child: Text(
+                                              regiao,
+                                              style: const TextStyle(
+                                                  color: Color(0xFF636363)),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CustomText(text: "Cidade"),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xFF636363)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      width: 200,
+                                      height: 40,
+                                      alignment: Alignment.center,
+                                      child: DropdownButton<String>(
+                                        onChanged: (city) {
+                                          _cityOfUf = city!;
+                                          setState(() {});
+                                        },
+                                        alignment: Alignment.center,
+                                        disabledHint: const SizedBox.shrink(),
+                                        underline: const SizedBox.shrink(),
+                                        value: _cityOfUf,
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.black,
+                                        ),
+                                        items: _citiesNamesUfBrazil
+                                            .map((String city) {
+                                          return DropdownMenuItem(
+                                            value: city,
+                                            child: SizedBox(
+                                              width: 150,
+                                              child: Text(
+                                                city,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                    color: Color(0xFF636363)),
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ))
+                                ],
+                              )
+                            ],
                           ),
                         ],
                       )
@@ -141,17 +262,108 @@ class _AddContratanteState extends State<AddContratante> {
                           CustomTextField(
                             textEditingController: _enderecoController,
                           ),
-                          const CustomText(text: 'Município'),
-                          const SizedBox(height: 14),
-                          CustomTextField(
-                            textEditingController: _municipioController,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CustomText(text: "UF"),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xFF636363)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      alignment: Alignment.center,
+                                      width: 100,
+                                      height: 40,
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      child: DropdownButton<String>(
+                                        onChanged: (regiaoSelecionada) async {
+                                          _uf = regiaoSelecionada!;
+                                          await _obtainCitiesOfUfBrazil(
+                                              regiaoSelecionada);
+                                          setState(() {});
+                                        },
+                                        alignment: Alignment.center,
+                                        disabledHint: const SizedBox.shrink(),
+                                        underline: const SizedBox.shrink(),
+                                        value: _uf,
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.black,
+                                        ),
+                                        items: _statesOfBrazil
+                                            .map((String regiao) {
+                                          return DropdownMenuItem(
+                                            value: regiao,
+                                            child: Text(
+                                              regiao,
+                                              style: const TextStyle(
+                                                  color: Color(0xFF636363)),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ))
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CustomText(text: "Cidade"),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1,
+                                            color: const Color(0xFF636363)),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      width: 200,
+                                      height: 40,
+                                      alignment: Alignment.center,
+                                      child: DropdownButton<String>(
+                                        onChanged: (city) {
+                                          _cityOfUf = city!;
+                                          setState(() {});
+                                        },
+                                        alignment: Alignment.center,
+                                        disabledHint: const SizedBox.shrink(),
+                                        underline: const SizedBox.shrink(),
+                                        value: _cityOfUf,
+                                        icon: const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.black,
+                                        ),
+                                        items: _citiesNamesUfBrazil
+                                            .map((String city) {
+                                          return DropdownMenuItem(
+                                            value: city,
+                                            child: SizedBox(
+                                              width: 150,
+                                              child: Text(
+                                                city,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 1,
+                                                style: const TextStyle(
+                                                    color: Color(0xFF636363)),
+                                              ),
+                                            ),
+                                          );
+                                        }).toList(),
+                                      ))
+                                ],
+                              )
+                            ],
                           ),
-                          /*  const CustomText(text: 'UF'),
-                          const SizedBox(height: 14),
-                          CustomTextField(
-                            textInputType: TextInputType.number,
-                            textEditingController: _ufController,
-                          ), */
                         ],
                       ),
                 Center(
