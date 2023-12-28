@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
@@ -21,6 +22,10 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   String _temperatureSelectedInitial = "Selecione";
   String _temperatureSelectedFinal = "Selecione";
   String _imageMapsPath = "";
+
+  String _humiditySelectedInitial = 'Selecione';
+
+  String _humiditySelectedFinal = 'Selecione';
 
   @override
   Widget build(BuildContext context) {
@@ -175,23 +180,54 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 ],
               ),
               const SizedBox(height: 30),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedInitial = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child:
+                              ComboBox(selectedName: _humiditySelectedInitial))
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedFinal = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child: ComboBox(selectedName: _humiditySelectedFinal))
                     ],
                   )
                 ],
