@@ -124,12 +124,12 @@ final GoRouter router = GoRouter(
             return const IdentificacaoAreaTratamento();
           },
         ),
-        GoRoute(
-          path: 'croquisarea',
-          builder: (BuildContext context, GoRouterState state) {
-            return const CroquisAreaCliente();
-          },
-        ),
+        // GoRoute(
+        //   path: 'croquisarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const CroquisAreaCliente();
+        //   },
+        // ),
         GoRoute(
           path: 'carateristicaproduto',
           builder: (BuildContext context, GoRouterState state) {

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
@@ -18,6 +22,13 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   final ImagePicker picker = ImagePicker();
   String _speedWindInitial = 'Selecione';
   String _speedWindFinal = 'Selecione';
+  String _temperatureSelectedInitial = "Selecione";
+  String _temperatureSelectedFinal = "Selecione";
+  String _imageMapsPath = "";
+
+  String _humiditySelectedInitial = 'Selecione';
+
+  String _humiditySelectedFinal = 'Selecione';
 
   @override
   Widget build(BuildContext context) {
@@ -68,11 +79,29 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
               const SizedBox(height: 20),
               InkWell(
                   onTap: () async {
-                    final XFile? image =
-                        await picker.pickImage(source: ImageSource.gallery);
+                    _imageMapsPath = await Util.obtainImagePathMaps(context);
+                    setState(() {});
                   },
                   child: const UploadButton()),
+              _imageMapsPath.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15),
+                        const CustomText(
+                            text: 'Imagem do Receituário Agronômico'),
+                        const SizedBox(height: 15),
+                        ImageSelected(
+                          imageMapsPath: _imageMapsPath,
+                        )
+                      ],
+                    )
+                  : const SizedBox.shrink(),
               const SizedBox(height: 24),
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [],
+              ),
               const Center(
                 child: Text(
                   'Condições climáticas durante a aplicação',
@@ -87,45 +116,121 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 ),
               ),
               const SizedBox(height: 40),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "INICIAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 40),
+                          const CustomText(text: "Temperatura (°C)"),
+                          const SizedBox(height: 12),
+                          InkWell(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          backgroundColor: Colors.grey[100],
+                                          content: TemperatureSelect(
+                                              onChangedTemperature: (value) {
+                                            setState(() {
+                                              _temperatureSelectedInitial =
+                                                  value;
+                                            });
+                                          }));
+                                    });
+                              },
+                              child: ComboBox(
+                                  selectedName: _temperatureSelectedInitial))
+                        ],
+                      ),
                     ],
                   ),
                   Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "Temperatura (°C)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "FINAL"),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 40),
+                          const CustomText(text: "Temperatura (°C)"),
+                          const SizedBox(height: 12),
+                          InkWell(
+                              onTap: () async {
+                                await showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                          backgroundColor: Colors.grey[100],
+                                          content: TemperatureSelect(
+                                              onChangedTemperature: (value) {
+                                            setState(() {
+                                              _temperatureSelectedFinal = value;
+                                            });
+                                          }));
+                                    });
+                              },
+                              child: ComboBox(
+                                  selectedName: _temperatureSelectedFinal))
+                        ],
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedInitial = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child:
+                              ComboBox(selectedName: _humiditySelectedInitial))
                     ],
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CustomText(text: "U.R do ar (%)"),
-                      SizedBox(height: 12),
-                      ComboBox(selectedName: "Selecione")
+                      const CustomText(text: "U.R do ar (%)"),
+                      const SizedBox(height: 12),
+                      InkWell(
+                          onTap: () async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      backgroundColor: Colors.grey[100],
+                                      content: RelativeHumiditySelect(
+                                          onChangedHumidity: (value) {
+                                        setState(() {
+                                          _humiditySelectedFinal = value;
+                                        });
+                                      }));
+                                });
+                          },
+                          child: ComboBox(selectedName: _humiditySelectedFinal))
                     ],
                   )
                 ],

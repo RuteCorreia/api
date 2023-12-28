@@ -9,9 +9,27 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = MS_Teste
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> QA
+>>>>>>> QA
 build_property.ProjectDir = C:\Users\rapha\source\repos\flytec\backoffice\MS_Teste\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 =======
 build_property.ProjectDir = C:\Users\User\Desktop\clones\K\flytec\backoffice\MS_Teste\
 >>>>>>> master
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+build_property.ProjectDir = C:\Users\rapha\source\repos\flytec\backoffice\MS_Teste\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+>>>>>>> QA
+>>>>>>> QA
+>>>>>>> QA

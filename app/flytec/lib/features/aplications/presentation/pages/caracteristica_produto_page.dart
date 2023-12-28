@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'my_activity_page.dart';
@@ -18,7 +19,7 @@ enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
 
 class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
-  final ImagePicker picker = ImagePicker();
+  String _imageMapsPath = "";
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +70,8 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 15),
               InkWell(
                 onTap: () async {
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  _imageMapsPath = await Util.obtainImagePathMaps(context);
+                  setState(() {});
                 },
                 child: Container(
                   height: 60,
@@ -109,6 +110,20 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   ),
                 ),
               ),
+              _imageMapsPath.isNotEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(height: 15),
+                        const CustomText(
+                            text: 'Imagem do Receituário Agronômico'),
+                        const SizedBox(height: 15),
+                        ImageSelected(
+                          imageMapsPath: _imageMapsPath,
+                        )
+                      ],
+                    )
+                  : const SizedBox.shrink(),
               const SizedBox(height: 15),
               const CustomText(text: 'Nome do produto'),
               const SizedBox(height: 10),
