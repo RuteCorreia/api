@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/presentation/widgets/degree_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/flight_height_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/product_type_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
@@ -25,6 +26,7 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   String _veiculanteType = "Selecione";
   String _humiditySelected = 'Selecione';
   String _temperatureSelected = "Selecione";
+  String _flightHeight = "Selecione";
 
   @override
   Widget build(BuildContext context) {
@@ -182,7 +184,22 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),
-            const ComboBox(selectedName: "Selecione"),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: FlightHeightSelect(
+                                onChangedFlightHeight: (value) {
+                              setState(() {
+                                _flightHeight = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _flightHeight)),
             const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
