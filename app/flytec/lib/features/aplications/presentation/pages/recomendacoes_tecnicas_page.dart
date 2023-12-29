@@ -3,6 +3,7 @@ import 'package:flytec/features/aplications/presentation/widgets/degree_select.d
 import 'package:flytec/features/aplications/presentation/widgets/product_type_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/veiculante_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,6 +22,7 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   String _productType = "Selecione";
   Unidade _unidade = Unidade.NENHUM;
   String _degree = "Selecione";
+  String _veiculanteType = "Selecione";
   String _humiditySelected = 'Selecione';
   String _temperatureSelected = "Selecione";
 
@@ -43,12 +45,27 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Column(
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: 'Veiculante'),
-                    SizedBox(height: 14),
-                    ComboBox(selectedName: "Selecione"),
+                    const CustomText(text: 'Veiculante'),
+                    const SizedBox(height: 14),
+                    InkWell(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.grey[100],
+                                    content: VeiculanteSelect(
+                                        onChangeVeiculanteType: (value) {
+                                      setState(() {
+                                        _veiculanteType = value;
+                                      });
+                                    }));
+                              });
+                        },
+                        child: ComboBox(selectedName: _veiculanteType)),
                   ],
                 ),
                 Column(
