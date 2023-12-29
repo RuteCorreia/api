@@ -39,7 +39,7 @@ export class TutorialService {
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(`${baseUrl}/${id}`);
+    return this.http.delete(baseUrl + "RemoveUser?userId=" + id);
   }
 
   deleteAll(): Observable<any> {

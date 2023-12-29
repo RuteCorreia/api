@@ -96,12 +96,6 @@ public class UserAuthService : IUserAuthService
         await _usuarioRepository.AddAsync(usuario);
     }
 
-    private async Task<IEnumerable<Usuario>> GetUsers()
-    {
-        var users = await _usuarioRepository.GetAllAsync();
-        return users;
-    }
-
     private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
     {
         var claims = await GetUserClaims(user, userName, nrUsuario);
@@ -158,7 +152,11 @@ public class UserAuthService : IUserAuthService
 
     public async Task RemoveUser(string id)
     {
-        var user = _usuarioRepository.DeleteAsync(id);
+        var userInDb = GetUserById(id).Result;
+
+        userInDb.Removido = true;
+
+        var user = _usuarioRepository.UpdateAsync(userInDb);
         return;
     }
 
@@ -168,15 +166,14 @@ public class UserAuthService : IUserAuthService
         return user;
     }
 
-    public Task<Usuario> UpdateUserAsync(string id, UserLoginViewModel user)
+    public string UpdateUserAsync(string id, UserRegisterViewModel user)
     {
-        var getUserById = GetUserById(id);
-        //var usuario = new Usuario(user.Email,user.no, userId )
-        //{
-        //    Nome = user.Name,
+        var userInDb = GetUserById(id).Result;
 
-        //}
-        //var userToUpdate = _usuarioRepository.UpdateAsync(user);
-        return getUserById;
+        userInDb.Nome = user.Name;
+        userInDb.Email = user.Email;
+
+        var userToUpdate = _usuarioRepository.UpdateAsync(userInDb);
+        return "OK";
     }
 }

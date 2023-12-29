@@ -68,11 +68,11 @@ public class AuthController : ControllerBase
     {
         if (ModelState.IsValid)
         {
-            //var result = await _authService.UpdateUserAsync("1", user);
-            //if (result != null)
-            //{
-            //    return Ok(result);
-            //}
+            var result = _authService.UpdateUserAsync(id, user);
+            if (result != null)
+            {
+                return Ok(result);
+            }
 
             return BadRequest();
         }

@@ -4,7 +4,7 @@
         <input
           type="text"
           class="form-control"
-          placeholder="Search by title"
+          placeholder="Pesquisar por Nome de Usuário"
           [(ngModel)]="nome"
         />
         <div class="input-group-append">
@@ -13,13 +13,13 @@
             type="button"
             (click)="searchTitle()"
           >
-            Search
+            Pesquisar
           </button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Tutorials List</h4>
+      <h4>Listagem de Usuários</h4>
       <ul class="list-group">
         @for (tutorial of tutorials; track tutorial.id; let i = $index) {
         <li
@@ -31,10 +31,6 @@
         </li>
         }
       </ul>
-  
-      <button class="m-3 btn btn-sm btn-danger" (click)="removeAllTutorials()">
-        Remove All
-      </button>
     </div>
     <div class="col-md-6">
       <app-tutorial-details
