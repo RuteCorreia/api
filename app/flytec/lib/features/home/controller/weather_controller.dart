@@ -29,6 +29,7 @@ class WeatherController {
   }
 
   Future<Weather?>? getCurrentWeatherByCountry(String country) async {
+    if (country.isEmpty) return null;
     try {
       final httpResponse = await http.get(Uri.parse(
           '$_baseURLApi/current.json?key=$_tokenWeatherApi&q=$country&aqi=no'));

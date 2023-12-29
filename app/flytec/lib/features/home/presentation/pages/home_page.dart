@@ -33,7 +33,13 @@ class _HomePagaState extends State<HomePaga> {
   bool _loadingObtainWeatherCurrent = true;
 
   Future<void> obtainWeatherCurrent() async {
-    final country = await _weatherController.getCurrentCountry();
+    _weatherCurrent = null;
+    String country = await _weatherController.getCurrentCountry();
+
+    if (country.isEmpty) {
+      country = await _weatherController.getCurrentCountry();
+    }
+
     _weatherCurrent =
         await _weatherController.getCurrentWeatherByCountry(country);
     _loadingObtainWeatherCurrent = false;
@@ -220,7 +226,68 @@ class _HomePagaState extends State<HomePaga> {
             Builder(
               builder: (context) {
                 if (_loadingObtainWeatherCurrent) {
-                  return const CircularProgressIndicator();
+                  return Container(
+                    width: double.infinity,
+                    height: 200,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFF00B45D)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (_weatherCurrent == null) {
+                  return Container(
+                    width: double.infinity,
+                    height: 200,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFF00B45D)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: InkWell(
+                        onTap: () async {
+                          _loadingObtainWeatherCurrent = true;
+                          setState(() {});
+                          await obtainWeatherCurrent();
+                        },
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.refresh,
+                              size: 50,
+                              color: Colors.green,
+                            ),
+                            SizedBox(height: 16),
+                            Text(
+                              "Clique para atualizar",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                                height: 0.09,
+                              ),
+                            ),
+                          ],
+                        )),
+                  );
                 }
                 return Container(
                   width: double.infinity,
