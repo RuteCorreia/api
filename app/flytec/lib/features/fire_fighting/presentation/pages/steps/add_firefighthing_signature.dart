@@ -201,14 +201,7 @@ class _AddFireFightingSecondStepState
                   ),
                 ),
               ),
-              Center(
-                child: CustomButton(
-                  title: "OK",
-                  onClick: () {
-                    context.pop();
-                  },
-                ),
-              ),
+              
             ],
           ),
         ),
@@ -230,6 +223,14 @@ class _AddFireFightingSecondStepState
                 tooltip: 'Export Image',
               ),
  */
+              IconButton(
+                icon: const Icon(Icons.check),
+                color: Colors.blue,
+                onPressed: () {
+                  context.pop();
+                },
+                tooltip: 'Ok',
+              ),
               IconButton(
                 icon: const Icon(Icons.undo),
                 color: Colors.blue,
