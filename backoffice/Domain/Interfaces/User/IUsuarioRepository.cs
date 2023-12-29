@@ -10,4 +10,5 @@ public interface IUsuarioRepository
     Task<IEnumerable<Usuario>> GetAllAsync();
     Task<Usuario> GetByUserIdAsync(string id);
     Task<Usuario> GetLastAsync();
+    Task<Usuario> GetUserByIdAsync(string id);
 }

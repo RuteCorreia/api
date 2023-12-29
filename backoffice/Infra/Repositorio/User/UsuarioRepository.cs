@@ -22,13 +22,16 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var usuario = await _contextBase.Usuario.FindAsync(id);
+        _contextBase.Usuario.Remove(usuario);
     }
 
     public async Task<IEnumerable<Usuario>> GetAllAsync()
     {
-        throw new NotImplementedException();
+       return _contextBase.Usuario.ToList();
     }
+
+    public async Task<Usuario> GetUserByIdAsync(string id) => _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
 
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
     

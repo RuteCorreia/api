@@ -14,6 +14,10 @@ public class Usuario
         DataCriacao = DateTime.Now;
         NrUsuario = nrUsuario;
     }
+    public Usuario()
+    {
+
+    }
 
     [Key]
     public Guid Id { get; private set; }

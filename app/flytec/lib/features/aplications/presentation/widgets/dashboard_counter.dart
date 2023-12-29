@@ -68,12 +68,13 @@ class CustomDashBoardCounter extends StatelessWidget {
               Flexible(
                 child: Text(
                   text,
+                  maxLines: 2,
                   style: const TextStyle(
                     color: Color.fromARGB(255, 121, 118, 118),
                     fontSize: 10,
                     fontFamily: 'Inter',
                     fontWeight: FontWeight.w700,
-                    height: 0.15,
+                    
                   ),
                 ),
               ),
