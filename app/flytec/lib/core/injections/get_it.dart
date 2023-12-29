@@ -3,6 +3,10 @@ import 'package:flytec/features/aeronave/data/datasources/remote_aeronave_data_s
 import 'package:flytec/features/aeronave/data/repositories/aeronave_repository_impl.dart';
 import 'package:flytec/features/aeronave/domain/repositories/aeronave_repository.dart';
 import 'package:flytec/features/aeronave/domain/usecases/get_veiculante_usecase.dart';
+import 'package:flytec/features/altura_voo/data/datasources/remote_altura_voo_data_source.dart';
+import 'package:flytec/features/altura_voo/data/repositories/altura_voo_repository_impl.dart';
+import 'package:flytec/features/altura_voo/domain/repositories/altura_voo_repository.dart';
+import 'package:flytec/features/altura_voo/domain/usecases/get_altura_voo_usecase.dart';
 import 'package:flytec/features/alvo_biologico/data/datasources/remote_alvo_biologico_data_source.dart';
 import 'package:flytec/features/alvo_biologico/data/repositories/produto_repository_impl.dart';
 import 'package:flytec/features/alvo_biologico/domain/repositories/produto_repository.dart';
@@ -14,6 +18,10 @@ import 'package:flytec/features/cultura/data/datasources/remote_piloto_data_sour
 import 'package:flytec/features/cultura/data/repositories/authentication_repository_impl.dart';
 import 'package:flytec/features/cultura/domain/repositories/executor_repository.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
+import 'package:flytec/features/equipamento/data/datasources/remote_equipamento_data_source.dart';
+import 'package:flytec/features/equipamento/data/repositories/equipamento_repository_impl.dart';
+import 'package:flytec/features/equipamento/domain/repositories/equipamento_repository.dart';
+import 'package:flytec/features/equipamento/domain/usecases/get_equipamentos_usecase.dart';
 import 'package:flytec/features/executor/data/datasources/remote_authentication_data_source.dart';
 import 'package:flytec/features/executor/data/repositories/authentication_repository_impl.dart';
 import 'package:flytec/features/executor/domain/repositories/executor_repository.dart';
@@ -26,6 +34,10 @@ import 'package:flytec/features/produto/data/datasources/remote_produtos_data_so
 import 'package:flytec/features/produto/data/repositories/produto_repository_impl.dart';
 import 'package:flytec/features/produto/domain/repositories/produto_repository.dart';
 import 'package:flytec/features/produto/domain/usecases/get_produtos_usecase.dart';
+import 'package:flytec/features/tipo_produto/data/datasources/remote_tipo_produto_data_source.dart';
+import 'package:flytec/features/tipo_produto/data/repositories/equipamento_repository_impl.dart';
+import 'package:flytec/features/tipo_produto/domain/repositories/tipoproduto_repository.dart';
+import 'package:flytec/features/tipo_produto/domain/usecases/get_tipo_produtos_usecase.dart';
 import 'package:flytec/features/veiculante/data/datasources/remote_veiculante_data_source.dart';
 import 'package:flytec/features/veiculante/domain/repositories/produto_repository.dart';
 import 'package:flytec/features/veiculante/domain/usecases/get_veiculante_usecase.dart';
@@ -68,6 +80,7 @@ void setup() async {
   final sharedPreferences = await SharedPreferences.getInstance();
   getIt.registerSingletonAsync(() async => sharedPreferences);
   getIt.registerLazySingleton(() => InternetConnectionChecker());
+
   //DATSOURCES
   getIt.registerLazySingleton<RemoteAuthenticationDataSourceImpl>(
     () => RemoteAuthenticationDataSourceImpl(
@@ -126,6 +139,25 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
+  getIt.registerLazySingleton<RemoteEquipamentoDataSourceImpl>(
+    () => RemoteEquipamentoDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<RemoteTipoProdutoDataSourceImpl>(
+    () => RemoteTipoProdutoDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
+  getIt.registerLazySingleton<RemoteAlturVooDataSourceImpl>(
+    () => RemoteAlturVooDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
+
   //REPOSITORES
   getIt.registerLazySingleton<IAuthenticationRepository>(() =>
       AuthenticationRepositoryImpl(
@@ -154,6 +186,15 @@ void setup() async {
   getIt.registerLazySingleton<IAeroNaveRepository>(
     () => AeroNaveRepositoryImpl(remoteAeroNaveRepository: getIt()),
   );
+  getIt.registerLazySingleton<IEquipamentoRepository>(
+    () => EquipamentoRepositoryImpl(datasource: getIt()),
+  );
+  getIt.registerLazySingleton<ITipoProdutoRepository>(
+    () => TipoProdutoRepositoryImpl(datasource: getIt()),
+  );
+  getIt.registerLazySingleton<IAlturaVooRepository>(
+    () => AlturaVooRepositoryImpl(datasource: getIt()),
+  );
   // UseCases
   getIt.registerLazySingleton<AuthenticateUseCase>(
       () => AuthenticateUseCase(getIt()));
@@ -171,4 +212,7 @@ void setup() async {
   getIt.registerLazySingleton(() => GetAlvoBiologicoUseCase(getIt()));
   getIt.registerLazySingleton(() => GetVeiculanteUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAeroNaveUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetEquipamentoUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetTipoProdutosUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetAlturaVooUseCase(getIt()));
 }

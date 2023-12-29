@@ -186,8 +186,10 @@ class HomePaga extends StatelessWidget {
             const SizedBox(height: 26),
             GestureDetector(
               onTap: () async {
-                print(getIt<GlobalConfigVars>().aeronaves);
-                //await getIt<GetAeroNaveUseCase>().call(NoParams());
+                print(getIt<GlobalConfigVars>().alturaVoo);
+                print(getIt<GlobalConfigVars>().equipamentos);
+                print(getIt<GlobalConfigVars>().tiposProdutos);
+                //await getIt<GetAlturaVooUseCase>().call(NoParams());
               },
               child: WelcomeText(
                 userName: "${getIt<GlobalConfigVars>().userPayload.name}",

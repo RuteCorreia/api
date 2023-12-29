@@ -6,12 +6,16 @@ import 'package:flytec/core/utils/save_local_controller.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/aeronave/domain/usecases/get_veiculante_usecase.dart';
+import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
+import 'package:flytec/features/altura_voo/domain/usecases/get_altura_voo_usecase.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
+import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
+import 'package:flytec/features/equipamento/domain/usecases/get_equipamentos_usecase.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/executor/domain/repositories/executor_repository.dart';
 import 'package:flytec/features/executor/domain/usecases/authentication_usecase.dart';
@@ -19,6 +23,8 @@ import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/domain/usecases/get_piloto_usecase.dart';
 import 'package:flytec/features/produto/data/models/produto_model.dart';
 import 'package:flytec/features/produto/domain/usecases/get_produtos_usecase.dart';
+import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart';
+import 'package:flytec/features/tipo_produto/domain/usecases/get_tipo_produtos_usecase.dart';
 import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/veiculante/domain/usecases/get_veiculante_usecase.dart';
 import 'package:flytec/features/weather/data/models/weather_model.dart';
@@ -153,6 +159,24 @@ class _LoginPageState extends State<LoginPage> {
                 value.fold((l) {}, (r) {
                   final aeronaves = r as List<AeroNaveModel>;
                   getIt<GlobalConfigVars>().setAeroNaves(data: aeronaves);
+                });
+              }),
+              getIt<GetEquipamentoUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final equipamentos = r as List<EquipamentoModel>;
+                  getIt<GlobalConfigVars>().setEquipamentos(data: equipamentos);
+                });
+              }),
+              getIt<GetAlturaVooUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final alturas = r as List<AlturaVooModel>;
+                  getIt<GlobalConfigVars>().setAlturaVoo(data: alturas);
+                });
+              }),
+              getIt<GetTipoProdutosUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final tipos = r as List<TipoProdutoModel>;
+                  getIt<GlobalConfigVars>().setTipoProdutos(data: tipos);
                 });
               }),
             ]);
