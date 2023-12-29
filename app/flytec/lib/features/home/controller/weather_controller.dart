@@ -5,7 +5,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 
 class WeatherController {
-  final String _baseURL = 'http://api.weatherapi.com/v1';
+  final String _baseURLApi = 'http://api.weatherapi.com/v1';
+  final String _tokenWeatherApi = 'b8f51c06dc7c4a2f817120627232912';
 
   Future<String> getCurrentCountry() async {
     try {
@@ -30,7 +31,7 @@ class WeatherController {
   Future<Weather?>? getCurrentWeatherByCountry(String country) async {
     try {
       final httpResponse = await http.get(Uri.parse(
-          '$_baseURL/current.json?key=af45b1c156334d319ff150503232412&q=$country&aqi=no'));
+          '$_baseURLApi/current.json?key=$_tokenWeatherApi&q=$country&aqi=no'));
       if (httpResponse.statusCode == 200) {
         return Weather.fromJson(jsonDecode(httpResponse.body));
       }
