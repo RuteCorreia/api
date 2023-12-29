@@ -21,6 +21,9 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
 
   String veiculanteSelecionado = "";
   String aeronaveSelecionada = "";
+  String alturaDoVooSelecionado = "";
+  String equipamentoSelecionado = "";
+  String tipoProdutoSelecionado = "";
 
   @override
   Widget build(BuildContext context) {
@@ -279,7 +282,63 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBoxExpanded(
+              selectedName: alturaDoVooSelecionado.isEmpty
+                  ? "Selecione"
+                  : alturaDoVooSelecionado,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .alturaVoo
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final altura = getIt<GlobalConfigVars>()
+                                          .alturaVoo[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              alturaDoVooSelecionado =
+                                                  altura.nome!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${altura.nome}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 15),
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -309,11 +368,125 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 20),
             const CustomText(text: 'Tipo de produto'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBoxExpanded(
+              selectedName: tipoProdutoSelecionado.isEmpty
+                  ? "Selecione"
+                  : tipoProdutoSelecionado,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .tiposProdutos
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final tipoproduto =
+                                          getIt<GlobalConfigVars>()
+                                              .tiposProdutos[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              tipoProdutoSelecionado =
+                                                  tipoproduto.nome!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${tipoproduto.nome}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 14),
             const CustomText(text: 'Equipamento'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBoxExpanded(
+              selectedName: equipamentoSelecionado.isEmpty
+                  ? "Selecione"
+                  : equipamentoSelecionado,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .equipamentos
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final equipamento =
+                                          getIt<GlobalConfigVars>()
+                                              .equipamentos[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              equipamentoSelecionado =
+                                                  equipamento.nome!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${equipamento.nome}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 14),
             const CustomText(text: 'Ângulo'),
             const SizedBox(height: 14),

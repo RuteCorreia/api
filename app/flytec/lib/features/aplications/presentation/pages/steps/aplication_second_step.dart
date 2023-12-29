@@ -251,7 +251,7 @@ class CustomComboBox extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 328,
+        width: double.infinity,
         height: 40,
         padding: const EdgeInsets.all(8),
         decoration: ShapeDecoration(

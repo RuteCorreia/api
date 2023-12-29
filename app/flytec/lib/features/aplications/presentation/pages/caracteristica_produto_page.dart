@@ -50,7 +50,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 16),
               const CustomText(text: 'Cultura'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName:
                     selectedCultura.isEmpty ? "Selecione" : selectedCultura,
                 onTap: () {
@@ -154,7 +154,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 15),
               const CustomText(text: 'Nome do produto'),
               const SizedBox(height: 10),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName: produtoSelecionado.isEmpty
                     ? "Selecione"
                     : produtoSelecionado,
@@ -220,7 +220,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 20),
               const CustomText(text: 'Classificação Toxicológica'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName: classificacaoToxicologica.isEmpty
                     ? "Selecione"
                     : classificacaoToxicologica,
@@ -230,14 +230,14 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 14),
               const CustomText(text: 'Classe'),
               const SizedBox(height: 10),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName: classe.isEmpty ? "Selecione" : classe,
                 onTap: () {},
               ),
               const SizedBox(height: 12),
               const CustomText(text: 'Tipo de Formulação'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName:
                     tipoFormulacao.isEmpty ? "Selecione" : tipoFormulacao,
                 onTap: () {},
@@ -246,7 +246,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 14),
               const CustomText(text: 'Alvo biológico'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName:
                     alvoBiologico.isEmpty ? "Selecione" : alvoBiologico,
                 onTap: () {
