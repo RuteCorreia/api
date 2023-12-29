@@ -3,6 +3,7 @@ import 'package:flytec/features/aplications/presentation/widgets/degree_select.d
 import 'package:flytec/features/aplications/presentation/widgets/flight_height_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/product_type_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/veiculante_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
@@ -27,6 +28,7 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   String _humiditySelected = 'Selecione';
   String _temperatureSelected = "Selecione";
   String _flightHeight = "Selecione";
+  String _speedWind = "Selecione";
 
   @override
   Widget build(BuildContext context) {
@@ -255,7 +257,22 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Velocidade do vento'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content:
+                                SpeedWindSelect(onChangedSpeedWind: (value) {
+                              setState(() {
+                                _speedWind = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _speedWind)),
             const SizedBox(height: 20),
             const CustomText(text: 'Tipo de produto'),
             const SizedBox(height: 14),
