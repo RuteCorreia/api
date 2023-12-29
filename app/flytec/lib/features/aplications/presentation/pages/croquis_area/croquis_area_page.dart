@@ -751,6 +751,14 @@ class _DesenharAreaState extends State<DesenharArea> {
               ),
  */
               IconButton(
+                icon: const Icon(Icons.check),
+                color: Colors.blue,
+                onPressed: () {
+                  context.pop();
+                },
+                tooltip: 'Ok',
+              ),
+              IconButton(
                 icon: const Icon(Icons.undo),
                 color: Colors.blue,
                 onPressed: () {
