@@ -11,7 +11,7 @@
         "projectName": "Domain",
         "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -88,7 +88,7 @@
         "projectName": "Helpers",
         "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\obj\\",
+        "outputPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

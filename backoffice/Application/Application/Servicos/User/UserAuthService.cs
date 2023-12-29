@@ -162,8 +162,21 @@ public class UserAuthService : IUserAuthService
         return;
     }
 
-    public Task RemoveUser()
+    public Task<Usuario> GetUserById(string id)
     {
-        throw new NotImplementedException();
+        var user = _usuarioRepository.GetUserByIdAsync(id);
+        return user;
+    }
+
+    public Task<Usuario> UpdateUserAsync(string id, UserLoginViewModel user)
+    {
+        var getUserById = GetUserById(id);
+        //var usuario = new Usuario(user.Email,user.no, userId )
+        //{
+        //    Nome = user.Name,
+
+        //}
+        //var userToUpdate = _usuarioRepository.UpdateAsync(user);
+        return getUserById;
     }
 }

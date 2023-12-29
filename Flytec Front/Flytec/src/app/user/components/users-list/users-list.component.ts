@@ -6,7 +6,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink } from '@angular/router';
 import { take } from 'rxjs';
+import { User } from '../../userModel';
+import { FormBuilder } from '@angular/forms';
 // *ngIf="users().length"
+
 @Component({
   selector: 'app-users-list',
   standalone: true,
@@ -27,7 +30,8 @@ import { take } from 'rxjs';
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef>Ação</th>
           <td mat-cell *matCellDef="let user">
-            <button mat-icon-button color="accent">
+            <button mat-icon-button color="accent"
+            >
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="accent"
@@ -87,4 +91,11 @@ export class UsersListComponent {
     if (!todoId) return;
     this.userService.deletePost(todoId).pipe(take(1)).subscribe();
   }
+
+  // editTodo(todoId: User | undefined) {
+  //   if (!todoId) return;
+  //   this.userService.editTodo(todoId);
+  // }
+
+
 }

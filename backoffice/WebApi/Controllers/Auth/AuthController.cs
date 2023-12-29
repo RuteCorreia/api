@@ -63,12 +63,46 @@ public class AuthController : ControllerBase
             return BadRequest(result);
     }
 
-    //[HttpPost("UpdateUser")]
-    //public async Task<IActionResult> UpdateUser([FromBody] UserLoginViewModel user)
+    [HttpPost("UpdateUser")]
+    public async Task<IActionResult> UpdateUser(string id,[FromBody] UserRegisterViewModel user)
+    {
+        if (ModelState.IsValid)
+        {
+            //var result = await _authService.UpdateUserAsync("1", user);
+            //if (result != null)
+            //{
+            //    return Ok(result);
+            //}
+
+            return BadRequest();
+        }
+
+        return BadRequest("Falha ao Atualizar Usuário");
+    }
+
+    [HttpGet("GetUserById")]
+    public async Task<IActionResult> GetUserById(string userId)
+    {
+        if (ModelState.IsValid)
+        {
+            var result = await _authService.GetUserById(userId);
+            if (result != null)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result);
+        }
+
+        return BadRequest("Falha ao buscar usuário");
+    }
+
+    //[HttpGet("FindUserByName")]
+    //public async Task<IActionResult> FindUserByName(string name)
     //{
     //    if (ModelState.IsValid)
     //    {
-    //        var result = await _authService.LoginAsync(user);
+    //        var result = await _authService.GetUsers();
     //        if (result.Item1)
     //        {
     //            return Ok(new { success = true, token = result.Item2 });

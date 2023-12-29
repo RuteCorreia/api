@@ -31,6 +31,8 @@ public class UsuarioRepository : IUsuarioRepository
        return _contextBase.Usuario.ToList();
     }
 
+    public async Task<Usuario> GetUserByIdAsync(string id) => _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
+
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
     
 
