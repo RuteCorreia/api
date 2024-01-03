@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -44,6 +45,25 @@ class _IdentificacaoAreaTratamentoState
         await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
+  }
+  final List<String> items = [
+    'A_Item1',
+    'A_Item2',
+    'A_Item3',
+    'A_Item4',
+    'B_Item1',
+    'B_Item2',
+    'B_Item3',
+    'B_Item4',
+  ];
+
+  String? selectedValue;
+  final TextEditingController textEditingController = TextEditingController();
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -124,45 +144,82 @@ class _IdentificacaoAreaTratamentoState
                     children: [
                       const CustomText(text: "Cidade"),
                       const SizedBox(height: 10),
-                      Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: const Color(0xFF636363)),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          width: 200,
-                          height: 40,
-                          alignment: Alignment.center,
-                          child: DropdownButton<String>(
-                            onChanged: (city) {
-                              _cityOfUf = city!;
-                              setState(() {});
-                            },
-                            alignment: Alignment.center,
-                            disabledHint: const SizedBox.shrink(),
-                            underline: const SizedBox.shrink(),
-                            value: _cityOfUf,
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.black,
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          items: _citiesNamesUfBrazil
+                              .map((item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: _cityOfUf,
+                          onChanged: (value) {
+                            setState(() {
+                              _cityOfUf = value!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: const Color(0xFF636363)),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            items: _citiesNamesUfBrazil.map((String city) {
-                              return DropdownMenuItem(
-                                value: city,
-                                child: SizedBox(
-                                  width: 150,
-                                  child: Text(
-                                    city,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        color: Color(0xFF636363)),
+                            width: 200,
+                          ),
+                          dropdownStyleData: const DropdownStyleData(
+                            maxHeight: 200,
+                            padding: EdgeInsets.all(0),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                          ),
+                          dropdownSearchData: DropdownSearchData(
+                            searchController: textEditingController,
+                            searchInnerWidgetHeight: 50,
+                            searchInnerWidget: Container(
+                              height: 50,
+                              padding: const EdgeInsets.only(
+                                right: 8,
+                                top: 4.0,
+                                bottom: 4.0,
+                                left: 8,
+                              ),
+                              child: TextFormField(
+                                controller: textEditingController,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  hintText: 'Digite a cidade',
+                                  hintStyle: const TextStyle(fontSize: 12),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                          ))
+                              ),
+                            ),
+                            searchMatchFn: (item, searchValue) {
+                              return item.value
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(searchValue.toLowerCase());
+                            },
+                          ),
+                          onMenuStateChange: (isOpen) {
+                            if (!isOpen) {
+                              textEditingController.clear();
+                            }
+                          },
+                        ),
+                      ),
+    
                    
                     ],
                   )
