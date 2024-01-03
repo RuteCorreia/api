@@ -46,23 +46,12 @@ class _IdentificacaoAreaTratamentoState
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
-  final List<String> items = [
-    'A_Item1',
-    'A_Item2',
-    'A_Item3',
-    'A_Item4',
-    'B_Item1',
-    'B_Item2',
-    'B_Item3',
-    'B_Item4',
-  ];
 
-  String? selectedValue;
-  final TextEditingController textEditingController = TextEditingController();
+  final TextEditingController _citySearchController = TextEditingController();
 
   @override
   void dispose() {
-    textEditingController.dispose();
+    _citySearchController.dispose();
     super.dispose();
   }
 
@@ -183,7 +172,7 @@ class _IdentificacaoAreaTratamentoState
                             height: 40,
                           ),
                           dropdownSearchData: DropdownSearchData(
-                            searchController: textEditingController,
+                            searchController: _citySearchController,
                             searchInnerWidgetHeight: 50,
                             searchInnerWidget: Container(
                               height: 50,
@@ -194,7 +183,7 @@ class _IdentificacaoAreaTratamentoState
                                 left: 8,
                               ),
                               child: TextFormField(
-                                controller: textEditingController,
+                                controller: _citySearchController,
                                 decoration: InputDecoration(
                                   isDense: true,
                                   hintText: 'Digite a cidade',
@@ -214,7 +203,7 @@ class _IdentificacaoAreaTratamentoState
                           ),
                           onMenuStateChange: (isOpen) {
                             if (!isOpen) {
-                              textEditingController.clear();
+                              _citySearchController.clear();
                             }
                           },
                         ),
