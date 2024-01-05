@@ -6,6 +6,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
@@ -22,12 +23,14 @@ class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
-      
+
   String _imagePathMap = '';
   void _updateImagePathMap(String path) {
     _imagePathMap = path;
     setState(() {});
   }
+
+  bool _isCut = true;
 
   List<String> _statesOfBrazil = [];
   Future<void> _obtainStatesOfBrazil() async {
@@ -125,7 +128,6 @@ class _IdentificacaoAreaTratamentoState
                               );
                             }).toList(),
                           ))
-                    
                     ],
                   ),
                   Column(
@@ -208,8 +210,6 @@ class _IdentificacaoAreaTratamentoState
                           },
                         ),
                       ),
-    
-                   
                     ],
                   )
                 ],
@@ -288,14 +288,28 @@ class _IdentificacaoAreaTratamentoState
               ),
               _imagePathMap.isNotEmpty
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: CustomText(text: 'Imagem Selecionada'),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: CustomText(text: 'Imagem Selecionada'),
+                            ),
                           ),
-                          InkWell(
-                            onTap: () {
+                          ImageSelected(
+                            imageMapsPath: _imagePathMap,
+                            onCutImage: (cut) {
+                              _isCut = cut;
+                              setState(() {});
+                            },
+                            isCut: _isCut,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _imagePathMap = '';
+                              _isCut = false;
+                              setState(() {});
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -303,36 +317,24 @@ class _IdentificacaoAreaTratamentoState
                                             updateImagePathMap:
                                                 _updateImagePathMap,
                                           )));
+                              _isCut = true;
+                              setState(() {});
                             },
-                            child: Container(
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.black.withOpacity(0.2),
-                                          BlendMode.darken),
-                                      image: FileImage(File(_imagePathMap)),
-                                      fit: BoxFit.fill)),
-                              child: const Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                            ),
+                            child: const CustomText(
+                                text:
+                                    'Clique aqui para selecionar outra imagem'),
                           )
                         ])
                   : CroquiButton(
-                onPressed: () {
+                      onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CroquisAreaCliente(
                                       updateImagePathMap: _updateImagePathMap,
                                     )));
-                 
-                },
-              ),
+                      },
+                    ),
               const SizedBox(height: 14),
               Center(
                 child: CustomButton(
@@ -451,7 +453,6 @@ class CroquiButton extends StatelessWidget {
                         ),
                       ),
                     ),
-                  
                   ],
                 ),
               ),
