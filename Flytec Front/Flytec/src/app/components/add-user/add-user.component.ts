@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Tutorial } from '../../models/tutorial.model';
-import { TutorialService } from '../../services/tutorial.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-add-tutorial',
-  templateUrl: './add-tutorial.component.html',
-  styleUrls: ['./add-tutorial.component.css']
+  templateUrl: './add-user.component.html',
+  styleUrls: ['./add-user.component.css']
 })
 export class AddTutorialComponent {
 
@@ -15,7 +15,7 @@ export class AddTutorialComponent {
   };
   submitted = false;
 
-  constructor(private tutorialService: TutorialService) { }
+  constructor(private tutorialService: UsersService) { }
 
   saveTutorial(): void {
     const data = {

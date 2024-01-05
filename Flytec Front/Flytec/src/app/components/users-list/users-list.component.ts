@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { Tutorial } from '../../models/tutorial.model';
-import { TutorialService } from '../../services/tutorial.service';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-tutorials-list',
-  templateUrl: './tutorials-list.component.html',
-  styleUrls: ['./tutorials-list.component.css']
+  templateUrl: './users-list.component.html',
+  styleUrls: ['./users-list.component.css']
 })
-export class TutorialsListComponent implements OnInit {
+export class UsersListComponent implements OnInit {
 
   tutorials?: Tutorial[];
   currentTutorial: Tutorial = {};
   currentIndex = -1;
   nome = '';
 
-  constructor(private tutorialService: TutorialService) { }
+  constructor(private tutorialService: UsersService) { }
 
   ngOnInit(): void {
     this.retrieveTutorials();

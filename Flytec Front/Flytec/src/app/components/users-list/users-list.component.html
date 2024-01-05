@@ -16,6 +16,14 @@
             Pesquisar
           </button>
         </div>
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+          <a href="/novoUsuario">Novo Usuário</a>
+          </button>
+        </div>
       </div>
     </div>
     <div class="col-md-6">
@@ -33,9 +41,9 @@
       </ul>
     </div>
     <div class="col-md-6">
-      <app-tutorial-details
+      <app-users-details
         [viewMode]="true"
         [currentTutorial]="currentTutorial"
-      ></app-tutorial-details>
+      ></app-users-details>
     </div>
   </div>

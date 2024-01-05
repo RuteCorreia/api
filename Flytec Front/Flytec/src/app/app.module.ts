@@ -12,10 +12,9 @@ import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { httpInterceptorProviders } from './helpers/http.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { UsersListComponent } from './user/components/users-list/users-list.component';
-import { AddTutorialComponent } from './components/add-tutorial/add-tutorial.component';
-import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
-import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
+import { AddTutorialComponent } from './components/add-user/add-user.component';
+import { UsersDetailsComponent } from './components/users-details/users-details.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
 
 
 @NgModule({
@@ -27,8 +26,8 @@ import { TutorialsListComponent } from './components/tutorials-list/tutorials-li
     ProfileComponent,
     BoardAdminComponent,
     AddTutorialComponent,
-    TutorialDetailsComponent,
-    TutorialsListComponent,
+    UsersDetailsComponent,
+    UsersListComponent
   ],
   imports: [
     BrowserModule,

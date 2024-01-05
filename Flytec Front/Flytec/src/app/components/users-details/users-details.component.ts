@@ -1,14 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { TutorialService } from '../../services/tutorial.service';
+import { UsersService } from '../../services/users.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Tutorial } from '../../models/tutorial.model';
 
 @Component({
-  selector: 'app-tutorial-details',
-  templateUrl: './tutorial-details.component.html',
-  styleUrls: ['./tutorial-details.component.css']
+  selector: 'app-users-details',
+  templateUrl: './users-details.component.html',
+  styleUrls: ['./users-details.component.css']
 })
-export class TutorialDetailsComponent implements OnInit {
+export class UsersDetailsComponent implements OnInit {
 
   @Input() viewMode = false;
 
@@ -20,7 +20,7 @@ export class TutorialDetailsComponent implements OnInit {
   message = '';
 
   constructor(
-    private tutorialService: TutorialService,
+    private tutorialService: UsersService,
     private route: ActivatedRoute,
     private router: Router) { }
 

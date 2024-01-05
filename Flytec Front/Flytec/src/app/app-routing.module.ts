@@ -5,9 +5,8 @@ import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
-import { UsersListComponent } from './user/components/users-list/users-list.component';
-import { TutorialsListComponent } from './components/tutorials-list/tutorials-list.component';
-import { TutorialDetailsComponent } from './components/tutorial-details/tutorial-details.component';
+import { UsersListComponent } from './components/users-list/users-list.component';
+import { UsersDetailsComponent } from './components/users-details/users-details.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -15,8 +14,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfileComponent },
   { path: 'admin', component: BoardAdminComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
-  { path: 'usuarios', component: TutorialsListComponent },
-  { path: 'usuario/:id', component: TutorialDetailsComponent },
+  { path: 'usuarios', component: UsersListComponent },
+  { path: 'usuario/:id', component: UsersDetailsComponent },
 ];
 
 @NgModule({

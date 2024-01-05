@@ -11,7 +11,7 @@ const baseUrl = 'https://localhost:7221/api/v1/auth/';
 @Injectable({
   providedIn: 'root'
 })
-export class TutorialService {
+export class UsersService {
 
   constructor(private http: HttpClient) { }
 
