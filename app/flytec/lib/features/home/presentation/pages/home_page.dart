@@ -486,11 +486,11 @@ class _HomePagaState extends State<HomePaga> {
                                                 fontSize: 16,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700,
-                                                height: 0.09,
+
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 30),
+                                          const SizedBox(height: 20),
                                           SizedBox(
                                             width: double.infinity,
                                             child: Text.rich(
