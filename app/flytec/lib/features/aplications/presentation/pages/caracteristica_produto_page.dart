@@ -20,7 +20,7 @@ enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
 class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   String _imageMapsPath = "";
-
+  bool _isCut = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +70,11 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 15),
               InkWell(
                 onTap: () async {
+                  _imageMapsPath = '';
+                  _isCut = false;
+                  setState(() {});
                   _imageMapsPath = await Util.obtainImagePathMaps(context);
+                  _isCut = true;
                   setState(() {});
                 },
                 child: Container(
@@ -120,6 +124,11 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                         const SizedBox(height: 15),
                         ImageSelected(
                           imageMapsPath: _imageMapsPath,
+                          isCut: _isCut,
+                          onCutImage: (cut) {
+                            _isCut = cut;
+                            setState(() {});
+                          },
                         )
                       ],
                     )
