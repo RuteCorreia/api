@@ -437,7 +437,7 @@ class _DesenharAreaState extends State<DesenharArea> {
                                       fontSize: 16,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
-                                      height: 0.09,
+                                       
                                     ),
                                   ),
                                 ),
@@ -1373,7 +1373,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                       fontSize: 15,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
-                                      height: 0.09,
+                                     
                                     ),
                                   ),
                                 ),

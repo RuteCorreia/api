@@ -9,7 +9,6 @@ import 'package:go_router/go_router.dart';
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'my_activity_page.dart';
 import 'relatorio_aplicacao_page.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AplicacoesPage extends StatefulWidget {
   const AplicacoesPage({super.key});
@@ -19,7 +18,6 @@ class AplicacoesPage extends StatefulWidget {
 }
 
 class _AplicacoesPageState extends State<AplicacoesPage> {
-  final ImagePicker picker = ImagePicker();
   String _speedWindInitial = 'Selecione';
   String _speedWindFinal = 'Selecione';
   String _temperatureSelectedInitial = "Selecione";
@@ -29,7 +27,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   String _humiditySelectedInitial = 'Selecione';
 
   String _humiditySelectedFinal = 'Selecione';
-
+  bool isCut = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -93,6 +91,11 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                         const SizedBox(height: 15),
                         ImageSelected(
                           imageMapsPath: _imageMapsPath,
+                          isCut: isCut,
+                          onCutImage: (cut) {
+                            isCut = cut;
+                            setState(() {});
+                          },
                         )
                       ],
                     )

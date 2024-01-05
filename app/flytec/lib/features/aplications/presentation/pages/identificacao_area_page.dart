@@ -1,10 +1,12 @@
 import 'dart:io';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
@@ -21,12 +23,14 @@ class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
-      
+
   String _imagePathMap = '';
   void _updateImagePathMap(String path) {
     _imagePathMap = path;
     setState(() {});
   }
+
+  bool _isCut = true;
 
   List<String> _statesOfBrazil = [];
   Future<void> _obtainStatesOfBrazil() async {
@@ -44,6 +48,14 @@ class _IdentificacaoAreaTratamentoState
         await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
+  }
+
+  final TextEditingController _citySearchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _citySearchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -116,7 +128,6 @@ class _IdentificacaoAreaTratamentoState
                               );
                             }).toList(),
                           ))
-                    
                     ],
                   ),
                   Column(
@@ -124,46 +135,81 @@ class _IdentificacaoAreaTratamentoState
                     children: [
                       const CustomText(text: "Cidade"),
                       const SizedBox(height: 10),
-                      Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                width: 1, color: const Color(0xFF636363)),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          width: 200,
-                          height: 40,
-                          alignment: Alignment.center,
-                          child: DropdownButton<String>(
-                            onChanged: (city) {
-                              _cityOfUf = city!;
-                              setState(() {});
-                            },
-                            alignment: Alignment.center,
-                            disabledHint: const SizedBox.shrink(),
-                            underline: const SizedBox.shrink(),
-                            value: _cityOfUf,
-                            icon: const Icon(
-                              Icons.keyboard_arrow_down,
-                              color: Colors.black,
+                      DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          items: _citiesNamesUfBrazil
+                              .map((item) => DropdownMenuItem(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: _cityOfUf,
+                          onChanged: (value) {
+                            setState(() {
+                              _cityOfUf = value!;
+                            });
+                          },
+                          buttonStyleData: ButtonStyleData(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 12.0),
+                            height: 40,
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 1, color: const Color(0xFF636363)),
+                              borderRadius: BorderRadius.circular(10.0),
                             ),
-                            items: _citiesNamesUfBrazil.map((String city) {
-                              return DropdownMenuItem(
-                                value: city,
-                                child: SizedBox(
-                                  width: 150,
-                                  child: Text(
-                                    city,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: const TextStyle(
-                                        color: Color(0xFF636363)),
+                            width: 200,
+                          ),
+                          dropdownStyleData: const DropdownStyleData(
+                            maxHeight: 200,
+                            padding: EdgeInsets.all(0),
+                          ),
+                          menuItemStyleData: const MenuItemStyleData(
+                            height: 40,
+                          ),
+                          dropdownSearchData: DropdownSearchData(
+                            searchController: _citySearchController,
+                            searchInnerWidgetHeight: 50,
+                            searchInnerWidget: Container(
+                              height: 50,
+                              padding: const EdgeInsets.only(
+                                right: 8,
+                                top: 4.0,
+                                bottom: 4.0,
+                                left: 8,
+                              ),
+                              child: TextFormField(
+                                controller: _citySearchController,
+                                decoration: InputDecoration(
+                                  isDense: true,
+                                  hintText: 'Digite a cidade',
+                                  hintStyle: const TextStyle(fontSize: 12),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                              );
-                            }).toList(),
-                          ))
-                   
+                              ),
+                            ),
+                            searchMatchFn: (item, searchValue) {
+                              return item.value
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(searchValue.toLowerCase());
+                            },
+                          ),
+                          onMenuStateChange: (isOpen) {
+                            if (!isOpen) {
+                              _citySearchController.clear();
+                            }
+                          },
+                        ),
+                      ),
                     ],
                   )
                 ],
@@ -242,14 +288,28 @@ class _IdentificacaoAreaTratamentoState
               ),
               _imagePathMap.isNotEmpty
                   ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 16.0),
-                            child: CustomText(text: 'Imagem Selecionada'),
+                          const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16.0),
+                              child: CustomText(text: 'Imagem Selecionada'),
+                            ),
                           ),
-                          InkWell(
-                            onTap: () {
+                          ImageSelected(
+                            imageMapsPath: _imagePathMap,
+                            onCutImage: (cut) {
+                              _isCut = cut;
+                              setState(() {});
+                            },
+                            isCut: _isCut,
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              _imagePathMap = '';
+                              _isCut = false;
+                              setState(() {});
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -257,36 +317,24 @@ class _IdentificacaoAreaTratamentoState
                                             updateImagePathMap:
                                                 _updateImagePathMap,
                                           )));
+                              _isCut = true;
+                              setState(() {});
                             },
-                            child: Container(
-                              height: 200,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      colorFilter: ColorFilter.mode(
-                                          Colors.black.withOpacity(0.2),
-                                          BlendMode.darken),
-                                      image: FileImage(File(_imagePathMap)),
-                                      fit: BoxFit.fill)),
-                              child: const Icon(
-                                Icons.camera_alt,
-                                color: Colors.white,
-                                size: 40,
-                              ),
-                            ),
+                            child: const CustomText(
+                                text:
+                                    'Clique aqui para selecionar outra imagem'),
                           )
                         ])
                   : CroquiButton(
-                onPressed: () {
+                      onPressed: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => CroquisAreaCliente(
                                       updateImagePathMap: _updateImagePathMap,
                                     )));
-                 
-                },
-              ),
+                      },
+                    ),
               const SizedBox(height: 14),
               Center(
                 child: CustomButton(
@@ -405,7 +453,6 @@ class CroquiButton extends StatelessWidget {
                         ),
                       ),
                     ),
-                  
                   ],
                 ),
               ),
