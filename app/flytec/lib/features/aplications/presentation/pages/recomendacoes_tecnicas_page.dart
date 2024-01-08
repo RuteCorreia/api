@@ -25,7 +25,7 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   Unidade _unidade = Unidade.NENHUM;
   String _degree = "Selecione";
   String _veiculanteType = "Selecione";
-  String _humiditySelected = 'Selecione';
+  String _humiditySelected = '+ 55%';
   String _temperatureSelected = "20.0°C";
   String _flightHeight = "Selecione";
   String _speedWind = "Selecione";

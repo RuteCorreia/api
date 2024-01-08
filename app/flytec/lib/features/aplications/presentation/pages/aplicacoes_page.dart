@@ -24,9 +24,9 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   String _temperatureSelectedFinal = "20.0°C";
   String _imageMapsPath = "";
 
-  String _humiditySelectedInitial = 'Selecione';
+  String _humiditySelectedInitial = '+ 55%';
 
-  String _humiditySelectedFinal = 'Selecione';
+  String _humiditySelectedFinal = '+ 55%';
   bool isCut = true;
   @override
   Widget build(BuildContext context) {
