@@ -1,23 +1,20 @@
-import 'package:estados_municipios/estados_municipios.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/states_brazil_controller/states_brazil_controller.dart';
 
 abstract class MapsInformationsController {
-  Future<List<String>> getUfBrazil();
-  Future<List<String>> obtainCitiesOfUfBrazil(String uf);
+  List<String> get getStatesBrazil;
+  List<String> obtainCitiesFromStateBrazil(String uf);
 }
 
 class MapsInformationsControllerBrazil implements MapsInformationsController {
-  final _controllerMapStates = EstadosMunicipiosController();
+  final _controllerMapStates = StatesBrazilController();
 
   @override
-  Future<List<String>> getUfBrazil() async {
-    List<Estado> states = await _controllerMapStates.buscaTodosEstados();
-    return states.map((state) => state.sigla).toList();
-  }
+  List<String> get getStatesBrazil => _controllerMapStates.statesBrazil;
+  
 
   @override
-  Future<List<String>> obtainCitiesOfUfBrazil(String uf) async {
-    List<Municipio> cities =
-        await _controllerMapStates.buscaMunicipiosPorEstado(uf);
-    return cities.map((city) => city.nome).toList();
+  List<String> obtainCitiesFromStateBrazil(String uf) {
+    return _controllerMapStates.getCitiesByState(uf);
+  
   }
 }
