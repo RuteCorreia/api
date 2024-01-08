@@ -31,8 +31,8 @@ class _AddContratanteState extends State<AddContratante> {
   final TextEditingController _ufController = TextEditingController();
   bool isPageLoading = false;
   List<String> _statesOfBrazil = [];
-  Future<void> _obtainStatesOfBrazil() async {
-    _statesOfBrazil = await _mapsInformationsController.getUfBrazil();
+  void _obtainStatesOfBrazil() {
+    _statesOfBrazil = _mapsInformationsController.getStatesBrazil;
     setState(() {});
   }
 
@@ -43,7 +43,7 @@ class _AddContratanteState extends State<AddContratante> {
     _cityOfUf = 'Selecione';
     setState(() {});
     List<String> cities =
-        await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
+        await _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
