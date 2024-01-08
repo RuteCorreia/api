@@ -20,8 +20,8 @@ class AplicacoesPage extends StatefulWidget {
 class _AplicacoesPageState extends State<AplicacoesPage> {
   String _speedWindInitial = 'Selecione';
   String _speedWindFinal = 'Selecione';
-  String _temperatureSelectedInitial = "Selecione";
-  String _temperatureSelectedFinal = "Selecione";
+  String _temperatureSelectedInitial = "20.0°C";
+  String _temperatureSelectedFinal = "20.0°C";
   String _imageMapsPath = "";
 
   String _humiditySelectedInitial = 'Selecione';

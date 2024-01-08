@@ -26,7 +26,7 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   String _degree = "Selecione";
   String _veiculanteType = "Selecione";
   String _humiditySelected = 'Selecione';
-  String _temperatureSelected = "Selecione";
+  String _temperatureSelected = "20.0°C";
   String _flightHeight = "Selecione";
   String _speedWind = "Selecione";
 
