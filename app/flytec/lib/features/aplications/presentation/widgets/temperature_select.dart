@@ -5,7 +5,7 @@ class TemperatureSelect extends StatelessWidget {
   TemperatureSelect({super.key, required this.onChangedTemperature});
 
   final List<double> _temperatures =
-      List.generate(23, (index) => 20 + (index / 2));
+      List.generate(63, (index) => index / 2);
 
   @override
   Widget build(BuildContext context) {
