@@ -15,7 +15,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddTutorialComponent } from './components/add-user/add-user.component';
 import { UsersDetailsComponent } from './components/users-details/users-details.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
-
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
+import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
+import { NgChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -27,16 +31,25 @@ import { UsersListComponent } from './components/users-list/users-list.component
     BoardAdminComponent,
     AddTutorialComponent,
     UsersDetailsComponent,
-    UsersListComponent
+    UsersListComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FontAwesomeModule,
+    NgChartsModule
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, far);
+
+  }
+
+}
