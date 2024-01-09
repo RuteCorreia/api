@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -9,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -116,6 +118,9 @@ class UplodadFotos extends StatefulWidget {
 }
 
 class _UplodadFotosState extends State<UplodadFotos> {
+  String? _imagePath = '';
+  bool _isCut = true;
+  Uint8List? _imageData;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,38 +132,62 @@ class _UplodadFotosState extends State<UplodadFotos> {
           style: TextStyle(),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 050),
-            Center(
-              child: InkWell(
-                onTap: () async {
-                  final imagePath = await Util.obtainImagePathMaps(context);
-                  widget.updateImagePathMap!(imagePath);
-                  setState(() {});
-                },
-                child: const Icon(
-                  Icons.photo_camera_outlined,
-                  color: Colors.green,
-                  size: 050,
+            Column(
+              children: [
+                Center(
+                  child: InkWell(
+                    onTap: () async {
+                      _isCut = true;
+                      _imagePath = '';
+                      setState(() {});
+                      _imagePath = await Util.obtainImagePathMaps(context);
+                      _imageData = await File(_imagePath!).readAsBytes();
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      Icons.photo_camera_outlined,
+                      color: Colors.green,
+                      size: 050,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Tire uma foto do mapa da área',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF151515),
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    height: 0.07,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 25),
-            const Text(
-              'Tire uma foto do mapa da área',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF151515),
-                fontSize: 20,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-                height: 0.07,
+          
+            if (_imagePath!.isNotEmpty)
+              Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  ImageSelected(
+                    imageMapsPath: _imagePath,
+                    imageData: _imageData,
+                    onCutImage: (cut, path) {
+                      _isCut = cut;
+                      widget.updateImagePathMap!(path);
+                      setState(() {});
+                    },
+                    isCut: _isCut,
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 120),
-            
+            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
             Center(
               child: InkWell(
                 onTap: () {
@@ -437,7 +466,6 @@ class _DesenharAreaState extends State<DesenharArea> {
                                       fontSize: 16,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
-                                       
                                     ),
                                   ),
                                 ),
@@ -1373,7 +1401,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                       fontSize: 15,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
-                                     
                                     ),
                                   ),
                                 ),
