@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -297,14 +299,15 @@ class _IdentificacaoAreaTratamentoState
                               child: CustomText(text: 'Imagem Selecionada'),
                             ),
                           ),
-                          ImageSelected(
-                            imageMapsPath: _imagePathMap,
-                            onCutImage: (cut) {
-                              _isCut = cut;
-                              setState(() {});
-                            },
-                            isCut: _isCut,
-                          ),
+                          Container(
+                              height: 300,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: FileImage(File(_imagePathMap)),
+                                    fit: BoxFit.fill),
+                              )),
+                          
                           TextButton(
                             onPressed: () {
                               _imagePathMap = '';

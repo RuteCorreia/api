@@ -1,16 +1,19 @@
 import 'dart:io';
-import 'dart:ui';
-import 'package:crop_image/crop_image.dart';
+import 'dart:typed_data';
+import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/pages/my_activity_page.dart';
 
 class ImageSelected extends StatefulWidget {
   final String? imageMapsPath;
   final bool isCut;
-  final Function(bool) onCutImage;
+  final Uint8List? imageData;
+  final Function(bool cut, String path) onCutImage;
   const ImageSelected(
       {super.key,
       this.imageMapsPath,
       this.isCut = true,
+      required this.imageData,
       required this.onCutImage});
 
   @override
@@ -18,51 +21,34 @@ class ImageSelected extends StatefulWidget {
 }
 
 class _ImageSelectedState extends State<ImageSelected> {
-  final _cropController = CropController(
-    aspectRatio: 1,
-    defaultCrop: const Rect.fromLTRB(0.1, 0.1, 0.9, 0.9),
-  );
+  final _cropController = CropController();
 
-  Future<void> _rotateImageToLeft() async => _cropController.rotateLeft();
-
-  Future<void> _rotateImageToRight() async => _cropController.rotateRight();
-
-  late Image imageCropped;
-
-  Future<void> _finishedCrop() async {
-    imageCropped = await _cropController.croppedImage();
-    setState(() {});
-    await _updateImageCropped();
-    widget.onCutImage(false);
-  }
-
-  Future<void> _updateImageCropped() async {
-    final bitmap = await _cropController.croppedBitmap();
-    final data = await bitmap.toByteData(format: ImageByteFormat.png);
-    final bytes = data!.buffer.asUint64List();
+  Future<void> _updateImageCropped(Uint8List newData) async {
     final file = File(widget.imageMapsPath!);
     file.deleteSync();
-    await file.writeAsBytes(bytes, flush: false);
+    await file.writeAsBytes(newData, flush: false);
+    setState(() {});
   }
+
 
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
       if (widget.isCut) {
-        return ListView(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          controller: ScrollController(),
+        return Column(
           children: [
             SizedBox(
-                height: 300,
-                width: MediaQuery.of(context).size.width,
-                child: CropImage(
+              height: MediaQuery.of(context).size.height * 0.45,
+              width: MediaQuery.of(context).size.width,
+              child: Crop(
+                  image: widget.imageData!,
                   controller: _cropController,
-                  image: Image.file(File(widget.imageMapsPath!)),
-                  paddingSize: 25.0,
-                  alwaysMove: true,
-                )),
+                  onCropped: (image) async {
+                    await _updateImageCropped(image);
+                    widget.onCutImage(false, widget.imageMapsPath!);
+                    setState(() {});
+                  }),
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -70,34 +56,31 @@ class _ImageSelectedState extends State<ImageSelected> {
                 IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    _cropController.rotation = CropRotation.up;
-                    _cropController.crop =
+                    _cropController.rect =
                         const Rect.fromLTRB(0.1, 0.1, 0.9, 0.9);
                     _cropController.aspectRatio = 1.0;
                   },
                 ),
-                IconButton(
-                  icon: const Icon(Icons.rotate_90_degrees_ccw_outlined),
-                  onPressed: _rotateImageToLeft,
-                ),
-                IconButton(
-                  icon: const Icon(Icons.rotate_90_degrees_cw_outlined),
-                  onPressed: _rotateImageToRight,
-                ),
+     
                 TextButton(
-                  onPressed: _finishedCrop,
-                  child: const Text('Pronto'),
+                  onPressed: () async {
+                    _cropController.crop();
+                  },
+                  child: const CustomText(text: 'Pronto'),
                 ),
               ],
             )
           ],
         );
+
       }
       return Container(
           height: 300,
           width: MediaQuery.of(context).size.width,
           decoration: BoxDecoration(
-            image: DecorationImage(image: imageCropped.image, fit: BoxFit.fill),
+            image: DecorationImage(
+                image: FileImage(File(widget.imageMapsPath!)),
+                fit: BoxFit.fill),
           ));
     });
   }

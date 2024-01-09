@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
@@ -21,6 +24,8 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   String _imageMapsPath = "";
   bool _isCut = true;
+  Uint8List? _imageData;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +79,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   _isCut = false;
                   setState(() {});
                   _imageMapsPath = await Util.obtainImagePathMaps(context);
+                  _imageData = await File(_imageMapsPath).readAsBytes();  
                   _isCut = true;
                   setState(() {});
                 },
@@ -125,7 +131,9 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                         ImageSelected(
                           imageMapsPath: _imageMapsPath,
                           isCut: _isCut,
-                          onCutImage: (cut) {
+                          imageData: _imageData,
+
+                          onCutImage: (cut, path) {
                             _isCut = cut;
                             setState(() {});
                           },
