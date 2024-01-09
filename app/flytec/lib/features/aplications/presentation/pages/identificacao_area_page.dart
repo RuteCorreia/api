@@ -7,7 +7,6 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
-import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
@@ -30,8 +29,6 @@ class _IdentificacaoAreaTratamentoState
     _imagePathMap = path;
     setState(() {});
   }
-
-  bool _isCut = true;
 
   List<String> _statesOfBrazil = [];
   void _obtainStatesOfBrazil() {
@@ -307,11 +304,9 @@ class _IdentificacaoAreaTratamentoState
                                     image: FileImage(File(_imagePathMap)),
                                     fit: BoxFit.fill),
                               )),
-                          
                           TextButton(
                             onPressed: () {
                               _imagePathMap = '';
-                              _isCut = false;
                               setState(() {});
                               Navigator.push(
                                   context,
@@ -320,7 +315,6 @@ class _IdentificacaoAreaTratamentoState
                                             updateImagePathMap:
                                                 _updateImagePathMap,
                                           )));
-                              _isCut = true;
                               setState(() {});
                             },
                             child: const CustomText(
@@ -408,52 +402,47 @@ class CroquiButton extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.only(left: 8),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      child: const Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              'Croqui de área',
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 121, 118, 118),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w600,
-                                                height: 0.09,
-                                              ),
-                                            ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.only(left: 8),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                        width: double.infinity,
+                                        child: Text(
+                                          'Croqui de área',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 121, 118, 118),
+                                            fontSize: 16,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w600,
+                                            height: 0.09,
                                           ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ],

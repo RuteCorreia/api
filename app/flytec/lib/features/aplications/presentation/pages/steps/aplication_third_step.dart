@@ -25,19 +25,16 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
   void initState() {
     super.initState();
     setState(() {
-      print("updated ...");
     });
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    print("DID");
   }
 
   @override
   Widget build(BuildContext context) {
-    print("Buildado ...");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -174,48 +171,44 @@ class _CustomClientCardState extends State<CustomClientCard> {
           ),
           const SizedBox(width: 1),
           Expanded(
-            child: Container(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  child: Text(
-                                    widget.title!,
-                                    style: const TextStyle(
-                                      color: Color.fromARGB(255, 121, 118, 118),
-                                      fontSize: 13,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w600,
-                                      height: 0.09,
-                                    ),
-                                  ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              child: Text(
+                                widget.title!,
+                                style: const TextStyle(
+                                  color: Color.fromARGB(255, 121, 118, 118),
+                                  fontSize: 13,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w600,
+                                  height: 0.09,
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
