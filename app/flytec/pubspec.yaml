@@ -61,7 +61,6 @@ dependencies:
   geocoding:
   mask_text_input_formatter: 
   dropdown_button2: ^2.3.9
-  # crop_image: ^1.0.11
   crop_your_image: ^0.7.5
 
 dev_dependencies:
