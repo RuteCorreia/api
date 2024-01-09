@@ -121,6 +121,7 @@ class _UplodadFotosState extends State<UplodadFotos> {
   String? _imagePath = '';
   bool _isCut = true;
   Uint8List? _imageData;
+  bool _showButtonOk = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -181,64 +182,68 @@ class _UplodadFotosState extends State<UplodadFotos> {
                     onCutImage: (cut, path) {
                       _isCut = cut;
                       widget.updateImagePathMap!(path);
+                      _showButtonOk = true;
                       setState(() {});
                     },
                     isCut: _isCut,
                   ),
-                ],
-              ),
-            SizedBox(height: MediaQuery.of(context).size.height * 0.01),
-            Center(
-              child: InkWell(
-                onTap: () {
-                  context.pop();
-                },
-                child: Container(
-                  height: 40,
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 20, right: 24, bottom: 8),
-                  decoration: ShapeDecoration(
-                    color: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.green,
-                      ),
-                      borderRadius: BorderRadius.circular(05),
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(),
-                        child: Stack(children: [
-                          SvgPicture.asset(
-                            "assets/images/checkbox.svg",
-                          )
-                        ]),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'OK',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0.11,
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  if (_showButtonOk)
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          context.pop();
+                          context.pop();
+                        },
+                        child: Container(
+                          height: 40,
+                          padding: const EdgeInsets.only(
+                              top: 8, left: 20, right: 24, bottom: 8),
+                          decoration: ShapeDecoration(
+                            color: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                width: 2,
+                                color: Colors.green,
+                              ),
+                              borderRadius: BorderRadius.circular(05),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 24,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                                child: Stack(children: [
+                                  SvgPicture.asset(
+                                    "assets/images/checkbox.svg",
+                                  )
+                                ]),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'OK',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.11,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ],
-                  ),
-                ),
+                    )
+          
+                ],
               ),
-            )
           ],
         ),
       ),
