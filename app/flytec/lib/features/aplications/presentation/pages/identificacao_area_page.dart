@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -33,19 +32,20 @@ class _IdentificacaoAreaTratamentoState
   bool _isCut = true;
 
   List<String> _statesOfBrazil = [];
-  Future<void> _obtainStatesOfBrazil() async {
-    _statesOfBrazil = await _mapsInformationsController.getUfBrazil();
+  void _obtainStatesOfBrazil() {
+    _statesOfBrazil = _mapsInformationsController.getStatesBrazil;
     setState(() {});
   }
 
   List<String> _citiesNamesUfBrazil = ['Selecione'];
-  Future<void> _obtainCitiesOfUfBrazil(String uf) async {
+  void _obtainCitiesOfUfBrazil(String uf) {
     _citiesNamesUfBrazil.clear();
     _citiesNamesUfBrazil = ['Selecione'];
     _cityOfUf = 'Selecione';
     setState(() {});
     List<String> cities =
-        await _mapsInformationsController.obtainCitiesOfUfBrazil(uf);
+        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
@@ -104,9 +104,9 @@ class _IdentificacaoAreaTratamentoState
                           height: 40,
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
                           child: DropdownButton<String>(
-                            onChanged: (regiaoSelecionada) async {
+                            onChanged: (regiaoSelecionada) {
                               _uf = regiaoSelecionada!;
-                              await _obtainCitiesOfUfBrazil(regiaoSelecionada);
+                              _obtainCitiesOfUfBrazil(regiaoSelecionada);
                               setState(() {});
                             },
                             alignment: Alignment.center,
