@@ -22,6 +22,9 @@ import { AddAplicacaoLogComponent } from './components/aplicacao-log/add-aplicac
 import { AddAplicacaoRecomendacoesTecnicasComponent } from './components/aplicacao-recomendacoes-tecnicas/add-aplicacao-recomendacoes-tecnicas/add-aplicacao-recomendacoes-tecnicas.component';
 import { AddAplicacaoRelatorioComponent } from './components/aplicacao-relatorio/add-aplicacao-relatorio/add-aplicacao-relatorio.component';
 import { AddAplicacaoRelatorioItemComponent } from './components/aplicacao-relatorio-item/add-aplicacao-relatorio-item/add-aplicacao-relatorio-item.component';
+import { AddBulaComponent } from './components/bula/add-bula/add-bula.component';
+import { AddCidadesComponent } from './components/cidades/add-cidades/add-cidades.component';
+import { AddClientesComponent } from './components/clientes/add-clientes/add-clientes.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -46,6 +49,11 @@ const routes: Routes = [
   { path: 'aplicacaoRecomendacoesTecnicas', component: AddAplicacaoRecomendacoesTecnicasComponent },
   { path: 'aplicacaoRelatorio', component: AddAplicacaoRelatorioComponent },
   { path: 'aplicacaoRelatorioItem', component: AddAplicacaoRelatorioItemComponent },
+  { path: 'bula', component: AddBulaComponent },
+  { path: 'cidade', component: AddCidadesComponent },
+  { path: 'cliente', component: AddClientesComponent },
+
+
 
 
 
