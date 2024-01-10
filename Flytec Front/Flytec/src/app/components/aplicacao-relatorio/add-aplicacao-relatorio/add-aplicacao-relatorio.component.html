@@ -1,0 +1,171 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aplicação Relatório</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idAplicacao">Id Aplicação</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idAplicacao"
+              [(ngModel)]="form.idAplicacao"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAplicacao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAplicacao.errors }"
+            />
+            @if (idAplicacao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAplicacao.errors['required']) {
+              <div>O Id da Aplicação obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idPista">Id Pista</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idPista"
+              [(ngModel)]="form.idPista"
+              required
+              minlength="3"
+              maxlength="20"
+              #idPista="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idPista.errors }"
+            />
+            @if (idPista.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idPista.errors['required']) {
+              <div>O Id da Pista é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="dosagem">Dosagem</label>
+            <input
+              type="text"
+              class="form-control"
+              name="dosagem"
+              [(ngModel)]="form.dosagem"
+              required
+              minlength="3"
+              maxlength="20"
+              #dosagem="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && dosagem.errors }"
+            />
+            @if (dosagem.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (dosagem.errors['required']) {
+              <div>A Dosagem é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="kG_LT">KG LT</label>
+            <input
+              type="text"
+              class="form-control"
+              name="kG_LT"
+              [(ngModel)]="form.kG_LT"
+              required
+              minlength="3"
+              maxlength="20"
+              #kG_LT="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && kG_LT.errors }"
+            />
+            @if (kG_LT.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (kG_LT.errors['required']) {
+              <div>A KG LT é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="volumeAplicacao">Volume Aplicação</label>
+            <input
+              type="text"
+              class="form-control"
+              name="volumeAplicacao"
+              [(ngModel)]="form.volumeAplicacao"
+              required
+              minlength="3"
+              maxlength="20"
+              #volumeAplicacao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && volumeAplicacao.errors }"
+            />
+            @if (volumeAplicacao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (volumeAplicacao.errors['required']) {
+              <div>O Volume Aplicação é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="totalAreaAplicada">Total Área Aplicada</label>
+            <input
+              type="text"
+              class="form-control"
+              name="totalAreaAplicada"
+              [(ngModel)]="form.totalAreaAplicada"
+              required
+              minlength="3"
+              maxlength="20"
+              #totalAreaAplicada="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && totalAreaAplicada.errors }"
+            />
+            @if (totalAreaAplicada.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (totalAreaAplicada.errors['required']) {
+              <div>O Total da Área Aplicada é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="alteracoes_Observacoes">Alterações Observações</label>
+            <input
+              type="text"
+              class="form-control"
+              name="alteracoes_Observacoes"
+              [(ngModel)]="form.alteracoes_Observacoes"
+              required
+              minlength="3"
+              maxlength="20"
+              #alteracoes_Observacoes="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && alteracoes_Observacoes.errors }"
+            />
+            @if (alteracoes_Observacoes.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (alteracoes_Observacoes.errors['required']) {
+              <div>As Alterações Observações são obrigatórias!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

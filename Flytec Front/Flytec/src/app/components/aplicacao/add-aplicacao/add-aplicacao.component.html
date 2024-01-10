@@ -1,0 +1,151 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aplicação</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idEmpresa">Id Empresa</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idEmpresa"
+              [(ngModel)]="form.idEmpresa"
+              required
+              minlength="3"
+              maxlength="20"
+              #idEmpresa="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idEmpresa.errors }"
+            />
+            @if (idEmpresa.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idEmpresa.errors['required']) {
+              <div>O Id da Empresa é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="statusEnvio">Status Envio</label>
+            <input
+              type="text"
+              class="form-control"
+              name="statusEnvio"
+              [(ngModel)]="form.statusEnvio"
+              required
+              minlength="3"
+              maxlength="20"
+              #statusEnvio="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && statusEnvio.errors }"
+            />
+            @if (statusEnvio.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (statusEnvio.errors['required']) {
+              <div>O Status de Envio é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idPiloto">Id Piloto</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idPiloto"
+              [(ngModel)]="form.idPiloto"
+              required
+              minlength="3"
+              maxlength="20"
+              #idPiloto="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idPiloto.errors }"
+            />
+            @if (idPiloto.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idPiloto.errors['required']) {
+              <div>O Id do Piloto é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idExecutor">Id Executor</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idExecutor"
+              [(ngModel)]="form.idExecutor"
+              required
+              minlength="3"
+              maxlength="20"
+              #idExecutor="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idExecutor.errors }"
+            />
+            @if (idExecutor.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idExecutor.errors['required']) {
+              <div>O Id do Executor é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idCliente">Id Cliente</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idCliente"
+              [(ngModel)]="form.idCliente"
+              required
+              minlength="3"
+              maxlength="20"
+              #idCliente="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idCliente.errors }"
+            />
+            @if (idCliente.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idCliente.errors['required']) {
+              <div>O Id do Cliente é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idCultura">Id Cultura</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idCultura"
+              [(ngModel)]="form.idCultura"
+              required
+              minlength="3"
+              maxlength="20"
+              #idCultura="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idCultura.errors }"
+            />
+            @if (idCultura.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idCultura.errors['required']) {
+              <div>O Id da Cultura é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+    
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

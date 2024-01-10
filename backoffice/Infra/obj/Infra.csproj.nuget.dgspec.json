@@ -1,15 +1,15 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Infra\\Infra.csproj": {}
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\Infra.csproj": {}
   },
   "projects": {
-    "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
         "projectName": "Domain",
-        "projectPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\Domain.csproj",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\obj\\",
         "projectStyle": "PackageReference",
@@ -81,12 +81,12 @@
         }
       }
     },
-    "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "projectName": "Helpers",
-        "projectPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\obj\\",
         "projectStyle": "PackageReference",
@@ -140,14 +140,14 @@
         }
       }
     },
-    "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Infra\\Infra.csproj": {
+    "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\Infra.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "projectUniqueName": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\Infra.csproj",
         "projectName": "Infra",
-        "projectPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Infra\\Infra.csproj",
+        "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\Infra.csproj",
         "packagesPath": "C:\\Users\\rapha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Infra\\obj\\",
+        "outputPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Infra\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -168,11 +168,11 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
-                "projectPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Domain\\Domain.csproj"
+              "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj": {
+                "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj"
               },
-              "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
-                "projectPath": "C:\\Users\\rapha\\Source\\Repos\\flytec\\backoffice\\Helpers\\Helpers.csproj"
+              "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj": {
+                "projectPath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Helpers\\Helpers.csproj"
               }
             }
           }

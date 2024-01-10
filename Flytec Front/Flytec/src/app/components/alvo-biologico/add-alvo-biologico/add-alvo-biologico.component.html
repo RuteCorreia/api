@@ -1,0 +1,88 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Alvo Biológico</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idProduto">Id Produto</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idProduto"
+              [(ngModel)]="form.idProduto"
+              required
+              minlength="3"
+              maxlength="20"
+              #idProduto="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idProduto.errors }"
+            />
+            @if (idProduto.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idProduto.errors['required']) {
+              <div>O Id do Produto é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="nomeProduto">Nome Produto</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nomeProduto"
+              [(ngModel)]="form.nome"
+              required
+              minlength="3"
+              maxlength="20"
+              #nomeProduto="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nomeProduto.errors }"
+            />
+            @if (nomeProduto.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nomeProduto.errors['required']) {
+              <div>O Nome do Produto é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="combustivel">Dose Produto Por Hectáre</label>
+            <input
+              type="text"
+              class="form-control"
+              name="doseProdutoPorHectare"
+              [(ngModel)]="form.doseProdutoPorHectare"
+              required
+              minlength="3"
+              maxlength="20"
+              #doseProdutoPorHectare="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && doseProdutoPorHectare.errors }"
+            />
+            @if (doseProdutoPorHectare.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (doseProdutoPorHectare.errors['required']) {
+              <div>Informe a Dose do Produto Por Hectáre!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+    
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

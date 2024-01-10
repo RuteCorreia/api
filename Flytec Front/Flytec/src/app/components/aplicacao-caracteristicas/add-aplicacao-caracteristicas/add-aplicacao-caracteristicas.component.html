@@ -1,0 +1,109 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aplicação Características</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idAplicacao">Id Aplicação</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idAplicacao"
+              [(ngModel)]="form.idAplicacao"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAplicacao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAplicacao.errors }"
+            />
+            @if (idAplicacao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAplicacao.errors['required']) {
+              <div>O Id da Aplicação obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idProduto">Id Produto</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idProduto"
+              [(ngModel)]="form.idProduto"
+              required
+              minlength="3"
+              maxlength="20"
+              #idProduto="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idProduto.errors }"
+            />
+            @if (idProduto.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idProduto.errors['required']) {
+              <div>O Id do Produto é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idAdjuvante">Id Adjuvante</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idAdjuvante"
+              [(ngModel)]="form.idAdjuvante"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAdjuvante="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAdjuvante.errors }"
+            />
+            @if (idAdjuvante.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAdjuvante.errors['required']) {
+              <div>O Id do Adjuvante é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="tipoDeServico">Tipo de Serviço</label>
+            <input
+              type="text"
+              class="form-control"
+              name="tipoDeServico"
+              [(ngModel)]="form.tipoDeServico"
+              required
+              minlength="3"
+              maxlength="20"
+              #tipoDeServico="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && tipoDeServico.errors }"
+            />
+            @if (tipoDeServico.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (tipoDeServico.errors['required']) {
+              <div>O Tipo de Serviço é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+    
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

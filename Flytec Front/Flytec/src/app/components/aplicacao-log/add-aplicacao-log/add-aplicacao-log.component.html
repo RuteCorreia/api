@@ -1,0 +1,108 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aplicação Log</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idAplicacao">Id Aplicação</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idAplicacao"
+              [(ngModel)]="form.idAplicacao"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAplicacao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAplicacao.errors }"
+            />
+            @if (idAplicacao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAplicacao.errors['required']) {
+              <div>O Id da Aplicação obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="data">Data</label>
+            <input
+              type="datetime"
+              class="form-control"
+              name="data"
+              [(ngModel)]="form.data"
+              required
+              minlength="3"
+              maxlength="20"
+              #data="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && data.errors }"
+            />
+            @if (data.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (data.errors['required']) {
+              <div>A data é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="nome">Nome Log</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nome"
+              [(ngModel)]="form.nome"
+              required
+              minlength="3"
+              maxlength="20"
+              #nome="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+            />
+            @if (nome.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nome.errors['required']) {
+              <div>O Nome Log é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="descricao">Descrição</label>
+            <input
+              type="text"
+              class="form-control"
+              name="descricao"
+              [(ngModel)]="form.descricao"
+              required
+              minlength="3"
+              maxlength="20"
+              #descricao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && descricao.errors }"
+            />
+            @if (descricao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (descricao.errors['required']) {
+              <div>A Descrição é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>
