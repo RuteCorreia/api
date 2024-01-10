@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'dart:developer';
+import 'dart:io';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
@@ -9,11 +10,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
+import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart' as lct;
 import 'package:signature/signature.dart';
 
@@ -116,6 +116,10 @@ class UplodadFotos extends StatefulWidget {
 }
 
 class _UplodadFotosState extends State<UplodadFotos> {
+  String? _imagePath = '';
+  bool _isCut = true;
+  Uint8List? _imageData;
+  bool _showButtonOk = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -127,89 +131,117 @@ class _UplodadFotosState extends State<UplodadFotos> {
           style: TextStyle(),
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            const SizedBox(height: 050),
-            Center(
-              child: InkWell(
-                onTap: () async {
-                  final imagePath = await Util.obtainImagePathMaps(context);
-                  widget.updateImagePathMap!(imagePath);
-                  setState(() {});
-                },
-                child: const Icon(
-                  Icons.photo_camera_outlined,
-                  color: Colors.green,
-                  size: 050,
-                ),
-              ),
-            ),
-            const SizedBox(height: 25),
-            const Text(
-              'Tire uma foto do mapa da área',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: Color(0xFF151515),
-                fontSize: 20,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-                height: 0.07,
-              ),
-            ),
-            const SizedBox(height: 120),
-            
-            Center(
-              child: InkWell(
-                onTap: () {
-                  context.pop();
-                },
-                child: Container(
-                  height: 40,
-                  padding: const EdgeInsets.only(
-                      top: 8, left: 20, right: 24, bottom: 8),
-                  decoration: ShapeDecoration(
-                    color: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      side: const BorderSide(
-                        width: 2,
-                        color: Colors.green,
-                      ),
-                      borderRadius: BorderRadius.circular(05),
+            Column(
+              children: [
+                Center(
+                  child: InkWell(
+                    onTap: () async {
+                      _isCut = true;
+                      _imagePath = '';
+                      setState(() {});
+                      _imagePath = await Util.obtainImagePathMaps(context);
+                      _imageData = await File(_imagePath!).readAsBytes();
+                      setState(() {});
+                    },
+                    child: const Icon(
+                      Icons.photo_camera_outlined,
+                      color: Colors.green,
+                      size: 050,
                     ),
                   ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 24,
-                        height: 24,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: const BoxDecoration(),
-                        child: Stack(children: [
-                          SvgPicture.asset(
-                            "assets/images/checkbox.svg",
-                          )
-                        ]),
-                      ),
-                      const SizedBox(width: 8),
-                      const Text(
-                        'OK',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w700,
-                          height: 0.11,
-                        ),
-                      ),
-                    ],
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  'Tire uma foto do mapa da área',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFF151515),
+                    fontSize: 20,
+                    fontFamily: 'Inter',
+                    fontWeight: FontWeight.w600,
+                    height: 0.07,
                   ),
                 ),
+              ],
+            ),
+          
+            if (_imagePath!.isNotEmpty)
+              Column(
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  ImageSelected(
+                    imageMapsPath: _imagePath,
+                    imageData: _imageData,
+                    onCutImage: (cut, path) {
+                      _isCut = cut;
+                      widget.updateImagePathMap!(path);
+                      _showButtonOk = true;
+                      setState(() {});
+                    },
+                    isCut: _isCut,
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01),
+                  if (_showButtonOk)
+                    Center(
+                      child: InkWell(
+                        onTap: () {
+                          context.pop();
+                          context.pop();
+                        },
+                        child: Container(
+                          height: 40,
+                          padding: const EdgeInsets.only(
+                              top: 8, left: 20, right: 24, bottom: 8),
+                          decoration: ShapeDecoration(
+                            color: Colors.green,
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                width: 2,
+                                color: Colors.green,
+                              ),
+                              borderRadius: BorderRadius.circular(05),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 24,
+                                height: 24,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                                child: Stack(children: [
+                                  SvgPicture.asset(
+                                    "assets/images/checkbox.svg",
+                                  )
+                                ]),
+                              ),
+                              const SizedBox(width: 8),
+                              const Text(
+                                'OK',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.11,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+          
+                ],
               ),
-            )
           ],
         ),
       ),
@@ -256,7 +288,6 @@ class _DesenharAreaState extends State<DesenharArea> {
       return;
     }
 
-    final SvgPicture data = _controller.toSVG()!;
 
     if (!mounted) return;
   }
@@ -437,7 +468,6 @@ class _DesenharAreaState extends State<DesenharArea> {
                                       fontSize: 16,
                                       fontFamily: 'Inter',
                                       fontWeight: FontWeight.w600,
-                                       
                                     ),
                                   ),
                                 ),
@@ -875,43 +905,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
   }
 
   _showDialog(LatLng position) async {
-    String description = await showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        TextEditingController controller = TextEditingController();
-        return AlertDialog(
-          title: const Text('Adicionar Descrição'),
-          content: TextField(
-            controller: controller,
-            decoration: const InputDecoration(hintText: 'Digite a descrição'),
-          ),
-          actions: <Widget>[
-            ElevatedButton(
-              child: const Text('Cancelar'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            ElevatedButton(
-              child: const Text('Adicionar'),
-              onPressed: () {
-                if (controller.text.isNotEmpty) {
-                  setState(() {
-                    markers.add(Marker(
-                      markerId: MarkerId(position.toString()),
-                      position: position,
-                      infoWindow: InfoWindow(
-                          title: 'Marcador', snippet: controller.text),
-                    ));
-                  });
-                }
-                Navigator.of(context).pop(controller.text);
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   CameraPosition _kGooglePlex = const CameraPosition(
@@ -942,8 +935,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
       () {
         lct.Location local = lct.Location();
         local.getLocation().then((lc) async {
-          print("============LATITUDE=========== ${lc.latitude}");
-          print("============LONGITUDE=========== ${lc.longitude}");
 
           setState(() async {
             latitudeController.text = lc.latitude.toString();
@@ -1095,1251 +1086,1254 @@ class _BuscarGPSState extends State<BuscarGPS> {
           ),
         ],
       ),
-      body: Container(
-        child: ListView(
-          // physics: const NeverScrollableScrollPhysics(),
-          children: [
-            Stack(
-              children: [
-                Positioned(
-                    child: SizedBox(
-                  height: 360,
-                  child: GoogleMap(
-                    indoorViewEnabled: true,
-                    scrollGesturesEnabled: true,
-                    gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
-                      Factory<OneSequenceGestureRecognizer>(
-                        () => EagerGestureRecognizer(),
-                      ),
-                    },
-                    compassEnabled: true,
-                    myLocationEnabled: true,
-                    onLongPress: (position) {
-                      _onMapTapMarker(position);
-                    },
-                    onTap: (argument) {
-                      if (closePoligon) {
-                        return;
-                      }
-                      setState(() {
-                        points
-                            .add(LatLng(argument.latitude, argument.longitude));
-                        _poligone.add(Polygon(
-                            fillColor: Colors.red.withOpacity(0.2),
-                            strokeWidth: 2,
-                            strokeColor: Colors.red,
-                            polygonId: const PolygonId("1"),
-                            points: points));
-                      });
-                    },
-                    zoomGesturesEnabled: true,
-                    polygons: _poligone,
-                    mapType: MapType.satellite,
-                    markers: markers,
-                    initialCameraPosition: _kGooglePlex,
-                    onMapCreated: (GoogleMapController controller) {
-                      _controller.complete(controller);
-                    },
-                  ),
-                )),
-                Positioned(
-                  left: x1,
-                  top: y1,
-                  child: GestureDetector(
-                    onPanDown: (d) {
-                      x1Prev = x1;
-                      y1Prev = y1;
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        x1 = x1Prev + details.localPosition.dx;
-                        y1 = y1Prev + details.localPosition.dy;
-                      });
-                    },
-                    child: Visibility(
-                      visible: showTiro1,
-                      child: Transform.rotate(
-                        angle: angle4,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              angle4++;
-                            });
-                          },
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Image.asset("assets/images/tiro.png"),
-                          ),
-                        ),
-                      ),
+      body: ListView(
+        // physics: const NeverScrollableScrollPhysics(),
+        children: [
+          Stack(
+            children: [
+              Positioned(
+                  child: SizedBox(
+                height: 360,
+                child: GoogleMap(
+                  indoorViewEnabled: true,
+                  scrollGesturesEnabled: true,
+                  gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
+                    Factory<OneSequenceGestureRecognizer>(
+                      () => EagerGestureRecognizer(),
                     ),
-                  ),
-                ),
-                Positioned(
-                  left: x12,
-                  top: y12,
-                  child: GestureDetector(
-                    onPanDown: (d) {
-                      x1Prev2 = x12;
-                      y1Prev2 = y12;
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        x12 = x1Prev2 + details.localPosition.dx;
-                        y12 = y1Prev2 + details.localPosition.dy;
-                      });
-                    },
-                    child: Visibility(
-                      visible: showTiro2,
-                      child: Transform.rotate(
-                        angle: angle2,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              angle2 = angle2++;
-                            });
-                          },
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Image.asset("assets/images/tiro.png"),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: x13,
-                  top: y13,
-                  child: GestureDetector(
-                    onPanDown: (d) {
-                      x1Prev3 = x13;
-                      y1Prev3 = y13;
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        x13 = x1Prev3 + details.localPosition.dx;
-                        y13 = y1Prev3 + details.localPosition.dy;
-                      });
-                    },
-                    child: Visibility(
-                      visible: showTiro3,
-                      child: Transform.rotate(
-                        angle: angle3,
-                        child: InkWell(
-                          onTap: () {
-                            setState(() {
-                              angle3 = angle3++;
-                            });
-                          },
-                          child: SizedBox(
-                            width: 40,
-                            height: 40,
-                            child: Image.asset("assets/images/tiro.png"),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                Positioned(
-                  left: x21,
-                  top: y21,
-                  child: GestureDetector(
-                    onPanDown: (d) {
-                      x2Prev1 = x21;
-                      y2Prev1 = y21;
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        x21 = x2Prev1 + details.localPosition.dx;
-                        y21 = y2Prev1 + details.localPosition.dy;
-                      });
-                    },
-                    child: GestureDetector(
-                      /*    onScaleUpdate: (details) {
+                  },
+                  compassEnabled: true,
+                  myLocationEnabled: true,
+                  onLongPress: (position) {
+                    _onMapTapMarker(position);
+                  },
+                  onTap: (argument) {
+                    if (closePoligon) {
+                      return;
+                    }
                     setState(() {
-                      angle = details.rotation;
+                      points.add(LatLng(argument.latitude, argument.longitude));
+                      _poligone.add(Polygon(
+                          fillColor: Colors.red.withOpacity(0.2),
+                          strokeWidth: 2,
+                          strokeColor: Colors.red,
+                          polygonId: const PolygonId("1"),
+                          points: points));
                     });
-                  }, */
-                      child: Transform.rotate(
-                        angle: angle,
-                        child: Visibility(
-                          visible: showSentidoVento,
-                          child: Transform.rotate(
-                            angle: angle,
-                            child: InkWell(
-                              onTap: () {
-                                setState(() {
-                                  angle++;
-                                });
-                              },
-                              child: Container(
-                                width: 100,
-                                height: 100,
-                                padding: const EdgeInsets.all(20),
-                                color: Colors.transparent,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/vento.png",
-                                      width: 50,
-                                    )
-                                  ],
-                                ),
+                  },
+                  zoomGesturesEnabled: true,
+                  polygons: _poligone,
+                  mapType: MapType.satellite,
+                  markers: markers,
+                  initialCameraPosition: _kGooglePlex,
+                  onMapCreated: (GoogleMapController controller) {
+                    _controller.complete(controller);
+                  },
+                ),
+              )),
+              Positioned(
+                left: x1,
+                top: y1,
+                child: GestureDetector(
+                  onPanDown: (d) {
+                    x1Prev = x1;
+                    y1Prev = y1;
+                  },
+                  onPanUpdate: (details) {
+                    setState(() {
+                      x1 = x1Prev + details.localPosition.dx;
+                      y1 = y1Prev + details.localPosition.dy;
+                    });
+                  },
+                  child: Visibility(
+                    visible: showTiro1,
+                    child: Transform.rotate(
+                      angle: angle4,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            angle4++;
+                          });
+                        },
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Image.asset("assets/images/tiro.png"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: x12,
+                top: y12,
+                child: GestureDetector(
+                  onPanDown: (d) {
+                    x1Prev2 = x12;
+                    y1Prev2 = y12;
+                  },
+                  onPanUpdate: (details) {
+                    setState(() {
+                      x12 = x1Prev2 + details.localPosition.dx;
+                      y12 = y1Prev2 + details.localPosition.dy;
+                    });
+                  },
+                  child: Visibility(
+                    visible: showTiro2,
+                    child: Transform.rotate(
+                      angle: angle2,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            angle2 = angle2++;
+                          });
+                        },
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Image.asset("assets/images/tiro.png"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: x13,
+                top: y13,
+                child: GestureDetector(
+                  onPanDown: (d) {
+                    x1Prev3 = x13;
+                    y1Prev3 = y13;
+                  },
+                  onPanUpdate: (details) {
+                    setState(() {
+                      x13 = x1Prev3 + details.localPosition.dx;
+                      y13 = y1Prev3 + details.localPosition.dy;
+                    });
+                  },
+                  child: Visibility(
+                    visible: showTiro3,
+                    child: Transform.rotate(
+                      angle: angle3,
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            angle3 = angle3++;
+                          });
+                        },
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: Image.asset("assets/images/tiro.png"),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                left: x21,
+                top: y21,
+                child: GestureDetector(
+                  onPanDown: (d) {
+                    x2Prev1 = x21;
+                    y2Prev1 = y21;
+                  },
+                  onPanUpdate: (details) {
+                    setState(() {
+                      x21 = x2Prev1 + details.localPosition.dx;
+                      y21 = y2Prev1 + details.localPosition.dy;
+                    });
+                  },
+                  child: GestureDetector(
+                    /*    onScaleUpdate: (details) {
+                  setState(() {
+                    angle = details.rotation;
+                  });
+                }, */
+                    child: Transform.rotate(
+                      angle: angle,
+                      child: Visibility(
+                        visible: showSentidoVento,
+                        child: Transform.rotate(
+                          angle: angle,
+                          child: InkWell(
+                            onTap: () {
+                              setState(() {
+                                angle++;
+                              });
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              padding: const EdgeInsets.all(20),
+                              color: Colors.transparent,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Image.asset(
+                                    "assets/images/vento.png",
+                                    width: 50,
+                                  )
+                                ],
                               ),
                             ),
                           ),
                         ),
                       ),
                     ),
+                  ),
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 20),
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Center(
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (!showTiro1) {
+                          showTiro1 = true;
+                        } else if (!showTiro2) {
+                          showTiro2 = true;
+                        } else if (!showTiro3) {
+                          showTiro3 = true;
+                        } else if (!showTiro4) {
+                          showTiro4 = true;
+                        } else if (!showTiro5) {
+                          showTiro5 = true;
+                        } else if (!showTiro6) {
+                          showTiro6 = true;
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: 328,
+                      height: 50,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 2, color: Color(0xFF00B45D)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 40,
+                            height: 36,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(),
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.arrow_upward,
+                                  size: 20,
+                                ),
+                                Icon(
+                                  Icons.arrow_downward,
+                                  size: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 55,
+                              margin: const EdgeInsets.only(top: 5),
+                              child: const Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  'Inserir sentido da aplicação (tiro)',
+                                  style: TextStyle(
+                                    color: Color(0xFF151515),
+                                    fontSize: 15,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                Center(
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        showSentidoVento = !showSentidoVento;
+                      });
+                    },
+                    child: Container(
+                      width: 328,
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                              width: 2, color: Color(0xFF00B45D)),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 33,
+                            height: 36,
+                            clipBehavior: Clip.antiAlias,
+                            decoration: const BoxDecoration(),
+                            child: const Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 33,
+                                  height: 32,
+                                  child: Stack(children: [
+                                    Icon(Icons.arrow_upward),
+                                  ]),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const Expanded(
+                            child: SizedBox(
+                              height: 50,
+                              child: Padding(
+                                padding: EdgeInsets.all(12),
+                                child: Text(
+                                  'Inserir sentido do vento',
+                                  style: TextStyle(
+                                    color: Color(0xFF151515),
+                                    fontSize: 16,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w600,
+                                    height: 0.09,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.all(15),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(text: "Latitude"),
+                      const SizedBox(height: 14),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        margin: const EdgeInsets.only(bottom: 05),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 05),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(05),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: latitudeController,
+                          decoration: const InputDecoration(
+                              hintText: "",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      const CustomText(text: "Longitude"),
+                      const SizedBox(height: 14),
+                      Container(
+                        width: double.infinity,
+                        height: 50,
+                        margin: const EdgeInsets.only(bottom: 05),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 05),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(05),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: longitudeController,
+                          decoration: const InputDecoration(
+                              hintText: "",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                      const SizedBox(height: 14),
+                      Center(
+                        child: InkWell(
+                          onTap: () async {
+                            _kGooglePlex = CameraPosition(
+                                target: LatLng(
+                                    double.tryParse(latitudeController.text) ??
+                                        0.0,
+                                    double.tryParse(longitudeController.text) ??
+                                        0.0),
+                                zoom: 17.0);
+                            final GoogleMapController controller =
+                                await _controller.future;
+                            await controller.animateCamera(
+                                CameraUpdate.newCameraPosition(_kGooglePlex));
+                          },
+                          child: Container(
+                            height: 40,
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 20, right: 24, bottom: 8),
+                            decoration: ShapeDecoration(
+                              color: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 2,
+                                  color: Colors.green,
+                                ),
+                                borderRadius: BorderRadius.circular(05),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(),
+                                  child: Stack(children: [
+                                    SvgPicture.asset(
+                                      "assets/images/checkbox.svg",
+                                    )
+                                  ]),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  'BUSCAR PELO GPS',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0.11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 14,
+                      ),
+                      Center(
+                        child: InkWell(
+                          onTap: () async {
+                            showModalBottomSheet(
+                                context: context,
+                                builder: (ctx) {
+                                  return StatefulBuilder(
+                                      builder: (context, update) {
+                                    return Container(
+                                      height: 600,
+                                      width: double.infinity,
+                                      color: Colors.white,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 15,
+                                            right: 15,
+                                            top: 15,
+                                            bottom: MediaQuery.of(context)
+                                                .viewInsets
+                                                .bottom),
+                                        child: SingleChildScrollView(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Gap(20),
+                                              const Text("Latitude"),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Graus º"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                grausController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Minutos"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                minutesController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Segundos"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                segundosController,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      const Text("N"),
+                                                      Checkbox(
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .padded,
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .comfortable,
+                                                          value:
+                                                              _direcaoLatitude ==
+                                                                  DirecaoLatitude
+                                                                      .NORTE,
+                                                          onChanged: (_) {
+                                                            update(() {
+                                                              _direcaoLatitude =
+                                                                  DirecaoLatitude
+                                                                      .NORTE;
+                                                            });
+                                                          })
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      const Text("S"),
+                                                      Checkbox(
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .padded,
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .comfortable,
+                                                          value:
+                                                              _direcaoLatitude ==
+                                                                  DirecaoLatitude
+                                                                      .SUL,
+                                                          onChanged: (_) {
+                                                            update(() {
+                                                              _direcaoLatitude =
+                                                                  DirecaoLatitude
+                                                                      .SUL;
+                                                            });
+                                                          })
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const Text("Longitude"),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Graus º"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                grausControllerLongitude,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Minutos"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                minutesControllerLongitude,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        const Gap(20),
+                                                        const CustomText(
+                                                            text: "Segundos"),
+                                                        const Gap(10),
+                                                        Container(
+                                                          width: 70,
+                                                          height: 50,
+                                                          margin:
+                                                              const EdgeInsets
+                                                                  .only(
+                                                                  bottom: 05),
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .symmetric(
+                                                                  horizontal:
+                                                                      10,
+                                                                  vertical: 05),
+                                                          decoration:
+                                                              ShapeDecoration(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              side: const BorderSide(
+                                                                  width: 1,
+                                                                  color: Color(
+                                                                      0xFF636363)),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          05),
+                                                            ),
+                                                          ),
+                                                          child: TextField(
+                                                            controller:
+                                                                segundosControllerLongitude,
+                                                            keyboardType:
+                                                                TextInputType
+                                                                    .number,
+                                                            decoration:
+                                                                const InputDecoration(
+                                                                    hintText:
+                                                                        "",
+                                                                    border:
+                                                                        InputBorder
+                                                                            .none,
+                                                                    hintStyle:
+                                                                        TextStyle(
+                                                                      color: Color.fromARGB(
+                                                                          255,
+                                                                          121,
+                                                                          118,
+                                                                          118),
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontFamily:
+                                                                          'Inter',
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      height:
+                                                                          0.09,
+                                                                    )),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      const Text("W"),
+                                                      Checkbox(
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .padded,
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .comfortable,
+                                                          value:
+                                                              _direcaoLongitude ==
+                                                                  DirecaoLongitude
+                                                                      .OESTE,
+                                                          onChanged: (_) {
+                                                            update(() {
+                                                              _direcaoLongitude =
+                                                                  DirecaoLongitude
+                                                                      .OESTE;
+                                                            });
+                                                          })
+                                                    ],
+                                                  ),
+                                                  Column(
+                                                    children: [
+                                                      const Text("E"),
+                                                      Checkbox(
+                                                          materialTapTargetSize:
+                                                              MaterialTapTargetSize
+                                                                  .padded,
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .comfortable,
+                                                          value:
+                                                              _direcaoLongitude ==
+                                                                  DirecaoLongitude
+                                                                      .ESTE,
+                                                          onChanged: (_) {
+                                                            update(() {
+                                                              _direcaoLongitude =
+                                                                  DirecaoLongitude
+                                                                      .ESTE;
+                                                            });
+                                                          })
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
+                                              const Gap(10),
+                                              Center(
+                                                child: ElevatedButton(
+                                                    style: const ButtonStyle(),
+                                                    onPressed: () async {
+                                                      latitudeController
+                                                          .text = converterCoordenadasParaLatitude(
+                                                              int.parse(
+                                                                  grausController
+                                                                      .text),
+                                                              int.parse(
+                                                                  minutesController
+                                                                      .text),
+                                                              double.parse(
+                                                                  segundosController
+                                                                      .text),
+                                                              _direcaoLatitude ==
+                                                                      DirecaoLatitude
+                                                                          .NORTE
+                                                                  ? "N"
+                                                                  : "S")
+                                                          .toStringAsFixed(6);
+
+                                                      longitudeController
+                                                          .text = converterCoordenadasParaLongitude(
+                                                              int.parse(
+                                                                  grausControllerLongitude
+                                                                      .text),
+                                                              int.parse(
+                                                                  minutesControllerLongitude
+                                                                      .text),
+                                                              double.parse(
+                                                                  segundosControllerLongitude
+                                                                      .text),
+                                                              _direcaoLongitude ==
+                                                                      DirecaoLongitude
+                                                                          .ESTE
+                                                                  ? "E"
+                                                                  : "W")
+                                                          .toStringAsFixed(6);
+
+                                                      _kGooglePlex =
+                                                          CameraPosition(
+                                                              target: LatLng(
+                                                                converterCoordenadasParaLatitude(
+                                                                    int.parse(
+                                                                        grausController
+                                                                            .text),
+                                                                    int.parse(
+                                                                        minutesController
+                                                                            .text),
+                                                                    double.parse(
+                                                                        segundosController
+                                                                            .text),
+                                                                    _direcaoLatitude ==
+                                                                            DirecaoLatitude.NORTE
+                                                                        ? "N"
+                                                                        : "S"),
+                                                                converterCoordenadasParaLongitude(
+                                                                    int.parse(
+                                                                        grausControllerLongitude
+                                                                            .text),
+                                                                    int.parse(
+                                                                        minutesControllerLongitude
+                                                                            .text),
+                                                                    double.parse(
+                                                                        segundosControllerLongitude
+                                                                            .text),
+                                                                    _direcaoLongitude ==
+                                                                            DirecaoLongitude.ESTE
+                                                                        ? "E"
+                                                                        : "W"),
+                                                              ),
+                                                              zoom: 18.0);
+                                                      final GoogleMapController
+                                                          controller =
+                                                          await _controller
+                                                              .future;
+                                                      controller
+                                                          .animateCamera(CameraUpdate
+                                                              .newCameraPosition(
+                                                                  _kGooglePlex))
+                                                          .then((value) {
+                                                        setState(() {});
+                                                        context.pop();
+                                                      });
+                                                    },
+                                                    child: const Text(
+                                                        "BUSCAR LOCALIZAÇÃO")),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    );
+                                  });
+                                });
+                          },
+                          child: Container(
+                            height: 40,
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 15, right: 15, bottom: 8),
+                            decoration: ShapeDecoration(
+                              color: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 2,
+                                  color: Colors.green,
+                                ),
+                                borderRadius: BorderRadius.circular(05),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(),
+                                  child: Stack(children: [
+                                    SvgPicture.asset(
+                                      "assets/images/checkbox.svg",
+                                    )
+                                  ]),
+                                ),
+                                const SizedBox(width: 8),
+                                const Flexible(
+                                  child: Text(
+                                    'BUSCAR POR GRAU, MINUTOS E SEGUNDOS',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                      height: 0.11,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Center(
+                        child: InkWell(
+                          onTap: () {
+                            context.pop();
+                          },
+                          child: Container(
+                            height: 40,
+                            padding: const EdgeInsets.only(
+                                top: 8, left: 20, right: 24, bottom: 8),
+                            decoration: ShapeDecoration(
+                              color: Colors.green,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  width: 2,
+                                  color: Colors.green,
+                                ),
+                                borderRadius: BorderRadius.circular(05),
+                              ),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: 24,
+                                  height: 24,
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: const BoxDecoration(),
+                                  child: Stack(children: [
+                                    SvgPicture.asset(
+                                      "assets/images/checkbox.svg",
+                                    )
+                                  ]),
+                                ),
+                                const SizedBox(width: 8),
+                                const Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                    height: 0.11,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
                   ),
                 )
               ],
             ),
-            const SizedBox(height: 20),
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Center(
-                    child: GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (!showTiro1) {
-                            showTiro1 = true;
-                          } else if (!showTiro2) {
-                            showTiro2 = true;
-                          } else if (!showTiro3) {
-                            showTiro3 = true;
-                          } else if (!showTiro4) {
-                            showTiro4 = true;
-                          } else if (!showTiro5) {
-                            showTiro5 = true;
-                          } else if (!showTiro6) {
-                            showTiro6 = true;
-                          }
-                        });
-                      },
-                      child: Container(
-                        width: 328,
-                        height: 50,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 2, color: Color(0xFF00B45D)),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 40,
-                              height: 36,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(),
-                              child: const Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.arrow_upward,
-                                    size: 20,
-                                  ),
-                                  Icon(
-                                    Icons.arrow_downward,
-                                    size: 20,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Expanded(
-                              child: Container(
-                                height: 55,
-                                margin: const EdgeInsets.only(top: 5),
-                                child: const Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Text(
-                                    'Inserir sentido da aplicação (tiro)',
-                                    style: TextStyle(
-                                      color: Color(0xFF151515),
-                                      fontSize: 15,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w600,
-                                     
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 15),
-                  Center(
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          showSentidoVento = !showSentidoVento;
-                        });
-                      },
-                      child: Container(
-                        width: 328,
-                        height: 40,
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
-                        decoration: ShapeDecoration(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                width: 2, color: Color(0xFF00B45D)),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Container(
-                              width: 33,
-                              height: 36,
-                              clipBehavior: Clip.antiAlias,
-                              decoration: const BoxDecoration(),
-                              child: const Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: 33,
-                                    height: 32,
-                                    child: Stack(children: [
-                                      Icon(Icons.arrow_upward),
-                                    ]),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            const Expanded(
-                              child: SizedBox(
-                                height: 50,
-                                child: Padding(
-                                  padding: EdgeInsets.all(12),
-                                  child: Text(
-                                    'Inserir sentido do vento',
-                                    style: TextStyle(
-                                      color: Color(0xFF151515),
-                                      fontSize: 16,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w600,
-                                      height: 0.09,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const CustomText(text: "Latitude"),
-                        const SizedBox(height: 14),
-                        Container(
-                          width: double.infinity,
-                          height: 50,
-                          margin: const EdgeInsets.only(bottom: 05),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 05),
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFF636363)),
-                              borderRadius: BorderRadius.circular(05),
-                            ),
-                          ),
-                          child: TextField(
-                            controller: latitudeController,
-                            decoration: const InputDecoration(
-                                hintText: "",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                )),
-                          ),
-                        ),
-                        const SizedBox(height: 15),
-                        const CustomText(text: "Longitude"),
-                        const SizedBox(height: 14),
-                        Container(
-                          width: double.infinity,
-                          height: 50,
-                          margin: const EdgeInsets.only(bottom: 05),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 05),
-                          decoration: ShapeDecoration(
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  width: 1, color: Color(0xFF636363)),
-                              borderRadius: BorderRadius.circular(05),
-                            ),
-                          ),
-                          child: TextField(
-                            controller: longitudeController,
-                            decoration: const InputDecoration(
-                                hintText: "",
-                                border: InputBorder.none,
-                                hintStyle: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                )),
-                          ),
-                        ),
-                        const SizedBox(height: 14),
-                        Center(
-                          child: InkWell(
-                            onTap: () async {
-                              _kGooglePlex = CameraPosition(
-                                  target: LatLng(
-                                      double.tryParse(
-                                              latitudeController.text) ??
-                                          0.0,
-                                      double.tryParse(
-                                              longitudeController.text) ??
-                                          0.0),
-                                  zoom: 17.0);
-                              final GoogleMapController controller =
-                                  await _controller.future;
-                              await controller.animateCamera(
-                                  CameraUpdate.newCameraPosition(_kGooglePlex));
-                            },
-                            child: Container(
-                              height: 40,
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 20, right: 24, bottom: 8),
-                              decoration: ShapeDecoration(
-                                color: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    width: 2,
-                                    color: Colors.green,
-                                  ),
-                                  borderRadius: BorderRadius.circular(05),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(),
-                                    child: Stack(children: [
-                                      SvgPicture.asset(
-                                        "assets/images/checkbox.svg",
-                                      )
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    'BUSCAR PELO GPS',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700,
-                                      height: 0.11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 14,
-                        ),
-                        Center(
-                          child: InkWell(
-                            onTap: () async {
-                              showModalBottomSheet(
-                                  context: context,
-                                  builder: (ctx) {
-                                    return StatefulBuilder(
-                                        builder: (context, update) {
-                                      return Container(
-                                        height: 600,
-                                        width: double.infinity,
-                                        color: Colors.white,
-                                        child: Padding(
-                                          padding: EdgeInsets.only(
-                                              left: 15,
-                                              right: 15,
-                                              top: 15,
-                                              bottom: MediaQuery.of(context)
-                                                  .viewInsets
-                                                  .bottom),
-                                          child: SingleChildScrollView(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const Gap(20),
-                                                const Text("Latitude"),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Graus º"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  grausController,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Minutos"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  minutesController,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Segundos"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  segundosController,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        const Text("N"),
-                                                        Checkbox(
-                                                            materialTapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .padded,
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .comfortable,
-                                                            value: _direcaoLatitude ==
-                                                                DirecaoLatitude
-                                                                    .NORTE,
-                                                            onChanged: (_) {
-                                                              update(() {
-                                                                _direcaoLatitude =
-                                                                    DirecaoLatitude
-                                                                        .NORTE;
-                                                              });
-                                                            })
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        const Text("S"),
-                                                        Checkbox(
-                                                            materialTapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .padded,
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .comfortable,
-                                                            value: _direcaoLatitude ==
-                                                                DirecaoLatitude
-                                                                    .SUL,
-                                                            onChanged: (_) {
-                                                              update(() {
-                                                                _direcaoLatitude =
-                                                                    DirecaoLatitude
-                                                                        .SUL;
-                                                              });
-                                                            })
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Text("Longitude"),
-                                                Row(
-                                                  children: [
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Graus º"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  grausControllerLongitude,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Minutos"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  minutesControllerLongitude,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Expanded(
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
-                                                        children: [
-                                                          const Gap(20),
-                                                          const CustomText(
-                                                              text: "Segundos"),
-                                                          const Gap(10),
-                                                          Container(
-                                                            width: 70,
-                                                            height: 50,
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .only(
-                                                                    bottom: 05),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                    horizontal:
-                                                                        10,
-                                                                    vertical:
-                                                                        05),
-                                                            decoration:
-                                                                ShapeDecoration(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                side: const BorderSide(
-                                                                    width: 1,
-                                                                    color: Color(
-                                                                        0xFF636363)),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            05),
-                                                              ),
-                                                            ),
-                                                            child: TextField(
-                                                              controller:
-                                                                  segundosControllerLongitude,
-                                                              keyboardType:
-                                                                  TextInputType
-                                                                      .number,
-                                                              decoration:
-                                                                  const InputDecoration(
-                                                                      hintText:
-                                                                          "",
-                                                                      border: InputBorder
-                                                                          .none,
-                                                                      hintStyle:
-                                                                          TextStyle(
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            121,
-                                                                            118,
-                                                                            118),
-                                                                        fontSize:
-                                                                            16,
-                                                                        fontFamily:
-                                                                            'Inter',
-                                                                        fontWeight:
-                                                                            FontWeight.w500,
-                                                                        height:
-                                                                            0.09,
-                                                                      )),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        const Text("W"),
-                                                        Checkbox(
-                                                            materialTapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .padded,
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .comfortable,
-                                                            value: _direcaoLongitude ==
-                                                                DirecaoLongitude
-                                                                    .OESTE,
-                                                            onChanged: (_) {
-                                                              update(() {
-                                                                _direcaoLongitude =
-                                                                    DirecaoLongitude
-                                                                        .OESTE;
-                                                              });
-                                                            })
-                                                      ],
-                                                    ),
-                                                    Column(
-                                                      children: [
-                                                        const Text("E"),
-                                                        Checkbox(
-                                                            materialTapTargetSize:
-                                                                MaterialTapTargetSize
-                                                                    .padded,
-                                                            visualDensity:
-                                                                VisualDensity
-                                                                    .comfortable,
-                                                            value: _direcaoLongitude ==
-                                                                DirecaoLongitude
-                                                                    .ESTE,
-                                                            onChanged: (_) {
-                                                              update(() {
-                                                                _direcaoLongitude =
-                                                                    DirecaoLongitude
-                                                                        .ESTE;
-                                                              });
-                                                            })
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Gap(10),
-                                                Center(
-                                                  child: ElevatedButton(
-                                                      style:
-                                                          const ButtonStyle(),
-                                                      onPressed: () async {
-                                                        latitudeController
-                                                            .text = converterCoordenadasParaLatitude(
-                                                                int.parse(
-                                                                    grausController
-                                                                        .text),
-                                                                int.parse(
-                                                                    minutesController
-                                                                        .text),
-                                                                double.parse(
-                                                                    segundosController
-                                                                        .text),
-                                                                _direcaoLatitude ==
-                                                                        DirecaoLatitude
-                                                                            .NORTE
-                                                                    ? "N"
-                                                                    : "S")
-                                                            .toStringAsFixed(6);
-
-                                                        longitudeController
-                                                            .text = converterCoordenadasParaLongitude(
-                                                                int.parse(
-                                                                    grausControllerLongitude
-                                                                        .text),
-                                                                int.parse(
-                                                                    minutesControllerLongitude
-                                                                        .text),
-                                                                double.parse(
-                                                                    segundosControllerLongitude
-                                                                        .text),
-                                                                _direcaoLongitude ==
-                                                                        DirecaoLongitude
-                                                                            .ESTE
-                                                                    ? "E"
-                                                                    : "W")
-                                                            .toStringAsFixed(6);
-
-                                                        _kGooglePlex =
-                                                            CameraPosition(
-                                                                target: LatLng(
-                                                                  converterCoordenadasParaLatitude(
-                                                                      int.parse(
-                                                                          grausController
-                                                                              .text),
-                                                                      int.parse(
-                                                                          minutesController
-                                                                              .text),
-                                                                      double.parse(
-                                                                          segundosController
-                                                                              .text),
-                                                                      _direcaoLatitude ==
-                                                                              DirecaoLatitude.NORTE
-                                                                          ? "N"
-                                                                          : "S"),
-                                                                  converterCoordenadasParaLongitude(
-                                                                      int.parse(
-                                                                          grausControllerLongitude
-                                                                              .text),
-                                                                      int.parse(
-                                                                          minutesControllerLongitude
-                                                                              .text),
-                                                                      double.parse(
-                                                                          segundosControllerLongitude
-                                                                              .text),
-                                                                      _direcaoLongitude ==
-                                                                              DirecaoLongitude.ESTE
-                                                                          ? "E"
-                                                                          : "W"),
-                                                                ),
-                                                                zoom: 18.0);
-                                                        final GoogleMapController
-                                                            controller =
-                                                            await _controller
-                                                                .future;
-                                                        controller
-                                                            .animateCamera(CameraUpdate
-                                                                .newCameraPosition(
-                                                                    _kGooglePlex))
-                                                            .then((value) {
-                                                          setState(() {});
-                                                          context.pop();
-                                                        });
-                                                      },
-                                                      child: const Text(
-                                                          "BUSCAR LOCALIZAÇÃO")),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      );
-                                    });
-                                  });
-                            },
-                            child: Container(
-                              height: 40,
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 15, right: 15, bottom: 8),
-                              decoration: ShapeDecoration(
-                                color: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    width: 2,
-                                    color: Colors.green,
-                                  ),
-                                  borderRadius: BorderRadius.circular(05),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(),
-                                    child: Stack(children: [
-                                      SvgPicture.asset(
-                                        "assets/images/checkbox.svg",
-                                      )
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Flexible(
-                                    child: Text(
-                                      'BUSCAR POR GRAU, MINUTOS E SEGUNDOS',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w700,
-                                        height: 0.11,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Center(
-                          child: InkWell(
-                            onTap: () {
-                              context.pop();
-                            },
-                            child: Container(
-                              height: 40,
-                              padding: const EdgeInsets.only(
-                                  top: 8, left: 20, right: 24, bottom: 8),
-                              decoration: ShapeDecoration(
-                                color: Colors.green,
-                                shape: RoundedRectangleBorder(
-                                  side: const BorderSide(
-                                    width: 2,
-                                    color: Colors.green,
-                                  ),
-                                  borderRadius: BorderRadius.circular(05),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 24,
-                                    height: 24,
-                                    clipBehavior: Clip.antiAlias,
-                                    decoration: const BoxDecoration(),
-                                    child: Stack(children: [
-                                      SvgPicture.asset(
-                                        "assets/images/checkbox.svg",
-                                      )
-                                    ]),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  const Text(
-                                    'OK',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 14,
-                                      fontFamily: 'Inter',
-                                      fontWeight: FontWeight.w700,
-                                      height: 0.11,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

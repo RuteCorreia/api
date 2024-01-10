@@ -1,6 +1,8 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
@@ -15,6 +17,36 @@ class DadosResponsavelPage extends StatefulWidget {
 }
 
 class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
+  List<String> _statesOfBrazil = [];
+  String _uf = 'SP';
+  String _cityOfUf = 'Selecione';
+  void _obtainStatesOfBrazil() {
+    _statesOfBrazil = _mapsInformationsController.getStatesBrazil;
+    setState(() {});
+  }
+
+  final MapsInformationsController _mapsInformationsController =
+      MapsInformationsControllerBrazil();
+  List<String> _citiesNamesUfBrazil = ['Selecione'];
+  void _obtainCitiesOfUfBrazil(String uf) {
+    _citiesNamesUfBrazil.clear();
+    _citiesNamesUfBrazil = ['Selecione'];
+    _cityOfUf = 'Selecione';
+    setState(() {});
+    List<String> cities =
+        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+
+    _citiesNamesUfBrazil.addAll(cities);
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _obtainStatesOfBrazil();
+  }
+
+  final TextEditingController _citySearchController = TextEditingController();
   void OpenContrato() {
     showAdaptiveDialog<String>(
       context: context,
@@ -85,14 +117,135 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
             const SizedBox(height: 14),
             const ComboBox(selectedName: "Selecione"),
             const SizedBox(height: 20),
-            const CustomText(text: 'UF'),
-            const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomText(text: "UF"),
+                    const SizedBox(height: 10),
+                    Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              width: 1, color: const Color(0xFF636363)),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        alignment: Alignment.center,
+                        width: 100,
+                        height: 40,
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: DropdownButton<String>(
+                          onChanged: (regiaoSelecionada) {
+                            _uf = regiaoSelecionada!;
+                            _obtainCitiesOfUfBrazil(regiaoSelecionada);
+                            setState(() {});
+                          },
+                          alignment: Alignment.center,
+                          disabledHint: const SizedBox.shrink(),
+                          underline: const SizedBox.shrink(),
+                          value: _uf,
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down,
+                            color: Colors.black,
+                          ),
+                          items: _statesOfBrazil.map((String regiao) {
+                            return DropdownMenuItem(
+                              value: regiao,
+                              child: Text(
+                                regiao,
+                                style:
+                                    const TextStyle(color: Color(0xFF636363)),
+                              ),
+                            );
+                          }).toList(),
+                        ))
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomText(text: "Cidade"),
+                    const SizedBox(height: 10),
+                    DropdownButtonHideUnderline(
+                      child: DropdownButton2<String>(
+                        isExpanded: true,
+                        items: _citiesNamesUfBrazil
+                            .map((item) => DropdownMenuItem(
+                                  value: item,
+                                  child: Text(
+                                    item,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        value: _cityOfUf,
+                        onChanged: (value) {
+                          setState(() {
+                            _cityOfUf = value!;
+                          });
+                        },
+                        buttonStyleData: ButtonStyleData(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          height: 40,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                width: 1, color: const Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          width: 200,
+                        ),
+                        dropdownStyleData: const DropdownStyleData(
+                          maxHeight: 200,
+                          padding: EdgeInsets.all(0),
+                        ),
+                        menuItemStyleData: const MenuItemStyleData(
+                          height: 40,
+                        ),
+                        dropdownSearchData: DropdownSearchData(
+                          searchController: _citySearchController,
+                          searchInnerWidgetHeight: 50,
+                          searchInnerWidget: Container(
+                            height: 50,
+                            padding: const EdgeInsets.only(
+                              right: 8,
+                              top: 4.0,
+                              bottom: 4.0,
+                              left: 8,
+                            ),
+                            child: TextFormField(
+                              controller: _citySearchController,
+                              decoration: InputDecoration(
+                                isDense: true,
+                                hintText: 'Digite a cidade',
+                                hintStyle: const TextStyle(fontSize: 12),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                          ),
+                          searchMatchFn: (item, searchValue) {
+                            return item.value
+                                .toString()
+                                .toLowerCase()
+                                .contains(searchValue.toLowerCase());
+                          },
+                        ),
+                        onMenuStateChange: (isOpen) {
+                          if (!isOpen) {
+                            _citySearchController.clear();
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
             const SizedBox(height: 20),
-            const CustomText(text: 'Cidade'),
-            const SizedBox(height: 14),
-            const CustomTextField(),
-            const SizedBox(height: 14),
             const CustomText(text: 'Nome completo'),
             const SizedBox(height: 14),
             const CustomTextField(

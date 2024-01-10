@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
@@ -28,6 +31,8 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
 
   String _humiditySelectedFinal = '+ 55%';
   bool isCut = true;
+  Uint8List? _imageData;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,6 +83,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
               InkWell(
                   onTap: () async {
                     _imageMapsPath = await Util.obtainImagePathMaps(context);
+                    _imageData = await File(_imageMapsPath).readAsBytes(); 
                     setState(() {});
                   },
                   child: const UploadButton()),
@@ -92,7 +98,8 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                         ImageSelected(
                           imageMapsPath: _imageMapsPath,
                           isCut: isCut,
-                          onCutImage: (cut) {
+                          imageData: _imageData,
+                          onCutImage: (cut, path) {
                             isCut = cut;
                             setState(() {});
                           },
