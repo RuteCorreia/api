@@ -35,9 +35,17 @@ class DMS {
   }
 }
 
-class CroquisAreaCliente extends StatelessWidget {
+class CroquisAreaCliente extends StatefulWidget {
   const CroquisAreaCliente({super.key, required this.updateImagePathMap});
   final void Function(String path)? updateImagePathMap;
+
+  @override
+  State<CroquisAreaCliente> createState() => _CroquisAreaClienteState();
+}
+
+class _CroquisAreaClienteState extends State<CroquisAreaCliente> {
+  String? _imagePath = '';
+  Uint8List? _imageData;
 
   @override
   Widget build(BuildContext context) {
@@ -75,11 +83,18 @@ class CroquisAreaCliente extends StatelessWidget {
                   title: "Buscar pelo GPS",
                 ),
                 CustomCardButton(
-                  onTap: () {
+                  onTap: () async {
+                    _imagePath = '';
+                    setState(() {});
+                    _imagePath = await Util.obtainImagePathMaps(context);
+                    _imageData = await File(_imagePath!).readAsBytes();
+                    // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return UplodadFotos(
-                          updateImagePathMap: updateImagePathMap,
+                          updateImagePathMap: widget.updateImagePathMap,
+                          imageData: _imageData,
+                          imagePath: _imagePath,
                         );
                       },
                     ));
@@ -108,17 +123,21 @@ class CroquisAreaCliente extends StatelessWidget {
 }
 
 class UplodadFotos extends StatefulWidget {
-  const UplodadFotos({super.key, required this.updateImagePathMap});
+  const UplodadFotos(
+      {super.key,
+      required this.updateImagePathMap,
+      this.imageData,
+      this.imagePath});
   final void Function(String path)? updateImagePathMap;
+  final String? imagePath;
+  final Uint8List? imageData;
 
   @override
   State<UplodadFotos> createState() => _UplodadFotosState();
 }
 
 class _UplodadFotosState extends State<UplodadFotos> {
-  String? _imagePath = '';
   bool _isCut = true;
-  Uint8List? _imageData;
   bool _showButtonOk = false;
   @override
   Widget build(BuildContext context) {
@@ -136,47 +155,13 @@ class _UplodadFotosState extends State<UplodadFotos> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Column(
-              children: [
-                Center(
-                  child: InkWell(
-                    onTap: () async {
-                      _isCut = true;
-                      _imagePath = '';
-                      setState(() {});
-                      _imagePath = await Util.obtainImagePathMaps(context);
-                      _imageData = await File(_imagePath!).readAsBytes();
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      Icons.photo_camera_outlined,
-                      color: Colors.green,
-                      size: 050,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Text(
-                  'Tire uma foto do mapa da área',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFF151515),
-                    fontSize: 20,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w600,
-                    height: 0.07,
-                  ),
-                ),
-              ],
-            ),
-          
-            if (_imagePath!.isNotEmpty)
+            if (widget.imagePath!.isNotEmpty)
               Column(
                 children: [
                   SizedBox(height: MediaQuery.of(context).size.height * 0.01),
                   ImageSelected(
-                    imageMapsPath: _imagePath,
-                    imageData: _imageData,
+                    imageMapsPath: widget.imagePath,
+                    imageData: widget.imageData,
                     onCutImage: (cut, path) {
                       _isCut = cut;
                       widget.updateImagePathMap!(path);
@@ -239,7 +224,6 @@ class _UplodadFotosState extends State<UplodadFotos> {
                         ),
                       ),
                     )
-          
                 ],
               ),
           ],
@@ -287,7 +271,6 @@ class _DesenharAreaState extends State<DesenharArea> {
       );
       return;
     }
-
 
     if (!mounted) return;
   }
@@ -904,8 +887,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
     _showDialog(position);
   }
 
-  _showDialog(LatLng position) async {
-  }
+  _showDialog(LatLng position) async {}
 
   CameraPosition _kGooglePlex = const CameraPosition(
     target: LatLng(-23.57283933300534, -46.77803615315138),
@@ -935,7 +917,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
       () {
         lct.Location local = lct.Location();
         local.getLocation().then((lc) async {
-
           setState(() async {
             latitudeController.text = lc.latitude.toString();
             longitudeController.text = lc.longitude.toString();
