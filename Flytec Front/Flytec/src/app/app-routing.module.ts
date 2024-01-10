@@ -25,6 +25,10 @@ import { AddAplicacaoRelatorioItemComponent } from './components/aplicacao-relat
 import { AddBulaComponent } from './components/bula/add-bula/add-bula.component';
 import { AddCidadesComponent } from './components/cidades/add-cidades/add-cidades.component';
 import { AddClientesComponent } from './components/clientes/add-clientes/add-clientes.component';
+import { AddCombateIncendioComponent } from './components/combate-incendio/add-combate-incendio/add-combate-incendio.component';
+import { AddCombateIncendioDecolagemPousoComponent } from './components/combate-incendio-decolagem-pouso/add-combate-incendio-decolagem-pouso/add-combate-incendio-decolagem-pouso.component';
+import { AddCombustivelComponent } from './components/combustivel/add-combustivel/add-combustivel.component';
+import { AddControleDeFrotaComponent } from './components/controle-de-frota/add-controle-de-frota/add-controle-de-frota.component';
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
@@ -52,6 +56,12 @@ const routes: Routes = [
   { path: 'bula', component: AddBulaComponent },
   { path: 'cidade', component: AddCidadesComponent },
   { path: 'cliente', component: AddClientesComponent },
+  { path: 'combateIncendio', component: AddCombateIncendioComponent },
+  { path: 'combateIncendioDecolagemPouso', component: AddCombateIncendioDecolagemPousoComponent },
+  { path: 'combustivel', component: AddCombustivelComponent },
+  { path: 'controleDeFrota', component: AddControleDeFrotaComponent },
+
+
 
 
 

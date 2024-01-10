@@ -1,1 +1,360 @@
-<p>add-controle-de-frota works!</p>
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Controle de Frota</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+        <div class="mb-3">
+            <label for="observacao">Observação</label>
+            <input
+              type="text"
+              class="form-control"
+              name="observacao"
+              [(ngModel)]="form.observacao"
+              required
+              minlength="3"
+              maxlength="20"
+              #observacao="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && observacao.errors }"
+            />
+            @if (observacao.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (observacao.errors['required']) {
+              <div>Observação é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="data">Data</label>
+            <input
+              type="datetime"
+              class="form-control"
+              name="data"
+              [(ngModel)]="form.data"
+              required
+              minlength="3"
+              maxlength="20"
+              #data="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && data.errors }"
+            />
+            @if (data.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (data.errors['required']) {
+              <div>Data é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idFrota">Id Frota</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idFrota"
+              [(ngModel)]="form.idFrota"
+              required
+              minlength="3"
+              maxlength="20"
+              #idFrota="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idFrota.errors }"
+            />
+            @if (idFrota.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idFrota.errors['required']) {
+                <div>Id Frota obrigatório!</div>
+            }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idAeronave">Id Aeronave</label>
+            <input
+              type="time"
+              class="form-control"
+              name="idAeronave"
+              [(ngModel)]="form.idAeronave"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAeronave.errors }"
+            />
+            @if (idAeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAeronave.errors['required']) {
+              <div>Id Aeronave é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="kmInicial">KM Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="kmInicial"
+              [(ngModel)]="form.kmInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #kmInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && kmInicial.errors }"
+            />
+            @if (kmInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (kmInicial.errors['required']) {
+              <div>O Pouso Horimêtro é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="kmInicial">KM Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="kmInicial"
+              [(ngModel)]="form.kmInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #kmInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && kmInicial.errors }"
+            />
+            @if (kmInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (kmInicial.errors['required']) {
+              <div>O KM Inícial é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="localInicial">Local Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="localInicial"
+              [(ngModel)]="form.localInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #localInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && localInicial.errors }"
+            />
+            @if (localInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (localInicial.errors['required']) {
+              <div>Local Inícial obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="localizacaoPistaLat">Localização Pista LAT</label>
+            <input
+              type="text"
+              class="form-control"
+              name="localizacaoPistaLat"
+              [(ngModel)]="form.localizacaoPistaLat"
+              required
+              minlength="3"
+              maxlength="20"
+              #localizacaoPistaLat="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && localizacaoPistaLat.errors }"
+            />
+            @if (localizacaoPistaLat.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (localizacaoPistaLat.errors['required']) {
+              <div>Localização Pista LAT obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="localizacaoPistaLon">Localização Pista LON</label>
+            <input
+              type="text"
+              class="form-control"
+              name="localizacaoPistaLon"
+              [(ngModel)]="form.localizacaoPistaLon"
+              required
+              minlength="3"
+              maxlength="20"
+              #localizacaoPistaLon="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && localizacaoPistaLon.errors }"
+            />
+            @if (localizacaoPistaLon.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (localizacaoPistaLon.errors['required']) {
+                <div>Localização Pista LON obrigatório!</div>
+            }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="kmFinal">KM Final</label>
+            <input
+              type="text"
+              class="form-control"
+              name="kmFinal"
+              [(ngModel)]="form.kmFinal"
+              required
+              minlength="3"
+              maxlength="20"
+              #kmFinal="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && kmFinal.errors }"
+            />
+            @if (kmFinal.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (kmFinal.errors['required']) {
+              <div>KM Final obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horimetroInicial">Horimêtro Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horimetroInicial"
+              [(ngModel)]="form.horimetroInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #horimetroInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horimetroInicial.errors }"
+            />
+            @if (horimetroInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horimetroInicial.errors['required']) {
+              <div>Horimêtro Inícial obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horimetroFinal">Horimêtro Final</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horimetroFinal"
+              [(ngModel)]="form.horimetroFinal"
+              required
+              minlength="3"
+              maxlength="20"
+              #horimetroFinal="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horimetroFinal.errors }"
+            />
+            @if (horimetroFinal.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horimetroFinal.errors['required']) {
+              <div>Horimêtro Final obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="combustivel">Combustível</label>
+            <input
+              type="text"
+              class="form-control"
+              name="combustivel"
+              [(ngModel)]="form.combustivel"
+              required
+              minlength="3"
+              maxlength="20"
+              #combustivel="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && combustivel.errors }"
+            />
+            @if (combustivel.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (combustivel.errors['required']) {
+              <div>Combustível obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="qtdeCombustivel">Quantidade Combustível</label>
+            <input
+              type="text"
+              class="form-control"
+              name="qtdeCombustivel"
+              [(ngModel)]="form.qtdeCombustivel"
+              required
+              minlength="3"
+              maxlength="20"
+              #qtdeCombustivel="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && qtdeCombustivel.errors }"
+            />
+            @if (qtdeCombustivel.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (qtdeCombustivel.errors['required']) {
+              <div>Quantidade Combustível obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="qtdeHectare">Quantidade Hectáre</label>
+            <input
+              type="text"
+              class="form-control"
+              name="qtdeHectare"
+              [(ngModel)]="form.qtdeHectare"
+              required
+              minlength="3"
+              maxlength="20"
+              #qtdeHectare="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && qtdeHectare.errors }"
+            />
+            @if (qtdeHectare.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (qtdeHectare.errors['required']) {
+              <div>Quantidade Hectáre obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idPiloto">Id Piloto</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idPiloto"
+              [(ngModel)]="form.idPiloto"
+              required
+              minlength="3"
+              maxlength="20"
+              #idPiloto="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idPiloto.errors }"
+            />
+            @if (idPiloto.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idPiloto.errors['required']) {
+              <div>Id Piloto obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

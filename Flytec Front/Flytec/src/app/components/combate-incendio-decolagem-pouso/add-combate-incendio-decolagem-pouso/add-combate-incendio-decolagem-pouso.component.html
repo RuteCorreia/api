@@ -1,1 +1,129 @@
-<p>add-combate-incendio-decolagem-pouso works!</p>
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Combate Incêndio Decolagem Pouso</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+        <div class="mb-3">
+            <label for="idCombateIncendio">Id Combate Incêndio</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idCombateIncendio"
+              [(ngModel)]="form.idCombateIncendio"
+              required
+              minlength="3"
+              maxlength="20"
+              #idCombateIncendio="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idCombateIncendio.errors }"
+            />
+            @if (idCombateIncendio.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idCombateIncendio.errors['required']) {
+              <div>O Id Combate Incêndio é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="decolagemHorario">Decolagem Horário</label>
+            <input
+              type="time"
+              class="form-control"
+              name="decolagemHorario"
+              [(ngModel)]="form.decolagemHorario"
+              required
+              minlength="3"
+              maxlength="20"
+              #decolagemHorario="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && decolagemHorario.errors }"
+            />
+            @if (decolagemHorario.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (decolagemHorario.errors['required']) {
+              <div>Decolagem Horário obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="decolagemHorimetro">Decolagem Horimêtro</label>
+            <input
+              type="text"
+              class="form-control"
+              name="decolagemHorimetro"
+              [(ngModel)]="form.decolagemHorimetro"
+              required
+              minlength="3"
+              maxlength="20"
+              #decolagemHorimetro="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && decolagemHorimetro.errors }"
+            />
+            @if (decolagemHorimetro.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (decolagemHorimetro.errors['required']) {
+                <div>Decolagem Horimêtro obrigatório!</div>
+            }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="pousoHorario">Pouso Horário</label>
+            <input
+              type="time"
+              class="form-control"
+              name="pousoHorario"
+              [(ngModel)]="form.pousoHorario"
+              required
+              minlength="3"
+              maxlength="20"
+              #pousoHorario="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && pousoHorario.errors }"
+            />
+            @if (pousoHorario.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (pousoHorario.errors['required']) {
+              <div>O Pouso Horário é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="pousoHorimetro">Pouso Horimêtro</label>
+            <input
+              type="text"
+              class="form-control"
+              name="pousoHorimetro"
+              [(ngModel)]="form.pousoHorimetro"
+              required
+              minlength="3"
+              maxlength="20"
+              #pousoHorimetro="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && pousoHorimetro.errors }"
+            />
+            @if (pousoHorimetro.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (pousoHorimetro.errors['required']) {
+              <div>O Pouso Horimêtro é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>
