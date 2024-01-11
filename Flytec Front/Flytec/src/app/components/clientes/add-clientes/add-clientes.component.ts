@@ -1,12 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../_services/auth.service';
+import { ClienteService } from '../../../services/cliente.service';
 
 @Component({
   selector: 'app-add-clientes',
   templateUrl: './add-clientes.component.html',
   styleUrl: './add-clientes.component.css'
 })
-export class AddClientesComponent {
+export class AddClientesComponent  implements OnInit{
+
+  dropdownData!: any[];
+  selectedItem: any;
+
   form: any = {
     nomeCliente: null,
     idTipoCliente: null,
@@ -25,8 +30,13 @@ export class AddClientesComponent {
   isSignUpFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService) { }
-
+  constructor(private clienteService: ClienteService) { }
+  
+  ngOnInit(): void {
+    this.clienteService.getDropdownData().subscribe(data => {
+      this.dropdownData = data;
+    });
+  }
   // onSubmit(): void {
   //   const { nome } = this.form;
 

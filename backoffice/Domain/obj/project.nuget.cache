@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "mluD1G5Jy0n8rjZUHtO2JmztJepxEOlAJBWXSu2iV2gh5drAbZAdg29pJVgs8XdPJh+avOpUI4F79UcJDXHPug==",
+  "dgSpecHash": "CdRP87XLoN97iZTgdEIoVMtdnZwmt82cwPoPTHsMOjoJSn4OxqTqMj2s8SJrAYyNcCiz4sj5oZ07kDIvTW0u1Q==",
   "success": true,
   "projectFilePath": "C:\\Users\\rapha\\source\\repos\\flytec\\backoffice\\Domain\\Domain.csproj",
   "expectedPackageFiles": [
@@ -30,5 +30,26 @@
     "C:\\Users\\rapha\\.nuget\\packages\\system.text.encoding\\4.3.0\\system.text.encoding.4.3.0.nupkg.sha512",
     "C:\\Users\\rapha\\.nuget\\packages\\system.text.json\\4.7.2\\system.text.json.4.7.2.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "O pacote 'System.IdentityModel.Tokens.Jwt' 6.24.0 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-59j7-ghrg-fj52",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    },
+    {
+      "code": "NU1902",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "O pacote 'System.IdentityModel.Tokens.Jwt' 6.24.0 tem uma moderado vulnerabilidade de gravidade conhecida, https://github.com/advisories/GHSA-8g9c-28fc-mcx2",
+      "libraryId": "System.IdentityModel.Tokens.Jwt",
+      "targetGraphs": [
+        "net7.0"
+      ]
+    }
+  ]
 }

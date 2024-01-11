@@ -5,9 +5,18 @@ import { AuthService } from './_services/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  template: `
+    <app-navbar (toggle)="toggleNavbar($event)"></app-navbar>
+    <div *ngIf="isNavbarVisible">Main Content</div>
+  `,
 })
 export class AppComponent {
+  isNavbarVisible = true;
+
+  toggleNavbar(isVisible: boolean) {
+    this.isNavbarVisible = isVisible;
+  }
   private roles: string[] = [];
   isLoggedIn = false;
   showAdminBoard = false;

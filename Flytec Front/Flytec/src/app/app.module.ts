@@ -9,7 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { httpInterceptorProviders } from './helpers/http.interceptor';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AddTutorialComponent } from './components/add-user/add-user.component';
@@ -89,6 +88,9 @@ import { AddPrecificacaoComponent } from './components/precificacao/add-precific
 import { AddProdutoComponent } from './components/produto/add-produto/add-produto.component';
 import { AddTipoProdutoComponent } from './components/tipo-produto/add-tipo-produto/add-tipo-produto.component';
 import { AddVeiculanteComponent } from './components/veiculante/add-veiculante/add-veiculante.component';
+import { ClientesDetailsComponent } from './components/clientes/clientes-details/clientes-details.component';
+import { ClientesListComponent } from './components/clientes/clientes-list/clientes-list.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -97,7 +99,6 @@ import { AddVeiculanteComponent } from './components/veiculante/add-veiculante/a
     RegisterComponent,
     HomeComponent,
     ProfileComponent,
-    BoardAdminComponent,
     AddTutorialComponent,
     UsersDetailsComponent,
     UsersListComponent,
@@ -170,7 +171,10 @@ import { AddVeiculanteComponent } from './components/veiculante/add-veiculante/a
     AddPrecificacaoComponent,
     AddProdutoComponent,
     AddTipoProdutoComponent,
-    AddVeiculanteComponent
+    AddVeiculanteComponent,
+    ClientesDetailsComponent,
+    ClientesListComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

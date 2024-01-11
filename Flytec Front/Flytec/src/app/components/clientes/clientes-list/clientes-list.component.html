@@ -1,18 +1,17 @@
-<app-home></app-home>
-<div class="list row" id="userList">
+<app-navbar></app-navbar>
+<div class="list row" id="listaClientes">
     <div class="col-md-8">
       <div class="input-group mb-3">
         <input
           type="text"
           class="form-control"
-          placeholder="Pesquisar por Nome de Usuário"
+          placeholder="Pesquisar por Nome de Cliente"
           [(ngModel)]="nome"
         />
         <div class="input-group-append">
           <button
             class="btn btn-outline-secondary"
             type="button"
-            (click)="searchTitle()"
           >
             Pesquisar
           </button>
@@ -22,29 +21,29 @@
             class="btn btn-outline-secondary"
             type="button"
           >
-          <a href="/novoUsuario">Novo Usuário</a>
+          <a href="/novoCliente">Novo Cliente</a>
           </button>
         </div>
       </div>
     </div>
     <div class="col-md-6">
-      <h4>Listagem de Usuários</h4>
+      <h4>Listagem de Clientes</h4>
       <ul class="list-group">
-        @for (tutorial of tutorials; track tutorial.id; let i = $index) {
+        @for (cliente of clientes; track cliente.id; let i = $index) {
         <li
           class="list-group-item"
           [class.active]="i == currentIndex"
-          (click)="setActiveTutorial(tutorial, i)"
+          (click)="setActiveCliente(cliente, i)"
         >
-          {{ tutorial.nome }}
+          {{ cliente.nome }}
         </li>
         }
       </ul>
     </div>
-    <div class="col-md-6">
+    <!-- <div class="col-md-6">
       <app-users-details
         [viewMode]="true"
         [currentTutorial]="currentTutorial"
       ></app-users-details>
-    </div>
+    </div> -->
   </div>

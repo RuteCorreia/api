@@ -4,7 +4,6 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
-import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { UsersListComponent } from './components/users-list/users-list.component';
 import { UsersDetailsComponent } from './components/users-details/users-details.component';
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
@@ -29,12 +28,14 @@ import { AddCombateIncendioComponent } from './components/combate-incendio/add-c
 import { AddCombateIncendioDecolagemPousoComponent } from './components/combate-incendio-decolagem-pouso/add-combate-incendio-decolagem-pouso/add-combate-incendio-decolagem-pouso.component';
 import { AddCombustivelComponent } from './components/combustivel/add-combustivel/add-combustivel.component';
 import { AddControleDeFrotaComponent } from './components/controle-de-frota/add-controle-de-frota/add-controle-de-frota.component';
+import { ClientesListComponent } from './components/clientes/clientes-list/clientes-list.component';
+
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'novoUsuario', component: RegisterComponent },
+  { path: 'novoCliente', component: AddClientesComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'admin', component: BoardAdminComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'usuarios', component: UsersListComponent },
   { path: 'usuario/:id', component: UsersDetailsComponent },
@@ -55,7 +56,7 @@ const routes: Routes = [
   { path: 'aplicacaoRelatorioItem', component: AddAplicacaoRelatorioItemComponent },
   { path: 'bula', component: AddBulaComponent },
   { path: 'cidade', component: AddCidadesComponent },
-  { path: 'cliente', component: AddClientesComponent },
+  { path: 'cliente', component: ClientesListComponent },
   { path: 'combateIncendio', component: AddCombateIncendioComponent },
   { path: 'combateIncendioDecolagemPouso', component: AddCombateIncendioDecolagemPousoComponent },
   { path: 'combustivel', component: AddCombustivelComponent },
