@@ -37,14 +37,16 @@ class _AddContratanteState extends State<AddContratante> {
     setState(() {});
   }
 
-  List<String> _citiesNamesUfBrazil = ['Selecione'];
+  String _uf = 'SP';
+  late String _cityOfUf = '';
+  final List<String> _citiesNamesUfBrazil = [];
+
   Future<void> _obtainCitiesOfUfBrazil(String uf) async {
     _citiesNamesUfBrazil.clear();
-    _citiesNamesUfBrazil = ['Selecione'];
-    _cityOfUf = 'Selecione';
-    setState(() {});
     List<String> cities =
-        await _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+    _cityOfUf = cities.first;
+    setState(() {}); 
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
@@ -56,8 +58,6 @@ class _AddContratanteState extends State<AddContratante> {
     _obtainCitiesOfUfBrazil('SP');
   }
 
-  String _uf = 'SP';
-  String _cityOfUf = 'Selecione';
   final TextEditingController _citySearchControllerJuridica =
       TextEditingController();
   final TextEditingController _citySearchControllerFisica =
@@ -197,7 +197,11 @@ class _AddContratanteState extends State<AddContratante> {
                                       ))
                                 ],
                               ),
-                              Column(
+                              Builder(
+                                builder: (context) {
+                                  if (_citiesNamesUfBrazil.isNotEmpty &&
+                                      _cityOfUf.isNotEmpty) {
+                                    return Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const CustomText(text: "Cidade"),
@@ -287,7 +291,12 @@ class _AddContratanteState extends State<AddContratante> {
                                     ),
                                   ),
                                 ],
-                              )
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
+                             
                             ],
                           ),
                         ],
@@ -366,98 +375,112 @@ class _AddContratanteState extends State<AddContratante> {
                                       ))
                                 ],
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CustomText(text: "Cidade"),
-                                  const SizedBox(height: 10),
-                                  DropdownButtonHideUnderline(
-                                    child: DropdownButton2<String>(
-                                      isExpanded: true,
-                                      items: _citiesNamesUfBrazil
-                                          .map((item) => DropdownMenuItem(
-                                                value: item,
-                                                child: Text(
-                                                  item,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
+                              Builder(
+                                builder: (context) {
+                                  if (_citiesNamesUfBrazil.isNotEmpty &&
+                                      _cityOfUf.isNotEmpty) {
+                                    return Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CustomText(text: "Cidade"),
+                                        const SizedBox(height: 10),
+                                        DropdownButtonHideUnderline(
+                                          child: DropdownButton2<String>(
+                                            isExpanded: true,
+                                            items: _citiesNamesUfBrazil
+                                                .map((item) => DropdownMenuItem(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            value: _cityOfUf,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _cityOfUf = value!;
+                                              });
+                                            },
+                                            buttonStyleData: ButtonStyleData(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: const Color(
+                                                        0xFF636363)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              width: 200,
+                                            ),
+                                            dropdownStyleData:
+                                                const DropdownStyleData(
+                                              maxHeight: 200,
+                                              padding: EdgeInsets.all(0),
+                                            ),
+                                            menuItemStyleData:
+                                                const MenuItemStyleData(
+                                              height: 40,
+                                            ),
+                                            dropdownSearchData:
+                                                DropdownSearchData(
+                                              searchController:
+                                                  _citySearchControllerFisica,
+                                              searchInnerWidgetHeight: 50,
+                                              searchInnerWidget: Container(
+                                                height: 50,
+                                                padding: const EdgeInsets.only(
+                                                  right: 8,
+                                                  top: 4.0,
+                                                  bottom: 4.0,
+                                                  left: 8,
+                                                ),
+                                                child: TextFormField(
+                                                  controller:
+                                                      _citySearchControllerFisica,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    hintText: 'Digite a cidade',
+                                                    hintStyle: const TextStyle(
+                                                        fontSize: 12),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
                                                   ),
                                                 ),
-                                              ))
-                                          .toList(),
-                                      value: _cityOfUf,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _cityOfUf = value!;
-                                        });
-                                      },
-                                      buttonStyleData: ButtonStyleData(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12.0),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color: const Color(0xFF636363)),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        width: 200,
-                                      ),
-                                      dropdownStyleData:
-                                          const DropdownStyleData(
-                                        maxHeight: 200,
-                                        padding: EdgeInsets.all(0),
-                                      ),
-                                      menuItemStyleData:
-                                          const MenuItemStyleData(
-                                        height: 40,
-                                      ),
-                                      dropdownSearchData: DropdownSearchData(
-                                        searchController:
-                                            _citySearchControllerJuridica,
-                                        searchInnerWidgetHeight: 50,
-                                        searchInnerWidget: Container(
-                                          height: 50,
-                                          padding: const EdgeInsets.only(
-                                            right: 8,
-                                            top: 4.0,
-                                            bottom: 4.0,
-                                            left: 8,
-                                          ),
-                                          child: TextFormField(
-                                            controller:
-                                                _citySearchControllerJuridica,
-                                            decoration: InputDecoration(
-                                              isDense: true,
-                                              hintText: 'Digite a cidade',
-                                              hintStyle:
-                                                  const TextStyle(fontSize: 12),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
                                               ),
+                                              searchMatchFn:
+                                                  (item, searchValue) {
+                                                return item.value
+                                                    .toString()
+                                                    .toLowerCase()
+                                                    .contains(searchValue
+                                                        .toLowerCase());
+                                              },
                                             ),
+                                            onMenuStateChange: (isOpen) {
+                                              if (!isOpen) {
+                                                _citySearchControllerFisica
+                                                    .clear();
+                                              }
+                                            },
                                           ),
                                         ),
-                                        searchMatchFn: (item, searchValue) {
-                                          return item.value
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(
-                                                  searchValue.toLowerCase());
-                                        },
-                                      ),
-                                      onMenuStateChange: (isOpen) {
-                                        if (!isOpen) {
-                                          _citySearchControllerJuridica.clear();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                    
-                                ],
-                              )
+                                      ],
+                                    );
+                                  }
+                                  return const SizedBox.shrink();
+                                },
+                              ),
                             ],
                           ),
                         ],
