@@ -63,7 +63,7 @@ public class ClienteController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _clienteService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -111,7 +111,7 @@ public class ClienteController : ControllerBase
             if (id != 0)
             {
                 await _clienteService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

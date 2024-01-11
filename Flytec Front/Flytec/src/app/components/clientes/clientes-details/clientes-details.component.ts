@@ -67,7 +67,7 @@ export class ClientesDetailsComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.router.navigate(['/cliente']);
+          window.location.href = "/cliente";
         },
         error: (e) => console.error(e)
       });

@@ -20,10 +20,10 @@ window.location.href = "/cliente";
   form: Cliente = {
     nomeCliente: '',
     idTipoCliente: 0,
-    cpf: 0,
-    rg: 0,
-    cnpj: 0,
-    inscricaoEstadual: 0,
+    cpf: '',
+    rg: '',
+    cnpj: '',
+    inscricaoEstadual: '',
     endereco: '',
     telefone1: '',
     telefone2: '',
@@ -49,6 +49,8 @@ window.location.href = "/cliente";
         console.log(data);
         this.isSuccessful = true;
         this.isSignUpFailed = false;
+        window.location.href = "/cliente";
+
       },
       error: err => {
         debugger;

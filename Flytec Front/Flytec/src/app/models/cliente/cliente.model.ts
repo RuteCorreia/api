@@ -3,10 +3,10 @@ export class Cliente {
     nome?: string;
     nomeCliente?: string;
     idTipoCliente?: number;
-    cpf?: number;
-    rg?: number;
-    cnpj?: number;
-    inscricaoEstadual?: number;
+    cpf?: string;
+    rg?: string;
+    cnpj?: string;
+    inscricaoEstadual?: string;
     endereco?: string;
     telefone1?: string;
     telefone2?: string;
