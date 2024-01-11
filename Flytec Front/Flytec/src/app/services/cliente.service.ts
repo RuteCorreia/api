@@ -6,7 +6,7 @@ import { Cliente } from '../models/cliente/cliente.model';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const baseUrl = 'https://localhost:7221/api/v1/clientes/';
+const baseUrl = 'https://localhost:7221/api/v1/cliente/';
 
 @Injectable({
   providedIn: 'root'
@@ -15,30 +15,30 @@ export class ClienteService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Cliente[]> {
-    return this.http.get<Cliente[]>(baseUrl + "getAll");
+    return this.http.get<Cliente[]>(baseUrl + "clientes");
   }
 
   get(id: any): Observable<Cliente> {
-    return this.http.get<Cliente>(baseUrl + "GetClienteById?clienteId=" + id);
+    debugger;
+    return this.http.get<Cliente>(baseUrl + "GetClienteById?id=" + id);
   }
 
-  create(data: any): Observable<any> {
-    return this.http.post(baseUrl + "createCliente", data);
+  create(data: Cliente): Observable<any> {
+    debugger;
+    return this.http.post(baseUrl + "CriarCliente", data,
+    httpOptions);
   }
 
-  update(id: any, name: any, email: any, password: any): Observable<any> {
-    return this.http.post(baseUrl + "UpdateCliente?id=" + id,
-    {
-      name,
-      email,
-      password
-    },
+  update(id: any, data: Cliente): Observable<any> {
+    debugger;
+    return this.http.post(baseUrl + "UpdateCliente?id=" + id, data,
     httpOptions
     );
   }
 
   delete(id: any): Observable<any> {
-    return this.http.delete(baseUrl + "RemoveCliente?clienteId=" + id);
+    debugger;
+    return this.http.delete(baseUrl + "RemoveCliente?id=" + id);
   }
 
   deleteAll(): Observable<any> {

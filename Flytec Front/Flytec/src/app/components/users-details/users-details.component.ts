@@ -27,11 +27,13 @@ export class UsersDetailsComponent implements OnInit {
   ngOnInit(): void {
     if (!this.viewMode) {
       this.message = '';
+      debugger;
       this.getTutorial(this.route.snapshot.params["id"]);
     }
   }
 
   getTutorial(id: string): void {
+    debugger;
     this.tutorialService.get(id)
       .subscribe({
         next: (data) => {

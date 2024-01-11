@@ -37,6 +37,7 @@ export class ClientesListComponent implements OnInit{
   }
 
   setActiveCliente(cliente: Cliente, index: number): void {
+    debugger;
     this.currentCliente = cliente;
     this.currentIndex = index;
   }

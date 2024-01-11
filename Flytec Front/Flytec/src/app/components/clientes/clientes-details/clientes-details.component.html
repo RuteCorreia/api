@@ -1,1 +1,67 @@
-<p>clientes-details works!</p>
+@if (viewMode){
+    @if (currentCliente.idCliente){
+    <h4>Cliente</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentCliente.nomeCliente }}
+    </div>
+    <div>
+      <label><strong>Email:</strong></label>
+      {{ currentCliente.email }}
+    </div>
+  
+    <a class="badge badge-warning" routerLink="/cliente/{{ currentCliente.idCliente }}">
+      Editar
+    </a>
+    } @else {<p>Selecione um Cliente...</p>}
+  } @else {
+    @if (currentCliente.idCliente) {
+    <div class="edit-form">
+      <h4>Edição de Cliente</h4>
+      <form>
+        <div class="form-group">
+          <label for="title">Nome</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            [(ngModel)]="currentCliente.nomeCliente"
+            name="title"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentCliente.email"
+            name="description"
+          />
+        </div>
+      </form>
+  
+      <!-- @if (currentTutorial.published) {
+      <button class="badge badge-primary mr-2"
+        (click)="updatePublished(false)" >
+        UnPublish
+      </button>
+      } @else {
+      <button class="badge badge-primary mr-2" (click)="updatePublished(true)">
+        Publish
+      </button>
+      } -->
+  
+      <button class="badge badge-danger mr-2" (click)="deleteCliente()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="badge badge-success mb-2"
+        (click)="updateCliente()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+    } @else {<p>Não foi Possível Visualizar o Cliente Selecionado...</p>}
+  }

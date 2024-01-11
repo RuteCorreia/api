@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -22,13 +22,13 @@ public class ClienteController : ControllerBase
         _clienteService = clienteService;
     }
 
-    [HttpGet]
+    [HttpGet("clientes")]
     public async Task<ActionResult<IAsyncEnumerable<ClienteViewModel>>> GetAll()
     {
         try
         {
-            var combustiveis = await _clienteService.GetAllAsync();
-            return Ok(combustiveis);
+            var clientes = await _clienteService.GetAllAsync();
+            return Ok(clientes);
         }
         catch (Exception ex)
         {
@@ -36,7 +36,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("GetClienteById")]
     public async Task<ActionResult<ClienteViewModel>> GetById(int id)
     {
         try
@@ -55,7 +55,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("CriarCliente")]
     public async Task<ActionResult> Add([FromBody] ClienteViewModel obj)
     {
         try
@@ -74,7 +74,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPost("UpdateCliente")]
     public async Task<ActionResult> Update(int id, [FromBody] ClienteViewModel obj)
     {
         try
@@ -103,7 +103,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("RemoveCliente")]
     public async Task<ActionResult> Delete(int id)
     {
         try

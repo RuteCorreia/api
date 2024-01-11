@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../_services/auth.service';
 import { ClienteService } from '../../../services/cliente.service';
+import { Cliente } from '../../../models/cliente/cliente.model';
 
 @Component({
   selector: 'app-add-clientes',
@@ -9,22 +10,26 @@ import { ClienteService } from '../../../services/cliente.service';
 })
 export class AddClientesComponent  implements OnInit{
 
+voltar() {
+window.location.href = "/cliente";
+}
+
   dropdownData!: any[];
   selectedItem: any;
 
-  form: any = {
-    nomeCliente: null,
-    idTipoCliente: null,
-    cpf: null,
-    rg: null,
-    cnpj: null,
-    inscricaoEstadual: null,
-    endereco: null,
-    telefone1: null,
-    telefone2: null,
-    email: null,
-    senha: null,
-    precificacao: null,
+  form: Cliente = {
+    nomeCliente: '',
+    idTipoCliente: 0,
+    cpf: 0,
+    rg: 0,
+    cnpj: 0,
+    inscricaoEstadual: 0,
+    endereco: '',
+    telefone1: '',
+    telefone2: '',
+    email: '',
+    senha: '',
+    precificacao: ''
   };
   isSuccessful = false;
   isSignUpFailed = false;
@@ -33,23 +38,23 @@ export class AddClientesComponent  implements OnInit{
   constructor(private clienteService: ClienteService) { }
   
   ngOnInit(): void {
-    this.clienteService.getDropdownData().subscribe(data => {
-      this.dropdownData = data;
+    // this.clienteService.getDropdownData().subscribe(data => {
+    //   this.dropdownData = data;
+    // });
+  }
+  onSubmit(): void {
+    debugger;
+    this.clienteService.create(this.form).subscribe({
+      next: data => {
+        console.log(data);
+        this.isSuccessful = true;
+        this.isSignUpFailed = false;
+      },
+      error: err => {
+        debugger;
+        this.errorMessage = err;
+        this.isSignUpFailed = true;
+      }
     });
   }
-  // onSubmit(): void {
-  //   const { nome } = this.form;
-
-  //   this.authService.register(nome).subscribe({
-  //     next: data => {
-  //       console.log(data);
-  //       this.isSuccessful = true;
-  //       this.isSignUpFailed = false;
-  //     },
-  //     error: err => {
-  //       this.errorMessage = err.error;
-  //       this.isSignUpFailed = true;
-  //     }
-  //   });
-  // }
 }

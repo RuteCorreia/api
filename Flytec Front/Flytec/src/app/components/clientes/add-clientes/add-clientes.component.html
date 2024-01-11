@@ -4,7 +4,7 @@
           <h1 class="text-center">Cadastro de Cliente</h1>
         <form
           name="form"
-          (ngSubmit)="f.form.valid"
+          (ngSubmit)="f.form.valid && onSubmit()"
           #f="ngForm"
           novalidate
         >
@@ -30,22 +30,21 @@
             }
           </div>
           <div class="mb-3">
-            <label for="idTipoCliente">Id Tipo Cliente</label>
-            <select
-              type="text"
+            <label for="idTipoCliente">Tipo Cliente</label>
+            <select id="selectTipoCliente"
               class="form-control"
               name="idTipoCliente"
               [(ngModel)]="form.idTipoCliente"
-              required
-              minlength="3"
-              maxlength="20"
               #idTipoCliente="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && idTipoCliente.errors }"
-            ><option *ngFor="let item of dropdownData" [value]="item.id">{{ item.name }}</option></select>
+            >
+            <option [value]="1">CNPJ e INCSRIÇÃO ESTADUAL</option>
+            <option [value]="2">CPF e RG</option>
+            <option [value]="3">INSCRIÇÃO ESTADUAL e CPF</option>
+          </select>
             @if (idTipoCliente.errors && f.submitted) {
             <div class="invalid-feedback">
               @if (idTipoCliente.errors['required']) {
-              <div>O Id Tipo Cliente é obrigatório!</div>
+              <div>O Tipo Cliente é obrigatório!</div>
               }
             </div>
             }
@@ -234,34 +233,14 @@
             @if (senha.errors && f.submitted) {
             <div class="invalid-feedback">
               @if (senha.errors['required']) {
-              <div>A Senha é obrigatória!</div>
+              <div>A senha é obrigatória!</div>
               }
             </div>
             }
           </div>
           <div class="mb-3">
-            <label for="precificacao">Precificação</label>
-            <input
-              type="text"
-              class="form-control"
-              name="precificacao"
-              [(ngModel)]="form.precificacao"
-              required
-              minlength="3"
-              maxlength="20"
-              #precificacao="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && precificacao.errors }"
-            />
-            @if (precificacao.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (precificacao.errors['required']) {
-              <div>A Precificação é obrigatória!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <button class="btn btn-primary btn-block">Cadastrar</button>
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>
           </div>
           @if (f.submitted && isSignUpFailed) {
           <div class="alert alert-warning">

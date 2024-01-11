@@ -29,12 +29,14 @@ import { AddCombateIncendioDecolagemPousoComponent } from './components/combate-
 import { AddCombustivelComponent } from './components/combustivel/add-combustivel/add-combustivel.component';
 import { AddControleDeFrotaComponent } from './components/controle-de-frota/add-controle-de-frota/add-controle-de-frota.component';
 import { ClientesListComponent } from './components/clientes/clientes-list/clientes-list.component';
+import { ClientesDetailsComponent } from './components/clientes/clientes-details/clientes-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'novoUsuario', component: RegisterComponent },
   { path: 'novoCliente', component: AddClientesComponent },
+  { path: 'cliente/:id', component: ClientesDetailsComponent },
   { path: 'profile', component: ProfileComponent },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'usuarios', component: UsersListComponent },
