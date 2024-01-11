@@ -117,12 +117,12 @@ final GoRouter router = GoRouter(
             return const AddContratante();
           },
         ),
-        GoRoute(
-          path: 'identificaoarea',
-          builder: (BuildContext context, GoRouterState state) {
-            return const IdentificacaoAreaTratamento();
-          },
-        ),
+        // GoRoute(
+        //   path: 'identificaoarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const IdentificacaoAreaTratamento(updateIdentifyAreaProcess: ,);
+        //   },
+        // ),
         // GoRoute(
         //   path: 'croquisarea',
         //   builder: (BuildContext context, GoRouterState state) {

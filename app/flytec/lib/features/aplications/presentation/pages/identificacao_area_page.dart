@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/identify_area_process.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
@@ -12,7 +13,13 @@ import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
 
 class IdentificacaoAreaTratamento extends StatefulWidget {
-  const IdentificacaoAreaTratamento({super.key});
+  final IdentifyAreaProcess? identifyAreaProcess;
+  final void Function(IdentifyAreaProcess identifyAreaProcess)
+      updateIdentifyAreaProcess;
+  const IdentificacaoAreaTratamento(
+      {super.key,
+      required this.updateIdentifyAreaProcess,
+      this.identifyAreaProcess});
 
   @override
   State<IdentificacaoAreaTratamento> createState() =>
@@ -37,17 +44,10 @@ class _IdentificacaoAreaTratamentoState
   }
   String _uf = 'SP';
   late String _cityOfUf = '';
-  final List<String> _citiesNamesUfBrazil = [];
+  List<String> _citiesNamesUfBrazil = [];
 
-  Future<void> _obtainCitiesOfUfBrazil(String uf) async {
-    _citiesNamesUfBrazil.clear();
-    List<String> cities =
-        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
-    _cityOfUf = cities.first;
-    setState(() {});
-    _citiesNamesUfBrazil.addAll(cities);
-    setState(() {});
-  }
+  List<String> _obtainCitiesOfUfBrazil(String uf) =>
+      _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
 
   final TextEditingController _citySearchController = TextEditingController();
 
@@ -57,16 +57,38 @@ class _IdentificacaoAreaTratamentoState
     super.dispose();
   }
 
+  void _initWithidentifyAreaProcess() {
+    if (widget.identifyAreaProcess != null) {
+      _imagePathMap = widget.identifyAreaProcess!.imageArea!;
+      _uf = widget.identifyAreaProcess!.uf!;
+      _cityOfUf = widget.identifyAreaProcess!.city!;
+      _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil(_uf);
+      return;
+    }
+    _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil('SP');
+  }
+
   @override
   void initState() {
     super.initState();
-    _obtainStatesOfBrazil();
-    _obtainCitiesOfUfBrazil('SP');
+   
+    _obtainStatesOfBrazil(); 
+    _initWithidentifyAreaProcess();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.updateIdentifyAreaProcess(IdentifyAreaProcess(
+                uf: _uf, city: _cityOfUf, imageArea: _imagePathMap));
+            setState(() {});
+            Navigator.pop(context);
+          },
+        ),
+       
         centerTitle: true,
         title: const Text(
           "Identificação da área \na ser tratada",
@@ -343,12 +365,11 @@ class _IdentificacaoAreaTratamentoState
               Center(
                 child: CustomButton(
                   title: "OK",
-                  onClick: () {
-                    if (_imagePathMap.isNotEmpty) {
-                      Util.toastSucesso('Identificação Enviada com Sucesso!');
-                      _imagePathMap = '';
-                      setState(() {});
-                    }
+                  onClick: () {          
+                    widget.updateIdentifyAreaProcess(IdentifyAreaProcess(
+                        uf: _uf, city: _cityOfUf, imageArea: _imagePathMap));
+                    setState(() {});
+                    Navigator.pop(context);                 
                   },
                 ),
               ),
