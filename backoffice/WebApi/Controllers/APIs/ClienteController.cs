@@ -87,7 +87,7 @@ public class ClienteController : ControllerBase
                     obj.IdCliente = objeto.IdCliente;
 
                     await _clienteService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {

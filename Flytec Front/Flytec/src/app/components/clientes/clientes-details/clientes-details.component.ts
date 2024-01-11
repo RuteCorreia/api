@@ -34,24 +34,28 @@ export class ClientesDetailsComponent implements OnInit {
 
   getCliente(id: number): void {
     debugger;
-    this.clienteService.get(id)
+      this.clienteService.get(id)
       .subscribe({
         next: (data) => {
           this.currentCliente = data;
           console.log(data);
+
         },
-        error: (e) => console.error(e)
-      });
+        error: (e) => {
+        }
+        
+      });    
   }
 
   updateCliente(): void {
+    debugger;
     this.message = '';
 
     this.clienteService.update(this.currentCliente.idCliente,this.currentCliente)
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.message = res.message ? res.message : 'This tutorial was updated successfully!';
+          window.location.href = "/cliente";
         },
         error: (e) => console.error(e)
       });
