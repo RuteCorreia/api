@@ -7,8 +7,8 @@ import { Produto } from '../../models/produto/produto.model';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const baseUrl = 'https://localhost:7221/api/v1/produto/';
-const dropdownDataUrl = 'https://localhost:7221/api/v1/cultura/';
+const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/produto/';
+const dropdownDataUrl = 'https://flytec.keltecnologia.com.br/api/v1/cultura/';
 
 
 @Injectable({
@@ -19,30 +19,30 @@ export class ProdutoService {
   constructor(private http: HttpClient) { }
 
   getAll(): Observable<Produto[]> {
-    return this.http.get<Produto[]>(baseUrl + "produtos");
+    return this.http.get<Produto[]>(baseUrl);
   }
 
   get(id: any): Observable<Produto> {
     debugger;
-    return this.http.get<Produto>(baseUrl + "GetProdutoById?id=" + id);
+    return this.http.get<Produto>(baseUrl + id);
   }
 
   create(data: Produto): Observable<any> {
     debugger;
-    return this.http.post(baseUrl + "CriarProduto", data,
+    return this.http.post(baseUrl, data,
     httpOptions);
   }
 
   update(id: any, data: Produto): Observable<any> {
     debugger;
-    return this.http.post(baseUrl + "UpdateProduto?id=" + id, data,
+    return this.http.put(baseUrl + id, data,
     httpOptions
     );
   }
 
   delete(id: any): Observable<any> {
     debugger;
-    return this.http.delete(baseUrl + "RemoveCliente?id=" + id);
+    return this.http.delete(baseUrl + id);
   }
 
   deleteAll(): Observable<any> {
@@ -55,6 +55,6 @@ export class ProdutoService {
 
   getDropdownData(): Observable<any[]> {
     debugger
-    return this.http.get<any[]>(dropdownDataUrl + "culturas");
+    return this.http.get<any[]>(dropdownDataUrl);
   }
 }

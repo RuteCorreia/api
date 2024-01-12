@@ -6,7 +6,7 @@ import { Tutorial } from '../../models/tutorial.model';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const baseUrl = 'https://localhost:7221/api/v1/auth/';
+const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/auth/';
 
 @Injectable({
   providedIn: 'root'
