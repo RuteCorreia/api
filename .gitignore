@@ -121,3 +121,15 @@ backoffice/Helpers/obj
 /backoffice/Backoffice/bin/
 /backoffice/Backoffice/.vs
 /backoffice/Backoffice/.vs/
+/backoffice/Domain/obj/Debug/net7.0/Domain.AssemblyInfoInputs.cache
+/backoffice/Domain/obj/Debug/net7.0/Domain.csproj.AssemblyReference.cache
+/backoffice/Domain/obj/Debug/net7.0/Domain.assets.cache
+/backoffice/Domain/obj/Debug/net7.0/Domain.GeneratedMSBuildEditorConfig.editorconfig
+/backoffice/Infra/obj/Debug/net7.0/Infra.csproj.AssemblyReference.cache
+/backoffice/Infra/obj/Debug/net7.0/Infra.assets.cache
+/backoffice/Infra/obj/Debug/net7.0/Infra.AssemblyInfoInputs.cache
+/backoffice/Infra/obj/Debug/net7.0/Infra.GeneratedMSBuildEditorConfig.editorconfig
+/backoffice/MS_Teste/obj/Debug/net7.0/MS_Teste.GeneratedMSBuildEditorConfig.editorconfig
+/backoffice/MS_Teste/obj/Debug/net7.0/MS_Teste.AssemblyInfoInputs.cache
+/backoffice/MS_Teste/obj/Debug/net7.0/MS_Teste.assets.cache
+/backoffice/MS_Teste/obj/Debug/net7.0/MS_Teste.csproj.AssemblyReference.cache
