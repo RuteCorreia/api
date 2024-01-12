@@ -33,6 +33,11 @@ import { ClientesDetailsComponent } from './components/clientes/clientes-details
 import { AddProdutoComponent } from './components/produto/add-produto/add-produto.component';
 import { ProdutoListComponent } from './components/produto/produto-list/produto-list.component';
 import { ProdutoDetailsComponent } from './components/produto/produto-details/produto-details.component';
+import { AeronaveListComponent } from './components/aeronave/aeronave-list/aeronave-list.component';
+import { AeronaveDetailsComponent } from './components/aeronave/aeronave-details/aeronave-details.component';
+import { EquipamentoListComponent } from './components/equipamento/equipamento-list/equipamento-list.component';
+import { AddEquipamentoComponent } from './components/equipamento/add-equipamento/add-equipamento.component';
+import { EquipamentoDetailsComponent } from './components/equipamento/equipamento-details/equipamento-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -46,7 +51,9 @@ const routes: Routes = [
   { path: 'usuario/:id', component: UsersDetailsComponent },
   { path: 'dash', component: DashboardComponent },
   { path: 'adjuvante', component: AdjuvanteComponent },
-  { path: 'aeronave', component: AddAeronaveComponent },
+  { path: 'aeronave', component: AeronaveListComponent },
+  { path: 'novaAeronave', component: AddAeronaveComponent },
+  { path: 'aeronave/:id', component: AeronaveDetailsComponent },
   { path: 'alturaVoo', component: AddAlturaVooComponent },
   { path: 'alvoBiologico', component: AddAlvoBiologicoComponent },
   { path: 'aplicacao', component: AddAplicacaoComponent },
@@ -69,6 +76,9 @@ const routes: Routes = [
   { path: 'produto', component: ProdutoListComponent },
   { path: 'novoProduto', component: AddProdutoComponent },
   { path: 'produto/:id', component: ProdutoDetailsComponent },
+  { path: 'equipamento', component: EquipamentoListComponent },
+  { path: 'novoEquipamento', component: AddEquipamentoComponent },
+  { path: 'equipamento/:id', component: EquipamentoDetailsComponent },
 
 ];
 

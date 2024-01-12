@@ -20,7 +20,6 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { DashboardComponent } from './dashboard/components/dashboard/dashboard.component';
 import { NgChartsModule } from 'ng2-charts';
 import { AdjuvanteComponent } from './components/adjuvante/adjuvante.component';
-import { AeronaveComponent } from './components/aeronave/aeronave.component';
 import { AlturaVooComponent } from './components/altura-voo/altura-voo.component';
 import { AlvoBiologicoComponent } from './components/alvo-biologico/alvo-biologico.component';
 import { AplicacaoComponent } from './components/aplicacao/aplicacao.component';
@@ -42,7 +41,6 @@ import { ControleDeFrotaComponent } from './components/controle-de-frota/control
 import { CulturaComponent } from './components/cultura/cultura.component';
 import { EmpresaComponent } from './components/empresa/empresa.component';
 import { EngenheiroComponent } from './components/engenheiro/engenheiro.component';
-import { EquipamentoComponent } from './components/equipamento/equipamento.component';
 import { EstadosComponent } from './components/estados/estados.component';
 import { ExecutorComponent } from './components/executor/executor.component';
 import { FrotaComponent } from './components/frota/frota.component';
@@ -130,7 +128,6 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     UsersListComponent,
     DashboardComponent,
     AdjuvanteComponent,
-    AeronaveComponent,
     AlturaVooComponent,
     AlvoBiologicoComponent,
     AplicacaoComponent,
@@ -152,7 +149,6 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     CulturaComponent,
     EmpresaComponent,
     EngenheiroComponent,
-    EquipamentoComponent,
     EstadosComponent,
     ExecutorComponent,
     FrotaComponent,
