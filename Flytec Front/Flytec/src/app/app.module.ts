@@ -91,6 +91,32 @@ import { ClientesListComponent } from './components/clientes/clientes-list/clien
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProdutoDetailsComponent } from './components/produto/produto-details/produto-details.component';
 import { ProdutoListComponent } from './components/produto/produto-list/produto-list.component';
+import { AeronaveDetailsComponent } from './components/aeronave/aeronave-details/aeronave-details.component';
+import { AeronaveListComponent } from './components/aeronave/aeronave-list/aeronave-list.component';
+import { EquipamentoDetailsComponent } from './components/equipamento/equipamento-details/equipamento-details.component';
+import { EquipamentoListComponent } from './components/equipamento/equipamento-list/equipamento-list.component';
+import { PistaDetailsComponent } from './components/pista/pista-details/pista-details.component';
+import { PistaListComponent } from './components/pista/pista-list/pista-list.component';
+import { BulaDetailsComponent } from './components/bula/bula-details/bula-details.component';
+import { BulaListComponent } from './components/bula/bula-list/bula-list.component';
+import { AlvoBiologicoDetailsComponent } from './components/alvo-biologico/alvo-biologico-details/alvo-biologico-details.component';
+import { AlvoBiologicoListComponent } from './components/alvo-biologico/alvo-biologico-list/alvo-biologico-list.component';
+import { ClasseDetailsComponent } from './components/classe/classe-details/classe-details.component';
+import { ClasseListComponent } from './components/classe/classe-list/classe-list.component';
+import { AddClasseComponent } from './components/classe/add-classe/add-classe.component';
+import { ClassificacaoToxicologicaDetailsComponent } from './components/classificacao-toxicologica/classificacao-toxicologica-details/classificacao-toxicologica-details.component';
+import { ClassificacaoToxicologicaListComponent } from './components/classificacao-toxicologica/classificacao-toxicologica-list/classificacao-toxicologica-list.component';
+import { AddClassificacaoToxicologicaComponent } from './components/classificacao-toxicologica/add-classificacao-toxicologica/add-classificacao-toxicologica.component';
+import { CulturaDetailsComponent } from './components/cultura/cultura-details/cultura-details.component';
+import { CulturaListComponent } from './components/cultura/cultura-list/cultura-list.component';
+import { VeiculanteDetailsComponent } from './components/veiculante/veiculante-details/veiculante-details.component';
+import { VeiculanteListComponent } from './components/veiculante/veiculante-list/veiculante-list.component';
+import { AdjuvanteDetailsComponent } from './components/adjuvante/adjuvante-details/adjuvante-details.component';
+import { AdjuvanteListComponent } from './components/adjuvante/adjuvante-list/adjuvante-list.component';
+import { AplicacaoDetailsComponent } from './components/aplicacao/aplicacao-details/aplicacao-details.component';
+import { AplicacaoListComponent } from './components/aplicacao/aplicacao-list/aplicacao-list.component';
+import { EmpresaDetailsComponent } from './components/empresa/empresa-details/empresa-details.component';
+import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-list.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +200,33 @@ import { ProdutoListComponent } from './components/produto/produto-list/produto-
     ClientesListComponent,
     NavbarComponent,
     ProdutoDetailsComponent,
-    ProdutoListComponent
+    ProdutoListComponent,
+    AeronaveDetailsComponent,
+    AeronaveListComponent,
+    EquipamentoDetailsComponent,
+    EquipamentoListComponent,
+    PistaDetailsComponent,
+    PistaListComponent,
+    BulaDetailsComponent,
+    BulaListComponent,
+    AlvoBiologicoDetailsComponent,
+    AlvoBiologicoListComponent,
+    ClasseDetailsComponent,
+    ClasseListComponent,
+    AddClasseComponent,
+    ClassificacaoToxicologicaDetailsComponent,
+    ClassificacaoToxicologicaListComponent,
+    AddClassificacaoToxicologicaComponent,
+    CulturaDetailsComponent,
+    CulturaListComponent,
+    VeiculanteDetailsComponent,
+    VeiculanteListComponent,
+    AdjuvanteDetailsComponent,
+    AdjuvanteListComponent,
+    AplicacaoDetailsComponent,
+    AplicacaoListComponent,
+    EmpresaDetailsComponent,
+    EmpresaListComponent
   ],
   imports: [
     BrowserModule,
