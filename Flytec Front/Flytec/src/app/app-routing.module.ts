@@ -30,6 +30,9 @@ import { AddCombustivelComponent } from './components/combustivel/add-combustive
 import { AddControleDeFrotaComponent } from './components/controle-de-frota/add-controle-de-frota/add-controle-de-frota.component';
 import { ClientesListComponent } from './components/clientes/clientes-list/clientes-list.component';
 import { ClientesDetailsComponent } from './components/clientes/clientes-details/clientes-details.component';
+import { AddProdutoComponent } from './components/produto/add-produto/add-produto.component';
+import { ProdutoListComponent } from './components/produto/produto-list/produto-list.component';
+import { ProdutoDetailsComponent } from './components/produto/produto-details/produto-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -63,12 +66,9 @@ const routes: Routes = [
   { path: 'combateIncendioDecolagemPouso', component: AddCombateIncendioDecolagemPousoComponent },
   { path: 'combustivel', component: AddCombustivelComponent },
   { path: 'controleDeFrota', component: AddControleDeFrotaComponent },
-
-
-
-
-
-
+  { path: 'produto', component: ProdutoListComponent },
+  { path: 'novoProduto', component: AddProdutoComponent },
+  { path: 'produto/:id', component: ProdutoDetailsComponent },
 
 ];
 

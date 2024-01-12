@@ -35,7 +35,6 @@ import { AplicacaoRelatorioComponent } from './components/aplicacao-relatorio/ap
 import { AplicacaoRelatorioItemComponent } from './components/aplicacao-relatorio-item/aplicacao-relatorio-item.component';
 import { BulaComponent } from './components/bula/bula.component';
 import { CidadesComponent } from './components/cidades/cidades.component';
-import { ClientesComponent } from './components/clientes/clientes.component';
 import { CombateIncendioComponent } from './components/combate-incendio/combate-incendio.component';
 import { CombateIncendioDecolagemPousoComponent } from './components/combate-incendio-decolagem-pouso/combate-incendio-decolagem-pouso.component';
 import { CombustivelComponent } from './components/combustivel/combustivel.component';
@@ -51,7 +50,6 @@ import { PilotoComponent } from './components/piloto/piloto.component';
 import { PistaComponent } from './components/pista/pista.component';
 import { PlanoDeContratoComponent } from './components/plano-de-contrato/plano-de-contrato.component';
 import { PrecificacaoComponent } from './components/precificacao/precificacao.component';
-import { ProdutoComponent } from './components/produto/produto.component';
 import { TipoProdutoComponent } from './components/tipo-produto/tipo-produto.component';
 import { VeiculanteComponent } from './components/veiculante/veiculante.component';
 import { AddAeronaveComponent } from './components/aeronave/add-aeronave/add-aeronave.component';
@@ -91,6 +89,8 @@ import { AddVeiculanteComponent } from './components/veiculante/add-veiculante/a
 import { ClientesDetailsComponent } from './components/clientes/clientes-details/clientes-details.component';
 import { ClientesListComponent } from './components/clientes/clientes-list/clientes-list.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { ProdutoDetailsComponent } from './components/produto/produto-details/produto-details.component';
+import { ProdutoListComponent } from './components/produto/produto-list/produto-list.component';
 
 @NgModule({
   declarations: [
@@ -119,7 +119,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AplicacaoRelatorioItemComponent,
     BulaComponent,
     CidadesComponent,
-    ClientesComponent,
     CombateIncendioComponent,
     CombateIncendioDecolagemPousoComponent,
     CombustivelComponent,
@@ -135,7 +134,6 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     PistaComponent,
     PlanoDeContratoComponent,
     PrecificacaoComponent,
-    ProdutoComponent,
     TipoProdutoComponent,
     VeiculanteComponent,
     AddAeronaveComponent,
@@ -174,7 +172,9 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     AddVeiculanteComponent,
     ClientesDetailsComponent,
     ClientesListComponent,
-    NavbarComponent
+    NavbarComponent,
+    ProdutoDetailsComponent,
+    ProdutoListComponent
   ],
   imports: [
     BrowserModule,

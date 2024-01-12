@@ -1,0 +1,158 @@
+@if (viewMode){
+    @if (currentProduto.id){
+    <h4>Produto</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentProduto.nome }}
+    </div>
+  
+    <a class="badge badge-warning" routerLink="/produto/{{ currentProduto.id }}">
+      Editar
+    </a>
+    } @else {<p>Selecione um Produto...</p>}
+  } @else {
+    @if (currentProduto.id) {
+        <div class="login">
+            <div class="login-content">
+    <div class="edit-form">
+      <h4>Edição de Cliente</h4>
+      <form
+      name="form"
+      (ngSubmit)="f.form.valid"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="idCultura">Cultura</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idCultura"
+          [(ngModel)]="currentProduto.idCultura"
+          #idCultura="ngModel"
+        >
+        <option id="opcoesSelect" *ngFor="let cultura of dropdownData" [value]="cultura.idCultura">{{ cultura.nome }}</option>
+
+      </select>
+        @if (idCultura.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idCultura.errors['required']) {
+          <div>O Tipo Cliente é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="nome">Nome Produto</label>
+        <input
+          type="text"
+          class="form-control"
+          name="nome"
+          [(ngModel)]="currentProduto.nome"
+          required
+          minlength="3"
+          #nome="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+        />
+        @if (nome.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (nome.errors['required']) {
+          <div>O Nome do Produto é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idClassificacaoToxicologica">Classificação Toxicológica</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idClassificacaoToxicologica"
+          [(ngModel)]="currentProduto.classificacaoToxicologica"
+          #idClassificacaoToxicologica="ngModel"
+        >
+        <option [value]="1">Extremamente Tóxicos</option>
+        <option [value]="2">Altamente Tóxicos</option>
+        <option [value]="3">Moderadamente Tóxicos</option>
+        <option [value]="4">Pouco Tóxicos</option>
+        <option [value]="5">Improvável De Causar Dano Agudo</option>
+        <option [value]="6">Não Classificado</option>
+    </select>
+        @if (idClassificacaoToxicologica.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idClassificacaoToxicologica.errors['required']) {
+          <div>A Classificação Toxicológica é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idClasse">Classe</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idClasse"
+          [(ngModel)]="currentProduto.classe"
+          #idClasse="ngModel"
+        >
+        <option [value]="1">Fungicida de Ação Sistêmica dos Grupos QuÍmicos</option>
+
+      </select>
+        @if (idClasse.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idClasse.errors['required']) {
+          <div>A Classe é obrigatória!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idTipoDeFormulacao">Tipo de Formulação</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idTipoDeFormulacao"
+          [(ngModel)]="currentProduto.tipoDeFormulacao"
+          #idTipoDeFormulacao="ngModel"
+        >
+        <option [value]="1">Suspoemulsão (SE)</option>
+      </select>
+        @if (idTipoDeFormulacao.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idTipoDeFormulacao.errors['required']) {
+          <div>O Tipo de Formulação é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idTipoDeServico">Tipo de Serviço</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idTipoDeServico"
+          [(ngModel)]="currentProduto.tipoServico"
+          #idTipoDeServico="ngModel"
+        >
+        <option [value]="1">Teste</option>
+
+      </select>
+        @if (idTipoDeServico.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idTipoDeServico.errors['required']) {
+          <div>O Tipo de Serviço é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+    </form>
+
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteProduto()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="updateProduto()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+            </div></div>
+    } @else {<p>Não foi Possível Visualizar o Cliente Selecionado...</p>}
+  }

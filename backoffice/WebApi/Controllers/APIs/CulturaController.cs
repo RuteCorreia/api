@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -22,7 +22,7 @@ public class CulturaController : ControllerBase
         _culturaService = culturaService;
     }
 
-    [HttpGet]
+    [HttpGet("culturas")]
     public async Task<ActionResult<IAsyncEnumerable<CulturaViewModel>>> GetAll()
     {
         try

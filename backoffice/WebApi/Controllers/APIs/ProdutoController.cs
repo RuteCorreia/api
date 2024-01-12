@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -22,13 +22,13 @@ public class ProdutoController : ControllerBase
         _produtoService = produtoService;
     }
 
-    [HttpGet]
+    [HttpGet("produtos")]
     public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll()
     {
         try
         {
-            var combustiveis = await _produtoService.GetAllAsync();
-            return Ok(combustiveis);
+            var produtos = await _produtoService.GetAllAsync();
+            return Ok(produtos);
         }
         catch (Exception ex)
         {
@@ -36,7 +36,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("GetProdutoById")]
     public async Task<ActionResult<ProdutoViewModel>> GetById(int id)
     {
         try
@@ -55,7 +55,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpPost]
+    [HttpPost("CriarProduto")]
     public async Task<ActionResult> Add([FromBody] ProdutoViewModel obj)
     {
         try
@@ -63,7 +63,7 @@ public class ProdutoController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _produtoService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -74,7 +74,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPost("UpdateProduto")]
     public async Task<ActionResult> Update(int id, [FromBody] ProdutoViewModel obj)
     {
         try
@@ -87,7 +87,7 @@ public class ProdutoController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _produtoService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {
@@ -103,7 +103,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("RemoveProduto")]
     public async Task<ActionResult> Delete(int id)
     {
         try
@@ -111,7 +111,7 @@ public class ProdutoController : ControllerBase
             if (id != 0)
             {
                 await _produtoService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

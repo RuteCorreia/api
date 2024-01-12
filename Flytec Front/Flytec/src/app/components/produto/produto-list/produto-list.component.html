@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<div class="list row" id="listaProdutos">
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar por Nome de Cliente"
+          [(ngModel)]="nome"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+            Pesquisar
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+          <a href="/novoProduto">Novo Produto</a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4>Listagem de Produtos</h4>
+      <ul class="list-group">
+        @for (produto of produtos; track produto.id; let i = $index) {
+        <li
+          class="list-group-item"
+          [class.active]="i == currentIndex"
+          (click)="setActiveProduto(produto, i)"
+          
+        >
+          {{ produto.nome }}
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <app-produto-details
+        [viewMode]="true"
+        [currentProduto]="currentProduto"
+      ></app-produto-details>
+    </div>
+  </div>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Tutorial } from '../../models/tutorial.model';
-import { UsersService } from '../../services/users.service';
+import { UsersService } from '../../services/users/users.service';
 
 @Component({
   selector: 'app-tutorials-list',
