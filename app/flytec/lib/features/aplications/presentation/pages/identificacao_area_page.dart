@@ -4,6 +4,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/identify_area_process.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
@@ -12,7 +13,13 @@ import '../../../auth/presentation/widgets/custom_login_button.dart';
 import 'steps/aplication_first_step.dart';
 
 class IdentificacaoAreaTratamento extends StatefulWidget {
-  const IdentificacaoAreaTratamento({super.key});
+  final IdentifyAreaProcess? identifyAreaProcess;
+  final void Function(IdentifyAreaProcess identifyAreaProcess)
+      updateIdentifyAreaProcess;
+  const IdentificacaoAreaTratamento(
+      {super.key,
+      required this.updateIdentifyAreaProcess,
+      this.identifyAreaProcess});
 
   @override
   State<IdentificacaoAreaTratamento> createState() =>
@@ -35,19 +42,12 @@ class _IdentificacaoAreaTratamentoState
     _statesOfBrazil = _mapsInformationsController.getStatesBrazil;
     setState(() {});
   }
+  String _uf = 'SP';
+  late String _cityOfUf = '';
+  List<String> _citiesNamesUfBrazil = [];
 
-  List<String> _citiesNamesUfBrazil = ['Selecione'];
-  void _obtainCitiesOfUfBrazil(String uf) {
-    _citiesNamesUfBrazil.clear();
-    _citiesNamesUfBrazil = ['Selecione'];
-    _cityOfUf = 'Selecione';
-    setState(() {});
-    List<String> cities =
-        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
-
-    _citiesNamesUfBrazil.addAll(cities);
-    setState(() {});
-  }
+  List<String> _obtainCitiesOfUfBrazil(String uf) =>
+      _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
 
   final TextEditingController _citySearchController = TextEditingController();
 
@@ -57,20 +57,38 @@ class _IdentificacaoAreaTratamentoState
     super.dispose();
   }
 
+  void _initWithidentifyAreaProcess() {
+    if (widget.identifyAreaProcess != null) {
+      _imagePathMap = widget.identifyAreaProcess!.imageArea!;
+      _uf = widget.identifyAreaProcess!.uf!;
+      _cityOfUf = widget.identifyAreaProcess!.city!;
+      _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil(_uf);
+      return;
+    }
+    _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil('SP');
+  }
+
   @override
   void initState() {
     super.initState();
-    _obtainStatesOfBrazil();
-    _obtainCitiesOfUfBrazil('SP');
+   
+    _obtainStatesOfBrazil(); 
+    _initWithidentifyAreaProcess();
   }
-
-  String _uf = 'SP';
-  String _cityOfUf = 'Selecione';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            widget.updateIdentifyAreaProcess(IdentifyAreaProcess(
+                uf: _uf, city: _cityOfUf, imageArea: _imagePathMap));
+            setState(() {});
+            Navigator.pop(context);
+          },
+        ),
+       
         centerTitle: true,
         title: const Text(
           "Identificação da área \na ser tratada",
@@ -129,88 +147,99 @@ class _IdentificacaoAreaTratamentoState
                           ))
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const CustomText(text: "Cidade"),
-                      const SizedBox(height: 10),
-                      DropdownButtonHideUnderline(
-                        child: DropdownButton2<String>(
-                          isExpanded: true,
-                          items: _citiesNamesUfBrazil
-                              .map((item) => DropdownMenuItem(
-                                    value: item,
-                                    child: Text(
-                                      item,
-                                      style: const TextStyle(
-                                        fontSize: 14,
+                  Builder(
+                    builder: (context) {
+                      if (_citiesNamesUfBrazil.isNotEmpty &&
+                          _cityOfUf.isNotEmpty) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const CustomText(text: "Cidade"),
+                            const SizedBox(height: 10),
+                            DropdownButtonHideUnderline(
+                              child: DropdownButton2<String>(
+                                isExpanded: true,
+                                items: _citiesNamesUfBrazil
+                                    .map((item) => DropdownMenuItem(
+                                          value: item,
+                                          child: Text(
+                                            item,
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                        ))
+                                    .toList(),
+                                value: _cityOfUf,
+                                onChanged: (value) {
+                                  setState(() {
+                                    _cityOfUf = value!;
+                                  });
+                                },
+                                buttonStyleData: ButtonStyleData(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0),
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 1,
+                                        color: const Color(0xFF636363)),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  width: 200,
+                                ),
+                                dropdownStyleData: const DropdownStyleData(
+                                  maxHeight: 200,
+                                  padding: EdgeInsets.all(0),
+                                ),
+                                menuItemStyleData: const MenuItemStyleData(
+                                  height: 40,
+                                ),
+                                dropdownSearchData: DropdownSearchData(
+                                  searchController: _citySearchController,
+                                  searchInnerWidgetHeight: 50,
+                                  searchInnerWidget: Container(
+                                    height: 50,
+                                    padding: const EdgeInsets.only(
+                                      right: 8,
+                                      top: 4.0,
+                                      bottom: 4.0,
+                                      left: 8,
+                                    ),
+                                    child: TextFormField(
+                                      controller: _citySearchController,
+                                      decoration: InputDecoration(
+                                        isDense: true,
+                                        hintText: 'Digite a cidade',
+                                        hintStyle:
+                                            const TextStyle(fontSize: 12),
+                                        border: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                        ),
                                       ),
                                     ),
-                                  ))
-                              .toList(),
-                          value: _cityOfUf,
-                          onChanged: (value) {
-                            setState(() {
-                              _cityOfUf = value!;
-                            });
-                          },
-                          buttonStyleData: ButtonStyleData(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 12.0),
-                            height: 40,
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 1, color: const Color(0xFF636363)),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            width: 200,
-                          ),
-                          dropdownStyleData: const DropdownStyleData(
-                            maxHeight: 200,
-                            padding: EdgeInsets.all(0),
-                          ),
-                          menuItemStyleData: const MenuItemStyleData(
-                            height: 40,
-                          ),
-                          dropdownSearchData: DropdownSearchData(
-                            searchController: _citySearchController,
-                            searchInnerWidgetHeight: 50,
-                            searchInnerWidget: Container(
-                              height: 50,
-                              padding: const EdgeInsets.only(
-                                right: 8,
-                                top: 4.0,
-                                bottom: 4.0,
-                                left: 8,
-                              ),
-                              child: TextFormField(
-                                controller: _citySearchController,
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  hintText: 'Digite a cidade',
-                                  hintStyle: const TextStyle(fontSize: 12),
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8),
                                   ),
+                                  searchMatchFn: (item, searchValue) {
+                                    return item.value
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(searchValue.toLowerCase());
+                                  },
                                 ),
+                                onMenuStateChange: (isOpen) {
+                                  if (!isOpen) {
+                                    _citySearchController.clear();
+                                  }
+                                },
                               ),
                             ),
-                            searchMatchFn: (item, searchValue) {
-                              return item.value
-                                  .toString()
-                                  .toLowerCase()
-                                  .contains(searchValue.toLowerCase());
-                            },
-                          ),
-                          onMenuStateChange: (isOpen) {
-                            if (!isOpen) {
-                              _citySearchController.clear();
-                            }
-                          },
-                        ),
-                      ),
-                    ],
-                  )
+                          ],
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 15),
@@ -336,12 +365,11 @@ class _IdentificacaoAreaTratamentoState
               Center(
                 child: CustomButton(
                   title: "OK",
-                  onClick: () {
-                    if (_imagePathMap.isNotEmpty) {
-                      Util.toastSucesso('Identificação Enviada com Sucesso!');
-                      _imagePathMap = '';
-                      setState(() {});
-                    }
+                  onClick: () {          
+                    widget.updateIdentifyAreaProcess(IdentifyAreaProcess(
+                        uf: _uf, city: _cityOfUf, imageArea: _imagePathMap));
+                    setState(() {});
+                    Navigator.pop(context);                 
                   },
                 ),
               ),
