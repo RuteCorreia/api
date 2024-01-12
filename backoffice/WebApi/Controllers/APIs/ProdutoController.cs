@@ -22,7 +22,7 @@ public class ProdutoController : ControllerBase
         _produtoService = produtoService;
     }
 
-    [HttpGet("produtos")]
+    [HttpGet]
     public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll()
     {
         try
@@ -36,7 +36,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpGet("GetProdutoById")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ProdutoViewModel>> GetById(int id)
     {
         try
@@ -55,7 +55,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpPost("CriarProduto")]
+    [HttpPost]
     public async Task<ActionResult> Add([FromBody] ProdutoViewModel obj)
     {
         try
@@ -74,7 +74,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpPost("UpdateProduto")]
+    [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, [FromBody] ProdutoViewModel obj)
     {
         try
@@ -103,7 +103,7 @@ public class ProdutoController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveProduto")]
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
         try

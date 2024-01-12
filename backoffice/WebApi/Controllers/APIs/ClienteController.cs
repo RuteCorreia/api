@@ -22,7 +22,7 @@ public class ClienteController : ControllerBase
         _clienteService = clienteService;
     }
 
-    [HttpGet("clientes")]
+    [HttpGet]
     public async Task<ActionResult<IAsyncEnumerable<ClienteViewModel>>> GetAll()
     {
         try
@@ -36,7 +36,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpGet("GetClienteById")]
+    [HttpGet("{id:int}")]
     public async Task<ActionResult<ClienteViewModel>> GetById(int id)
     {
         try
@@ -55,7 +55,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpPost("CriarCliente")]
+    [HttpPost]
     public async Task<ActionResult> Add([FromBody] ClienteViewModel obj)
     {
         try
@@ -74,7 +74,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpPost("UpdateCliente")]
+    [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, [FromBody] ClienteViewModel obj)
     {
         try
@@ -103,7 +103,7 @@ public class ClienteController : ControllerBase
         }
     }
 
-    [HttpDelete("RemoveCliente")]
+    [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
         try

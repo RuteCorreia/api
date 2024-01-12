@@ -22,7 +22,7 @@ public class CulturaController : ControllerBase
         _culturaService = culturaService;
     }
 
-    [HttpGet("culturas")]
+    [HttpGet]
     public async Task<ActionResult<IAsyncEnumerable<CulturaViewModel>>> GetAll()
     {
         try
