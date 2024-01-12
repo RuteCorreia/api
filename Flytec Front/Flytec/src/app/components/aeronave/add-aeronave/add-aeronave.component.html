@@ -1,0 +1,130 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aeronaves</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idEmpresa">Id Empresa</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idEmpresa"
+              [(ngModel)]="form.idEmpresa"
+              required
+              minlength="3"
+              maxlength="20"
+              #aeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
+            />
+            @if (aeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (aeronave.errors['required']) {
+              <div>O Id da Empresa é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="prefixo">Prefixo</label>
+            <input
+              type="text"
+              class="form-control"
+              name="prefixo"
+              [(ngModel)]="form.prefixo"
+              required
+              minlength="3"
+              maxlength="20"
+              #aeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
+            />
+            @if (aeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (aeronave.errors['required']) {
+              <div>O Prefixo é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="combustivel">Combustível</label>
+            <input
+              type="text"
+              class="form-control"
+              name="combustivel"
+              [(ngModel)]="form.combustivel"
+              required
+              minlength="3"
+              maxlength="20"
+              #aeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
+            />
+            @if (aeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (aeronave.errors['required']) {
+              <div>Informe o Combustível!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="capacidadeDeCarga">Capacidade de Carga</label>
+            <input
+              type="text"
+              class="form-control"
+              name="capacidadeDeCarga"
+              [(ngModel)]="form.capacidadeDeCarga"
+              required
+              minlength="3"
+              maxlength="20"
+              #aeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
+            />
+            @if (aeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (aeronave.errors['required']) {
+              <div>Informe a Capacidade de Carga!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horimetro">Horímetro</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horimetro"
+              [(ngModel)]="form.horimetro"
+              required
+              minlength="3"
+              maxlength="20"
+              #aeronave="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
+            />
+            @if (aeronave.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (aeronave.errors['required']) {
+              <div>Informe o Horímetro!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+    
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

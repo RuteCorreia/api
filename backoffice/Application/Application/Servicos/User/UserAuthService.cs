@@ -143,4 +143,37 @@ public class UserAuthService : IUserAuthService
     private long ToUnixEpochDate(DateTime date)
         => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
             .TotalSeconds);
+
+    Task<IEnumerable<Usuario>> IUserAuthService.GetUsers()
+    {
+        var users = _usuarioRepository.GetAllAsync();
+        return users;
+    }
+
+    public async Task RemoveUser(string id)
+    {
+        var userInDb = GetUserById(id).Result;
+
+        userInDb.Removido = true;
+
+        var user = _usuarioRepository.UpdateAsync(userInDb);
+        return;
+    }
+
+    public Task<Usuario> GetUserById(string id)
+    {
+        var user = _usuarioRepository.GetUserByIdAsync(id);
+        return user;
+    }
+
+    public string UpdateUserAsync(string id, UserRegisterViewModel user)
+    {
+        var userInDb = GetUserById(id).Result;
+
+        userInDb.Nome = user.Name;
+        userInDb.Email = user.Email;
+
+        var userToUpdate = _usuarioRepository.UpdateAsync(userInDb);
+        return "OK";
+    }
 }

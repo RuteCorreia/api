@@ -1,0 +1,276 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Aplicação Relatório Item</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="idAplicacaoRelatorio">Id Aplicação Relatório</label>
+            <input
+              type="text"
+              class="form-control"
+              name="idAplicacaoRelatorio"
+              [(ngModel)]="form.idAplicacaoRelatorio"
+              required
+              minlength="3"
+              maxlength="20"
+              #idAplicacaoRelatorio="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && idAplicacaoRelatorio.errors }"
+            />
+            @if (idAplicacaoRelatorio.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idAplicacaoRelatorio.errors['required']) {
+              <div>O Id da Aplicação Relatório é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horaInicio">Hora Início</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horaInicio"
+              [(ngModel)]="form.horaInicio"
+              required
+              minlength="3"
+              maxlength="20"
+              #horaInicio="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horaInicio.errors }"
+            />
+            @if (horaInicio.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horaInicio.errors['required']) {
+              <div>A Hora Início é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horimetroInicial">Horimetro Inicial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horimetroInicial"
+              [(ngModel)]="form.horimetroInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #horimetroInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horimetroInicial.errors }"
+            />
+            @if (horimetroInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horimetroInicial.errors['required']) {
+              <div>O Horimetro Inicial é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horaTermino">Hora Termino</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horaTermino"
+              [(ngModel)]="form.horaTermino"
+              required
+              minlength="3"
+              maxlength="20"
+              #horaTermino="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horaTermino.errors }"
+            />
+            @if (horaTermino.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horaTermino.errors['required']) {
+              <div>A Hora Termino é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="horimetroTermino">Horimetro Término</label>
+            <input
+              type="text"
+              class="form-control"
+              name="horimetroTermino"
+              [(ngModel)]="form.horimetroTermino"
+              required
+              minlength="3"
+              maxlength="20"
+              #horimetroTermino="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && horimetroTermino.errors }"
+            />
+            @if (horimetroTermino.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (horimetroTermino.errors['required']) {
+              <div>O Horimetro Término é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="temperaturaInicial">Temperatura Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="temperaturaInicial"
+              [(ngModel)]="form.temperaturaInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #temperaturaInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && temperaturaInicial.errors }"
+            />
+            @if (temperaturaInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (temperaturaInicial.errors['required']) {
+              <div>A Temperatura Inícial é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="temperaturaFinal">Temperatura Final</label>
+            <input
+              type="text"
+              class="form-control"
+              name="temperaturaFinal"
+              [(ngModel)]="form.temperaturaFinal"
+              required
+              minlength="3"
+              maxlength="20"
+              #temperaturaFinal="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && temperaturaFinal.errors }"
+            />
+            @if (temperaturaFinal.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (temperaturaFinal.errors['required']) {
+              <div>A Temperatura Final é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="urInicial">UR Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="urInicial"
+              [(ngModel)]="form.urInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #urInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && urInicial.errors }"
+            />
+            @if (urInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (urInicial.errors['required']) {
+              <div>A UR Inícial é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="urFinal">UR Final</label>
+            <input
+              type="text"
+              class="form-control"
+              name="urFinal"
+              [(ngModel)]="form.urFinal"
+              required
+              minlength="3"
+              maxlength="20"
+              #urFinal="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && urFinal.errors }"
+            />
+            @if (urFinal.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (urFinal.errors['required']) {
+              <div>A UR Final é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="ventoInicial">Vento Inícial</label>
+            <input
+              type="text"
+              class="form-control"
+              name="ventoInicial"
+              [(ngModel)]="form.ventoInicial"
+              required
+              minlength="3"
+              maxlength="20"
+              #ventoInicial="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && ventoInicial.errors }"
+            />
+            @if (ventoInicial.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (ventoInicial.errors['required']) {
+              <div>O Vento Inícial é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="ventoFinal">Vento Final</label>
+            <input
+              type="text"
+              class="form-control"
+              name="ventoFinal"
+              [(ngModel)]="form.ventoFinal"
+              required
+              minlength="3"
+              maxlength="20"
+              #ventoFinal="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && ventoFinal.errors }"
+            />
+            @if (ventoFinal.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (ventoFinal.errors['required']) {
+              <div>O Vento Final é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="imagemDadosClimaticos">Imagem Dados Climáticos</label>
+            <input
+              type="file"
+              class="form-control"
+              name="imagemDadosClimaticos"
+              [(ngModel)]="form.imagemDadosClimaticos"
+              required
+              minlength="3"
+              maxlength="20"
+              #imagemDadosClimaticos="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && imagemDadosClimaticos.errors }"
+            />
+            @if (imagemDadosClimaticos.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (imagemDadosClimaticos.errors['required']) {
+              <div>A Imagem Dados Climáticos é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button class="btn btn-primary btn-block">Cadastrar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

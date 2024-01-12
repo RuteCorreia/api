@@ -22,13 +22,16 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task DeleteAsync(string id)
     {
-        throw new NotImplementedException();
+        var usuario = _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
+        _contextBase.Usuario.Remove(usuario);
     }
 
     public async Task<IEnumerable<Usuario>> GetAllAsync()
     {
-        throw new NotImplementedException();
+       return _contextBase.Usuario.Where(x => x.Removido == false).ToList();
     }
+
+    public async Task<Usuario> GetUserByIdAsync(string id) => _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
 
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
     
@@ -42,6 +45,7 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task UpdateAsync(Usuario obj)
     {
-        throw new NotImplementedException();
+        _contextBase.Update(obj);
+        _contextBase.SaveChanges();
     }
 }

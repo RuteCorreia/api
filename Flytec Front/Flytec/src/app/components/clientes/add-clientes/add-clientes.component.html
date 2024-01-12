@@ -1,0 +1,245 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Cliente</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nomeCliente">Nome Cliente</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nomeCliente"
+              [(ngModel)]="form.nomeCliente"
+              required
+              minlength="3"
+              #nomeCliente="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nomeCliente.errors }"
+            />
+            @if (nomeCliente.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nomeCliente.errors['required']) {
+              <div>O Nome do Cliente é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="idTipoCliente">Tipo Cliente</label>
+            <select id="selectTipoCliente"
+              class="form-control"
+              name="idTipoCliente"
+              [(ngModel)]="form.idTipoCliente"
+              #idTipoCliente="ngModel"
+            >
+            <option [value]="1">CNPJ e INCSRIÇÃO ESTADUAL</option>
+            <option [value]="2">CPF e RG</option>
+            <option [value]="3">INSCRIÇÃO ESTADUAL e CPF</option>
+          </select>
+            @if (idTipoCliente.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (idTipoCliente.errors['required']) {
+              <div>O Tipo Cliente é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="cpf">CPF</label>
+            <input
+              type="text"
+              class="form-control"
+              name="cpf"
+              [(ngModel)]="form.cpf"
+              required
+              minlength="3"
+              #cpf="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && cpf.errors }"
+            />
+            @if (cpf.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (cpf.errors['required']) {
+              <div>O CPF é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="rg">RG</label>
+            <input
+              type="text"
+              class="form-control"
+              name="rg"
+              [(ngModel)]="form.rg"
+              required
+              minlength="3"
+              #rg="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && rg.errors }"
+            />
+            @if (rg.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (rg.errors['required']) {
+              <div>O RG é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="cnpj">CNPJ</label>
+            <input
+              type="text"
+              class="form-control"
+              name="cnpj"
+              [(ngModel)]="form.cnpj"
+              required
+              minlength="3"
+              #cnpj="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && cnpj.errors }"
+            />
+            @if (cnpj.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (cnpj.errors['required']) {
+              <div>O CNPJ é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="inscricaoEstadual">Inscrição Estadual</label>
+            <input
+              type="text"
+              class="form-control"
+              name="inscricaoEstadual"
+              [(ngModel)]="form.inscricaoEstadual"
+              required
+              minlength="3"
+              #inscricaoEstadual="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && inscricaoEstadual.errors }"
+            />
+            @if (inscricaoEstadual.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (inscricaoEstadual.errors['required']) {
+              <div>A Inscrição Estadual é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="endereco">Endereço</label>
+            <input
+              type="text"
+              class="form-control"
+              name="endereco"
+              [(ngModel)]="form.endereco"
+              required
+              minlength="3"
+              #endereco="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && endereco.errors }"
+            />
+            @if (endereco.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (endereco.errors['required']) {
+              <div>O Endereço é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="telefone1">Telefone 1</label>
+            <input
+              type="text"
+              class="form-control"
+              name="telefone1"
+              [(ngModel)]="form.telefone1"
+              required
+              minlength="3"
+              #telefone1="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && telefone1.errors }"
+            />
+            @if (telefone1.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (telefone1.errors['required']) {
+              <div>O Telefone 1 é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="telefone2">Telefone 2</label>
+            <input
+              type="text"
+              class="form-control"
+              name="telefone2"
+              [(ngModel)]="form.telefone2"
+              required
+              minlength="3"
+              #telefone2="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && telefone2.errors }"
+            />
+            @if (telefone2.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (telefone2.errors['required']) {
+              <div>O Telefone 2 é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="email">Email</label>
+            <input
+              type="text"
+              class="form-control"
+              name="email"
+              [(ngModel)]="form.email"
+              required
+              minlength="3"
+              #email="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
+            />
+            @if (email.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (email.errors['required']) {
+              <div>O Email é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="senha">Senha</label>
+            <input
+              type="password"
+              class="form-control"
+              name="senha"
+              [(ngModel)]="form.senha"
+              required
+              minlength="3"
+              #senha="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && senha.errors }"
+            />
+            @if (senha.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (senha.errors['required']) {
+              <div>A senha é obrigatória!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

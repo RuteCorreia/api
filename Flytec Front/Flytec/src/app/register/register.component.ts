@@ -28,7 +28,7 @@ export class RegisterComponent {
         this.isSignUpFailed = false;
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        this.errorMessage = err.error;
         this.isSignUpFailed = true;
       }
     });

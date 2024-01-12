@@ -1,0 +1,177 @@
+import 'package:flutter/widgets.dart';
+import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/relatorio_aplicacao_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
+import 'package:flytec/features/auth/presentation/pages/login_page.dart';
+import 'package:flytec/features/home/presentation/pages/home_page.dart';
+import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../features/aplications/presentation/pages/add_contratante_page.dart';
+import '../../features/aplications/presentation/pages/caracteristica_produto_page.dart';
+import '../../features/aplications/presentation/pages/dados_responsavel_page.dart';
+import '../../features/aplications/presentation/pages/home_aplications.dart';
+import '../../features/aplications/presentation/pages/identificacao_area_page.dart';
+import '../../features/aplications/presentation/pages/recomendacoes_tecnicas_page.dart';
+import '../../features/aplications/presentation/pages/steps/aplication_second_step.dart';
+import '../../features/aplications/presentation/pages/steps/aplication_third_step.dart';
+import '../../features/fire_fighting/presentation/pages/home_firefighting.dart';
+import '../../features/fire_fighting/presentation/pages/my_activity_page.dart';
+import '../../features/fire_fighting/presentation/pages/steps/add_firefighthing_signature.dart';
+import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
+import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_second_step.dart';
+import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_step_one.dart';
+import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_third_step.dart';
+
+final GoRouter router = GoRouter(
+  debugLogDiagnostics: true,
+  routes: <RouteBase>[
+    GoRoute(
+      path: '/',
+      builder: (BuildContext context, GoRouterState state) {
+        return const SplashScreen();
+      },
+      routes: <RouteBase>[
+        GoRoute(
+          path: 'login',
+          builder: (BuildContext context, GoRouterState state) {
+            return LoginPage();
+          },
+        ),
+        GoRoute(
+          path: 'home',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HomePaga();
+          },
+        ),
+        GoRoute(
+          path: 'combateincendio',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HomeFireFighting();
+          },
+        ),
+        GoRoute(
+          path: 'combateIncendioPasso1',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddFireFightingStepOne();
+          },
+        ),
+        GoRoute(
+          path: 'combateIncendioPasso2',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddFireFightingSecondStep();
+          },
+        ),
+        GoRoute(
+          path: 'combateIncendioPasso3',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddFireFightingThirdStep();
+          },
+        ),
+        GoRoute(
+          path: 'combateIncendioPasso4',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddFireFightingFourthtep();
+          },
+        ),
+        GoRoute(
+          path: 'addsignature',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddFireFightingSignatureStep();
+          },
+        ),
+        GoRoute(
+          path: 'myactivity',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MyActivityPage();
+          },
+        ),
+        GoRoute(
+          path: 'aplications',
+          builder: (BuildContext context, GoRouterState state) {
+            return const HomeAplicationPage();
+          },
+        ),
+        GoRoute(
+          path: 'aplicationstep1',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AplicationFirstStep();
+          },
+        ),
+        GoRoute(
+          path: 'aplicationstep2',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AplicationSecondStep();
+          },
+        ),
+        GoRoute(
+          path: 'aplicationstep3',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AplicationThirdStep();
+          },
+        ),
+        GoRoute(
+          path: 'addcontratante',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AddContratante();
+          },
+        ),
+        // GoRoute(
+        //   path: 'identificaoarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const IdentificacaoAreaTratamento(updateIdentifyAreaProcess: ,);
+        //   },
+        // ),
+        // GoRoute(
+        //   path: 'croquisarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const CroquisAreaCliente();
+        //   },
+        // ),
+        GoRoute(
+          path: 'carateristicaproduto',
+          builder: (BuildContext context, GoRouterState state) {
+            return const CaracteristicaProdutoPage();
+          },
+        ),
+        GoRoute(
+          path: 'carateristicaproduto',
+          builder: (BuildContext context, GoRouterState state) {
+            return const CaracteristicaProdutoPage();
+          },
+        ),
+        GoRoute(
+          path: 'recomendacoestecnicas',
+          builder: (BuildContext context, GoRouterState state) {
+            return const RecomendacoesTecnicas();
+          },
+        ),
+        GoRoute(
+          path: 'relatorioaplicacao',
+          builder: (BuildContext context, GoRouterState state) {
+            return const RelatorioAplicacaoPage();
+          },
+        ),
+        GoRoute(
+          path: 'aplicacoes',
+          builder: (BuildContext context, GoRouterState state) {
+            return const AplicacoesPage();
+          },
+        ),
+        GoRoute(
+          path: 'contrato',
+          builder: (BuildContext context, GoRouterState state) {
+            return const ContratoPrestacaoService();
+          },
+        ),
+        GoRoute(
+          path: 'responsavel',
+          builder: (BuildContext context, GoRouterState state) {
+            return const DadosResponsavelPage();
+          },
+        ),
+      ],
+    ),
+  ],
+);

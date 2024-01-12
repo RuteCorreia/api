@@ -531,11 +531,11 @@ namespace Infra.Migrations
                     b.Property<bool>("Admin")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("CNPJ")
-                        .HasColumnType("int");
+                    b.Property<string>("CNPJ")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CPF")
-                        .HasColumnType("int");
+                    b.Property<string>("CPF")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -548,8 +548,8 @@ namespace Infra.Migrations
                     b.Property<int?>("IdTipoCliente")
                         .HasColumnType("int");
 
-                    b.Property<int?>("InscricaoEstadual")
-                        .HasColumnType("int");
+                    b.Property<string>("InscricaoEstadual")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NomeCliente")
                         .IsRequired()
@@ -559,8 +559,8 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RG")
-                        .HasColumnType("int");
+                    b.Property<string>("RG")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Senha")
                         .IsRequired()

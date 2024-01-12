@@ -1,0 +1,15 @@
+#myChart{
+
+    margin-left: 200px;
+    border-width: 1px;
+    border-style: solid;
+    margin-top: 10px;
+    width: 100px;
+    height: 50px;
+}
+
+.dashboard-container {
+    padding: 20px;
+    padding-top: 50px;
+
+  }
