@@ -54,6 +54,10 @@ import { VeiculanteDetailsComponent } from './components/veiculante/veiculante-d
 import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-list.component';
 import { AddEmpresaComponent } from './components/empresa/add-empresa/add-empresa.component';
 import { EmpresaDetailsComponent } from './components/empresa/empresa-details/empresa-details.component';
+import { AplicacaoListComponent } from './components/aplicacao/aplicacao-list/aplicacao-list.component';
+import { AplicacaoDetailsComponent } from './components/aplicacao/aplicacao-details/aplicacao-details.component';
+import { BulaListComponent } from './components/bula/bula-list/bula-list.component';
+import { BulaDetailsComponent } from './components/bula/bula-details/bula-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -70,7 +74,6 @@ const routes: Routes = [
   { path: 'novaAeronave', component: AddAeronaveComponent },
   { path: 'aeronave/:id', component: AeronaveDetailsComponent },
   { path: 'alturaVoo', component: AddAlturaVooComponent },
-  { path: 'aplicacao', component: AddAplicacaoComponent },
   { path: 'aplicacaoAreaTratada', component: AddAplicacaoAreaTratadaComponent },
   { path: 'aplicacaoCaracteristicas', component: AddAplicacaoCaracteristicasComponent },
   { path: 'aplicacaoContrato', component: AddAplicacaoContratoComponent },
@@ -80,7 +83,6 @@ const routes: Routes = [
   { path: 'aplicacaoRecomendacoesTecnicas', component: AddAplicacaoRecomendacoesTecnicasComponent },
   { path: 'aplicacaoRelatorio', component: AddAplicacaoRelatorioComponent },
   { path: 'aplicacaoRelatorioItem', component: AddAplicacaoRelatorioItemComponent },
-  { path: 'bula', component: AddBulaComponent },
   { path: 'cidade', component: AddCidadesComponent },
   { path: 'cliente', component: ClientesListComponent },
   { path: 'combateIncendio', component: AddCombateIncendioComponent },
@@ -111,6 +113,13 @@ const routes: Routes = [
   { path: 'empresa', component: EmpresaListComponent },
   { path: 'novaEmpresa', component: AddEmpresaComponent },
   { path: 'empresa/:id', component: EmpresaDetailsComponent },
+  { path: 'aplicacao', component: AplicacaoListComponent },
+  { path: 'novaAplicacao', component: AddAplicacaoComponent },
+  { path: 'aplicacao/:id', component: AplicacaoDetailsComponent },
+  { path: 'bula', component: BulaListComponent },
+  { path: 'novaBula', component: AddBulaComponent },
+  { path: 'bula/:id', component: BulaDetailsComponent },
+
 
 
 ];

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../../_services/auth.service';
+import { Bula } from '../../../models/bula/bula.model';
+import { BulaService } from '../../../services/bula/bula.service';
 
 @Component({
   selector: 'app-add-bula',
@@ -7,36 +9,56 @@ import { AuthService } from '../../../_services/auth.service';
   styleUrl: './add-bula.component.css'
 })
 export class AddBulaComponent {
-  form: any = {
-    nomeProduto: null,
-    idCultura: null,
-    idClassificacaoToxicologica: null,
-    classe: null,
-    tipoDeFormulacao: null,
-    idAlvoBiologico: null,
-    doseProdutoComercial: null,
-    adjuvante: null,
-    idTipoDeServico: null,
-  };
-  isSuccessful = false;
-  isSignUpFailed = false;
-  errorMessage = '';
+  voltar() {
+    window.location.href = "/bula";
+    }
+    
+      dropdownDataAlvoBiologico!: any[];
+      dropdownDataCultura!: any[];
 
-  constructor(private authService: AuthService) { }
-
-  // onSubmit(): void {
-  //   const { nome } = this.form;
-
-  //   this.authService.register(nome).subscribe({
-  //     next: data => {
-  //       console.log(data);
-  //       this.isSuccessful = true;
-  //       this.isSignUpFailed = false;
-  //     },
-  //     error: err => {
-  //       this.errorMessage = err.error;
-  //       this.isSignUpFailed = true;
-  //     }
-  //   });
-  // }
+      selectedItem: any;
+    
+      form: Bula = {
+        idBula: 0,
+        nomeProduto: '',
+        idCultura: 0,
+        idClassificacaoToxicologica: 0,
+        classe: '',
+        tipoDeFormulacao: '',
+        idAlvoBiologico: 0,
+        doseProdutoComercial: 0,
+        adjuvante: '',
+        idTipoDeServico: 0,
+      };
+      isSuccessful = false;
+      isSignUpFailed = false;
+      errorMessage = '';
+    
+      constructor(private bulaService: BulaService) { }
+      
+      ngOnInit(): void {
+        this.bulaService.getDropdownAlvoBiologico().subscribe(data => {
+          this.dropdownDataAlvoBiologico = data;
+        });
+        this.bulaService.getDropdownCultura().subscribe(data => {
+          this.dropdownDataCultura = data;
+        });
+      }
+      onSubmit(): void {
+        debugger;
+        this.bulaService.create(this.form).subscribe({
+          next: data => {
+            console.log(data);
+            this.isSuccessful = true;
+            this.isSignUpFailed = false;
+            window.location.href = "/bula";
+    
+          },
+          error: err => {
+            debugger;
+            this.errorMessage = err;
+            this.isSignUpFailed = true;
+          }
+        });
+      }
 }

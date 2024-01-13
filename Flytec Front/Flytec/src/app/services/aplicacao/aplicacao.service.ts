@@ -8,6 +8,12 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/aplicacao/';
+const dropdownEmpresa = 'https://flytec.keltecnologia.com.br/api/v1/empresa/';
+const dropdownPiloto = 'https://flytec.keltecnologia.com.br/api/v1/piloto/';
+const dropdownExecutor = 'https://flytec.keltecnologia.com.br/api/v1/executor/';
+const dropdownCliente = 'https://flytec.keltecnologia.com.br/api/v1/cliente/';
+const dropdownCultura = 'https://flytec.keltecnologia.com.br/api/v1/cultura/';
+
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +58,19 @@ export class AplicacaoService {
     return this.http.get<Aplicacao[]>(`${baseUrl}+"FindUserByName?name="+${title}`);
   }
 
-  getDropdownData(): Observable<any[]> {
-    return this.http.get<any[]>(baseUrl);
+  getDropdownEmpresa(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownEmpresa);
+  }
+  getDropdownPiloto(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownPiloto);
+  }
+    getDropdownExecutor(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownExecutor);
+  }
+    getDropdownCliente(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownCliente);
+  } 
+   getDropdownCultura(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownCultura);
   }
 }

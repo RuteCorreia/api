@@ -1,213 +1,203 @@
 <div class="login">
-    <div class="login-content">
-        @if (!isSuccessful) {
-          <h1 class="text-center">Cadastro de Bula</h1>
-        <form
-          name="form"
-          (ngSubmit)="f.form.valid"
-          #f="ngForm"
-          novalidate
-        >
-          <div class="mb-3">
-            <label for="nomeProduto">Nome Produto</label>
-            <input
-              type="text"
-              class="form-control"
-              name="nomeProduto"
-              [(ngModel)]="form.nomeProduto"
-              required
-              minlength="3"
-              maxlength="20"
-              #nomeProduto="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && nomeProduto.errors }"
-            />
-            @if (nomeProduto.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (nomeProduto.errors['required']) {
-              <div>O Nome do Produto é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="idCultura">Id Cultura</label>
-            <input
-              type="text"
-              class="form-control"
-              name="idCultura"
-              [(ngModel)]="form.idCultura"
-              required
-              minlength="3"
-              maxlength="20"
-              #idCultura="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && idCultura.errors }"
-            />
-            @if (idCultura.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (idCultura.errors['required']) {
-              <div>O Id Cultura é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="idClassificacaoToxicologica">Id Classificação Toxicológica</label>
-            <input
-              type="text"
-              class="form-control"
-              name="idClassificacaoToxicologica"
-              [(ngModel)]="form.idClassificacaoToxicologica"
-              required
-              minlength="3"
-              maxlength="20"
-              #idClassificacaoToxicologica="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && idClassificacaoToxicologica.errors }"
-            />
-            @if (idClassificacaoToxicologica.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (idClassificacaoToxicologica.errors['required']) {
-              <div>O Id Classificação Toxicológica é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="classe">Classe</label>
-            <input
-              type="text"
-              class="form-control"
-              name="classe"
-              [(ngModel)]="form.classe"
-              required
-              minlength="3"
-              maxlength="20"
-              #classe="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && classe.errors }"
-            />
-            @if (classe.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (classe.errors['required']) {
-              <div>A Classe é obrigatória!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="tipoDeFormulacao">Tipo De Formulação</label>
-            <input
-              type="text"
-              class="form-control"
-              name="tipoDeFormulacao"
-              [(ngModel)]="form.tipoDeFormulacao"
-              required
-              minlength="3"
-              maxlength="20"
-              #tipoDeFormulacao="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && tipoDeFormulacao.errors }"
-            />
-            @if (tipoDeFormulacao.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (tipoDeFormulacao.errors['required']) {
-              <div>O Tipo De Formulação é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="idAlvoBiologico">Id Alvo Biológico</label>
-            <input
-              type="text"
-              class="form-control"
-              name="idAlvoBiologico"
-              [(ngModel)]="form.idAlvoBiologico"
-              required
-              minlength="3"
-              maxlength="20"
-              #idAlvoBiologico="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && idAlvoBiologico.errors }"
-            />
-            @if (idAlvoBiologico.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (idAlvoBiologico.errors['required']) {
-              <div>O Id Alvo Biológico é obrigatória!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="doseProdutoComercial">Dose Produto Comercial</label>
-            <input
-              type="text"
-              class="form-control"
-              name="doseProdutoComercial"
-              [(ngModel)]="form.doseProdutoComercial"
-              required
-              minlength="3"
-              maxlength="20"
-              #doseProdutoComercial="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && doseProdutoComercial.errors }"
-            />
-            @if (doseProdutoComercial.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (doseProdutoComercial.errors['required']) {
-              <div>A Dose Produto Comercial é obrigatória!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="adjuvante">Adjuvante</label>
-            <input
-              type="text"
-              class="form-control"
-              name="adjuvante"
-              [(ngModel)]="form.adjuvante"
-              required
-              minlength="3"
-              maxlength="20"
-              #adjuvante="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && adjuvante.errors }"
-            />
-            @if (adjuvante.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (adjuvante.errors['required']) {
-              <div>O Adjuvante é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="idTipoDeServico">Id Tipo De Serviço</label>
-            <input
-              type="text"
-              class="form-control"
-              name="idTipoDeServico"
-              [(ngModel)]="form.idTipoDeServico"
-              required
-              minlength="3"
-              maxlength="20"
-              #idTipoDeServico="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && idTipoDeServico.errors }"
-            />
-            @if (idTipoDeServico.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (idTipoDeServico.errors['required']) {
-              <div>O Id Tipo De Serviço é obrigatório!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <button class="btn btn-primary btn-block">Cadastrar</button>
-          </div>
-          @if (f.submitted && isSignUpFailed) {
-          <div class="alert alert-warning">
-            Atenção!<br />{{ errorMessage }}
-          </div>
+  <div class="login-content">
+      @if (!isSuccessful) {
+        <h1 class="text-center">Cadastro de Bula</h1>
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && onSubmit()"
+        #f="ngForm"
+        novalidate
+      >
+      <div class="mb-3">
+        <label for="nomeProduto">Nome Produto</label>
+        <input
+          type="text"
+          class="form-control"
+          name="nomeProduto"
+          [(ngModel)]="form.nomeProduto"
+          required
+          minlength="3"
+          maxlength="20"
+          #nomeProduto="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && nomeProduto.errors }"
+        />
+        @if (nomeProduto.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (nomeProduto.errors['required']) {
+          <div>O Nome Produto é obrigatório!</div>
           }
-        </form>
-        } @else {
-        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        </div>
         }
       </div>
+      <div class="mb-3">
+        <label for="idCultura">Cultura</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idCultura"
+          [(ngModel)]="form.idCultura"
+          #idCultura="ngModel"
+        >
+        <option id="opcoesSelect" *ngFor="let cultura of dropdownDataCultura" [value]="cultura.idCultura">{{ cultura.nome }}</option>
+
+      </select>
+        @if (idCultura.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idCultura.errors['required']) {
+          <div>Cultura é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idClassificacaoToxicologica">Classificação Toxicológica</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idClassificacaoToxicologica"
+          [(ngModel)]="form.idClassificacaoToxicologica"
+          #idClassificacaoToxicologica="ngModel"
+        >
+        <option [value]="1">Extremamente Tóxicos</option>
+        <option [value]="2">Altamente Tóxicos</option>
+        <option [value]="3">Moderadamente Tóxicos</option>
+        <option [value]="4">Pouco Tóxicos</option>
+        <option [value]="5">Improvável De Causar Dano Agudo</option>
+        <option [value]="6">Não Classificado</option>
+    </select>
+        @if (idClassificacaoToxicologica.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idClassificacaoToxicologica.errors['required']) {
+          <div>A Classificação Toxicológica é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idClasse">Classe</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idClasse"
+          [(ngModel)]="form.classe"
+          #idClasse="ngModel"
+        >
+        <option [value]="1">Fungicida de Ação Sistêmica dos Grupos QuÍmicos</option>
+      </select>
+        @if (idClasse.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idClasse.errors['required']) {
+          <div>A Classe é obrigatória!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idTipoDeFormulacao">Tipo de Formulação</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idTipoDeFormulacao"
+          [(ngModel)]="form.tipoDeFormulacao"
+          #idTipoDeFormulacao="ngModel"
+        >
+        <option [value]="1">Suspoemulsão (SE)</option>
+      </select>
+        @if (idTipoDeFormulacao.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idTipoDeFormulacao.errors['required']) {
+          <div>O Tipo de Formulação é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idAlvoBiologico">Alvo Biológico</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idAlvoBiologico"
+          [(ngModel)]="form.idAlvoBiologico"
+          #idAlvoBiologico="ngModel"
+        >
+        <option id="opcoesSelect" *ngFor="let alvoBiologico of dropdownDataAlvoBiologico" [value]="alvoBiologico.id">{{ alvoBiologico.nome }}</option>
+
+      </select>
+        @if (idAlvoBiologico.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idAlvoBiologico.errors['required']) {
+          <div>Alvo Biológico é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="doseProdutoComercial">Dose Produto Comercial</label>
+        <input
+          type="number"
+          class="form-control"
+          name="doseProdutoComercial"
+          [(ngModel)]="form.doseProdutoComercial"
+          required
+          minlength="3"
+          maxlength="20"
+          #doseProdutoComercial="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && doseProdutoComercial.errors }"
+        />
+        @if (doseProdutoComercial.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (doseProdutoComercial.errors['required']) {
+          <div>A Dose Produto Comercial é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="adjuvante">Adjuvante</label>
+        <input
+          type="text"
+          class="form-control"
+          name="adjuvante"
+          [(ngModel)]="form.adjuvante"
+          required
+          minlength="3"
+          maxlength="20"
+          #adjuvante="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && adjuvante.errors }"
+        />
+        @if (adjuvante.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (adjuvante.errors['required']) {
+          <div>Adjuvante é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+      <div class="mb-3">
+        <label for="idTipoDeServico">Tipo de Serviço</label>
+        <select id="selectTipoCliente"
+          class="form-control"
+          name="idTipoDeServico"
+          [(ngModel)]="form.idTipoDeServico"
+          #idTipoDeServico="ngModel"
+        >
+        <option [value]="1">Teste</option>
+      </select>
+        @if (idTipoDeServico.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (idTipoDeServico.errors['required']) {
+          <div>O Tipo de Serviço é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+        <div class="mb-3">
+          <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+          <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>
+        </div>
+        @if (f.submitted && isSignUpFailed) {
+        <div class="alert alert-warning">
+          Atenção!<br />{{ errorMessage }}
+        </div>
+        }
+      </form>
+      } @else {
+      <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+      }
     </div>
+  </div>

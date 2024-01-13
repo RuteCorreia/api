@@ -8,6 +8,8 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/bula/';
+const dropdownCultura = 'https://flytec.keltecnologia.com.br/api/v1/cultura/';
+const dropdownAlvoBiologico = 'https://flytec.keltecnologia.com.br/api/v1/alvoBiologico/';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +53,11 @@ export class BulaService {
     return this.http.get<Bula[]>(`${baseUrl}+"FindUserByName?name="+${title}`);
   }
 
-  getDropdownData(): Observable<any[]> {
-    return this.http.get<any[]>(baseUrl);
+  getDropdownAlvoBiologico(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownAlvoBiologico);
+  }
+
+  getDropdownCultura(): Observable<any[]> {
+    return this.http.get<any[]>(dropdownCultura);
   }
 }

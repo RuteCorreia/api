@@ -21,7 +21,6 @@ import { DashboardComponent } from './dashboard/components/dashboard/dashboard.c
 import { NgChartsModule } from 'ng2-charts';
 import { AdjuvanteComponent } from './components/adjuvante/adjuvante.component';
 import { AlturaVooComponent } from './components/altura-voo/altura-voo.component';
-import { AplicacaoComponent } from './components/aplicacao/aplicacao.component';
 import { AplicacaoAreaTratadaComponent } from './components/aplicacao-area-tratada/aplicacao-area-tratada.component';
 import { AplicacaoCaracteristicasComponent } from './components/aplicacao-caracteristicas/aplicacao-caracteristicas.component';
 import { AplicacaoContratoComponent } from './components/aplicacao-contrato/aplicacao-contrato.component';
@@ -124,7 +123,6 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     DashboardComponent,
     AdjuvanteComponent,
     AlturaVooComponent,
-    AplicacaoComponent,
     AplicacaoAreaTratadaComponent,
     AplicacaoCaracteristicasComponent,
     AplicacaoContratoComponent,
