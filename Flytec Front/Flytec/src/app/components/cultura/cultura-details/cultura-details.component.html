@@ -1,1 +1,61 @@
-<p>cultura-details works!</p>
+@if (viewMode){
+    @if (currentCultura.idCultura){
+    <h4>Cultura</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentCultura.nome }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/cultura/{{ currentCultura.idCultura }}">
+      Editar
+    </a>
+    } @else {<p>Selecione uma Cultura...</p>}
+  } @else {
+    @if (currentCultura.idCultura) {
+        <div class="login">
+            <div class="login-content">
+    <div class="edit-form">
+      <h4>Edição de Cultura</h4>
+      <form
+      name="form"
+      (ngSubmit)="f.form.valid"
+      #f="ngForm"
+      novalidate
+    >
+      <div class="mb-3">
+        <label for="nome">Nome Cultura</label>
+        <input
+          type="text"
+          class="form-control"
+          name="nome"
+          [(ngModel)]="currentCultura.nome"
+          required
+          minlength="3"
+          maxlength="20"
+          #nome="ngModel"
+          [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+        />
+        @if (nome.errors && f.submitted) {
+        <div class="invalid-feedback">
+          @if (nome.errors['required']) {
+          <div>O Nome da Cultura é obrigatório!</div>
+          }
+        </div>
+        }
+      </div>
+    </form>
+  
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteCultura()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="updateCultura()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+            </div></div>
+    } @else {<p>Não foi Possível Visualizar a Cultura Selecionada...</p>}
+  }

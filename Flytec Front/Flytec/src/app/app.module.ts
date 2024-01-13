@@ -21,7 +21,6 @@ import { DashboardComponent } from './dashboard/components/dashboard/dashboard.c
 import { NgChartsModule } from 'ng2-charts';
 import { AdjuvanteComponent } from './components/adjuvante/adjuvante.component';
 import { AlturaVooComponent } from './components/altura-voo/altura-voo.component';
-import { AlvoBiologicoComponent } from './components/alvo-biologico/alvo-biologico.component';
 import { AplicacaoComponent } from './components/aplicacao/aplicacao.component';
 import { AplicacaoAreaTratadaComponent } from './components/aplicacao-area-tratada/aplicacao-area-tratada.component';
 import { AplicacaoCaracteristicasComponent } from './components/aplicacao-caracteristicas/aplicacao-caracteristicas.component';
@@ -38,18 +37,14 @@ import { CombateIncendioComponent } from './components/combate-incendio/combate-
 import { CombateIncendioDecolagemPousoComponent } from './components/combate-incendio-decolagem-pouso/combate-incendio-decolagem-pouso.component';
 import { CombustivelComponent } from './components/combustivel/combustivel.component';
 import { ControleDeFrotaComponent } from './components/controle-de-frota/controle-de-frota.component';
-import { CulturaComponent } from './components/cultura/cultura.component';
-import { EmpresaComponent } from './components/empresa/empresa.component';
 import { EngenheiroComponent } from './components/engenheiro/engenheiro.component';
 import { EstadosComponent } from './components/estados/estados.component';
 import { ExecutorComponent } from './components/executor/executor.component';
 import { FrotaComponent } from './components/frota/frota.component';
 import { PilotoComponent } from './components/piloto/piloto.component';
-import { PistaComponent } from './components/pista/pista.component';
 import { PlanoDeContratoComponent } from './components/plano-de-contrato/plano-de-contrato.component';
 import { PrecificacaoComponent } from './components/precificacao/precificacao.component';
 import { TipoProdutoComponent } from './components/tipo-produto/tipo-produto.component';
-import { VeiculanteComponent } from './components/veiculante/veiculante.component';
 import { AddAeronaveComponent } from './components/aeronave/add-aeronave/add-aeronave.component';
 import { AddAlturaVooComponent } from './components/altura-voo/add-altura-voo/add-altura-voo.component';
 import { AddAlvoBiologicoComponent } from './components/alvo-biologico/add-alvo-biologico/add-alvo-biologico.component';
@@ -129,7 +124,6 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     DashboardComponent,
     AdjuvanteComponent,
     AlturaVooComponent,
-    AlvoBiologicoComponent,
     AplicacaoComponent,
     AplicacaoAreaTratadaComponent,
     AplicacaoCaracteristicasComponent,
@@ -146,18 +140,14 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     CombateIncendioDecolagemPousoComponent,
     CombustivelComponent,
     ControleDeFrotaComponent,
-    CulturaComponent,
-    EmpresaComponent,
     EngenheiroComponent,
     EstadosComponent,
     ExecutorComponent,
     FrotaComponent,
     PilotoComponent,
-    PistaComponent,
     PlanoDeContratoComponent,
     PrecificacaoComponent,
     TipoProdutoComponent,
-    VeiculanteComponent,
     AddAeronaveComponent,
     AddAlturaVooComponent,
     AddAlvoBiologicoComponent,

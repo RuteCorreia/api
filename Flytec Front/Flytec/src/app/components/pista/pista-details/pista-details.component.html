@@ -1,1 +1,100 @@
-<p>pista-details works!</p>
+@if (viewMode){
+    @if (currentPista.id){
+    <h4>Pista</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentPista.nome }}
+    </div>
+  
+    <a class="badge badge-warning" routerLink="/pista/{{ currentPista.id }}">
+      Editar
+    </a>
+    } @else {<p>Selecione uma Pista...</p>}
+  } @else {
+    @if (currentPista.id) {
+        <div class="login">
+            <div class="login-content">
+    <div class="edit-form">
+      <h4>Edição de Pista</h4>
+      <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nome">Nome Pista</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nome"
+              [(ngModel)]="currentPista.nome"
+              required
+              minlength="3"
+              #nome="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+            />
+            @if (nome.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nome.errors['required']) {
+              <div>O Nome da Pista é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="lat">LAT</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lat"
+              [(ngModel)]="currentPista.lat"
+              required
+              minlength="3"
+              #lat="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && lat.errors }"
+            />
+            @if (lat.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (lat.errors['required']) {
+              <div>LAT é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="long">LONG</label>
+            <input
+              type="text"
+              class="form-control"
+              name="long"
+              [(ngModel)]="currentPista.long"
+              required
+              minlength="3"
+              #long="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && long.errors }"
+            />
+            @if (long.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (long.errors['required']) {
+              <div>LONG é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+    </form>
+
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteProduto()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="updateProduto()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+            </div></div>
+    } @else {<p>Não foi Possível Visualizar a Pista Selecionada...</p>}
+  }

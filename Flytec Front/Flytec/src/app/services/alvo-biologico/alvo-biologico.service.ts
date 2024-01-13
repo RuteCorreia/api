@@ -8,6 +8,8 @@ const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/alvoBiologico/';
+const dropdownDatabaseUrl = 'https://flytec.keltecnologia.com.br/api/v1/produto/';
+
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +55,6 @@ export class AlvoBiologicoService {
   }
 
   getDropdownData(): Observable<any[]> {
-    return this.http.get<any[]>(baseUrl);
+    return this.http.get<any[]>(dropdownDatabaseUrl);
   }
 }

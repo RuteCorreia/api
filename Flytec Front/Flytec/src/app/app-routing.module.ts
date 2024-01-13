@@ -38,6 +38,22 @@ import { AeronaveDetailsComponent } from './components/aeronave/aeronave-details
 import { EquipamentoListComponent } from './components/equipamento/equipamento-list/equipamento-list.component';
 import { AddEquipamentoComponent } from './components/equipamento/add-equipamento/add-equipamento.component';
 import { EquipamentoDetailsComponent } from './components/equipamento/equipamento-details/equipamento-details.component';
+import { PistaListComponent } from './components/pista/pista-list/pista-list.component';
+import { AddPistaComponent } from './components/pista/add-pista/add-pista.component';
+import { PistaDetailsComponent } from './components/pista/pista-details/pista-details.component';
+import { AlvoBiologicoListComponent } from './components/alvo-biologico/alvo-biologico-list/alvo-biologico-list.component';
+import { AlvoBiologicoDetailsComponent } from './components/alvo-biologico/alvo-biologico-details/alvo-biologico-details.component';
+import { CulturaListComponent } from './components/cultura/cultura-list/cultura-list.component';
+import { AddCulturaComponent } from './components/cultura/add-cultura/add-cultura.component';
+import { CulturaDetailsComponent } from './components/cultura/cultura-details/cultura-details.component';
+import { AdjuvanteListComponent } from './components/adjuvante/adjuvante-list/adjuvante-list.component';
+import { AdjuvanteDetailsComponent } from './components/adjuvante/adjuvante-details/adjuvante-details.component';
+import { VeiculanteListComponent } from './components/veiculante/veiculante-list/veiculante-list.component';
+import { AddVeiculanteComponent } from './components/veiculante/add-veiculante/add-veiculante.component';
+import { VeiculanteDetailsComponent } from './components/veiculante/veiculante-details/veiculante-details.component';
+import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-list.component';
+import { AddEmpresaComponent } from './components/empresa/add-empresa/add-empresa.component';
+import { EmpresaDetailsComponent } from './components/empresa/empresa-details/empresa-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -50,12 +66,10 @@ const routes: Routes = [
   { path: 'usuarios', component: UsersListComponent },
   { path: 'usuario/:id', component: UsersDetailsComponent },
   { path: 'dash', component: DashboardComponent },
-  { path: 'adjuvante', component: AdjuvanteComponent },
   { path: 'aeronave', component: AeronaveListComponent },
   { path: 'novaAeronave', component: AddAeronaveComponent },
   { path: 'aeronave/:id', component: AeronaveDetailsComponent },
   { path: 'alturaVoo', component: AddAlturaVooComponent },
-  { path: 'alvoBiologico', component: AddAlvoBiologicoComponent },
   { path: 'aplicacao', component: AddAplicacaoComponent },
   { path: 'aplicacaoAreaTratada', component: AddAplicacaoAreaTratadaComponent },
   { path: 'aplicacaoCaracteristicas', component: AddAplicacaoCaracteristicasComponent },
@@ -79,6 +93,25 @@ const routes: Routes = [
   { path: 'equipamento', component: EquipamentoListComponent },
   { path: 'novoEquipamento', component: AddEquipamentoComponent },
   { path: 'equipamento/:id', component: EquipamentoDetailsComponent },
+  { path: 'pista', component: PistaListComponent },
+  { path: 'novaPista', component: AddPistaComponent },
+  { path: 'pista/:id', component: PistaDetailsComponent },
+  { path: 'alvoBiologico', component: AlvoBiologicoListComponent },
+  { path: 'novoAlvoBiologico', component: AddAlvoBiologicoComponent },
+  { path: 'alvoBiologico/:id', component: AlvoBiologicoDetailsComponent },
+  { path: 'cultura', component: CulturaListComponent },
+  { path: 'novaCultura', component: AddCulturaComponent },
+  { path: 'cultura/:id', component: CulturaDetailsComponent },
+  { path: 'adjuvante', component: AdjuvanteListComponent },
+  { path: 'novoAdjuvante', component: AdjuvanteComponent },
+  { path: 'adjuvante/:id', component: AdjuvanteDetailsComponent },
+  { path: 'veiculante', component: VeiculanteListComponent },
+  { path: 'novoVeiculante', component: AddVeiculanteComponent },
+  { path: 'veiculante/:id', component: VeiculanteDetailsComponent },
+  { path: 'empresa', component: EmpresaListComponent },
+  { path: 'novaEmpresa', component: AddEmpresaComponent },
+  { path: 'empresa/:id', component: EmpresaDetailsComponent },
+
 
 ];
 

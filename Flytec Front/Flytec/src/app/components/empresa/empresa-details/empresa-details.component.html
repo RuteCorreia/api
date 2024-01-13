@@ -1,1 +1,79 @@
-<p>empresa-details works!</p>
+@if (viewMode){
+    @if (currentEmpresa.idEmpresa){
+    <h4>Empresa</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentEmpresa.nome }}
+    </div>
+    <div>
+        <label><strong>Imagem:</strong></label> {{ currentEmpresa.imagem }}
+    </div>
+      
+
+    <a class="badge badge-warning" routerLink="/empresa/{{ currentEmpresa.idEmpresa }}">
+      Editar
+    </a>
+    } @else {<p>Selecione uma Empresa...</p>}
+  } @else {
+    @if (currentEmpresa.idEmpresa) {
+        <div class="login">
+            <div class="login-content">
+    <div class="edit-form">
+      <h4>Edição de Empresa</h4>
+      <form
+          name="form"
+          (ngSubmit)="f.form.valid"
+          #f="ngForm"
+          novalidate
+        >
+        <div class="mb-3">
+          <label for="nome">Nome Empresa</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nome"
+            [(ngModel)]="currentEmpresa.nome"
+            required
+            minlength="3"
+            maxlength="20"
+            #nome="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+          />
+          @if (nome.errors && f.submitted) {
+          <div class="invalid-feedback">
+            @if (nome.errors['required']) {
+            <div>O Nome da Empresa é obrigatório!</div>
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="imagem">Imagem</label>
+          <input
+            type="file"
+            class="form-control"
+            name="imagem"
+            [(ngModel)]="currentEmpresa.imagem"
+            required
+            minlength="3"
+            maxlength="20"
+            #imagem="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && imagem.errors }"
+          />
+        </div>
+        </form>
+  
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteEmpresa()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="updateEmpresa()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+            </div></div>
+    } @else {<p>Não foi Possível Visualizar a Empresa Selecionada...</p>}
+  }

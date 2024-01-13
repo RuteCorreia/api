@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,7 +63,7 @@ public class AdjuvanteController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _adjuvanteService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -87,7 +87,7 @@ public class AdjuvanteController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _adjuvanteService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {
@@ -111,7 +111,7 @@ public class AdjuvanteController : ControllerBase
             if (id != 0)
             {
                 await _adjuvanteService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

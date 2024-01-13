@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,7 +63,7 @@ public class PistaController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _pistaService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -87,7 +87,7 @@ public class PistaController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _pistaService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {
@@ -111,7 +111,7 @@ public class PistaController : ControllerBase
             if (id != 0)
             {
                 await _pistaService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

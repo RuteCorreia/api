@@ -1,1 +1,50 @@
-<p>empresa-list works!</p>
+<app-navbar></app-navbar>
+<div class="list row" id="lista">
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar por Nome de Empresa"
+          [(ngModel)]="nome"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+            Pesquisar
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+          <a href="/novaEmpresa">Nova Empresa</a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4>Listagem de Empresas</h4>
+      <ul class="list-group">
+        @for (empresa of empresas; track empresa.idEmpresa; let i = $index) {
+        <li
+          class="list-group-item"
+          [class.active]="i == currentIndex"
+          (click)="setActiveEmpresa(empresa, i)"
+          
+        >
+          {{ empresa.nome }}
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <app-empresa-details
+        [viewMode]="true"
+        [currentEmpresa]="currentEmpresas"
+      ></app-empresa-details>
+    </div>
+  </div>

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/empresa/';
+const baseUrl = 'https://localhost:7221/api/v1/empresa/';
 
 @Injectable({
   providedIn: 'root'
