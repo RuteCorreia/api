@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -23,7 +21,6 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
 
   @override
   Widget build(BuildContext context) {
-    log("AplicationSecondStep --> ${_areaApplication.identifyAreaProcess?.imageArea != null ? '${_areaApplication.identifyAreaProcess?.imageArea}' : 'ok'}");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
