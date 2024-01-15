@@ -3,7 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
+import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
@@ -23,7 +23,6 @@ enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
 class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   String _imageMapsPath = "";
-  bool _isCut = true;
   Uint8List? _imageData;
 
   @override
@@ -75,13 +74,23 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 15),
               InkWell(
                 onTap: () async {
-                  _imageMapsPath = '';
-                  _isCut = false;
-                  setState(() {});
                   _imageMapsPath = await Util.obtainImagePathMaps(context);
-                  _imageData = await File(_imageMapsPath).readAsBytes();  
-                  _isCut = true;
-                  setState(() {});
+                  _imageData = await File(_imageMapsPath).readAsBytes();
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UplodadFotos(
+                                updateImagePathMap: (path) {
+                                  _imageMapsPath = path;
+                                  setState(() {});
+                                },
+                                imageData: _imageData,
+                                imagePath: _imageMapsPath,
+                                onOkButton: () {
+                                  context.pop();
+                                },
+                              )));
                 },
                 child: Container(
                   height: 60,
@@ -120,27 +129,24 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   ),
                 ),
               ),
-              _imageMapsPath.isNotEmpty
-                  ? Column(
+              if (_imageMapsPath.isNotEmpty)
+                Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 15),
                         const CustomText(
                             text: 'Imagem do Receituário Agronômico'),
                         const SizedBox(height: 15),
-                        ImageSelected(
-                          imageMapsPath: _imageMapsPath,
-                          isCut: _isCut,
-                          imageData: _imageData,
-
-                          onCutImage: (cut, path) {
-                            _isCut = cut;
-                            setState(() {});
-                          },
-                        )
-                      ],
-                    )
-                  : const SizedBox.shrink(),
+                  Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: FileImage(File(_imageMapsPath)),
+                            fit: BoxFit.fill),
+                      ))
+                ]),
+                
               const SizedBox(height: 15),
               const CustomText(text: 'Nome do produto'),
               const SizedBox(height: 10),
