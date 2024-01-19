@@ -1,10 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/area_application.dart';
 import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
+import 'package:flytec/features/aplications/services/report_aplications_generate_service.dart';
+import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../../core/injections/get_it.dart';
 
@@ -19,7 +26,7 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
-
+  late PdfGenerator _pdfGenerator;
   final AreaApplication _areaApplication = AreaApplication();
 
   @override
@@ -119,14 +126,26 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
                   context.push("/responsavel");
                 },
               ),
-              /*  Center(
+              Center(
                 child: CustomButton(
-                  title: "Próximo",
-                  onClick: () {
-                    context.push("/combateIncendioPasso3");
+                  title: "Gerar Relatório",
+                  onClick: () async {
+                    _pdfGenerator = ReportAplicationsGenerate();
+                    final document = await _pdfGenerator.generatePdf();
+                    final documentBytes =
+                        await _pdfGenerator.saveDocument(document: document);
+                    final directory = await getApplicationDocumentsDirectory();
+                    final file = File("${directory.path}/relatorio.pdf");
+                    await file.writeAsBytes(documentBytes!);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ReportAplicationsPage(report: file),
+                        ));
                   },
                 ),
-              ), */
+              ), 
             ],
           ),
         ),
