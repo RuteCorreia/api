@@ -1,0 +1,85 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Pista</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nome">Nome Pista</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nome"
+              [(ngModel)]="form.nome"
+              required
+              minlength="3"
+              #nome="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+            />
+            @if (nome.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nome.errors['required']) {
+              <div>O Nome da Pista é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="lat">LAT</label>
+            <input
+              type="text"
+              class="form-control"
+              name="lat"
+              [(ngModel)]="form.lat"
+              required
+              minlength="3"
+              #lat="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && lat.errors }"
+            />
+            @if (lat.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (lat.errors['required']) {
+              <div>LAT é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label for="long">LONG</label>
+            <input
+              type="text"
+              class="form-control"
+              name="long"
+              [(ngModel)]="form.long"
+              required
+              minlength="3"
+              #long="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && long.errors }"
+            />
+            @if (long.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (long.errors['required']) {
+              <div>LONG é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

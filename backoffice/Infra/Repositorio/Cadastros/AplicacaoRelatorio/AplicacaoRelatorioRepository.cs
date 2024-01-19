@@ -22,8 +22,8 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,16 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio obj)
     {
-        _contextBase.AplicacaoRelatorio.Update(obj);
+        var objeto = await _contextBase.AplicacaoRelatorio.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.IdPista = obj.IdPista;
+        objeto.Dosagem = obj.Dosagem;
+        objeto.KG_LT = obj.KG_LT;
+        objeto.VolumeAplicacao = obj.VolumeAplicacao;
+        objeto.TotalAreaAplicada = obj.TotalAreaAplicada;
+        objeto.Alteracoes_Observacoes = obj.Alteracoes_Observacoes;
+
+        _contextBase.AplicacaoRelatorio.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

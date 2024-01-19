@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 
 class Util {
   static String Token = "";
+  static final ImagePicker _imagePicker = ImagePicker();
 
   static String getTodayDate() {
     final now = DateTime.now();
@@ -11,6 +14,74 @@ class Util {
     final formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
     return formattedDate;
+  }
+
+  static Future<String> obtainImagePathMaps(BuildContext context) async {
+    String pathImage = "";
+    await showAdaptiveDialog<String>(
+      context: context,
+      useSafeArea: true,
+      builder: (BuildContext context) => AlertDialog.adaptive(
+        insetPadding: const EdgeInsets.all(32),
+        title: const SizedBox(
+          width: 244,
+          height: 30,
+          child: Text(
+            'Selecione de onde vem a imagem',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color.fromARGB(255, 121, 118, 118),
+              fontSize: 16,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w500,
+              height: 0.09,
+            ),
+          ),
+        ),
+        content: SizedBox(
+          height: 200,
+          child: Column(
+            children: [
+              CustomDialogButton(
+                text: "Galeria",
+                icon: Icons.image,
+                onClick: () async {
+                  try {
+                    final XFile? image = await _imagePicker.pickImage(
+                        source: ImageSource.gallery);
+                    pathImage = image!.path;
+                    Navigator.pop(context);
+                    Util.toastSucesso('Imagem adicionada com sucesso');
+                  } catch (e) {
+                    Util.toastErro(
+                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                  }
+                },
+              ),
+              const SizedBox(height: 10),
+              CustomDialogButton(
+                icon: Icons.camera_alt_outlined,
+                onClick: () async {
+                  try {
+                    final XFile? image = await _imagePicker.pickImage(
+                        source: ImageSource.camera);
+                    pathImage = image!.path;
+                    Navigator.pop(context);
+                    Util.toastSucesso('Imagem adicionada com sucesso');
+                  } catch (e) {
+                    Util.toastErro(
+                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                  }
+                },
+                text: "Câmera",
+              )
+            ],
+          ),
+        ),
+        actions: const <Widget>[],
+      ),
+    );
+    return pathImage;
   }
 
   static toastSucesso(txt) {

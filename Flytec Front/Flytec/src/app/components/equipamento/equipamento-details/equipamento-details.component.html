@@ -1,0 +1,59 @@
+@if (viewMode){
+    @if (currentEquipamento.id){
+    <h4>Equipamento</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentEquipamento.nome }}
+    </div>
+
+    <a class="badge badge-warning" routerLink="/equipamento/{{ currentEquipamento.id }}">
+      Editar
+    </a>
+    } @else {<p>Selecione um Equipamento...</p>}
+  } @else {
+    @if (currentEquipamento.id) {
+        <div class="login">
+            <div class="login-content">
+    <div class="edit-form">
+      <h4>Edição de Equipamento</h4>
+      <form
+          name="form"
+          #f="ngForm"
+          novalidate
+        >
+          <div class="mb-3">
+            <label for="nome">Nome Equipamento</label>
+            <input
+              type="text"
+              class="form-control"
+              name="nome"
+              [(ngModel)]="currentEquipamento.nome"
+              required
+              minlength="3"
+              #nome="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+            />
+            @if (nome.errors && f.submitted) {
+            <div class="invalid-feedback">
+              @if (nome.errors['required']) {
+              <div>O Nome do Equipamento é obrigatório!</div>
+              }
+            </div>
+            }
+          </div>
+        </form>
+  
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteEquipamento()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="btn btn-primary btn-block"
+        (click)="updateEquipamento()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+            </div></div>
+    } @else {<p>Não foi Possível Visualizar o Equipamento Selecionado...</p>}
+  }

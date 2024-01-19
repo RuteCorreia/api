@@ -1,28 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
+using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 
-namespace Application.Application.Servicos.Cadastros.CombateIncendio
+namespace Application.Application.Servicos.Cadastros.CombateIncendio;
+
+public class CombateIncendioService : ICombateIncendioService
 {
-    public class CombateIncendioService : BaseService<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>, ICombateIncendioService
+    private readonly ICombateIncendioRepository _combateIncendioRepository;
+    private readonly IMapper _mapper;
+
+    public CombateIncendioService(IMapper mapper, ICombateIncendioRepository combateIncendioRepository)
     {
-        private readonly ICombateIncendioRepository _combateIncendioRepository;
+        _combateIncendioRepository = combateIncendioRepository;
+        _mapper = mapper;
+    }
 
-        public CombateIncendioService(ICombateIncendioRepository combateIncendioRepository) : base(combateIncendioRepository)
-        {
-            _combateIncendioRepository = combateIncendioRepository;
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync()
+    {
+        var list = await _combateIncendioRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
+    }
 
-        }
+    public async Task<CombateIncendioViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _combateIncendioRepository.GetByIdAsync(id);
+        return _mapper.Map<CombateIncendioViewModel>(obj);
+    }
 
-        public Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio BuscarPorId(int? Id)
-        {
-            var obj = _combateIncendioRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task AddAsync(CombateIncendioViewModel obj)
+    {
+        var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
+        await _combateIncendioRepository.AddAsync(mapCombateIncendio);
+    }
 
-        public List<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ListarTodosCombatesIncendio()
-        {
-            var obj = _combateIncendioRepository.ListarTodosCombatesIncendio();
-            return obj;
-        }
+    public async Task UpdateAsync(CombateIncendioViewModel obj)
+    {
+        var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
+        await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _combateIncendioRepository.DeleteAsync(id);
     }
 }

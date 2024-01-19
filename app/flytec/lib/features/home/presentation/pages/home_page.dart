@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/home/controller/weather_controller.dart';
+import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,12 +14,42 @@ import '../widgets/custom_dialog_button.dart';
 import '../widgets/custom_drawer_button.dart';
 import '../widgets/welcome_text.dart';
 
-class HomePaga extends StatelessWidget {
-  HomePaga({super.key});
+class HomePaga extends StatefulWidget {
+  const HomePaga({super.key});
+
+  @override
+  State<HomePaga> createState() => _HomePagaState();
+}
+
+class _HomePagaState extends State<HomePaga> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
     _scaffoldKey.currentState!.openDrawer();
+  }
+
+  final WeatherController _weatherController = WeatherController();
+  Weather? _weatherCurrent;
+  bool _loadingObtainWeatherCurrent = true;
+
+  Future<void> obtainWeatherCurrent() async {
+    _weatherCurrent = null;
+    String country = await _weatherController.getCurrentCountry();
+
+    if (country.isEmpty) {
+      country = await _weatherController.getCurrentCountry();
+    }
+
+    _weatherCurrent =
+        await _weatherController.getCurrentWeatherByCountry(country);
+    _loadingObtainWeatherCurrent = false;
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    obtainWeatherCurrent();
   }
 
   @override
@@ -195,266 +226,330 @@ class HomePaga extends StatelessWidget {
                 userName: "${getIt<GlobalConfigVars>().userPayload.name}",
               ),
             ),
-            Container(
-              width: double.infinity,
-              height: 200,
-              margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  side: const BorderSide(width: 2, color: Color(0xFF00B45D)),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(
+            Builder(
+              builder: (context) {
+                if (_loadingObtainWeatherCurrent) {
+                  return Container(
                     width: double.infinity,
-                    height: 72,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 19,
-                          child: Container(
-                            width: 29.89,
-                            height: 32,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 29.89,
-                                  height: 32,
-                                  child: Stack(children: [
-                                    SvgPicture.asset(
-                                        "assets/images/sun_foggy_fill.svg")
-                                  ]),
-                                ),
-                              ],
+                    height: 200,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFF00B45D)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
+                }
+                if (_weatherCurrent == null) {
+                  return Container(
+                    width: double.infinity,
+                    height: 200,
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    clipBehavior: Clip.antiAlias,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: const BorderSide(
+                            width: 2, color: Color(0xFF00B45D)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: InkWell(
+                        onTap: () async {
+                          _loadingObtainWeatherCurrent = true;
+                          setState(() {});
+                          await obtainWeatherCurrent();
+                        },
+                        child: const Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.refresh,
+                              size: 50,
+                              color: Colors.green,
                             ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 44.84,
-                          top: 0,
-                          child: SizedBox(
-                            width: 237.27,
-                            height: 72,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            '${getIt<GlobalConfigVars>().weather.weather![0].description}',
-                                            style: const TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 121, 118, 118),
-                                              fontSize: 16,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700,
-                                              height: 0.09,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      getIt<GlobalConfigVars>()
-                                                          .weather
-                                                          .main!
-                                                          .temp!
-                                                          .toStringAsFixed(0),
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 32,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.05,
-                                                  ),
-                                                ),
-                                                const TextSpan(
-                                                  text: '°C',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 20,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.07,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            SizedBox(height: 16),
+                            Text(
+                              "Clique para atualizar",
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w700,
+                                height: 0.09,
+                              ),
                             ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 289.58,
-                          top: 24,
-                          child: Container(
-                            width: 22.42,
-                            height: 24,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                          ),
-                        ),
-                      ],
+                          ],
+                        )),
+                  );
+                }
+                return Container(
+                  width: double.infinity,
+                  height: 200,
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side:
+                          const BorderSide(width: 2, color: Color(0xFF00B45D)),
+                      borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 72,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          left: 0,
-                          top: 19,
-                          child: Container(
-                            width: 29.89,
-                            height: 32,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 29.89,
-                                  height: 32,
-                                  child: Stack(children: [
-                                    SvgPicture.asset(
-                                        "assets/images/home_icon.svg")
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        Positioned(
-                          left: 44.84,
-                          top: 0,
-                          child: SizedBox(
-                            width: 237.27,
-                            height: 72,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        const SizedBox(
-                                          width: double.infinity,
-                                          child: Text(
-                                            'Direção e velocidade do vento',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 121, 118, 118),
-                                              fontSize: 16,
-                                              fontFamily: 'Inter',
-                                              fontWeight: FontWeight.w700,
-                                              height: 0.09,
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        SizedBox(
-                                          width: double.infinity,
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: Util.converterMetrosPorSegundoParaKmPorHora(
-                                                          getIt<GlobalConfigVars>()
-                                                              .weather
-                                                              .wind!
-                                                              .speed!)
-                                                      .toStringAsFixed(0),
-                                                  style: const TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 32,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.05,
-                                                  ),
-                                                ),
-                                                const TextSpan(
-                                                  text: ' km/h',
-                                                  style: TextStyle(
-                                                    color: Color(0xFF00B45D),
-                                                    fontSize: 20,
-                                                    fontFamily: 'Inter',
-                                                    fontWeight: FontWeight.w700,
-                                                    height: 0.07,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: double.infinity,
+                        height: 72,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              top: 19,
+                              child: Container(
+                                width: 29.89,
+                                height: 32,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 29.89,
+                                      height: 32,
+                                      child: Stack(children: [
+                                        SvgPicture.asset(
+                                            "assets/images/sun_foggy_fill.svg")
+                                      ]),
                                     ),
-                                  ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
+                            Positioned(
+                              left: 44.84,
+                              top: 0,
+                              child: SizedBox(
+                                width: 237.27,
+                                height: 72,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              _weatherCurrent!.condition
+                                                  .translationConditionWeather,
+                                              style: const TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 121, 118, 118),
+                                                fontSize: 16,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                                height: 0.09,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 30),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        '${_weatherCurrent!.tempC.toInt()}°',
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF00B45D),
+                                                      fontSize: 32,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.05,
+                                                    ),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: 'c',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF00B45D),
+                                                      fontSize: 20,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.07,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 289.58,
+                              top: 24,
+                              child: Container(
+                                width: 22.42,
+                                height: 24,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                              ),
+                            ),
+                          ],
                         ),
-                        Positioned(
-                          left: 289.58,
-                          top: 24,
-                          child: Container(
-                            width: 22.42,
-                            height: 24,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                          ),
+                      ),
+                      const SizedBox(height: 16),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 72,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 0,
+                              top: 19,
+                              child: Container(
+                                width: 29.89,
+                                height: 32,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      width: 29.89,
+                                      height: 32,
+                                      child: Stack(children: [
+                                        SvgPicture.asset(
+                                            "assets/images/home_icon.svg")
+                                      ]),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 44.84,
+                              top: 0,
+                              child: SizedBox(
+                                width: 237.27,
+                                height: 72,
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          const SizedBox(
+                                            width: double.infinity,
+                                            child: Text(
+                                              'Direção e velocidade do vento',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 121, 118, 118),
+                                                fontSize: 16,
+                                                fontFamily: 'Inter',
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 20),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  TextSpan(
+                                                    text: _weatherCurrent!
+                                                        .windKph
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      color: Color(0xFF00B45D),
+                                                      fontSize: 32,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.05,
+                                                    ),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: ' km/h',
+                                                    style: TextStyle(
+                                                      color: Color(0xFF00B45D),
+                                                      fontSize: 20,
+                                                      fontFamily: 'Inter',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.07,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 289.58,
+                              top: 24,
+                              child: Container(
+                                width: 22.42,
+                                height: 24,
+                                clipBehavior: Clip.antiAlias,
+                                decoration: const BoxDecoration(),
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
             const SizedBox(height: 20),
             Padding(

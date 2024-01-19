@@ -22,8 +22,8 @@ public class CidadesRepository : ICidadeRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,11 @@ public class CidadesRepository : ICidadeRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Cidades.Cidades obj)
     {
-        _contextBase.Cidades.Update(obj);
+        var objeto = await _contextBase.Cidades.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
+        objeto.Sigla = obj.Sigla;
+
+        _contextBase.Cidades.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

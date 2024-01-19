@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.Cadastros.Pilotos;
+﻿using Domain.Entidades.Cadastros.Piloto;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -29,7 +29,7 @@ public class Aplicacao
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
     [JsonIgnore]
-    public virtual Piloto? Piloto { get; set; }
+    public virtual Piloto.Piloto? Piloto { get; set; }
     [JsonIgnore]
     public virtual Executor.Executor? Executor { get; set; }
     [JsonIgnore]

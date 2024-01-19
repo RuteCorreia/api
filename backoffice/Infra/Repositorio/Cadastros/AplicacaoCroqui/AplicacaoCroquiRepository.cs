@@ -22,8 +22,8 @@ public class AplicacaoCroquiRepository : IAplicacaoCroquiRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,14 @@ public class AplicacaoCroquiRepository : IAplicacaoCroquiRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoCroqui obj)
     {
-        _contextBase.AplicacaoCroqui.Update(obj);
+        var objeto = await _contextBase.AplicacaoCroqui.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.Desenho = obj.Desenho;
+        objeto.IdMapa = obj.IdMapa;
+        objeto.Latitude = obj.Latitude;
+        objeto.Longitude = obj.Longitude;
+
+        _contextBase.AplicacaoCroqui.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

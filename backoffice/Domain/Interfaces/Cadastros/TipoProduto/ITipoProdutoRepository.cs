@@ -1,13 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.TipoProduto
+namespace Domain.Interfaces.Cadastros.TipoProduto;
+
+public interface ITipoProdutoRepository
 {
-    public interface ITipoProdutoRepository : IBaseRepository<Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Tipo_Produto.TipoProduto obj);
+    Task UpdateAsync(Entidades.Cadastros.Tipo_Produto.TipoProduto obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Tipo_Produto.TipoProduto>> GetAllAsync();
+    Task<Entidades.Cadastros.Tipo_Produto.TipoProduto> GetByIdAsync(int id);
 }

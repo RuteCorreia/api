@@ -43,7 +43,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
               child: CustomCombo(
                 selectedName:
                     getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                        ? getIt<GlobalConfigVars>().userPayload.name!
+                        ? getIt<GlobalConfigVars>().userPayload.name ?? ''
                         : selectedPilot.isEmpty
                             ? "Selecione o piloto"
                             : selectedPilot,

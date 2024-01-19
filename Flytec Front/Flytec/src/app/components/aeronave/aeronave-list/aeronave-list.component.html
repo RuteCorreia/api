@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+<div class="list row" id="listaAeronaves">
+    <div class="col-md-8">
+      <div class="input-group mb-3">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Pesquisar por Prefixo de Aeronave"
+          [(ngModel)]="nome"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+            Pesquisar
+          </button>
+        </div>
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+          >
+          <a href="/novaAeronave">Nova Aeronave</a>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h4>Listagem de Aeronaves</h4>
+      <ul class="list-group">
+        @for (aeronave of aeronaves; track aeronave.id; let i = $index) {
+        <li
+          class="list-group-item"
+          [class.active]="i == currentIndex"
+          (click)="setActiveAeronave(aeronave, i)"
+          
+        >
+          {{ aeronave.prefixo }}
+        </li>
+        }
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <app-aeronave-details
+        [viewMode]="true"
+        [currentAeronave]="currentAeronave"
+      ></app-aeronave-details>
+    </div>
+  </div>

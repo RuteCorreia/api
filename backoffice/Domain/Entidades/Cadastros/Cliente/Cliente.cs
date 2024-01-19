@@ -8,10 +8,10 @@ public class Cliente
     public int IdCliente { get; set; }
     public string NomeCliente { get; set; }
     public int? IdTipoCliente { get; set; }
-    public int? CPF { get; set; }
-    public int? RG { get; set; }
-    public int? CNPJ { get; set; }
-    public int? InscricaoEstadual { get; set; }
+    public string? CPF { get; set; }
+    public string? RG { get; set; }
+    public string? CNPJ { get; set; }
+    public string? InscricaoEstadual { get; set; }
     public string Endereco { get; set; }
 
     [Required]
@@ -20,5 +20,8 @@ public class Cliente
 
     [EmailAddress]
     public string Email { get; set; }
+    public string Senha { get; set; }
     public string Precificacao { get; set; }
+
+    public bool Admin { get; set; }
 }

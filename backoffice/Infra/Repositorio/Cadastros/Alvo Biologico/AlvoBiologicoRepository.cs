@@ -22,8 +22,8 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,12 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
     {
-        _contextBase.AlvoBiologico.Update(obj);
+        var objeto = await _contextBase.AlvoBiologico.FindAsync(obj.Id);
+        objeto.IdProduto = obj.IdProduto;
+        objeto.Nome = obj.Nome;
+        objeto.DoseProdutoPorHectare = obj.DoseProdutoPorHectare;
+
+        _contextBase.AlvoBiologico.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

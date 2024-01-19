@@ -1,0 +1,16 @@
+﻿using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+
+namespace Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+
+public interface IControleDeFrotaService 
+{
+    Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync();
+
+    Task<ControleDeFrotaViewModel> GetByIdAsync(int id);
+
+    Task AddAsync(ControleDeFrotaViewModel obj);
+
+    Task UpdateAsync(ControleDeFrotaViewModel obj);
+
+    Task DeleteAsync(int id);
+}

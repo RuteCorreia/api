@@ -3,6 +3,13 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
+import 'package:flytec/features/aplications/presentation/widgets/degree_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/flight_height_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/product_type_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/veiculante_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -17,6 +24,7 @@ class RecomendacoesTecnicas extends StatefulWidget {
 enum Unidade { KG, L, NENHUM }
 
 class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
+  String _productType = "Selecione";
   Unidade _unidade = Unidade.NENHUM;
 
   String veiculanteSelecionado = "";
@@ -24,6 +32,12 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
   String alturaDoVooSelecionado = "";
   String equipamentoSelecionado = "";
   String tipoProdutoSelecionado = "";
+  String _degree = "Selecione";
+  String _veiculanteType = "Selecione";
+  String _humiditySelected = '+ 55%';
+  String _temperatureSelected = "20.0°C";
+  String _flightHeight = "Selecione";
+  String _speedWind = "Selecione";
 
   @override
   Widget build(BuildContext context) {
@@ -49,67 +63,22 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
                   children: [
                     const CustomText(text: 'Veiculante'),
                     const SizedBox(height: 14),
-                    CustomComboBox(
-                      selectedName: veiculanteSelecionado.isEmpty
-                          ? "Selecione"
-                          : veiculanteSelecionado,
-                      onTap: () {
-                        showMaterialModalBottomSheet(
-                          context: context,
-                          builder: (context) => SingleChildScrollView(
-                            controller: ModalScrollController.of(context),
-                            child: Container(
-                              height: 400,
-                              color: Colors.white,
-                              child: Padding(
-                                padding: const EdgeInsets.all(0.0),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        height: 500,
-                                        child: ListView.builder(
-                                            padding: EdgeInsets.zero,
-                                            itemCount: getIt<GlobalConfigVars>()
-                                                .veiculantes
-                                                .length,
-                                            itemBuilder: (ctx, index) {
-                                              final veiculante =
-                                                  getIt<GlobalConfigVars>()
-                                                      .veiculantes[index];
-                                              return Container(
-                                                margin: const EdgeInsets.only(
-                                                    bottom: 2),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.grey
-                                                      .withOpacity(0.1),
-                                                ),
-                                                child: ListTile(
-                                                  onTap: () {
-                                                    setState(() {
-                                                      veiculanteSelecionado =
-                                                          veiculante.nome!;
-                                                    });
-                                                    context.pop();
-                                                  },
-                                                  style: ListTileStyle.drawer,
-                                                  title: Text(
-                                                      "${veiculante.nome}"),
-                                                ),
-                                              );
-                                            }),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    ),
+                    InkWell(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.grey[100],
+                                    content: VeiculanteSelect(
+                                        onChangeVeiculanteType: (value) {
+                                      setState(() {
+                                        _veiculanteType = value;
+                                      });
+                                    }));
+                              });
+                        },
+                        child: ComboBox(selectedName: _veiculanteType)),
                   ],
                 ),
                 Column(
@@ -282,81 +251,70 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),
-            CustomComboBoxExpanded(
-              selectedName: alturaDoVooSelecionado.isEmpty
-                  ? "Selecione"
-                  : alturaDoVooSelecionado,
-              onTap: () {
-                showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) => SingleChildScrollView(
-                    controller: ModalScrollController.of(context),
-                    child: Container(
-                      height: 400,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 500,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: getIt<GlobalConfigVars>()
-                                        .alturaVoo
-                                        .length,
-                                    itemBuilder: (ctx, index) {
-                                      final altura = getIt<GlobalConfigVars>()
-                                          .alturaVoo[index];
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.1),
-                                        ),
-                                        child: ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              alturaDoVooSelecionado =
-                                                  altura.nome!;
-                                            });
-                                            context.pop();
-                                          },
-                                          style: ListTileStyle.drawer,
-                                          title: Text("${altura.nome}"),
-                                        ),
-                                      );
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: FlightHeightSelect(
+                                onChangedFlightHeight: (value) {
+                              setState(() {
+                                _flightHeight = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _flightHeight)),
             const SizedBox(height: 15),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: 'Temperatura (ºC)'),
-                    SizedBox(height: 14),
-                    ComboBox(selectedName: "Selecione"),
+                    const CustomText(text: 'Temperatura (ºC)'),
+                    const SizedBox(height: 14),
+                    InkWell(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.grey[100],
+                                    content: TemperatureSelect(
+                                        onChangedTemperature: (value) {
+                                      setState(() {
+                                        _temperatureSelected = value;
+                                      });
+                                    }));
+                              });
+                        },
+                        child: ComboBox(selectedName: _temperatureSelected))
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText(text: 'U.R do ar(%)'),
-                    SizedBox(height: 14),
-                    ComboBox(selectedName: "Selecione"),
+                    const CustomText(text: 'U.R do ar(%)'),
+                    const SizedBox(height: 14),
+                    InkWell(
+                        onTap: () async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    backgroundColor: Colors.grey[100],
+                                    content: RelativeHumiditySelect(
+                                        onChangedHumidity: (value) {
+                                      setState(() {
+                                        _humiditySelected = value;
+                                      });
+                                    }));
+                              });
+                        },
+                        child: ComboBox(selectedName: _humiditySelected))
                   ],
                 )
               ],
@@ -364,68 +322,41 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Velocidade do vento'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content:
+                                SpeedWindSelect(onChangedSpeedWind: (value) {
+                              setState(() {
+                                _speedWind = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _speedWind)),
             const SizedBox(height: 20),
             const CustomText(text: 'Tipo de produto'),
             const SizedBox(height: 14),
-            CustomComboBoxExpanded(
-              selectedName: tipoProdutoSelecionado.isEmpty
-                  ? "Selecione"
-                  : tipoProdutoSelecionado,
-              onTap: () {
-                showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) => SingleChildScrollView(
-                    controller: ModalScrollController.of(context),
-                    child: Container(
-                      height: 400,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 500,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: getIt<GlobalConfigVars>()
-                                        .tiposProdutos
-                                        .length,
-                                    itemBuilder: (ctx, index) {
-                                      final tipoproduto =
-                                          getIt<GlobalConfigVars>()
-                                              .tiposProdutos[index];
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.1),
-                                        ),
-                                        child: ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              tipoProdutoSelecionado =
-                                                  tipoproduto.nome!;
-                                            });
-                                            context.pop();
-                                          },
-                                          style: ListTileStyle.drawer,
-                                          title: Text("${tipoproduto.nome}"),
-                                        ),
-                                      );
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: ProductTypeSelect(
+                                onChangedProductType: (value) {
+                              setState(() {
+                                _productType = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _productType)),
             const SizedBox(height: 14),
             const CustomText(text: 'Equipamento'),
             const SizedBox(height: 14),
@@ -490,7 +421,21 @@ class _RecomendacoesTecnicasState extends State<RecomendacoesTecnicas> {
             const SizedBox(height: 14),
             const CustomText(text: 'Ângulo'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            InkWell(
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: Colors.grey[100],
+                            content: DegreeSelect(onChangeDegree: (value) {
+                              setState(() {
+                                _degree = value;
+                              });
+                            }));
+                      });
+                },
+                child: ComboBox(selectedName: _degree)),
             Center(
               child: CustomButton(
                 title: "OK",

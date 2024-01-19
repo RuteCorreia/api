@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/area_application.dart';
+import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../../core/injections/get_it.dart';
@@ -17,6 +19,8 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+
+  final AreaApplication _areaApplication = AreaApplication();
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +76,17 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               CustomCardButton(
                 title: "Identificação da área a ser tratada",
                 onTap: () {
-                  context.push("/identificaoarea");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => IdentificacaoAreaTratamento(
+                              identifyAreaProcess:
+                                  _areaApplication.identifyAreaProcess,
+                              updateIdentifyAreaProcess: (identifyAreaProcess) {
+                                _areaApplication.updateIdentifyAreaProcess(
+                                    identifyAreaProcess);
+                                setState(() {});
+                              })));
                 },
               ),
               CustomCardButton(

@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Precificacao.Interface;
+using Application.DTOs.Cadastros.Precificacao.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Precificacao;
 
-namespace Application.Application.Servicos.Cadastros.Precificacao
+namespace Application.Application.Servicos.Cadastros.Precificacao;
+
+public class PrecificacaoService : IPrecificacaoService
 {
-    public class PrecificacaoService : BaseService<Domain.Entidades.Cadastros.Precificacao.Precificacao>, IPrecificacaoService
+    private readonly IPrecificacaoRepository _precificacaoRepository;
+    private readonly IMapper _mapper;
+
+    public PrecificacaoService(IMapper mapper, IPrecificacaoRepository precificacaoRepository)
     {
-        private readonly IPrecificacaoRepository _precificacaoRepository;
+        _precificacaoRepository = precificacaoRepository;
+        _mapper = mapper;
+    }
 
-        public PrecificacaoService(IPrecificacaoRepository precificacaoRepository) : base(precificacaoRepository)
-        {
-            _precificacaoRepository = precificacaoRepository;
-        }
+    public async Task<IEnumerable<PrecificacaoViewModel>> GetAllAsync()
+    {
+        var list = await _precificacaoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PrecificacaoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id)
-        {
-            var obj = _precificacaoRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<PrecificacaoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _precificacaoRepository.GetByIdAsync(id);
+        return _mapper.Map<PrecificacaoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes()
-        {
-            var obj = _precificacaoRepository.ListarPrecificacoes();
-            return obj;
-        }
+    public async Task AddAsync(PrecificacaoViewModel obj)
+    {
+        var mapPrecificacao = _mapper.Map<Domain.Entidades.Cadastros.Precificacao.Precificacao>(obj);
+        await _precificacaoRepository.AddAsync(mapPrecificacao);
+    }
+
+    public async Task UpdateAsync(PrecificacaoViewModel obj)
+    {
+        var mapPrecificacao = _mapper.Map<Domain.Entidades.Cadastros.Precificacao.Precificacao>(obj);
+        await _precificacaoRepository.UpdateAsync(mapPrecificacao);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _precificacaoRepository.DeleteAsync(id);
     }
 }

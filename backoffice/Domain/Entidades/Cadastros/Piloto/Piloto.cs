@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Domain.Entidades.Cadastros.Pilotos;
+namespace Domain.Entidades.Cadastros.Piloto;
 
 public class Piloto
 {

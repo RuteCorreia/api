@@ -22,8 +22,8 @@ public class AeronaveRepository : IAeronaveRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,14 @@ public class AeronaveRepository : IAeronaveRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aeronave.Aeronave obj)
     {
-        _contextBase.Aeronave.Update(obj);
+        var objeto = await _contextBase.Aeronave.FindAsync(obj.Id);
+        objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.Prefixo = obj.Prefixo;
+        objeto.Combustivel = obj.Combustivel;
+        objeto.CapacidadeDeCarga = obj.CapacidadeDeCarga;
+        objeto.Horimetro = obj.Horimetro;
+
+        _contextBase.Aeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

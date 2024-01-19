@@ -1,10 +1,14 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/presentation/pages/add_contratante_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../../../core/widgets/combo_box.dart';
@@ -22,7 +26,6 @@ enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
 
 class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
-  final ImagePicker picker = ImagePicker();
   String selectedCultura = "";
   String classificacaoToxicologica = "";
   String produtoSelecionado = "";
@@ -30,6 +33,8 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   String tipoFormulacao = "";
   String alvoBiologico = "";
   String dosePorHectar = "";
+  String _imageMapsPath = "";
+  Uint8List? _imageData;
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +116,23 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 15),
               InkWell(
                 onTap: () async {
-                  final XFile? image =
-                      await picker.pickImage(source: ImageSource.gallery);
+                  _imageMapsPath = await Util.obtainImagePathMaps(context);
+                  _imageData = await File(_imageMapsPath).readAsBytes();
+                  // ignore: use_build_context_synchronously
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => UplodadFotos(
+                                updateImagePathMap: (path) {
+                                  _imageMapsPath = path;
+                                  setState(() {});
+                                },
+                                imageData: _imageData,
+                                imagePath: _imageMapsPath,
+                                onOkButton: () {
+                                  context.pop();
+                                },
+                              )));
                 },
                 child: Container(
                   height: 60,
@@ -151,6 +171,20 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   ),
                 ),
               ),
+              if (_imageMapsPath.isNotEmpty)
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const SizedBox(height: 15),
+                  const CustomText(text: 'Imagem do Receituário Agronômico'),
+                  const SizedBox(height: 15),
+                  Container(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: FileImage(File(_imageMapsPath)),
+                            fit: BoxFit.fill),
+                      ))
+                ]),
               const SizedBox(height: 15),
               const CustomText(text: 'Nome do produto'),
               const SizedBox(height: 10),

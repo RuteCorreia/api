@@ -1,0 +1,67 @@
+@if (viewMode){
+    @if (currentTutorial.id){
+    <h4>Usuário</h4>
+    <div>
+      <label><strong>Nome:</strong></label> {{ currentTutorial.nome }}
+    </div>
+    <div>
+      <label><strong>Email:</strong></label>
+      {{ currentTutorial.email }}
+    </div>
+  
+    <a class="badge badge-warning" routerLink="/usuario/{{ currentTutorial.id }}">
+      Editar
+    </a>
+    } @else {<p>Selecione um Usuário...</p>}
+  } @else {
+    @if (currentTutorial.id) {
+    <div class="edit-form">
+      <h4>Edição de Usuário</h4>
+      <form>
+        <div class="form-group">
+          <label for="title">Nome</label>
+          <input
+            type="text"
+            class="form-control"
+            id="title"
+            [(ngModel)]="currentTutorial.nome"
+            name="title"
+          />
+        </div>
+        <div class="form-group">
+          <label for="description">Email</label>
+          <input
+            type="text"
+            class="form-control"
+            id="description"
+            [(ngModel)]="currentTutorial.email"
+            name="description"
+          />
+        </div>
+      </form>
+  
+      <!-- @if (currentTutorial.published) {
+      <button class="badge badge-primary mr-2"
+        (click)="updatePublished(false)" >
+        UnPublish
+      </button>
+      } @else {
+      <button class="badge badge-primary mr-2" (click)="updatePublished(true)">
+        Publish
+      </button>
+      } -->
+  
+      <button class="badge badge-danger mr-2" (click)="deleteTutorial()">
+        Remover
+      </button>
+  
+      <button
+        type="submit"
+        class="badge badge-success mb-2"
+        (click)="updateTutorial()">
+        Atualizar
+      </button>
+      <p>{{ message }}</p>
+    </div>
+    } @else {<p>Não foi Possível Visualizar o Usuário Selecionado...</p>}
+  }

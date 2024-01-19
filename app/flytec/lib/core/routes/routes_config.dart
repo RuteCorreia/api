@@ -10,7 +10,6 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/aplications/presentation/pages/add_contratante_page.dart';
 import '../../features/aplications/presentation/pages/caracteristica_produto_page.dart';
-import '../../features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import '../../features/aplications/presentation/pages/dados_responsavel_page.dart';
 import '../../features/aplications/presentation/pages/home_aplications.dart';
 import '../../features/aplications/presentation/pages/identificacao_area_page.dart';
@@ -43,7 +42,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'home',
           builder: (BuildContext context, GoRouterState state) {
-            return HomePaga();
+            return const HomePaga();
           },
         ),
         GoRoute(
@@ -118,18 +117,18 @@ final GoRouter router = GoRouter(
             return const AddContratante();
           },
         ),
-        GoRoute(
-          path: 'identificaoarea',
-          builder: (BuildContext context, GoRouterState state) {
-            return const IdentificacaoAreaTratamento();
-          },
-        ),
-        GoRoute(
-          path: 'croquisarea',
-          builder: (BuildContext context, GoRouterState state) {
-            return const CroquisAreaCliente();
-          },
-        ),
+        // GoRoute(
+        //   path: 'identificaoarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const IdentificacaoAreaTratamento(updateIdentifyAreaProcess: ,);
+        //   },
+        // ),
+        // GoRoute(
+        //   path: 'croquisarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const CroquisAreaCliente();
+        //   },
+        // ),
         GoRoute(
           path: 'carateristicaproduto',
           builder: (BuildContext context, GoRouterState state) {

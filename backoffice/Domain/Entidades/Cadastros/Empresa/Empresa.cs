@@ -10,10 +10,10 @@ public class Empresa
     [Required]
     public string Nome { get; set; }
 
-    [Required]
     public byte[] Imagem { get; set; }
 
     [Required]
+    [Display(Name ="Plano Contratado")]
     public int? PlanoContratado { get; set; }
 
 }

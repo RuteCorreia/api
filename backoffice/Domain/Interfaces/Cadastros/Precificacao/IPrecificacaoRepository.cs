@@ -1,15 +1,12 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Precificacao
+namespace Domain.Interfaces.Cadastros.Precificacao;
+
+public interface IPrecificacaoRepository
 {
-    public interface IPrecificacaoRepository : IBaseRepository<Domain.Entidades.Cadastros.Precificacao.Precificacao>
-    {
-        Domain.Entidades.Cadastros.Precificacao.Precificacao BuscarPorId(int? Id);
-        List<Domain.Entidades.Cadastros.Precificacao.Precificacao> ListarPrecificacoes();
-    }
+    Task AddAsync(Entidades.Cadastros.Precificacao.Precificacao obj);
+    Task UpdateAsync(Entidades.Cadastros.Precificacao.Precificacao obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Precificacao.Precificacao>> GetAllAsync();
+    Task<Entidades.Cadastros.Precificacao.Precificacao> GetByIdAsync(int id);
 }

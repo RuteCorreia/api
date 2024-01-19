@@ -1,0 +1,98 @@
+<div class="login">
+  <div class="login-content">
+      @if (!isSuccessful) {
+        <h1 class="text-center">Cadastro de Usuários</h1>
+      <form
+        name="form"
+        (ngSubmit)="f.form.valid && onSubmit()"
+        #f="ngForm"
+        novalidate
+      >
+        <div class="mb-3">
+          <label for="username">Nome de Usuário</label>
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="form.username"
+            required
+            minlength="3"
+            maxlength="20"
+            #username="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
+          />
+          @if (username.errors && f.submitted) {
+          <div class="invalid-feedback">
+            @if (username.errors['required']) {
+            <div>O Nome de Usuário é obrigatório!</div>
+            }
+            @if (username.errors['minlength']) {
+            <div>O Nome de Usuário precisa de pelo menos 3 caractéres!</div>
+            }
+            @if (username.errors['maxlength']) {
+            <div>O Nome de Usuário pode ter no maxímo 20 caractéres!</div>
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            name="email"
+            [(ngModel)]="form.email"
+            required
+            email
+            #email="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && email.errors }"
+          />
+          @if (email.errors && f.submitted) {
+          <div class="invalid-feedback">
+            @if (email.errors['required']) {
+            <div>Email is required</div>
+            }
+            @if (email.errors['email']) {
+            <div>Informe um email válido!</div>
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="password">Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="form.password"
+            required
+            minlength="6"
+            #password="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
+          />
+          @if (password.errors && f.submitted) {
+          <div class="invalid-feedback">
+            @if (password.errors['required']) {
+            <div>Senha é obrigatorio!</div>
+            }
+            @if (password.errors['minlength']) {
+            <div>A senha deve conter no mínimo 6 caractéres!</div>
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-primary btn-block">Cadastrar</button>
+        </div>
+  
+        @if (f.submitted && isSignUpFailed) {
+        <div class="alert alert-warning">
+          Atenção!<br />{{ errorMessage }}
+        </div>
+        }
+      </form>
+      } @else {
+      <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+      }
+    </div>
+  </div>

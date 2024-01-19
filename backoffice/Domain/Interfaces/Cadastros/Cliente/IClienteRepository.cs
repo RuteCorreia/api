@@ -1,14 +1,13 @@
 ﻿using Domain.Interfaces.Genericos;
-using Domain.Entidades.Cadastros.Cliente;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Cliente
+namespace Domain.Interfaces.Cadastros.Cliente;
+
+public interface IClienteRepository
 {
-    public interface IClienteRepository : IBaseRepository<Domain.Entidades.Cadastros.Cliente.Cliente>
-    {
-    }
+    Task AddAsync(Entidades.Cadastros.Cliente.Cliente obj);
+    Task UpdateAsync(Entidades.Cadastros.Cliente.Cliente obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetAllAsync();
+    Task<Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Cliente.Cliente> GetByLoginAsync(string email, string password);
 }

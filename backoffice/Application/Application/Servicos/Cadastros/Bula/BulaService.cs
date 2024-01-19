@@ -1,27 +1,47 @@
-﻿using Domain.Interfaces.Cadastros.Bula;
-using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Bula.Interface;
+using Application.DTOs.Cadastros.Bula.ViewModel;
+using AutoMapper;
+using Domain.Interfaces.Cadastros.Bula;
 
-namespace Application.Application.Servicos.Cadastros.Bula
+namespace Application.Application.Servicos.Cadastros.Bula;
+
+public class BulaService : IBulaService
 {
-    public class BulaService : BaseService<Domain.Entidades.Cadastros.Empresa.Bula>, IBulaService
+    private readonly IBulaRepository _bulaRepository;
+    private readonly IMapper _mapper;
+
+    public BulaService(IMapper mapper, IBulaRepository bulaRepository)
     {
-        private readonly IBulaRepository _bulaRepository;
+        _bulaRepository = bulaRepository;
+        _mapper = mapper;
+    }
 
-        public BulaService(IBulaRepository bulaRepository) : base(bulaRepository)
-        {
-            _bulaRepository = bulaRepository;
-        }
+    public async Task<IEnumerable<BulaViewModel>> GetAllAsync()
+    {
+        var list = await _bulaRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<BulaViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Empresa.Bula BuscarPorId(int? Id)
-        {
-            var obj = _bulaRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<BulaViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _bulaRepository.GetByIdAsync(id);
+        return _mapper.Map<BulaViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Empresa.Bula> ListarTodasBulas()
-        {
-            var obj = _bulaRepository.ListarTodasBulas();
-            return obj;
-        }
+    public async Task AddAsync(BulaViewModel obj)
+    {
+        var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
+        await _bulaRepository.AddAsync(mapBula);
+    }
+
+    public async Task UpdateAsync(BulaViewModel obj)
+    {
+        var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
+        await _bulaRepository.UpdateAsync(mapBula);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _bulaRepository.DeleteAsync(id);
     }
 }

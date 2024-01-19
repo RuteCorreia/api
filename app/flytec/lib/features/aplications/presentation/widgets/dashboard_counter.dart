@@ -46,38 +46,27 @@ class CustomDashBoardCounter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.infinity,
+          Text(
+            value,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 121, 118, 118),
+              fontSize: 24,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,           
+            ),
+          ),         
+          Flexible(
+            flex: 1,
             child: Text(
-              value,
+              text,
+              maxLines: 2,
               style: const TextStyle(
                 color: Color.fromARGB(255, 121, 118, 118),
-                fontSize: 24,
+                fontSize: 10,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w700,
-                height: 0.06,
               ),
             ),
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Flexible(
-                child: Text(
-                  text,
-                  style: const TextStyle(
-                    color: Color.fromARGB(255, 121, 118, 118),
-                    fontSize: 10,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                    height: 0.15,
-                  ),
-                ),
-              ),
-            ],
           ),
         ],
       ),

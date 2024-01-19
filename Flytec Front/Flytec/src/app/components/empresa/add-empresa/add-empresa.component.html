@@ -1,0 +1,66 @@
+<div class="login">
+    <div class="login-content">
+        @if (!isSuccessful) {
+          <h1 class="text-center">Cadastro de Empresa</h1>
+        <form
+          name="form"
+          (ngSubmit)="f.form.valid && onSubmit()"
+          #f="ngForm"
+          novalidate
+        >
+        <div class="mb-3">
+          <label for="nome">Nome Empresa</label>
+          <input
+            type="text"
+            class="form-control"
+            name="nome"
+            [(ngModel)]="form.nome"
+            required
+            minlength="3"
+            maxlength="20"
+            #nome="ngModel"
+            [ngClass]="{ 'is-invalid': f.submitted && nome.errors }"
+          />
+          @if (nome.errors && f.submitted) {
+          <div class="invalid-feedback">
+            @if (nome.errors['required']) {
+            <div>O Nome da Empresa é obrigatório!</div>
+            }
+          </div>
+          }
+        </div>
+        <div class="mb-3">
+          <label for="imagem">Imagem</label>
+          <input type="file" id="image" (change)="onFileChange($event)" />
+        </div>
+        <div *ngIf="imageData">
+          <img [src]="imageData" alt="Uploaded Image" style="max-width: 100%; max-height: 300px;" />
+        </div>
+        <div class="mb-3">
+          <label for="plano">Plano Contratado</label>
+          <input
+            type="text"
+            class="form-control"
+            name="plano"
+            [(ngModel)]="form.planoContratado"
+            required
+            minlength="3"
+            maxlength="20"
+            #plano="ngModel"
+          />
+        </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
+            <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>
+          </div>
+          @if (f.submitted && isSignUpFailed) {
+          <div class="alert alert-warning">
+            Atenção!<br />{{ errorMessage }}
+          </div>
+          }
+        </form>
+        } @else {
+        <div class="alert alert-success">Cadastro realizado com sucesso!</div>
+        }
+      </div>
+    </div>

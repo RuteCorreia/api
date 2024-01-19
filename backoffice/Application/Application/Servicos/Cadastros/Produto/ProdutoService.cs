@@ -1,27 +1,47 @@
-﻿using Application.Application.Servicos.Genericos;
+﻿using Application.DTOs.Cadastros.Produto.Interface;
+using Application.DTOs.Cadastros.Produto.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Produto;
 
-namespace Application.Application.Servicos.Cadastros.Produto
+namespace Application.Application.Servicos.Cadastros.Produto;
+
+public class ProdutoService : IProdutoService
 {
-    public class ProdutoService : BaseService<Domain.Entidades.Cadastros.Produto.Produto>, IProdutoService
+    private readonly IProdutoRepository _produtoRepository;
+    private readonly IMapper _mapper;
+
+    public ProdutoService(IMapper mapper, IProdutoRepository produtoRepository)
     {
-        private readonly IProdutoRepository _produtoRepository;
+        _produtoRepository = produtoRepository;
+        _mapper = mapper;
+    }
 
-        public ProdutoService(IProdutoRepository produtoRepository) : base(produtoRepository)
-        {
-            _produtoRepository = produtoRepository;
-        }
+    public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync()
+    {
+        var list = await _produtoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
+    }
 
-        public Domain.Entidades.Cadastros.Produto.Produto BuscarPorId(int? Id)
-        {
-            var obj = _produtoRepository.BuscarPorId(Id);
-            return obj;
-        }
+    public async Task<ProdutoViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _produtoRepository.GetByIdAsync(id);
+        return _mapper.Map<ProdutoViewModel>(obj);
+    }
 
-        public List<Domain.Entidades.Cadastros.Produto.Produto> ListarProdutos()
-        {
-            var obj = _produtoRepository.ListarProdutos();
-            return obj;
-        }
+    public async Task AddAsync(ProdutoViewModel obj)
+    {
+        var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
+        await _produtoRepository.AddAsync(mapProduto);
+    }
+
+    public async Task UpdateAsync(ProdutoViewModel obj)
+    {
+        var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
+        await _produtoRepository.UpdateAsync(mapProduto);
+    }
+
+    public async Task DeleteAsync(int id)
+    {
+        await _produtoRepository.DeleteAsync(id);
     }
 }

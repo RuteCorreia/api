@@ -22,8 +22,8 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = GetByIdAsync(id);
-        if(ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemove = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -44,7 +44,23 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)
     {
-        _contextBase.AplicacaoRecomendacoesTecnicas.Update(obj);
+        var objeto = await _contextBase.AplicacaoRecomendacoesTecnicas.FindAsync(obj.Id);
+        objeto.IdAplicacao = obj.IdAplicacao;
+        objeto.IdVeiculante = obj.IdVeiculante;
+        objeto.QtdeVeiculante = obj.QtdeVeiculante;
+        objeto.LarguraFaixa = obj.LarguraFaixa;
+        objeto.VolumeAplicacao = obj.VolumeAplicacao;
+        objeto.IdAeronave = obj.IdAeronave;
+        objeto.IdAlturaVoo = obj.IdAlturaVoo;
+        objeto.AlturaVooCustom = obj.AlturaVooCustom;
+        objeto.Temperatura = obj.Temperatura;
+        objeto.UrDoAR = obj.UrDoAR;
+        objeto.VelocidadeVento = obj.VelocidadeVento;
+        objeto.IdTipoDeProduto = obj.IdTipoDeProduto;
+        objeto.IdEquipamento = obj.IdEquipamento;
+        objeto.Angulo = obj.Angulo;
+
+        _contextBase.AplicacaoRecomendacoesTecnicas.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
 }

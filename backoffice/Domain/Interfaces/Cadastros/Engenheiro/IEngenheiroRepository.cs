@@ -1,15 +1,13 @@
 ﻿using Domain.Interfaces.Genericos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Domain.Interfaces.Cadastros.Engenheiro
+namespace Domain.Interfaces.Cadastros.Engenheiro;
+
+public interface IEngenheiroRepository
 {
-    public interface IEngenheiroRepository : IBaseRepository<Entidades.Cadastros.Engenheiro.Engenheiro>
-    {
-        Entidades.Cadastros.Engenheiro.Engenheiro BuscarPorId(int? Id);
-        List<Entidades.Cadastros.Engenheiro.Engenheiro> ListarTodosEngenheiros();
-    }
+    Task AddAsync(Entidades.Cadastros.Engenheiro.Engenheiro obj);
+    Task UpdateAsync(Entidades.Cadastros.Engenheiro.Engenheiro obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Engenheiro.Engenheiro>> GetAllAsync();
+    Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password);
 }
