@@ -65,11 +65,14 @@ class _IdentificacaoAreaTratamentoState
     if (widget.identifyAreaProcess != null) {
       _imagePathMap = widget.identifyAreaProcess!.imageArea!;
       _uf = widget.identifyAreaProcess!.uf!;
-      _cityOfUf = widget.identifyAreaProcess!.city!;
       _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil(_uf);
+      _cityOfUf = widget.identifyAreaProcess!.city!.isNotEmpty
+          ? widget.identifyAreaProcess!.city!
+          : _citiesNamesUfBrazil.first;
       return;
     }
     _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil('SP');
+    _cityOfUf = _citiesNamesUfBrazil.first;
   }
 
   @override
