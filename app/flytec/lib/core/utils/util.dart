@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
@@ -14,6 +15,13 @@ class Util {
     final formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
     return formattedDate;
+  }
+  static String getRandomString(int length) {
+    const chars =
+        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    Random rnd = Random();
+    return String.fromCharCodes(Iterable.generate(
+        length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
   }
 
   static Future<String> obtainImagePathMaps(BuildContext context) async {

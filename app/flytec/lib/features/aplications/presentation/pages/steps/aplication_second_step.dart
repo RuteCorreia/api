@@ -7,7 +7,6 @@ import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/area_application.dart';
 import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
-import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
 import 'package:flytec/features/aplications/services/report_aplications_generate_service.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +27,17 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
   late PdfGenerator _pdfGenerator;
   final AreaApplication _areaApplication = AreaApplication();
+
+  Future<File> _generateReportPdf() async {
+    _pdfGenerator = ReportAplicationsGenerate();
+    final document = await _pdfGenerator.generatePdf();
+    final documentBytes = await _pdfGenerator.saveDocument(document: document);
+    final directory = await getApplicationCacheDirectory();
+    File file =
+        File("${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+    await file.writeAsBytes(documentBytes!);
+    return file;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,22 +140,11 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
                 child: CustomButton(
                   title: "Gerar Relatório",
                   onClick: () async {
-                    _pdfGenerator = ReportAplicationsGenerate();
-                    final document = await _pdfGenerator.generatePdf();
-                    final documentBytes =
-                        await _pdfGenerator.saveDocument(document: document);
-                    final directory = await getApplicationDocumentsDirectory();
-                    final file = File("${directory.path}/relatorio.pdf");
-                    await file.writeAsBytes(documentBytes!);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ReportAplicationsPage(report: file),
-                        ));
+                    await _generateReportPdf().then(
+                        (file) => context.push("/reportPage", extra: file));
                   },
                 ),
-              ), 
+              ),
             ],
           ),
         ),
