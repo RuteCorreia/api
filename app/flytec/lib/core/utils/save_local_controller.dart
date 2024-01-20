@@ -3,8 +3,17 @@ import 'dart:convert';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
+import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
+import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
+import 'package:flytec/features/cultura/data/models/cultura_model.dart';
+import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
+import 'package:flytec/features/produto/data/models/produto_model.dart';
+import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart';
+import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
+import 'package:flytec/features/weather/data/models/weather_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../features/aplications/data/models/clientes_model.dart';
@@ -21,7 +30,20 @@ class SaveLocalDataController {
           clientesPreloadModelToJson(getIt<GlobalConfigVars>().clientes),
       "token": Util.Token,
       "executores": executorModelToJson(getIt<GlobalConfigVars>().executores),
-      "pilotos": pilotoModelToJson(getIt<GlobalConfigVars>().pilotos)
+      "weather": weatherModelToJson(getIt<GlobalConfigVars>().weather),
+      "culturas": culturaModelToJson(getIt<GlobalConfigVars>().culturas),
+      "produtos": produtoModelToJson(getIt<GlobalConfigVars>().produtos),
+      "pilotos": pilotoModelToJson(getIt<GlobalConfigVars>().pilotos),
+      "aeronaves": aeroNaveModelToJson(getIt<GlobalConfigVars>().aeronaves),
+      "equipamentos":
+          equipamentoModelToJson(getIt<GlobalConfigVars>().equipamentos),
+      "tipoprodutos":
+          tipoProdutoModelToJson(getIt<GlobalConfigVars>().tiposProdutos),
+      "veiculantes":
+          veiculanteModelToJson(getIt<GlobalConfigVars>().veiculantes),
+      "alturavoo": alturaVooModelToJson(getIt<GlobalConfigVars>().alturaVoo),
+      "alvosBiologicos":
+          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos)
     };
     return preloadData;
   }

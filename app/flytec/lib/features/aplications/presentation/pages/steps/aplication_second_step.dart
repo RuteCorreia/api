@@ -1,9 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/area_application.dart';
 import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
+import 'package:flytec/features/aplications/services/report_aplications_generate_service.dart';
+import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+
+import '../../../../../core/injections/get_it.dart';
 
 class AplicationSecondStep extends StatefulWidget {
   const AplicationSecondStep({super.key});
@@ -16,8 +25,19 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
-
+  late PdfGenerator _pdfGenerator;
   final AreaApplication _areaApplication = AreaApplication();
+
+  Future<File> _generateReportPdf() async {
+    _pdfGenerator = ReportAplicationsGenerate();
+    final document = await _pdfGenerator.generatePdf();
+    final documentBytes = await _pdfGenerator.saveDocument(document: document);
+    final directory = await getApplicationCacheDirectory();
+    File file =
+        File("${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+    await file.writeAsBytes(documentBytes!);
+    return file;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +59,10 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'N° 1758',
+                  Text(
+                    'N° ${getIt<GlobalConfigVars>().userPayload.nrUsuario}1',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',
@@ -116,14 +136,15 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
                   context.push("/responsavel");
                 },
               ),
-              /*  Center(
+              Center(
                 child: CustomButton(
-                  title: "Próximo",
-                  onClick: () {
-                    context.push("/combateIncendioPasso3");
+                  title: "Gerar Relatório",
+                  onClick: () async {
+                    await _generateReportPdf().then(
+                        (file) => context.push("/reportPage", extra: file));
                   },
                 ),
-              ), */
+              ),
             ],
           ),
         ),
@@ -262,7 +283,7 @@ class CustomComboBox extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 328,
+        width: double.infinity,
         height: 40,
         padding: const EdgeInsets.all(8),
         decoration: ShapeDecoration(

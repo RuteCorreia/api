@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/relatorio_aplicacao_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
@@ -12,7 +15,6 @@ import '../../features/aplications/presentation/pages/add_contratante_page.dart'
 import '../../features/aplications/presentation/pages/caracteristica_produto_page.dart';
 import '../../features/aplications/presentation/pages/dados_responsavel_page.dart';
 import '../../features/aplications/presentation/pages/home_aplications.dart';
-import '../../features/aplications/presentation/pages/identificacao_area_page.dart';
 import '../../features/aplications/presentation/pages/recomendacoes_tecnicas_page.dart';
 import '../../features/aplications/presentation/pages/steps/aplication_second_step.dart';
 import '../../features/aplications/presentation/pages/steps/aplication_third_step.dart';
@@ -36,7 +38,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'login',
           builder: (BuildContext context, GoRouterState state) {
-            return LoginPage();
+            return const LoginPage();
           },
         ),
         GoRoute(
@@ -103,6 +105,13 @@ final GoRouter router = GoRouter(
           path: 'aplicationstep2',
           builder: (BuildContext context, GoRouterState state) {
             return const AplicationSecondStep();
+          },
+        ),
+        GoRoute(
+          path: 'reportPage',
+          builder: (BuildContext context, GoRouterState state) {
+            File file = state.extra as File;
+            return ReportAplicationsPage(report: file);
           },
         ),
         GoRoute(

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/core/widgets/custom_text.dart';
+import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/widgets/observations_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart' as lct;
-
-import 'my_activity_page.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class RelatorioAplicacaoPage extends StatefulWidget {
   const RelatorioAplicacaoPage({super.key});
@@ -24,6 +28,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+  String selectedCultura = "";
+  String produtoSelecionado = "";
 
   final List<String> _observations = [];
   final List<int> _observationsIndex = [];
@@ -46,15 +52,126 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 16),
             const CustomText(text: 'Cultura'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "-"),
+            CustomComboBox(
+              selectedName:
+                  selectedCultura.isEmpty ? "Selecione" : selectedCultura,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .culturas
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final cultura = getIt<GlobalConfigVars>()
+                                          .culturas[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              selectedCultura = cultura.nome!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${cultura.nome}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 20),
             const CustomText(text: 'Produto aplicado'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "-"),
+            CustomComboBox(
+              selectedName:
+                  produtoSelecionado.isEmpty ? "Selecione" : produtoSelecionado,
+              onTap: () {
+                showMaterialModalBottomSheet(
+                  context: context,
+                  builder: (context) => SingleChildScrollView(
+                    controller: ModalScrollController.of(context),
+                    child: Container(
+                      height: 400,
+                      color: Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.all(0.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 500,
+                                child: ListView.builder(
+                                    padding: EdgeInsets.zero,
+                                    itemCount: getIt<GlobalConfigVars>()
+                                        .produtos
+                                        .length,
+                                    itemBuilder: (ctx, index) {
+                                      final produto = getIt<GlobalConfigVars>()
+                                          .produtos[index];
+                                      return Container(
+                                        margin:
+                                            const EdgeInsets.only(bottom: 2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey.withOpacity(0.1),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            setState(() {
+                                              produtoSelecionado =
+                                                  produto.nome!;
+                                            });
+                                            context.pop();
+                                          },
+                                          style: ListTileStyle.drawer,
+                                          title: Text("${produto.nome}"),
+                                        ),
+                                      );
+                                    }),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
             const SizedBox(height: 10),
             const CustomText(text: 'Dosagem'),
             const SizedBox(height: 14),
-            const CustomTextField(),
+            const CustomTextField(
+              keyboardType: TextInputType.number,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -127,7 +244,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 20),
             const CustomText(text: 'Volume de aplicação'),
             const SizedBox(height: 14),
-            const CustomTextField(),
+            const CustomTextField(
+              keyboardType: TextInputType.number,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -166,7 +285,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 14),
             const CustomText(text: 'Total da área aplicada (ha)'),
             const SizedBox(height: 14),
-            const CustomTextField(),
+            const CustomTextField(
+              text: "Digite aqui",
+              keyboardType: TextInputType.number,
+            ),
             const SizedBox(height: 14),
             const CustomText(text: 'Localização da pista/Código ICAO'),
             const SizedBox(height: 14),
@@ -451,7 +573,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       });
                 },
                 child: ComboBox(selectedName: _selectedObservation)),
-            
             Center(
               child: CustomButton(
                 title: "APLICAÇÕES",
@@ -511,6 +632,7 @@ class CustomGpsButton extends StatelessWidget {
   }
 }
 
+/* 
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
@@ -544,7 +666,7 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
-
+ */
 class ComboBox extends StatelessWidget {
   const ComboBox({super.key, required this.selectedName});
   final String selectedName;

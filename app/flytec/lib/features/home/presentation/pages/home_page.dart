@@ -202,7 +202,7 @@ class _HomePagaState extends State<HomePaga> {
                         'Dashboard',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 121, 118, 118),
+                          color: Color.fromARGB(255, 12, 6, 6),
                           fontSize: 20,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
@@ -217,10 +217,13 @@ class _HomePagaState extends State<HomePaga> {
             const SizedBox(height: 26),
             GestureDetector(
               onTap: () async {
-                print(getIt<GlobalConfigVars>().userPayload.role.toString());
+                print(getIt<GlobalConfigVars>().alturaVoo);
+                print(getIt<GlobalConfigVars>().equipamentos);
+                print(getIt<GlobalConfigVars>().tiposProdutos);
+                //await getIt<GetAlturaVooUseCase>().call(NoParams());
               },
-              child: const WelcomeText(
-                userName: "Rodrigo",
+              child: WelcomeText(
+                userName: "${getIt<GlobalConfigVars>().userPayload.name}",
               ),
             ),
             Builder(
@@ -486,7 +489,6 @@ class _HomePagaState extends State<HomePaga> {
                                                 fontSize: 16,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700,
-
                                               ),
                                             ),
                                           ),
