@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flytec/core/utils/pdf_generator.dart';
+import 'package:flutter/services.dart';
 
 class ReportAplicationsGenerate implements PdfGenerator {
   @override
@@ -11,6 +12,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final newRoman = pw.Font.times();
     final newRomanBold = pw.Font.timesBold();
     final dateTimeNow = DateTime.now();
+    final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
+        .buffer
+        .asUint8List();
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -20,51 +24,106 @@ class ReportAplicationsGenerate implements PdfGenerator {
             decoration: pw.BoxDecoration(
                 border: pw.Border.all(color: PdfColors.black, width: 1.5)),
             child: pw.Column(children: [
-              pw.Align(
-                  child: pw.Padding(
-                      child: pw.Text('CDA N°                    '),
-                      padding: const pw.EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 10)),
-                  alignment: pw.Alignment.centerRight),
-              pw.Align(
-                  alignment: pw.Alignment.centerRight,
-                  child: pw.SizedBox(
-                    width: 250,
-                    child: pw.Column(
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
-                        children: [
-                          pw.Text('Receituário Agronômico',
-                              style: pw.TextStyle(
-                                  fontSize: 14,
-                                  font: newRomanBold,
-                                  fontWeight: pw.FontWeight.bold)),
-                          pw.SizedBox(height: 2.0),
-                          pw.Container(
-                              height: 28,
-                              padding: const pw.EdgeInsets.only(bottom: 5),
-                              decoration: const pw.BoxDecoration(
-                                border: pw.Border(
-                                  top: pw.BorderSide(
-                                      width: 1.5, color: PdfColors.black),
-                                  left: pw.BorderSide(
-                                      width: 1.5, color: PdfColors.black),
-                                ),
+              pw.Row(
+                  mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                  children: [
+                    pw.Container(
+                        width: 300,
+                        height: 80,
+                        padding: const pw.EdgeInsets.only(left: 5, top: 5),
+                        child: pw.Column(
+                          crossAxisAlignment: pw.CrossAxisAlignment.start,
+                          children: [
+                            pw.Row(children: [
+                              pw.Container(
+                                child: pw.Image(pw.MemoryImage(logoImage),
+                                    fit: pw.BoxFit.contain,
+                                    width: 140,
+                                    height: 140),
                               ),
-                              child: pw.Row(
-                                  mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
-                                  crossAxisAlignment: pw.CrossAxisAlignment.end,
+                              pw.SizedBox(width: 10),
+                              pw.Column(
+                                  crossAxisAlignment:
+                                      pw.CrossAxisAlignment.start,
                                   children: [
-                                    pw.Text('N° '),
-                                    pw.Text('______________ '),
-                                    pw.Text(' Data '),
+                                    pw.Text('IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
+                                        style: pw.TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: pw.FontWeight.normal)),
                                     pw.Text(
-                                        DateFormat('dd/MM/yyyy')
-                                        .format(dateTimeNow)
-                                        .toString()),
-                                  ])),
-                        ]),
-                  )),
+                                        'MA SP - 000000-0 - CNPJ 00.000.000/0000-00 - Inscr. Est. 000.000.000.000',
+                                        maxLines: 1,
+                                        style: pw.TextStyle(
+                                            fontSize: 8,
+                                            fontWeight: pw.FontWeight.normal)),
+                                    pw.SizedBox(height: 10),
+                                    pw.Text('FONE: (XX) XXXX-XXXX',
+                                        style: pw.TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: pw.FontWeight.bold)),
+                                  ])
+                            ]),
+                            pw.SizedBox(height: 5),
+                            pw.Text(
+                                'RUA PARANÁ, 000 - CENTRO - CEP 00000-000 - MONÇÕES - EST.SÃO PAULO',
+                                style: pw.TextStyle(
+                                    fontSize: 8,
+                                    fontWeight: pw.FontWeight.normal)),
+                          ],
+                        )),
+                    pw.Column(children: [
+                      pw.Align(
+                          child: pw.Padding(
+                              child:
+                                  pw.Text('                           CDA N°'),
+                              padding: const pw.EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 10)),
+                          alignment: pw.Alignment.centerRight),
+                      pw.Align(
+                          alignment: pw.Alignment.centerRight,
+                          child: pw.SizedBox(
+                            width: 250,
+                            child: pw.Column(
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.Text('Receituário Agronômico',
+                                      style: pw.TextStyle(
+                                          fontSize: 14,
+                                          font: newRomanBold,
+                                          fontWeight: pw.FontWeight.bold)),
+                                  pw.SizedBox(height: 2.0),
+                                  pw.Container(
+                                      height: 28,
+                                      padding:
+                                          const pw.EdgeInsets.only(bottom: 5),
+                                      decoration: const pw.BoxDecoration(
+                                        border: pw.Border(
+                                          top: pw.BorderSide(
+                                              width: 1.5,
+                                              color: PdfColors.black),
+                                          left: pw.BorderSide(
+                                              width: 1.5,
+                                              color: PdfColors.black),
+                                        ),
+                                      ),
+                                      child: pw.Row(
+                                          mainAxisAlignment:
+                                              pw.MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              pw.CrossAxisAlignment.end,
+                                          children: [
+                                            pw.Text('N° '),
+                                            pw.Text('______________ '),
+                                            pw.Text(' Data '),
+                                            pw.Text(DateFormat('dd/MM/yyyy')
+                                                .format(dateTimeNow)
+                                                .toString()),
+
+                                          ])),
+                                ]),
+                          )),
+                    ]),
+                  ]),
               pw.Divider(height: 1, thickness: 1.5),
               pw.Column(children: [
                 pw.Text('Planejamento Operacional de Aplicação Aérea',
