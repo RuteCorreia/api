@@ -14,6 +14,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
+    final mapaImage =
+        (await rootBundle.load('assets/images/mapa.png')).buffer.asUint8List();
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -1325,6 +1327,31 @@ class ReportAplicationsGenerate implements PdfGenerator {
         },
       ),
     );
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(10),
+        build: (context) {
+          return pw.Container(
+              decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black, width: 1.5)),
+              child: pw.Column(children: [
+                pw.Text('Foto do mapa da área',
+                    style: pw.TextStyle(
+                        fontSize: 16,
+                        font: newRomanBold,
+                        color: PdfColors.green800,
+                        fontWeight: pw.FontWeight.normal)),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.Container(
+                  alignment: pw.Alignment.center,
+                  decoration: pw.BoxDecoration(
+                      border:
+                          pw.Border.all(color: PdfColors.black, width: 1.5)),
+                  child: pw.Image(pw.MemoryImage(mapaImage),
+                      fit: pw.BoxFit.contain),
+                ),
+              ]));
+        }));
 
     return pdf;
   }
