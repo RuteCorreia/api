@@ -57,7 +57,7 @@ class _ReportAplicationsPageState extends State<ReportAplicationsPage> {
               try {
                 await _downloadReportInPdf();
                 Util.toastSucesso(
-                    'Download do Relatório concluído e se encontra nos seus documentos!');
+                    'Download do Relatório concluído');
               } catch (e) {
                 Util.toastErro(
                     'Erro ao fazer download do relatório. Tente novamente mais tarde');
