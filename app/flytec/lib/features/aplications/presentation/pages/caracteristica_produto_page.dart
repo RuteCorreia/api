@@ -122,7 +122,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UplodadFotos(
+                          builder: (context) => UploadFotos(
                                 updateImagePathMap: (path) {
                                   _imageMapsPath = path;
                                   setState(() {});

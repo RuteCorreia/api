@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 
-class UplodadFotos extends StatefulWidget {
-  const UplodadFotos(
+class UploadFotos extends StatefulWidget {
+  const UploadFotos(
       {super.key,
       required this.updateImagePathMap,
       required this.onOkButton,
@@ -17,10 +17,10 @@ class UplodadFotos extends StatefulWidget {
   final VoidCallback onOkButton;
 
   @override
-  State<UplodadFotos> createState() => _UplodadFotosState();
+  State<UploadFotos> createState() => _UploadFotosState();
 }
 
-class _UplodadFotosState extends State<UplodadFotos> {
+class _UploadFotosState extends State<UploadFotos> {
   bool _isCut = true;
   bool _showButtonOk = false;
   @override

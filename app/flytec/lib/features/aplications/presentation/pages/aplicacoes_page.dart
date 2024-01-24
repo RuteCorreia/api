@@ -1,12 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
-import 'package:flytec/features/aplications/presentation/widgets/image_selected.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
@@ -142,7 +142,21 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                   onTap: () async {
                     _imageMapsPath = await Util.obtainImagePathMaps(context);
                     _imageData = await File(_imageMapsPath).readAsBytes();
-                    setState(() {});
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => UploadFotos(
+                                  updateImagePathMap: (path) {
+                                    _imageMapsPath = path;
+                                    setState(() {});
+                                  },
+                                  imageData: _imageData,
+                                  imagePath: _imageMapsPath,
+                                  onOkButton: () {
+                                    context.pop();
+                                  },
+                                )));
                   },
                   child: const UploadButton()),
               _imageMapsPath.isNotEmpty
@@ -153,15 +167,14 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                         const CustomText(
                             text: 'Imagem do Receituário Agronômico'),
                         const SizedBox(height: 15),
-                        ImageSelected(
-                          imageMapsPath: _imageMapsPath,
-                          isCut: isCut,
-                          imageData: _imageData,
-                          onCutImage: (cut, path) {
-                            isCut = cut;
-                            setState(() {});
-                          },
-                        )
+                        Container(
+                            height: 300,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: FileImage(File(_imageMapsPath)),
+                                  fit: BoxFit.fill),
+                            ))
                       ],
                     )
                   : const SizedBox.shrink(),
