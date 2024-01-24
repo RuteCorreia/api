@@ -91,7 +91,7 @@ class _CroquisAreaClienteState extends State<CroquisAreaCliente> {
                     // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
-                        return UplodadFotos(
+                        return UploadFotos(
                           updateImagePathMap: widget.updateImagePathMap,
                           imageData: _imageData,
                           imagePath: _imagePath,
