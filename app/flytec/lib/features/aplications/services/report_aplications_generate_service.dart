@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -74,8 +73,10 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     pw.Column(children: [
                       pw.Align(
                           child: pw.Padding(
-                              child:
-                                  pw.Text('                           CDA N°'),
+                              child: pw.Text(
+                                  '                           CDA N° 4046',
+                                  style:
+                                      const pw.TextStyle(color: PdfColors.red)),
                               padding: const pw.EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 10)),
                           alignment: pw.Alignment.centerRight),
@@ -118,7 +119,6 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                             pw.Text(DateFormat('dd/MM/yyyy')
                                                 .format(dateTimeNow)
                                                 .toString()),
-
                                           ])),
                                 ]),
                           )),
@@ -586,34 +586,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                     ]),
                 pw.Divider(height: 1, thickness: 1.5),
-                pw.Row(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Container(
-                          width: 345,
-                          height: 25,
-                          padding: const pw.EdgeInsets.only(left: 5, top: 2),
-                          alignment: pw.Alignment.topLeft,
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              right: pw.BorderSide(
-                                  width: 1.5, color: PdfColors.black),
-                            ),
-                          ),
-                          child: pw.Text('Regulagem Equip. Aplicação',
-                              textAlign: pw.TextAlign.left,
-                              style:
-                                  pw.TextStyle(fontSize: 12, font: newRoman))),
-                      pw.Container(
-                          width: 200,
-                          height: 25,
-                          padding: const pw.EdgeInsets.only(left: 5, top: 2),
-                          alignment: pw.Alignment.topLeft,
-                          child: pw.Text('Outros',
-                              textAlign: pw.TextAlign.left,
-                              style:
-                                  pw.TextStyle(fontSize: 12, font: newRoman))),
-                    ]),
+                pw.Container(
+                    height: 25,
+                    padding: const pw.EdgeInsets.only(left: 5, top: 2),
+                    alignment: pw.Alignment.topLeft,
+                    child: pw.Text('Regulagem Equip. Aplicação / Outros',
+                        textAlign: pw.TextAlign.left,
+                        style: pw.TextStyle(fontSize: 12, font: newRoman))),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
                     height: 50,
@@ -706,7 +685,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   width: 1.5, color: PdfColors.black),
                             ),
                           ),
-                          child: pw.Text('Dosagem L/HA',
+                          child: pw.Text('Dosagem',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
@@ -719,7 +698,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   width: 1.5, color: PdfColors.black),
                             ),
                           ),
-                          child: pw.Text('Vazão L/HA',
+                          child: pw.Text('Volume',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
