@@ -1352,6 +1352,23 @@ class ReportAplicationsGenerate implements PdfGenerator {
                 ),
               ]));
         }));
+    pdf.addPage(pw.Page(
+        pageFormat: PdfPageFormat.a4,
+        margin: const pw.EdgeInsets.all(10),
+        build: (context) {
+          return pw.Container(
+              decoration: pw.BoxDecoration(
+                  border: pw.Border.all(color: PdfColors.black, width: 1.5)),
+              child: pw.Column(children: [
+                pw.Text('Receituário Agronômico',
+                    style: pw.TextStyle(
+                        fontSize: 16,
+                        font: newRomanBold,
+                        color: PdfColors.green800,
+                        fontWeight: pw.FontWeight.normal)),
+                pw.Divider(height: 1, thickness: 1.5),
+              ]));
+        }));
 
     return pdf;
   }
