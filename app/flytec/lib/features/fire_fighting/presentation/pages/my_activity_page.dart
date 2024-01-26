@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
 import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -14,6 +15,8 @@ class MyActivityPage extends StatefulWidget {
 
 class _AddFireFightingSecondStepState extends State<MyActivityPage> {
   late DateTime? dataSelecionada = DateTime.now();
+  late DateTime? dataSelecionada2 = DateTime.now();
+
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
 
@@ -205,7 +208,7 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
               const SizedBox(height: 20),
               const CustomText(text: 'Selecione a data inicial'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomCombo(
                 selectedName: dataSelecionada == null
                     ? "Selecione"
                     : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
@@ -215,9 +218,10 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                     cancelText: "Cancelar",
                     helpText: "",
                     context: context,
+                    //locale: const Locale("pt"),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    firstDate: DateTime(2024),
+                    lastDate: DateTime(2028),
                   );
                   setState(() {
                     dataSelecionada = data;
@@ -227,22 +231,23 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
               const SizedBox(height: 20),
               const CustomText(text: 'Selecione a data final'),
               const SizedBox(height: 14),
-              CustomComboBox(
-                selectedName: dataSelecionada == null
+              CustomCombo(
+                selectedName: dataSelecionada2 == null
                     ? "Selecione"
-                    : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+                    : DateFormat('dd/MM/yyyy').format(dataSelecionada2!),
                 onTap: () async {
                   final data = await showDatePicker(
                     confirmText: "Selecionar data",
                     cancelText: "Cancelar",
                     helpText: "",
                     context: context,
+                    //locale: const Locale("pt"),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    firstDate: DateTime(2024),
+                    lastDate: DateTime(2028),
                   );
                   setState(() {
-                    dataSelecionada = data;
+                    dataSelecionada2 = data;
                   });
                 },
               ),
@@ -271,8 +276,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                   ),
                 ),
                 child: const TextField(
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: "-",
+                      hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 121, 118, 118),
@@ -308,8 +314,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                   ),
                 ),
                 child: const TextField(
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: "-",
+                      hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 121, 118, 118),

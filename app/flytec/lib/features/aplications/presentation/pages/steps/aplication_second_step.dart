@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/area_application.dart';
+import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
 import 'package:go_router/go_router.dart';
-
-import '../../../../../core/injections/get_it.dart';
 
 class AplicationSecondStep extends StatefulWidget {
   const AplicationSecondStep({super.key});
@@ -17,14 +21,28 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+  late PdfGenerator _pdfGenerator;
 
+  final AreaApplication _areaApplication = AreaApplication();
+/* Future<File> _generateReportPdf() async {
+    _pdfGenerator = ReportAplicationsGenerate();
+    final document = await _pdfGenerator.generatePdf();
+    final documentBytes = await _pdfGenerator.saveDocument(document: document);
+    final directory = await getApplicationCacheDirectory();
+    File file =
+        File("${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+    await file.writeAsBytes(documentBytes!);
+    return file;
+  } */
   @override
   Widget build(BuildContext context) {
+    log("AplicationSecondStep --> ${_areaApplication.identifyAreaProcess?.imageArea != null ? '${_areaApplication.identifyAreaProcess?.imageArea}' : 'ok'}");
+    log(getIt<GlobalConfigVars>().reportList.last.toJson().toString());
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Planejamento de\n aplicação de área",
+          "Planejamento Operacional \nde Aplicação Aérea",
           textAlign: TextAlign.center,
         ),
       ),
@@ -38,10 +56,10 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'N° ${getIt<GlobalConfigVars>().userPayload.nrUsuario}1',
+                  const Text(
+                    'N° 1758',
                     textAlign: TextAlign.right,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',
@@ -72,11 +90,21 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               CustomCardButton(
                 title: "Identificação da área a ser tratada",
                 onTap: () {
-                  context.push("/identificaoarea");
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => IdentificacaoAreaTratamento(
+                              identifyAreaProcess:
+                                  _areaApplication.identifyAreaProcess,
+                              updateIdentifyAreaProcess: (identifyAreaProcess) {
+                                _areaApplication.updateIdentifyAreaProcess(
+                                    identifyAreaProcess);
+                                setState(() {});
+                              })));
                 },
               ),
               CustomCardButton(
-                title: "Características do produto a ser aplicado ",
+                title: "Caraterísticas do produto a ser aplicado ",
                 onTap: () {
                   context.push("/carateristicaproduto");
                 },
@@ -105,11 +133,12 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
                   context.push("/responsavel");
                 },
               ),
-              /*  Center(
+              /* Center(
                 child: CustomButton(
-                  title: "Próximo",
-                  onClick: () {
-                    context.push("/combateIncendioPasso3");
+                  title: "Gerar Relatório",
+                  onClick: () async {
+                    /*  await _generateReportPdf().then(
+                        (file) => context.push("/reportPage", extra: file)); */
                   },
                 ),
               ), */
@@ -235,7 +264,6 @@ class CustomText extends StatelessWidget {
         fontSize: 14,
         fontFamily: 'Inter',
         fontWeight: FontWeight.w700,
-        height: 0.11,
       ),
     );
   }
@@ -252,7 +280,7 @@ class CustomComboBox extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 40,
+        height: 50,
         padding: const EdgeInsets.all(8),
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(

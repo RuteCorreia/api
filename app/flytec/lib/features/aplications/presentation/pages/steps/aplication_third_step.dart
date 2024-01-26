@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -21,6 +23,7 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+  String selectedClient = "";
   @override
   void initState() {
     super.initState();
@@ -33,6 +36,11 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     print("DID");
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -66,10 +74,35 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                             for (var element
                                 in getIt<GlobalConfigVars>().clientes) {
                               element.isSelected = false;
+                              selectedClient = getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .nomeCliente!;
                             }
                             getIt<GlobalConfigVars>()
                                 .clientes[index]
                                 .isSelected = true;
+                            getIt<GlobalConfigVars>().reportList.last.cliente =
+                                Cliente(
+                              endereco: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .endereco,
+                              cpf:
+                                  getIt<GlobalConfigVars>().clientes[index].cpf,
+                              rg: getIt<GlobalConfigVars>().clientes[index].rg,
+                              uf: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .inscricaoEstadual,
+                              id: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .idCliente
+                                  .toString(),
+                              nome: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .nomeCliente,
+                              cnpj: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .cnpj,
+                            );
                           });
                         },
                         child: CustomClientCard(
@@ -97,7 +130,13 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                 child: CustomButton(
                   title: "OK",
                   onClick: () {
-                    context.pop();
+                    if (selectedClient.isEmpty) {
+                      Util.toastAlerta("Selecione o cliente");
+                      return;
+                    } else {
+                      Util.toastSucesso("Cliente selecionado");
+                      context.pop();
+                    }
                   },
                 ),
               ),

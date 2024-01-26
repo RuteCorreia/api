@@ -4,7 +4,10 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
+import 'package:flytec/features/aplications/data/models/aplicacao_model.dart';
 import 'package:flytec/features/aplications/data/models/clientes_model.dart';
+import 'package:flytec/features/aplications/data/models/identificacao_area_model.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
@@ -13,7 +16,6 @@ import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:flytec/features/produto/data/models/produto_model.dart';
 import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart';
 import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
-import 'package:flytec/features/weather/data/models/weather_model.dart';
 
 class GlobalConfigVars {
   late List<ClientesModel> clientes = [];
@@ -27,12 +29,23 @@ class GlobalConfigVars {
   late List<EquipamentoModel> equipamentos = [];
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<AlturaVooModel> alturaVoo = [];
+  late List<AplicacaoModel> aplications = [];
+  List<RelatorioModel> reportList = [];
 
+  List<String> logs = [];
+  IdentificacaoAreaModel? identificacaoAreaModel;
   late UserPayloadModel userPayload;
-  late WeatherModel weather;
+  String selectedPilot = "";
+  String selectedExecutor = "";
+  String selectedCultura = "";
+  String dgs = "";
 
   void setClientes({required List<ClientesModel>? clientesData}) {
     clientes = clientesData!;
+  }
+
+  void setRelatorios({required List<RelatorioModel>? relatorios}) {
+    reportList = relatorios!;
   }
 
   void setEquipamentos({required List<EquipamentoModel>? data}) {
@@ -76,21 +89,16 @@ class GlobalConfigVars {
     pilotos = pilotosData!;
   }
 
-  void setWeatherData({required WeatherModel? weatherData}) {
-    weather = weatherData!;
-  }
-
   void setPreloadDataFromJson({
     required Map<String, dynamic> preloadJson,
   }) {
     try {
       print("SETADO COM SUCESSO ");
-
+      reportList = relatorioModelFromJson(preloadJson["relatorios"]);
       clientes = clientesModelFromJson(preloadJson["clientes"]);
       culturas = culturaModelFromJson(preloadJson["culturas"]);
       executores = executorModelFromJson(preloadJson["executores"]);
       pilotos = pilotoModelFromJson(preloadJson["pilotos"]);
-      weather = weatherModelFromJson(preloadJson["weather"]);
       produtos = produtoModelFromJson(preloadJson["produtos"]);
       aeronaves = aeroNaveModelFromJson(preloadJson["aeronaves"]);
       veiculantes = veiculanteModelFromJson(preloadJson["veiculantes"]);

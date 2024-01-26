@@ -1,15 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
-import 'package:signature/signature.dart';
-
-import '../../../../auth/presentation/widgets/custom_login_button.dart';
-import 'dart:typed_data';
-
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:signature/signature.dart';
 
 class AddFireFightingSignatureStep extends StatefulWidget {
   const AddFireFightingSignatureStep({super.key});
@@ -34,12 +30,18 @@ class _AddFireFightingSecondStepState
   void initState() {
     super.initState();
     _controller.addListener(() => log('Value changed'));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
   void dispose() {
     // IMPORTANT to dispose of the controller
     _controller.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.dispose();
   }
 
@@ -201,14 +203,6 @@ class _AddFireFightingSecondStepState
                   ),
                 ),
               ),
-              Center(
-                child: CustomButton(
-                  title: "OK",
-                  onClick: () {
-                    context.pop();
-                  },
-                ),
-              ),
             ],
           ),
         ),
@@ -230,6 +224,14 @@ class _AddFireFightingSecondStepState
                 tooltip: 'Export Image',
               ),
  */
+              IconButton(
+                icon: const Icon(Icons.check),
+                color: Colors.blue,
+                onPressed: () {
+                  context.pop();
+                },
+                tooltip: 'Ok',
+              ),
               IconButton(
                 icon: const Icon(Icons.undo),
                 color: Colors.blue,

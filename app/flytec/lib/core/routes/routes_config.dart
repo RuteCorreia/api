@@ -1,7 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/minhas_aplica%C3%A7%C3%B5es.dart';
 import 'package:flytec/features/aplications/presentation/pages/relatorio_aplicacao_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
@@ -10,10 +14,8 @@ import 'package:go_router/go_router.dart';
 
 import '../../features/aplications/presentation/pages/add_contratante_page.dart';
 import '../../features/aplications/presentation/pages/caracteristica_produto_page.dart';
-import '../../features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
 import '../../features/aplications/presentation/pages/dados_responsavel_page.dart';
 import '../../features/aplications/presentation/pages/home_aplications.dart';
-import '../../features/aplications/presentation/pages/identificacao_area_page.dart';
 import '../../features/aplications/presentation/pages/recomendacoes_tecnicas_page.dart';
 import '../../features/aplications/presentation/pages/steps/aplication_second_step.dart';
 import '../../features/aplications/presentation/pages/steps/aplication_third_step.dart';
@@ -43,7 +45,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'home',
           builder: (BuildContext context, GoRouterState state) {
-            return HomePaga();
+            return const HomePaga();
           },
         ),
         GoRoute(
@@ -118,16 +120,24 @@ final GoRouter router = GoRouter(
             return const AddContratante();
           },
         ),
+        /*  ),
         GoRoute(
           path: 'identificaoarea',
           builder: (BuildContext context, GoRouterState state) {
-            return const IdentificacaoAreaTratamento();
+            return  IdentificacaoAreaTratamento(updateIdentifyAreaProcess:,);
           },
-        ),
+        ) */
+        // GoRoute(
+        //   path: 'croquisarea',
+        //   builder: (BuildContext context, GoRouterState state) {
+        //     return const CroquisAreaCliente();
+        //   },
+        // ),
+
         GoRoute(
-          path: 'croquisarea',
+          path: 'carateristicaproduto',
           builder: (BuildContext context, GoRouterState state) {
-            return const CroquisAreaCliente();
+            return const CaracteristicaProdutoPage();
           },
         ),
         GoRoute(
@@ -137,15 +147,16 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: 'carateristicaproduto',
+          path: 'reportPage',
           builder: (BuildContext context, GoRouterState state) {
-            return const CaracteristicaProdutoPage();
+            File file = state.extra as File;
+            return ReportAplicationsPage(report: file);
           },
         ),
         GoRoute(
           path: 'recomendacoestecnicas',
           builder: (BuildContext context, GoRouterState state) {
-            return const RecomendacoesTecnicas();
+            return const RecomendacoesTecnicasPage();
           },
         ),
         GoRoute(
@@ -160,6 +171,13 @@ final GoRouter router = GoRouter(
             return const AplicacoesPage();
           },
         ),
+        GoRoute(
+          path: 'minhasaplicacoes',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MinhasAplicacoes();
+          },
+        ),
+
         GoRoute(
           path: 'contrato',
           builder: (BuildContext context, GoRouterState state) {
