@@ -1,9 +1,10 @@
 import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:pick_or_save/pick_or_save.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 class ReportAplicationsPage extends StatefulWidget {
   final File? report;
@@ -56,8 +57,7 @@ class _ReportAplicationsPageState extends State<ReportAplicationsPage> {
             onPressed: () async {
               try {
                 await _downloadReportInPdf();
-                Util.toastSucesso(
-                    'Download do Relatório concluído');
+                Util.toastSucesso('Download do Relatório concluído');
               } catch (e) {
                 Util.toastErro(
                     'Erro ao fazer download do relatório. Tente novamente mais tarde');
@@ -75,7 +75,7 @@ class _ReportAplicationsPageState extends State<ReportAplicationsPage> {
           if (widget.report == null) {
             return const Text('Relatório não encontrado');
           }
-          
+
           return PDFView(
             filePath: widget.report!.path,
             enableSwipe: true,

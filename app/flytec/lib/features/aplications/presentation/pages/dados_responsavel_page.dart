@@ -2,11 +2,18 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/save_local_controller.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
+import '../../../../core/injections/get_it.dart';
 import 'my_activity_page.dart';
 
 class DadosResponsavelPage extends StatefulWidget {
@@ -17,6 +24,8 @@ class DadosResponsavelPage extends StatefulWidget {
 }
 
 class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
+  late DateTime? dataSelecionada = DateTime.now();
+
   List<String> _statesOfBrazil = [];
 
   void _obtainStatesOfBrazil() {
@@ -45,9 +54,63 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
     super.initState();
     _obtainStatesOfBrazil();
     _obtainCitiesOfUfBrazil('SP');
+    var data = getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel;
+    _nome.text = data!.nomeCompleto!;
+    _cpf.text = data.cpf!;
+    _telefone.text = data.telefone!;
+    data.uf = _uf;
+    data.cidade = _cityOfUf;
+    data.data =
+        "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}";
   }
 
   final TextEditingController _citySearchController = TextEditingController();
+  final TextEditingController _nome = TextEditingController();
+  final TextEditingController _cpf = TextEditingController();
+  final TextEditingController _telefone = TextEditingController();
+  bool verifyFields() {
+    if (_nome.text.isEmpty) {
+      Util.toastAlerta("Insira o nome");
+      return false;
+    } else if (_cpf.text.isEmpty) {
+      Util.toastAlerta("Insira o cpf");
+      return false;
+    } else if (_telefone.text.isEmpty) {
+      Util.toastAlerta("Insira o telefone");
+      return false;
+    } else {
+      Util.toastSucesso("Dados inseridos com sucesso");
+      getIt<GlobalConfigVars>().reportList.last.finalizado = true;
+      getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel =
+          DadosDoResponsavel(
+              assinatura: "",
+              cidade: _cityOfUf,
+              uf: _uf,
+              cpf: _cpf.text,
+              nomeCompleto: _nome.text,
+              telefone: _telefone.text,
+              data:
+                  "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}");
+      getIt<GlobalConfigVars>()
+          .setRelatorios(relatorios: getIt<GlobalConfigVars>().reportList);
+
+      var preloadData = getIt<SaveLocalDataController>().initializeLocalData();
+      getIt<SaveLocalDataController>()
+          .salvarLocalPreloadData(preloadData: preloadData)
+          .then((value) {
+        print(
+          "SAVED PRELOAD CACHE  ${value.toString()} ",
+        );
+      });
+
+      Future.delayed(const Duration(seconds: 1), () {
+        context.push("/home");
+      });
+
+      return true;
+    }
+  }
+
   void OpenContrato() {
     showAdaptiveDialog<String>(
       context: context,
@@ -98,15 +161,15 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
 
   @override
   Widget build(BuildContext context) {
+    var responsavel =
+        getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
           "Dados do responsável",
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-          ),
         ),
       ),
       body: Padding(
@@ -116,7 +179,30 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
             const SizedBox(height: 16),
             const CustomText(text: 'Data'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBox(
+              selectedName: dataSelecionada == null
+                  ? "Selecione"
+                  : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+              onTap: () async {
+                final data = await showDatePicker(
+                  confirmText: "Selecionar data",
+                  cancelText: "Cancelar",
+                  helpText: "",
+                  context: context,
+                  //locale: const Locale("pt"),
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2024),
+                  lastDate: DateTime(2028),
+                );
+                Util.closeKeyBoard();
+
+                setState(() {
+                  dataSelecionada = data;
+                  responsavel!.data =
+                      "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}";
+                });
+              },
+            ),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,6 +225,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
                         child: DropdownButton<String>(
                           onChanged: (regiaoSelecionada) {
                             _uf = regiaoSelecionada!;
+                            responsavel!.uf = _uf;
                             _obtainCitiesOfUfBrazil(regiaoSelecionada);
                             setState(() {});
                           },
@@ -190,6 +277,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
                               onChanged: (value) {
                                 setState(() {
                                   _cityOfUf = value!;
+                                  responsavel!.cidade = _cityOfUf;
                                 });
                               },
                               buttonStyleData: ButtonStyleData(
@@ -258,14 +346,101 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
             const SizedBox(height: 20),
             const CustomText(text: 'Nome completo'),
             const SizedBox(height: 14),
-            const CustomTextField(
-              text: "Digite aqui",
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _nome,
+                onChanged: (value) {
+                  responsavel!.nomeCompleto = value;
+                },
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             const SizedBox(height: 14),
-            const CustomText(text: 'CPF'),
+            const CustomText(text: 'Documento'),
             const SizedBox(height: 14),
-            const CustomTextField(
-              text: "Digite aqui",
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _cpf,
+                keyboardType: TextInputType.number,
+                onChanged: (value) {
+                  responsavel!.cpf = value;
+                },
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
+            ),
+            const SizedBox(height: 14),
+            const CustomText(text: 'Telefone'),
+            const SizedBox(height: 14),
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                onChanged: (value) {
+                  responsavel!.telefone = value;
+                },
+                controller: _telefone,
+                keyboardType: TextInputType.number,
+                inputFormatters: [
+                  MaskTextInputFormatter(
+                    mask: '(##) #####-####',
+                    filter: {"#": RegExp(r'[0-9]')},
+                  )
+                ],
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             const SizedBox(height: 14),
             const CustomText(text: 'Telefone'),
@@ -289,7 +464,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
               child: CustomButton(
                 title: "FINALIZAR",
                 onClick: () {
-                  context.pop();
+                  verifyFields();
                 },
               ),
             ),

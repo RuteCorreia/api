@@ -1,18 +1,30 @@
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
+import 'package:flytec/features/aplications/data/models/aplicacao_model.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
+import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 import 'package:flytec/features/aplications/presentation/widgets/relative_humidity_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/speed_wind_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/temperature_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+
+extension TimeOfDayConverter on TimeOfDay {
+  String to24hours() {
+    final hour = this.hour.toString().padLeft(2, "0");
+    final min = minute.toString().padLeft(2, "0");
+    return "$hour:$min";
+  }
+}
 
 class AplicacoesPage extends StatefulWidget {
   const AplicacoesPage({super.key});
@@ -25,9 +37,49 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+  final TextEditingController _horimetroInicial = TextEditingController();
+  final TextEditingController _horimetroFinal = TextEditingController();
 
   TimeOfDay _selectedTime = TimeOfDay.now();
   TimeOfDay _selectedTimeFinal = TimeOfDay.now();
+
+  bool verifyFields() {
+    if (_horimetroInicial.text.isEmpty) {
+      Util.toastAlerta("Digite o horímetro inicial");
+      return false;
+    } else if (_horimetroFinal.text.isEmpty) {
+      Util.toastAlerta("Digite o horímetro final");
+      return false;
+    } else if (_speedWindInitial.isEmpty) {
+      Util.toastAlerta("Selecione a velocidade do vento inicial");
+      return false;
+    } else if (_humiditySelectedFinal.isEmpty) {
+      Util.toastAlerta("Selecione a velocidade do vento final");
+      return false;
+    } else {
+      Util.toastSucesso("  Dados inseridos com sucesso");
+      getIt<GlobalConfigVars>()
+          .reportList
+          .last
+          .relatorioDeAplicacao!
+          .aplicacoes = Aplicacoes(
+        dataDaAplicacao: DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+        horarioDeInicio: _selectedTime.to24hours(),
+        horarioDeTermino: _selectedTimeFinal.to24hours(),
+        temperaturaFinal: _temperatureSelectedFinal,
+        temperaturaIncial: _temperatureSelectedFinal,
+        ventoFinal: _speedWindFinal,
+        ventoInicial: _speedWindInitial,
+        umidadeRelativaInicial: _humiditySelectedInitial,
+        umidadeRelativaFinal: _humiditySelectedFinal,
+        horimetroInicial: _horimetroInicial.text,
+        horimetroFinal: _horimetroFinal.text,
+      );
+
+      context.pop();
+      return true;
+    }
+  }
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? picked = await showTimePicker(
@@ -68,7 +120,40 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
   Uint8List? _imageData;
 
   @override
+  void initState() {
+    getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao!.aplicacoes =
+        Aplicacoes(
+            dataDaAplicacao: "",
+            horarioDeInicio: "",
+            horarioDeTermino: "",
+            horimetroFinal: "",
+            horimetroInicial: "",
+            temperaturaFinal: "",
+            temperaturaIncial: "",
+            umidadeRelativaFinal: "",
+            umidadeRelativaInicial: "",
+            ventoFinal: "",
+            ventoInicial: "");
+    var relatorio = getIt<GlobalConfigVars>()
+        .reportList
+        .last
+        .relatorioDeAplicacao!
+        .aplicacoes;
+    relatorio!.temperaturaIncial = "20.0°C";
+    relatorio.temperaturaFinal = "20.0°C";
+    relatorio.umidadeRelativaInicial = '+ 55%';
+    relatorio.umidadeRelativaFinal = '+ 55%';
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var data = getIt<GlobalConfigVars>()
+        .reportList
+        .last
+        .relatorioDeAplicacao!
+        .aplicacoes;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -91,18 +176,22 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                     ? "Selecione"
                     : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
                 onTap: () async {
-                  final data = await showDatePicker(
+                  final dataS = await showDatePicker(
                     confirmText: "Selecionar data",
                     cancelText: "Cancelar",
                     helpText: "",
                     context: context,
                     //locale: const Locale("pt"),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    firstDate: DateTime(2024),
+                    lastDate: DateTime(2028),
                   );
+                  Util.closeKeyBoard();
+
                   setState(() {
-                    dataSelecionada = data;
+                    dataSelecionada = dataS;
+                    data!.dataDaAplicacao =
+                        "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}";
                   });
                 },
               ),
@@ -110,32 +199,85 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
               const CustomText(text: 'Horário de início'),
               const SizedBox(height: 14),
               CustomCombo(
-                  selectedName: "${_selectedTime.hour}:${_selectedTime.minute}",
+                  selectedName: _selectedTime.to24hours(),
                   onTap: () {
                     _selectTime(context);
+                    data!.horarioDeInicio = _selectedTime.to24hours();
+                    Util.closeKeyBoard();
                   }),
               const SizedBox(height: 14),
               const CustomText(text: 'Horímetro inicial'),
               const SizedBox(height: 14),
-              const CustomTextField(
-                text: "Digite aqui",
-                keyboardType: TextInputType.datetime,
+              Container(
+                width: (MediaQuery.of(context).size.width / 2) - 25,
+                height: 50,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  controller: _horimetroInicial,
+                  onChanged: (value) {
+                    data!.horimetroInicial = value;
+                  },
+                  keyboardType: TextInputType.datetime,
+                  decoration: const InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
               ),
               const SizedBox(height: 14),
               const CustomText(text: 'Horário de término'),
               const SizedBox(height: 14),
               CustomCombo(
-                  selectedName:
-                      "${_selectedTimeFinal.hour}:${_selectedTimeFinal.minute}",
+                  selectedName: _selectedTimeFinal.to24hours(),
                   onTap: () {
                     _selectTimeFinal(context);
+                    data!.horarioDeTermino = _selectedTimeFinal.to24hours();
+                    Util.closeKeyBoard();
                   }),
               const SizedBox(height: 20),
               const CustomText(text: "Horímetro final"),
               const SizedBox(height: 14),
-              const CustomTextField(
-                text: "Digite aqui",
-                keyboardType: TextInputType.datetime,
+              Container(
+                width: (MediaQuery.of(context).size.width / 2) - 25,
+                height: 50,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  controller: _horimetroFinal,
+                  onChanged: (value) {
+                    data!.horimetroFinal = value;
+                  },
+                  keyboardType: TextInputType.datetime,
+                  decoration: const InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
               ),
               const SizedBox(height: 20),
               InkWell(
@@ -216,13 +358,18 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                           backgroundColor: Colors.grey[100],
-                                          content: TemperatureSelect(
-                                              onChangedTemperature: (value) {
-                                            setState(() {
-                                              _temperatureSelectedInitial =
-                                                  value;
-                                            });
-                                          }));
+                                          content: SizedBox(
+                                            width: double.maxFinite,
+                                            child: TemperatureSelect(
+                                                onChangedTemperature: (value) {
+                                              setState(() {
+                                                _temperatureSelectedInitial =
+                                                    value;
+                                                data!.temperaturaIncial = value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
+                                          ));
                                     });
                               },
                               child: ComboBox(
@@ -247,12 +394,18 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                     builder: (BuildContext context) {
                                       return AlertDialog(
                                           backgroundColor: Colors.grey[100],
-                                          content: TemperatureSelect(
-                                              onChangedTemperature: (value) {
-                                            setState(() {
-                                              _temperatureSelectedFinal = value;
-                                            });
-                                          }));
+                                          content: SizedBox(
+                                            width: double.maxFinite,
+                                            child: TemperatureSelect(
+                                                onChangedTemperature: (value) {
+                                              setState(() {
+                                                _temperatureSelectedFinal =
+                                                    value;
+                                                data!.temperaturaFinal = value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
+                                          ));
                                     });
                               },
                               child: ComboBox(
@@ -279,12 +432,18 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                       backgroundColor: Colors.grey[100],
-                                      content: RelativeHumiditySelect(
-                                          onChangedHumidity: (value) {
-                                        setState(() {
-                                          _humiditySelectedInitial = value;
-                                        });
-                                      }));
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: RelativeHumiditySelect(
+                                            onChangedHumidity: (value) {
+                                          setState(() {
+                                            _humiditySelectedInitial = value;
+                                            data!.umidadeRelativaInicial =
+                                                value;
+                                          });
+                                          Util.closeKeyBoard();
+                                        }),
+                                      ));
                                 });
                           },
                           child:
@@ -303,12 +462,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                       backgroundColor: Colors.grey[100],
-                                      content: RelativeHumiditySelect(
-                                          onChangedHumidity: (value) {
-                                        setState(() {
-                                          _humiditySelectedFinal = value;
-                                        });
-                                      }));
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: RelativeHumiditySelect(
+                                            onChangedHumidity: (value) {
+                                          setState(() {
+                                            _humiditySelectedFinal = value;
+                                            data!.umidadeRelativaFinal = value;
+                                          });
+                                          Util.closeKeyBoard();
+                                        }),
+                                      ));
                                 });
                           },
                           child: ComboBox(selectedName: _humiditySelectedFinal))
@@ -332,12 +496,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                       backgroundColor: Colors.grey[100],
-                                      content: SpeedWindSelect(
-                                          onChangedSpeedWind: (value) {
-                                        setState(() {
-                                          _speedWindInitial = value;
-                                        });
-                                      }));
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: SpeedWindSelect(
+                                            onChangedSpeedWind: (value) {
+                                          setState(() {
+                                            _speedWindInitial = value;
+                                            data!.ventoInicial = value;
+                                          });
+                                          Util.closeKeyBoard();
+                                        }),
+                                      ));
                                 });
                           },
                           child: ComboBox(selectedName: _speedWindInitial))
@@ -355,12 +524,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                 builder: (BuildContext context) {
                                   return AlertDialog(
                                       backgroundColor: Colors.grey[100],
-                                      content: SpeedWindSelect(
-                                          onChangedSpeedWind: (value) {
-                                        setState(() {
-                                          _speedWindFinal = value;
-                                        });
-                                      }));
+                                      content: SizedBox(
+                                        width: double.maxFinite,
+                                        child: SpeedWindSelect(
+                                            onChangedSpeedWind: (value) {
+                                          setState(() {
+                                            _speedWindFinal = value;
+                                            data!.ventoFinal = value;
+                                          });
+                                          Util.closeKeyBoard();
+                                        }),
+                                      ));
                                 });
                           },
                           child: ComboBox(selectedName: _speedWindFinal))
@@ -373,6 +547,22 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 child: CustomButton(
                   title: "OK",
                   onClick: () {
+                    final verify = verifyFields();
+                    if (!verify) {
+                      return;
+                    }
+                    getIt<GlobalConfigVars>().aplications.add(AplicacaoModel(
+                        data:
+                            "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}",
+                        umidadeFinal: _humiditySelectedFinal,
+                        umidadeInicial: _humiditySelectedInitial,
+                        ventoFinal: _speedWindFinal,
+                        ventoInicial: _speedWindInitial,
+                        horarioInicial: _selectedTime.hour.toString(),
+                        temperaturaFinal: _temperatureSelectedFinal,
+                        temperaturaInicial: _temperatureSelectedInitial));
+
+                    context.pop();
                     context.pop();
                   },
                 ),

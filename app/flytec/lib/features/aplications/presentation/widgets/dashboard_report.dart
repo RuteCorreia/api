@@ -57,7 +57,7 @@ class DashBoardReport extends StatelessWidget {
       onTap: onClick,
       child: Container(
         width: 328,
-        height: 130,
+        height: 150,
         margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.all(16),
         clipBehavior: Clip.antiAlias,
@@ -80,40 +80,13 @@ class DashBoardReport extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.only(left: 8),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    width: double.infinity,
-                                    child: Text(
-                                      title!,
-                                      style: const TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 121, 118, 118),
-                                        fontSize: 16,
-                                        fontFamily: 'Inter',
-                                        fontWeight: FontWeight.w600,
-                                        height: 0.09,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
+                    Text(
+                      title!,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                     const SizedBox(height: 15),

@@ -3,16 +3,19 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
-import 'package:go_router/go_router.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/data/models/identify_area_process.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
+import 'package:flytec/features/aplications/presentation/widgets/culture_select.dart';
 
+import '../../../../core/injections/get_it.dart';
+import '../../../../core/utils/util.dart';
 import '../../../auth/presentation/widgets/custom_login_button.dart';
+import '../../services/aplication_cache_service.dart';
 
 class IdentificacaoAreaTratamento extends StatefulWidget {
   final IdentifyAreaProcess? identifyAreaProcess;
@@ -30,7 +33,6 @@ class IdentificacaoAreaTratamento extends StatefulWidget {
 
 class _IdentificacaoAreaTratamentoState
     extends State<IdentificacaoAreaTratamento> {
-  String selectedCultura = "";
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
 
@@ -48,12 +50,21 @@ class _IdentificacaoAreaTratamentoState
 
   String _uf = 'SP';
   late String _cityOfUf = '';
-  List<String> _citiesNamesUfBrazil = [];
+  final List<String> _citiesNamesUfBrazil = [];
 
-  List<String> _obtainCitiesOfUfBrazil(String uf) =>
-      _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+  Future<void> _obtainCitiesOfUfBrazil(String uf) async {
+    _citiesNamesUfBrazil.clear();
+    List<String> cities =
+        _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
+    _cityOfUf = cities.first;
+    setState(() {});
+    _citiesNamesUfBrazil.addAll(cities);
+    setState(() {});
+  }
 
   final TextEditingController _citySearchController = TextEditingController();
+  final TextEditingController _extensaoController = TextEditingController();
+  final TextEditingController _localizacaoController = TextEditingController();
 
   @override
   void dispose() {
@@ -65,22 +76,32 @@ class _IdentificacaoAreaTratamentoState
     if (widget.identifyAreaProcess != null) {
       _imagePathMap = widget.identifyAreaProcess!.imageArea!;
       _uf = widget.identifyAreaProcess!.uf!;
-      _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil(_uf);
-      _cityOfUf = widget.identifyAreaProcess!.city!.isNotEmpty
-          ? widget.identifyAreaProcess!.city!
-          : _citiesNamesUfBrazil.first;
+      _cityOfUf = widget.identifyAreaProcess!.city!;
+      //_citiesNamesUfBrazil = _obtainCitiesOfUfBrazil(_uf);
       return;
     }
-    _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil('SP');
-    _cityOfUf = _citiesNamesUfBrazil.first;
+    // _citiesNamesUfBrazil = _obtainCitiesOfUfBrazil('SP');
   }
+
+  String selectedCultura = "";
 
   @override
   void initState() {
     super.initState();
 
     _obtainStatesOfBrazil();
-    _initWithidentifyAreaProcess();
+    _obtainCitiesOfUfBrazil('SP');
+    var data = getIt<GlobalConfigVars>().reportList.last.areaTratada;
+    if (data!.localizacao!.isNotEmpty) {
+      _localizacaoController.text = data.localizacao!;
+    }
+    if (data.extensao!.isNotEmpty) {
+      _extensaoController.text = data.extensao!;
+    }
+    if (data.cultura!.isNotEmpty) {
+      selectedCultura = data.cultura!;
+    }
+    //  _initWithidentifyAreaProcess();
   }
 
   @override
@@ -130,7 +151,13 @@ class _IdentificacaoAreaTratamentoState
                           child: DropdownButton<String>(
                             onChanged: (regiaoSelecionada) {
                               _uf = regiaoSelecionada!;
+
                               _obtainCitiesOfUfBrazil(regiaoSelecionada);
+                              getIt<ReportCacheService>()
+                                  .reportList
+                                  .last
+                                  .areaTratada!
+                                  .uf = _uf;
                               setState(() {});
                             },
                             alignment: Alignment.center,
@@ -181,6 +208,11 @@ class _IdentificacaoAreaTratamentoState
                                 onChanged: (value) {
                                   setState(() {
                                     _cityOfUf = value!;
+                                    getIt<ReportCacheService>()
+                                        .reportList
+                                        .last
+                                        .areaTratada!
+                                        .uf = _cityOfUf;
                                   });
                                 },
                                 buttonStyleData: ButtonStyleData(
@@ -264,8 +296,18 @@ class _IdentificacaoAreaTratamentoState
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _localizacaoController,
+                  onChanged: (text) {
+                    setState(() {
+                      getIt<GlobalConfigVars>()
+                          .reportList
+                          .last
+                          .areaTratada!
+                          .localizacao = text;
+                    });
+                  },
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -288,60 +330,32 @@ class _IdentificacaoAreaTratamentoState
                 ),
               ),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName:
                     selectedCultura.isEmpty ? "Selecione" : selectedCultura,
-                onTap: () {
-                  showMaterialModalBottomSheet(
-                    context: context,
-                    builder: (context) => SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: Container(
-                        height: 400,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 500,
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      itemCount: getIt<GlobalConfigVars>()
-                                          .culturas
-                                          .length,
-                                      itemBuilder: (ctx, index) {
-                                        final cultura =
-                                            getIt<GlobalConfigVars>()
-                                                .culturas[index];
-                                        return Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 2),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                          ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              setState(() {
-                                                selectedCultura = cultura.nome!;
-                                              });
-                                              context.pop();
-                                            },
-                                            style: ListTileStyle.drawer,
-                                            title: Text("${cultura.nome}"),
-                                          ),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: CultureSelect(onChanged: (value) {
+                                setState(() {
+                                  selectedCultura = value;
+                                  getIt<GlobalConfigVars>().selectedCultura =
+                                      value;
+                                  getIt<GlobalConfigVars>()
+                                      .reportList
+                                      .last
+                                      .areaTratada!
+                                      .cultura = value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
                 },
               ),
               const SizedBox(height: 14),
@@ -359,9 +373,19 @@ class _IdentificacaoAreaTratamentoState
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
+                child: TextField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  controller: _extensaoController,
+                  onChanged: (text) {
+                    setState(() {
+                      getIt<GlobalConfigVars>()
+                          .reportList
+                          .last
+                          .areaTratada!
+                          .extensao = text;
+                    });
+                  },
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -428,7 +452,28 @@ class _IdentificacaoAreaTratamentoState
                     widget.updateIdentifyAreaProcess(IdentifyAreaProcess(
                         uf: _uf, city: _cityOfUf, imageArea: _imagePathMap));
                     setState(() {});
-                    Navigator.pop(context);
+                    if (_localizacaoController.text.isEmpty) {
+                      Util.toastAlerta("Digite a localizacao");
+                      return;
+                    } else if (selectedCultura.isEmpty) {
+                      Util.toastAlerta("Selecione a cultura");
+                      return;
+                    } else if (_extensaoController.text.isEmpty) {
+                      Util.toastAlerta("Selecione a cultura");
+                      return;
+                    } else {
+                      Util.toastSucesso("Dados inseridos com sucesso!");
+                      Navigator.pop(context);
+
+                      getIt<GlobalConfigVars>().reportList.last.areaTratada =
+                          AreaTratada(
+                        cidade: _cityOfUf,
+                        uf: _uf,
+                        cultura: selectedCultura,
+                        extensao: _extensaoController.text,
+                        localizacao: _localizacaoController.text,
+                      );
+                    }
                   },
                 ),
               ),
@@ -448,7 +493,7 @@ class CroquiButton extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        width: double.infinity,
+        width: 328,
         height: 50,
         padding: const EdgeInsets.all(10),
         decoration: ShapeDecoration(

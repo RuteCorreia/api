@@ -30,7 +30,6 @@ class _ImageSelectedState extends State<ImageSelected> {
     setState(() {});
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -61,7 +60,6 @@ class _ImageSelectedState extends State<ImageSelected> {
                     _cropController.aspectRatio = 1.0;
                   },
                 ),
-     
                 TextButton(
                   onPressed: () async {
                     _cropController.crop();
@@ -72,7 +70,6 @@ class _ImageSelectedState extends State<ImageSelected> {
             )
           ],
         );
-
       }
       return Container(
           height: 300,

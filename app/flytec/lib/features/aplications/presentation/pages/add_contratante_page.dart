@@ -1,12 +1,12 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/data/datasource/clientes_datasource.dart';
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
-import 'package:flytec/features/aplications/presentation/pages/steps/aplication_second_step.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 
@@ -28,8 +28,6 @@ class _AddContratanteState extends State<AddContratante> {
   final TextEditingController _inscricaoEstadualController =
       TextEditingController();
   final TextEditingController _enderecoController = TextEditingController();
-  final TextEditingController _municipioController = TextEditingController();
-  final TextEditingController _ufController = TextEditingController();
   bool isPageLoading = false;
   List<String> _statesOfBrazil = [];
   void _obtainStatesOfBrazil() {
@@ -46,7 +44,7 @@ class _AddContratanteState extends State<AddContratante> {
     List<String> cities =
         _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
     _cityOfUf = cities.first;
-    setState(() {}); 
+    setState(() {});
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
@@ -133,7 +131,9 @@ class _AddContratanteState extends State<AddContratante> {
                           const CustomText(text: 'Nome'),
                           const SizedBox(height: 14),
                           CustomTextField(
-                              textEditingController: _nomeClienteController),
+                            textEditingController: _nomeClienteController,
+                            onChanged: (String value) {},
+                          ),
                           const CustomText(
                             text: 'CPF',
                           ),
@@ -141,11 +141,13 @@ class _AddContratanteState extends State<AddContratante> {
                           CustomTextField(
                             textInputType: TextInputType.number,
                             textEditingController: _cnpjController,
+                            onChanged: (String value) {},
                           ),
                           const CustomText(text: 'Endereço'),
                           const SizedBox(height: 14),
                           CustomTextField(
                             textEditingController: _enderecoController,
+                            onChanged: (String value) {},
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -202,101 +204,107 @@ class _AddContratanteState extends State<AddContratante> {
                                   if (_citiesNamesUfBrazil.isNotEmpty &&
                                       _cityOfUf.isNotEmpty) {
                                     return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CustomText(text: "Cidade"),
-                                  const SizedBox(height: 10),
-                                  DropdownButtonHideUnderline(
-                                    child: DropdownButton2<String>(
-                                      isExpanded: true,
-                                      items: _citiesNamesUfBrazil
-                                          .map((item) => DropdownMenuItem(
-                                                value: item,
-                                                child: Text(
-                                                  item,
-                                                  style: const TextStyle(
-                                                    fontSize: 14,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CustomText(text: "Cidade"),
+                                        const SizedBox(height: 10),
+                                        DropdownButtonHideUnderline(
+                                          child: DropdownButton2<String>(
+                                            isExpanded: true,
+                                            items: _citiesNamesUfBrazil
+                                                .map((item) => DropdownMenuItem(
+                                                      value: item,
+                                                      child: Text(
+                                                        item,
+                                                        style: const TextStyle(
+                                                          fontSize: 14,
+                                                        ),
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            value: _cityOfUf,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                _cityOfUf = value!;
+                                              });
+                                            },
+                                            buttonStyleData: ButtonStyleData(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 12.0),
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    width: 1,
+                                                    color: const Color(
+                                                        0xFF636363)),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              width: 200,
+                                            ),
+                                            dropdownStyleData:
+                                                const DropdownStyleData(
+                                              maxHeight: 200,
+                                              padding: EdgeInsets.all(0),
+                                            ),
+                                            menuItemStyleData:
+                                                const MenuItemStyleData(
+                                              height: 40,
+                                            ),
+                                            dropdownSearchData:
+                                                DropdownSearchData(
+                                              searchController:
+                                                  _citySearchControllerFisica,
+                                              searchInnerWidgetHeight: 50,
+                                              searchInnerWidget: Container(
+                                                height: 50,
+                                                padding: const EdgeInsets.only(
+                                                  right: 8,
+                                                  top: 4.0,
+                                                  bottom: 4.0,
+                                                  left: 8,
+                                                ),
+                                                child: TextFormField(
+                                                  controller:
+                                                      _citySearchControllerFisica,
+                                                  decoration: InputDecoration(
+                                                    isDense: true,
+                                                    hintText: 'Digite a cidade',
+                                                    hintStyle: const TextStyle(
+                                                        fontSize: 12),
+                                                    border: OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),
+                                                    ),
                                                   ),
                                                 ),
-                                              ))
-                                          .toList(),
-                                      value: _cityOfUf,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          _cityOfUf = value!;
-                                        });
-                                      },
-                                      buttonStyleData: ButtonStyleData(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 12.0),
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color: const Color(0xFF636363)),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        width: 200,
-                                      ),
-                                      dropdownStyleData:
-                                          const DropdownStyleData(
-                                        maxHeight: 200,
-                                        padding: EdgeInsets.all(0),
-                                      ),
-                                      menuItemStyleData:
-                                          const MenuItemStyleData(
-                                        height: 40,
-                                      ),
-                                      dropdownSearchData: DropdownSearchData(
-                                        searchController:
-                                            _citySearchControllerFisica,
-                                        searchInnerWidgetHeight: 50,
-                                        searchInnerWidget: Container(
-                                          height: 50,
-                                          padding: const EdgeInsets.only(
-                                            right: 8,
-                                            top: 4.0,
-                                            bottom: 4.0,
-                                            left: 8,
-                                          ),
-                                          child: TextFormField(
-                                            controller:
-                                                _citySearchControllerFisica,
-                                            decoration: InputDecoration(
-                                              isDense: true,
-                                              hintText: 'Digite a cidade',
-                                              hintStyle:
-                                                  const TextStyle(fontSize: 12),
-                                              border: OutlineInputBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8),
                                               ),
+                                              searchMatchFn:
+                                                  (item, searchValue) {
+                                                return item.value
+                                                    .toString()
+                                                    .toLowerCase()
+                                                    .contains(searchValue
+                                                        .toLowerCase());
+                                              },
                                             ),
+                                            onMenuStateChange: (isOpen) {
+                                              if (!isOpen) {
+                                                _citySearchControllerFisica
+                                                    .clear();
+                                              }
+                                            },
                                           ),
                                         ),
-                                        searchMatchFn: (item, searchValue) {
-                                          return item.value
-                                              .toString()
-                                              .toLowerCase()
-                                              .contains(
-                                                  searchValue.toLowerCase());
-                                        },
-                                      ),
-                                      onMenuStateChange: (isOpen) {
-                                        if (!isOpen) {
-                                          _citySearchControllerFisica.clear();
-                                        }
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                      ],
                                     );
                                   }
                                   return const SizedBox.shrink();
                                 },
                               ),
-                             
                             ],
                           ),
                         ],
@@ -308,22 +316,26 @@ class _AddContratanteState extends State<AddContratante> {
                           const SizedBox(height: 14),
                           CustomTextField(
                             textEditingController: _nomeClienteController,
+                            onChanged: (String value) {},
                           ),
                           const CustomText(text: 'CNPJ'),
                           const SizedBox(height: 14),
                           CustomTextField(
                             textInputType: TextInputType.number,
                             textEditingController: _cnpjController,
+                            onChanged: (String value) {},
                           ),
                           const CustomText(text: 'Inscrição estadual'),
                           const SizedBox(height: 14),
                           CustomTextField(
                             textEditingController: _inscricaoEstadualController,
+                            onChanged: (String value) {},
                           ),
                           const CustomText(text: 'Endereço'),
                           const SizedBox(height: 14),
                           CustomTextField(
                             textEditingController: _enderecoController,
+                            onChanged: (String value) {},
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -496,9 +508,7 @@ class _AddContratanteState extends State<AddContratante> {
                           Util.toastAlerta("Digite o cpf do cliente");
                         } else if (_enderecoController.text.isEmpty) {
                           Util.toastAlerta("Digite o endereço do cliente");
-                        } else if (_municipioController.text.isEmpty) {
-                          Util.toastAlerta("Digite o município do cliente");
-                        } else if (_ufController.text.isEmpty) {
+                        } else if (_uf.isEmpty) {
                           Util.toastAlerta("Digite o UF do cliente");
                         } else {
                           setState(() {
@@ -546,8 +556,6 @@ class _AddContratanteState extends State<AddContratante> {
                           Util.toastAlerta("Digite o cpf do cliente");
                         } else if (_enderecoController.text.isEmpty) {
                           Util.toastAlerta("Digite o endereço do cliente");
-                        } else if (_municipioController.text.isEmpty) {
-                          Util.toastAlerta("Digite o município do cliente");
                         } else {
                           setState(() {
                             isPageLoading = true;
@@ -603,9 +611,11 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField(
       {super.key,
       required this.textEditingController,
+      required this.onChanged,
       this.textInputType = TextInputType.text});
   final TextEditingController? textEditingController;
   final TextInputType? textInputType;
+  final Function(String value) onChanged;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -620,6 +630,7 @@ class CustomTextField extends StatelessWidget {
         ),
       ),
       child: TextField(
+        onChanged: onChanged,
         keyboardType: textInputType,
         controller: textEditingController,
         decoration: const InputDecoration(

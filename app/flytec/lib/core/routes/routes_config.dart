@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/minhas_aplica%C3%A7%C3%B5es.dart';
 import 'package:flytec/features/aplications/presentation/pages/relatorio_aplicacao_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
@@ -151,9 +152,16 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
+          path: 'reportPage',
+          builder: (BuildContext context, GoRouterState state) {
+            File file = state.extra as File;
+            return ReportAplicationsPage(report: file);
+          },
+        ),
+        GoRoute(
           path: 'recomendacoestecnicas',
           builder: (BuildContext context, GoRouterState state) {
-            return const RecomendacoesTecnicas();
+            return const RecomendacoesTecnicasPage();
           },
         ),
         GoRoute(
@@ -168,6 +176,13 @@ final GoRouter router = GoRouter(
             return const AplicacoesPage();
           },
         ),
+        GoRoute(
+          path: 'minhasaplicacoes',
+          builder: (BuildContext context, GoRouterState state) {
+            return const MinhasAplicacoes();
+          },
+        ),
+
         GoRoute(
           path: 'contrato',
           builder: (BuildContext context, GoRouterState state) {

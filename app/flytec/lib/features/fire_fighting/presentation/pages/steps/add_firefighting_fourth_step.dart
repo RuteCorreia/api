@@ -297,7 +297,7 @@ class AssignmentButton extends StatelessWidget {
                                   SizedBox(
                                     width: double.infinity,
                                     child: Text(
-                                      'Assinatura ',
+                                      'Assinatura',
                                       style: TextStyle(
                                         color:
                                             Color.fromARGB(255, 121, 118, 118),

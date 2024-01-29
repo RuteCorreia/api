@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/features/aplications/presentation/widgets/pilot_select.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -20,6 +22,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+  String selectedPilot = "";
   void openContextMenu() {
     showAdaptiveDialog<String>(
       context: context,
@@ -102,7 +105,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                             ),
                           ),
                           const SizedBox(height: 15),
-                          CustomComboBox(
+                          CustomComboBoxExpanded(
                             selectedName: "...",
                             onTap: () async {},
                           ),
@@ -118,7 +121,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                             ),
                           ),
                           const SizedBox(height: 20),
-                          CustomComboBox(
+                          CustomComboBoxExpanded(
                             selectedName: dataSelecionada == null
                                 ? "Selecione"
                                 : DateFormat('dd/MM/yyyy')
@@ -129,7 +132,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                                 cancelText: "Cancelar",
                                 helpText: "",
                                 context: context,
-                                //locale: const Locale("pt"),
+                                //locale: const Locale("pt-BR"),
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(2023),
                                 lastDate: DateTime(2024),
@@ -188,9 +191,29 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                             ),
                           ),
                           const SizedBox(height: 15),
-                          CustomComboBox(
-                            selectedName: "...",
-                            onTap: () async {},
+                          CustomComboBoxExpanded(
+                            selectedName: selectedPilot.isEmpty
+                                ? "Selecione"
+                                : selectedPilot,
+                            onTap: () async {
+                              await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                        backgroundColor:
+                                            const Color(0xFFF5F5F5),
+                                        content: SizedBox(
+                                          width: double.maxFinite,
+                                          child:
+                                              PilotSelect(onChanged: (value) {
+                                            setState(() {
+                                              selectedPilot = value!;
+                                            });
+                                            Util.closeKeyBoard();
+                                          }),
+                                        ));
+                                  });
+                            },
                           ),
                           const SizedBox(height: 15),
                           const Text(
@@ -204,7 +227,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                             ),
                           ),
                           const SizedBox(height: 15),
-                          CustomComboBox(
+                          CustomComboBoxExpanded(
                             selectedName: "...",
                             onTap: () async {},
                           ),

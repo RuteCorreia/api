@@ -27,9 +27,6 @@ import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart
 import 'package:flytec/features/tipo_produto/domain/usecases/get_tipo_produtos_usecase.dart';
 import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/veiculante/domain/usecases/get_veiculante_usecase.dart';
-import 'package:flytec/features/weather/data/models/weather_model.dart';
-import 'package:flytec/features/weather/domain/repositories/weather_repository.dart';
-import 'package:flytec/features/weather/domain/usecases/get_current_weather_usecase.dart';
 import 'package:go_router/go_router.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:location/location.dart' as lct;
@@ -116,18 +113,6 @@ class _LoginPageState extends State<LoginPage> {
                 }, (right) {
                   final pilotos = right as List<PilotoModel>;
                   getIt<GlobalConfigVars>().setPilotos(pilotosData: pilotos);
-                });
-              }),
-              getIt<GetCurrentWeather>()
-                  .call(WeatherParams(
-                lat: currentLatitude,
-                long: currentLongitude,
-              ))
-                  .then((value) {
-                value.fold((l) {}, (r) {
-                  final weatherData = r as WeatherModel;
-                  getIt<GlobalConfigVars>()
-                      .setWeatherData(weatherData: weatherData);
                 });
               }),
               getIt<GetCulturasUseCase>().call(NoParams()).then((value) {

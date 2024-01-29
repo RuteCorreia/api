@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/core/widgets/combo_box.dart';
-import 'package:flytec/core/widgets/custom_text.dart';
-import 'package:flytec/features/aplications/presentation/pages/contrato_page.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/presentation/widgets/observations_select.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
+import 'package:flytec/features/aplications/presentation/widgets/logs_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/pista_select.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:location/location.dart' as lct;
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../../../../core/widgets/combo_box.dart';
+import '../widgets/culture_select.dart';
+import '../widgets/product_name_select.dart';
+import 'my_activity_page.dart';
 
 class RelatorioAplicacaoPage extends StatefulWidget {
   const RelatorioAplicacaoPage({super.key});
@@ -21,22 +25,118 @@ class RelatorioAplicacaoPage extends StatefulWidget {
 
 enum VolumeUnidade { LH, KG, NENHUM }
 
-enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
+enum DosagemUnidade { ML, L, G, KG, NENHUM }
 
 class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   VolumeUnidade _volumeUnidade = VolumeUnidade.NENHUM;
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
-  String selectedCultura = "";
-  String produtoSelecionado = "";
+  final TextEditingController _dosagemController = TextEditingController();
+  final TextEditingController _volumeAplicado = TextEditingController();
+  final TextEditingController _totalAreaAplicada = TextEditingController();
+
+  final TextEditingController _densidadeController = TextEditingController();
 
   final List<String> _observations = [];
   final List<int> _observationsIndex = [];
-  TextEditingController _observationTextField = TextEditingController();
-  String _selectedObservation = "Selecione";
+  final TextEditingController _observationTextField = TextEditingController();
+  final String _selectedObservation = "Selecione";
+  String _selectedLog = "Selecione";
+
+  String produtoSelecionado = "";
+  String selectedPista = "";
+  String getDosagemUnidade({DosagemUnidade? dosagemUnidade}) {
+    switch (dosagemUnidade) {
+      case DosagemUnidade.L:
+        return "L/ha";
+      case DosagemUnidade.KG:
+        return "Kg/ha";
+      case DosagemUnidade.ML:
+        return "ml/ha";
+      case DosagemUnidade.G:
+        return "g/ha";
+      default:
+        return "Unknown";
+    }
+  }
+
+  bool verifyFields() {
+    if (getIt<GlobalConfigVars>().selectedCultura.isEmpty) {
+      Util.toastAlerta("Selecione a cultura");
+      return false;
+    } else if (produtoSelecionado.isEmpty) {
+      Util.toastAlerta("Selecione o produto aplicado");
+      return false;
+    } else if (_dosagemController.text.isEmpty) {
+      Util.toastAlerta("Digite a dosagem");
+      return false;
+    } else if (_dosagemUnidade == DosagemUnidade.NENHUM) {
+      Util.toastAlerta("Selecione a unidade da dosagem");
+      return false;
+    } else if (_volumeAplicado.text.isEmpty) {
+      Util.toastAlerta("Digite o volume aplicado");
+      return false;
+    } else if (_volumeUnidade == VolumeUnidade.NENHUM) {
+      Util.toastAlerta("Selecione a unidade do volume de aplicação");
+      return false;
+    } else if (_totalAreaAplicada.text.isEmpty) {
+      Util.toastAlerta("Digite o total da área aplicada");
+      return false;
+    } else if (selectedPista.isEmpty) {
+      Util.toastAlerta("Selecione a pista");
+      return false;
+    } else if (_latitudeController.text.isEmpty) {
+      Util.toastAlerta("Digite a latitude");
+      return false;
+    } else if (_longitudeController.text.isEmpty) {
+      Util.toastAlerta("Digite a longitude");
+      return false;
+    } else if (_densidadeController.text.isEmpty) {
+      Util.toastAlerta("Digite a densidade");
+      return false;
+    } else {
+      getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao =
+          RelatorioDeAplicacao(
+        cultura: getIt<GlobalConfigVars>().selectedCultura,
+        dosagem: _dosagemController.text,
+        latitudeSul: _latitudeController.text,
+        densidade: _densidadeController.text,
+        log: _selectedLog,
+        longitudeOeste: _longitudeController.text,
+        localizacaoPista: selectedPista,
+        observacoes: _observationTextField.text,
+        totalAreaAplicada: _totalAreaAplicada.text,
+        produtoAplicado: produtoSelecionado,
+        volumeDeAplicacao: _volumeAplicado.text,
+        unidadeVolume: _volumeUnidade == VolumeUnidade.KG ? "Kg/ha" : "L/ha",
+        unidadeDosagem: getDosagemUnidade(dosagemUnidade: _dosagemUnidade),
+      );
+
+      Util.toastSucesso("Dados salvo com sucesso");
+      return true;
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var data = getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao;
+
+    produtoSelecionado = data!.produtoAplicado!;
+    _dosagemController.text = data.dosagem!;
+    _volumeAplicado.text = data.volumeDeAplicacao!;
+    _totalAreaAplicada.text = data.totalAreaAplicada!;
+    _longitudeController.text = data.longitudeOeste!;
+    _latitudeController.text = data.latitudeSul!;
+    _observationTextField.text = data.observacoes!;
+    selectedPista = data.localizacaoPista!;
+  }
+
   @override
   Widget build(BuildContext context) {
+    var data = getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -52,125 +152,85 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 16),
             const CustomText(text: 'Cultura'),
             const SizedBox(height: 14),
-            CustomComboBox(
-              selectedName:
-                  selectedCultura.isEmpty ? "Selecione" : selectedCultura,
-              onTap: () {
-                showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) => SingleChildScrollView(
-                    controller: ModalScrollController.of(context),
-                    child: Container(
-                      height: 400,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 500,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: getIt<GlobalConfigVars>()
-                                        .culturas
-                                        .length,
-                                    itemBuilder: (ctx, index) {
-                                      final cultura = getIt<GlobalConfigVars>()
-                                          .culturas[index];
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.1),
-                                        ),
-                                        child: ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              selectedCultura = cultura.nome!;
-                                            });
-                                            context.pop();
-                                          },
-                                          style: ListTileStyle.drawer,
-                                          title: Text("${cultura.nome}"),
-                                        ),
-                                      );
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
+            CustomComboBoxExpanded(
+              selectedName: getIt<GlobalConfigVars>().selectedCultura.isEmpty
+                  ? "Selecione"
+                  : getIt<GlobalConfigVars>().selectedCultura,
+              onTap: () async {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                          backgroundColor: const Color(0xFFF5F5F5),
+                          content: SizedBox(
+                            width: double.maxFinite,
+                            child: CultureSelect(onChanged: (value) {
+                              setState(() {
+                                getIt<GlobalConfigVars>().selectedCultura =
+                                    value;
+                              });
+                              Util.closeKeyBoard();
+                            }),
+                          ));
+                    });
               },
             ),
             const SizedBox(height: 20),
             const CustomText(text: 'Produto aplicado'),
             const SizedBox(height: 14),
-            CustomComboBox(
+            CustomComboBoxExpanded(
               selectedName:
                   produtoSelecionado.isEmpty ? "Selecione" : produtoSelecionado,
-              onTap: () {
-                showMaterialModalBottomSheet(
-                  context: context,
-                  builder: (context) => SingleChildScrollView(
-                    controller: ModalScrollController.of(context),
-                    child: Container(
-                      height: 400,
-                      color: Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.all(0.0),
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: 500,
-                                child: ListView.builder(
-                                    padding: EdgeInsets.zero,
-                                    itemCount: getIt<GlobalConfigVars>()
-                                        .produtos
-                                        .length,
-                                    itemBuilder: (ctx, index) {
-                                      final produto = getIt<GlobalConfigVars>()
-                                          .produtos[index];
-                                      return Container(
-                                        margin:
-                                            const EdgeInsets.only(bottom: 2),
-                                        decoration: BoxDecoration(
-                                          color: Colors.grey.withOpacity(0.1),
-                                        ),
-                                        child: ListTile(
-                                          onTap: () {
-                                            setState(() {
-                                              produtoSelecionado =
-                                                  produto.nome!;
-                                            });
-                                            context.pop();
-                                          },
-                                          style: ListTileStyle.drawer,
-                                          title: Text("${produto.nome}"),
-                                        ),
-                                      );
-                                    }),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                );
+              onTap: () async {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                          backgroundColor: const Color(0xFFF5F5F5),
+                          content: SizedBox(
+                            width: double.maxFinite,
+                            child: ProductNameSelect(
+                                onChangedProductName: (value, produto) {
+                              setState(() {
+                                produtoSelecionado = value;
+                                data!.produtoAplicado = value;
+                              });
+                              Util.closeKeyBoard();
+                            }),
+                          ));
+                    });
               },
             ),
             const SizedBox(height: 10),
             const CustomText(text: 'Dosagem'),
             const SizedBox(height: 14),
-            const CustomTextField(
-              keyboardType: TextInputType.number,
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _dosagemController,
+                onChanged: (value) {
+                  data!.dosagem = value;
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,10 +258,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       Checkbox(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          value: _dosagemUnidade == DosagemUnidade.LH,
+                          value: _dosagemUnidade == DosagemUnidade.L,
                           onChanged: (value) {
                             setState(() {
-                              _dosagemUnidade = DosagemUnidade.LH;
+                              _dosagemUnidade = DosagemUnidade.L;
                             });
                           }),
                     ],
@@ -214,10 +274,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       Checkbox(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          value: _dosagemUnidade == DosagemUnidade.HA,
+                          value: _dosagemUnidade == DosagemUnidade.G,
                           onChanged: (value) {
                             setState(() {
-                              _dosagemUnidade = DosagemUnidade.HA;
+                              _dosagemUnidade = DosagemUnidade.G;
                             });
                           }),
                     ],
@@ -244,8 +304,33 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 20),
             const CustomText(text: 'Volume de aplicação'),
             const SizedBox(height: 14),
-            const CustomTextField(
-              keyboardType: TextInputType.number,
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _volumeAplicado,
+                onChanged: (value) {
+                  data!.volumeDeAplicacao = value;
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -285,14 +370,58 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 14),
             const CustomText(text: 'Total da área aplicada (ha)'),
             const SizedBox(height: 14),
-            const CustomTextField(
-              text: "Digite aqui",
-              keyboardType: TextInputType.number,
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _totalAreaAplicada,
+                onChanged: (value) {
+                  data!.totalAreaAplicada = value;
+                },
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             const SizedBox(height: 14),
             const CustomText(text: 'Localização da pista/Código ICAO'),
             const SizedBox(height: 14),
-            const ComboBox(selectedName: "Selecione"),
+            CustomComboBoxExpanded(
+              selectedName: selectedPista.isEmpty ? "Selecione" : selectedPista,
+              onTap: () async {
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                          backgroundColor: const Color(0xFFF5F5F5),
+                          content: SizedBox(
+                            width: double.maxFinite,
+                            child: PistaSelect(onChangedClasse: (value) {
+                              setState(() {
+                                selectedPista = value;
+                                data!.localizacaoPista = value;
+                              });
+                              Util.closeKeyBoard();
+                            }),
+                          ));
+                    });
+              },
+            ),
             const SizedBox(height: 20),
             CustomGpsButton(onClick: () async {
               lct.Location local = lct.Location();
@@ -300,6 +429,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 setState(() {
                   _latitudeController.text = lc.latitude.toString();
                   _longitudeController.text = lc.longitude.toString();
+                  data!.latitudeSul = lc.latitude.toString();
+                  data.longitudeOeste = lc.longitude.toString();
                 });
               });
             }),
@@ -327,6 +458,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       ),
                       child: TextField(
                         controller: _latitudeController,
+                        onChanged: (value) {
+                          data!.latitudeSul = value;
+                        },
                         textInputAction: TextInputAction.done,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
@@ -363,6 +497,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       ),
                       child: TextField(
                         controller: _longitudeController,
+                        onChanged: (value) {
+                          data!.longitudeOeste = value;
+                        },
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
                             hintText: "Digite aqui",
@@ -379,6 +516,35 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                   ],
                 )
               ],
+            ),
+            const CustomText(text: 'Densidade'),
+            const SizedBox(height: 14),
+            Container(
+              width: (MediaQuery.of(context).size.width / 2) - 25,
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: TextField(
+                controller: _densidadeController,
+                keyboardType: TextInputType.number,
+                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                onChanged: (value) {},
+                decoration: const InputDecoration(
+                    hintText: "Digite aqui",
+                    border: InputBorder.none,
+                    hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 16,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w500,
+                      height: 0.09,
+                    )),
+              ),
             ),
             const SizedBox(height: 20),
             const CustomText(text: "Alterações do planejamento / Observações "),
@@ -398,6 +564,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 minLines: 4,
                 maxLines: 4,
                 controller: _observationTextField,
+                onChanged: (value) {
+                  data!.observacoes = value;
+                },
                 textInputAction: TextInputAction.done,
                 onSubmitted: (value) {
                   if (_observationTextField.text.isEmpty) return;
@@ -476,16 +645,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    if (_observationTextField.text.isEmpty) return;
                     try {
-                      _observations.add(_observationTextField.text);
-                      _observationsIndex.add(_observations.length);
-                      _observationTextField.clear();
-                      setState(() {});
-                      Util.toastSucesso("Observação adicionada com sucesso!");
-                    } catch (e) {
-                      Util.toastErro("Observação não foi adicionada");
-                    }
+                      verifyFields();
+                    } catch (e) {}
                   },
                   child: Container(
                     height: 40,
@@ -541,43 +703,29 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 13),
             InkWell(
                 onTap: () async {
-                  if (_observationsIndex.isEmpty) return;
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                            backgroundColor: Colors.grey[100],
-                            content: ObservationsSelect(
-                              findObservation: (find) {
-                                try {
-                                  final observationSelect =
-                                      _observations[find - 1];
-                                  _selectedObservation =
-                                      'LOG ${find.toString().padLeft(3, '0')}';
-                                  _observationTextField = TextEditingController(
-                                      text: observationSelect);
-                                  setState(() {});
-                                  Util.toastSucesso("Observação encontrada");
-                                } catch (e) {
-                                  Util.toastErro("Observação não encontrada");
-                                }
-                              },
-                              observationsIndex: _observationsIndex,
-                              onChangedObservations: (value, index) {
-                                _selectedObservation = value;
-                                _observationTextField = TextEditingController(
-                                    text: _observations[index]);
-                                setState(() {});
-                              },
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: LogsSelect(onChanged: (value) {
+                                setState(() {
+                                  _selectedLog = value;
+                                  getIt<GlobalConfigVars>().dgs = value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
                             ));
                       });
                 },
-                child: ComboBox(selectedName: _selectedObservation)),
+                child: ComboBox(selectedName: _selectedLog)),
             Center(
               child: CustomButton(
                 title: "APLICAÇÕES",
                 onClick: () {
-                  context.push("/aplicacoes");
+                  context.push("/minhasaplicacoes");
                 },
               ),
             ),
@@ -632,11 +780,9 @@ class CustomGpsButton extends StatelessWidget {
   }
 }
 
-/* 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-  });
+  final TextInputType textInputType;
+  const CustomTextField({super.key, this.textInputType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {
@@ -651,8 +797,9 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
       ),
-      child: const TextField(
-        decoration: InputDecoration(
+      child: TextField(
+        keyboardType: textInputType,
+        decoration: const InputDecoration(
             hintText: "Digite aqui",
             border: InputBorder.none,
             hintStyle: TextStyle(
@@ -666,7 +813,7 @@ class CustomTextField extends StatelessWidget {
     );
   }
 }
- */
+
 class ComboBox extends StatelessWidget {
   const ComboBox({super.key, required this.selectedName});
   final String selectedName;

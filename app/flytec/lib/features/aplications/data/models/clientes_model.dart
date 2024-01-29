@@ -15,10 +15,10 @@ class ClientesModel {
   final int? idCliente;
   final String? nomeCliente;
   final int? idTipoCliente;
-  final int? cpf;
-  final int? rg;
-  final int? cnpj;
-  final int? inscricaoEstadual;
+  final String? cpf;
+  final String? rg;
+  final String? cnpj;
+  final String? inscricaoEstadual;
   final String? endereco;
   final String? telefone1;
   final String? telefone2;
@@ -27,14 +27,15 @@ class ClientesModel {
   final String? precificacao;
   final bool? admin;
   bool isSelected;
+
   ClientesModel({
     this.idCliente,
     this.nomeCliente,
     this.idTipoCliente,
+    this.isSelected = false,
     this.cpf,
     this.rg,
     this.cnpj,
-    this.isSelected = false,
     this.inscricaoEstadual,
     this.endereco,
     this.telefone1,

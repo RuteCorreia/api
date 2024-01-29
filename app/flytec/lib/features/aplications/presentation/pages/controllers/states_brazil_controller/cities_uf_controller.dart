@@ -1,4 +1,4 @@
-import 'package:flytec/features/aplications/presentation/pages/controllers/states_brazil_controller/constants/cities.dart';
+import 'package:flytec/features/aplications/presentation/pages/controllers/states_brazil_controller/constants/cities/cities.dart';
 
 class CitiesUfController {
   final _citiesByStatesBrazilConstants = CitiesByStatesBrazilConstants();

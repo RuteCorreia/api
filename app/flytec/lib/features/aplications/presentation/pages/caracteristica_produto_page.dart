@@ -6,13 +6,21 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/aplications/presentation/pages/add_contratante_page.dart';
-import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
+import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
+import 'package:flytec/features/aplications/presentation/widgets/biologic_target_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/classe_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/culture_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/product_name_select.dart';
+import 'package:flytec/features/aplications/presentation/widgets/toxicological_classification_select.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../../../core/widgets/combo_box.dart';
 import '../../../auth/presentation/widgets/custom_login_button.dart';
+import '../widgets/formulation_type_select.dart';
 
 class CaracteristicaProdutoPage extends StatefulWidget {
   const CaracteristicaProdutoPage({super.key});
@@ -27,6 +35,10 @@ enum DosagemUnidade { LH, KG, ML, HA, NENHUM }
 class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   DosagemUnidade _dosagemUnidade = DosagemUnidade.NENHUM;
   String selectedCultura = "";
+  final TextEditingController _adjuvanteController = TextEditingController();
+  final TextEditingController _tipoServicoController = TextEditingController();
+  final TextEditingController dosePorHectarController = TextEditingController();
+
   String classificacaoToxicologica = "";
   String produtoSelecionado = "";
   String classe = "";
@@ -35,14 +47,118 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
   String dosePorHectar = "";
   String _imageMapsPath = "";
   Uint8List? _imageData;
+  @override
+  void initState() {
+    super.initState();
+    if (getIt<GlobalConfigVars>().identificacaoAreaModel != null) {
+      getIt<GlobalConfigVars>().selectedCultura =
+          getIt<GlobalConfigVars>().identificacaoAreaModel!.cultura!;
+    }
+
+    var data = getIt<GlobalConfigVars>().reportList.last.carateristicaProduto;
+
+    produtoSelecionado = data!.nomeProduto!;
+
+    classificacaoToxicologica = data.classificacaoToxicologica!;
+    classe = data.classe!;
+    alvoBiologico = data.alvoBiologico!;
+    tipoFormulacao = data.tipoFormulacao!;
+    dosePorHectarController.text = data.dosePorHectare!;
+    _adjuvanteController.text = data.adjuvante!;
+    _tipoServicoController.text = data.tipoServico!;
+    switch (data.unidadeHectare) {
+      case "ML":
+        _dosagemUnidade = DosagemUnidade.ML;
+        break;
+      case "KG":
+        _dosagemUnidade = DosagemUnidade.KG;
+        break;
+      case "LH":
+        _dosagemUnidade = DosagemUnidade.LH;
+        break;
+      case "HA":
+        _dosagemUnidade = DosagemUnidade.HA;
+        break;
+      default:
+        _dosagemUnidade = DosagemUnidade.NENHUM;
+    }
+  }
+
+  String getDosagemUnidade({DosagemUnidade? unidade}) {
+    switch (unidade) {
+      case DosagemUnidade.HA:
+        return "HA";
+      case DosagemUnidade.KG:
+        return "KG";
+      case DosagemUnidade.LH:
+        return "LH";
+      case DosagemUnidade.ML:
+        return "ML";
+
+      default:
+        return "unknown";
+    }
+  }
+
+  bool verifiyFields() {
+    if (getIt<GlobalConfigVars>().selectedCultura.isEmpty) {
+      Util.toastAlerta("Selecione a cultura");
+      return false;
+    } else if (produtoSelecionado.isEmpty) {
+      Util.toastAlerta("Selecione a produto");
+      return false;
+    } else if (classificacaoToxicologica.isEmpty) {
+      Util.toastAlerta("Selecione a classificação toxicológica");
+      return false;
+    } else if (classe.isEmpty) {
+      Util.toastAlerta("Selecione a classe");
+      return false;
+    } else if (tipoFormulacao.isEmpty) {
+      Util.toastAlerta("Selecione o tipo de formulação");
+      return false;
+    } else if (alvoBiologico.isEmpty) {
+      Util.toastAlerta("Selecione o alvo biológico");
+      return false;
+    } else if (dosePorHectarController.text.isEmpty) {
+      Util.toastAlerta("Digite a dose do produto comercial por hectare");
+      return false;
+    } else if (_dosagemUnidade == DosagemUnidade.NENHUM) {
+      Util.toastAlerta("Selecione a unidade da dosagem ");
+      return false;
+    } else if (_adjuvanteController.text.isEmpty) {
+      Util.toastAlerta("Digite o Adjuvante");
+      return false;
+    } else if (_tipoServicoController.text.isEmpty) {
+      Util.toastAlerta("Digite o tipo de serviço");
+      return false;
+    } else {
+      getIt<GlobalConfigVars>().reportList.last.carateristicaProduto =
+          CarateristicaProduto(
+              adjuvante: _adjuvanteController.text,
+              alvoBiologico: alvoBiologico,
+              classe: classe,
+              classificacaoToxicologica: classificacaoToxicologica,
+              cultura: getIt<GlobalConfigVars>().selectedCultura,
+              dosePorHectare: dosePorHectarController.text,
+              nomeProduto: produtoSelecionado,
+              tipoFormulacao: tipoFormulacao,
+              tipoServico: _tipoServicoController.text,
+              unidadeHectare: getDosagemUnidade(unidade: _dosagemUnidade));
+      Util.toastSucesso("Dados inseridos com sucesso");
+      context.pop();
+      return true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    var data = getIt<GlobalConfigVars>().reportList.last.carateristicaProduto;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Caraterística do\nproduto a ser aplicado",
+          "Caraterísticas do\nproduto a ser aplicado",
           textAlign: TextAlign.center,
         ),
       ),
@@ -56,59 +172,26 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const CustomText(text: 'Cultura'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
-                selectedName:
-                    selectedCultura.isEmpty ? "Selecione" : selectedCultura,
-                onTap: () {
-                  showMaterialModalBottomSheet(
-                    context: context,
-                    builder: (context) => SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: Container(
-                        height: 400,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 500,
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      itemCount: getIt<GlobalConfigVars>()
-                                          .culturas
-                                          .length,
-                                      itemBuilder: (ctx, index) {
-                                        final cultura =
-                                            getIt<GlobalConfigVars>()
-                                                .culturas[index];
-                                        return Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 2),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                          ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              setState(() {
-                                                selectedCultura = cultura.nome!;
-                                              });
-                                              context.pop();
-                                            },
-                                            style: ListTileStyle.drawer,
-                                            title: Text("${cultura.nome}"),
-                                          ),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                selectedName: getIt<GlobalConfigVars>().selectedCultura.isEmpty
+                    ? "Selecione"
+                    : getIt<GlobalConfigVars>().selectedCultura,
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: CultureSelect(onChanged: (value) {
+                                setState(() {
+                                  getIt<GlobalConfigVars>().selectedCultura =
+                                      value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
                 },
               ),
               const SizedBox(height: 15),
@@ -122,16 +205,13 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UploadFotos(
+                          builder: (context) => UplodadFotos(
                                 updateImagePathMap: (path) {
                                   _imageMapsPath = path;
                                   setState(() {});
                                 },
                                 imageData: _imageData,
                                 imagePath: _imageMapsPath,
-                                onOkButton: () {
-                                  context.pop();
-                                },
                               )));
                 },
                 child: Container(
@@ -192,63 +272,38 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                 selectedName: produtoSelecionado.isEmpty
                     ? "Selecione"
                     : produtoSelecionado,
-                onTap: () {
-                  showMaterialModalBottomSheet(
-                    context: context,
-                    builder: (context) => SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: Container(
-                        height: 400,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 500,
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      itemCount: getIt<GlobalConfigVars>()
-                                          .produtos
-                                          .length,
-                                      itemBuilder: (ctx, index) {
-                                        final produto =
-                                            getIt<GlobalConfigVars>()
-                                                .produtos[index];
-                                        return Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 2),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                          ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              setState(() {
-                                                produtoSelecionado =
-                                                    produto.nome!;
-                                                classificacaoToxicologica = produto
-                                                    .classificacaoToxicologica!;
-                                                classe = produto.classe!;
-                                                tipoFormulacao =
-                                                    produto.tipoDeFormulacao!;
-                                              });
-                                              context.pop();
-                                            },
-                                            style: ListTileStyle.drawer,
-                                            title: Text("${produto.nome}"),
-                                          ),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: ProductNameSelect(
+                                  onChangedProductName: (value, produto) {
+                                setState(() {
+                                  produtoSelecionado = value;
+                                  data!.nomeProduto = value;
+
+                                  if (produto == null) {
+                                    return;
+                                  }
+                                  classificacaoToxicologica =
+                                      produto.classificacaoToxicologica!;
+                                  classe = produto.classe!;
+                                  tipoFormulacao = produto.tipoDeFormulacao!;
+                                  data.nomeProduto = value;
+                                  data.classe = produto.classe;
+                                  data.tipoFormulacao =
+                                      produto.tipoDeFormulacao;
+                                  data.classificacaoToxicologica =
+                                      produto.classificacaoToxicologica;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
                 },
               ),
               const SizedBox(height: 20),
@@ -258,7 +313,23 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                 selectedName: classificacaoToxicologica.isEmpty
                     ? "Selecione"
                     : classificacaoToxicologica,
-                onTap: () {},
+                onTap: () async {
+                  await showMaterialModalBottomSheet(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Container(
+                            height: 80.h,
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            color: const Color(0xFFF5F5F5),
+                            child: ToxicologicalClassificationSelect(
+                                onSelect: (value) {
+                              setState(() {
+                                classificacaoToxicologica = value;
+                                data!.classificacaoToxicologica = value;
+                              });
+                            }));
+                      });
+                },
               ),
               const SizedBox(height: 10),
               const SizedBox(height: 14),
@@ -266,7 +337,24 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               const SizedBox(height: 10),
               CustomComboBoxExpanded(
                 selectedName: classe.isEmpty ? "Selecione" : classe,
-                onTap: () {},
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: ClasseSelect(onChangedClasse: (value) {
+                                setState(() {
+                                  classe = value;
+                                  data!.classe = value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
+                },
               ),
               const SizedBox(height: 12),
               const CustomText(text: 'Tipo de Formulação'),
@@ -274,7 +362,25 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               CustomComboBoxExpanded(
                 selectedName:
                     tipoFormulacao.isEmpty ? "Selecione" : tipoFormulacao,
-                onTap: () {},
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: FormulationTypeSelect(
+                                  onChangedFormulationType: (value) {
+                                setState(() {
+                                  tipoFormulacao = value;
+                                  data!.tipoFormulacao = value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
+                },
               ),
               const SizedBox(height: 14),
               const SizedBox(height: 14),
@@ -283,64 +389,34 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               CustomComboBoxExpanded(
                 selectedName:
                     alvoBiologico.isEmpty ? "Selecione" : alvoBiologico,
-                onTap: () {
-                  showMaterialModalBottomSheet(
-                    context: context,
-                    builder: (context) => SingleChildScrollView(
-                      controller: ModalScrollController.of(context),
-                      child: Container(
-                        height: 400,
-                        color: Colors.white,
-                        child: Padding(
-                          padding: const EdgeInsets.all(0.0),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                SizedBox(
-                                  height: 500,
-                                  child: ListView.builder(
-                                      padding: EdgeInsets.zero,
-                                      itemCount: getIt<GlobalConfigVars>()
-                                          .alvosBiologicos
-                                          .length,
-                                      itemBuilder: (ctx, index) {
-                                        final alvo = getIt<GlobalConfigVars>()
-                                            .alvosBiologicos[index];
-                                        return Container(
-                                          margin:
-                                              const EdgeInsets.only(bottom: 2),
-                                          decoration: BoxDecoration(
-                                            color: Colors.grey.withOpacity(0.1),
-                                          ),
-                                          child: ListTile(
-                                            onTap: () {
-                                              setState(() {
-                                                alvoBiologico = alvo.nome!;
-                                              });
-                                              context.pop();
-                                            },
-                                            style: ListTileStyle.drawer,
-                                            title: Text("${alvo.nome}"),
-                                          ),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
+                onTap: () async {
+                  await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                            backgroundColor: const Color(0xFFF5F5F5),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              child: BiologicTargetSelect(onChanged: (value) {
+                                setState(() {
+                                  alvoBiologico = value;
+                                  data!.alvoBiologico = value;
+                                });
+                                Util.closeKeyBoard();
+                              }),
+                            ));
+                      });
                 },
               ),
               const SizedBox(height: 20),
               const CustomText(text: 'Dose do produto comercial por hectare'),
               const SizedBox(height: 14),
-              const CustomTextField(
-                textEditingController: null,
+              CustomTextField(
+                textEditingController: dosePorHectarController,
                 textInputType: TextInputType.number,
+                onChanged: (String value) {
+                  data!.dosePorHectare = value;
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -356,6 +432,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                             onChanged: (value) {
                               setState(() {
                                 _dosagemUnidade = DosagemUnidade.ML;
+                                data!.unidadeHectare = "ML";
                               });
                             }),
                       ],
@@ -372,6 +449,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                             onChanged: (value) {
                               setState(() {
                                 _dosagemUnidade = DosagemUnidade.LH;
+                                data!.unidadeHectare = "LH";
                               });
                             }),
                       ],
@@ -388,6 +466,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                             onChanged: (value) {
                               setState(() {
                                 _dosagemUnidade = DosagemUnidade.HA;
+                                data!.unidadeHectare = "HA";
                               });
                             }),
                       ],
@@ -404,6 +483,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                             onChanged: (value) {
                               setState(() {
                                 _dosagemUnidade = DosagemUnidade.KG;
+                                data!.unidadeHectare = "KG";
                               });
                             }),
                       ],
@@ -426,8 +506,12 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _adjuvanteController,
+                  onChanged: (value) {
+                    data!.adjuvante = value;
+                  },
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -453,8 +537,12 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _tipoServicoController,
+                  onChanged: (value) {
+                    data!.tipoServico = value;
+                  },
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -470,7 +558,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                 child: CustomButton(
                   title: "OK",
                   onClick: () {
-                    context.pop();
+                    verifiyFields();
                   },
                 ),
               ),

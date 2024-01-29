@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
@@ -161,7 +161,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                               child: CustomComboBox(
                                                 selectedName: horimetro == null
                                                     ? "Selecione"
-                                                    : "${horimetro!.hour}:${horimetro!.minute}",
+                                                    : horimetro!.to24hours(),
                                                 onTap: () async {
                                                   final data =
                                                       await showTimePicker(
@@ -276,7 +276,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                               child: CustomComboBox(
                                                 selectedName: horimetro2 == null
                                                     ? "Selecione"
-                                                    : "${horimetro2!.hour}:${horimetro2!.minute}",
+                                                    : horimetro2!.to24hours(),
                                                 onTap: () async {
                                                   final data =
                                                       await showTimePicker(
@@ -397,9 +397,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
               const CustomText(text: 'Horário final da operação'),
               const SizedBox(height: 14),
               CustomComboBox(
-                selectedName: time == null
-                    ? "Selecione"
-                    : "${time!.hour}:${time!.minute}",
+                selectedName: time == null ? "Selecione" : time!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",

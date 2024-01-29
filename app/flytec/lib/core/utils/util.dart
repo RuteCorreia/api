@@ -16,6 +16,7 @@ class Util {
 
     return formattedDate;
   }
+
   static String getRandomString(int length) {
     const chars =
         'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -92,6 +93,15 @@ class Util {
     return pathImage;
   }
 
+  static double converterMetrosPorSegundoParaKmPorHora(
+      double velocidadeEmMetrosPorSegundo) {
+    return velocidadeEmMetrosPorSegundo * 3.6;
+  }
+
+  static closeKeyBoard() {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
+
   static toastSucesso(txt) {
     return Fluttertoast.showToast(
       msg: txt,
@@ -114,11 +124,6 @@ class Util {
       textColor: Colors.white,
       fontSize: 16.0,
     );
-  }
-
-  static double converterMetrosPorSegundoParaKmPorHora(
-      double velocidadeEmMetrosPorSegundo) {
-    return velocidadeEmMetrosPorSegundo * 3.6;
   }
 
   static toastAlerta(txt) {

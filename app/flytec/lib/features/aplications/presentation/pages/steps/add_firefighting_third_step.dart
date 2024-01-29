@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
@@ -430,9 +430,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
               const CustomText(text: 'Horímetro final da operação'),
               const SizedBox(height: 14),
               CustomComboBox(
-                selectedName: horimetro == null
-                    ? "Selecione"
-                    : "${horimetro!.hour}:${horimetro!.minute}",
+                selectedName:
+                    horimetro == null ? "Selecione" : horimetro!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/core/injections/get_it.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
+import 'package:flytec/features/aplications/presentation/widgets/aircraft_prefix_select.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -19,7 +20,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
-
+  String airCraftPrexix = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,13 +34,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'N° ${getIt<GlobalConfigVars>().userPayload.nrUsuario}1',
+                    'N° 1758',
                     textAlign: TextAlign.right,
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',
@@ -65,8 +66,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                   ),
                 ),
                 child: const TextField(
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: "Email",
+                      hintText: "Número do aviso",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 121, 118, 118),
@@ -79,14 +81,30 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               ),
               const CustomText(text: 'Prefixo da Aeronave'),
               const SizedBox(height: 14),
-              CustomComboBox(
-                selectedName: "Selecione",
-                onTap: () async {},
-              ),
+              CustomComboBoxExpanded(
+                  selectedName:
+                      airCraftPrexix.isEmpty ? "Selecione" : airCraftPrexix,
+                  onTap: () async {
+                    await showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              backgroundColor: Colors.grey[100],
+                              content: SizedBox(
+                                width: double.maxFinite,
+                                child: AirCraftPrefixSelect(onChanged: (value) {
+                                  setState(() {
+                                    airCraftPrexix = value;
+                                  });
+                                  Util.closeKeyBoard();
+                                }),
+                              ));
+                        });
+                  }),
               const SizedBox(height: 20),
               const CustomText(text: 'Data'),
               const SizedBox(height: 14),
-              CustomComboBox(
+              CustomComboBoxExpanded(
                 selectedName: dataSelecionada == null
                     ? "Selecione"
                     : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
@@ -97,8 +115,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     helpText: "",
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    firstDate: DateTime(2024),
+                    lastDate: DateTime(2028),
                   );
                   setState(() {
                     dataSelecionada = data;
@@ -108,10 +126,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               const SizedBox(height: 20),
               const CustomText(text: 'Horário inicial'),
               const SizedBox(height: 14),
-              CustomComboBox(
-                selectedName: time == null
-                    ? "Selecione"
-                    : "${time!.hour}:${time!.minute}",
+              CustomComboBoxExpanded(
+                selectedName: time == null ? "Selecione" : time!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",
@@ -154,7 +170,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 ),
               ),
 
-              /*  CustomComboBox(
+              /*  CustomComboBoxExpanded(
                 selectedName: horimetro == null
                     ? "Selecione"
                     : "${horimetro!.hour}:${horimetro!.minute}",
@@ -363,8 +379,8 @@ class CustomText extends StatelessWidget {
   }
 }
 
-class CustomComboBox extends StatelessWidget {
-  const CustomComboBox(
+class CustomComboBoxExpanded extends StatelessWidget {
+  const CustomComboBoxExpanded(
       {super.key, required this.selectedName, required this.onTap});
   final String selectedName;
   final VoidCallback? onTap;
@@ -374,7 +390,7 @@ class CustomComboBox extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: 328,
-        height: 40,
+        height: 50,
         padding: const EdgeInsets.all(8),
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(

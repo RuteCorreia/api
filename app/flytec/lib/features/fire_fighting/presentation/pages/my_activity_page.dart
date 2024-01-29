@@ -216,9 +216,10 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                     cancelText: "Cancelar",
                     helpText: "",
                     context: context,
+                    //locale: const Locale("pt"),
                     initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime(2024),
+                    firstDate: DateTime(2024),
+                    lastDate: DateTime(2028),
                   );
                   setState(() {
                     dataInicialSelecionada = data;
@@ -229,35 +230,24 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
               const CustomText(text: 'Selecione a data final'),
               const SizedBox(height: 14),
               CustomComboBox(
-                selectedName: dataFinalSelecionada == null
-                    ? "Selecione"
-                    : DateFormat('dd/MM/yyyy').format(dataFinalSelecionada!),
-                onTap: () async {
-                  final data = await showDatePicker(
-                    confirmText: "Selecionar data",
-                    cancelText: "Cancelar",
-                    helpText: "",
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2023),
-                    lastDate: DateTime.now(),
-                  );
-                  setState(() {
-                    dataFinalSelecionada = data;
-                  });
-                },
-              ),
-              const SizedBox(height: 20),
-              const Text(
-                'Hectares voados',
-                style: TextStyle(
-                  color: Color(0xFF00B45D),
-                  fontSize: 14,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
-                  height: 0.11,
-                ),
-              ),
+                  selectedName: dataFinalSelecionada == null
+                      ? "Selecione"
+                      : DateFormat('dd/MM/yyyy').format(dataFinalSelecionada!),
+                  onTap: () async {
+                    final data = await showDatePicker(
+                      confirmText: "Selecionar data",
+                      cancelText: "Cancelar",
+                      helpText: "",
+                      context: context,
+                      //locale: const Locale("pt"),
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2023),
+                      lastDate: DateTime.now(),
+                    );
+                    setState(() {
+                      dataFinalSelecionada = data;
+                    });
+                  }),
               const SizedBox(height: 20),
               Container(
                 width: double.infinity,
@@ -272,8 +262,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                   ),
                 ),
                 child: const TextField(
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: "-",
+                      hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 121, 118, 118),
@@ -309,8 +300,9 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                   ),
                 ),
                 child: const TextField(
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(
-                      hintText: "-",
+                      hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 121, 118, 118),

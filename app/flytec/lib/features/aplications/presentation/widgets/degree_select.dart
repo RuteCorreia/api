@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 class DegreeSelect extends StatelessWidget {
   final Function(String) onChangeDegree;
   DegreeSelect({super.key, required this.onChangeDegree});
-  final List<int> _degree = List.generate(201, (index) => index * 5);
+  final List<int> _degree = [
+    25,
+    30,
+    35,
+    45
+  ]; //List.generate(201, (index) => index * 5);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: 200,
       child: ListView.builder(
         itemCount: _degree.length,
         shrinkWrap: true,

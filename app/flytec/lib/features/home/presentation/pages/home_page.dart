@@ -202,7 +202,7 @@ class _HomePagaState extends State<HomePaga> {
                         'Dashboard',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 12, 6, 6),
+                          color: Color.fromARGB(255, 121, 118, 118),
                           fontSize: 20,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w600,
@@ -217,13 +217,10 @@ class _HomePagaState extends State<HomePaga> {
             const SizedBox(height: 26),
             GestureDetector(
               onTap: () async {
-                print(getIt<GlobalConfigVars>().alturaVoo);
-                print(getIt<GlobalConfigVars>().equipamentos);
-                print(getIt<GlobalConfigVars>().tiposProdutos);
-                //await getIt<GetAlturaVooUseCase>().call(NoParams());
+                print(getIt<GlobalConfigVars>().userPayload.role.toString());
               },
-              child: WelcomeText(
-                userName: "${getIt<GlobalConfigVars>().userPayload.name}",
+              child: const WelcomeText(
+                userName: "Rodrigo",
               ),
             ),
             Builder(
@@ -489,10 +486,11 @@ class _HomePagaState extends State<HomePaga> {
                                                 fontSize: 16,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700,
+                                                height: 0.09,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 20),
+                                          const SizedBox(height: 30),
                                           SizedBox(
                                             width: double.infinity,
                                             child: Text.rich(
@@ -570,7 +568,10 @@ class _HomePagaState extends State<HomePaga> {
                       Expanded(
                         child: ActivityButton(
                           text: "Relatórios",
-                          value: "0",
+                          value: getIt<GlobalConfigVars>()
+                              .reportList
+                              .length
+                              .toString(),
                           onTap: () {},
                         ),
                       ),

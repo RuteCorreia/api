@@ -69,9 +69,9 @@ class ObservationsSelect extends StatelessWidget {
                   ),
                   child: TextField(
                     controller: _observationText,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     onSubmitted: (value) {
-                      findObservation(int.tryParse(_observationText.text)!);
+                      // findObservation(int.tryParse(_observationText.text)!);
                       Navigator.of(context).pop();
                     },
                     decoration: const InputDecoration(
@@ -87,7 +87,7 @@ class ObservationsSelect extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    findObservation(int.tryParse(_observationText.text)!);
+                    //findObservation(int.tryParse(_observationText.text)!);
                     Navigator.of(context).pop();
                   },
                   child: Container(

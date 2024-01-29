@@ -19,7 +19,7 @@ class RemoteProdutoDataSourceImpl implements IRemoteProdutoDataSource {
   Future<List<ProdutoModel>> getProdutos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Produto"),
+        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/produto"),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',

@@ -52,9 +52,9 @@ class CustomDashBoardCounter extends StatelessWidget {
               color: Color.fromARGB(255, 121, 118, 118),
               fontSize: 24,
               fontFamily: 'Inter',
-              fontWeight: FontWeight.w700,           
+              fontWeight: FontWeight.w700,
             ),
-          ),         
+          ),
           Flexible(
             flex: 1,
             child: Text(

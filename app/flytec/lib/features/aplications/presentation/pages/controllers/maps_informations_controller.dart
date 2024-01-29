@@ -10,11 +10,9 @@ class MapsInformationsControllerBrazil implements MapsInformationsController {
 
   @override
   List<String> get getStatesBrazil => _controllerMapStates.statesBrazil;
-  
 
   @override
   List<String> obtainCitiesFromStateBrazil(String uf) {
     return _controllerMapStates.getCitiesByState(uf);
-  
   }
 }

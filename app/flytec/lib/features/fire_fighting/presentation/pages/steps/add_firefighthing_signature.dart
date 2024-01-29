@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signature/signature.dart';
-
-import 'dart:typed_data';
-
 
 class AddFireFightingSignatureStep extends StatefulWidget {
   const AddFireFightingSignatureStep({super.key});
@@ -30,12 +30,18 @@ class _AddFireFightingSecondStepState
   void initState() {
     super.initState();
     _controller.addListener(() => log('Value changed'));
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   @override
   void dispose() {
     // IMPORTANT to dispose of the controller
     _controller.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     super.dispose();
   }
 
@@ -69,7 +75,6 @@ class _AddFireFightingSecondStepState
       );
       return;
     }
-
 
     if (!mounted) return;
   }
@@ -191,7 +196,6 @@ class _AddFireFightingSecondStepState
                   ),
                 ),
               ),
-              
             ],
           ),
         ),
