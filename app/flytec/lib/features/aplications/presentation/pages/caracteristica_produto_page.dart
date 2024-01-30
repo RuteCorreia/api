@@ -8,7 +8,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/aplications/presentation/pages/add_contratante_page.dart';
-import 'package:flytec/features/aplications/presentation/pages/croquis_area/croquis_area_page.dart';
+import 'package:flytec/features/aplications/presentation/pages/upload_fotos.dart';
 import 'package:flytec/features/aplications/presentation/widgets/biologic_target_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/classe_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/culture_select.dart';
@@ -205,7 +205,10 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => UplodadFotos(
+                          builder: (context) => UploadFotos(
+                                onOkButton: () {
+                                  context.pop();
+                                },
                                 updateImagePathMap: (path) {
                                   _imageMapsPath = path;
                                   setState(() {});
