@@ -206,14 +206,18 @@ class _IdentificacaoAreaTratamentoState
                                     .toList(),
                                 value: _cityOfUf,
                                 onChanged: (value) {
-                                  setState(() {
-                                    _cityOfUf = value!;
+                                  _cityOfUf = value!;
+                                  setState(() {});
+                                  if (getIt<ReportCacheService>()
+                                      .reportList
+                                      .isNotEmpty) {
                                     getIt<ReportCacheService>()
                                         .reportList
                                         .last
                                         .areaTratada!
                                         .uf = _cityOfUf;
-                                  });
+                                    setState(() {});
+                                  }
                                 },
                                 buttonStyleData: ButtonStyleData(
                                   padding: const EdgeInsets.symmetric(
