@@ -618,35 +618,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                     ]),
                 pw.Divider(height: 1, thickness: 1.5),
-                pw.Row(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Container(
-                          width: 345,
-                          height: 25,
-                          padding: const pw.EdgeInsets.only(left: 5, top: 2),
-                          alignment: pw.Alignment.topLeft,
-                          decoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                              right: pw.BorderSide(
-                                  width: 1.5, color: PdfColors.black),
-                            ),
-                          ),
-                          child: pw.Text(
-                              'Regulagem Equip. Aplicação ${relatorioModel.recomendacoesTecnicas!.equipamento} ${relatorioModel.recomendacoesTecnicas!.angulo}',
-                              textAlign: pw.TextAlign.left,
-                              style:
-                                  pw.TextStyle(fontSize: 12, font: newRoman))),
-                      pw.Container(
-                          width: 200,
-                          height: 25,
-                          padding: const pw.EdgeInsets.only(left: 5, top: 2),
-                          alignment: pw.Alignment.topLeft,
-                          child: pw.Text('Outros',
-                              textAlign: pw.TextAlign.left,
-                              style:
-                                  pw.TextStyle(fontSize: 12, font: newRoman))),
-                    ]),
+                pw.Container(
+                    height: 25,
+                    padding: const pw.EdgeInsets.only(left: 5, top: 2),
+                    alignment: pw.Alignment.topLeft,
+                    child: pw.Text('Regulagem Equip. Aplicação / Outros',
+                        textAlign: pw.TextAlign.left,
+                        style: pw.TextStyle(fontSize: 12, font: newRoman))),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
                     height: 50,
