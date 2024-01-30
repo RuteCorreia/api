@@ -633,7 +633,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
                         pw.Container(
-                            width: 320,
+                            width: 300,
                             padding:
                                 const pw.EdgeInsets.only(left: 5, bottom: 5),
                             alignment: pw.Alignment.bottomCenter,
@@ -658,10 +658,11 @@ class ReportAplicationsGenerate implements PdfGenerator {
                               ],
                             )),
                         pw.SizedBox(
-                            width: 80,
+                            width: 150,
                             child: pw.Text(
                                 ' ${relatorioModel.areaTratada!.cidade} ${relatorioModel.areaTratada!.uf},  ${relatorioModel.dadosDoResponsavel!.data} ',
                                 textAlign: pw.TextAlign.left,
+                                maxLines: 1,
                                 style: pw.TextStyle(
                                     fontSize: 12, font: newRoman))),
                         /* pw.SizedBox(
