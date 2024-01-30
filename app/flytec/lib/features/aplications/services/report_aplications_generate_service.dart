@@ -1375,7 +1375,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
                                 pw.Text(
-                                    'RG ${relatorioModel.dadosDoResponsavel!.cpf}',
+                                    'DOCUMENTO ${relatorioModel.dadosDoResponsavel!.cpf}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
