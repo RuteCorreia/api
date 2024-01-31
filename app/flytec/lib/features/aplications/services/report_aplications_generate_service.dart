@@ -639,15 +639,11 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 const pw.EdgeInsets.only(left: 5, bottom: 5),
                             alignment: pw.Alignment.bottomCenter,
                             child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.end,
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
                                 pw.Text(" ${relatorioModel.executor}"),
-                                pw.Text(
-                                    '_____________________________________________________________',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 11, font: newRoman)),
+                                pw.Divider(height: 0.5, thickness: 1.0),
                                 pw.Text('Executor',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
@@ -658,14 +654,17 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                         fontSize: 8, font: newRoman)),
                               ],
                             )),
-                        pw.SizedBox(
-                            width: 150,
+                        pw.Container(
+                            padding:
+                                const pw.EdgeInsets.only(right: 5, bottom: 5),
+                            width: 180,
                             child: pw.Text(
                                 ' ${relatorioModel.areaTratada!.cidade} ${relatorioModel.areaTratada!.uf},  ${relatorioModel.dadosDoResponsavel!.data} ',
-                                textAlign: pw.TextAlign.left,
+                                textAlign: pw.TextAlign.right,
                                 maxLines: 1,
                                 style: pw.TextStyle(
                                     fontSize: 12, font: newRoman))),
+
                         /* pw.SizedBox(
                             width: 80,
                             child: pw.Text('de',
