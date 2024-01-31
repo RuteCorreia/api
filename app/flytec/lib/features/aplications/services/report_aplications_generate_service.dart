@@ -622,7 +622,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     height: 25,
                     padding: const pw.EdgeInsets.only(left: 5, top: 2),
                     alignment: pw.Alignment.topLeft,
-                    child: pw.Text('Regulagem Equip. Aplicação / Outros',
+                    child: pw.Text(
+                        'Regulagem Equip. Aplicação ${relatorioModel.recomendacoesTecnicas?.equipamento} ${relatorioModel.recomendacoesTecnicas?.angulo}',
                         textAlign: pw.TextAlign.left,
                         style: pw.TextStyle(fontSize: 12, font: newRoman))),
                 pw.Divider(height: 1, thickness: 1.5),
