@@ -695,7 +695,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           ),
                           alignment: pw.Alignment.center,
                           child: pw.Text(
-                              'Cultura ${relatorioModel.areaTratada!.cultura}',
+                              'Cultura',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
