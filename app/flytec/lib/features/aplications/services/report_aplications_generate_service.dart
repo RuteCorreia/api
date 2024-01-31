@@ -771,6 +771,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 75,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.relatorioDeAplicacao!.cultura}"),
                         decoration: const pw.BoxDecoration(
@@ -783,6 +784,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 120,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.relatorioDeAplicacao!.produtoAplicado}"),
                         decoration: const pw.BoxDecoration(
@@ -797,6 +799,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 100,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.relatorioDeAplicacao!.dosagem} ${relatorioModel.relatorioDeAplicacao!.unidadeDosagem}"),
                         decoration: const pw.BoxDecoration(
@@ -811,8 +814,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 80,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.unidadeDosagem}"),
+                            " ${relatorioModel.relatorioDeAplicacao!.volumeDeAplicacao} ${relatorioModel.relatorioDeAplicacao!.unidadeVolume}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -825,8 +829,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 80,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
-                            "${relatorioModel.relatorioDeAplicacao!.densidade}",
+                            " ${relatorioModel.relatorioDeAplicacao!.densidade}",
                             style: const pw.TextStyle(
                               fontSize: 9,
                             )),
@@ -842,6 +847,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 120,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.relatorioDeAplicacao!.totalAreaAplicada}"),
                         decoration: const pw.BoxDecoration(
