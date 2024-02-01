@@ -162,7 +162,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Nome ${relatorioModel.cliente!.nome} ',
+                              'Nome ${relatorioModel.cliente?.nome} ',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -185,7 +185,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'CNPJ/CPF  ${relatorioModel.cliente!.cpf}',
+                                      'CNPJ/CPF  ${relatorioModel.cliente?.cpf}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -212,7 +212,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Endereço: ${relatorioModel.cliente!.uf}',
+                              'Endereço: ${relatorioModel.cliente?.uf}',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -230,7 +230,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10, top: 2),
                             child: pw.Text(
-                                'Município/UF ${relatorioModel.cliente!.endereco} ',
+                                'Município/UF ${relatorioModel.cliente?.endereco} ',
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
@@ -251,7 +251,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Localização: ${relatorioModel.areaTratada!.localizacao}',
+                              'Localização: ${relatorioModel.areaTratada?.localizacao}',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -270,7 +270,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10, top: 2),
                             child: pw.Text(
-                                'Cultura: ${relatorioModel.areaTratada!.cultura}',
+                                'Cultura: ${relatorioModel.areaTratada?.cultura}',
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
@@ -293,7 +293,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   padding: const pw.EdgeInsets.only(
                                       left: 10, top: 2),
                                   child: pw.Text(
-                                      'Extensão (Ha) ${relatorioModel.areaTratada!.extensao}',
+                                      'Extensão (Ha) ${relatorioModel.areaTratada?.extensao}',
                                       style: pw.TextStyle(
                                           fontSize: 11, font: newRoman)),
                                 ),
@@ -394,7 +394,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     children: [
                       pw.Container(
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.nomeProduto}",
+                            " ${relatorioModel.carateristicaProduto?.nomeProduto}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         height: 25,
                         width: 115,
@@ -409,7 +409,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.classificacaoToxicologica}",
+                            " ${relatorioModel.carateristicaProduto?.classificacaoToxicologica}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -424,7 +424,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 120,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.tipoServico}",
+                            " ${relatorioModel.carateristicaProduto?.tipoServico}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -439,7 +439,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 100,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.tipoFormulacao}",
+                            " ${relatorioModel.carateristicaProduto?.tipoFormulacao}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -454,7 +454,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.dosePorHectare} ${relatorioModel.carateristicaProduto!.unidadeHectare}",
+                            " ${relatorioModel.carateristicaProduto?.dosePorHectare} ${relatorioModel.carateristicaProduto?.unidadeHectare}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -469,7 +469,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.adjuvante}",
+                            " ${relatorioModel.carateristicaProduto?.adjuvante}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -501,7 +501,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Veiculante: ${relatorioModel.recomendacoesTecnicas!.veiculante}',
+                              'Veiculante: ${relatorioModel.recomendacoesTecnicas?.veiculante}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -517,7 +517,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Vazão ${relatorioModel.recomendacoesTecnicas!.volumeDaAplicacao} ${relatorioModel.recomendacoesTecnicas!.unidadeVolume}',
+                              'Vazão ${relatorioModel.recomendacoesTecnicas?.volumeDaAplicacao} ${relatorioModel.recomendacoesTecnicas?.unidadeVolume}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -527,7 +527,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           child: pw.Text(
-                              'Largura Faixa  ${relatorioModel.recomendacoesTecnicas!.larguraDaFaixa}',
+                              'Largura Faixa  ${relatorioModel.recomendacoesTecnicas?.larguraDaFaixa}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -548,7 +548,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Aeronave  ${relatorioModel.recomendacoesTecnicas!.aeronave}',
+                              'Aeronave  ${relatorioModel.recomendacoesTecnicas?.aeronave}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -564,7 +564,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Altura Vôo  ${relatorioModel.recomendacoesTecnicas!.alturaDoVoo}',
+                              'Altura Vôo  ${relatorioModel.recomendacoesTecnicas?.alturaDoVoo}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -580,7 +580,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Temp. C°  ${relatorioModel.recomendacoesTecnicas!.temperatura}',
+                              'Temp. C°  ${relatorioModel.recomendacoesTecnicas?.temperatura}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -596,7 +596,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'U.R% do Ar  ${relatorioModel.recomendacoesTecnicas!.umidadeRelativaDoAr}',
+                              'U.R% do Ar  ${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -612,7 +612,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Veloc. Vento  ${relatorioModel.recomendacoesTecnicas!.velocidadeDoVento}',
+                              'Veloc. Vento  ${relatorioModel.recomendacoesTecnicas?.velocidadeDoVento}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -659,7 +659,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 const pw.EdgeInsets.only(right: 5, bottom: 5),
                             width: 180,
                             child: pw.Text(
-                                ' ${relatorioModel.areaTratada!.cidade} ${relatorioModel.areaTratada!.uf},  ${relatorioModel.dadosDoResponsavel!.data} ',
+                                ' ${relatorioModel.areaTratada?.cidade} ${relatorioModel.areaTratada?.uf},  ${relatorioModel.dadosDoResponsavel?.data} ',
                                 textAlign: pw.TextAlign.right,
                                 maxLines: 1,
                                 style: pw.TextStyle(
@@ -773,7 +773,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 75,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.cultura}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.cultura}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             right: pw.BorderSide(
@@ -786,7 +786,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.produtoAplicado}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.produtoAplicado}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -801,7 +801,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 100,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.dosagem} ${relatorioModel.relatorioDeAplicacao!.unidadeDosagem}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.dosagem} ${relatorioModel.relatorioDeAplicacao?.unidadeDosagem}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -816,7 +816,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.volumeDeAplicacao} ${relatorioModel.relatorioDeAplicacao!.unidadeVolume}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.volumeDeAplicacao} ${relatorioModel.relatorioDeAplicacao?.unidadeVolume}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -831,7 +831,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.densidade}",
+                            " ${relatorioModel.relatorioDeAplicacao?.densidade}",
                             style: const pw.TextStyle(
                               fontSize: 9,
                             )),
@@ -849,7 +849,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.totalAreaAplicada}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -983,7 +983,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 100,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.dataDaAplicacao}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -995,7 +995,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horarioDeInicio}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeInicio}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1007,7 +1007,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horarioDeTermino}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeTermino}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1019,7 +1019,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.temperaturaIncial}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.temperaturaIncial}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1031,7 +1031,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 95,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.umidadeRelativaInicial}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.umidadeRelativaInicial}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1043,7 +1043,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 125,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.ventoInicial}"),
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.ventoInicial}"),
                     ),
                   ]),
                   pw.Divider(height: 1, thickness: 1.5),
@@ -1175,7 +1175,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${relatorioModel.relatorioDeAplicacao!.localizacaoPista}',
+                        'Localização da Pista:  ${relatorioModel.relatorioDeAplicacao?.localizacaoPista}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1203,7 +1203,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Inicial: ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horimetroInicial}',
+                        'Inicial: ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horimetroInicial}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1212,7 +1212,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Final:  ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horimetroFinal}',
+                        'Final:  ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horimetroFinal}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
@@ -1230,7 +1230,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     alignment: pw.Alignment.centerLeft,
                     padding: const pw.EdgeInsets.only(left: 2),
                     child: pw.Text(
-                        'Alterações do Planejamento: ${relatorioModel.relatorioDeAplicacao!.observacoes}',
+                        'Alterações do Planejamento: ${relatorioModel.relatorioDeAplicacao?.observacoes}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1282,7 +1282,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   height: 20,
                                   alignment: pw.Alignment.bottomCenter,
                                   child: pw.Text(
-                                      'Preço Ha: ${relatorioModel.contratoServico!.preco!}',
+                                      'Preço Ha: ${relatorioModel.contratoServico?.preco!}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -1290,7 +1290,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   height: 20,
                                   alignment: pw.Alignment.bottomCenter,
                                   child: pw.Text(
-                                      'Valor Total: ${relatorioModel.contratoServico!.valorTotal!}',
+                                      'Valor Total: ${relatorioModel.contratoServico?.valorTotal!}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -1306,7 +1306,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     height: 20,
                                     alignment: pw.Alignment.bottomCenter,
                                     child: pw.Text(
-                                        '${relatorioModel.contratoServico!.vencimento}',
+                                        '${relatorioModel.contratoServico?.vencimento}',
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -1338,7 +1338,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       const pw.EdgeInsets.only(left: 4.0, right: 4, top: 12),
                   alignment: pw.Alignment.centerRight,
                   child: pw.Text(
-                      '${relatorioModel.dadosDoResponsavel!.cidade} ${relatorioModel.dadosDoResponsavel!.uf}, ${relatorioModel.dadosDoResponsavel!.data!.split("/")[0]} de ${relatorioModel.dadosDoResponsavel!.data!.split("/")[1]} de ${relatorioModel.dadosDoResponsavel!.data!.split("/")[2]}',
+                      '${relatorioModel.dadosDoResponsavel?.cidade} ${relatorioModel.dadosDoResponsavel?.uf}, ${relatorioModel.dadosDoResponsavel?.data?.split("/")[0]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[1]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[2]}',
                       style: pw.TextStyle(fontSize: 11, font: newRoman)),
                 ),
                 pw.SizedBox(height: 12),
@@ -1352,7 +1352,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
                                 pw.Text(
-                                    '${relatorioModel.dadosDoResponsavel!.nomeCompleto}',
+                                    '${relatorioModel.dadosDoResponsavel?.nomeCompleto}',
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
                                 pw.Text('Contratante',
@@ -1360,7 +1360,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
                                 pw.Text(
-                                    'DOCUMENTO ${relatorioModel.dadosDoResponsavel!.cpf}',
+                                    'DOCUMENTO ${relatorioModel.dadosDoResponsavel?.cpf}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1562,7 +1562,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Nome ${relatorioModel.cliente!.nome} ',
+                              'Nome ${relatorioModel.cliente?.nome} ',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -1592,7 +1592,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   pw.Padding(
                                     padding: const pw.EdgeInsets.only(left: 10),
                                     child: pw.Text(
-                                        '${relatorioModel.cliente!.cpf}',
+                                        '${relatorioModel.cliente?.cpf}',
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -1631,7 +1631,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           width: 50,
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10, top: 2),
-                            child: pw.Text(' ${relatorioModel.cliente!.uf}',
+                            child: pw.Text(' ${relatorioModel.cliente?.uf}',
                                 style: pw.TextStyle(
                                     fontSize: 12,
                                     fontWeight: pw.FontWeight.bold,
@@ -1681,7 +1681,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                               padding:
                                   const pw.EdgeInsets.only(left: 10, top: 2),
                               child: pw.Text(
-                                  ' ${relatorioModel.areaTratada!.localizacao}',
+                                  ' ${relatorioModel.areaTratada?.localizacao}',
                                   style: pw.TextStyle(
                                       fontWeight: pw.FontWeight.bold,
                                       fontSize: 12,
@@ -1707,7 +1707,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     style: pw.TextStyle(
                                         fontSize: 12, font: newRoman)),
                                 pw.Text(
-                                    ' ${relatorioModel.areaTratada!.cultura}',
+                                    ' ${relatorioModel.areaTratada?.cultura}',
                                     style: pw.TextStyle(
                                         fontSize: 12,
                                         fontWeight: pw.FontWeight.bold,
@@ -1736,7 +1736,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                         style: pw.TextStyle(
                                             fontSize: 12, font: newRoman)),
                                     pw.Text(
-                                        '${relatorioModel.areaTratada!.extensao}',
+                                        '${relatorioModel.areaTratada?.extensao}',
                                         style: pw.TextStyle(
                                             fontSize: 12,
                                             font: newRomanBold,
@@ -1840,7 +1840,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     children: [
                       pw.Container(
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.nomeProduto}",
+                            " ${relatorioModel.carateristicaProduto?.nomeProduto}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1858,7 +1858,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.classe}",
+                            " ${relatorioModel.carateristicaProduto?.classe}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1876,7 +1876,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 120,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.tipoServico}",
+                            " ${relatorioModel.carateristicaProduto?.tipoServico}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1894,7 +1894,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 100,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.tipoFormulacao}",
+                            " ${relatorioModel.carateristicaProduto?.tipoFormulacao}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1912,7 +1912,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.unidadeHectare}",
+                            " ${relatorioModel.carateristicaProduto?.unidadeHectare}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1930,7 +1930,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.carateristicaProduto!.adjuvante}",
+                            " ${relatorioModel.carateristicaProduto?.adjuvante}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -1965,7 +1965,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Veiculante: ${relatorioModel.recomendacoesTecnicas!.veiculante}',
+                              'Veiculante: ${relatorioModel.recomendacoesTecnicas?.veiculante}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -1981,7 +1981,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Quant. Veic.  ${relatorioModel.recomendacoesTecnicas!.qtdVeiculante}',
+                              'Quant. Veic.  ${relatorioModel.recomendacoesTecnicas?.qtdVeiculante}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -1997,7 +1997,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Vazão L/Ha: ${relatorioModel.recomendacoesTecnicas!.volumeDaAplicacao}',
+                              'Vazão L/Ha: ${relatorioModel.recomendacoesTecnicas?.volumeDaAplicacao}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -2007,7 +2007,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           child: pw.Text(
-                              'Largura Faixa  ${relatorioModel.recomendacoesTecnicas!.larguraDaFaixa}',
+                              'Largura Faixa  ${relatorioModel.recomendacoesTecnicas?.larguraDaFaixa}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -2033,7 +2033,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                             pw.Text(
-                                ' ${relatorioModel.recomendacoesTecnicas!.aeronave}',
+                                ' ${relatorioModel.recomendacoesTecnicas?.aeronave}',
                                 textAlign: pw.TextAlign.left,
                                 style: pw.TextStyle(
                                   fontSize: 12,
@@ -2054,12 +2054,12 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           ),
                           child: pw.Row(children: [
                             pw.Text(
-                                'Altura Vôo  ${relatorioModel.recomendacoesTecnicas!.alturaDoVoo}',
+                                'Altura Vôo  ${relatorioModel.recomendacoesTecnicas?.alturaDoVoo}',
                                 textAlign: pw.TextAlign.left,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                             pw.Text(
-                                ' ${relatorioModel.recomendacoesTecnicas!.alturaDoVoo}',
+                                ' ${relatorioModel.recomendacoesTecnicas?.alturaDoVoo}',
                                 textAlign: pw.TextAlign.left,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman))
@@ -2076,7 +2076,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Temp. C°  ${relatorioModel.recomendacoesTecnicas!.temperatura}',
+                              'Temp. C°  ${relatorioModel.recomendacoesTecnicas?.temperatura}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -2092,7 +2092,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'U.R% do Ar  ${relatorioModel.recomendacoesTecnicas!.umidadeRelativaDoAr}',
+                              'U.R% do Ar  ${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -2108,7 +2108,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Veloc. Vento  ${relatorioModel.recomendacoesTecnicas!.velocidadeDoVento}',
+                              'Veloc. Vento  ${relatorioModel.recomendacoesTecnicas?.velocidadeDoVento}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -2286,7 +2286,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 75,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.cultura}",
+                            " ${relatorioModel.relatorioDeAplicacao?.cultura}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -2302,7 +2302,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 120,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.produtoAplicado}",
+                            " ${relatorioModel.relatorioDeAplicacao?.produtoAplicado}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -2320,7 +2320,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 100,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.dosagem}",
+                            " ${relatorioModel.relatorioDeAplicacao?.dosagem}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -2338,7 +2338,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 80,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.unidadeDosagem}",
+                            " ${relatorioModel.relatorioDeAplicacao?.unidadeDosagem}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -2368,7 +2368,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         height: 25,
                         width: 120,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao!.totalAreaAplicada}",
+                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}",
                             style: pw.TextStyle(
                                 fontWeight: pw.FontWeight.bold,
                                 fontSize: 12,
@@ -2506,7 +2506,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 100,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.dataDaAplicacao}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2522,7 +2522,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horarioDeInicio}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeInicio}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2538,7 +2538,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horarioDeTermino}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeTermino}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2554,7 +2554,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 85,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.temperaturaIncial}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.temperaturaIncial}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2570,7 +2570,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 95,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.umidadeRelativaInicial}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.umidadeRelativaInicial}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2586,7 +2586,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       height: 15,
                       width: 125,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.ventoInicial}",
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.ventoInicial}",
                           style: pw.TextStyle(
                               fontWeight: pw.FontWeight.bold,
                               fontSize: 12,
@@ -2725,7 +2725,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Text('Localização da Pista: ',
                           style: pw.TextStyle(fontSize: 12, font: newRoman)),
                       pw.Text(
-                          '${relatorioModel.relatorioDeAplicacao!.localizacaoPista}',
+                          '${relatorioModel.relatorioDeAplicacao?.localizacaoPista}',
                           style: pw.TextStyle(
                               fontSize: 12,
                               fontWeight: pw.FontWeight.bold,
@@ -2760,7 +2760,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Text('Inicial: ',
                           style: pw.TextStyle(fontSize: 12, font: newRoman)),
                       pw.Text(
-                          '${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horimetroInicial}',
+                          '${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horimetroInicial}',
                           style: pw.TextStyle(
                               fontSize: 12,
                               fontWeight: pw.FontWeight.bold,
@@ -2776,7 +2776,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Text('Final:',
                           style: pw.TextStyle(fontSize: 12, font: newRoman)),
                       pw.Text(
-                        ' ${relatorioModel.relatorioDeAplicacao!.aplicacoes!.horimetroFinal}',
+                        ' ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horimetroFinal}',
                         style: pw.TextStyle(
                           fontSize: 12,
                           fontWeight: pw.FontWeight.bold,
@@ -2855,7 +2855,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                         style: pw.TextStyle(
                                             fontSize: 12, font: newRoman)),
                                     pw.Text(
-                                        ' ${relatorioModel.contratoServico!.preco!}',
+                                        ' ${relatorioModel.contratoServico?.preco!}',
                                         style: pw.TextStyle(
                                             fontSize: 12,
                                             fontWeight: pw.FontWeight.bold,
@@ -2870,7 +2870,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                         style: pw.TextStyle(
                                             fontSize: 12, font: newRoman)),
                                     pw.Text(
-                                        ' ${relatorioModel.contratoServico!.valorTotal!}',
+                                        ' ${relatorioModel.contratoServico?.valorTotal!}',
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -2889,7 +2889,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     height: 20,
                                     alignment: pw.Alignment.bottomCenter,
                                     child: pw.Text(
-                                        '${relatorioModel.contratoServico!.vencimento}',
+                                        '${relatorioModel.contratoServico?.vencimento}',
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -2921,7 +2921,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       const pw.EdgeInsets.only(left: 4.0, right: 4, top: 12),
                   alignment: pw.Alignment.centerRight,
                   child: pw.Text(
-                      '${relatorioModel.dadosDoResponsavel!.cidade} ${relatorioModel.dadosDoResponsavel!.uf}, ${relatorioModel.dadosDoResponsavel!.data}  de ______________ de ______',
+                      '${relatorioModel.dadosDoResponsavel?.cidade} ${relatorioModel.dadosDoResponsavel?.uf}, ${relatorioModel.dadosDoResponsavel?.data}  de ______________ de ______',
                       style: pw.TextStyle(fontSize: 11, font: newRoman)),
                 ),
                 pw.SizedBox(height: 12),
@@ -2942,7 +2942,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
                                 pw.Text(
-                                    'RG ${relatorioModel.dadosDoResponsavel!.cpf}',
+                                    'RG ${relatorioModel.dadosDoResponsavel?.cpf}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),

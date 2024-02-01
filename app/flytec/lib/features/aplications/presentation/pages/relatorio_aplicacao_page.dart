@@ -41,7 +41,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   final List<String> _observations = [];
   final List<int> _observationsIndex = [];
   final TextEditingController _observationTextField = TextEditingController();
-  final String _selectedObservation = "Selecione";
   String _selectedLog = "Selecione";
 
   String produtoSelecionado = "";
@@ -112,7 +111,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         unidadeVolume: _volumeUnidade == VolumeUnidade.KG ? "Kg/ha" : "L/ha",
         unidadeDosagem: getDosagemUnidade(dosagemUnidade: _dosagemUnidade),
       );
-
+      setState(() {});
       Util.toastSucesso("Dados salvo com sucesso");
       return true;
     }
@@ -165,10 +164,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           content: SizedBox(
                             width: double.maxFinite,
                             child: CultureSelect(onChanged: (value) {
-                              setState(() {
-                                getIt<GlobalConfigVars>().selectedCultura =
-                                    value;
-                              });
+                              getIt<GlobalConfigVars>().selectedCultura = value;
+                              setState(() {});
                               Util.closeKeyBoard();
                             }),
                           ));
@@ -246,6 +243,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           onChanged: (value) {
                             setState(() {
                               _dosagemUnidade = DosagemUnidade.ML;
+                              data!.unidadeDosagem = "ml/ha";
                             });
                           }),
                     ],
@@ -262,6 +260,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           onChanged: (value) {
                             setState(() {
                               _dosagemUnidade = DosagemUnidade.L;
+                              data!.unidadeDosagem = "L/ha";
                             });
                           }),
                     ],
@@ -278,6 +277,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           onChanged: (value) {
                             setState(() {
                               _dosagemUnidade = DosagemUnidade.G;
+                              data!.unidadeDosagem = "g/ha";
                             });
                           }),
                     ],
@@ -294,6 +294,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           onChanged: (value) {
                             setState(() {
                               _dosagemUnidade = DosagemUnidade.KG;
+                              data!.unidadeDosagem = "Kg/ha";
                             });
                           }),
                     ],
@@ -499,6 +500,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                         controller: _longitudeController,
                         onChanged: (value) {
                           data!.longitudeOeste = value;
+                          setState(() {});
                         },
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
