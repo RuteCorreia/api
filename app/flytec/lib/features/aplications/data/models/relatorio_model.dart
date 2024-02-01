@@ -193,6 +193,7 @@ class CarateristicaProduto {
   String? unidadeHectare;
   String? adjuvante;
   String? tipoServico;
+  String? pathImage;
 
   CarateristicaProduto({
     this.cultura,
@@ -205,6 +206,7 @@ class CarateristicaProduto {
     this.unidadeHectare,
     this.adjuvante,
     this.tipoServico,
+      this.pathImage
   });
 
   factory CarateristicaProduto.fromJson(Map<String, dynamic> json) =>
@@ -219,11 +221,13 @@ class CarateristicaProduto {
         unidadeHectare: json["unidadeHectare"] ?? "",
         adjuvante: json["adjuvante"] ?? "",
         tipoServico: json["tipoServico"] ?? "",
+          pathImage: json["pathImage"] ?? ""
       );
 
   Map<String, dynamic> toJson() => {
         "cultura": cultura,
         "nomeProduto": nomeProduto,
+        "pathImage": pathImage,
         "classificacaoToxicologica": classificacaoToxicologica,
         "classe": classe,
         "tipoFormulacao": tipoFormulacao,

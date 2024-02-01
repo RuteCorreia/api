@@ -66,6 +66,9 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
     dosePorHectarController.text = data.dosePorHectare!;
     _adjuvanteController.text = data.adjuvante!;
     _tipoServicoController.text = data.tipoServico!;
+    if (data.pathImage != null && data.pathImage!.isNotEmpty) {
+      _imageMapsPath = data.pathImage!;
+    }
     switch (data.unidadeHectare) {
       case "ML":
         _dosagemUnidade = DosagemUnidade.ML;
@@ -131,6 +134,9 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
     } else if (_tipoServicoController.text.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
       return false;
+    } else if (_imageMapsPath.isEmpty) {
+      Util.toastAlerta("Insira a imagem do receituário agronômico");
+      return false;
     } else {
       getIt<GlobalConfigVars>().reportList.last.carateristicaProduto =
           CarateristicaProduto(
@@ -141,6 +147,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               cultura: getIt<GlobalConfigVars>().selectedCultura,
               dosePorHectare: dosePorHectarController.text,
               nomeProduto: produtoSelecionado,
+              pathImage: _imageMapsPath,
               tipoFormulacao: tipoFormulacao,
               tipoServico: _tipoServicoController.text,
               unidadeHectare: getDosagemUnidade(unidade: _dosagemUnidade));

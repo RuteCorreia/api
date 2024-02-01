@@ -25,9 +25,17 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    final fileImage = File(relatorioModel.areaTratada?.pathImage ?? "");
-    final mapaImageAreaTratada =
-        await fileImage.exists() ? await fileImage.readAsBytes() : null;
+    final fileImageAreaTratada =
+        File(relatorioModel.areaTratada?.pathImage ?? "");
+    final mapaImageAreaTratada = await fileImageAreaTratada.exists()
+        ? await fileImageAreaTratada.readAsBytes()
+        : null;
+    final fileImageCarateristicaProduto =
+        File(relatorioModel.carateristicaProduto?.pathImage ?? "");
+    final mapaImageCarateristicaProduto =
+        await fileImageCarateristicaProduto.exists()
+            ? await fileImageCarateristicaProduto.readAsBytes()
+            : null;
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -1454,6 +1462,14 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
+                if (mapaImageCarateristicaProduto != null)
+                  pw.Container(
+                    alignment: pw.Alignment.center,
+                    margin: const pw.EdgeInsets.all(10),
+                    child: pw.Image(
+                        pw.MemoryImage(mapaImageCarateristicaProduto),
+                        fit: pw.BoxFit.fill),
+                  ),
               ]));
         }));
 

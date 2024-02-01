@@ -101,7 +101,7 @@ class _IdentificacaoAreaTratamentoState
     if (data.cultura!.isNotEmpty) {
       selectedCultura = data.cultura!;
     }
-    if (data.pathImage!.isNotEmpty) {
+    if (data.pathImage != null && data.pathImage!.isNotEmpty) {
       _imagePathMap = data.pathImage!;
     }
     //  _initWithidentifyAreaProcess();
@@ -468,7 +468,7 @@ class _IdentificacaoAreaTratamentoState
                     } else if (_extensaoController.text.isEmpty) {
                       Util.toastAlerta("Selecione a cultura");
                       return;
-                    } else if (_imagePathMap.isNotEmpty) {
+                    } else if (_imagePathMap.isEmpty) {
                       Util.toastAlerta("Selecione a imagem da área");
                       return;
                     } else {
