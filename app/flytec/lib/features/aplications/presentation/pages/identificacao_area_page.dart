@@ -101,6 +101,9 @@ class _IdentificacaoAreaTratamentoState
     if (data.cultura!.isNotEmpty) {
       selectedCultura = data.cultura!;
     }
+    if (data.pathImage!.isNotEmpty) {
+      _imagePathMap = data.pathImage!;
+    }
     //  _initWithidentifyAreaProcess();
   }
 
@@ -465,6 +468,9 @@ class _IdentificacaoAreaTratamentoState
                     } else if (_extensaoController.text.isEmpty) {
                       Util.toastAlerta("Selecione a cultura");
                       return;
+                    } else if (_imagePathMap.isNotEmpty) {
+                      Util.toastAlerta("Selecione a imagem da área");
+                      return;
                     } else {
                       Util.toastSucesso("Dados inseridos com sucesso!");
                       Navigator.pop(context);
@@ -475,8 +481,10 @@ class _IdentificacaoAreaTratamentoState
                         uf: _uf,
                         cultura: selectedCultura,
                         extensao: _extensaoController.text,
+                        pathImage: _imagePathMap,
                         localizacao: _localizacaoController.text,
                       );
+                      setState(() {});
                     }
                   },
                 ),

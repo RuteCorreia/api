@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:flytec/core/injections/get_it.dart';
@@ -16,6 +17,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
   @override
   Future<dynamic> generatePdf({parameters}) async {
     log(relatorioModel.contratoServico!.toJson().toString());
+    log(relatorioModel.areaTratada?.pathImage ?? '');
     final pdf = pw.Document();
     final newRoman = pw.Font.times();
     final newRomanBold = pw.Font.timesBold();
@@ -23,8 +25,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    final mapaImage =
-        (await rootBundle.load('assets/images/mapa.png')).buffer.asUint8List();
+    final fileImage = File(relatorioModel.areaTratada?.pathImage ?? "");
+    final mapaImageAreaTratada =
+        await fileImage.exists() ? await fileImage.readAsBytes() : null;
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -694,8 +697,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           alignment: pw.Alignment.center,
-                          child: pw.Text(
-                              'Cultura',
+                          child: pw.Text('Cultura',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
@@ -1428,14 +1430,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                pw.Container(
-                  alignment: pw.Alignment.center,
-                  decoration: pw.BoxDecoration(
-                      border:
-                          pw.Border.all(color: PdfColors.black, width: 1.5)),
-                  child: pw.Image(pw.MemoryImage(mapaImage),
-                      fit: pw.BoxFit.contain),
-                ),
+                if (mapaImageAreaTratada != null)
+                  pw.Container(
+                    alignment: pw.Alignment.center,
+                    margin: const pw.EdgeInsets.all(10),
+                    child: pw.Image(pw.MemoryImage(mapaImageAreaTratada),
+                        fit: pw.BoxFit.fill),
+                  ),
               ]));
         }));
     pdf.addPage(pw.Page(
