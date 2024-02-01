@@ -152,6 +152,7 @@ class AreaTratada {
   String? localizacao;
   String? cultura;
   String? extensao;
+  String? pathImage;
 
   AreaTratada({
     this.uf,
@@ -159,6 +160,7 @@ class AreaTratada {
     this.localizacao,
     this.cultura,
     this.extensao,
+      this.pathImage
   });
 
   factory AreaTratada.fromJson(Map<String, dynamic> json) => AreaTratada(
@@ -167,6 +169,7 @@ class AreaTratada {
         localizacao: json["localizacao"] ?? "",
         cultura: json["cultura"] ?? "",
         extensao: json["extensao"] ?? "",
+      pathImage: json["pathImage"] ?? ""
       );
 
   Map<String, dynamic> toJson() => {
@@ -175,6 +178,7 @@ class AreaTratada {
         "localizacao": localizacao,
         "cultura": cultura,
         "extensao": extensao,
+        "pathImage": pathImage,
       };
 }
 
