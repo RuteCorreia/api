@@ -56,6 +56,9 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
     } else if (_humiditySelectedFinal.isEmpty) {
       Util.toastAlerta("Selecione a velocidade do vento final");
       return false;
+    } else if (_imageMapsPath.isEmpty) {
+      Util.toastAlerta("Adicione a imagem de condições climáticas");
+      return false;
     } else {
       Util.toastSucesso("  Dados inseridos com sucesso");
       getIt<GlobalConfigVars>()
@@ -73,9 +76,10 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
         umidadeRelativaInicial: _humiditySelectedInitial,
         umidadeRelativaFinal: _humiditySelectedFinal,
         horimetroInicial: _horimetroInicial.text,
+        pathImage: _imageMapsPath,
         horimetroFinal: _horimetroFinal.text,
       );
-
+      setState(() {});
       context.pop();
       return true;
     }

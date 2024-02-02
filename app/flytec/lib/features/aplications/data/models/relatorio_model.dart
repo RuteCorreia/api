@@ -523,6 +523,7 @@ class Aplicacoes {
   String? umidadeRelativaFinal;
   String? ventoInicial;
   String? ventoFinal;
+  String? pathImage;
 
   Aplicacoes({
     this.dataDaAplicacao,
@@ -536,6 +537,7 @@ class Aplicacoes {
     this.umidadeRelativaFinal,
     this.ventoInicial,
     this.ventoFinal,
+      this.pathImage
   });
 
   factory Aplicacoes.fromJson(Map<String, dynamic> json) => Aplicacoes(
@@ -550,6 +552,7 @@ class Aplicacoes {
         umidadeRelativaFinal: json["umidadeRelativaFinal"] ?? "",
         ventoInicial: json["ventoInicial"] ?? "",
         ventoFinal: json["ventoFinal"] ?? "",
+      pathImage: json["pathImage"] ?? ""
       );
 
   Map<String, dynamic> toJson() => {
@@ -564,5 +567,6 @@ class Aplicacoes {
         "umidadeRelativaFinal": umidadeRelativaFinal,
         "ventoInicial": ventoInicial,
         "ventoFinal": ventoFinal,
+        "pathImage": pathImage,
       };
 }
