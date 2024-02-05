@@ -124,7 +124,10 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'addcontratante',
           builder: (BuildContext context, GoRouterState state) {
-            return const AddContratante();
+            final extra = state.extra as Map<String, dynamic>;
+            return AddContratante(
+              onAddContratante: extra['onAddContratante'],
+            );
           },
         ),
         // GoRoute(
