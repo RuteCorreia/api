@@ -7,7 +7,6 @@ import 'package:flytec/features/aplications/data/datasource/clientes_datasource.
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 
 class AddContratante extends StatefulWidget {
@@ -543,12 +542,9 @@ class _AddContratanteState extends State<AddContratante> {
                           });
                           if (isSucess) {
                             Util.toastSucesso("Cliente registado");
-                            getIt<GlobalConfigVars>().clientes = [];
-                            setState(() {});
                             await getIt<ClienteDataSourceImpl>()
                                 .getClients()
                                 .then((value) {
-                              setState(() {});
                               widget.onAddContratante!();
                               context.pop();
                             });
@@ -593,12 +589,9 @@ class _AddContratanteState extends State<AddContratante> {
                           });
                           if (isSucess) {
                             Util.toastSucesso("Cliente registado");
-                            getIt<GlobalConfigVars>().clientes = [];
-                            setState(() {});
                             await getIt<ClienteDataSourceImpl>()
                                 .getClients()
                                 .then((value) {
-                              setState(() {});
                               widget.onAddContratante!();
                               context.pop();
                             });
