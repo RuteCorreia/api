@@ -41,6 +41,8 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
     super.dispose();
   }
 
+  void _onAddContratante() => setState(() {});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -143,7 +145,8 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push("/addcontratante");
+          context.push("/addcontratante",
+              extra: {"onAddContratante": _onAddContratante});
         },
         child: const Icon(
           Icons.add,
@@ -154,6 +157,7 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
   }
 }
 
+// ignore: must_be_immutable
 class CustomClientCard extends StatefulWidget {
   CustomClientCard({super.key, required this.title, this.isSelected = false});
   final String? title;

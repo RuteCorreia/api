@@ -7,11 +7,11 @@ import 'package:flytec/features/aplications/data/datasource/clientes_datasource.
 import 'package:flytec/features/aplications/presentation/pages/controllers/maps_informations_controller.dart';
 import 'package:go_router/go_router.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 
 class AddContratante extends StatefulWidget {
-  const AddContratante({super.key});
+  final VoidCallback? onAddContratante;
+  const AddContratante({super.key, required this.onAddContratante});
 
   @override
   State<AddContratante> createState() => _AddContratanteState();
@@ -54,6 +54,9 @@ class _AddContratanteState extends State<AddContratante> {
     super.initState();
     _obtainStatesOfBrazil();
     _obtainCitiesOfUfBrazil('SP');
+    if (!mounted) {
+      widget.onAddContratante!();
+    }
   }
 
   final TextEditingController _citySearchControllerJuridica =
@@ -542,6 +545,7 @@ class _AddContratanteState extends State<AddContratante> {
                             await getIt<ClienteDataSourceImpl>()
                                 .getClients()
                                 .then((value) {
+                              widget.onAddContratante!();
                               context.pop();
                             });
                           } else {
@@ -588,6 +592,7 @@ class _AddContratanteState extends State<AddContratante> {
                             await getIt<ClienteDataSourceImpl>()
                                 .getClients()
                                 .then((value) {
+                              widget.onAddContratante!();
                               context.pop();
                             });
                           } else {
