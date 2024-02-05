@@ -130,6 +130,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
     _latitudeController.text = data.latitudeSul!;
     _observationTextField.text = data.observacoes!;
     selectedPista = data.localizacaoPista!;
+    if (getIt<GlobalConfigVars>().selectedCultura.isNotEmpty) {
+      data.cultura = getIt<GlobalConfigVars>().selectedCultura;
+    }
   }
 
   @override
@@ -165,6 +168,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             width: double.maxFinite,
                             child: CultureSelect(onChanged: (value) {
                               getIt<GlobalConfigVars>().selectedCultura = value;
+                              data!.cultura = value;
                               setState(() {});
                               Util.closeKeyBoard();
                             }),
@@ -319,6 +323,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 controller: _volumeAplicado,
                 onChanged: (value) {
                   data!.volumeDeAplicacao = value;
+                  setState(() {});
                 },
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
@@ -345,6 +350,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                         onChanged: (value) {
                           setState(() {
                             _volumeUnidade = VolumeUnidade.LH;
+                            data!.unidadeVolume = "L/ha";
                           });
                         }),
                   ],
@@ -361,6 +367,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           onChanged: (value) {
                             setState(() {
                               _volumeUnidade = VolumeUnidade.KG;
+                              data!.unidadeVolume = "Kg/ha";
                             });
                           }),
                     ],
