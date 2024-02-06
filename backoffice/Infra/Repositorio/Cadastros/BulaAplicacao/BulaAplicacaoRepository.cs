@@ -47,7 +47,7 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
             return obj;
         }
 
-        public async Task<List<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id)
         {
             var obj = _contextBase.BulaAplicacao.Where(x => x.IdBula == id).ToList();
             return obj;

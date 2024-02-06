@@ -50,7 +50,7 @@ namespace Application.Application.Servicos.Cadastros.BulaAplicacao
             await _bulaRepository.DeleteAsync(id);
         }
 
-        public async Task<List<BulaAplicacaoViewModel>> GetByIdBulaAsync(int id)
+        public async Task<IEnumerable<BulaAplicacaoViewModel>> GetByIdBulaAsync(int id)
         {
             var obj = await _bulaRepository.GetByIdBulaAsync(id);
             return _mapper.Map<List<BulaAplicacaoViewModel>>(obj);

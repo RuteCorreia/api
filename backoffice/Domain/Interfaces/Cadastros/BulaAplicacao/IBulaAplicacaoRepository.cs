@@ -13,6 +13,6 @@ namespace Domain.Interfaces.Cadastros.BulaAplicacao
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Empresa.BulaAplicacao>> GetAllAsync();
         Task<Entidades.Cadastros.Empresa.BulaAplicacao> GetByIdAsync(int id);
-        Task<List<Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id);
+        Task<IEnumerable<Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id);
     }
 }

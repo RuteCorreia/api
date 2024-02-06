@@ -12,7 +12,7 @@ namespace Application.DTOs.Cadastros.BulaAplicacao.Interface
         Task<IEnumerable<BulaAplicacaoViewModel>> GetAllAsync();
 
         Task<BulaAplicacaoViewModel> GetByIdAsync(int id);
-        Task<List<BulaAplicacaoViewModel>> GetByIdBulaAsync(int id);
+        Task<IEnumerable<BulaAplicacaoViewModel>> GetByIdBulaAsync(int id);
 
         Task AddAsync(BulaAplicacaoViewModel obj);
 
