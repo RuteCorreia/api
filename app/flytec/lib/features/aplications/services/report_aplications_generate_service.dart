@@ -41,7 +41,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final imageCondicoesClimaticas = await fileImageCondicoesClimaticas.exists()
         ? await fileImageCondicoesClimaticas.readAsBytes()
         : null;
-    
+    final fileImageAssinaturaContratante =
+        File(relatorioModel.dadosDoResponsavel?.assinatura ?? "");
+    final imageAssinaturaContratante =
+        await fileImageAssinaturaContratante.exists()
+            ? await fileImageAssinaturaContratante.readAsBytes()
+            : null;
+    log('fileImageAssinaturaContratante --> $fileImageAssinaturaContratante');
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -1349,7 +1355,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       style: pw.TextStyle(fontSize: 11, font: newRoman)),
                 ),
                 pw.Container(
-                  height: 15,
+                  height: 10,
                   margin:
                       const pw.EdgeInsets.only(left: 4.0, right: 4, top: 12),
                   alignment: pw.Alignment.centerRight,
@@ -1357,20 +1363,27 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       '${relatorioModel.dadosDoResponsavel?.cidade} ${relatorioModel.dadosDoResponsavel?.uf}, ${relatorioModel.dadosDoResponsavel?.data?.split("/")[0]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[1]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[2]}',
                       style: pw.TextStyle(fontSize: 11, font: newRoman)),
                 ),
-                pw.SizedBox(height: 12),
+                pw.SizedBox(height: 5),
                 pw.Padding(
-                    padding: const pw.EdgeInsets.symmetric(horizontal: 5),
+                    padding: const pw.EdgeInsets.symmetric(
+                        horizontal: 5, vertical: 1),
                     child: pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.end,
                         children: [
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text(
-                                    '${relatorioModel.dadosDoResponsavel?.nomeCompleto}',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
+                                if (imageAssinaturaContratante != null)
+                                  pw.Container(
+                                    height: 20,
+                                    width: 80,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          imageAssinaturaContratante,
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
                                 pw.Text('Contratante',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(

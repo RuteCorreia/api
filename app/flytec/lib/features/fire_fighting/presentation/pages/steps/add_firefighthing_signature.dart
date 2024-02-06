@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signature/signature.dart';
 
 class AddFireFightingSignatureStep extends StatefulWidget {
-  const AddFireFightingSignatureStep({super.key});
+  final void Function(Uint8List? signature) onUpdateSignature;
+  const AddFireFightingSignatureStep(
+      {super.key, required this.onUpdateSignature});
 
   @override
   State<AddFireFightingSignatureStep> createState() =>
@@ -61,7 +61,8 @@ class _AddFireFightingSecondStepState
     if (data == null) {
       return;
     }
-
+    log('AQUI');
+    widget.onUpdateSignature(data);
     if (!mounted) return;
   }
 
@@ -220,7 +221,8 @@ class _AddFireFightingSecondStepState
               IconButton(
                 icon: const Icon(Icons.check),
                 color: Colors.blue,
-                onPressed: () {
+                onPressed: () async {
+                  await exportImage(context);
                   context.pop();
                 },
                 tooltip: 'Ok',

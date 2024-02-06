@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +14,7 @@ import 'package:flytec/features/auth/presentation/widgets/custom_login_button.da
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../../core/injections/get_it.dart';
 import 'my_activity_page.dart';
@@ -49,18 +52,31 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
     setState(() {});
   }
 
+  late DadosDoResponsavel? _data;
+
+  void _onUpdateSignature(Uint8List? signature) async {
+    if (signature != null) {
+      final pathFile = await getApplicationCacheDirectory();
+      final file =
+          File("${pathFile.path}/signature_${_data?.nomeCompleto!}.png");
+      await file.writeAsBytes(signature);
+      _data?.assinatura = file.path;
+      setState(() {});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _obtainStatesOfBrazil();
     _obtainCitiesOfUfBrazil('SP');
-    var data = getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel;
-    _nome.text = data!.nomeCompleto!;
-    _cpf.text = data.cpf!;
-    _telefone.text = data.telefone!;
-    data.uf = _uf;
-    data.cidade = _cityOfUf;
-    data.data =
+    _data = getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel!;
+    _nome.text = _data!.nomeCompleto!;
+    _cpf.text = _data!.cpf!;
+    _telefone.text = _data!.telefone!;
+    _data!.uf = _uf;
+    _data!.cidade = _cityOfUf;
+    _data!.data =
         "${dataSelecionada!.day}/${dataSelecionada!.month}/${dataSelecionada!.year}";
   }
 
@@ -78,12 +94,15 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
     } else if (_telefone.text.isEmpty) {
       Util.toastAlerta("Insira o telefone");
       return false;
+    } else if (_data!.assinatura!.isEmpty) {
+      Util.toastAlerta("Insira a Assinatura");
+      return false;
     } else {
       Util.toastSucesso("Dados inseridos com sucesso");
       getIt<GlobalConfigVars>().reportList.last.finalizado = true;
       getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel =
           DadosDoResponsavel(
-              assinatura: "",
+              assinatura: _data?.assinatura,
               cidade: _cityOfUf,
               uf: _uf,
               cpf: _cpf.text,
@@ -140,13 +159,13 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
                   width: 350,
                   height: 45,
                   padding: const EdgeInsets.symmetric(horizontal: 6),
-                  child: const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CancelButton(),
-                      SizedBox(width: 5),
-                      OkButton(),
+                      const CancelButton(),
+                      const SizedBox(width: 5),
+                      OkButton(onUpdateSignature: _onUpdateSignature),
                     ],
                   ),
                 )
@@ -460,6 +479,17 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
                 OpenContrato();
               },
             ),
+            if (_data != null &&
+                _data!.assinatura != null &&
+                _data!.assinatura!.isNotEmpty)
+              Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                        image: FileImage(File(_data!.assinatura!)),
+                        fit: BoxFit.fill),
+                  )),
             Center(
               child: CustomButton(
                 title: "FINALIZAR",
@@ -476,8 +506,10 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
 }
 
 class OkButton extends StatelessWidget {
+  final Function(Uint8List signature) onUpdateSignature;
   const OkButton({
     super.key,
+    required this.onUpdateSignature,
   });
 
   @override
@@ -486,7 +518,8 @@ class OkButton extends StatelessWidget {
       child: InkWell(
         onTap: () {
           context.pop();
-          context.push("/addsignature");
+          context.push("/addsignature",
+              extra: {"onUpdateSignature": onUpdateSignature});
         },
         child: Container(
           height: 45,
