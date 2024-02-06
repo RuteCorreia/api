@@ -85,19 +85,19 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
   final TextEditingController _cpf = TextEditingController();
   final TextEditingController _telefone = TextEditingController();
   bool verifyFields() {
-    if (_nome.text.isEmpty) {
-      Util.toastAlerta("Insira o nome");
-      return false;
-    } else if (_cpf.text.isEmpty) {
-      Util.toastAlerta("Insira o cpf");
-      return false;
-    } else if (_telefone.text.isEmpty) {
-      Util.toastAlerta("Insira o telefone");
-      return false;
-    } else if (_data!.assinatura!.isEmpty) {
-      Util.toastAlerta("Insira a Assinatura");
-      return false;
-    } else {
+    // if (_nome.text.isEmpty) {
+    //   Util.toastAlerta("Insira o nome");
+    //   return false;
+    // } else if (_cpf.text.isEmpty) {
+    //   Util.toastAlerta("Insira o cpf");
+    //   return false;
+    // } else if (_telefone.text.isEmpty) {
+    //   Util.toastAlerta("Insira o telefone");
+    //   return false;
+    // } else if (_data!.assinatura!.isEmpty) {
+    //   Util.toastAlerta("Insira a Assinatura");
+    //   return false;
+    // } else {
       Util.toastSucesso("Dados inseridos com sucesso");
       getIt<GlobalConfigVars>().reportList.last.finalizado = true;
       getIt<GlobalConfigVars>().reportList.last.dadosDoResponsavel =
@@ -127,7 +127,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
       });
 
       return true;
-    }
+    // }
   }
 
   void OpenContrato() {
