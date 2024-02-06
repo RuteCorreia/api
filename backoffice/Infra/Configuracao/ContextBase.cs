@@ -59,6 +59,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<Cultura> Cultura { get; set; }
     public DbSet<Empresa> Empresa { get; set; }
     public DbSet<Bula> Bula { get; set; }
+    public DbSet<BulaAplicacao> BulaAplicacao { get; set; }
     public DbSet<PlanoDeContrato> PlanoDeContrato { get; set; }
     public DbSet<Engenheiro> Engenheiro { get; set; }
     public DbSet<Equipamento> Equipamento { get; set; }

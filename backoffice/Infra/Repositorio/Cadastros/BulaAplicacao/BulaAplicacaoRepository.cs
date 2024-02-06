@@ -1,0 +1,65 @@
+﻿using Helpers;
+using Infra.Configuracao;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Infra.Repositorio.Cadastros.BulaAplicacao
+{
+    public class BulaAplicacaoRepository : I
+    {
+        private readonly ContextBase _contextBase;
+
+        public BulaAplicacaoRepository(ContextBase contextBase)
+        {
+            _contextBase = contextBase;
+        }
+
+        public async Task AddAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
+        {
+            await _contextBase.AddAsync(obj);
+            await _contextBase.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entityToRemove = await GetByIdAsync(id);
+            if (!ObjectNullValidation.IsObjectNull(entityToRemove))
+            {
+                _contextBase.Remove(entityToRemove);
+                await _contextBase.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync()
+        {
+            var entities = await _contextBase.Bula.ToListAsync();
+            return entities;
+        }
+
+        public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
+        {
+            var obj = await _contextBase.Bula.FindAsync(id);
+            return obj;
+        }
+
+        public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
+        {
+            var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
+            objeto.NomeProduto = obj.NomeProduto;
+            objeto.IdCultura = obj.IdCultura;
+            objeto.IdClassificacaoToxicologica = obj.IdClassificacaoToxicologica;
+            objeto.Classe = obj.Classe;
+            objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
+            objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
+            objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
+            objeto.Adjuvante = obj.Adjuvante;
+            objeto.IdTipoDeServico = obj.IdTipoDeServico;
+
+            _contextBase.Bula.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+    }
+}
