@@ -81,7 +81,10 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'addsignature',
           builder: (BuildContext context, GoRouterState state) {
-            return const AddFireFightingSignatureStep();
+            final extra = state.extra as Map<String, dynamic>;
+            return AddFireFightingSignatureStep(
+              onUpdateSignature: extra['onUpdateSignature'],
+            );
           },
         ),
         GoRoute(

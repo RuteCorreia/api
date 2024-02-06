@@ -1,3 +1,6 @@
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
@@ -16,6 +19,10 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+   
+  void _onUpdateSignature(Uint8List signature) {
+    log("Signature updated $signature");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +135,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
               const SizedBox(height: 8),
               AssignmentButton(
                 onClick: () {
-                  context.push("/addsignature");
+                  context.push("/addsignature",
+                      extra: {"onUpdateSignature": _onUpdateSignature});
                 },
               ),
               const SizedBox(height: 14),
@@ -230,7 +238,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
               ),
               AssignmentButton(
                 onClick: () {
-                  context.push("/addsignature");
+                  context.push("/addsignature",
+                      extra: {"onUpdateSignature": _onUpdateSignature});
                 },
               ),
               Center(
