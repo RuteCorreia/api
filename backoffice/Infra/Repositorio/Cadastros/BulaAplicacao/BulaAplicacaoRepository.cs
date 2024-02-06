@@ -1,5 +1,7 @@
-﻿using Helpers;
+﻿using Domain.Interfaces.Cadastros.BulaAplicacao;
+using Helpers;
 using Infra.Configuracao;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Infra.Repositorio.Cadastros.BulaAplicacao
 {
-    public class BulaAplicacaoRepository : I
+    public class BulaAplicacaoRepository : IBulaAplicacaoRepository
     {
         private readonly ContextBase _contextBase;
 
@@ -17,7 +19,7 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
             _contextBase = contextBase;
         }
 
-        public async Task AddAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
+        public async Task AddAsync(Domain.Entidades.Cadastros.Empresa.BulaAplicacao obj)
         {
             await _contextBase.AddAsync(obj);
             await _contextBase.SaveChangesAsync();
@@ -33,32 +35,26 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
             }
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync()
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetAllAsync()
         {
-            var entities = await _contextBase.Bula.ToListAsync();
+            var entities = await _contextBase.BulaAplicacao.ToListAsync();
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
+        public async Task<Domain.Entidades.Cadastros.Empresa.BulaAplicacao> GetByIdAsync(int id)
         {
-            var obj = await _contextBase.Bula.FindAsync(id);
+            var obj = await _contextBase.BulaAplicacao.FindAsync(id);
             return obj;
         }
 
-        public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
+        public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.BulaAplicacao obj)
         {
-            var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
-            objeto.NomeProduto = obj.NomeProduto;
+            var objeto = await _contextBase.BulaAplicacao.FindAsync(obj.IdBula);
             objeto.IdCultura = obj.IdCultura;
-            objeto.IdClassificacaoToxicologica = obj.IdClassificacaoToxicologica;
-            objeto.Classe = obj.Classe;
-            objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
             objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
             objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
-            objeto.Adjuvante = obj.Adjuvante;
-            objeto.IdTipoDeServico = obj.IdTipoDeServico;
 
-            _contextBase.Bula.Update(objeto);
+            _contextBase.BulaAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
     }
