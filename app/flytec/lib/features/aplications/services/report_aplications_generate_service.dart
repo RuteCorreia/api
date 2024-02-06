@@ -1470,11 +1470,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 if (mapaImageCarateristicaProduto != null)
                   pw.Container(
+                    height: 700,
+                    width: 700,
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
                         pw.MemoryImage(mapaImageCarateristicaProduto),
-                        fit: pw.BoxFit.fill),
+                    ),
                   ),
               ]));
         }));
