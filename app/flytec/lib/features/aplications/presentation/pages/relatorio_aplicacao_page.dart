@@ -542,7 +542,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 controller: _densidadeController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  data!.densidade = value;
+                  setState(() {});
+                },
                 decoration: const InputDecoration(
                     hintText: "Digite aqui",
                     border: InputBorder.none,
