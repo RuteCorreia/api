@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
@@ -16,8 +15,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
 
   @override
   Future<dynamic> generatePdf({parameters}) async {
-    log(relatorioModel.contratoServico!.toJson().toString());
-    log(relatorioModel.areaTratada?.pathImage ?? '');
+
     final pdf = pw.Document();
     final newRoman = pw.Font.times();
     final newRomanBold = pw.Font.timesBold();
@@ -47,7 +45,6 @@ class ReportAplicationsGenerate implements PdfGenerator {
         await fileImageAssinaturaContratante.exists()
             ? await fileImageAssinaturaContratante.readAsBytes()
             : null;
-    log('fileImageAssinaturaContratante --> $fileImageAssinaturaContratante');
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -208,7 +205,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'CNPJ/CPF  ${relatorioModel.cliente?.cpf}',
+                                      'CNPJ/CPF  ${relatorioModel.cliente?.cnpj}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -235,7 +232,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Endereço: ${relatorioModel.cliente?.uf}',
+                              'Endereço: ${relatorioModel.cliente?.endereco}',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -253,7 +250,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10, top: 2),
                             child: pw.Text(
-                                'Município/UF ${relatorioModel.cliente?.endereco} ',
+                                'Município/UF ${relatorioModel.cliente?.uf} ',
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
@@ -1488,7 +1485,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
-                        pw.MemoryImage(mapaImageCarateristicaProduto),
+                      pw.MemoryImage(mapaImageCarateristicaProduto),
                     ),
                   ),
               ]));

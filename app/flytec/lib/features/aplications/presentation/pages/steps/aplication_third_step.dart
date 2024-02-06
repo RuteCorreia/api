@@ -90,7 +90,7 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                               rg: getIt<GlobalConfigVars>().clientes[index].rg,
                               uf: getIt<GlobalConfigVars>()
                                   .clientes[index]
-                                  .inscricaoEstadual,
+                                  .uf,
                               id: getIt<GlobalConfigVars>()
                                   .clientes[index]
                                   .idCliente
