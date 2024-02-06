@@ -18,6 +18,7 @@ public class BulaRepository : IBulaRepository
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        
     }
 
     public async Task DeleteAsync(int id)
@@ -54,7 +55,8 @@ public class BulaRepository : IBulaRepository
         objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
         objeto.Adjuvante = obj.Adjuvante;
         objeto.IdTipoDeServico = obj.IdTipoDeServico;
-
+        var listaParaRemover = _contextBase.BulaAplicacao.Where(x => x.IdBula == obj.IdBula).ToList();
+        _contextBase.BulaAplicacao.RemoveRange(listaParaRemover);
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }

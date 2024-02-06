@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.Bula.ViewModel;
+using Application.DTOs.Cadastros.BulaAplicacao.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class BulaController : ControllerBase
 {
     private readonly IBulaService _bulaService;
+    private readonly IBulaAplicacaoService _bulaAplicacaoService;
 
-    public BulaController(IBulaService bulaService)
+    public BulaController(IBulaService bulaService, IBulaAplicacaoService bulaAplicacaoService)
     {
         _bulaService = bulaService;
+        _bulaAplicacaoService = bulaAplicacaoService;
     }
 
     [HttpGet]
@@ -62,7 +65,17 @@ public class BulaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
+                obj.IdAlvoBiologico = 3;
+                obj.IdCultura = 2;
                 await _bulaService.AddAsync(obj);
+                var lista = await _bulaService.GetAllAsync();
+                var ultimoCriado = lista.LastOrDefault();
+                foreach (var item in obj.BulaAplicacoes)
+                {
+                    item.IdBula = ultimoCriado.IdBula;
+                    await _bulaAplicacaoService.AddAsync(item);
+
+                }
                 return Ok();
             }
 
@@ -87,6 +100,12 @@ public class BulaController : ControllerBase
                     obj.IdBula = objeto.IdBula;
 
                     await _bulaService.UpdateAsync(obj);
+                    foreach (var item in obj.BulaAplicacoes)
+                    {
+                        item.IdBula = id;
+                        await _bulaAplicacaoService.AddAsync(item);
+
+                    }
                     return Ok();
                 }
                 else
