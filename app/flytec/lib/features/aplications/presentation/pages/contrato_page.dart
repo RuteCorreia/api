@@ -33,25 +33,25 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
   final TextEditingController _distancia = TextEditingController();
 
   bool verifyFields() {
-    if (_precoController.text.isEmpty) {
-      Util.toastAlerta("Digite o preço");
-      return false;
-    } else if (_extensaoController.text.isEmpty) {
-      Util.toastAlerta("Digite a extensão");
-      return false;
-    }
-    if (_valorTotalController.text.isEmpty) {
-      Util.toastAlerta("Digite o valor total");
-      return false;
-    }
-    if (_vencimentoController.text.isEmpty) {
-      Util.toastAlerta("Digite o vencimento");
-      return false;
-    }
-    if (_vencimentoController.text.length < 10) {
-      Util.toastAlerta("Digite uma data válida");
-      return false;
-    } else {
+    // if (_precoController.text.isEmpty) {
+    //   Util.toastAlerta("Digite o preço");
+    //   return false;
+    // } else if (_extensaoController.text.isEmpty) {
+    //   Util.toastAlerta("Digite a extensão");
+    //   return false;
+    // }
+    // if (_valorTotalController.text.isEmpty) {
+    //   Util.toastAlerta("Digite o valor total");
+    //   return false;
+    // }
+    // if (_vencimentoController.text.isEmpty) {
+    //   Util.toastAlerta("Digite o vencimento");
+    //   return false;
+    // }
+    // if (_vencimentoController.text.length < 10) {
+    //   Util.toastAlerta("Digite uma data válida");
+    //   return false;
+    // } else {
       getIt<GlobalConfigVars>().reportList.last.contratoServico =
           ContratoServico(
               executor: getIt<GlobalConfigVars>().selectedExecutor,
@@ -66,7 +66,7 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
       Util.toastSucesso("Dados inseridos com sucesso");
       context.pop();
       return true;
-    }
+    //}
   }
 
   @override
