@@ -47,9 +47,15 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
             return obj;
         }
 
+        public async Task<List<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id)
+        {
+            var obj = _contextBase.BulaAplicacao.Where(x => x.IdBula == id).ToList();
+            return obj;
+        }
+
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.BulaAplicacao obj)
         {
-            var objeto = await _contextBase.BulaAplicacao.FindAsync(obj.IdBula);
+            var objeto = await _contextBase.BulaAplicacao.FindAsync(obj.IdBulaAplicacao);
             objeto.IdCultura = obj.IdCultura;
             objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
             objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
