@@ -26,6 +26,7 @@ class ClientesModel {
   final String? senha;
   final String? precificacao;
   final bool? admin;
+  final String? uf;
   bool isSelected;
 
   ClientesModel({
@@ -40,6 +41,7 @@ class ClientesModel {
     this.endereco,
     this.telefone1,
     this.telefone2,
+    this.uf,
     this.email,
     this.senha,
     this.precificacao,
@@ -61,6 +63,7 @@ class ClientesModel {
         senha: json["senha"],
         precificacao: json["precificacao"],
         admin: json["admin"],
+        uf: json["uf"] ?? "",
       );
 
   Map<String, dynamic> toJson() => {
@@ -78,5 +81,6 @@ class ClientesModel {
         "senha": senha,
         "precificacao": precificacao,
         "admin": admin,
+        "uf": uf
       };
 }
