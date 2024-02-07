@@ -63,6 +63,8 @@ public class ClienteRepository : IClienteRepository
         objeto.Telefone2 = obj.Telefone2;
         objeto.Email = obj.Email;
         objeto.Precificacao = obj.Precificacao;
+        objeto.Cidade = obj.Cidade;
+        objeto.UF = obj.UF;
 
         _contextBase.Cliente.Update(objeto);
         await _contextBase.SaveChangesAsync();

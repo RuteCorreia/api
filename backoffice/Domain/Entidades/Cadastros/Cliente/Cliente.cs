@@ -20,7 +20,9 @@ public class Cliente
 
     [EmailAddress]
     public string Email { get; set; }
-    public string Senha { get; set; }
+    public string? Senha { get; set; }
+    public string? Cidade { get; set; }
+    public string? UF { get; set; }
     public string Precificacao { get; set; }
 
     public bool Admin { get; set; }
