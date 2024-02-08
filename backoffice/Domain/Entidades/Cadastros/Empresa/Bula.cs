@@ -20,7 +20,7 @@ public class Bula
 
     [ForeignKey("AlvoBiologico")]
     public int? IdAlvoBiologico { get; set; }
-    public int? DoseProdutoComercial { get; set; }
+    public string? DoseProdutoComercial { get; set; }
     public string Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
 

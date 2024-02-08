@@ -832,8 +832,8 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DoseProdutoComercial")
-                        .HasColumnType("int");
+                    b.Property<string>("DoseProdutoComercial")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("IdAlvoBiologico")
                         .HasColumnType("int");
@@ -872,8 +872,8 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBulaAplicacao"));
 
-                    b.Property<int?>("DoseProdutoComercial")
-                        .HasColumnType("int");
+                    b.Property<string>("DoseProdutoComercial")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("IdAlvoBiologico")
                         .HasColumnType("int");

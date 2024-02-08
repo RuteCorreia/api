@@ -60,6 +60,8 @@ public class EmpresaController : ControllerBase
     {
         try
         {
+            var file = Request.Form.Files[0];
+
             if (ModelState.IsValid)
             {
                 await _empresaService.AddAsync(obj);

@@ -23,7 +23,7 @@ namespace Domain.Entidades.Cadastros.Empresa
 
         [ForeignKey("Bula")]
         public int? IdBula { get; set; }
-        public int? DoseProdutoComercial { get; set; }
+        public string? DoseProdutoComercial { get; set; }
         public int? TipoDeUnidade { get; set; }
 
         [JsonIgnore]

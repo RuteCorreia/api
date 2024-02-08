@@ -14,7 +14,7 @@ namespace Application.DTOs.Cadastros.BulaAplicacao.ViewModel
         public int? IdCultura { get; set; }
         public int? IdAlvoBiologico { get; set; }
         public int? IdBula { get; set; }
-        public int? DoseProdutoComercial { get; set; }
+        public string? DoseProdutoComercial { get; set; }
         public int? TipoDeUnidade { get; set; }
     }
 }
