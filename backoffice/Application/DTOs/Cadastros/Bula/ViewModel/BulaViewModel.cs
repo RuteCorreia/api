@@ -13,7 +13,7 @@ public class BulaViewModel
     public string Classe { get; set; }
     public string TipoDeFormulacao { get; set; }
     public int? IdAlvoBiologico { get; set; }
-    public int? DoseProdutoComercial { get; set; }
+    public string? DoseProdutoComercial { get; set; }
     public string Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public int? TipoDeUnidade { get; set; }
