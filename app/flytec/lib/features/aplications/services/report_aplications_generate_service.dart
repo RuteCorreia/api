@@ -182,7 +182,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         child: pw.Padding(
                           padding: const pw.EdgeInsets.only(left: 10, top: 2),
                           child: pw.Text(
-                              'Nome ${relatorioModel.cliente?.nome} ',
+                              'Nome: ${relatorioModel.cliente?.nome} ',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         ),
@@ -205,7 +205,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'CNPJ/CPF  ${relatorioModel.cliente?.cnpj}',
+                                      'CNPJ/CPF:  ${relatorioModel.cliente?.cnpj}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -217,7 +217,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'I.E/R.G. ${relatorioModel.cliente?.inscricaoEstadual != '0' ? relatorioModel.cliente?.inscricaoEstadual : relatorioModel.cliente?.rg}',
+                                      'I.E/R.G: ${relatorioModel.cliente?.inscricaoEstadual != '0' ? relatorioModel.cliente?.inscricaoEstadual : relatorioModel.cliente?.rg}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -251,7 +251,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           child: pw.Padding(
                             padding: const pw.EdgeInsets.only(left: 10, top: 2),
                             child: pw.Text(
-                                'Município/UF ${relatorioModel.cliente?.uf} ',
+                                'Município/UF: ${relatorioModel.cliente?.cidade}, ${relatorioModel.cliente?.uf} ',
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
