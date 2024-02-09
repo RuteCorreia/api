@@ -27,6 +27,7 @@ class ClientesModel {
   final String? precificacao;
   final bool? admin;
   final String? uf;
+  final String? cidade;
   bool isSelected;
 
   ClientesModel({
@@ -37,6 +38,7 @@ class ClientesModel {
     this.cpf,
     this.rg,
     this.cnpj,
+    this.cidade,
     this.inscricaoEstadual,
     this.endereco,
     this.telefone1,
@@ -56,6 +58,7 @@ class ClientesModel {
         rg: json["rg"],
         cnpj: json["cnpj"],
         inscricaoEstadual: json["inscricaoEstadual"],
+        cidade: json["cidade"] ?? "",
         endereco: json["endereco"],
         telefone1: json["telefone1"],
         telefone2: json["telefone2"],
@@ -77,6 +80,7 @@ class ClientesModel {
         "endereco": endereco,
         "telefone1": telefone1,
         "telefone2": telefone2,
+        "cidade": cidade,
         "email": email,
         "senha": senha,
         "precificacao": precificacao,

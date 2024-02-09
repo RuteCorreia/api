@@ -247,12 +247,14 @@ class Cliente {
   String? rg;
   String? cnpj;
   String? endereco;
+  String? cidade;
 
   Cliente(
       {this.id,
       required this.endereco,
       this.nome,
       this.cpf,
+      this.cidade,
       this.uf,
       this.rg,
       this.cnpj});
@@ -261,6 +263,7 @@ class Cliente {
       id: json["id"] ?? "",
       nome: json["nome"] ?? "",
       endereco: json["endereco"] ?? "",
+      cidade: json["cidade"] ?? "",
       cpf: json["cpf"] ?? "",
       rg: json["rg"] ?? "",
       uf: json["uf"] ?? "",
@@ -272,6 +275,7 @@ class Cliente {
         "cpf": cpf ?? "",
         "rg": rg ?? "",
         "uf": uf ?? "",
+        "cidade": cidade ?? "",
         "cnpj": cnpj ?? ""
       };
 }

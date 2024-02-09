@@ -524,6 +524,7 @@ class _AddContratanteState extends State<AddContratante> {
                                       idTipoCliente: 1,
                                       cpf: 0,
                                       uf: _uf,
+                                      cidade: _cityOfUf,
                                       rg: 0,
                                       cnpj:
                                           int.tryParse(_cnpjController.text) ??
@@ -573,6 +574,7 @@ class _AddContratanteState extends State<AddContratante> {
                                       uf: _uf,
                                       cpf: 0,
                                       rg: 0,
+                                      cidade: _cityOfUf,
                                       cnpj:
                                           int.tryParse(_cnpjController.text) ??
                                               0,
