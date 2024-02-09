@@ -48,6 +48,7 @@ class ClienteDataSourceImpl implements IClientDataSource {
         "senha": addClientParams.senha.toString(),
         "precificacao": addClientParams.precificacao.toString(),
         "uf": addClientParams.uf.toString(),
+        "cidade": addClientParams.cidade,
         "admin": true
       }),
     );
@@ -74,6 +75,7 @@ class AddClientParams {
   final String? senha;
   final String? precificacao;
   final String? uf;
+  final String? cidade;
 
   AddClientParams(
       {required this.nome,
@@ -86,6 +88,7 @@ class AddClientParams {
       required this.endereco,
       required this.telefone1,
       required this.telefone2,
+      required this.cidade,
       required this.email,
       required this.senha,
       required this.precificacao});

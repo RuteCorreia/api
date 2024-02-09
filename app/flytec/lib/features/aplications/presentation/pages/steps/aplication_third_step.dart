@@ -88,9 +88,10 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                               cpf:
                                   getIt<GlobalConfigVars>().clientes[index].cpf,
                               rg: getIt<GlobalConfigVars>().clientes[index].rg,
-                              uf: getIt<GlobalConfigVars>()
+                              cidade: getIt<GlobalConfigVars>()
                                   .clientes[index]
-                                  .uf,
+                                  .cidade,
+                              uf: getIt<GlobalConfigVars>().clientes[index].uf,
                               id: getIt<GlobalConfigVars>()
                                   .clientes[index]
                                   .idCliente
