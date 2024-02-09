@@ -58,6 +58,9 @@ import { AplicacaoListComponent } from './components/aplicacao/aplicacao-list/ap
 import { AplicacaoDetailsComponent } from './components/aplicacao/aplicacao-details/aplicacao-details.component';
 import { BulaListComponent } from './components/bula/bula-list/bula-list.component';
 import { BulaDetailsComponent } from './components/bula/bula-details/bula-details.component';
+import { ComponenteListComponent } from './components/componente/componente-list/componente-list.component';
+import { AddComponenteComponent } from './components/componente/add-componente/add-componente.component';
+import { ComponenteDetailsComponent } from './components/componente/componente-details/componente-details.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent },
@@ -119,8 +122,9 @@ const routes: Routes = [
   { path: 'bula', component: BulaListComponent },
   { path: 'novaBula', component: AddBulaComponent },
   { path: 'bula/:id', component: BulaDetailsComponent },
-
-
+  { path: 'componente', component: ComponenteListComponent },
+  { path: 'novoComponente', component: AddComponenteComponent },
+  { path: 'componente/:id', component: ComponenteDetailsComponent }
 
 ];
 

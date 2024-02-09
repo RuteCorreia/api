@@ -4,8 +4,8 @@
 #selectTipoCliente option{
     color: black;
     background-color: transparent;
-
 }
-#btnRemover{
-    margin-right: 10px;
+#btnRemover, 
+#btnVoltar {
+    margin-left: 10px;
 }

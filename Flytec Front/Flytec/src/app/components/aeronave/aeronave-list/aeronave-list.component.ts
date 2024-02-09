@@ -5,7 +5,7 @@ import { AeronaveService } from '../../../services/aeronave/aeronave.service';
 @Component({
   selector: 'app-aeronave-list',
   templateUrl: './aeronave-list.component.html',
-  styleUrl: './aeronave-list.component.css'
+  styleUrls: ['./aeronave-list.component.css', '../../../../assets/css/generalConfig.css']
 })
 export class AeronaveListComponent {
   aeronaves?: Aeronave[];

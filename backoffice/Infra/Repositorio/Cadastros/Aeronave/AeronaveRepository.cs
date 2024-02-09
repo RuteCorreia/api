@@ -47,9 +47,8 @@ public class AeronaveRepository : IAeronaveRepository
         var objeto = await _contextBase.Aeronave.FindAsync(obj.Id);
         objeto.IdEmpresa = obj.IdEmpresa;
         objeto.Prefixo = obj.Prefixo;
-        objeto.Combustivel = obj.Combustivel;
-        objeto.CapacidadeDeCarga = obj.CapacidadeDeCarga;
-        objeto.Horimetro = obj.Horimetro;
+        objeto.Modelo = obj.Modelo;
+        objeto.SerialNumber = obj.SerialNumber;
 
         _contextBase.Aeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();

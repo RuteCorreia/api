@@ -7,8 +7,10 @@ import { Aeronave } from '../../models/aeronave/aeronave.model';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/aeronave/';
-const dropdownEmpresaUrl = 'https://flytec.keltecnologia.com.br/api/v1/empresa/';
+// const baseUrl = 'https://flytec.keltecnologia.com.br/api/v1/aeronave/';
+const baseUrl = 'https://localhost:7221/api/v1/aeronave/';
+// const dropdownEmpresaUrl = 'https://flytec.keltecnologia.com.br/api/v1/empresa/';
+const dropdownEmpresaUrl = 'https://localhost:7221/api/v1/empresa/';
 
 
 @Injectable({
