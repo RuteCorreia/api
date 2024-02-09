@@ -9,9 +9,9 @@
           novalidate
         >
         <div class="mb-3">
-          <label for="idEmpresa">Empresa</label>
+          <label for="idEmpresa">Fabricante</label>
           <select id="selectTipoCliente"
-            class="form-control"
+            class="form-control pointer"
             name="idEmpresa"
             [(ngModel)]="form.idEmpresa"
             #idEmpresa="ngModel"
@@ -22,7 +22,7 @@
           @if (idEmpresa.errors && f.submitted) {
           <div class="invalid-feedback">
             @if (idEmpresa.errors['required']) {
-            <div>Empresa é obrigatório!</div>
+            <div>Fabricante é obrigatório!</div>
             }
           </div>
           }
@@ -49,12 +49,12 @@
             }
           </div>
           <div class="mb-3">
-            <label for="combustivel">Combustível</label>
+            <label for="modelo">Modelo</label>
             <input
               type="text"
               class="form-control"
-              name="combustivel"
-              [(ngModel)]="form.combustivel"
+              name="modelo"
+              [(ngModel)]="form.modelo"
               required
               minlength="3"
               maxlength="20"
@@ -64,18 +64,18 @@
             @if (aeronave.errors && f.submitted) {
             <div class="invalid-feedback">
               @if (aeronave.errors['required']) {
-              <div>Informe o Combustível!</div>
+              <div>Informe o modelo!</div>
               }
             </div>
             }
           </div>
           <div class="mb-3">
-            <label for="capacidadeDeCarga">Capacidade de Carga</label>
+            <label for="serialNumber">Serial Number</label>
             <input
               type="text"
               class="form-control"
-              name="capacidadeDeCarga"
-              [(ngModel)]="form.capacidadeDeCarga"
+              name="serialNumber"
+              [(ngModel)]="form.serialNumber"
               required
               minlength="3"
               maxlength="20"
@@ -85,32 +85,11 @@
             @if (aeronave.errors && f.submitted) {
             <div class="invalid-feedback">
               @if (aeronave.errors['required']) {
-              <div>Informe a Capacidade de Carga!</div>
+              <div>Informe o Serial Number!</div>
               }
             </div>
             }
-          </div>
-          <div class="mb-3">
-            <label for="horimetro">Horímetro</label>
-            <input
-              type="text"
-              class="form-control"
-              name="horimetro"
-              [(ngModel)]="form.horimetro"
-              required
-              minlength="3"
-              maxlength="20"
-              #aeronave="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && aeronave.errors }"
-            />
-            @if (aeronave.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (aeronave.errors['required']) {
-              <div>Informe o Horímetro!</div>
-              }
-            </div>
-            }
-          </div>
+          </div>          
           <div class="mb-3">
             <button type="submit" class="btn btn-primary btn-block">Cadastrar</button>
             <button id="btnVoltar" class="btn btn-outline-secondary btn-block" (click)="voltar()">Voltar</button>

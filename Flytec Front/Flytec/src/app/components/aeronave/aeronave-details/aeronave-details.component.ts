@@ -8,7 +8,7 @@ import { AeronaveService } from '../../../services/aeronave/aeronave.service';
 @Component({
   selector: 'app-aeronave-details',
   templateUrl: './aeronave-details.component.html',
-  styleUrl: './aeronave-details.component.css'
+  styleUrls: ['./aeronave-details.component.css', '../../../../assets/css/generalConfig.css'],
 })
 export class AeronaveDetailsComponent implements OnInit {
 
@@ -19,7 +19,8 @@ export class AeronaveDetailsComponent implements OnInit {
 
   @Input() currentAeronave: Aeronave = {
     prefixo: '',
-    combustivel: '',
+    modelo: ''
+    // combustivel: '',
   };
   
   message = '';
@@ -80,5 +81,9 @@ export class AeronaveDetailsComponent implements OnInit {
         },
         error: (e) => console.error(e)
       });
+  }
+
+  voltar(): void{ 
+    window.location.href = '/aeronave';
   }
 }
