@@ -28,6 +28,8 @@ class _AddContratanteState extends State<AddContratante> {
   final TextEditingController _inscricaoEstadualController =
       TextEditingController();
   final TextEditingController _enderecoController = TextEditingController();
+  final TextEditingController _rgController = TextEditingController();
+
   bool isPageLoading = false;
   List<String> _statesOfBrazil = [];
   void _obtainStatesOfBrazil() {
@@ -150,6 +152,13 @@ class _AddContratanteState extends State<AddContratante> {
                           const SizedBox(height: 14),
                           CustomTextField(
                             textEditingController: _enderecoController,
+                            onChanged: (String value) {},
+                          ),
+                          const CustomText(text: 'Rg'),
+                          const SizedBox(height: 14),
+                          CustomTextField(
+                            textInputType: TextInputType.number,
+                            textEditingController: _rgController,
                             onChanged: (String value) {},
                           ),
                           Row(
@@ -525,7 +534,7 @@ class _AddContratanteState extends State<AddContratante> {
                                       cpf: 0,
                                       uf: _uf,
                                       cidade: _cityOfUf,
-                                      rg: 0,
+                                      rg: int.tryParse(_rgController.text) ?? 0,
                                       cnpj:
                                           int.tryParse(_cnpjController.text) ??
                                               0,

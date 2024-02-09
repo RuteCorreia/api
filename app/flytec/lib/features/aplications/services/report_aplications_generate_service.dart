@@ -217,7 +217,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'I.E/R.G. ${relatorioModel.cliente?.inscricaoEstadual}',
+                                      'I.E/R.G. ${relatorioModel.cliente?.inscricaoEstadual != '0' ? relatorioModel.cliente?.inscricaoEstadual : relatorioModel.cliente?.rg}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
