@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -85,6 +87,9 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                               endereco: getIt<GlobalConfigVars>()
                                   .clientes[index]
                                   .endereco,
+                              inscricaoEstadual: getIt<GlobalConfigVars>()
+                                  .clientes[index]
+                                  .inscricaoEstadual,
                               cpf:
                                   getIt<GlobalConfigVars>().clientes[index].cpf,
                               rg: getIt<GlobalConfigVars>().clientes[index].rg,
@@ -104,6 +109,7 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                                   .cnpj,
                             );
                           });
+                          log('--> ${getIt<GlobalConfigVars>().reportList.last.cliente?.inscricaoEstadual}');
                         },
                         child: CustomClientCard(
                           title: getIt<GlobalConfigVars>()
