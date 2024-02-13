@@ -3,6 +3,10 @@ using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Buffers.Text;
+using System.Collections;
+using System.Web;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApi.Controllers.APIs;
 
@@ -42,6 +46,14 @@ public class EmpresaController : ControllerBase
         try
         {
             var empresa = await _empresaService.GetByIdAsync(id);
+            if(empresa.Imagem != null)
+            {
+                var base64Imagem = Convert.ToBase64String(empresa.Imagem);
+                var base64Append = "data:image/jpeg;base64," + base64Imagem;
+                empresa.ImagemBase64 = base64Append;
+                
+            }
+
             if (!ObjectNullValidation.IsObjectNull(empresa))
             {
                 return Ok(empresa);
@@ -60,7 +72,14 @@ public class EmpresaController : ControllerBase
     {
         try
         {
-            var file = Request.Form.Files[0];
+            if(obj.ImagemBase64 != "")
+            {
+                string[] parts = obj.ImagemBase64.Split(',');
+                string decodedBase64String = parts[1];
+
+                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                obj.Imagem = imageDataBytes;
+            }
 
             if (ModelState.IsValid)
             {
@@ -81,6 +100,14 @@ public class EmpresaController : ControllerBase
     {
         try
         {
+            if (obj.ImagemBase64 != "")
+            {
+                string[] parts = obj.ImagemBase64.Split(',');
+                string decodedBase64String = parts[1];
+
+                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                obj.Imagem = imageDataBytes;
+            }
             if (ModelState.IsValid)
             {
                 var objeto = await _empresaService.GetByIdAsync(id);

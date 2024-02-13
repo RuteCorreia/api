@@ -11,5 +11,6 @@ public class EmpresaViewModel
     [MaxLength(120)]
     public string Nome { get; set; }
     public byte[] Imagem { get; set; }
+    public string? ImagemBase64 { get; set; }
     public int? PlanoContratado { get; set; }
 }
