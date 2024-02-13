@@ -238,16 +238,26 @@
          </div>
      </div>
      <div class="menu-item dropdown">
-       <a href="#" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link">
+       <a href="#" id="cadastrosDropdown" data-bs-toggle="dropdown" data-bs-display="static" class="menu-link">
          <span class="menu-icon">
            <fa-icon [icon]="['fas', 'plane-arrival']"></fa-icon>
          </span>
-         <div class="menu-text d-sm-block d-none w-200px">
+         <div class="menu-text d-sm-block d-none w-+200px">
            Cadastros de Aplicação
          </div>
        </a>
-       <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1">
-         <a class="dropdown-item d-flex align-items-right" href="/aeronave">Aeronaves</a>
+       <div class="dropdown-menu dropdown-menu-end me-lg-3 fs-11px mt-1" aria-labelledby="cadastrosDropdown">
+        
+        <a class="dropdown-item d-flex align-items-right menu-item dropdown" href="#" data-bs-toggle="dropdown" data-bs-display="static" (click)="stopPropagation($event)">
+          <div class="menu-text">
+            Aeronaves 
+          </div>
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item" href="#" (click)="goToPage('aeronave')">Cadastro de aeronaves</a>
+            <a class="dropdown-item" href="#" (click)="goToPage('componente')">Controle de componentes</a>
+          </div>
+        </a>
+         
          <a class="dropdown-item d-flex align-items-right" href="/equipamento">Equipamentos <i class="bi bi-envelope ms-auto text-theme fs-16px my-n1"></i></a>
          <a class="dropdown-item d-flex align-items-right" href="/pista">Pistas <i class="bi bi-envelope ms-auto text-theme fs-16px my-n1"></i></a>
          <a class="dropdown-item d-flex align-items-right" href="/bula ">Bula <i class="bi bi-envelope ms-auto text-theme fs-16px my-n1"></i></a>

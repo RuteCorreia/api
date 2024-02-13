@@ -47,19 +47,16 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CapacidadeDeCarga")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Combustivel")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Horimetro")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
+                    b.Property<string>("Modelo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Prefixo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerialNumber")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

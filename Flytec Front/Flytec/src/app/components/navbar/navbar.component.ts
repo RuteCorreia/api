@@ -17,4 +17,12 @@ export class NavbarComponent {
     this.isNavbarVisible = !this.isNavbarVisible;
     this.toggle.emit(this.isNavbarVisible);
   }
+
+  stopPropagation(event: Event): void {
+    event.stopPropagation();
+  }
+
+  goToPage(pageRoute: String): void {
+    window.location.href = `/${pageRoute}`; 
+  }
 }

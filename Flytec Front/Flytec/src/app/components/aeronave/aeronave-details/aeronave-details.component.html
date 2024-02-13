@@ -2,11 +2,12 @@
     @if (currentAeronave.id){
     <h4>Aeronave</h4>
     <div>
-      <label><strong>Prefixo:</strong></label> {{ currentAeronave.prefixo }}
+      <label><strong>Prefixo:</strong></label>
+       {{ currentAeronave.prefixo }}
     </div>
     <div>
-      <label><strong>Combustível:</strong></label>
-      {{ currentAeronave.combustivel }}
+      <label><strong>Modelo:</strong></label>
+      {{ currentAeronave.modelo }}
     </div>
   
     <a class="badge badge-warning" routerLink="/aeronave/{{ currentAeronave.id }}">
@@ -25,9 +26,9 @@
           novalidate
         >
         <div class="mb-3">
-            <label for="idEmpresa">Empresa</label>
+            <label for="idEmpresa">Fabricante</label>
             <select id="selectTipoCliente"
-              class="form-control"
+              class="form-control pointer"
               name="idEmpresa"
               [(ngModel)]="currentAeronave.idEmpresa"
               #idEmpresa="ngModel"
@@ -38,7 +39,7 @@
             @if (idEmpresa.errors && f.submitted) {
             <div class="invalid-feedback">
               @if (idEmpresa.errors['required']) {
-              <div>Empresa é obrigatório!</div>
+              <div>Fabricante é obrigatório!</div>
               }
             </div>
             }
@@ -64,70 +65,46 @@
             }
           </div>
           <div class="mb-3">
-            <label for="combustivel">Combustível</label>
+            <label for="modelo">Modelo</label>
             <input
               type="text"
               class="form-control"
-              name="combustivel"
-              [(ngModel)]="currentAeronave.combustivel"
+              name="modelo"
+              [(ngModel)]="currentAeronave.modelo"
               required
               minlength="3"
-              #combustivel="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && combustivel.errors }"
+              #modelo="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && modelo.errors }"
             />
-            @if (combustivel.errors && f.submitted) {
+            @if (modelo.errors && f.submitted) {
             <div class="invalid-feedback">
-              @if (combustivel.errors['required']) {
-              <div>O Combustível é obrigatório!</div>
+              @if (modelo.errors['required']) {
+              <div>O Modelo é obrigatório!</div>
               }
             </div>
             }
           </div>
           <div class="mb-3">
-            <label for="capacidadeDeCarga">Capacidade De Carga</label>
+            <label for="serialNumber">Serial Number</label>
             <input
               type="text"
               class="form-control"
-              name="capacidadeDeCarga"
-              [(ngModel)]="currentAeronave.capacidadeDeCarga"
+              name="serialNumber"
+              [(ngModel)]="currentAeronave.serialNumber"
               required
               minlength="3"
-              #capacidadeDeCarga="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && capacidadeDeCarga.errors }"
+              #serialNumber="ngModel"
+              [ngClass]="{ 'is-invalid': f.submitted && serialNumber.errors }"
             />
-            @if (capacidadeDeCarga.errors && f.submitted) {
+            @if (serialNumber.errors && f.submitted) {
             <div class="invalid-feedback">
-              @if (capacidadeDeCarga.errors['required']) {
-              <div>A Capacidade de Carga é obrigatória!</div>
-              }
-            </div>
-            }
-          </div>
-          <div class="mb-3">
-            <label for="horimetro">Horimêtro</label>
-            <input
-              type="text"
-              class="form-control"
-              name="horimetro"
-              [(ngModel)]="currentAeronave.horimetro"
-              required
-              minlength="3"
-              #horimetro="ngModel"
-              [ngClass]="{ 'is-invalid': f.submitted && horimetro.errors }"
-            />
-            @if (horimetro.errors && f.submitted) {
-            <div class="invalid-feedback">
-              @if (horimetro.errors['required']) {
-              <div>O Horimêtro é obrigatório!</div>
+              @if (serialNumber.errors['required']) {
+              <div>O Serial Number é obrigatória!</div>
               }
             </div>
             }
           </div>
         </form>
-  
-      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteAeronave()">
-        Remover
-      </button>
   
       <button
         type="submit"
@@ -135,6 +112,15 @@
         (click)="updateAeronave()">
         Atualizar
       </button>
+
+      <button id="btnRemover" class="btn btn-outline-secondary" (click)="deleteAeronave()">
+        Remover
+      </button>
+
+      <button id="btnVoltar" class="btn btn-outline-secondary" (click)="voltar()">
+        Voltar
+      </button>
+      
       <p>{{ message }}</p>
     </div>
             </div></div>

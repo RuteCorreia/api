@@ -6,13 +6,14 @@ import { AeronaveService } from '../../../services/aeronave/aeronave.service';
 @Component({
   selector: 'app-add-aeronave',
   templateUrl: './add-aeronave.component.html',
-  styleUrl: './add-aeronave.component.css'
+  styleUrls: ['./add-aeronave.component.css', '../../../../assets/css/generalConfig.css']
 })
+
 export class AddAeronaveComponent {
 
   voltar() {
-window.location.href = "/produto";
-}
+  	window.location.href = "/aeronave";
+  }
 
   dropdownData!: any[];
   selectedItem: any;
@@ -21,10 +22,10 @@ window.location.href = "/produto";
     id: 0,
     idEmpresa: 0,
     prefixo: '',
-    combustivel: '',
-    capacidadeDeCarga: 0,
-    horimetro: '',
+    modelo: '',
+    serialNumber: '',
   };
+
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
@@ -52,6 +53,6 @@ window.location.href = "/produto";
         this.errorMessage = err;
         this.isSignUpFailed = true;
       }
-    });
+    }); 
   }
 }

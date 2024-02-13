@@ -109,6 +109,9 @@ import { AplicacaoDetailsComponent } from './components/aplicacao/aplicacao-deta
 import { AplicacaoListComponent } from './components/aplicacao/aplicacao-list/aplicacao-list.component';
 import { EmpresaDetailsComponent } from './components/empresa/empresa-details/empresa-details.component';
 import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-list.component';
+import { ComponenteListComponent } from './components/componente/componente-list/componente-list.component';
+import { ComponenteDetailsComponent } from './components/componente/componente-details/componente-details.component';
+import { AddComponenteComponent } from './components/componente/add-componente/add-componente.component';
 
 @NgModule({
   declarations: [
@@ -210,7 +213,10 @@ import { EmpresaListComponent } from './components/empresa/empresa-list/empresa-
     AplicacaoDetailsComponent,
     AplicacaoListComponent,
     EmpresaDetailsComponent,
-    EmpresaListComponent
+    EmpresaListComponent,
+    ComponenteListComponent,
+    ComponenteDetailsComponent,
+    AddComponenteComponent
   ],
   imports: [
     BrowserModule,

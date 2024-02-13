@@ -247,23 +247,29 @@ class Cliente {
   String? rg;
   String? cnpj;
   String? endereco;
+  String? cidade;
+  String? inscricaoEstadual;
 
   Cliente(
       {this.id,
       required this.endereco,
       this.nome,
       this.cpf,
+      this.cidade,
       this.uf,
       this.rg,
+      this.inscricaoEstadual,
       this.cnpj});
 
   factory Cliente.fromJson(Map<String, dynamic> json) => Cliente(
       id: json["id"] ?? "",
       nome: json["nome"] ?? "",
       endereco: json["endereco"] ?? "",
+      cidade: json["cidade"] ?? "",
       cpf: json["cpf"] ?? "",
       rg: json["rg"] ?? "",
       uf: json["uf"] ?? "",
+      inscricaoEstadual: json["inscricaoEstadual"] ?? "",
       cnpj: json["cnpj"] ?? "");
 
   Map<String, dynamic> toJson() => {
@@ -271,7 +277,9 @@ class Cliente {
         "nome": nome ?? "",
         "cpf": cpf ?? "",
         "rg": rg ?? "",
+        "inscricaoEstatual": inscricaoEstadual ?? "",
         "uf": uf ?? "",
+        "cidade": cidade ?? "",
         "cnpj": cnpj ?? ""
       };
 }

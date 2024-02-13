@@ -211,3 +211,6 @@ backoffice/Helpers/obj
 /backoffice/WebApi/obj/Debug/net7.0/refint/WebApi.dll
 /backoffice/WebApi/obj/Debug/net7.0/WebApi.pdb
 /backoffice/Application/obj/Debug/net7.0/Application.AssemblyInfo.cs
+/backoffice/.vs/ProjectEvaluation/flytec.metadata.v7.bin
+/backoffice/.vs/ProjectEvaluation/flytec.projects.v7.bin
+/backoffice/WebApi/Properties/PublishProfiles/QA.pubxml.user
