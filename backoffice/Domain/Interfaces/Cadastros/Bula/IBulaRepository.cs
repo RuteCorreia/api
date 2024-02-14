@@ -9,4 +9,5 @@ public interface IBulaRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Empresa.Bula>> GetAllAsync();
     Task<Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name);
 }

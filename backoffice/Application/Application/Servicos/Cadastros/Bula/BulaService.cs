@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.Bula.ViewModel;
+using Application.DTOs.Cadastros.Cultura.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Bula;
 
@@ -43,5 +44,12 @@ public class BulaService : IBulaService
     public async Task DeleteAsync(int id)
     {
         await _bulaRepository.DeleteAsync(id);
+    }
+
+    public async Task<BulaViewModel> GetByName(string name)
+    {
+        var obj = await _bulaRepository.GetByNameAsync(name);
+
+        return _mapper.Map<BulaViewModel>(obj);
     }
 }

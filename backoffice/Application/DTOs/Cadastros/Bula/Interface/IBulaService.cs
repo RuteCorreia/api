@@ -7,6 +7,7 @@ public interface IBulaService
     Task<IEnumerable<BulaViewModel>> GetAllAsync();
 
     Task<BulaViewModel> GetByIdAsync(int id);
+    Task<BulaViewModel> GetByName(string name);
 
     Task AddAsync(BulaViewModel obj);
 

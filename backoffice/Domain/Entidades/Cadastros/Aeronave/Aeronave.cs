@@ -11,6 +11,7 @@ public class Aeronave
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
+    public string? Fabricante { get; set; }
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }

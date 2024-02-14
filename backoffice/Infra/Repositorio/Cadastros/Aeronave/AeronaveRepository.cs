@@ -46,6 +46,7 @@ public class AeronaveRepository : IAeronaveRepository
     {
         var objeto = await _contextBase.Aeronave.FindAsync(obj.Id);
         objeto.IdEmpresa = obj.IdEmpresa;
+        objeto.Fabricante = obj.Fabricante;
         objeto.Prefixo = obj.Prefixo;
         objeto.Modelo = obj.Modelo;
         objeto.SerialNumber = obj.SerialNumber;

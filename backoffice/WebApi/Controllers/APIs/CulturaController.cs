@@ -60,6 +60,12 @@ public class CulturaController : ControllerBase
     {
         try
         {
+            var verificaSeCulturaExistePeloNome = _culturaService.GetByName(obj.Nome).Result;
+            if (verificaSeCulturaExistePeloNome != null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma cultura com esse nome!");
+            }
+
             if (ModelState.IsValid)
             {
                 await _culturaService.AddAsync(obj);
@@ -79,6 +85,11 @@ public class CulturaController : ControllerBase
     {
         try
         {
+            var verificaSeCulturaExistePeloNome = _culturaService.GetByName(obj.Nome).Result;
+            if (verificaSeCulturaExistePeloNome != null && verificaSeCulturaExistePeloNome.IdCultura != obj.IdCultura)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma cultura com esse nome!");
+            }
             if (ModelState.IsValid)
             {
                 var objeto = await _culturaService.GetByIdAsync(id);

@@ -44,4 +44,11 @@ public class CulturaService : ICulturaService
     {
         await _culturaRepository.DeleteAsync(id);
     }
+
+    public async Task<CulturaViewModel> GetByName(string name)
+    {
+        var obj = await _culturaRepository.GetByNameAsync(name);
+
+        return _mapper.Map<CulturaViewModel>(obj);
+    }
 }

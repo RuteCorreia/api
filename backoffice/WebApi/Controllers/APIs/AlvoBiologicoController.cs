@@ -60,6 +60,12 @@ public class AlvoBiologicoController : ControllerBase
     {
         try
         {
+            var verificaSeAlvoBiologicoExistePeloNome = _alvoBiologicoService.GetByName(obj.Nome).Result;
+            if (verificaSeAlvoBiologicoExistePeloNome != null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
+            }
+
             if (ModelState.IsValid)
             {
                 await _alvoBiologicoService.AddAsync(obj);
@@ -79,6 +85,11 @@ public class AlvoBiologicoController : ControllerBase
     {
         try
         {
+            var verificaSeAlvoBiologicoExistePeloNome = _alvoBiologicoService.GetByName(obj.Nome).Result;
+            if (verificaSeAlvoBiologicoExistePeloNome != null && verificaSeAlvoBiologicoExistePeloNome.Id != obj.Id)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
+            }
             if (ModelState.IsValid)
             {
                 var objeto = await _alvoBiologicoService.GetByIdAsync(id);

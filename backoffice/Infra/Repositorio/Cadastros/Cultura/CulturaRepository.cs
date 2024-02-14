@@ -42,6 +42,12 @@ public class CulturaRepository : ICulturaRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name)
+    {
+        var obj = _contextBase.Cultura.Where(x => x.Nome == name).FirstOrDefault();
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Cultura.Cultura obj)
     {
         var objeto = await _contextBase.Cultura.FindAsync(obj.IdCultura);

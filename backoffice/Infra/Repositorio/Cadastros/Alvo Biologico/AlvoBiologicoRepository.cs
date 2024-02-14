@@ -42,6 +42,12 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name)
+    {
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name).FirstOrDefault();
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
     {
         var objeto = await _contextBase.AlvoBiologico.FindAsync(obj.Id);

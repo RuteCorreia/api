@@ -43,6 +43,12 @@ public class BulaRepository : IBulaRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name)
+    {
+        var obj =  _contextBase.Bula.Where(x => x.NomeProduto == name).FirstOrDefault();
+        return obj;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
         var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);

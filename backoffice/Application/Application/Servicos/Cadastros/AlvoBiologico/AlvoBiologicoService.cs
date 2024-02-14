@@ -44,4 +44,10 @@ public class AlvoBiologicoService : IAlvoBiologicoService
     {
         await _alvoBiologicoRepository.DeleteAsync(id);
     }
+
+    public async Task<AlvoBiologicoViewModel> GetByName(string name)
+    {
+        var obj = await _alvoBiologicoRepository.GetByNameAsync(name);
+        return _mapper.Map<AlvoBiologicoViewModel>(obj);
+    }
 }
