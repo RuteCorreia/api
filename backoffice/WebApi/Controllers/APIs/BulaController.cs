@@ -110,9 +110,11 @@ public class BulaController : ControllerBase
                     obj.IdBula = objeto.IdBula;
 
                     await _bulaService.UpdateAsync(obj);
+
                     foreach (var item in obj.BulaAplicacoes)
                     {
                         item.IdBula = id;
+                        item.IdBulaAplicacao = 0;
                         await _bulaAplicacaoService.AddAsync(item);
 
                     }
