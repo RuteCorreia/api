@@ -1382,7 +1382,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                         ),
                                         fit: pw.BoxFit.cover),
                                   ),
-                                pw.Text('Contratante',
+                                pw.Text(
+                                    'Contratante ${relatorioModel.dadosDoResponsavel?.nomeCompleto}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
