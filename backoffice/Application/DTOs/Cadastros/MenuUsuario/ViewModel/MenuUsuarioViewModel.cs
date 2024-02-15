@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Entidades.User;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -6,25 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 
-namespace Domain.Entidades.Cadastros.MenuUsuario
+namespace Application.DTOs.Cadastros.MenuUsuario.ViewModel
 {
-    public class MenuUsuario
+    public class MenuUsuarioViewModel
     {
-        [Key]
         public int Id { get; set; }
 
-        [ForeignKey("Usuario")]
         public string IdUsuario { get; set; }
 
-        [ForeignKey("Menu")]
         public int? IdMenu { get; set; }
-
-        [JsonIgnore]
-        public virtual Menu.Menu? Menu { get; set; }
-
-        [JsonIgnore]
-        public virtual IdentityUser? Usuario { get; set; }
     }
 }

@@ -6,20 +6,15 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Domain.Entidades.Cadastros.SubMenu
+namespace Application.DTOs.Cadastros.SubMenu.ViewModel
 {
-    public class SubMenu
+    public class SubMenuViewModel
     {
         public int SubMenuId { get; set; }
         public string Label { get; set; }
         public string Route { get; set; }
         public string Icon { get; set; }
-
-        [ForeignKey("MenuItem")]
         public int MenuItemId { get; set; }
-
-        [JsonIgnore]
-        public virtual Entidades.Cadastros.Menu.Menu MenuItem { get; set; }
 
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Cadastros.MenuUsuario
 {
-    public interface IMenuUsuario
+    public interface IMenuUsuarioRepository
     {
         Task AddAsync(Entidades.Cadastros.MenuUsuario.MenuUsuario obj);
         Task UpdateAsync(Entidades.Cadastros.MenuUsuario.MenuUsuario obj);

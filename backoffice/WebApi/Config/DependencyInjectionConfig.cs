@@ -27,11 +27,14 @@ using Application.Application.Servicos.Cadastros.Equipamento;
 using Application.Application.Servicos.Cadastros.Estados;
 using Application.Application.Servicos.Cadastros.Executor;
 using Application.Application.Servicos.Cadastros.Frota;
+using Application.Application.Servicos.Cadastros.Menu;
+using Application.Application.Servicos.Cadastros.MenuUsuario;
 using Application.Application.Servicos.Cadastros.Piloto;
 using Application.Application.Servicos.Cadastros.Pista;
 using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.Application.Servicos.Cadastros.Precificacao;
 using Application.Application.Servicos.Cadastros.Produto;
+using Application.Application.Servicos.Cadastros.SubMenu;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
 using Application.Application.Servicos.Genericos;
@@ -65,11 +68,14 @@ using Application.DTOs.Cadastros.Equipamento.Interface;
 using Application.DTOs.Cadastros.Estados.Interface;
 using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Frota.Interface;
+using Application.DTOs.Cadastros.Menu.Interface;
+using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Application.DTOs.Cadastros.Piloto.Interface;
 using Application.DTOs.Cadastros.Pistas.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Application.DTOs.Cadastros.Precificacao.Interface;
 using Application.DTOs.Cadastros.Produto.Interface;
+using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
 using Application.DTOs.Users.Interface;
@@ -103,11 +109,14 @@ using Domain.Interfaces.Cadastros.Equipamento;
 using Domain.Interfaces.Cadastros.Estados;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Frota;
+using Domain.Interfaces.Cadastros.Menu;
+using Domain.Interfaces.Cadastros.MenuUsuario;
 using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Domain.Interfaces.Cadastros.Precificacao;
 using Domain.Interfaces.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.SubMenu;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Genericos;
@@ -142,11 +151,14 @@ using Infra.Repositorio.Cadastros.Equipamento;
 using Infra.Repositorio.Cadastros.Estados;
 using Infra.Repositorio.Cadastros.Executor;
 using Infra.Repositorio.Cadastros.Frota;
+using Infra.Repositorio.Cadastros.Menu;
+using Infra.Repositorio.Cadastros.MenuUsuario;
 using Infra.Repositorio.Cadastros.Piloto;
 using Infra.Repositorio.Cadastros.Pistas;
 using Infra.Repositorio.Cadastros.PlanoDeContrato;
 using Infra.Repositorio.Cadastros.Precificacao;
 using Infra.Repositorio.Cadastros.Produto;
+using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
 using Infra.Repositorio.User;
@@ -199,6 +211,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<IProdutoService, ProdutoService>();
         services.AddScoped<ITipoProdutoService, TipoProdutoService>();
         services.AddScoped<IVeiculanteService, VeiculanteService>();
+        services.AddScoped<IMenuService, MenuService>();
+        services.AddScoped<ISubMenuService, SubMenuService>();
+        services.AddScoped<IMenuUsuarioService, MenuUsuarioService>();
 
         #endregion
 
@@ -241,6 +256,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<IProdutoRepository, ProdutoRepository>();
         services.AddScoped<ITipoProdutoRepository, TipoProdutoRepository>();
         services.AddScoped<IVeiculanteRepository, VeiculanteRepository>();
+        services.AddScoped<IMenuRepository, MenuRepository>();
+        services.AddScoped<ISubMenuRepository, SubMenuRepository>();
+        services.AddScoped<IMenuUsuarioRepository, MenuUsuarioRepository>();
 
         #endregion
 
