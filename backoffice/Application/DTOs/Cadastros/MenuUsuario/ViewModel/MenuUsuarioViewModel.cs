@@ -16,6 +16,6 @@ namespace Application.DTOs.Cadastros.MenuUsuario.ViewModel
 
         public string IdUsuario { get; set; }
 
-        public int? IdMenu { get; set; }
+        public int? IdSubMenu { get; set; }
     }
 }

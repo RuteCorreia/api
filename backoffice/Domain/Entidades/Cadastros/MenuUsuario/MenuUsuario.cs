@@ -18,11 +18,11 @@ namespace Domain.Entidades.Cadastros.MenuUsuario
         [ForeignKey("Usuario")]
         public string IdUsuario { get; set; }
 
-        [ForeignKey("Menu")]
-        public int? IdMenu { get; set; }
+        [ForeignKey("SubMenu")]
+        public int? IdSubMenu { get; set; }
 
         [JsonIgnore]
-        public virtual Menu.Menu? Menu { get; set; }
+        public virtual SubMenu.SubMenu? SubMenu { get; set; }
 
         [JsonIgnore]
         public virtual IdentityUser? Usuario { get; set; }

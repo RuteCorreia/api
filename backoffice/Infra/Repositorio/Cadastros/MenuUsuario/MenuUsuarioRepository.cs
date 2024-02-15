@@ -49,7 +49,7 @@ namespace Infra.Repositorio.Cadastros.MenuUsuario
         public async Task UpdateAsync(Domain.Entidades.Cadastros.MenuUsuario.MenuUsuario obj)
         {
             var objeto = await _contextBase.MenuUsuario.FindAsync(obj.Id);
-            objeto.IdMenu = obj.IdMenu;
+            objeto.IdSubMenu = obj.IdSubMenu;
             objeto.IdUsuario = obj.IdUsuario;
 
             _contextBase.MenuUsuario.Update(objeto);
