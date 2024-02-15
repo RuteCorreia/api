@@ -15,10 +15,13 @@ using Domain.Entidades.Cadastros.Equipamento;
 using Domain.Entidades.Cadastros.Estados;
 using Domain.Entidades.Cadastros.Executor;
 using Domain.Entidades.Cadastros.Frota;
+using Domain.Entidades.Cadastros.Menu;
+using Domain.Entidades.Cadastros.MenuUsuario;
 using Domain.Entidades.Cadastros.Piloto;
 using Domain.Entidades.Cadastros.Pistas;
 using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.Cadastros.Produto;
+using Domain.Entidades.Cadastros.SubMenu;
 using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
 using Domain.Entidades.User;
@@ -73,6 +76,9 @@ public class ContextBase : IdentityDbContext
     public DbSet<TipoProduto> TipoProduto { get; set; }
     public DbSet<Veiculante> Veiculante { get; set; }
     public DbSet<Usuario> Usuario { get; set; }
+    public DbSet<Menu> Menu { get; set; }
+    public DbSet<MenuUsuario> MenuUsuario { get; set; }
+    public DbSet<SubMenu> SubMenu { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
