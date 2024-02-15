@@ -1374,8 +1374,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                               children: [
                                 if (imageAssinaturaContratante != null)
                                   pw.Container(
-                                    height: 20,
-                                    width: 80,
+                                    height: 22,
+                                    width: 120,
                                     child: pw.Image(
                                         pw.MemoryImage(
                                           imageAssinaturaContratante,

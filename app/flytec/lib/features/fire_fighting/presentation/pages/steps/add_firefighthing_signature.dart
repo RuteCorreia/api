@@ -57,11 +57,10 @@ class _AddFireFightingSecondStepState
     }
 
     final Uint8List? data =
-        await _controller.toPngBytes(height: 1000, width: 1000);
+        await _controller.toPngBytes(height: 600, width: 600);
     if (data == null) {
       return;
     }
-    log('AQUI');
     widget.onUpdateSignature(data);
     if (!mounted) return;
   }
