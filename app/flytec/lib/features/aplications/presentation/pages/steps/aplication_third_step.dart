@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
@@ -109,7 +108,6 @@ class _AplicationThirdStepState extends State<AplicationThirdStep> {
                                   .cnpj,
                             );
                           });
-                          log('--> ${getIt<GlobalConfigVars>().reportList.last.cliente?.inscricaoEstadual}');
                         },
                         child: CustomClientCard(
                           title: getIt<GlobalConfigVars>()
