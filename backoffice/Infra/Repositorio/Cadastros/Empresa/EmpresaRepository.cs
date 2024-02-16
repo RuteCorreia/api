@@ -47,7 +47,17 @@ public class EmpresaRepository : IEmpresaRepository
         var objeto = await _contextBase.Empresa.FindAsync(obj.IdEmpresa);
         objeto.Nome = obj.Nome;
         objeto.Imagem = obj.Imagem;
-        objeto.PlanoContratado = obj.PlanoContratado;
+        objeto.Email = obj.Email;
+        objeto.Telefone = obj.Telefone;
+        objeto.RegistroMapa = obj.RegistroMapa;
+        objeto.CNPJ = obj.CNPJ;
+        objeto.InscricaoEstadual = obj.InscricaoEstadual;
+        objeto.NrCDA = obj.NrCDA;
+        objeto.Endereco = obj.Endereco;
+        obj.Numero = obj.Numero;
+        objeto.Estado = obj.Estado;
+        objeto.Cidade = obj.Cidade;
+
 
         _contextBase.Empresa.Update(objeto);
         await _contextBase.SaveChangesAsync();

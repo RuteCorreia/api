@@ -72,7 +72,7 @@ public class EmpresaController : ControllerBase
     {
         try
         {
-            if(obj.ImagemBase64 != "")
+            if(!string.IsNullOrEmpty(obj.ImagemBase64))
             {
                 string[] parts = obj.ImagemBase64.Split(',');
                 string decodedBase64String = parts[1];
@@ -100,7 +100,7 @@ public class EmpresaController : ControllerBase
     {
         try
         {
-            if (obj.ImagemBase64 != "")
+            if (!string.IsNullOrEmpty(obj.ImagemBase64))
             {
                 string[] parts = obj.ImagemBase64.Split(',');
                 string decodedBase64String = parts[1];

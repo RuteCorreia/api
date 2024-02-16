@@ -10,10 +10,25 @@ public class Empresa
     [Required]
     public string Nome { get; set; }
 
-    public byte[] Imagem { get; set; }
+    [Required]
+    public string Email { get; set; }
+    public string? Telefone { get; set; }
+    public string? RegistroMapa { get; set; }
 
     [Required]
-    [Display(Name ="Plano Contratado")]
-    public int? PlanoContratado { get; set; }
+    public string CNPJ { get; set; }
+    public string? InscricaoEstadual { get; set; }
+    public int? NrCDA { get; set; }
+    public string? Endereco { get; set; }
+    public string? Numero { get; set; }
+
+    [Required]
+    public string Estado { get; set; }
+        
+    [Required]
+    public string Cidade { get; set; }
+
+    public byte[] Imagem { get; set; }
+
 
 }
