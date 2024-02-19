@@ -1511,8 +1511,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
-                    child: pw.Image(pw.MemoryImage(imageCondicoesClimaticas),
-                        fit: pw.BoxFit.fill),
+                    child: pw.Image(pw.MemoryImage(imageCondicoesClimaticas)),
                   ),
               ]));
         }));
