@@ -128,9 +128,6 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
     } else if (_dosagemUnidade == DosagemUnidade.NENHUM) {
       Util.toastAlerta("Selecione a unidade da dosagem ");
       return false;
-    } else if (_adjuvanteController.text.isEmpty) {
-      Util.toastAlerta("Digite o Adjuvante");
-      return false;
     } else if (_tipoServicoController.text.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
       return false;
