@@ -514,8 +514,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
               ),
               child: TextField(
                 controller: _densidadeController,
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true, signed: true),
                 onChanged: (value) {
                   data!.densidade = value;
                   setState(() {});
