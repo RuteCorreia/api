@@ -119,9 +119,6 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
     } else if (tipoFormulacao.isEmpty) {
       Util.toastAlerta("Selecione o tipo de formulação");
       return false;
-    } else if (alvoBiologico.isEmpty) {
-      Util.toastAlerta("Selecione o alvo biológico");
-      return false;
     } else if (dosePorHectarController.text.isEmpty) {
       Util.toastAlerta("Digite a dose do produto comercial por hectare");
       return false;
