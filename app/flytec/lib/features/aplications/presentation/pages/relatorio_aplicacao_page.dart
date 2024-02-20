@@ -61,61 +61,33 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   }
 
   bool verifyFields() {
-    // if (getIt<GlobalConfigVars>().selectedCultura.isEmpty) {
-    //   Util.toastAlerta("Selecione a cultura");
-    //   return false;
-    // } else if (produtoSelecionado.isEmpty) {
-    //   Util.toastAlerta("Selecione o produto aplicado");
-    //   return false;
-    // } else if (_dosagemController.text.isEmpty) {
-    //   Util.toastAlerta("Digite a dosagem");
-    //   return false;
     if (_dosagemUnidade == DosagemUnidade.NENHUM) {
       Util.toastAlerta("Selecione a unidade da dosagem");
       return false;
-    }
-    // else if (_volumeAplicado.text.isEmpty) {
-    //   Util.toastAlerta("Digite o volume aplicado");
-    //   return false;
-    else if (_volumeUnidade == VolumeUnidade.NENHUM) {
+    } else if (_volumeUnidade == VolumeUnidade.NENHUM) {
       Util.toastAlerta("Selecione a unidade do volume de aplicação");
       return false;
     }
-    // } else if (_totalAreaAplicada.text.isEmpty) {
-    //   Util.toastAlerta("Digite o total da área aplicada");
-    //   return false;
-    // } else if (selectedPista.isEmpty) {
-    //   Util.toastAlerta("Selecione a pista");
-    //   return false;
-    // } else if (_latitudeController.text.isEmpty) {
-    //   Util.toastAlerta("Digite a latitude");
-    //   return false;
-    // } else if (_longitudeController.text.isEmpty) {
-    //   Util.toastAlerta("Digite a longitude");
-    //   return false;
-    // } else if (_densidadeController.text.isEmpty) {
-    //   Util.toastAlerta("Digite a densidade");
-    //   return false;
-    // } else {
-      getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao =
-          RelatorioDeAplicacao(
-        cultura: getIt<GlobalConfigVars>().selectedCultura,
-        dosagem: _dosagemController.text,
-        latitudeSul: _latitudeController.text,
-        densidade: _densidadeController.text,
-        log: _selectedLog,
-        longitudeOeste: _longitudeController.text,
-        localizacaoPista: selectedPista,
-        observacoes: _observationTextField.text,
-        totalAreaAplicada: _totalAreaAplicada.text,
-        produtoAplicado: produtoSelecionado,
-        volumeDeAplicacao: _volumeAplicado.text,
-        unidadeVolume: _volumeUnidade == VolumeUnidade.KG ? "Kg/ha" : "L/ha",
-        unidadeDosagem: getDosagemUnidade(dosagemUnidade: _dosagemUnidade),
-      );
-      setState(() {});
-      Util.toastSucesso("Dados salvo com sucesso");
-      return true;
+
+    getIt<GlobalConfigVars>().reportList.last.relatorioDeAplicacao =
+        RelatorioDeAplicacao(
+      cultura: getIt<GlobalConfigVars>().selectedCultura,
+      dosagem: _dosagemController.text,
+      latitudeSul: _latitudeController.text,
+      densidade: _densidadeController.text,
+      log: _selectedLog,
+      longitudeOeste: _longitudeController.text,
+      localizacaoPista: selectedPista,
+      observacoes: _observationTextField.text,
+      totalAreaAplicada: _totalAreaAplicada.text,
+      produtoAplicado: produtoSelecionado,
+      volumeDeAplicacao: _volumeAplicado.text,
+      unidadeVolume: _volumeUnidade == VolumeUnidade.KG ? "Kg/ha" : "L/ha",
+      unidadeDosagem: getDosagemUnidade(dosagemUnidade: _dosagemUnidade),
+    );
+    setState(() {});
+    Util.toastSucesso("Dados salvo com sucesso");
+    return true;
     //}
   }
 
