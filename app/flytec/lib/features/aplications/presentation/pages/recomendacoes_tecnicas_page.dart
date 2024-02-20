@@ -128,9 +128,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
     if (_veiculanteType.isEmpty || _veiculanteType == "Selecione") {
       Util.toastAlerta("Selecione o veiculante");
       return false;
-    } else if (_qtdVeiculante.text.isEmpty) {
-      Util.toastAlerta("Digite a quantidade veiculante");
-      return false;
     } else if (_larguraDaFaixa.text.isEmpty) {
       Util.toastAlerta("Digite a largura da faixa");
       return false;
