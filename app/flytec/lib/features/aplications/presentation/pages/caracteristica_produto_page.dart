@@ -119,17 +119,11 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
     } else if (tipoFormulacao.isEmpty) {
       Util.toastAlerta("Selecione o tipo de formulação");
       return false;
-    } else if (alvoBiologico.isEmpty) {
-      Util.toastAlerta("Selecione o alvo biológico");
-      return false;
     } else if (dosePorHectarController.text.isEmpty) {
       Util.toastAlerta("Digite a dose do produto comercial por hectare");
       return false;
     } else if (_dosagemUnidade == DosagemUnidade.NENHUM) {
       Util.toastAlerta("Selecione a unidade da dosagem ");
-      return false;
-    } else if (_adjuvanteController.text.isEmpty) {
-      Util.toastAlerta("Digite o Adjuvante");
       return false;
     } else if (_tipoServicoController.text.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
