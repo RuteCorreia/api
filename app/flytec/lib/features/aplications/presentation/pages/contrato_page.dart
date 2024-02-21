@@ -7,6 +7,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 import 'my_activity_page.dart';
@@ -32,6 +33,20 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
 
   final TextEditingController _distancia = TextEditingController();
 
+  String _changePrice() {
+    final price = double.parse(_precoController.text
+        .replaceAll("R\$", "")
+        .replaceAll(".", "")
+        .replaceAll(",", '.'));
+
+    _valorTotalController.text =
+        NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$').format((price *
+            double.parse(_extensaoController.text.isEmpty
+                ? "0.0"
+                : _extensaoController.text)));
+    return _valorTotalController.text;
+  }
+
   bool verifyFields() {
     // if (_precoController.text.isEmpty) {
     //   Util.toastAlerta("Digite o preço");
@@ -52,20 +67,19 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
     //   Util.toastAlerta("Digite uma data válida");
     //   return false;
     // } else {
-      getIt<GlobalConfigVars>().reportList.last.contratoServico =
-          ContratoServico(
-              executor: getIt<GlobalConfigVars>().selectedExecutor,
-              nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
-              extensao: _extensaoController.text,
-              vencimento: _vencimentoController.text,
-              preco: _precoController.text,
-              valorTotal: _valorTotalController.text,
-              tipoPreco: _preco == Preco.Ha ? "ha" : "hora",
-              distanciaDaPista: _distancia.text);
+    getIt<GlobalConfigVars>().reportList.last.contratoServico = ContratoServico(
+        executor: getIt<GlobalConfigVars>().selectedExecutor,
+        nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
+        extensao: _extensaoController.text,
+        vencimento: _vencimentoController.text,
+        preco: _precoController.text,
+        valorTotal: _valorTotalController.text,
+        tipoPreco: _preco == Preco.Ha ? "ha" : "hora",
+        distanciaDaPista: _distancia.text);
 
-      Util.toastSucesso("Dados inseridos com sucesso");
-      context.pop();
-      return true;
+    Util.toastSucesso("Dados inseridos com sucesso");
+    context.pop();
+    return true;
     //}
   }
 
@@ -117,6 +131,7 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
             CustomTextField(
               onChanged: (value) {
                 data!.preco = value;
+                data.valorTotal = _changePrice();
               },
               formater: [
                 FilteringTextInputFormatter.digitsOnly,
@@ -165,11 +180,13 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
               ],
             ),
             const SizedBox(height: 20),
-            const CustomText(text: 'Extensão ha'),
+            CustomText(
+                text: 'Extensão ${_preco == Preco.Ha ? "ha" : "em horas"}'),
             const SizedBox(height: 14),
             CustomTextField(
               onChanged: (value) {
                 data!.extensao = value;
+                data.valorTotal = _changePrice();
               },
               controller: _extensaoController,
               keyboardType: TextInputType.number,
