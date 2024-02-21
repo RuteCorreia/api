@@ -36,49 +36,70 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
   late PdfGenerator _pdfGenerator;
 
   String selectedPilot = "";
-  void openContextMenu() {
-    showAdaptiveDialog<String>(
+
+  DashBoardState _stateDashboard({int? reportListIndex}) {
+    return DashBoardState.NaoEnviado;
+  }
+
+  Future<void> _openContextMenu({int? reportListIndex}) async {
+    await showAdaptiveDialog<String>(
       context: context,
       useSafeArea: true,
       builder: (BuildContext context) => AlertDialog.adaptive(
         insetPadding: const EdgeInsets.all(32),
-        content: SizedBox(
-          height: 235,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                const Text(
-                  'Escolha uma ação',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color.fromARGB(255, 121, 118, 118),
-                    fontSize: 16,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w500,
-                    height: 0.09,
-                  ),
+        content: SingleChildScrollView(
+          child: Column(
+            children: [
+              const SizedBox(height: 10),
+              const Text(
+                'Escolha uma ação',
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color.fromARGB(255, 121, 118, 118),
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  fontWeight: FontWeight.w500,
+                  height: 0.09,
                 ),
-                const SizedBox(height: 20),
-                CustomDialogButton(
-                  leftIcon: "assets/images/sendicon.svg",
-                  text: "Enviar",
-                  showRightcon: false,
-                  onClick: () {},
-                ),
-                const SizedBox(height: 10),
-                CustomDialogButton(
-                  leftIcon: "assets/images/edit.svg",
-                  showRightcon: false,
-                  onClick: () {
-                    context.pop();
-                    context.push("/combateincendio", extra: "dd");
-                  },
-                  text: "Editar",
-                ),
-                const SizedBox(height: 10),
-              ],
-            ),
+              ),
+              const SizedBox(height: 20),
+              CustomDialogButton(
+                leftIcon: "assets/images/sendicon.svg",
+                text: "Enviar",
+                showRightcon: false,
+                onClick: () {},
+              ),
+              const SizedBox(height: 10),
+              CustomDialogButton(
+                leftIcon: "assets/images/edit.svg",
+                showRightcon: false,
+                onClick: () {
+                  context.pop();
+                },
+                text: "Editar",
+              ),
+              const SizedBox(height: 10),
+              CustomDialogButton(
+                leftIcon: "assets/images/cancel.svg",
+                showRightcon: false,
+                onClick: () async {
+                  _pdfGenerator = ReportAplicationsGenerate(
+                      relatorioModel: getIt<ReportCacheService>()
+                          .reportList[reportListIndex!]);
+                  final document = await _pdfGenerator.generatePdf();
+                  final documentBytes =
+                      await _pdfGenerator.saveDocument(document: document);
+                  final directory = await getApplicationCacheDirectory();
+                  File file = File(
+                      "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+                  await file.writeAsBytes(documentBytes!);
+                  context.pop();
+                  context.push("/reportPage", extra: file);
+                },
+                text: "Gerar Relatório",
+              ),
+              const SizedBox(height: 10),
+            ],
           ),
         ),
         actions: const <Widget>[],
@@ -360,21 +381,9 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
                             .dadosDoResponsavel!
                             .data,
                         hour: "${DateTime.now().hour}:${DateTime.now().minute}",
-                        state: DashBoardState.NaoEnviado,
+                        state: _stateDashboard(reportListIndex: index),
                         onClick: () async {
-                          _pdfGenerator = ReportAplicationsGenerate(
-                              relatorioModel: getIt<ReportCacheService>()
-                                  .reportList[index]);
-                          final document = await _pdfGenerator.generatePdf();
-                          final documentBytes = await _pdfGenerator
-                              .saveDocument(document: document);
-                          final directory =
-                              await getApplicationCacheDirectory();
-                          File file = File(
-                              "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
-                          await file.writeAsBytes(documentBytes!);
-                          context.push("/reportPage", extra: file);
-                          // openContextMenu();
+                          await _openContextMenu(reportListIndex: index);
                         },
                       );
                     }),
