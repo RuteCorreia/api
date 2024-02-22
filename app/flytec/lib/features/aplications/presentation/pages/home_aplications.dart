@@ -37,9 +37,7 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
 
   String selectedPilot = "";
 
-  DashBoardState _stateDashboard({int? reportListIndex}) {
-    return DashBoardState.NaoEnviado;
-  }
+
 
   Future<void> _openContextMenu({int? reportListIndex}) async {
     await showAdaptiveDialog<String>(
@@ -120,6 +118,13 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
         }
       }
     }
+  }
+
+  int _obtainQuantityReportsByState(DashBoardState state) {
+    return getIt<GlobalConfigVars>()
+        .reportList
+        .where((element) => element.dashBoardState == state)
+        .length;
   }
 
   @override
@@ -328,27 +333,33 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomDashBoardCounter(
                     text: "Enviado",
-                    value: "0",
+                    value: _obtainQuantityReportsByState(DashBoardState.Enviado)
+                        .toString(),
                     state: DashBoardState.Enviado,
                   ),
                   CustomDashBoardCounter(
                     text: "Pronto",
-                    value: "0",
+                    value: _obtainQuantityReportsByState(DashBoardState.Pronto)
+                        .toString(),
                     state: DashBoardState.Pronto,
                   ),
                   CustomDashBoardCounter(
                     text: "Incompleto",
-                    value: "0",
+                    value:
+                        _obtainQuantityReportsByState(DashBoardState.Incompleto)
+                            .toString(),
                     state: DashBoardState.Incompleto,
                   ),
                   CustomDashBoardCounter(
                     text: "Não enviado",
-                    value: "0",
+                    value:
+                        _obtainQuantityReportsByState(DashBoardState.NaoEnviado)
+                            .toString(),
                     state: DashBoardState.NaoEnviado,
                   ),
                 ],
@@ -381,171 +392,15 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
                             .dadosDoResponsavel!
                             .data,
                         hour: "${DateTime.now().hour}:${DateTime.now().minute}",
-                        state: _stateDashboard(reportListIndex: index),
+                        state: getIt<ReportCacheService>()
+                            .reportList[index]
+                            .dashBoardState!,
                         onClick: () async {
                           await _openContextMenu(reportListIndex: index);
                         },
                       );
                     }),
               )
-              /*    DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                state: DashBoardState.Pronto,
-                onClick: () {
-                  openContextMenu();
-                },
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 230,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/sendicon.svg",
-                                text: "Enviar",
-                                showRightcon: false,
-                                onClick: () {},
-                              ),
-                              const SizedBox(height: 10),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/edit.svg",
-                                showRightcon: false,
-                                onClick: () {
-                                  context.pop();
-                                  context.push("/combateincendio", extra: "dd");
-                                },
-                                text: "Editar",
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.NaoEnviado,
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 130,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/edit.svg",
-                                showRightcon: false,
-                                onClick: () {
-                                  context.pop();
-                                  context.push("/combateincendio", extra: "dd");
-                                },
-                                text: "Editar",
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.Incompleto,
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 130,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/sendicon.svg",
-                                text: "Visualizar",
-                                showRightcon: false,
-                                onClick: () {},
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.Enviado,
-              )
-            */
             ],
           ),
         ),
