@@ -144,7 +144,8 @@ class _AddFireFightingSecondStepState extends State<MyActivityPage> {
                                 ? "Selecione"
                                 : selectedPilot,
                             onTap: () async {
-                              await showDialog(
+                              Util.closeKeyBoard();
+await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(

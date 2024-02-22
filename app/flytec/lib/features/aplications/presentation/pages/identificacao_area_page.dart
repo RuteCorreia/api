@@ -341,6 +341,7 @@ class _IdentificacaoAreaTratamentoState
                 selectedName:
                     selectedCultura.isEmpty ? "Selecione" : selectedCultura,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {

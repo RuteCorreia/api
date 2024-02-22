@@ -177,6 +177,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                     ? "Selecione"
                     : getIt<GlobalConfigVars>().selectedCultura,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -277,6 +278,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                     ? "Selecione"
                     : produtoSelecionado,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -342,6 +344,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
               CustomComboBoxExpanded(
                 selectedName: classe.isEmpty ? "Selecione" : classe,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -367,6 +370,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                 selectedName:
                     tipoFormulacao.isEmpty ? "Selecione" : tipoFormulacao,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -394,6 +398,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                 selectedName:
                     alvoBiologico.isEmpty ? "Selecione" : alvoBiologico,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {

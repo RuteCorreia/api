@@ -78,7 +78,8 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                               ? "Selecione o piloto"
                               : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
-                    await showDialog(
+                    Util.closeKeyBoard();
+await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -120,7 +121,8 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                               ? "Selecione o executor"
                               : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
-                    await showDialog(
+                    Util.closeKeyBoard();
+await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(

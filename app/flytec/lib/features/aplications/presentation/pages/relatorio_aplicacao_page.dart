@@ -133,7 +133,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                   ? "Selecione"
                   : getIt<GlobalConfigVars>().selectedCultura,
               onTap: () async {
-                await showDialog(
+                Util.closeKeyBoard();
+await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
@@ -157,7 +158,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
               selectedName:
                   produtoSelecionado.isEmpty ? "Selecione" : produtoSelecionado,
               onTap: () async {
-                await showDialog(
+                Util.closeKeyBoard();
+await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
@@ -386,7 +388,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             CustomComboBoxExpanded(
               selectedName: selectedPista.isEmpty ? "Selecione" : selectedPista,
               onTap: () async {
-                await showDialog(
+                Util.closeKeyBoard();
+await showDialog(
                     context: context,
                     builder: (BuildContext context) {
                       return AlertDialog(
@@ -689,7 +692,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const SizedBox(height: 13),
             InkWell(
                 onTap: () async {
-                  await showDialog(
+                  Util.closeKeyBoard();
+await showDialog(
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(

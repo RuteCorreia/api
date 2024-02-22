@@ -196,7 +196,8 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                                 ? "Selecione"
                                 : selectedPilot,
                             onTap: () async {
-                              await showDialog(
+                              Util.closeKeyBoard();
+await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
