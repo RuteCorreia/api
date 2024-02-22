@@ -108,8 +108,8 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
     }
   }
 
-  String _speedWindInitial = 'Selecione';
-  String _speedWindFinal = 'Selecione';
+  String _speedWindInitial = '20 km/h';
+  String _speedWindFinal = '20 km/h';
   String _temperatureSelectedInitial = "20.0°C";
   String _temperatureSelectedFinal = "20.0°C";
   String _imageMapsPath = "";
@@ -362,14 +362,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                           content: SizedBox(
                                             width: double.maxFinite,
                                             child: TemperatureSelect(
+                                                scrollTheList: true,
+                                                scrollToIndex: 19,
                                                 onChangedTemperature: (value) {
-                                              setState(() {
-                                                _temperatureSelectedInitial =
-                                                    value;
-                                                data!.temperaturaIncial = value;
-                                              });
-                                              Util.closeKeyBoard();
-                                            }),
+                                                  setState(() {
+                                                    _temperatureSelectedInitial =
+                                                        value;
+                                                    data!.temperaturaIncial =
+                                                        value;
+                                                  });
+                                                  Util.closeKeyBoard();
+                                                }),
                                           ));
                                     });
                               },
@@ -398,14 +401,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                           content: SizedBox(
                                             width: double.maxFinite,
                                             child: TemperatureSelect(
+                                                scrollTheList: true,
+                                                scrollToIndex: 19,
                                                 onChangedTemperature: (value) {
-                                              setState(() {
-                                                _temperatureSelectedFinal =
-                                                    value;
-                                                data!.temperaturaFinal = value;
-                                              });
-                                              Util.closeKeyBoard();
-                                            }),
+                                                  setState(() {
+                                                    _temperatureSelectedFinal =
+                                                        value;
+                                                    data!.temperaturaFinal =
+                                                        value;
+                                                  });
+                                                  Util.closeKeyBoard();
+                                                }),
                                           ));
                                     });
                               },
@@ -436,14 +442,17 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                       content: SizedBox(
                                         width: double.maxFinite,
                                         child: RelativeHumiditySelect(
+                                            scrollTheList: true,
+                                            scrollToIndex: 54,
                                             onChangedHumidity: (value) {
-                                          setState(() {
-                                            _humiditySelectedInitial = value;
-                                            data!.umidadeRelativaInicial =
-                                                value;
-                                          });
-                                          Util.closeKeyBoard();
-                                        }),
+                                              setState(() {
+                                                _humiditySelectedInitial =
+                                                    value;
+                                                data!.umidadeRelativaInicial =
+                                                    value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
                                       ));
                                 });
                           },
@@ -466,13 +475,16 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                       content: SizedBox(
                                         width: double.maxFinite,
                                         child: RelativeHumiditySelect(
+                                            scrollTheList: true,
+                                            scrollToIndex: 54,
                                             onChangedHumidity: (value) {
-                                          setState(() {
-                                            _humiditySelectedFinal = value;
-                                            data!.umidadeRelativaFinal = value;
-                                          });
-                                          Util.closeKeyBoard();
-                                        }),
+                                              setState(() {
+                                                _humiditySelectedFinal = value;
+                                                data!.umidadeRelativaFinal =
+                                                    value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
                                       ));
                                 });
                           },
@@ -500,13 +512,15 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                       content: SizedBox(
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
+                                            scrollTheList: true,
+                                            scrollToIndex: 19,
                                             onChangedSpeedWind: (value) {
-                                          setState(() {
-                                            _speedWindInitial = value;
-                                            data!.ventoInicial = value;
-                                          });
-                                          Util.closeKeyBoard();
-                                        }),
+                                              setState(() {
+                                                _speedWindInitial = value;
+                                                data!.ventoInicial = value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
                                       ));
                                 });
                           },
@@ -528,13 +542,15 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                                       content: SizedBox(
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
+                                            scrollTheList: true,
+                                            scrollToIndex: 19,
                                             onChangedSpeedWind: (value) {
-                                          setState(() {
-                                            _speedWindFinal = value;
-                                            data!.ventoFinal = value;
-                                          });
-                                          Util.closeKeyBoard();
-                                        }),
+                                              setState(() {
+                                                _speedWindFinal = value;
+                                                data!.ventoFinal = value;
+                                              });
+                                              Util.closeKeyBoard();
+                                            }),
                                       ));
                                 });
                           },
