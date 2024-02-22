@@ -37,8 +37,6 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
 
   String selectedPilot = "";
 
-
-
   Future<void> _openContextMenu({int? reportListIndex}) async {
     await showAdaptiveDialog<String>(
       context: context,
@@ -110,21 +108,15 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
     super.initState();
     getIt<ReportCacheService>().reportList.clear();
     for (var element in getIt<GlobalConfigVars>().reportList) {
-      if (element.finalizado) {
-        if (getIt<ReportCacheService>().reportList.contains(element)) {
-          return;
-        } else {
-          getIt<ReportCacheService>().reportList.add(element);
-        }
-      }
+      getIt<ReportCacheService>().reportList.add(element);
     }
   }
 
   int _obtainQuantityReportsByState(DashBoardState state) {
-    return getIt<GlobalConfigVars>()
-        .reportList
-        .where((element) => element.dashBoardState == state)
-        .length;
+    return getIt<GlobalConfigVars>().reportList.where((element) {
+      element.dashBoardState ??= DashBoardState.Incompleto;
+      return element.dashBoardState == state;
+    }).length;
   }
 
   @override
