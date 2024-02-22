@@ -102,7 +102,9 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplicationstep1',
           builder: (BuildContext context, GoRouterState state) {
-            return const AplicationFirstStep();
+            final extra = state.extra as Map<String, dynamic>;
+            return AplicationFirstStep(
+                updateReportList: extra['updateReportList']);
           },
         ),
         GoRoute(
