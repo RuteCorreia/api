@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flytec/features/aplications/presentation/pages/home_aplications.dart';
+
 List<RelatorioModel> relatorioModelFromJson(String str) =>
     List<RelatorioModel>.from(
         json.decode(str).map((x) => RelatorioModel.fromJson(x)));
@@ -22,6 +24,7 @@ class RelatorioModel {
   RelatorioDeAplicacao? relatorioDeAplicacao;
   ContratoServico? contratoServico;
   DadosDoResponsavel? dadosDoResponsavel;
+  DashBoardState? dashBoardState;
 
   RelatorioModel({
     this.piloto,
@@ -32,9 +35,12 @@ class RelatorioModel {
     this.carateristicaProduto,
     this.recomendacoesTecnicas,
     this.relatorioDeAplicacao,
+    this.dashBoardState,
     this.contratoServico,
     this.dadosDoResponsavel,
   });
+
+ 
 
   factory RelatorioModel.fromJson(Map<String, dynamic> json) => RelatorioModel(
         piloto: json["piloto"],
@@ -154,23 +160,21 @@ class AreaTratada {
   String? extensao;
   String? pathImage;
 
-  AreaTratada({
-    this.uf,
-    this.cidade,
-    this.localizacao,
-    this.cultura,
-    this.extensao,
-      this.pathImage
-  });
+  AreaTratada(
+      {this.uf,
+      this.cidade,
+      this.localizacao,
+      this.cultura,
+      this.extensao,
+      this.pathImage});
 
   factory AreaTratada.fromJson(Map<String, dynamic> json) => AreaTratada(
-        uf: json["uf"] ?? "",
-        cidade: json["cidade"] ?? "",
-        localizacao: json["localizacao"] ?? "",
-        cultura: json["cultura"] ?? "",
-        extensao: json["extensao"] ?? "",
-      pathImage: json["pathImage"] ?? ""
-      );
+      uf: json["uf"] ?? "",
+      cidade: json["cidade"] ?? "",
+      localizacao: json["localizacao"] ?? "",
+      cultura: json["cultura"] ?? "",
+      extensao: json["extensao"] ?? "",
+      pathImage: json["pathImage"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "uf": uf,
@@ -195,34 +199,32 @@ class CarateristicaProduto {
   String? tipoServico;
   String? pathImage;
 
-  CarateristicaProduto({
-    this.cultura,
-    this.nomeProduto,
-    this.classificacaoToxicologica,
-    this.classe,
-    this.tipoFormulacao,
-    this.alvoBiologico,
-    this.dosePorHectare,
-    this.unidadeHectare,
-    this.adjuvante,
-    this.tipoServico,
-      this.pathImage
-  });
+  CarateristicaProduto(
+      {this.cultura,
+      this.nomeProduto,
+      this.classificacaoToxicologica,
+      this.classe,
+      this.tipoFormulacao,
+      this.alvoBiologico,
+      this.dosePorHectare,
+      this.unidadeHectare,
+      this.adjuvante,
+      this.tipoServico,
+      this.pathImage});
 
   factory CarateristicaProduto.fromJson(Map<String, dynamic> json) =>
       CarateristicaProduto(
-        cultura: json["cultura"] ?? "",
-        nomeProduto: json["nomeProduto"] ?? "",
-        classificacaoToxicologica: json["classificacaoToxicologica"] ?? "",
-        classe: json["classe"] ?? "",
-        tipoFormulacao: json["tipoFormulacao"] ?? "",
-        alvoBiologico: json["alvoBiologico"] ?? "",
-        dosePorHectare: json["dosePorHectare"] ?? "",
-        unidadeHectare: json["unidadeHectare"] ?? "",
-        adjuvante: json["adjuvante"] ?? "",
-        tipoServico: json["tipoServico"] ?? "",
-          pathImage: json["pathImage"] ?? ""
-      );
+          cultura: json["cultura"] ?? "",
+          nomeProduto: json["nomeProduto"] ?? "",
+          classificacaoToxicologica: json["classificacaoToxicologica"] ?? "",
+          classe: json["classe"] ?? "",
+          tipoFormulacao: json["tipoFormulacao"] ?? "",
+          alvoBiologico: json["alvoBiologico"] ?? "",
+          dosePorHectare: json["dosePorHectare"] ?? "",
+          unidadeHectare: json["unidadeHectare"] ?? "",
+          adjuvante: json["adjuvante"] ?? "",
+          tipoServico: json["tipoServico"] ?? "",
+          pathImage: json["pathImage"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "cultura": cultura,
@@ -533,35 +535,33 @@ class Aplicacoes {
   String? ventoFinal;
   String? pathImage;
 
-  Aplicacoes({
-    this.dataDaAplicacao,
-    this.horarioDeInicio,
-    this.horimetroInicial,
-    this.horarioDeTermino,
-    this.horimetroFinal,
-    this.temperaturaIncial,
-    this.temperaturaFinal,
-    this.umidadeRelativaInicial,
-    this.umidadeRelativaFinal,
-    this.ventoInicial,
-    this.ventoFinal,
-      this.pathImage
-  });
+  Aplicacoes(
+      {this.dataDaAplicacao,
+      this.horarioDeInicio,
+      this.horimetroInicial,
+      this.horarioDeTermino,
+      this.horimetroFinal,
+      this.temperaturaIncial,
+      this.temperaturaFinal,
+      this.umidadeRelativaInicial,
+      this.umidadeRelativaFinal,
+      this.ventoInicial,
+      this.ventoFinal,
+      this.pathImage});
 
   factory Aplicacoes.fromJson(Map<String, dynamic> json) => Aplicacoes(
-        dataDaAplicacao: json["dataDaAplicacao"] ?? "",
-        horarioDeInicio: json["horarioDeInicio"] ?? "",
-        horimetroInicial: json["horimetroInicial"] ?? "",
-        horarioDeTermino: json["horarioDeTermino"] ?? "",
-        horimetroFinal: json["horimetroFinal"] ?? "",
-        temperaturaIncial: json["temperaturaIncial"] ?? "",
-        temperaturaFinal: json["temperaturaFinal"] ?? "",
-        umidadeRelativaInicial: json["umidadeRelativaInicial"] ?? "",
-        umidadeRelativaFinal: json["umidadeRelativaFinal"] ?? "",
-        ventoInicial: json["ventoInicial"] ?? "",
-        ventoFinal: json["ventoFinal"] ?? "",
-      pathImage: json["pathImage"] ?? ""
-      );
+      dataDaAplicacao: json["dataDaAplicacao"] ?? "",
+      horarioDeInicio: json["horarioDeInicio"] ?? "",
+      horimetroInicial: json["horimetroInicial"] ?? "",
+      horarioDeTermino: json["horarioDeTermino"] ?? "",
+      horimetroFinal: json["horimetroFinal"] ?? "",
+      temperaturaIncial: json["temperaturaIncial"] ?? "",
+      temperaturaFinal: json["temperaturaFinal"] ?? "",
+      umidadeRelativaInicial: json["umidadeRelativaInicial"] ?? "",
+      umidadeRelativaFinal: json["umidadeRelativaFinal"] ?? "",
+      ventoInicial: json["ventoInicial"] ?? "",
+      ventoFinal: json["ventoFinal"] ?? "",
+      pathImage: json["pathImage"] ?? "");
 
   Map<String, dynamic> toJson() => {
         "dataDaAplicacao": dataDaAplicacao,
