@@ -354,6 +354,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                           const SizedBox(height: 12),
                           InkWell(
                               onTap: () async {
+                                Util.closeKeyBoard();
                                 await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -393,6 +394,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                           const SizedBox(height: 12),
                           InkWell(
                               onTap: () async {
+                                Util.closeKeyBoard();
                                 await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -434,6 +436,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                       const SizedBox(height: 12),
                       InkWell(
                           onTap: () async {
+                            Util.closeKeyBoard();
                             await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -467,6 +470,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                       const SizedBox(height: 12),
                       InkWell(
                           onTap: () async {
+                            Util.closeKeyBoard();
                             await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -504,6 +508,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                       const SizedBox(height: 12),
                       InkWell(
                           onTap: () async {
+                            Util.closeKeyBoard();
                             await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {
@@ -534,6 +539,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                       const SizedBox(height: 12),
                       InkWell(
                           onTap: () async {
+                            Util.closeKeyBoard();
                             await showDialog(
                                 context: context,
                                 builder: (BuildContext context) {

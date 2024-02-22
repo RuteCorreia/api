@@ -248,6 +248,7 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
                                   ? "Selecione"
                                   : selectedPilot,
                               onTap: () async {
+                                Util.closeKeyBoard();
                                 await showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
@@ -284,6 +285,7 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
                                     ? "Selecione"
                                     : __selectedAaeronave,
                                 onTap: () async {
+                                  Util.closeKeyBoard();
                                   await showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

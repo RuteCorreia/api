@@ -220,6 +220,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     const SizedBox(height: 14),
                     InkWell(
                         onTap: () async {
+                          Util.closeKeyBoard();
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -233,7 +234,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                           _veiculanteType = value;
                                           data!.veiculante = value;
                                         });
-                                        Util.closeKeyBoard();
                                       }),
                                     ));
                               });
@@ -395,6 +395,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     ? "Selecione"
                     : __selectedAaeronave,
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -407,7 +408,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                   __selectedAaeronave = value;
                                   data!.aeronave = value;
                                 });
-                                Util.closeKeyBoard();
                               }),
                             ));
                       });
@@ -418,6 +418,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
             const SizedBox(height: 10),
             InkWell(
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -431,7 +432,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                   _flightHeight = value;
                                   data!.alturaDoVoo = value;
                                 });
-                                Util.closeKeyBoard();
                               }),
                             ));
                       });
@@ -450,6 +450,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     const SizedBox(height: 14),
                     InkWell(
                         onTap: () async {
+                          Util.closeKeyBoard();
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -465,7 +466,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                               _temperatureSelected = value;
                                               data!.temperatura = value;
                                             });
-                                            Util.closeKeyBoard();
                                           }),
                                     ));
                               });
@@ -480,6 +480,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     const SizedBox(height: 14),
                     InkWell(
                         onTap: () async {
+                          Util.closeKeyBoard();
                           await showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -495,7 +496,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                               _humiditySelected = value;
                                               data!.umidadeRelativaDoAr = value;
                                             });
-                                            Util.closeKeyBoard();
                                           }),
                                     ));
                               });
@@ -513,6 +513,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
             const SizedBox(height: 14),
             InkWell(
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -520,16 +521,13 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             backgroundColor: Colors.grey[100],
                             content: SizedBox(
                               width: double.maxFinite,
-                              child: SpeedWindSelect(
-                                  scrollTheList: true,
-                                  scrollToIndex: 19,
-                                  onChangedSpeedWind: (value) {
-                                    setState(() {
-                                      _speedWind = value;
-                                      data!.velocidadeDoVento = value;
-                                    });
-                                    Util.closeKeyBoard();
-                                  }),
+                              child:
+                                  SpeedWindSelect(onChangedSpeedWind: (value) {
+                                setState(() {
+                                  _speedWind = value;
+                                  data!.velocidadeDoVento = value;
+                                });
+                              }),
                             ));
                       });
                 },
@@ -541,6 +539,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
             const SizedBox(height: 14),
             InkWell(
                 onTap: () async {
+                  Util.closeKeyBoard();
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
@@ -554,7 +553,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                   _productType = value;
                                   data!.tipoProduto = value;
                                 });
-                                Util.closeKeyBoard();
                               }),
                             ));
                       });
@@ -572,6 +570,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                 await showDialog(
                     context: context,
                     builder: (BuildContext context) {
+                      Util.closeKeyBoard();
                       return AlertDialog(
                           backgroundColor: const Color(0xFFF5F5F5),
                           content: SizedBox(
@@ -581,7 +580,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                 _selectedEquipment = value;
                                 data!.equipamento = value;
                               });
-                              Util.closeKeyBoard();
                             }),
                           ));
                     });
@@ -595,6 +593,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                   await showDialog(
                       context: context,
                       builder: (BuildContext context) {
+                        Util.closeKeyBoard();
                         return AlertDialog(
                             backgroundColor: Colors.grey[100],
                             content: SizedBox(
@@ -604,7 +603,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                   _degree = value;
                                   data!.angulo = value;
                                 });
-                                Util.closeKeyBoard();
                               }),
                             ));
                       });

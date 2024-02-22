@@ -85,7 +85,8 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                   selectedName:
                       airCraftPrexix.isEmpty ? "Selecione" : airCraftPrexix,
                   onTap: () async {
-                    await showDialog(
+                    Util.closeKeyBoard();
+await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
