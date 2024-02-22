@@ -169,14 +169,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.5"
-  estados_municipios:
-    dependency: "direct main"
-    description:
-      name: estados_municipios
-      sha256: d98fefc11df7274b37dbb558b82a9677f6d791e3d98349ebbfe0f68eb2453fa9
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.0.2"
   fake_async:
     dependency: transitive
     description:

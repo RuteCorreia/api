@@ -48,39 +48,35 @@ class _ContratoPrestacaoServiceState extends State<ContratoPrestacaoService> {
   }
 
   bool verifyFields() {
-    // if (_precoController.text.isEmpty) {
-    //   Util.toastAlerta("Digite o preço");
-    //   return false;
-    // } else if (_extensaoController.text.isEmpty) {
-    //   Util.toastAlerta("Digite a extensão");
-    //   return false;
-    // }
-    // if (_valorTotalController.text.isEmpty) {
-    //   Util.toastAlerta("Digite o valor total");
-    //   return false;
-    // }
-    // if (_vencimentoController.text.isEmpty) {
-    //   Util.toastAlerta("Digite o vencimento");
-    //   return false;
-    // }
-    // if (_vencimentoController.text.length < 10) {
-    //   Util.toastAlerta("Digite uma data válida");
-    //   return false;
-    // } else {
-    getIt<GlobalConfigVars>().reportList.last.contratoServico = ContratoServico(
-        executor: getIt<GlobalConfigVars>().selectedExecutor,
-        nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
-        extensao: _extensaoController.text,
-        vencimento: _vencimentoController.text,
-        preco: _precoController.text,
-        valorTotal: _valorTotalController.text,
-        tipoPreco: _preco == Preco.Ha ? "ha" : "hora",
-        distanciaDaPista: _distancia.text);
+    if (_distancia.text.isEmpty) {
+      Util.toastAlerta("Digite a distância da pista");
+      return false;
+    } else if (_precoController.text.isEmpty) {
+      Util.toastAlerta("Digite o preço");
+      return false;
+    } else if (_extensaoController.text.isEmpty) {
+      Util.toastAlerta("Digite a extensão");
+      return false;
+    }
+    if (_valorTotalController.text.isEmpty) {
+      Util.toastAlerta("Digite o valor total");
+      return false;
+    } else {
+      getIt<GlobalConfigVars>().reportList.last.contratoServico =
+          ContratoServico(
+              executor: getIt<GlobalConfigVars>().selectedExecutor,
+              nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
+              extensao: _extensaoController.text,
+              vencimento: _vencimentoController.text,
+              preco: _precoController.text,
+              valorTotal: _valorTotalController.text,
+              tipoPreco: _preco == Preco.Ha ? "ha" : "hora",
+              distanciaDaPista: _distancia.text);
 
-    Util.toastSucesso("Dados inseridos com sucesso");
-    context.pop();
-    return true;
-    //}
+      Util.toastSucesso("Dados inseridos com sucesso");
+      context.pop();
+      return true;
+    }
   }
 
   @override
