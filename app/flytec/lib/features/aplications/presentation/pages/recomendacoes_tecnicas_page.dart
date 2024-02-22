@@ -33,7 +33,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
   Unidade _unidade = Unidade.NENHUM;
   String _degree = "Selecione";
   String _veiculanteType = "Selecione";
-  String _humiditySelected = 'Selecione';
+  String _humiditySelected = '+55%';
   String _temperatureSelected = "20.0°C";
   String _flightHeight = "Selecione";
   String _speedWind = "Selecione";
@@ -110,6 +110,13 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
         .last
         .recomendacoesTecnicas!
         .volumeDaAplicacao!;
+
+    if (_humiditySelected.isEmpty) {
+      _humiditySelected = "+ 55%";
+    }
+    if (_speedWind.isEmpty) {
+      _speedWind = "20 km/h";
+    }
   }
 
   String getUnidadeVolume({Unidade? unidade}) {
@@ -451,13 +458,15 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                     content: SizedBox(
                                       width: double.maxFinite,
                                       child: TemperatureSelect(
+                                          scrollTheList: true,
+                                          scrollToIndex: 19,
                                           onChangedTemperature: (value) {
-                                        setState(() {
-                                          _temperatureSelected = value;
-                                          data!.temperatura = value;
-                                        });
-                                        Util.closeKeyBoard();
-                                      }),
+                                            setState(() {
+                                              _temperatureSelected = value;
+                                              data!.temperatura = value;
+                                            });
+                                            Util.closeKeyBoard();
+                                          }),
                                     ));
                               });
                         },
@@ -479,13 +488,15 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                     content: SizedBox(
                                       width: double.maxFinite,
                                       child: RelativeHumiditySelect(
+                                          scrollTheList: true,
+                                          scrollToIndex: 54,
                                           onChangedHumidity: (value) {
-                                        setState(() {
-                                          _humiditySelected = value;
-                                          data!.umidadeRelativaDoAr = value;
-                                        });
-                                        Util.closeKeyBoard();
-                                      }),
+                                            setState(() {
+                                              _humiditySelected = value;
+                                              data!.umidadeRelativaDoAr = value;
+                                            });
+                                            Util.closeKeyBoard();
+                                          }),
                                     ));
                               });
                         },
@@ -509,14 +520,16 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             backgroundColor: Colors.grey[100],
                             content: SizedBox(
                               width: double.maxFinite,
-                              child:
-                                  SpeedWindSelect(onChangedSpeedWind: (value) {
-                                setState(() {
-                                  _speedWind = value;
-                                  data!.velocidadeDoVento = value;
-                                });
-                                Util.closeKeyBoard();
-                              }),
+                              child: SpeedWindSelect(
+                                  scrollTheList: true,
+                                  scrollToIndex: 19,
+                                  onChangedSpeedWind: (value) {
+                                    setState(() {
+                                      _speedWind = value;
+                                      data!.velocidadeDoVento = value;
+                                    });
+                                    Util.closeKeyBoard();
+                                  }),
                             ));
                       });
                 },
