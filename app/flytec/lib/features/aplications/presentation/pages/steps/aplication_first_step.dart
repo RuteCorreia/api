@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/save_local_controller.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
+import 'package:flytec/features/aplications/presentation/pages/home_aplications.dart';
 import 'package:flytec/features/aplications/presentation/widgets/executor_select.dart';
 import 'package:flytec/features/aplications/presentation/widgets/pilot_select.dart';
 import 'package:go_router/go_router.dart';
@@ -10,7 +12,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
 
 class AplicationFirstStep extends StatefulWidget {
-  const AplicationFirstStep({super.key});
+  final VoidCallback? updateReportList;
+  const AplicationFirstStep({super.key, this.updateReportList});
 
   @override
   State<AplicationFirstStep> createState() => _AplicationFirstStepState();
@@ -38,6 +41,14 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Aplicações"),
+          leading: IconButton(
+            onPressed: () {
+              context.pop();
+              getIt<GlobalConfigVars>().clearGlobalConfigVars();
+            },
+            icon: const Icon(Icons.arrow_back_ios),
+          )
+        
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -78,8 +89,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                                   setState(() {
                                     getIt<GlobalConfigVars>().selectedPilot =
                                         value!;
-                                    getIt<GlobalConfigVars>().selectedPilot =
-                                        value;
+                                  
                                   });
                                 }),
                               ));
@@ -121,8 +131,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                                   setState(() {
                                     getIt<GlobalConfigVars>().selectedExecutor =
                                         value!;
-                                    getIt<GlobalConfigVars>().selectedExecutor =
-                                        value;
+                                  
                                   });
                                 }),
                               ));
@@ -140,7 +149,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
               Center(
                 child: CustomButton(
                   title: "Continuar",
-                  onClick: () {
+                  onClick: () async {
                     if (getIt<GlobalConfigVars>().selectedExecutor.isEmpty) {
                       Util.toastAlerta("Selecione o executor");
                     } else if (getIt<GlobalConfigVars>()
@@ -149,6 +158,7 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                       Util.toastAlerta("Selecione o piloto");
                     } else {
                       getIt<GlobalConfigVars>().reportList.add(RelatorioModel(
+                          dashBoardState: DashBoardState.Incompleto,
                           cliente: Cliente(
                             cnpj: "",
                             endereco: "",
@@ -239,6 +249,22 @@ class _AplicationFirstStepState extends State<AplicationFirstStep> {
                           piloto: getIt<GlobalConfigVars>().selectedPilot,
                           executor:
                               getIt<GlobalConfigVars>().selectedExecutor));
+                  
+                      getIt<GlobalConfigVars>().reportList.last.finalizado =
+                          false;
+                      getIt<GlobalConfigVars>().reportList.last.dashBoardState =
+                          DashBoardState.Incompleto;
+                      setState(() {});
+                      getIt<GlobalConfigVars>().setRelatorios(
+                          relatorios: getIt<GlobalConfigVars>().reportList);
+
+                      var preloadData = getIt<SaveLocalDataController>()
+                          .initializeLocalData();
+                      await getIt<SaveLocalDataController>()
+                          .salvarLocalPreloadData(preloadData: preloadData);
+
+                      setState(() {});
+                      widget.updateReportList!();
                       context.push(
                         "/aplicationstep2",
                       );

@@ -112,6 +112,9 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
     }
   }
 
+  void _updateReportList() => setState(() {});
+ 
+
   int _obtainQuantityReportsByState(DashBoardState state) {
     return getIt<GlobalConfigVars>().reportList.where((element) {
       element.dashBoardState ??= DashBoardState.Incompleto;
@@ -399,7 +402,8 @@ class _HomeAplicationPageState extends State<HomeAplicationPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          context.push("/aplicationstep1");
+          context.push("/aplicationstep1",
+              extra: {"updateReportList": () => _updateReportList()});
         },
         child: const Icon(
           Icons.add,

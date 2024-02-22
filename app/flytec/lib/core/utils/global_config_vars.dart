@@ -113,4 +113,11 @@ class GlobalConfigVars {
       log(preloadJson["clientes"]);
     }
   }
+
+  void clearGlobalConfigVars() {
+    selectedPilot = "";
+    selectedExecutor = "";
+    selectedCultura = "";
+    dgs = "";
+  }
 }
