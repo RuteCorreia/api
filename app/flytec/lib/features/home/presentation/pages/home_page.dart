@@ -5,13 +5,11 @@ import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
 import 'package:go_router/go_router.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/injections/get_it.dart';
 import '../widgets/custom_action_button.dart';
 import '../widgets/custom_activity_button.dart';
 import '../widgets/custom_dialog_button.dart';
-import '../widgets/custom_drawer_button.dart';
 import '../widgets/welcome_text.dart';
 
 class HomePaga extends StatefulWidget {
@@ -56,7 +54,7 @@ class _HomePagaState extends State<HomePaga> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      drawer: Container(
+      /* drawer: Container(
         width: 255,
         height: 800,
         decoration: const ShapeDecoration(
@@ -171,6 +169,7 @@ class _HomePagaState extends State<HomePaga> {
           ],
         ),
       ),
+      */
       body: SingleChildScrollView(
         child: Column(
           children: [
