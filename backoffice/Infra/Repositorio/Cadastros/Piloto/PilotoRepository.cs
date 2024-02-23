@@ -50,14 +50,14 @@ public class PilotoRepository : IPilotoRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Piloto.Piloto obj)
     {
-        var objeto = await _contextBase.Piloto.FindAsync(obj.IdPiloto);
-        objeto.IdEmpresa = obj.IdEmpresa;
-        objeto.NomePiloto = obj.NomePiloto;
+        var objeto = await _contextBase.Piloto.FindAsync(obj.Id);
+        objeto.Nome = obj.Nome;
         objeto.Email = obj.Email;
         objeto.Senha = obj.Senha;
-        objeto.CDAC = obj.CDAC;
+        objeto.CANAC = obj.CANAC;
         objeto.Assinatura = obj.Assinatura;
         objeto.PorcentagemComissao = obj.PorcentagemComissao;
+        objeto.Telefone = obj.Telefone;
 
         _contextBase.Piloto.Update(objeto);
         await _contextBase.SaveChangesAsync();

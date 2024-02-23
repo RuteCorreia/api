@@ -84,7 +84,7 @@ public class PilotoController : ControllerBase
                 var objeto = await _pilotoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    obj.IdPiloto = objeto.IdPiloto;
+                    obj.Id = objeto.Id;
 
                     await _pilotoService.UpdateAsync(obj);
                     return Ok("Sucesso");
