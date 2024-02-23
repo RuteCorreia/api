@@ -418,6 +418,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         height: 25,
                         width: 115,
+                        alignment: pw.Alignment.center,
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             right: pw.BorderSide(
@@ -428,6 +429,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 80,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.classificacaoToxicologica}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
@@ -443,6 +445,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 120,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.tipoServico}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
@@ -458,6 +461,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 100,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.tipoFormulacao}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
@@ -473,6 +477,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 80,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.dosePorHectare} ${relatorioModel.carateristicaProduto?.unidadeHectare}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
@@ -488,6 +493,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       pw.Container(
                         height: 25,
                         width: 80,
+                        alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.adjuvante}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
