@@ -856,10 +856,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao?.densidade}",
-                            style: const pw.TextStyle(
-                              fontSize: 9,
-                            )),
+                          "${relatorioModel.relatorioDeAplicacao?.densidade}",
+                        ),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
