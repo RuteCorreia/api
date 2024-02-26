@@ -1,20 +1,15 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace Domain.Entidades.Cadastros.Piloto;
 
 public class Piloto
 {
     [Key]
-    public int IdPiloto { get; set; }
-
-    [ForeignKey("Empresa")]
-    public int? IdEmpresa { get; set; }
+    public int Id { get; set; }
 
     [Required]
-    public string NomePiloto { get; set; }
+    public string Nome { get; set; }
 
     [Required]
     [EmailAddress]
@@ -25,14 +20,13 @@ public class Piloto
     public string Senha { get; set; }
 
     [Required]
-    public string CDAC { get; set; }
+    public string CANAC { get; set; }
+    public string? Telefone { get; set; }   
+        
 
     [Required]
-    public byte[] Assinatura { get; set; }
+    public int PorcentagemComissao { get; set; }
 
     [Required]
-    public string PorcentagemComissao { get; set; }
-
-    [JsonIgnore]
-    public virtual Empresa.Empresa? Empresa { get; set; }
+    public string Assinatura { get; set; }
 }

@@ -27,8 +27,8 @@ public class PilotoController : ControllerBase
     {
         try
         {
-            var combustiveis = await _pilotoService.GetAllAsync();
-            return Ok(combustiveis);
+            var pilotos = await _pilotoService.GetAllAsync();
+            return Ok(pilotos);
         }
         catch (Exception ex)
         {
@@ -63,7 +63,7 @@ public class PilotoController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _pilotoService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -84,10 +84,10 @@ public class PilotoController : ControllerBase
                 var objeto = await _pilotoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    obj.IdPiloto = objeto.IdPiloto;
+                    obj.Id = objeto.Id;
 
                     await _pilotoService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {
@@ -111,7 +111,7 @@ public class PilotoController : ControllerBase
             if (id != 0)
             {
                 await _pilotoService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

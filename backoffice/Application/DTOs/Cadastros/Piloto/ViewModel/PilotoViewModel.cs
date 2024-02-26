@@ -1,15 +1,31 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Cadastros.Piloto.ViewModel;
 
 public class PilotoViewModel
 {
-    public int IdPiloto { get; set; }
-    public int? IdEmpresa { get; set; }
-    public string NomePiloto { get; set; }
+    public int Id { get; set; }
+
+    [Required]
+    public string Nome { get; set; }
+
+    [Required]
+    [EmailAddress]
     public string Email { get; set; }
+
+    [Required]
+    [PasswordPropertyText]
     public string Senha { get; set; }
-    public string CDAC { get; set; }
-    public byte[] Assinatura { get; set; }
-    public string PorcentagemComissao { get; set; }
+
+    [Required]
+    public string CANAC { get; set; }
+
+    public string? Telefone { get; set; }
+
+    [Required]
+    public string Assinatura { get; set; }
+
+    [Required]
+    public int PorcentagemComissao { get; set; }
 }
