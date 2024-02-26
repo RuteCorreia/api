@@ -23,29 +23,45 @@ public class BulaRepository : IBulaRepository
 
     public async Task DeleteAsync(int id)
     {
-        var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
+        var entityToRemoveOrDeactivate = await GetByIdAsync(id);
+        if(!ObjectNullValidation.IsObjectNull(entityToRemoveOrDeactivate))
         {
-            _contextBase.Remove(entityToRemove);
+            var hasFk = await _contextBase.BulaAplicacao
+                .AnyAsync(x => x.IdBula == entityToRemoveOrDeactivate.IdBula);
+                        
+            if (hasFk)
+            {
+                entityToRemoveOrDeactivate.Removido = true;
+                _contextBase.Bula.Update(entityToRemoveOrDeactivate);
+            }
+            else
+            {
+                _contextBase.Bula.Remove(entityToRemoveOrDeactivate);
+            }
+
             await _contextBase.SaveChangesAsync();
         }
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync()
     {
-        var entities = await _contextBase.Bula.ToListAsync();
+        var entities = await _contextBase.Bula
+            .AsNoTracking()
+            .Where(x => !x.Removido)
+            .ToListAsync();
+
         return entities;
     }
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
     {
-        var obj = await _contextBase.Bula.FindAsync(id);
+        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdBula == id);
         return obj;
     }
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name)
     {
-        var obj =  _contextBase.Bula.Where(x => x.NomeProduto == name).FirstOrDefault();
+        var obj =  await _contextBase.Bula.FirstOrDefaultAsync(x => x.NomeProduto == name && !x.Removido);
         return obj;
     }
 

@@ -23,6 +23,7 @@ public class Bula
     public string? DoseProdutoComercial { get; set; }
     public string Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
+    public bool Removido { get; set; }
 
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }

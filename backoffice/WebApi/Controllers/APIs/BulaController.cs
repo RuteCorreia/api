@@ -30,8 +30,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var combustiveis = await _bulaService.GetAllAsync();
-            return Ok(combustiveis);
+            var bulas = await _bulaService.GetAllAsync();
+            return Ok(bulas);
         }
         catch (Exception ex)
         {
