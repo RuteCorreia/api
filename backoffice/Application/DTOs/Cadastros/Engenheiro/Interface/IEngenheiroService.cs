@@ -10,6 +10,7 @@ public interface IEngenheiroService
     Task<EngenheiroViewModel> GetByIdAsync(int id);
 
     Task<EngenheiroViewModel> GetByLoginAsync(string email, string password);
+    Task<EngenheiroViewModel> GetByIdEmpresaAsync(int id, int idEmpresa);
 
     Task AddAsync(EngenheiroViewModel obj);
 

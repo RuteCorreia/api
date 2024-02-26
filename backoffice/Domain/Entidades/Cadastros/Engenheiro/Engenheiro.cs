@@ -8,25 +8,23 @@ namespace Domain.Entidades.Cadastros.Engenheiro;
 public class Engenheiro
 {
     [Key]
-    public int IdEngenheiro { get; set; }
+    public int Id { get; set; }
 
     [ForeignKey("Empresa")]
-    public int? IdEmpresa { get; set; }
+    public int IdEmpresa { get; set; }
 
-    [Required]
     public string Nome { get; set; }
 
-    [Required]
-    [EmailAddress]
     public string Email { get; set; }
 
-    [Required]
-    [PasswordPropertyText]
     public string Senha { get; set; }
 
-    [Required]
     public string CREA { get; set; }
-    public byte[] Assinatura { get; set; }
+    public string? Telefone { get; set; }
+
+    public int PorcentagemComissao { get; set; }
+
+    public string Assinatura { get; set; }
 
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }

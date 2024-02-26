@@ -10,4 +10,5 @@ public interface IEngenheiroRepository
     Task<IEnumerable<Entidades.Cadastros.Engenheiro.Engenheiro>> GetAllAsync();
     Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdAsync(int id);
     Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password);
+    Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdEmpresaAsync(int id, int idEmpresa);
 }

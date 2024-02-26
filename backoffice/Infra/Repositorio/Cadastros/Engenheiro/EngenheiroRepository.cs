@@ -42,6 +42,11 @@ public class EngenheiroRepository : IEngenheiroRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdEmpresaAsync(int id, int idEmpresa)
+    {
+        return await _contextBase.Engenheiro.FirstOrDefaultAsync(x => x.IdEmpresa == idEmpresa && x.Id != id);
+    }
+
     public async Task<Domain.Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password)
     {
         var obj = await _contextBase.Engenheiro.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
@@ -50,13 +55,15 @@ public class EngenheiroRepository : IEngenheiroRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Engenheiro.Engenheiro obj)
     {
-        var objeto = await _contextBase.Engenheiro.FindAsync(obj.IdEngenheiro);
+        var objeto = await _contextBase.Engenheiro.FindAsync(obj.Id);
         objeto.IdEmpresa = obj.IdEmpresa;
         objeto.Nome = obj.Nome;
         objeto.Email = obj.Email;
         objeto.Senha = obj.Senha;
         objeto.CREA = obj.CREA;
         objeto.Assinatura = obj.Assinatura;
+        objeto.Telefone = obj.Telefone;
+        objeto.PorcentagemComissao = obj.PorcentagemComissao;
 
         _contextBase.Engenheiro.Update(objeto);
         await _contextBase.SaveChangesAsync();

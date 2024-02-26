@@ -36,18 +36,40 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task AddAsync(EngenheiroViewModel obj)
     {
-        var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-        await _engenheiroRepository.AddAsync(mapEngenheiro);
+        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
+        if(empresaJaTemEngenheiro is null)
+        {
+            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
+            await _engenheiroRepository.AddAsync(mapEngenheiro);
+        }
+        else
+        {
+            throw new Exception("A empresa já possui um engenheiro");
+        }
     }
 
     public async Task UpdateAsync(EngenheiroViewModel obj)
     {
-        var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-        await _engenheiroRepository.UpdateAsync(mapEngenheiro);
+        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
+        if (empresaJaTemEngenheiro is null)
+        {
+            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
+            await _engenheiroRepository.UpdateAsync(mapEngenheiro);
+        }
+        else
+        {
+            throw new Exception("A empresa já possui um engenheiro");
+        }
     }
 
     public async Task DeleteAsync(int id)
     {
         await _engenheiroRepository.DeleteAsync(id);
+    }
+
+    public async Task<EngenheiroViewModel> GetByIdEmpresaAsync(int id, int idEmpresa)
+    {
+        var obj = await _engenheiroRepository.GetByIdEmpresaAsync(id, idEmpresa);
+        return _mapper.Map<EngenheiroViewModel>(obj);
     }
 }

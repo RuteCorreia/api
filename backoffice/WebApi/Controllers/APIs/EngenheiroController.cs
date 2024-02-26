@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -27,8 +27,8 @@ public class EngenheiroController : ControllerBase
     {
         try
         {
-            var combustiveis = await _engenheiroService.GetAllAsync();
-            return Ok(combustiveis);
+            var engenheiros = await _engenheiroService.GetAllAsync();
+            return Ok(engenheiros);
         }
         catch (Exception ex)
         {
@@ -63,7 +63,7 @@ public class EngenheiroController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _engenheiroService.AddAsync(obj);
-                return Ok("Sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -84,10 +84,10 @@ public class EngenheiroController : ControllerBase
                 var objeto = await _engenheiroService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    obj.IdEngenheiro = objeto.IdEngenheiro;
+                    obj.Id = objeto.Id;
 
                     await _engenheiroService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    return Ok();
                 }
                 else
                 {
@@ -111,7 +111,7 @@ public class EngenheiroController : ControllerBase
             if (id != 0)
             {
                 await _engenheiroService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
