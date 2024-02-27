@@ -313,7 +313,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   padding: const pw.EdgeInsets.only(
                                       left: 10, top: 2),
                                   child: pw.Text(
-                                      'Extensão (Ha) ${relatorioModel.areaTratada?.extensao}ha',
+                                      'Extensão ${relatorioModel.areaTratada?.extensao}Ha',
                                       style: pw.TextStyle(
                                           fontSize: 11, font: newRoman)),
                                 ),
