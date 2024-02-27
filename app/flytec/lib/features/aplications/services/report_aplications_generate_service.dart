@@ -606,7 +606,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Temp. C°  <${relatorioModel.recomendacoesTecnicas?.temperatura}',
+                              'Temp.  <${relatorioModel.recomendacoesTecnicas?.temperatura}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
