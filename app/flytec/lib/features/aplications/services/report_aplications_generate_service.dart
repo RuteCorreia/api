@@ -465,6 +465,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.tipoFormulacao}",
+                            textAlign: pw.TextAlign.center,
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
