@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flytec/core/injections/get_it.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:intl/intl.dart';
@@ -1264,7 +1262,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
-                        'Relatório DGPS (LOG\'s): ${getIt<GlobalConfigVars>().dgs}',
+                        'Relatório DGPS (LOG\'s): ${relatorioModel.relatorioDeAplicacao?.log}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
