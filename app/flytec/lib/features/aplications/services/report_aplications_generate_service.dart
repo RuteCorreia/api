@@ -874,7 +874,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}Ha"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
