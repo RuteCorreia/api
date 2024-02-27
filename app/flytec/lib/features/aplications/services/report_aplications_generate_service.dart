@@ -622,7 +622,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'U.R% do Ar  >${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
+                              'U.R do Ar  >${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
