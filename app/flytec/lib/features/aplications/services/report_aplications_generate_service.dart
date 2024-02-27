@@ -144,7 +144,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                               pw.CrossAxisAlignment.end,
                                           children: [
                                             pw.Text('N° '),
-                                            pw.Text('0234 ',
+                                            pw.Text(
+                                                '${relatorioModel.numeroRelatorio?.toString().padLeft(4, '0')} ',
                                                 style: const pw.TextStyle(
                                                   color: PdfColors.red,
                                                 )),

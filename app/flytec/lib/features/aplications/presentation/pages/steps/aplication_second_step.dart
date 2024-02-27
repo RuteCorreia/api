@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/area_application.dart';
 import 'package:flytec/features/aplications/presentation/pages/identificacao_area_page.dart';
@@ -18,6 +20,14 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
 
   final AreaApplication _areaApplication = AreaApplication();
+
+  int get _numberOfReport => getIt<GlobalConfigVars>().reportList.length;
+
+  @override
+  void initState() {
+    super.initState();
+    getIt<GlobalConfigVars>().reportList.last.numeroRelatorio = _numberOfReport;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +49,10 @@ class _AplicationSecondStepState extends State<AplicationSecondStep> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'N° 1758',
+                  Text(
+                    'N° $_numberOfReport',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',
