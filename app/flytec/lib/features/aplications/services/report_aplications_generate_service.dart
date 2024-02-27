@@ -1264,7 +1264,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
-                        'Emitiu relatório do DGPS: ${getIt<GlobalConfigVars>().dgs}',
+                        'Relatório DGPS (LOG\'s): ${getIt<GlobalConfigVars>().dgs}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
