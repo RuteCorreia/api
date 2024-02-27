@@ -1,8 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:flytec/core/injections/get_it.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:intl/intl.dart';
@@ -144,7 +142,8 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                               pw.CrossAxisAlignment.end,
                                           children: [
                                             pw.Text('N° '),
-                                            pw.Text('0234 ',
+                                            pw.Text(
+                                                '${relatorioModel.numeroRelatorio?.toString().padLeft(4, '0')} ',
                                                 style: const pw.TextStyle(
                                                   color: PdfColors.red,
                                                 )),
@@ -313,7 +312,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   padding: const pw.EdgeInsets.only(
                                       left: 10, top: 2),
                                   child: pw.Text(
-                                      'Extensão (Ha) ${relatorioModel.areaTratada?.extensao}ha',
+                                      'Extensão ${relatorioModel.areaTratada?.extensao}Ha',
                                       style: pw.TextStyle(
                                           fontSize: 11, font: newRoman)),
                                 ),
@@ -464,6 +463,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${relatorioModel.carateristicaProduto?.tipoFormulacao}",
+                            textAlign: pw.TextAlign.center,
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -606,7 +606,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Temp. C°  <${relatorioModel.recomendacoesTecnicas?.temperatura}',
+                              'Temp.  <${relatorioModel.recomendacoesTecnicas?.temperatura}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -622,7 +622,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'U.R% do Ar  >${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
+                              'U.R do Ar  >${relatorioModel.recomendacoesTecnicas?.umidadeRelativaDoAr}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -872,7 +872,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}"),
+                            " ${relatorioModel.relatorioDeAplicacao?.totalAreaAplicada}Ha"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -1262,7 +1262,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
-                        'Emitiu relatório do DGPS: ${getIt<GlobalConfigVars>().dgs}',
+                        'Relatório DGPS (LOG\'s): ${relatorioModel.relatorioDeAplicacao?.log}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),

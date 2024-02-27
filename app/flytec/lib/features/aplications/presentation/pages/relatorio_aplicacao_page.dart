@@ -703,6 +703,11 @@ await showDialog(
                               child: LogsSelect(onChanged: (value) {
                                 setState(() {
                                   _selectedLog = value;
+                                  getIt<GlobalConfigVars>()
+                                      .reportList
+                                      .last
+                                      .relatorioDeAplicacao
+                                      ?.log = value;
                                   getIt<GlobalConfigVars>().dgs = value;
                                 });
                                 Util.closeKeyBoard();

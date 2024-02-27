@@ -25,6 +25,7 @@ class RelatorioModel {
   ContratoServico? contratoServico;
   DadosDoResponsavel? dadosDoResponsavel;
   DashBoardState? dashBoardState;
+  int? numeroRelatorio;
 
   RelatorioModel({
     this.piloto,
@@ -38,6 +39,7 @@ class RelatorioModel {
     this.dashBoardState,
     this.contratoServico,
     this.dadosDoResponsavel,
+    this.numeroRelatorio,
   });
 
  
@@ -142,6 +144,7 @@ class RelatorioModel {
         "piloto": piloto,
         "finalizado": finalizado,
         "executor": executor,
+        "numeroRelatorio": numeroRelatorio,
         "cliente": cliente?.toJson(),
         "areaTratada": areaTratada?.toJson(),
         "carateristicaProduto": carateristicaProduto?.toJson(),
