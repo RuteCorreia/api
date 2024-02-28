@@ -34,5 +34,5 @@ public class EngenheiroViewModel
     [Required]
     public string Assinatura { get; set; }
 
-    public string Telefone { get; set; }
+    public string? Telefone { get; set; }
 }
