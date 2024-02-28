@@ -908,7 +908,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           child: pw.Column(children: [
                             pw.Container(
                                 height: 17,
-                                width: 170,
+                                width: 80,
                                 alignment: pw.Alignment.center,
                                 child: pw.Text('Horário',
                                     style: pw.TextStyle(
@@ -916,7 +916,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                             pw.Row(children: [
                               pw.Container(
                                   height: 17,
-                                  width: 85,
+                                  width: 60,
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(
                                       top: pw.BorderSide(
@@ -926,12 +926,12 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     ),
                                   ),
                                   alignment: pw.Alignment.center,
-                                  child: pw.Text('Início',
+                                  child: pw.Text('Inicial',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman))),
                               pw.Container(
                                   height: 17,
-                                  width: 85,
+                                  width: 60,
                                   decoration: const pw.BoxDecoration(
                                     border: pw.Border(
                                       top: pw.BorderSide(
@@ -939,23 +939,116 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                     ),
                                   ),
                                   alignment: pw.Alignment.center,
-                                  child: pw.Text('Término',
+                                  child: pw.Text('Final',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman))),
                             ])
                           ])),
-                      pw.Column(children: [
+                      pw.Container(
+                          decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black),
+                            ),
+                          ),
+                          child: pw.Column(children: [
+                            pw.Container(
+                                height: 17,
+                                width: 120,
+                                alignment: pw.Alignment.center,
+                                child: pw.Text('Temperatura C°',
+                                    style: pw.TextStyle(
+                                        fontSize: 12, font: newRoman))),
+                            pw.Row(children: [
+                              pw.Container(
+                                  height: 17,
+                                  width: 60,
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                      right: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                    ),
+                                  ),
+                                  alignment: pw.Alignment.center,
+                                  child: pw.Text('Inicial',
+                                      style: pw.TextStyle(
+                                          fontSize: 12, font: newRoman))),
+                              pw.Container(
+                                  height: 17,
+                                  width: 60,
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                    ),
+                                  ),
+                                  alignment: pw.Alignment.center,
+                                  child: pw.Text('Final',
+                                      style: pw.TextStyle(
+                                          fontSize: 12, font: newRoman))),
+                            ])
+                          ])),
+                      pw.Container(
+                          decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black),
+                            ),
+                          ),
+                          child: pw.Column(children: [
+                            pw.Container(
+                                height: 17,
+                                width: 100,
+                                alignment: pw.Alignment.center,
+                                child: pw.Text('U.R. (%)',
+                                    style: pw.TextStyle(
+                                        fontSize: 12, font: newRoman))),
+                            pw.Row(children: [
+                              pw.Container(
+                                  height: 17,
+                                  width: 50,
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                      right: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                    ),
+                                  ),
+                                  alignment: pw.Alignment.center,
+                                  child: pw.Text('Inicial',
+                                      style: pw.TextStyle(
+                                          fontSize: 12, font: newRoman))),
+                              pw.Container(
+                                  height: 17,
+                                  width: 50,
+                                  decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                      top: pw.BorderSide(
+                                          width: 1.5, color: PdfColors.black),
+                                    ),
+                                  ),
+                                  alignment: pw.Alignment.center,
+                                  child: pw.Text('Final',
+                                      style: pw.TextStyle(
+                                          fontSize: 12, font: newRoman))),
+                            ])
+                          ])),
+                      pw.Container(
+                          child: pw.Column(children: [
                         pw.Container(
-                            height: 16,
+                            height: 17,
+                            width: 135,
                             alignment: pw.Alignment.center,
-                            child: pw.Text(
-                                'Condições climáticas durante a aplicação',
+                            child: pw.Text('Velocidade Vento (Km/h)',
                                 style: pw.TextStyle(
                                     fontSize: 12, font: newRoman))),
                         pw.Row(children: [
                           pw.Container(
-                              height: 17.5,
-                              width: 85,
+                              height: 17,
+                              width: 67.5,
                               decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                   top: pw.BorderSide(
@@ -965,27 +1058,12 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 ),
                               ),
                               alignment: pw.Alignment.center,
-                              child: pw.Text('Temp. (° C)',
+                              child: pw.Text('Inicial',
                                   style: pw.TextStyle(
                                       fontSize: 12, font: newRoman))),
                           pw.Container(
-                              height: 17.5,
-                              width: 95,
-                              decoration: const pw.BoxDecoration(
-                                border: pw.Border(
-                                  top: pw.BorderSide(
-                                      width: 1.5, color: PdfColors.black),
-                                  right: pw.BorderSide(
-                                      width: 1.5, color: PdfColors.black),
-                                ),
-                              ),
-                              alignment: pw.Alignment.center,
-                              child: pw.Text('U. R do Ar (%)',
-                                  style: pw.TextStyle(
-                                      fontSize: 12, font: newRoman))),
-                          pw.Container(
-                              height: 17.5,
-                              width: 125,
+                              height: 17,
+                              width: 67.5,
                               decoration: const pw.BoxDecoration(
                                 border: pw.Border(
                                   top: pw.BorderSide(
@@ -993,11 +1071,11 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                 ),
                               ),
                               alignment: pw.Alignment.center,
-                              child: pw.Text('Vento (Km/h ou m/s)',
+                              child: pw.Text('Final',
                                   style: pw.TextStyle(
                                       fontSize: 12, font: newRoman))),
                         ])
-                      ]),
+                      ])),
                     ]),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Column(children: [
@@ -1005,6 +1083,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     pw.Container(
                       height: 15,
                       width: 100,
+                      alignment: pw.Alignment.center,
                       child: pw.Text(
                           " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.dataDaAplicacao}"),
                       decoration: const pw.BoxDecoration(
@@ -1015,32 +1094,39 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       ),
                     ),
                     pw.Container(
-                      height: 15,
-                      width: 85,
-                      child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeInicio}"),
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
                         ),
-                      ),
-                    ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeInicio}',
+                        )),
+                    pw.Container(
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
+                        ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeTermino}',
+                        )),
                     pw.Container(
                       height: 15,
-                      width: 85,
-                      child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.horarioDeTermino}"),
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 85,
+                      width: 60,
+                      alignment: pw.Alignment.center,
                       child: pw.Text(
                           " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.temperaturaIncial}"),
                       decoration: const pw.BoxDecoration(
@@ -1052,7 +1138,21 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 95,
+                      width: 60,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.temperaturaFinal}"),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 50,
+                      alignment: pw.Alignment.center,
                       child: pw.Text(
                           " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.umidadeRelativaInicial}"),
                       decoration: const pw.BoxDecoration(
@@ -1064,66 +1164,34 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 125,
+                      width: 50,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.umidadeRelativaFinal}"),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black))),
                       child: pw.Text(
                           " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.ventoInicial}"),
                     ),
-                  ]),
-                  pw.Divider(height: 1, thickness: 1.5),
-                  pw.Row(children: [
                     pw.Container(
                       height: 15,
-                      width: 100,
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 85,
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 85,
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 85,
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 95,
-                      decoration: const pw.BoxDecoration(
-                        border: pw.Border(
-                          right:
-                              pw.BorderSide(width: 1.5, color: PdfColors.black),
-                        ),
-                      ),
-                    ),
-                    pw.Container(
-                      height: 15,
-                      width: 125,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(
+                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.ventoFinal}"),
                     ),
                   ]),
                   pw.Divider(height: 1, thickness: 1.5),
@@ -1131,6 +1199,50 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     pw.Container(
                       height: 15,
                       width: 100,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
+                        ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '',
+                        )),
+                    pw.Container(
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
+                        ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '',
+                        )),
+                    pw.Container(
+                      height: 15,
+                      width: 60,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1140,7 +1252,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 85,
+                      width: 60,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1150,7 +1264,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 85,
+                      width: 50,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1160,7 +1276,9 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 85,
+                      width: 50,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1170,7 +1288,70 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 95,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black))),
+                      child: pw.Text(""),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                    ),
+                  ]),
+                  pw.Divider(height: 1, thickness: 1.5),
+                  pw.Row(children: [
+                    pw.Container(
+                      height: 15,
+                      width: 100,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
+                        ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '',
+                        )),
+                    pw.Container(
+                        height: 15,
+                        width: 60,
+                        decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                            top: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                            right: pw.BorderSide(
+                                width: 1.5, color: PdfColors.black),
+                          ),
+                        ),
+                        alignment: pw.Alignment.center,
+                        child: pw.Text(
+                          '',
+                        )),
+                    pw.Container(
+                      height: 15,
+                      width: 60,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1180,7 +1361,55 @@ class ReportAplicationsGenerate implements PdfGenerator {
                     ),
                     pw.Container(
                       height: 15,
-                      width: 125,
+                      width: 60,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 50,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 50,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      decoration: const pw.BoxDecoration(
+                          border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black))),
+                      child: pw.Text(""),
+                    ),
+                    pw.Container(
+                      height: 15,
+                      width: 67.5,
+                      alignment: pw.Alignment.center,
+                      child: pw.Text(""),
                     ),
                   ]),
                 ]),
