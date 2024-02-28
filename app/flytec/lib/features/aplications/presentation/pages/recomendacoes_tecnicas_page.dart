@@ -114,9 +114,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
     if (_humiditySelected.isEmpty) {
       _humiditySelected = "+ 55%";
     }
-    if (_speedWind.isEmpty) {
-      _speedWind = "20 km/h";
-    }
   }
 
   String getUnidadeVolume({Unidade? unidade}) {
