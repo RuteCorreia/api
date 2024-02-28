@@ -141,36 +141,24 @@ class Util {
   }
 }
 
-/// Formata o valor do campo com a mascara kg,g (ex: 103,8)
-class FormatarHorimetro extends TextInputFormatter {
+
+
+class CustomNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    // verifica o tamanho máximo do campo
-    if (newValue.text.length > 4) return oldValue;
+    // Obtém o texto atual e remove caracteres não numéricos
+    String newText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
-    var posicaoCursor = newValue.selection.end;
-    var substrIndex = 0;
-    final valorFinal = StringBuffer();
-
-    switch (newValue.text.length) {
-      case 3:
-        valorFinal.write('${newValue.text.substring(0, substrIndex = 2)}.');
-        if (newValue.selection.end >= 3) posicaoCursor++;
-        break;
-      case 4:
-        valorFinal.write('${newValue.text.substring(0, substrIndex = 3)}.');
-        if (newValue.selection.end >= 4) posicaoCursor++;
-        break;
+    // Adiciona um ponto decimal e um caractere à direita
+    if (newText.length > 1) {
+      newText =
+          '${newText.substring(0, newText.length - 1)}.${newText.substring(newText.length - 1)}';
     }
 
-    if (newValue.text.length >= substrIndex) {
-      valorFinal.write(newValue.text.substring(substrIndex));
-    }
-
-    return TextEditingValue(
-      text: valorFinal.toString(),
-      selection: TextSelection.collapsed(offset: posicaoCursor),
+    return newValue.copyWith(
+      text: newText,
+      selection: TextSelection.collapsed(offset: newText.length),
     );
   }
 }
