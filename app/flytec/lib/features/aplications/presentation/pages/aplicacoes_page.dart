@@ -213,7 +213,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 width: (MediaQuery.of(context).size.width / 2) - 25,
                 height: 50,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 decoration: ShapeDecoration(
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(width: 1, color: Color(0xFF636363)),
@@ -261,7 +261,7 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                 width: (MediaQuery.of(context).size.width / 2) - 25,
                 height: 50,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 decoration: ShapeDecoration(
                   shape: RoundedRectangleBorder(
                     side: const BorderSide(width: 1, color: Color(0xFF636363)),
