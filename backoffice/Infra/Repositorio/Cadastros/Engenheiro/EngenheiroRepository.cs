@@ -32,7 +32,10 @@ public class EngenheiroRepository : IEngenheiroRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>> GetAllAsync()
     {
-        var entities = await _contextBase.Engenheiro.ToListAsync();
+        var entities = await _contextBase.Engenheiro
+            .AsNoTracking()
+            .ToListAsync();
+
         return entities;
     }
 
