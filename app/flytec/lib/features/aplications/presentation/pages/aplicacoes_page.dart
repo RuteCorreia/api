@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -225,6 +225,11 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                   onChanged: (value) {
                     data!.horimetroInicial = value;
                   },
+                  inputFormatters: [
+                    // obrigatório
+                    FilteringTextInputFormatter.digitsOnly,
+                    FormatarHorimetro()
+                  ],
                   keyboardType: TextInputType.datetime,
                   decoration: const InputDecoration(
                       hintText: "Digite aqui",
@@ -267,6 +272,11 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                   onChanged: (value) {
                     data!.horimetroFinal = value;
                   },
+                  inputFormatters: [
+                    // obrigatório
+                    FilteringTextInputFormatter.digitsOnly,
+                    FormatarHorimetro()
+                  ],
                   keyboardType: TextInputType.datetime,
                   decoration: const InputDecoration(
                       hintText: "Digite aqui",
