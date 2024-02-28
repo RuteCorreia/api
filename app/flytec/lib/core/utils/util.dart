@@ -147,18 +147,21 @@ class CustomNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-    // Obtém o texto atual e remove caracteres não numéricos
-    String newText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+     String newText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
-    // Adiciona um ponto decimal e um caractere à direita
-    if (newText.length > 1) {
+     if (newText.length > 9) {
+      newText = newText.substring(0, 9);
+    }
+
+     if (newText.length > 1) {
       newText =
           '${newText.substring(0, newText.length - 1)}.${newText.substring(newText.length - 1)}';
     }
 
-    return newValue.copyWith(
+     return newValue.copyWith(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),
     );
   }
 }
+
