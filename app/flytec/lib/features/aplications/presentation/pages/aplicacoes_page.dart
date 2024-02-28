@@ -228,7 +228,8 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                   inputFormatters: [
                     // obrigatório
                     FilteringTextInputFormatter.digitsOnly,
-                    FormatarHorimetro()
+                                       CustomNumberFormatter()
+
                   ],
                   keyboardType: TextInputType.datetime,
                   decoration: const InputDecoration(
@@ -275,7 +276,8 @@ class _AplicacoesPageState extends State<AplicacoesPage> {
                   inputFormatters: [
                     // obrigatório
                     FilteringTextInputFormatter.digitsOnly,
-                    FormatarHorimetro()
+                                    CustomNumberFormatter()
+
                   ],
                   keyboardType: TextInputType.datetime,
                   decoration: const InputDecoration(
