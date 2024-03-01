@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 
 class ReportAplicationPage extends StatefulWidget {
   const ReportAplicationPage({super.key});
@@ -14,8 +13,8 @@ class _ReportAplicationPageState extends State<ReportAplicationPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text(
-          "Relatório de Aplicação - ${ReportAplicationController.idRelatorioAplicacoes}",
+        title: const Text(
+          "Relatório de Aplicação",
           textAlign: TextAlign.center,
         ),
       ),

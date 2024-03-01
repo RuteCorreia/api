@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/features/aplications_v2/components/dashboard_counter.dart';
+import 'package:flytec/features/aplications_v2/components/report_card_aplication.dart';
 import 'package:flytec/features/aplications_v2/controller/aplications_initialization_controller.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
-import 'package:flytec/features/aplications_v2/pages/report_aplication_page.dart';
+import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 
 class AplicationsPage extends StatefulWidget {
   const AplicationsPage({super.key});
@@ -19,6 +21,8 @@ class _AplicationsPageState extends State<AplicationsPage> {
     _aplicationsInitializationController =
         AplicationsInitializationController();
     await _aplicationsInitializationController.initialize();
+    _reportAplicationController.setListRelatorioAplicacoes(
+        _aplicationsInitializationController.reportsAplications);
     setState(() {});
   }
 
@@ -28,11 +32,8 @@ class _AplicationsPageState extends State<AplicationsPage> {
     _initializationAplicationsReports();
   }
 
-  @override
-  void dispose() {
-    _reportAplicationController.dispose();
-    super.dispose();
-  }
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +48,11 @@ class _AplicationsPageState extends State<AplicationsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           await _aplicationsInitializationController.teste();
+          _reportAplicationController.setListRelatorioAplicacoes(
+              _aplicationsInitializationController.reportsAplications);
           setState(() {});
         },
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Builder(
         builder: (context) {
@@ -60,32 +63,78 @@ class _AplicationsPageState extends State<AplicationsPage> {
           }
           if (_aplicationsInitializationController
               .reportsAplications!.isEmpty) {
-            return const Center(
-              child: Text('NÃO TEM ELEMENTOS'),
+            return const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Nenhum relatório foi gerado",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             );
           }
-          return ListView.builder(
-              itemCount: _aplicationsInitializationController
-                  .reportsAplications?.length,
-              itemBuilder: (context, index) {
-                return InkWell(
-                  onTap: () {
-                    _reportAplicationController.setNewIdRelatorioAplicacoes(
-                        _aplicationsInitializationController
-                            .reportsAplications![index]["id"]);
-                    setState(() {});
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const ReportAplicationPage();
-                    }));
-                  },
-                  child: ListTile(
-                    title: Text(_aplicationsInitializationController
-                        .reportsAplications![index]["id"]
-                        .toString()),
+          return Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 16.0),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ReportDashBoardCounter(
+                        text: "Enviado",
+                        value: _reportAplicationController
+                            .obtainQuantityReportsByState(
+                                ReportDashBoardState.Enviado)
+                            .toString(),
+                        state: ReportDashBoardState.Enviado,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Pronto",
+                        value: _reportAplicationController
+                            .obtainQuantityReportsByState(
+                                ReportDashBoardState.Pronto)
+                            .toString(),
+                        state: ReportDashBoardState.Pronto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Incompleto",
+                        value: _reportAplicationController
+                            .obtainQuantityReportsByState(
+                                ReportDashBoardState.Incompleto)
+                            .toString(),
+                        state: ReportDashBoardState.Incompleto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Não enviado",
+                        value: _reportAplicationController
+                            .obtainQuantityReportsByState(
+                                ReportDashBoardState.NaoEnviado)
+                            .toString(),
+                        state: ReportDashBoardState.NaoEnviado,
+                      ),
+                    ],
                   ),
-                );
-              });
+                  const SizedBox(height: 20),
+                  ListView.builder(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      itemCount: _aplicationsInitializationController
+                          .reportsAplications?.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return ReportCardAplication(
+                            reportAplicationController:
+                                _reportAplicationController,
+                            index: index);
+                      })
+                ],
+              ),
+            ),
+          );
         },
       ),
     );

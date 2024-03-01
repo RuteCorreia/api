@@ -5,6 +5,7 @@ class SQLCommands {
     piloto TEXT,
     executor TEXT,
     data TEXT,
+    state TEXT,
     identificadorRelatorio INTEGER UNIQUE,
     identificacaoContratanteId INTEGER UNIQUE,
     identificacaoAreaId INTEGER UNIQUE,

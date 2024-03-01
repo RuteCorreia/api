@@ -11,8 +11,8 @@ class Util {
   static String Token = "";
   static final ImagePicker _imagePicker = ImagePicker();
 
-  static String getTodayDate() {
-    final now = DateTime.now();
+  static String getTodayDate({DateTime? date}) {
+    final now = date ?? DateTime.now();
 
     final formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
