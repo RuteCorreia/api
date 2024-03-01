@@ -7,6 +7,7 @@ import 'package:flytec/features/aplications/presentation/pages/minhas_aplica%C3%
 import 'package:flytec/features/aplications/presentation/pages/relatorio_aplicacao_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/report_aplications_page.dart';
 import 'package:flytec/features/aplications/presentation/pages/steps/aplication_first_step.dart';
+import 'package:flytec/features/aplications_v2/aplications_page.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
@@ -96,7 +97,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplications',
           builder: (BuildContext context, GoRouterState state) {
-            return const HomeAplicationPage();
+            return const AplicationsPage();
           },
         ),
         GoRoute(
