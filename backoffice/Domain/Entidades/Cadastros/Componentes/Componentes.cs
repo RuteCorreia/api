@@ -21,7 +21,10 @@ namespace Domain.Entidades.Cadastros.Componentes
         public string? Grupo { get; set; }
         public string? PartNumber { get; set; }
         public string? SerialNumber { get; set; }
+        public string? TLV { get; set; }
         public string? TBO { get; set; }
+        public string? EnumTLV { get; set; }
+        public string? EnumTBO { get; set; }
         public string? UltimaInspecao { get; set; }
         public string? PrazoParaInspecao { get; set; }
         public string? TSN { get; set; }

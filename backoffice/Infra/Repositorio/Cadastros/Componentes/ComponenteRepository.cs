@@ -60,6 +60,8 @@ namespace Infra.Repositorio.Cadastros.Componentes
             objeto.PrazoParaInspecao = obj.PrazoParaInspecao;
             objeto.TSN = obj.TSN;
             objeto.TSO = obj.TSO;
+            objeto.EnumTBO = obj.EnumTBO;
+            objeto.EnumTLV = obj.EnumTLV;
 
             _contextBase.Componente.Update(objeto);
             await _contextBase.SaveChangesAsync();
