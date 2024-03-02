@@ -1,7 +1,9 @@
-﻿using Application.DTOs.Cadastros.Frota.Interface;
+﻿using Application.DTOs.Cadastros.Aeronave.Interface;
+using Application.DTOs.Cadastros.Frota.Interface;
 using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
+using Domain.Entidades.Cadastros.Empresa;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,7 +12,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -18,10 +20,12 @@ namespace WebApi.Controllers.APIs
     public class ManutencaoAeronaveController : ControllerBase
     {
         private readonly IManutencaoAeronaveService _manutencaoAeronaveService;
+        private readonly IAeronaveService _aeronaveService;
 
-        public ManutencaoAeronaveController(IManutencaoAeronaveService manutencaoAeronaveService)
+        public ManutencaoAeronaveController(IManutencaoAeronaveService manutencaoAeronaveService, IAeronaveService aeronaveService)
         {
             _manutencaoAeronaveService = manutencaoAeronaveService;
+            _aeronaveService = aeronaveService;
         }
 
         [HttpGet]
@@ -30,6 +34,15 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync();
+                var aeronaves = await _aeronaveService.GetAllAsync();
+                foreach (var item in manutencaoAeronave)
+                {
+                    var buscaAeronave = aeronaves.Where(x => x.Id == item.IdAeronave).FirstOrDefault();
+                    if (buscaAeronave != null)
+                    {
+                        item.PrefixoAeronave = buscaAeronave.Prefixo;
+                    }
+                }
                 return Ok(manutencaoAeronave);
             }
             catch (Exception ex)
@@ -44,6 +57,13 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var manutencaoAeronave = await _manutencaoAeronaveService.GetByIdAsync(id);
+                if (manutencaoAeronave.Documento != null)
+                {
+                    var base64Imagem = Convert.ToBase64String(manutencaoAeronave.Documento);
+                    var base64Append = "data:image/jpeg;base64," + base64Imagem;
+                    manutencaoAeronave.DocumentoBase64 = base64Append;
+
+                }
                 if (!ObjectNullValidation.IsObjectNull(manutencaoAeronave))
                 {
                     return Ok(manutencaoAeronave);
@@ -62,6 +82,15 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
+                if (!string.IsNullOrEmpty(obj.DocumentoBase64))
+                {
+                    string[] parts = obj.DocumentoBase64.Split(',');
+                    string decodedBase64String = parts[1];
+
+                    byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                    obj.Documento = imageDataBytes;
+                }
+
                 if (ModelState.IsValid)
                 {
                     await _manutencaoAeronaveService.AddAsync(obj);
@@ -81,6 +110,15 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
+                if (!string.IsNullOrEmpty(obj.DocumentoBase64))
+                {
+                    string[] parts = obj.DocumentoBase64.Split(',');
+                    string decodedBase64String = parts[1];
+
+                    byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                    obj.Documento = imageDataBytes;
+                }
+
                 if (ModelState.IsValid)
                 {
                     var objeto = await _manutencaoAeronaveService.GetByIdAsync(id);

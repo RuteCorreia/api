@@ -16,6 +16,8 @@ namespace Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel
         public string? HorimetroInicial { get; set; }
         public string? HorasRevisao { get; set; }
         public string? HorasInspecao { get; set; }
+        public string? DocumentoBase64 { get; set; }
+        public string? PrefixoAeronave { get; set; }
         public byte[]? Documento { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Cadastros.Frota.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Application.DTOs.Cadastros.ManutencaoAeronave.Mappings
     {
         public ManutencaoAeronaveViewModelToDomainMappingProfile()
         {
-            CreateMap<FrotaViewModel, Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>();
+            CreateMap<ManutencaoAeronaveViewModel, Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>();
         }
     }
 }
