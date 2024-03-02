@@ -1,0 +1,128 @@
+﻿using Application.DTOs.Cadastros.Frota.Interface;
+using Application.DTOs.Cadastros.Frota.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
+using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
+using Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebApi.Controllers.APIs
+{
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class ManutencaoAeronaveController : ControllerBase
+    {
+        private readonly IManutencaoAeronaveService _manutencaoAeronaveService;
+
+        public ManutencaoAeronaveController(IManutencaoAeronaveService manutencaoAeronaveService)
+        {
+            _manutencaoAeronaveService = manutencaoAeronaveService;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<ManutencaoAeronaveViewModel>>> GetAll()
+        {
+            try
+            {
+                var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync();
+                return Ok(manutencaoAeronave);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave getAll - {ex.Message}");
+            }
+        }
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<ManutencaoAeronaveViewModel>> GetById(int id)
+        {
+            try
+            {
+                var manutencaoAeronave = await _manutencaoAeronaveService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(manutencaoAeronave))
+                {
+                    return Ok(manutencaoAeronave);
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave getById - {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] ManutencaoAeronaveViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _manutencaoAeronaveService.AddAsync(obj);
+                    return Ok();
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave add - {ex.Message}");
+            }
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] ManutencaoAeronaveViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _manutencaoAeronaveService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
+
+                        await _manutencaoAeronaveService.UpdateAsync(obj);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave update - {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _manutencaoAeronaveService.DeleteAsync(id);
+                    return Ok();
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave delete - {ex.Message}");
+            }
+        }
+    }
+
+}
