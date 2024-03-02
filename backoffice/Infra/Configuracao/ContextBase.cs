@@ -7,6 +7,7 @@ using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cliente;
 using Domain.Entidades.Cadastros.CombateIncendio;
 using Domain.Entidades.Cadastros.Combustivel;
+using Domain.Entidades.Cadastros.Componentes;
 using Domain.Entidades.Cadastros.Controle_De_Frota;
 using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.Cadastros.Empresa;
@@ -79,6 +80,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<Menu> Menu { get; set; }
     public DbSet<MenuUsuario> MenuUsuario { get; set; }
     public DbSet<SubMenu> SubMenu { get; set; }
+    public DbSet<Componentes> Componente { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
