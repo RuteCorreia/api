@@ -26,8 +26,19 @@ public class AuthController : ControllerBase
         if (ModelState.IsValid)
         {
             var result = await _authService.RegisterUserAsync(user);
+            switch (result.Item2)
+            {
+                case "Passwords must have at least one non alphanumeric character.":
+                    result.Item2 = "A senha deve conter pelo menos um caracter especial. Ex: Senha@123";
+                    break;
+                case "Passwords must have at least one uppercase ('A'-'Z').":
+                    result.Item2 = "A senha deve conter pelo menos um caracter em Caixa Alta. Ex: Senha@123";
+                    break;
+                default:
+                    break;
+            }
             if (result.Item1)
-                return Ok(result.Item2);
+                return Ok();
 
             return BadRequest(result.Item2);
         }
