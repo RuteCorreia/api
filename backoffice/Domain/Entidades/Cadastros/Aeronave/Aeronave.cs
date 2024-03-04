@@ -8,14 +8,9 @@ public class Aeronave
 {
     [Key]
     public int Id { get; set; }
-
-    [ForeignKey("Empresa")]
-    public int? IdEmpresa { get; set; }
     public string? Fabricante { get; set; }
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }
-    
-    [JsonIgnore]
-    public virtual Empresa.Empresa? Empresa { get; set; }
+   
 }
