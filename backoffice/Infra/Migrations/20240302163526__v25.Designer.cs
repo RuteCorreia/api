@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240302163526__v25")]
+    partial class _v25
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1181,36 +1184,6 @@ namespace Infra.Migrations
                     b.ToTable("Frota");
                 });
 
-            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("Documento")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("HorasInspecao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HorasRevisao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HorimetroInicial")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IdAeronave")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdAeronave");
-
-                    b.ToTable("ManutencaoAeronave");
-                });
-
             modelBuilder.Entity("Domain.Entidades.Cadastros.Menu.Menu", b =>
                 {
                     b.Property<int>("MenuItemId")
@@ -2014,15 +1987,6 @@ namespace Infra.Migrations
                         .HasForeignKey("IdEmpresa");
 
                     b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
-                        .WithMany()
-                        .HasForeignKey("IdAeronave");
-
-                    b.Navigation("Aeronave");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.MenuUsuario.MenuUsuario", b =>
