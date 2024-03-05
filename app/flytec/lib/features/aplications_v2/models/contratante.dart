@@ -34,7 +34,8 @@ class Contratante {
       'inscricaoEstadual': inscricaoEstadual,
     };
   }
-  factory Contratante.fromJson(Map<String, dynamic> json) {
+  factory Contratante.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return Contratante();
     return Contratante(
       tipoContratante: json['tipoContratante'],
       nome: json['nome'],

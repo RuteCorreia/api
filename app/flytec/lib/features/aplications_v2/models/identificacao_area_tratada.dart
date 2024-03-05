@@ -28,7 +28,8 @@ class IdentificacaoAreaTratada {
     };
   }
 
-  factory IdentificacaoAreaTratada.fromJson(Map<String, dynamic> json) {
+  factory IdentificacaoAreaTratada.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return IdentificacaoAreaTratada();
     return IdentificacaoAreaTratada(
       uf: json['uf'],
       cidade: json['cidade'],

@@ -47,7 +47,8 @@ class RecomendacoesTecnicas{
     };
   }
 
-  factory RecomendacoesTecnicas.fromJson(Map<String, dynamic> json) {
+  factory RecomendacoesTecnicas.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return RecomendacoesTecnicas();
     return RecomendacoesTecnicas(
       veiculante: json['veiculante'],
       qtdVeiculante: json['qtdVeiculante'],

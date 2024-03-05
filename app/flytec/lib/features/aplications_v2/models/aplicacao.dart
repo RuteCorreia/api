@@ -21,34 +21,33 @@ class Aplicacao {
   ContratoPrestacaoServico? contratoPrestacaoServico;
   DadosResponsavel? dadosResponsavel;
 
-  Aplicacao({
-    this.piloto,
-    this.executor,
-    this.id,
-    this.contratante,
-    this.identificacaoAreaTratada,
-    this.caracteristicasProdutoAplicado,
-    this.recomendacoesTecnicas,
-    this.relatorioAplicacao,
-    this.contratoPrestacaoServico,
-    this.dadosResponsavel,
-    this.state,this.data
-  });
+  Aplicacao(
+      {this.piloto,
+      this.executor,
+      this.id,
+      this.contratante,
+      this.identificacaoAreaTratada,
+      this.caracteristicasProdutoAplicado,
+      this.recomendacoesTecnicas,
+      this.relatorioAplicacao,
+      this.contratoPrestacaoServico,
+      this.dadosResponsavel,
+      this.state,
+      this.data});
 
   // Create toJson and toMap methods of class
   Map<String, dynamic> toMap() {
     return {
       'piloto': piloto,
       'executor': executor,
-      'id': id,
-      'contratante': contratante?.toMap(),
-      'identificacaoAreaTratada': identificacaoAreaTratada?.toMap(),
-      'caracteristicasProdutoAplicado': caracteristicasProdutoAplicado?.toMap(),
-      'recomendacoesTecnicas': recomendacoesTecnicas?.toMap(),
-      'relatorioAplicacao': relatorioAplicacao?.toMap(),
-      'contratoPrestacaoServico': contratoPrestacaoServico?.toMap(),
-      'dadosResponsavel': dadosResponsavel?.toMap(),
-      'state': state ?? ReportDashBoardState.Incompleto,
+      // 'contratante': contratante?.toMap(),
+      // 'identificacaoAreaTratada': identificacaoAreaTratada?.toMap(),
+      // 'caracteristicasProdutoAplicado': caracteristicasProdutoAplicado?.toMap(),
+      // 'recomendacoesTecnicas': recomendacoesTecnicas?.toMap(),
+      // 'relatorioAplicacao': relatorioAplicacao?.toMap(),
+      // 'contratoPrestacaoServico': contratoPrestacaoServico?.toMap(),
+      // 'dadosResponsavel': dadosResponsavel?.toMap(),
+      'state': state?.index ?? ReportDashBoardState.Incompleto.index,
       'data': data
     };
   }
@@ -70,7 +69,9 @@ class Aplicacao {
         contratoPrestacaoServico:
             ContratoPrestacaoServico.fromJson(json['contratoPrestacaoServico']),
         dadosResponsavel: DadosResponsavel.fromJson(json['dadosResponsavel']),
-        state: json['state'],
+        state: ReportDashBoardState.values.firstWhere(
+            (state) => state.index == json['state'],
+            orElse: () => ReportDashBoardState.Incompleto),
         data: json['data']);
   }
 }

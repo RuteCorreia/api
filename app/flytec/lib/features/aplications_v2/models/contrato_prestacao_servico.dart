@@ -32,7 +32,8 @@ class ContratoPrestacaoServico {
     };
   }
 
-  factory ContratoPrestacaoServico.fromJson(Map<String, dynamic> json) {
+  factory ContratoPrestacaoServico.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return ContratoPrestacaoServico();
     return ContratoPrestacaoServico(
       distanciaPista: json['distanciaPista'],
       preco: json['preco'],

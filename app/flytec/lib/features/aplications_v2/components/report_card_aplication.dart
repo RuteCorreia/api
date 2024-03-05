@@ -17,19 +17,19 @@ class ReportCardAplication extends StatelessWidget {
         _index = index;
 
   Color get _getColorStateColor {
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Enviado) {
       return Colors.blue;
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Pronto) {
       return Colors.green;
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Incompleto) {
       return const Color(0xFFFF9900);
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.NaoEnviado) {
       return Colors.red;
     }
@@ -37,19 +37,19 @@ class ReportCardAplication extends StatelessWidget {
   }
 
   String get _getTitleStateColor {
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Enviado) {
       return "Relatório enviado";
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Pronto) {
       return "Relatório pronto para envio";
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.Incompleto) {
       return "Relatório incompleto";
     }
-    if (_reportAplicationController.reportsAplications![_index].state ==
+    if (_reportAplicationController.listaAplicacao![_index].state ==
         ReportDashBoardState.NaoEnviado) {
       return "Relatório não enviado";
     }
@@ -58,7 +58,7 @@ class ReportCardAplication extends StatelessWidget {
 
   DateTime get _date {
     int? epoch = int.tryParse(
-        _reportAplicationController.reportsAplications![_index].data!);
+        _reportAplicationController.listaAplicacao![_index].data!);
     if (epoch != null) {
       return DateTime.fromMillisecondsSinceEpoch(epoch);
     }
@@ -165,7 +165,7 @@ class ReportCardAplication extends StatelessWidget {
                 children: [
                   Text(
                     _reportAplicationController
-                            .reportsAplications![_index].contratante?.nome ??
+                            .listaAplicacao![_index].contratante?.nome ??
                         "",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 121, 118, 118),

@@ -46,7 +46,8 @@ class Aplicacoes {
     };
   }
 
-  factory Aplicacoes.fromJson(Map<String, dynamic> json) {
+  factory Aplicacoes.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return Aplicacoes();
     return Aplicacoes(
       dataAplicacao: json['dataAplicacao'],
       horaInicio: json['horaInicio'],

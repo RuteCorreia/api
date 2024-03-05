@@ -43,7 +43,8 @@ class CaracteristicasProdutoAplicado {
     };
   }
 
-  factory CaracteristicasProdutoAplicado.fromJson(Map<String, dynamic> json) {
+  factory CaracteristicasProdutoAplicado.fromJson(Map<String, dynamic>? json) {
+    if(json==null) return CaracteristicasProdutoAplicado();
     return CaracteristicasProdutoAplicado(
       cultura: json['cultura'],
       receiturarioAgronomico: json['receiturarioAgronomico'],

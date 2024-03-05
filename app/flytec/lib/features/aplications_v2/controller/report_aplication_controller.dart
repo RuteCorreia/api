@@ -9,16 +9,16 @@ class ReportAplicationController {
   SQLDatabaseProvider get _sqlDatabaseProvider =>
       SQLDatabaseProvider(_databaseInstance);
 
-  List<Aplicacao>? _reportsAplications;
+  List<Aplicacao>? _listaAplicacao;
 
-  List<Aplicacao>? get reportsAplications => _reportsAplications;
+  List<Aplicacao>? get listaAplicacao => _listaAplicacao;
 
-  void setListRelatorioAplicacao(List<Aplicacao>? reportsAplicationsNew) {
-    _reportsAplications = reportsAplicationsNew;
+  void setListRelatorioAplicacao(List<Aplicacao>? listaAplicacaoNew) {
+    _listaAplicacao = listaAplicacaoNew;
   }
 
   int obtainQuantityReportsByState(ReportDashBoardState state) {
-    return _reportsAplications!
+    return _listaAplicacao!
         .where((element) => element.state == state)
         .toList()
         .length;
@@ -27,10 +27,10 @@ class ReportAplicationController {
   Future<void> obtainReportsAplications() async {
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacao");
-    _reportsAplications = reports.map((e) => Aplicacao.fromJson(e)).toList();
+    _listaAplicacao = reports.map((e) => Aplicacao.fromJson(e)).toList();
   }
 
-  Future<int> createRelatorioAplicacao(Aplicacao aplicacao) async {
+  Future<int> createAplicacao(Aplicacao aplicacao) async {
     int id = await _sqlDatabaseProvider.insert(aplicacao.toMap(), 'Aplicacao');
     await obtainReportsAplications();
     return id;
