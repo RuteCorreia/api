@@ -6,5 +6,5 @@ public class AeronaveViewModel
     public string? Fabricante { get; set; }
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
-    public int? SerialNumber { get; set; }
+    public string? SerialNumber { get; set; }
 }

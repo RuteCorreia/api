@@ -1,4 +1,5 @@
-﻿using Infra.Configuracao;
+﻿using Helpers;
+using Infra.Configuracao;
 using Microsoft.AspNetCore.Identity;
 
 namespace WebApi.Config;
@@ -12,6 +13,9 @@ public static class IdentityConfig
             options.Password.RequiredLength = 6;
         })
         .AddEntityFrameworkStores<ContextBase>()
-        .AddDefaultTokenProviders();
+        .AddDefaultTokenProviders()
+        .AddErrorDescriber<CustomIdentityErrorDescriber>();
     }
 }
+
+
