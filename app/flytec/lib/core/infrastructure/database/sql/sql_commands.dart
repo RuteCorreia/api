@@ -1,47 +1,50 @@
 class SQLCommands {
-  static String createRelatorioAplicacaoTable = '''
-  CREATE TABLE RelatorioAplicacoes (
+  static String createAplicacaoTable = '''
+CREATE TABLE Aplicacao (
     id INTEGER PRIMARY KEY,
     piloto TEXT,
     executor TEXT,
+    state INTEGER,
     data TEXT,
-    state TEXT,
-    identificadorRelatorio INTEGER UNIQUE,
-    identificacaoContratanteId INTEGER UNIQUE,
-    identificacaoAreaId INTEGER UNIQUE,
-    caracteristicasProdutoId INTEGER UNIQUE,
-    aplicacaoRelatorioId INTEGER UNIQUE,
-    contratoPrestacaoServicosId INTEGER UNIQUE,
-    dadosResponsavelId INTEGER UNIQUE
-  )
+    contratante_id INTEGER,
+    identificacaoAreaTratada_id INTEGER,
+    caracteristicasProdutoAplicado_id INTEGER,
+    recomendacoesTecnicas_id INTEGER,
+    relatorioAplicacao_id INTEGER,
+    contratoPrestacaoServico_id INTEGER,
+    dadosResponsavel_id INTEGER
+)
 ''';
-  static String createIdentificacaoContratanteTable = '''
-  CREATE TABLE IdentificacaoContratante (
+static String createContratanteTable = '''
+CREATE TABLE Contratante (
     id INTEGER PRIMARY KEY,
-    nomeContratante TEXT,
-    endereco TEXT,
-    documento TEXT UNIQUE,
     tipoContratante TEXT,
+    nome TEXT,
+    cpf TEXT,
+    endereco TEXT,
+    rg TEXT,
     uf TEXT,
-    cidade TEXT
-  )
+    cidade TEXT,
+    cnpj TEXT,
+    inscricaoEstadual TEXT
+)
 ''';
-  static String createIdentificacaoAreaTable = '''
-  CREATE TABLE IdentificacaoArea (
+static String createIdentificacaoAreaTratadaTable = '''
+CREATE TABLE IdentificacaoAreaTratada (
     id INTEGER PRIMARY KEY,
-    uf TEXT
+    uf TEXT,
     cidade TEXT,
     localizacao TEXT,
     cultura TEXT,
     extensao TEXT,
-    fotoArea BLOB UNIQUE
-  )
+    croquiArea BLOB
+)
 ''';
-  static String createCaracteristicasProdutoTable = '''
-  CREATE TABLE CaracteristicasProduto (
+static String createCaracteristicasProdutoAplicadoTable = '''
+CREATE TABLE CaracteristicasProdutoAplicado (
     id INTEGER PRIMARY KEY,
     cultura TEXT,
-    fotoReceituarioAgronomico BLOB UNIQUE,
+    receiturarioAgronomico BLOB,
     nomeProduto TEXT,
     classificacaoToxicologica TEXT,
     classe TEXT,
@@ -51,48 +54,87 @@ class SQLCommands {
     unidadeDoseProdutoHectare TEXT,
     adjuvante TEXT,
     tipoServico TEXT
-  )
+)
 ''';
-  static String createAplicacaoTable = '''
-  CREATE TABLE Aplicacao (
+static String createRecomendacoesTecnicasTable = '''
+CREATE TABLE RecomendacoesTecnicas (
+    id INTEGER PRIMARY KEY,
+    veiculante TEXT,
+    qtdVeiculante TEXT,
+    larguraFaixa TEXT,
+    volumeAplicacao TEXT,
+    unidadevolumeAplicacao TEXT,
+    aeronave TEXT,
+    alturaVoo TEXT,
+    temperatura TEXT,
+    umidadeRelativaAr TEXT,
+    velocidadeVento TEXT,
+    tipoProduto TEXT,
+    equipamento TEXT,
+    angulo TEXT
+)
+''';
+static String createAplicacoesTable = '''
+CREATE TABLE Aplicacoes (
     id INTEGER PRIMARY KEY,
     dataAplicacao TEXT,
-    horarioInicio TEXT,
+    horaInicio TEXT,
+    horaFinal TEXT,
     horimetroInicial TEXT,
-    horarioTermino TEXT,
     horimetroFinal TEXT,
-    imagemCondicoesClimaticas BLOB UNIQUE,
-    temperaturaInicial INTEGER,
-    temperaturaFinal INTEGER,
-    urArInicial INTEGER,
-    urArFinal INTEGER,
-    ventoInicial INTEGER,
-    ventoFinal INTEGER
-  )
+    imagemCondicaoClimatica BLOB,
+    temperaturaInicial TEXT,
+    temperaturaFinal TEXT,
+    umidadeRelativaArInicial TEXT,
+    umidadeRelativaArFinal TEXT,
+    ventoInicial TEXT,
+    ventoFinal TEXT,
+    relatorioAplicacaoId INTEGER,
+    FOREIGN KEY (relatorioAplicacaoId) REFERENCES RelatorioAplicacao(id)
+)
 ''';
-  static String createContratoPrestacaoServicosTable = '''
-  CREATE TABLE ContratoPrestacaoServicos (
+
+static String createRelatorioAplicacaoTable = '''
+CREATE TABLE RelatorioAplicacao (
     id INTEGER PRIMARY KEY,
-    distanciaPista INTEGER,
-    preco INTEGER,
-    precoUnidade TEXT,
-    extensaoHorasHa TEXT,
+    cultura TEXT,
+    produtoAplicado TEXT,
+    dosagem TEXT,
+    unidadeDosagem TEXT,
+    volumeAplicacao TEXT,
+    unidadeVolumeAplicacao TEXT,
+    totalAreaAplicada TEXT,
+    localizacaoPistaCodigoICAO TEXT,
+    lat TEXT,
+    long TEXT,
+    observacoes TEXT,
+    relatorioDGPS TEXT
+)
+''';
+static String createContratoPrestacaoServicoTable = '''
+CREATE TABLE ContratoPrestacaoServico (
+    id INTEGER PRIMARY KEY,
+    distanciaPista TEXT,
+    preco TEXT,
+    unidadePreco TEXT,
+    extensao TEXT,
     valorTotal TEXT,
     vencimento TEXT,
     nomePiloto TEXT,
     executor TEXT
-  )
+)
 ''';
-  static String createDadosResponsavelTable = '''
-  CREATE TABLE DadosResponsavel (
+static String createDadosResponsavelTable = '''
+CREATE TABLE DadosResponsavel (
     id INTEGER PRIMARY KEY,
     data TEXT,
     uf TEXT,
     cidade TEXT,
     nomeCompleto TEXT,
-    documento TEXT UNIQUE,
+    documento TEXT,
     telefone TEXT,
     assinaturaResponsavel BLOB
-  )
+)
 ''';
+
 }

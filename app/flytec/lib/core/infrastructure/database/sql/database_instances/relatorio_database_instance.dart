@@ -27,17 +27,19 @@ class RelatorioDatabaseInstance<T> implements DatabaseInstance {
   }
 
   Future<void> _onCreate(db, versao) async {
-    await db.execute(SQLCommands.createRelatorioAplicacaoTable);
-
-    await db.execute(SQLCommands.createIdentificacaoContratanteTable);
-
-    await db.execute(SQLCommands.createIdentificacaoAreaTable);
-
-    await db.execute(SQLCommands.createCaracteristicasProdutoTable);
-
     await db.execute(SQLCommands.createAplicacaoTable);
 
-    await db.execute(SQLCommands.createContratoPrestacaoServicosTable);
+    await db.execute(SQLCommands.createContratanteTable);
+
+    await db.execute(SQLCommands.createIdentificacaoAreaTratadaTable);
+
+    await db.execute(SQLCommands.createCaracteristicasProdutoAplicadoTable);
+
+    await db.execute(SQLCommands.createRecomendacoesTecnicasTable);
+
+    await db.execute(SQLCommands.createAplicacoesTable);
+
+    await db.execute(SQLCommands.createContratoPrestacaoServicoTable);
 
     await db.execute(SQLCommands.createDadosResponsavelTable);
   }

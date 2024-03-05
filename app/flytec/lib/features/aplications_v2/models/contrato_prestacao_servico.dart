@@ -1,21 +1,47 @@
-class ContratoPrestacaoServicos {
-  int distanciaPista;
-  int preco;
-  String precoUnidade;
-  String extensaoHorasHa;
-  String valorTotal;
-  DateTime vencimento;
-  String nomePiloto;
-  String executor;
+class ContratoPrestacaoServico {
+  String? distanciaPista;
+  String? preco;
+  String? unidadePreco;
+  String? extensao;
+  String? valorTotal;
+  String? vencimento;
+  String? nomePiloto;
+  String? executor;
 
-  ContratoPrestacaoServicos({
-    required this.distanciaPista,
-    required this.preco,
-    required this.precoUnidade,
-    required this.extensaoHorasHa,
-    required this.valorTotal,
-    required this.vencimento,
-    required this.nomePiloto,
-    required this.executor,
+  ContratoPrestacaoServico({
+    this.distanciaPista,
+    this.preco,
+    this.unidadePreco,
+    this.extensao,
+    this.valorTotal,
+    this.vencimento,
+    this.nomePiloto,
+    this.executor,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'distanciaPista': distanciaPista,
+      'preco': preco,
+      'unidadePreco': unidadePreco,
+      'extensao': extensao,
+      'valorTotal': valorTotal,
+      'vencimento': vencimento,
+      'nomePiloto': nomePiloto,
+      'executor': executor,
+    };
+  }
+
+  factory ContratoPrestacaoServico.fromJson(Map<String, dynamic> json) {
+    return ContratoPrestacaoServico(
+      distanciaPista: json['distanciaPista'],
+      preco: json['preco'],
+      unidadePreco: json['unidadePreco'],
+      extensao: json['extensao'],
+      valorTotal: json['valorTotal'],
+      vencimento: json['vencimento'],
+      nomePiloto: json['nomePiloto'],
+      executor: json['executor'],
+    );
+  }
 }

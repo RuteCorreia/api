@@ -97,6 +97,7 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplications',
           builder: (BuildContext context, GoRouterState state) {
+            // return const HomeAplicationPage();
             return const AplicationsPage();
           },
         ),

@@ -1,112 +1,70 @@
-import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
-import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
-import 'package:flytec/features/aplications_v2/models/caracteristicas_produto.dart';
-import 'package:flytec/features/aplications_v2/models/contrato_prestacao_servico.dart';
-import 'package:flytec/features/aplications_v2/models/dados_responsavel.dart';
-import 'package:flytec/features/aplications_v2/models/identificacao_area.dart';
-import 'package:flytec/features/aplications_v2/models/identificacao_contratante.dart';
+import 'package:flytec/features/aplications_v2/models/aplicacoes.dart';
 
-class RelatorioAplicacoes {
-  String? piloto;
-  String? executor;
-  DateTime data;
-  int? identificadorRelatorio;
-  ReportDashBoardState? state;
+class RelatorioAplicacao {
+  String? cultura;
+  String? produtoAplicado;
+  String? dosagem;
+  String? unidadeDosagem;
+  String? volumeAplicacao;
+  String? unidadeVolumeAplicacao;
+  String? totalAreaAplicada;
+  String? localizacaoPistaCodigoICAO;
+  String? lat;
+  String? long;
+  String? observacoes;
+  String? relatorioDGPS;
+  List<Aplicacoes>? aplicacoes;
 
-  IdentificacaoContratante? identificacaoContratante;
-  IdentificacaoArea? identificacaoArea;
-  CaracteristicasProduto? caracteristicasProduto;
-  Aplicacao? aplicacaoRelatorio;
-  ContratoPrestacaoServicos? contratoPrestacaoServicos;
-  DadosResponsavel? dadosResponsavel;
-
-  RelatorioAplicacoes({
-    this.piloto,
-    this.executor,
-    required this.data,
-    required this.state,
-    this.identificadorRelatorio,
-    this.identificacaoContratante,
-    this.identificacaoArea,
-    this.caracteristicasProduto,
-    this.aplicacaoRelatorio,
-    this.contratoPrestacaoServicos,
-    this.dadosResponsavel,
+  RelatorioAplicacao({
+    this.cultura,
+    this.produtoAplicado,
+    this.dosagem,
+    this.unidadeDosagem,
+    this.volumeAplicacao,
+    this.unidadeVolumeAplicacao,
+    this.totalAreaAplicada,
+    this.localizacaoPistaCodigoICAO,
+    this.lat,
+    this.long,
+    this.observacoes,
+    this.relatorioDGPS,
+    this.aplicacoes,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'piloto': piloto,
-      'executor': executor,
-      'data': data.millisecondsSinceEpoch.toString(),
-      'state': state?.name,
+      'cultura': cultura,
+      'produtoAplicado': produtoAplicado,
+      'dosagem': dosagem,
+      'unidadeDosagem': unidadeDosagem,
+      'volumeAplicacao': volumeAplicacao,
+      'unidadeVolumeAplicacao': unidadeVolumeAplicacao,
+      'totalAreaAplicada': totalAreaAplicada,
+      'localizacaoPistaCodigoICAO': localizacaoPistaCodigoICAO,
+      'lat': lat,
+      'long': long,
+      'observacoes': observacoes,
+      'relatorioDGPS': relatorioDGPS,
+      'aplicacoes': aplicacoes?.map((x) => x.toMap()).toList(),
     };
   }
 
-  factory RelatorioAplicacoes.fromJson(Map<String, dynamic> json) {
-    return RelatorioAplicacoes(
-      data: DateTime.fromMillisecondsSinceEpoch(int.tryParse(json['data'])!),
-      state: json['state'] != null
-          ? ReportDashBoardState.values
-              .firstWhere((element) => element.name == json['state'])
-          : ReportDashBoardState.Incompleto,
+  factory RelatorioAplicacao.fromJson(Map<String, dynamic> json) {
+    return RelatorioAplicacao(
+      cultura: json['cultura'],
+      produtoAplicado: json['produtoAplicado'],
+      dosagem: json['dosagem'],
+      unidadeDosagem: json['unidadeDosagem'],
+      volumeAplicacao: json['volumeAplicacao'],
+      unidadeVolumeAplicacao: json['unidadeVolumeAplicacao'],
+      totalAreaAplicada: json['totalAreaAplicada'],
+      localizacaoPistaCodigoICAO: json['localizacaoPistaCodigoICAO'],
+      lat: json['lat'],
+      long: json['long'],
+      observacoes: json['observacoes'],
+      relatorioDGPS: json['relatorioDGPS'],
+      aplicacoes: List<Aplicacoes>.from(
+          json['aplicacoes']?.map((x) => Aplicacoes.fromJson(x))),
     );
   }
-
-  // RelatorioModel toRelatorioModel() {
-  //   return RelatorioModel(
-  //     piloto: piloto,
-  //     executor: executor,
-  //     finalizado: state == ReportDashBoardState.Pronto,
-  //     areaTratada: AreaTratada(
-  //         cidade: identificacaoArea?.cidade,
-  //         uf: identificacaoArea?.uf,
-  //         cultura: identificacaoArea?.cultura,
-  //         extensao: identificacaoArea?.extensao,
-  //         localizacao: identificacaoArea?.localizacao,
-  //         pathImage: null),
-  //     carateristicaProduto: CarateristicaProduto(
-  //         adjuvante: caracteristicasProduto?.adjuvante,
-  //         alvoBiologico: caracteristicasProduto?.alvoBiologico,
-  //         classe: caracteristicasProduto?.classe,
-  //         cultura: caracteristicasProduto?.cultura,
-  //         classificacaoToxicologica:
-  //             caracteristicasProduto?.classificacaoToxicologica,
-  //         dosePorHectare: caracteristicasProduto?.doseProdutoHectare,
-  //         nomeProduto: caracteristicasProduto?.nomeProduto,
-  //         pathImage: null,
-  //         tipoFormulacao: caracteristicasProduto?.tipoFormulacao,
-  //         tipoServico: caracteristicasProduto?.tipoServico,
-  //         unidadeHectare: caracteristicasProduto?.unidadeDoseProdutoHectare),
-  //     cliente: Cliente(
-  //         endereco: identificacaoContratante?.endereco,
-  //         nome: identificacaoContratante?.nomeContratante,
-  //         cidade: identificacaoContratante?.cidade,
-  //         uf: identificacaoContratante?.uf,
-  //         cnpj: identificacaoContratante?.documento,
-  //         cpf: identificacaoContratante?.documento,
-  //         id: null,
-  //         inscricaoEstadual: identificacaoContratante?.inscricaoEstadual,
-  //         rg: identificacaoContratante?.documento),
-  //     contratoServico: ContratoServico(
-  //         distanciaDaPista:
-  //             contratoPrestacaoServicos?.distanciaPista.toString(),
-  //         executor: contratoPrestacaoServicos?.executor,
-  //         extensao: contratoPrestacaoServicos?.extensaoHorasHa,
-  //         nomePiloto: contratoPrestacaoServicos?.nomePiloto,
-  //         preco: contratoPrestacaoServicos?.preco.toString(),
-  //         tipoPreco: contratoPrestacaoServicos?.precoUnidade,
-  //         valorTotal: contratoPrestacaoServicos?.valorTotal,
-  //         vencimento: contratoPrestacaoServicos
-  //             ?.vencimento.millisecondsSinceEpoch
-  //             .toString()),
-  //     dadosDoResponsavel: DadosDoResponsavel(),
-  //     dashBoardState: DashBoardState.values
-  //         .firstWhere((element) => element.name == state?.name),
-  //     numeroRelatorio: identificadorRelatorio,
-  //     recomendacoesTecnicas: RecomendacoesTecnicas(aeronave: re ,alturaDoVoo: ,angulo: ,equipamento: ,larguraDaFaixa: ,qtdVeiculante: ,temperatura: ,tipoProduto: ,umidadeRelativaDoAr: ,unidadeVolume: ,veiculante: ,velocidadeDoVento: ,volumeDaAplicacao: ),
-  //     relatorioDeAplicacao: RelatorioDeAplicacao(aplicacoes: ,),
-  //   );
-  // }
-
 }

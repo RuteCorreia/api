@@ -4,6 +4,7 @@ import 'package:flytec/features/aplications_v2/components/report_card_aplication
 import 'package:flytec/features/aplications_v2/controller/aplications_initialization_controller.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
+import 'package:flytec/features/aplications_v2/pages/create_aplication_page.dart';
 
 class AplicationsPage extends StatefulWidget {
   const AplicationsPage({super.key});
@@ -21,7 +22,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
     _aplicationsInitializationController =
         AplicationsInitializationController();
     await _aplicationsInitializationController.initialize();
-    _reportAplicationController.setListRelatorioAplicacoes(
+    _reportAplicationController.setListRelatorioAplicacao(
         _aplicationsInitializationController.reportsAplications);
     setState(() {});
   }
@@ -31,7 +32,6 @@ class _AplicationsPageState extends State<AplicationsPage> {
     super.initState();
     _initializationAplicationsReports();
   }
-
 
   final ScrollController _scrollController = ScrollController();
 
@@ -47,10 +47,14 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await _aplicationsInitializationController.teste();
-          _reportAplicationController.setListRelatorioAplicacoes(
+          _reportAplicationController.setListRelatorioAplicacao(
               _aplicationsInitializationController.reportsAplications);
           setState(() {});
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CreateAplicationPage(
+              reportAplicationController: _reportAplicationController,
+            );
+          }));
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),

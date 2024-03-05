@@ -263,7 +263,16 @@ class _LoginPageState extends State<LoginPage> {
                     CustomButton(
                       title: "Entrar",
                       onClick: () async {
-                        context.push("/home");
+                        getIt<AuthenticationBloc>().add(
+                          LoginEvent(
+                            password: _editingControllerPassword.text,
+                            username: _editingControllerEmail.text,
+                            context: context,
+                          ),
+                        );
+                        setState(() {
+                          isLoading = true;
+                        });
                       },
                     ),
                     const SizedBox(height: 25),

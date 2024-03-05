@@ -1,21 +1,45 @@
 import 'dart:typed_data';
 
 class DadosResponsavel {
-  DateTime data;
-  String uf;
-  String cidade;
-  String nomeCompleto;
-  String documento;
-  String telefone;
-  Uint8List assinaturaResponsavel;
+  String? data;
+  String? uf;
+  String? cidade;
+  String? nomeCompleto;
+  String? documento;
+  String? telefone;
+  Uint8List? assinaturaResponsavel;
 
   DadosResponsavel({
-    required this.data,
-    required this.uf,
-    required this.cidade,
-    required this.nomeCompleto,
-    required this.documento,
-    required this.telefone,
-    required this.assinaturaResponsavel,
+    this.data,
+    this.uf,
+    this.cidade,
+    this.nomeCompleto,
+    this.documento,
+    this.telefone,
+    this.assinaturaResponsavel,
   });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'data': data,
+      'uf': uf,
+      'cidade': cidade,
+      'nomeCompleto': nomeCompleto,
+      'documento': documento,
+      'telefone': telefone,
+      'assinaturaResponsavel': assinaturaResponsavel,
+    };
+  }
+
+  factory DadosResponsavel.fromJson(Map<String, dynamic> json) {
+    return DadosResponsavel(
+      data: json['data'],
+      uf: json['uf'],
+      cidade: json['cidade'],
+      nomeCompleto: json['nomeCompleto'],
+      documento: json['documento'],
+      telefone: json['telefone'],
+      assinaturaResponsavel: json['assinaturaResponsavel'],
+    );
+  }
 }

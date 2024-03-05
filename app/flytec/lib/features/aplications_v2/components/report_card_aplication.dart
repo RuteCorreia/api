@@ -56,6 +56,15 @@ class ReportCardAplication extends StatelessWidget {
     return "Sem descrição";
   }
 
+  DateTime get _date {
+    int? epoch = int.tryParse(
+        _reportAplicationController.reportsAplications![_index].data!);
+    if (epoch != null) {
+      return DateTime.fromMillisecondsSinceEpoch(epoch);
+    }
+    return DateTime.now();
+  }
+
   Future<void> _openContextMenu(BuildContext context) async {
     await showAdaptiveDialog<String>(
       context: context,
@@ -155,8 +164,8 @@ class ReportCardAplication extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _reportAplicationController.reportsAplications![_index]
-                            .identificacaoContratante?.nomeContratante ??
+                    _reportAplicationController
+                            .reportsAplications![_index].contratante?.nome ??
                         "",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 121, 118, 118),
@@ -241,9 +250,7 @@ class ReportCardAplication extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              Util.getTodayDate(
-                                  date: _reportAplicationController
-                                      .reportsAplications![_index].data),
+                              Util.getTodayDate(date: _date),
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 121, 118, 118),
                                 fontSize: 12,
@@ -290,7 +297,7 @@ class ReportCardAplication extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              "${_reportAplicationController.reportsAplications![_index].data.hour}:${_reportAplicationController.reportsAplications![_index].data.minute}",
+                              "${_date.hour}:${_date.minute}",
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 121, 118, 118),
                                 fontSize: 12,
