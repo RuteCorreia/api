@@ -14,7 +14,6 @@ class CustomCardButton extends StatelessWidget {
       onTap: _onTap,
       child: Container(
         width: double.infinity,
-        height: 67,
         margin: const EdgeInsets.symmetric(vertical: 10),
         padding: const EdgeInsets.all(16),
         clipBehavior: Clip.antiAlias,
@@ -58,7 +57,6 @@ class CustomCardButton extends StatelessWidget {
                                     fontSize: 13,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w600,
-                                    height: 0.09,
                                   ),
                                 ),
                               ),

@@ -21,6 +21,8 @@ class ReportAplicationController {
 
   Aplicacao? get aplicacaoSelected => _aplicacaoSelected;
 
+  VoidCallback? get updateView => _updateView;
+
   void setAplicacaoSelected(Aplicacao? aplicacao) {
     _aplicacaoSelected = aplicacao;
     _updateView!();
@@ -42,6 +44,7 @@ class ReportAplicationController {
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacao");
     _listaAplicacao = reports.map((e) => Aplicacao.fromJson(e)).toList();
+    _updateView!();
   }
 
   Future<int> createAplicacao(Aplicacao aplicacao) async {

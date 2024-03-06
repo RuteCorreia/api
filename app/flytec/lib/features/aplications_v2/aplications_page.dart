@@ -14,8 +14,8 @@ class AplicationsPage extends StatefulWidget {
 }
 
 class _AplicationsPageState extends State<AplicationsPage> {
-  late AplicationsInitializationController _aplicationsInitializationController;
-  late ReportAplicationController _reportAplicationController;
+  AplicationsInitializationController? _aplicationsInitializationController;
+  ReportAplicationController? _reportAplicationController;
 
   void _updateView() {
     setState(() {});
@@ -24,9 +24,10 @@ class _AplicationsPageState extends State<AplicationsPage> {
   Future<void> _initializationAplicationsReports() async {
     _aplicationsInitializationController =
         AplicationsInitializationController();
-    await _aplicationsInitializationController.initialize();
-    _reportAplicationController.setListRelatorioAplicacao(
-        _aplicationsInitializationController.reportsAplications);
+    setState(() {});
+    await _aplicationsInitializationController?.initialize();
+    _reportAplicationController?.setListRelatorioAplicacao(
+        _aplicationsInitializationController!.reportsAplications!);
     setState(() {});
   }
 
@@ -54,12 +55,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          _reportAplicationController.setListRelatorioAplicacao(
-              _aplicationsInitializationController.reportsAplications);
+          _reportAplicationController?.setListRelatorioAplicacao(
+              _aplicationsInitializationController?.reportsAplications);
           setState(() {});
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateAplicationPage(
-              reportAplicationController: _reportAplicationController,
+              reportAplicationController: _reportAplicationController!,
             );
           }));
         },
@@ -67,12 +68,13 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       body: Builder(
         builder: (context) {
-          if (_aplicationsInitializationController.reportsAplications == null) {
+          if (_aplicationsInitializationController?.reportsAplications ==
+              null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (_aplicationsInitializationController
+          if (_aplicationsInitializationController!
               .reportsAplications!.isEmpty) {
             return const Align(
               alignment: Alignment.center,
@@ -97,7 +99,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                     children: [
                       ReportDashBoardCounter(
                         text: "Enviado",
-                        value: _reportAplicationController
+                        value: _reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Enviado)
                             .toString(),
@@ -105,7 +107,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Pronto",
-                        value: _reportAplicationController
+                        value: _reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Pronto)
                             .toString(),
@@ -113,7 +115,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Incompleto",
-                        value: _reportAplicationController
+                        value: _reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Incompleto)
                             .toString(),
@@ -121,7 +123,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Não enviado",
-                        value: _reportAplicationController
+                        value: _reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.NaoEnviado)
                             .toString(),
@@ -133,13 +135,13 @@ class _AplicationsPageState extends State<AplicationsPage> {
                   ListView.builder(
                       controller: _scrollController,
                       shrinkWrap: true,
-                      itemCount: _aplicationsInitializationController
-                          .reportsAplications?.length,
+                      itemCount:
+                          _reportAplicationController?.listaAplicacao!.length,
                       reverse: true,
                       itemBuilder: (context, index) {
                         return ReportCardAplication(
                             reportAplicationController:
-                                _reportAplicationController,
+                                _reportAplicationController!,
                             index: index);
                       })
                 ],

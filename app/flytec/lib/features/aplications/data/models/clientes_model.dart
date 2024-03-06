@@ -106,5 +106,6 @@ class ClientesModel {
         precificacao: "",
         admin: false,
         uf: contratante.uf,
+          idCliente: int.tryParse(contratante.id!)
       );
 }

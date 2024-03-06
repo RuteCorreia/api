@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -10,6 +8,7 @@ import 'package:flytec/features/aplications_v2/components/custom_cliente_card.da
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
 import 'package:flytec/features/aplications_v2/models/contratante.dart';
+import 'package:flytec/features/aplications_v2/pages/create_new_contratante_page.dart';
 
 class ContrantePage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -40,6 +39,10 @@ class _ContrantePageState extends State<ContrantePage> {
     });
   }
 
+  void _onAddContratanteUpdateView() {
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,38 +54,42 @@ class _ContrantePageState extends State<ContrantePage> {
           style: TextStyle(),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return CreateNewContratantePage(
+              onAddContratanteUpdateView: _onAddContratanteUpdateView,
+            );
+          }));
+        },
+        child: const Icon(Icons.add, color: Colors.white),
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 25),
-              SizedBox(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: getIt<GlobalConfigVars>().clientes.length,
-                    itemBuilder: (ctx, index) {
-                      return InkWell(
-                        onTap: () {
-                          _selectedContratante =
-                              getIt<GlobalConfigVars>().clientes[index];
-                          setState(() {});
-                          log('--> ${_selectedContratante?.nomeCliente}');
-                        },
-                        child: CustomContratanteCard(
-                          title: getIt<GlobalConfigVars>()
-                              .clientes[index]
-                              .nomeCliente,
-                          isSelected: _selectedContratante?.endereco ==
-                              getIt<GlobalConfigVars>()
-                                  .clientes[index]
-                                  .endereco,
-                        ),
-                      );
-                    }),
-              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: getIt<GlobalConfigVars>().clientes.length,
+                  itemBuilder: (ctx, index) {
+                    return InkWell(
+                      onTap: () {
+                        _selectedContratante =
+                            getIt<GlobalConfigVars>().clientes[index];
+                        setState(() {});
+                      },
+                      child: CustomContratanteCard(
+                        title: getIt<GlobalConfigVars>()
+                            .clientes[index]
+                            .nomeCliente,
+                        isSelected: _selectedContratante?.idCliente ==
+                            getIt<GlobalConfigVars>().clientes[index].idCliente,
+                      ),
+                    );
+                  }),
               const SizedBox(height: 20),
               Center(
                 child: CustomButton(
@@ -92,7 +99,7 @@ class _ContrantePageState extends State<ContrantePage> {
                       Util.toastAlerta("Selecione o cliente");
                       return;
                     }
-                    if(_aplicacao.contratante?.nome != null) {
+                    if (_aplicacao.contratante?.nome != null) {
                       Navigator.pop(context);
                       return;
                     }
@@ -106,8 +113,9 @@ class _ContrantePageState extends State<ContrantePage> {
                               _selectedContratante?.inscricaoEstadual,
                           nome: _selectedContratante?.nomeCliente,
                           rg: _selectedContratante?.rg,
+                          id: _selectedContratante?.idCliente.toString(),
                           tipoContratante:
-                              _selectedContratante?.idTipoCliente == 1
+                              _selectedContratante?.idTipoCliente == 0
                                   ? "Pessoa Física"
                                   : "Pessoa Jurídica");
                       int idContrante = await widget._reportAplicationController
@@ -119,7 +127,6 @@ class _ContrantePageState extends State<ContrantePage> {
                       aplicacao.contratante = contratante;
                       widget._reportAplicationController
                           .setAplicacaoSelected(aplicacao);
-                      log('UPDATE REALIZADO');
                       Util.toastSucesso("Cliente selecionado");
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);

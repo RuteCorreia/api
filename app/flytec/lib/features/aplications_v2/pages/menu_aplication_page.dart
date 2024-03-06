@@ -37,76 +37,78 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
           textAlign: TextAlign.center,
         ),
       ),
-      body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'N° ${_aplicacao.id}',
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    color: Color(0xFF00B45D),
-                    fontSize: 14,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                    height: 0.11,
+      body: SingleChildScrollView(
+        child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'N° ${_aplicacao.id}',
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      color: Color(0xFF00B45D),
+                      fontSize: 14,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                      height: 0.11,
+                    ),
                   ),
-                ),
-                Text(
-                  'Data ${Util.getTodayDate(date: _dataAplicacao)}',
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    color: Color(0xFF00B45D),
-                    fontSize: 14,
-                    fontFamily: 'Inter',
-                    fontWeight: FontWeight.w700,
-                    height: 0.11,
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 25),
-            CustomCardButton(
-              title: "Identificação do contratante",
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ContrantePage(
-                          reportAplicationController:
-                              widget._reportAplicationController),
-                    ));
-              },
-            ),
-            CustomCardButton(
-              title: "Identificação da área a ser tratada",
-              onTap: () {},
-            ),
-            CustomCardButton(
-              title: "Caraterísticas do produto a ser aplicado ",
-              onTap: () {},
-            ),
-            CustomCardButton(
-              title: "Recomendações técnicas para aplicação",
-              onTap: () {},
-            ),
-            CustomCardButton(
-              title: "Relatório de aplicação",
-              onTap: () {},
-            ),
-            CustomCardButton(
-              title: "Contrato de prestação de serviços",
-              onTap: () {},
-            ),
-            CustomCardButton(
-              title: "Dados do responsável",
-              onTap: () {},
-            ),
-          ])),
+                  Text(
+                    'Data ${Util.getTodayDate(date: _dataAplicacao)}',
+                    textAlign: TextAlign.right,
+                    style: const TextStyle(
+                      color: Color(0xFF00B45D),
+                      fontSize: 14,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w700,
+                      height: 0.11,
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(height: 25),
+              CustomCardButton(
+                title: "Identificação do contratante",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContrantePage(
+                            reportAplicationController:
+                                widget._reportAplicationController),
+                      ));
+                },
+              ),
+              CustomCardButton(
+                title: "Identificação da área a ser tratada",
+                onTap: () {},
+              ),
+              CustomCardButton(
+                title: "Caraterísticas do produto a ser aplicado ",
+                onTap: () {},
+              ),
+              CustomCardButton(
+                title: "Recomendações técnicas para aplicação",
+                onTap: () {},
+              ),
+              CustomCardButton(
+                title: "Relatório de aplicação",
+                onTap: () {},
+              ),
+              CustomCardButton(
+                title: "Contrato de prestação de serviços",
+                onTap: () {},
+              ),
+              CustomCardButton(
+                title: "Dados do responsável",
+                onTap: () {},
+              ),
+            ])),
+      ),
     );
   }
 }

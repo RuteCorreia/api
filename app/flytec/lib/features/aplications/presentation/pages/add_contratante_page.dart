@@ -320,7 +320,7 @@ class _AddContratanteState extends State<AddContratante> {
                             ],
                           ),
                         ],
-                      )
+                      )                  
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -509,6 +509,7 @@ class _AddContratanteState extends State<AddContratante> {
                           ),
                         ],
                       ),
+               
                 Center(
                   child: CustomButton(
                     title: "OK",
