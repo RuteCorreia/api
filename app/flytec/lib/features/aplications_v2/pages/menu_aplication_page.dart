@@ -4,6 +4,7 @@ import 'package:flytec/features/aplications_v2/components/custom_card_button.dar
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
 import 'package:flytec/features/aplications_v2/pages/area_tratada_page.dart';
+import 'package:flytec/features/aplications_v2/pages/caracteristicas_produto_aplicado_page.dart';
 import 'package:flytec/features/aplications_v2/pages/contratante_page.dart';
 
 class MenuAplicationPage extends StatefulWidget {
@@ -34,7 +35,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
-          "Planejamento Operacional \nde Aplicação Aérea",
+          "Planejamento \nOperacional de Aplicação Aérea",
           textAlign: TextAlign.center,
         ),
       ),
@@ -98,7 +99,16 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
               ),
               CustomCardButton(
                 title: "Caraterísticas do produto a ser aplicado ",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            CaracteristicasProdutoAplicadoPage(
+                                reportAplicationController:
+                                    widget._reportAplicationController),
+                      ));
+                },
               ),
               CustomCardButton(
                 title: "Recomendações técnicas para aplicação",

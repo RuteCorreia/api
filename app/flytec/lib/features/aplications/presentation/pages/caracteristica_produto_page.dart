@@ -312,6 +312,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                       });
                 },
               ),
+              
               const SizedBox(height: 20),
               const CustomText(text: 'Classificação Toxicológica'),
               const SizedBox(height: 14),
@@ -417,6 +418,7 @@ class _CaracteristicaProdutoPageState extends State<CaracteristicaProdutoPage> {
                       });
                 },
               ),
+              
               const SizedBox(height: 20),
               const CustomText(text: 'Dose do produto comercial por hectare'),
               const SizedBox(height: 14),

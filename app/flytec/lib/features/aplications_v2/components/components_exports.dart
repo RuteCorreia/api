@@ -10,3 +10,8 @@ export 'dashboard_counter.dart';
 export 'report_card_aplication.dart';
 export 'culture_select.dart';
 export 'custom_combo_box_expanded.dart';
+export 'product_name_select.dart';
+export 'toxicological_classification_select.dart';
+export 'classe_select.dart';
+export 'formulation_type_select.dart';
+export 'biologic_target_select.dart';

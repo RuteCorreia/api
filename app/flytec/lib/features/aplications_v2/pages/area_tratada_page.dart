@@ -274,6 +274,7 @@ class _AreaTratadaState extends State<AreaTratada> {
               CustomTextField(
                 textEditingController: _extensaoController,
                 onChanged: (value) {},
+                textInputType: TextInputType.number,
               ),
               const SizedBox(height: 10),
               _imageData != null

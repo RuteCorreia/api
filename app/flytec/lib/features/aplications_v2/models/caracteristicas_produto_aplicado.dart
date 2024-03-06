@@ -1,5 +1,7 @@
 import 'dart:typed_data';
 
+import 'package:flytec/features/produto/data/models/produto_model.dart';
+
 class CaracteristicasProdutoAplicado {
   String? cultura;
   Uint8List? receiturarioAgronomico;
@@ -59,4 +61,13 @@ class CaracteristicasProdutoAplicado {
       tipoServico: json['tipoServico'],
     );
   }
+
+  factory CaracteristicasProdutoAplicado.fromProduto(ProdutoModel produto) =>
+      CaracteristicasProdutoAplicado(
+        nomeProduto: produto.nome,
+        classificacaoToxicologica: produto.classificacaoToxicologica,
+        classe: produto.classe,
+        tipoFormulacao: produto.tipoDeFormulacao,
+        tipoServico: produto.tipoServico,
+      );
 }
