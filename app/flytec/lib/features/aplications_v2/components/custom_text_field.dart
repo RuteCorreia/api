@@ -13,9 +13,8 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 50,
-      margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: ShapeDecoration(
         shape: RoundedRectangleBorder(
           side: const BorderSide(width: 1, color: Color(0xFF636363)),
@@ -26,15 +25,16 @@ class CustomTextField extends StatelessWidget {
         onChanged: onChanged,
         keyboardType: textInputType,
         controller: textEditingController,
+        textAlign: TextAlign.left,
+        textDirection: TextDirection.ltr,
         decoration: const InputDecoration(
             hintText: "Digite aqui",
             border: InputBorder.none,
             hintStyle: TextStyle(
               color: Color.fromARGB(255, 121, 118, 118),
               fontSize: 16,
-              fontFamily: 'Inter',
+              fontFamily: 'Inter',             
               fontWeight: FontWeight.w500,
-              height: 0.09,
             )),
       ),
     );

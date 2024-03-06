@@ -3,6 +3,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications_v2/components/custom_card_button.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
+import 'package:flytec/features/aplications_v2/pages/area_tratada_page.dart';
 import 'package:flytec/features/aplications_v2/pages/contratante_page.dart';
 
 class MenuAplicationPage extends StatefulWidget {
@@ -85,7 +86,15 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
               ),
               CustomCardButton(
                 title: "Identificação da área a ser tratada",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AreaTratada(
+                            reportAplicationController:
+                                widget._reportAplicationController),
+                      ));
+                },
               ),
               CustomCardButton(
                 title: "Caraterísticas do produto a ser aplicado ",
