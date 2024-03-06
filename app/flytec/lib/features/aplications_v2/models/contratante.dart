@@ -1,3 +1,5 @@
+import 'package:flytec/features/aplications/data/models/clientes_model.dart';
+
 class Contratante {
   String? tipoContratante;
   String? nome;
@@ -52,4 +54,17 @@ class Contratante {
       inscricaoEstadual: json['inscricaoEstadual'],
     );
   }
+
+  factory Contratante.fromCliente(ClientesModel cliente) => Contratante(
+      tipoContratante:
+          cliente.idTipoCliente == 0 ? "Pessoa Física" : "Pessoa Jurídica",
+      nome: cliente.nomeCliente,
+      cpf: cliente.cpf,
+      endereco: cliente.endereco,
+      rg: cliente.rg,
+      uf: cliente.uf,
+      cidade: cliente.cidade,
+      cnpj: cliente.cnpj,
+      inscricaoEstadual: cliente.inscricaoEstadual,
+      id: cliente.idCliente.toString());
 }

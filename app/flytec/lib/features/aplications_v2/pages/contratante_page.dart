@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/data/models/clientes_model.dart';
 import 'package:flytec/features/aplications_v2/components/custom_button.dart';
 import 'package:flytec/features/aplications_v2/components/custom_cliente_card.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
@@ -22,7 +21,7 @@ class ContrantePage extends StatefulWidget {
 }
 
 class _ContrantePageState extends State<ContrantePage> {
-  ClientesModel? _selectedContratante;
+  Contratante? _selectedContratante;
 
   Aplicacao get _aplicacao =>
       widget._reportAplicationController.aplicacaoSelected!;
@@ -32,8 +31,7 @@ class _ContrantePageState extends State<ContrantePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_aplicacao.contratante?.nome != null) {
-        _selectedContratante =
-            ClientesModel.fromContratante(_aplicacao.contratante!);
+        _selectedContratante = _aplicacao.contratante!;
         setState(() {});
       }
     });
@@ -77,16 +75,19 @@ class _ContrantePageState extends State<ContrantePage> {
                   itemBuilder: (ctx, index) {
                     return InkWell(
                       onTap: () {
-                        _selectedContratante =
-                            getIt<GlobalConfigVars>().clientes[index];
+                        _selectedContratante = Contratante.fromCliente(
+                            getIt<GlobalConfigVars>().clientes[index]);
                         setState(() {});
                       },
                       child: CustomContratanteCard(
                         title: getIt<GlobalConfigVars>()
                             .clientes[index]
                             .nomeCliente,
-                        isSelected: _selectedContratante?.idCliente ==
-                            getIt<GlobalConfigVars>().clientes[index].idCliente,
+                        isSelected: _selectedContratante?.id ==
+                            getIt<GlobalConfigVars>()
+                                .clientes[index]
+                                .idCliente
+                                .toString(),
                       ),
                     );
                   }),
@@ -104,27 +105,13 @@ class _ContrantePageState extends State<ContrantePage> {
                       return;
                     }
                     try {
-                      Contratante contratante = Contratante(
-                          cidade: _selectedContratante?.cidade,
-                          cnpj: _selectedContratante?.cnpj,
-                          cpf: _selectedContratante?.cpf,
-                          endereco: _selectedContratante?.endereco,
-                          inscricaoEstadual:
-                              _selectedContratante?.inscricaoEstadual,
-                          nome: _selectedContratante?.nomeCliente,
-                          rg: _selectedContratante?.rg,
-                          id: _selectedContratante?.idCliente.toString(),
-                          tipoContratante:
-                              _selectedContratante?.idTipoCliente == 0
-                                  ? "Pessoa Física"
-                                  : "Pessoa Jurídica");
                       int idContrante = await widget._reportAplicationController
-                          .createContrante(contratante);
+                          .createContrante(_selectedContratante!);
                       await widget._reportAplicationController
                           .updateContratanteAplicacao(
                               idContrante, _aplicacao.id!);
                       final aplicacao = _aplicacao;
-                      aplicacao.contratante = contratante;
+                      aplicacao.contratante = _selectedContratante;
                       widget._reportAplicationController
                           .setAplicacaoSelected(aplicacao);
                       Util.toastSucesso("Cliente selecionado");
