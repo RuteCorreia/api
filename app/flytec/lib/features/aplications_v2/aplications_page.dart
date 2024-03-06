@@ -15,8 +15,11 @@ class AplicationsPage extends StatefulWidget {
 
 class _AplicationsPageState extends State<AplicationsPage> {
   late AplicationsInitializationController _aplicationsInitializationController;
-  final ReportAplicationController _reportAplicationController =
-      ReportAplicationController();
+  late ReportAplicationController _reportAplicationController;
+
+  void _updateView() {
+    setState(() {});
+  }
 
   Future<void> _initializationAplicationsReports() async {
     _aplicationsInitializationController =
@@ -30,7 +33,11 @@ class _AplicationsPageState extends State<AplicationsPage> {
   @override
   void initState() {
     super.initState();
-    _initializationAplicationsReports();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _reportAplicationController =
+          ReportAplicationController(updateView: _updateView);
+      _initializationAplicationsReports();
+    });
   }
 
   final ScrollController _scrollController = ScrollController();

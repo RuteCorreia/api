@@ -26,7 +26,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
   @override
   void initState() {
     super.initState();
-    getIt<GlobalConfigVars>().selectedPilot = getIt<GlobalConfigVars>().userPayload.name ?? '';
+    getIt<GlobalConfigVars>().selectedPilot =
+        getIt<GlobalConfigVars>().userPayload.name ?? '';
   }
 
   @override
@@ -97,7 +98,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
             ),
             const SizedBox(height: 12),
             AbsorbPointer(
-              absorbing: getIt<GlobalConfigVars>().userPayload.role == "Executor",
+              absorbing:
+                  getIt<GlobalConfigVars>().userPayload.role == "Executor",
               child: CustomCombo(
                 selectedName:
                     getIt<GlobalConfigVars>().userPayload.role == "Executor"
@@ -152,12 +154,12 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                   int idAplicacao = await widget._reportAplicationController
                       .createAplicacao(aplicacao);
                   aplicacao.id = idAplicacao;
+                  widget._reportAplicationController.setAplicacaoSelected(aplicacao);
                   // ignore: use_build_context_synchronously
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return MenuAplicationPage(
                       reportAplicationController:
                           widget._reportAplicationController,
-                      aplicacao: aplicacao,
                     );
                   }));
                 },

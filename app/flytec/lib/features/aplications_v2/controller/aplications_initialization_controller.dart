@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
@@ -21,7 +20,6 @@ class AplicationsInitializationController {
   Future<void> _obtainReportsAplications() async {
     final reports = await _sqlDatabaseProvider
         .obtainTableElementsList("Aplicacao");
-    log('--> reports: $reports');
     _reportsAplications =
         reports.map((e) => Aplicacao.fromJson(e)).toList();
   }

@@ -57,18 +57,6 @@ class Aplicacao {
         piloto: json['piloto'],
         executor: json['executor'],
         id: json['id'],
-        contratante: Contratante.fromJson(json['contratante']),
-        identificacaoAreaTratada:
-            IdentificacaoAreaTratada.fromJson(json['identificacaoAreaTratada']),
-        caracteristicasProdutoAplicado: CaracteristicasProdutoAplicado.fromJson(
-            json['caracteristicasProdutoAplicado']),
-        recomendacoesTecnicas:
-            RecomendacoesTecnicas.fromJson(json['recomendacoesTecnicas']),
-        relatorioAplicacao:
-            RelatorioAplicacao.fromJson(json['relatorioAplicacao']),
-        contratoPrestacaoServico:
-            ContratoPrestacaoServico.fromJson(json['contratoPrestacaoServico']),
-        dadosResponsavel: DadosResponsavel.fromJson(json['dadosResponsavel']),
         state: ReportDashBoardState.values.firstWhere(
             (state) => state.index == json['state'],
             orElse: () => ReportDashBoardState.Incompleto),
