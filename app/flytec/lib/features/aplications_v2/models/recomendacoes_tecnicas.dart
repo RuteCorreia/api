@@ -12,6 +12,7 @@ class RecomendacoesTecnicas{
 	String? tipoProduto;
 	String? equipamento;
 	String? angulo;
+  int? id;
 
   RecomendacoesTecnicas({
     this.veiculante,
@@ -27,6 +28,7 @@ class RecomendacoesTecnicas{
     this.tipoProduto,
     this.equipamento,
     this.angulo,
+      this.id
   });
 
   Map<String, dynamic> toMap() {
@@ -63,6 +65,7 @@ class RecomendacoesTecnicas{
       tipoProduto: json['tipoProduto'],
       equipamento: json['equipamento'],
       angulo: json['angulo'],
+      id: json['id'],
     );
   }
 }

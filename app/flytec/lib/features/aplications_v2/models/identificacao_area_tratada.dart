@@ -7,6 +7,7 @@ class IdentificacaoAreaTratada {
   String? cultura;
   String? extensao;
   Uint8List? croquiArea;
+  int? id;
 
   IdentificacaoAreaTratada({
     this.uf,
@@ -15,6 +16,7 @@ class IdentificacaoAreaTratada {
     this.cultura,
     this.extensao,
     this.croquiArea,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -37,6 +39,7 @@ class IdentificacaoAreaTratada {
       cultura: json['cultura'],
       extensao: json['extensao'],
       croquiArea: json['croquiArea'],
+      id: json['id'],
     );
   }
 }

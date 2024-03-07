@@ -161,8 +161,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                         piloto: getIt<GlobalConfigVars>().selectedPilot,
                         data: DateTime.now().millisecondsSinceEpoch.toString(),
                         state: ReportDashBoardState.Incompleto);
-                    int idAplicacao = await widget._reportAplicationController
-                        .createAplicacao(aplicacao);
+                    int? idAplicacao = await widget._reportAplicationController
+                        .createElementInTable(aplicacao.toMap(), "Aplicacao");
                     aplicacao.id = idAplicacao;
                     widget._reportAplicationController
                         .setAplicacaoSelected(aplicacao);

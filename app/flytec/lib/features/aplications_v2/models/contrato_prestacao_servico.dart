@@ -7,6 +7,7 @@ class ContratoPrestacaoServico {
   String? vencimento;
   String? nomePiloto;
   String? executor;
+  int? id;
 
   ContratoPrestacaoServico({
     this.distanciaPista,
@@ -17,6 +18,7 @@ class ContratoPrestacaoServico {
     this.vencimento,
     this.nomePiloto,
     this.executor,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +45,7 @@ class ContratoPrestacaoServico {
       vencimento: json['vencimento'],
       nomePiloto: json['nomePiloto'],
       executor: json['executor'],
+      id: json['id'],
     );
   }
 }

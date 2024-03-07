@@ -14,6 +14,7 @@ class CaracteristicasProdutoAplicado {
   String? unidadeDoseProdutoHectare;
   String? adjuvante;
   String? tipoServico;
+  int? id;
 
   CaracteristicasProdutoAplicado({
     this.cultura,
@@ -27,6 +28,7 @@ class CaracteristicasProdutoAplicado {
     this.unidadeDoseProdutoHectare,
     this.adjuvante,
     this.tipoServico,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -59,6 +61,7 @@ class CaracteristicasProdutoAplicado {
       unidadeDoseProdutoHectare: json['unidadeDoseProdutoHectare'],
       adjuvante: json['adjuvante'],
       tipoServico: json['tipoServico'],
+      id: json['id'],
     );
   }
 

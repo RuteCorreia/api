@@ -4,7 +4,6 @@ import 'package:flytec/core/infrastructure/database/sql/database_instances/relat
 import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
-import 'package:flytec/features/aplications_v2/models/contratante.dart';
 
 class ReportAplicationController {
   final DatabaseInstance _databaseInstance = RelatorioDatabaseInstance.instance;
@@ -13,6 +12,7 @@ class ReportAplicationController {
       SQLDatabaseProvider(_databaseInstance);
   ReportAplicationController({required VoidCallback? updateView})
       : _updateView = updateView;
+      
   List<Aplicacao>? _listaAplicacao;
 
   List<Aplicacao>? get listaAplicacao => _listaAplicacao;
@@ -47,26 +47,21 @@ class ReportAplicationController {
     _updateView!();
   }
 
-  Future<int> createAplicacao(Aplicacao aplicacao) async {
-    int id = await _sqlDatabaseProvider.insert(aplicacao.toMap(), 'Aplicacao');
+  Future<Map<String, dynamic>> getElementById(int id, String table) async {
+    return await _sqlDatabaseProvider.obtainElementTableById(
+        table, id.toString());
+  }
+
+  Future<int?> createElementInTable(
+      Map<String, dynamic> data, String table) async {
+    int? id = await _sqlDatabaseProvider.insert(data, table);
     await obtainReportsAplications();
     return id;
   }
 
-  Future<void> updateContratanteAplicacao(
-      int idContratante, int idAplicacao) async {
-    await _sqlDatabaseProvider.update(
-        {'contratante_id': idContratante}, 'Aplicacao', idAplicacao.toString());
+  Future<void> updateElementInTable(
+      int id, Map<String, dynamic> data, String table) async {
+    await _sqlDatabaseProvider.update(data, table, id.toString());
     await obtainReportsAplications();
-  }
-
-  Future<int> createContrante(Contratante contratante) async {
-    return await _sqlDatabaseProvider.insert(
-        contratante.toMap(), 'Contratante');
-  }
-
-  Future<Map<String, dynamic>> getElementById(int id, String table) async {
-    return await _sqlDatabaseProvider.obtainElementTableById(
-        table, id.toString());
   }
 }

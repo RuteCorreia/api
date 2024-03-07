@@ -10,7 +10,8 @@ class Contratante {
   String? cidade;
   String? cnpj;
   String? inscricaoEstadual;
-  String? id;
+  String? idContrante;
+  int? id;
 
   Contratante({
     this.tipoContratante,
@@ -22,6 +23,7 @@ class Contratante {
     this.cidade,
     this.cnpj,
     this.inscricaoEstadual,
+    this.idContrante,
     this.id,
   });
 
@@ -33,7 +35,7 @@ class Contratante {
       'endereco': endereco,
       'rg': rg,
       'uf': uf,
-      'id': id,
+      'id': idContrante,
       'cidade': cidade,
       'cnpj': cnpj,
       'inscricaoEstadual': inscricaoEstadual,
@@ -50,8 +52,9 @@ class Contratante {
       uf: json['uf'],
       cidade: json['cidade'],
       cnpj: json['cnpj'],
-      id: json['id'] ?? '',
+      idContrante: json['id'] ?? '',
       inscricaoEstadual: json['inscricaoEstadual'],
+      id: json['id'],
     );
   }
 
@@ -66,5 +69,5 @@ class Contratante {
       cidade: cliente.cidade,
       cnpj: cliente.cnpj,
       inscricaoEstadual: cliente.inscricaoEstadual,
-      id: cliente.idCliente.toString());
+      idContrante: cliente.idCliente.toString());
 }

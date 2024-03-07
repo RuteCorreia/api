@@ -8,6 +8,7 @@ class DadosResponsavel {
   String? documento;
   String? telefone;
   Uint8List? assinaturaResponsavel;
+  int? id;
 
   DadosResponsavel({
     this.data,
@@ -17,6 +18,7 @@ class DadosResponsavel {
     this.documento,
     this.telefone,
     this.assinaturaResponsavel,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -41,6 +43,7 @@ class DadosResponsavel {
       documento: json['documento'],
       telefone: json['telefone'],
       assinaturaResponsavel: json['assinaturaResponsavel'],
+      id: json['id'],
     );
   }
 }

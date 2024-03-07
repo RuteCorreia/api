@@ -13,6 +13,7 @@ class Aplicacoes {
   String? umidadeRelativaArFinal;
   String? ventoInicial;
   String? ventoFinal;
+  int? id;
 
   Aplicacoes({
     this.dataAplicacao,
@@ -27,6 +28,7 @@ class Aplicacoes {
     this.umidadeRelativaArFinal,
     this.ventoInicial,
     this.ventoFinal,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -61,6 +63,7 @@ class Aplicacoes {
       umidadeRelativaArFinal: json['umidadeRelativaArFinal'],
       ventoInicial: json['ventoInicial'],
       ventoFinal: json['ventoFinal'],
+      id: json['id'],
     );
   }
 }

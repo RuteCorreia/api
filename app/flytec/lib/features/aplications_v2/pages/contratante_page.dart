@@ -83,7 +83,7 @@ class _ContrantePageState extends State<ContrantePage> {
                         title: getIt<GlobalConfigVars>()
                             .clientes[index]
                             .nomeCliente,
-                        isSelected: _selectedContratante?.id ==
+                        isSelected: _selectedContratante?.idContrante ==
                             getIt<GlobalConfigVars>()
                                 .clientes[index]
                                 .idCliente
@@ -105,11 +105,15 @@ class _ContrantePageState extends State<ContrantePage> {
                       return;
                     }
                     try {
-                      int idContrante = await widget._reportAplicationController
-                          .createContrante(_selectedContratante!);
+                      int? idContrante = await widget
+                          ._reportAplicationController
+                          .createElementInTable(
+                              _selectedContratante!.toMap(), 'Contratante');
+                      _selectedContratante!.id = idContrante;
+                      setState(() {});
                       await widget._reportAplicationController
-                          .updateContratanteAplicacao(
-                              idContrante, _aplicacao.id!);
+                          .updateElementInTable(_aplicacao.id!,
+                              {'contratante_id': idContrante}, 'Aplicacao');
                       final aplicacao = _aplicacao;
                       aplicacao.contratante = _selectedContratante;
                       widget._reportAplicationController

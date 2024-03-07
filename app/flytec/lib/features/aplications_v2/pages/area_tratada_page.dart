@@ -51,6 +51,57 @@ class _AreaTratadaState extends State<AreaTratada> {
     });
   }
 
+  Future<void> _verifyFields() async {
+    if (_localizacaoController.text.isEmpty) {
+      Util.toastAlerta("Digite a localizacao");
+      return;
+    } else if (getIt<GlobalConfigVars>().selectedCultura.isEmpty) {
+      Util.toastAlerta("Selecione a cultura");
+      return;
+    } else if (_extensaoController.text.isEmpty) {
+      Util.toastAlerta("Selecione a cultura");
+      return;
+    } else if (_imageData == null) {
+      Util.toastAlerta("Selecione a imagem da área");
+      return;
+    } else {
+      await _areaTratadaAction();
+      Util.toastSucesso("Dados inseridos com sucesso!");
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    }
+  }
+
+  Future<void> _areaTratadaAction() async {
+    _areaTratada = IdentificacaoAreaTratada(
+      localizacao: _localizacaoController.text,
+      extensao: _extensaoController.text,
+      uf: _uf,
+      cidade: _cityOfUf,
+      croquiArea: _imageData,
+      cultura: getIt<GlobalConfigVars>().selectedCultura,
+    );
+
+    if (_aplicacao.identificacaoAreaTratada == null) {
+      int? idAreaTratada = await widget._reportAplicationController
+          .createElementInTable(
+              _areaTratada!.toMap(), 'IdentificacaoAreaTratada');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'identificacaoAreaTratada_id': idAreaTratada},
+          'Aplicacao');
+      await widget._reportAplicationController.obtainReportsAplications();
+      _areaTratada?.id = idAreaTratada;
+      _aplicacao.identificacaoAreaTratada = _areaTratada;
+      setState(() {});
+      widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+      return;
+    }
+    int? idAreaTratada = _aplicacao.identificacaoAreaTratada!.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idAreaTratada!, _areaTratada!.toMap(), 'IdentificacaoAreaTratada');
+  }
+
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
 
@@ -88,12 +139,19 @@ class _AreaTratadaState extends State<AreaTratada> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Identificação da área \na ser tratada",
-          textAlign: TextAlign.center,
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Identificação da área \na ser tratada",
+            textAlign: TextAlign.center,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _areaTratadaAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -345,92 +403,93 @@ class _AreaTratadaState extends State<AreaTratada> {
                           children: [
                             Expanded(
                               child: SizedBox(
-                                height: 24,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 24,
-                                      height: 24,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: const BoxDecoration(),
-                                      child: const Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(
-                                            Icons.edit,
-                                            color: Colors.green,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Container(
-                                            width: double.infinity,
-                                            padding:
-                                                const EdgeInsets.only(left: 8),
-                                            child: const Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.min,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      SizedBox(
-                                                        width: double.infinity,
-                                                        child: Text(
-                                                          'Croqui de área',
-                                                          style: TextStyle(
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    121,
-                                                                    118,
-                                                                    118),
-                                                            fontSize: 16,
-                                                            fontFamily: 'Inter',
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            height: 0.09,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                  height: 24,
+                                  child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 24,
+                                          height: 24,
+                                          clipBehavior: Clip.antiAlias,
+                                          decoration: const BoxDecoration(),
+                                          child: const Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.edit,
+                                                color: Colors.green,
+                                              )
+                                            ],
                                           ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                                        ),
+                                        Expanded(
+                                            child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                              Container(
+                                                  width: double.infinity,
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 8),
+                                                  child: const Row(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Expanded(
+                                                            child: Column(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .center,
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .center,
+                                                                children: [
+                                                              SizedBox(
+                                                                  width: double
+                                                                      .infinity,
+                                                                  child: Text(
+                                                                      'Croqui de área',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        color: Color.fromARGB(
+                                                                            255,
+                                                                            121,
+                                                                            118,
+                                                                            118),
+                                                                        fontSize:
+                                                                            16,
+                                                                        fontFamily:
+                                                                            'Inter',
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                        height:
+                                                                            0.09,
+                                                                      )))
+                                                            ]))
+                                                      ]))
+                                            ]))
+                                      ])),
                             ),
                             const SizedBox(width: 16),
                             Container(
@@ -445,7 +504,14 @@ class _AreaTratadaState extends State<AreaTratada> {
                           ],
                         ),
                       ),
-                    )
+                    ),
+              Center(
+                  child: CustomButton(
+                title: "OK",
+                onClick: () async {
+                  await _verifyFields();
+                },
+              ))
             ],
           ),
         ),

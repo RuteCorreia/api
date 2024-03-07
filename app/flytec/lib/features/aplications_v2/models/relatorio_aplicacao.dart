@@ -15,6 +15,7 @@ class RelatorioAplicacao {
   String? relatorioDGPS;
   String? densidade;
   List<Aplicacoes>? aplicacoes;
+  int? id;
 
   RelatorioAplicacao({
     this.cultura,
@@ -31,6 +32,7 @@ class RelatorioAplicacao {
     this.relatorioDGPS,
     this.aplicacoes,
     this.densidade,
+    this.id,
   });
 
   Map<String, dynamic> toMap() {
@@ -70,6 +72,7 @@ class RelatorioAplicacao {
       relatorioDGPS: json['relatorioDGPS'],
       aplicacoes: List<Aplicacoes>.from(
           json['aplicacoes']?.map((x) => Aplicacoes.fromJson(x))),
+      id: json['id'],
     );
   }
 }
