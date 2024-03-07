@@ -13,6 +13,7 @@ class RelatorioAplicacao {
   String? long;
   String? observacoes;
   String? relatorioDGPS;
+  String? densidade;
   List<Aplicacoes>? aplicacoes;
 
   RelatorioAplicacao({
@@ -29,6 +30,7 @@ class RelatorioAplicacao {
     this.observacoes,
     this.relatorioDGPS,
     this.aplicacoes,
+    this.densidade,
   });
 
   Map<String, dynamic> toMap() {
@@ -43,6 +45,7 @@ class RelatorioAplicacao {
       'localizacaoPistaCodigoICAO': localizacaoPistaCodigoICAO,
       'lat': lat,
       'long': long,
+      'densidade': densidade,
       'observacoes': observacoes,
       'relatorioDGPS': relatorioDGPS,
       'aplicacoes': aplicacoes?.map((x) => x.toMap()).toList(),
@@ -62,6 +65,7 @@ class RelatorioAplicacao {
       localizacaoPistaCodigoICAO: json['localizacaoPistaCodigoICAO'],
       lat: json['lat'],
       long: json['long'],
+      densidade: json['densidade'],
       observacoes: json['observacoes'],
       relatorioDGPS: json['relatorioDGPS'],
       aplicacoes: List<Aplicacoes>.from(

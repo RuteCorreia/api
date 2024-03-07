@@ -108,6 +108,7 @@ CREATE TABLE RelatorioAplicacao (
     localizacaoPistaCodigoICAO TEXT,
     lat TEXT,
     long TEXT,
+    densidade TEXT,
     observacoes TEXT,
     relatorioDGPS TEXT
 )

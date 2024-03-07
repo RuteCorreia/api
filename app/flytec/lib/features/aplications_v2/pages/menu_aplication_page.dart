@@ -9,6 +9,7 @@ import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
 import 'package:flytec/features/aplications_v2/pages/area_tratada_page.dart';
 import 'package:flytec/features/aplications_v2/pages/caracteristicas_produto_aplicado_page.dart';
 import 'package:flytec/features/aplications_v2/pages/contratante_page.dart';
+import 'package:flytec/features/aplications_v2/pages/relatorio_aplicacao_page.dart';
 
 class MenuAplicationPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -126,7 +127,15 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
               ),
               CustomCardButton(
                 title: "Relatório de aplicação",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => RelatorioAplicacaoPage(
+                            reportAplicationController:
+                                widget._reportAplicationController),
+                      ));
+                },
               ),
               CustomCardButton(
                 title: "Contrato de prestação de serviços",

@@ -24,3 +24,6 @@ export 'relative_humidity_select.dart';
 export 'temperature_select.dart';
 export 'speed_wind_select.dart';
 export 'product_type_select.dart';
+export 'pista_select.dart';
+export 'logs_select.dart';
+export 'combo_box.dart';
