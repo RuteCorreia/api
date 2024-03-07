@@ -28,13 +28,15 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task<IEnumerable<Usuario>> GetAllAsync()
     {
-       return _contextBase.Usuario.Where(x => x.Removido == false).ToList();
+       return await _contextBase.Usuario
+            .AsNoTracking()
+            .Where(x => !x.Removido)
+            .ToListAsync();
     }
 
-    public async Task<Usuario> GetUserByIdAsync(string id) => _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
+    public async Task<Usuario> GetUserByIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
-    public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id));
-    
+    public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => string.Equals(x.UserId, id) && !x.Removido);
 
     public async Task<Usuario> GetLastAsync() => await _contextBase.Usuario
         .AsNoTracking()
@@ -46,6 +48,6 @@ public class UsuarioRepository : IUsuarioRepository
     public async Task UpdateAsync(Usuario obj)
     {
         _contextBase.Update(obj);
-        _contextBase.SaveChanges();
+        await _contextBase.SaveChangesAsync();
     }
 }

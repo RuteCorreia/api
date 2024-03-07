@@ -1,9 +1,9 @@
 ﻿using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
-using Domain.Entidades.User;
-using Domain.Interfaces.Genericos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.Auth;
 
@@ -14,116 +14,109 @@ namespace WebApi.Controllers.Auth;
 public class AuthController : ControllerBase
 {
     private readonly IUserAuthService _authService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public AuthController(IUserAuthService authService)
+    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService)
     {
         _authService = authService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
    
     [HttpPost("registerUser")]
+    [Authorize]
     public async Task<IActionResult> RegisterUser([FromBody] UserRegisterViewModel user)
     {
-        if (ModelState.IsValid)
+        var resultError = new StringBuilder().Append("Campos de registro não válidos");
+        var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole(); 
+        if (ModelState.IsValid && !string.IsNullOrEmpty(loggedUser.Item1))
         {
-            var result = await _authService.RegisterUserAsync(user);
-
+            var result = await _authService.RegisterUserAsync(user, loggedUser.Item1);
             if (result.Item1)
                 return Ok();
 
-            return BadRequest(result.Item2);
+            resultError.Clear();
+            resultError.Append(result.Item2);
         }
-        return BadRequest("campos de registro não válidos");        
+
+        return BadRequest(resultError.ToString());        
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginViewModel user)
     {
+        var resultError = new StringBuilder().Append("Campos de login inválidos");
         if (ModelState.IsValid)
         {
             var result = await _authService.LoginAsync(user);
             if (result.Item1)
-            {
                 return Ok(new { success = true,  token = result.Item2 });
-            }
 
-            return BadRequest(result.Item2);
+            resultError.Clear();
+            resultError.Append(result.Item2);
         }
 
-        return BadRequest("Campos de login inválidos");
+        return BadRequest(resultError.ToString());
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetUsers()
-    {
-            var result = await _authService.GetUsers();
-            if (result.Any())
-            {
-                return Ok(result);
-            }
+    public async Task<IActionResult> GetUsers() => Ok(await _authService.GetAllUsersAsync());
 
-            return BadRequest(result);
-    }
-
-    [HttpPost("UpdateUser")]
-    public async Task<IActionResult> UpdateUser(string id,[FromBody] UserRegisterViewModel user)
+    [HttpPatch("changePassword")]
+    public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel user)
     {
+        var resultError = new StringBuilder().Append("Não foi possível alterar a senha");
         if (ModelState.IsValid)
         {
-            var result = _authService.UpdateUserAsync(id, user);
-            if (result != null)
-            {
-                return Ok(result);
-            }
+            var result = await _authService.ChangeUserPasswordAsync(user);
+            if (result.Item1)
+                return Ok();
 
-            return BadRequest();
+            resultError.Clear();
+            resultError.Append(result.Item2);
         }
 
-        return BadRequest("Falha ao Atualizar Usuário");
+        return BadRequest(resultError.ToString());
+    }
+
+    [HttpPut("updateUser")]
+    public async Task<IActionResult> UpdateUser(string id,[FromBody] UserUpdateViewModel user)
+    {
+        var resultError = new StringBuilder().Append("Falha ao atualizar usuário");
+        if (!string.IsNullOrEmpty(id) && !string.IsNullOrWhiteSpace(id) && ModelState.IsValid)
+        {
+            var result = await _authService.UpdateUserAsync(id, user);
+            if (result.Item1)
+                return Ok();
+
+            resultError.Clear();
+            resultError.Append(result.Item2);
+        }
+
+        return BadRequest(resultError.ToString());
     }
 
     [HttpGet("GetUserById")]
     public async Task<IActionResult> GetUserById(string userId)
     {
-        if (ModelState.IsValid)
+        if (!string.IsNullOrEmpty(userId) && !string.IsNullOrWhiteSpace(userId))
         {
-            var result = await _authService.GetUserById(userId);
-            if (result != null)
-            {
+            var result = await _authService.GetUserByIdAsync(userId);
+            if (result is not null)
                 return Ok(result);
-            }
-
-            return BadRequest(result);
         }
 
         return BadRequest("Falha ao buscar usuário");
     }
 
-    //[HttpGet("FindUserByName")]
-    //public async Task<IActionResult> FindUserByName(string name)
-    //{
-    //    if (ModelState.IsValid)
-    //    {
-    //        var result = await _authService.GetUsers();
-    //        if (result.Item1)
-    //        {
-    //            return Ok(new { success = true, token = result.Item2 });
-    //        }
-
-    //        return BadRequest(result.Item2);
-    //    }
-
-    //    return BadRequest("Campos de login inválidos");
-    //}
-
     [HttpDelete("RemoveUser")]
     public async Task<IActionResult> RemoveUser(string userId)
     {
-        var result = _authService.RemoveUser(userId);
-        if (result != null)
+        if(!string.IsNullOrEmpty(userId) && !string.IsNullOrWhiteSpace(userId))
         {
+            await _authService.RemoveUserAsync(userId);
             return Ok();
         }
 
-        return BadRequest(result);
+        return BadRequest();
     }
 }
