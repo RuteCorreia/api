@@ -240,7 +240,7 @@ class _AreaTratadaState extends State<AreaTratada> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
               const CustomText(text: "Localização"),
               const SizedBox(height: 10),
               CustomTextField(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications_v2/pages/contrato_prestacao_servico_page.dart';
+import 'package:flytec/features/aplications_v2/pages/dados_responsavel_page.dart';
 import 'package:flytec/features/aplications_v2/pages/recomendacoes_tecnicas_page.dart';
 import 'package:flytec/features/aplications_v2/components/custom_card_button.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
@@ -141,7 +142,15 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
               ),
               CustomCardButton(
                 title: "Dados do responsável",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DadosResponsavelPage(
+                            reportAplicationController:
+                                widget._reportAplicationController),
+                      ));
+                },
               ),
             ])),
       ),
