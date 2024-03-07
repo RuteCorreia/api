@@ -54,122 +54,6 @@ class _HomePagaState extends State<HomePaga> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      /* drawer: Container(
-        width: 255,
-        height: 800,
-        decoration: const ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(27),
-              bottomRight: Radius.circular(27),
-            ),
-          ),
-        ),
-        child: ListView(
-          children: [
-            const SizedBox(height: 70),
-            SizedBox(
-              width: 200,
-              height: 80,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 49,
-                    height: 49,
-                    decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                          image: AssetImage(
-                        "assets/images/profile_icon.png",
-                      )),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(27),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Rodrigo Freitas',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 121, 118, 118),
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            height: 0.11,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Editar perfil',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 121, 118, 118),
-                            fontSize: 12,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            height: 0.12,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Stack(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/arrow_right.svg",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 50),
-            CustomDrawerButton(
-              imageUrl: "assets/images/remix_icon.svg",
-              text: "Relatório Operacional",
-              onClick: () {},
-            ),
-            const SizedBox(height: 32),
-            CustomDrawerButton(
-              imageUrl: "assets/images/map_icon.svg",
-              text: "Minhas Atividades",
-              onClick: () {},
-            ),
-            const SizedBox(height: 157),
-            CustomDrawerButton(
-              imageUrl: "assets/images/settings_icon.svg",
-              text: "Configurações",
-              onClick: () {},
-            ),
-            const SizedBox(height: 32),
-            CustomDrawerButton(
-              imageUrl: "assets/images/logout_icon.svg",
-              text: "Sair",
-              onClick: () async {
-                context.pushReplacement("/login");
-
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                await preferences.clear();
-              },
-            ),
-          ],
-        ),
-      ),
-      */
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -213,13 +97,15 @@ class _HomePagaState extends State<HomePaga> {
                 ],
               ),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 16),
             GestureDetector(
               onTap: () async {
-                print(getIt<GlobalConfigVars>().userPayload.role.toString());
               },
-              child: const WelcomeText(
-                userName: "Rodrigo",
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: WelcomeText(
+                  userName: "Rodrigo",
+                ),
               ),
             ),
             Builder(
@@ -290,7 +176,6 @@ class _HomePagaState extends State<HomePaga> {
                 }
                 return Container(
                   width: double.infinity,
-                  height: 200,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                   padding:
@@ -425,10 +310,10 @@ class _HomePagaState extends State<HomePaga> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        height: 72,
+                        height: 80,
                         child: Stack(
                           children: [
                             Positioned(
@@ -461,7 +346,6 @@ class _HomePagaState extends State<HomePaga> {
                               top: 0,
                               child: SizedBox(
                                 width: 237.27,
-                                height: 72,
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -473,23 +357,26 @@ class _HomePagaState extends State<HomePaga> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         crossAxisAlignment:
-                                            CrossAxisAlignment.center,
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          const SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
+                                          SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.65,
+                                            child: const Text(
                                               'Direção e velocidade do vento',
+                                              maxLines: 2,
                                               style: TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 121, 118, 118),
                                                 fontSize: 16,
                                                 fontFamily: 'Inter',
                                                 fontWeight: FontWeight.w700,
-                                                height: 0.09,
                                               ),
                                             ),
                                           ),
-                                          const SizedBox(height: 30),
+                                          const SizedBox(height: 15),
                                           SizedBox(
                                             width: double.infinity,
                                             child: Text.rich(
@@ -655,7 +542,8 @@ class _HomePagaState extends State<HomePaga> {
                   ),
                 ],
               ),
-            )
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

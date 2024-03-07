@@ -47,6 +47,8 @@ class ReportDashBoardCounter extends StatelessWidget {
         children: [
           Text(
             value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(
               color: Color.fromARGB(255, 121, 118, 118),
               fontSize: 24,

@@ -15,9 +15,8 @@ class ActivityButton extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 159,
-        height: 109,
-        padding: const EdgeInsets.all(16),
+        height: 135,
+        padding: const EdgeInsets.all(8.0),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
@@ -30,38 +29,25 @@ class ActivityButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                value!,
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 121, 118, 118),
-                  fontSize: 32,
-                  fontFamily: 'Inter',
-                  fontWeight: FontWeight.w700,
-                  height: 0.05,
-                ),
+            Text(
+              value!,
+              maxLines: 2,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 121, 118, 118),
+                fontSize: 32,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 26),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    text!,
-                    style: const TextStyle(
-                      color: Color.fromARGB(255, 121, 118, 118),
-                      fontSize: 14,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w700,
-                      height: 0.11,
-                    ),
-                  ),
-                ],
+            const SizedBox(height: 10),
+            Text(
+              text!,
+              maxLines: 2,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 121, 118, 118),
+                fontSize: 14,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
               ),
             ),
           ],
