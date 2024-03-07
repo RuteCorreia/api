@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications_v2/pages/contrato_prestacao_servico_page.dart';
 import 'package:flytec/features/aplications_v2/pages/recomendacoes_tecnicas_page.dart';
 import 'package:flytec/features/aplications_v2/components/custom_card_button.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
@@ -12,18 +13,17 @@ class MenuAplicationPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
 
   const MenuAplicationPage(
-      {
-      required ReportAplicationController reportAplicationController,
+      {required ReportAplicationController reportAplicationController,
       super.key})
-      : 
-        _reportAplicationController = reportAplicationController;
+      : _reportAplicationController = reportAplicationController;
 
   @override
   State<MenuAplicationPage> createState() => _MenuAplicationPageState();
 }
 
 class _MenuAplicationPageState extends State<MenuAplicationPage> {
-  Aplicacao get _aplicacao => widget._reportAplicationController.aplicacaoSelected!;
+  Aplicacao get _aplicacao =>
+      widget._reportAplicationController.aplicacaoSelected!;
 
   DateTime get _dataAplicacao {
     int? epoch = int.tryParse(_aplicacao.data!);
@@ -129,7 +129,15 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
               ),
               CustomCardButton(
                 title: "Contrato de prestação de serviços",
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ContratoPrestacaoServicoPage(
+                            reportAplicationController:
+                                widget._reportAplicationController),
+                      ));
+                },
               ),
               CustomCardButton(
                 title: "Dados do responsável",
