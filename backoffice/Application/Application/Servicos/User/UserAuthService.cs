@@ -67,7 +67,7 @@ public class UserAuthService : IUserAuthService
         {
             var identityUser = new IdentityUser
             {
-                UserName = request.Name,
+                UserName = request.Email,
                 Email = request.Email,
                 PhoneNumber = request.Telefone,
                 EmailConfirmed = true
