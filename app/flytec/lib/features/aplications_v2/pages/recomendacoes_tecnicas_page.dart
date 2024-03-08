@@ -134,7 +134,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_aplicacao.recomendacoesTecnicas?.angulo != null) {
+      if (_aplicacao.recomendacoesTecnicas?.id != null) {
         _recomendacoesTecnicas = _aplicacao.recomendacoesTecnicas!;
         _productType = _recomendacoesTecnicas!.tipoProduto!;
         _unidade = _recomendacoesTecnicas!.unidadevolumeAplicacao!;

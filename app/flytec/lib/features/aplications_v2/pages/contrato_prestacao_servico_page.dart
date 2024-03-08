@@ -35,7 +35,7 @@ class _ContratoPrestacaoServicoPageState
   final TextEditingController _valorTotalController = TextEditingController();
   final TextEditingController _vencimentoController = TextEditingController();
   final TextEditingController _distancia = TextEditingController();
-  String? _preco = "";
+  String? _precoUnidade = "";
 
   final _maskFormatter = MaskTextInputFormatter(
       mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
@@ -68,24 +68,69 @@ class _ContratoPrestacaoServicoPageState
       Util.toastAlerta("Digite o valor total");
       return false;
     } else {
+      await _contratoPrestacaoServicoAction();
       Util.toastSucesso("Dados inseridos com sucesso");
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       return true;
     }
+  }
+
+  Future<void> _contratoPrestacaoServicoAction() async {
+    _contratoPrestacaoServico = ContratoPrestacaoServico(
+        preco: _precoController.text,
+        extensao: _extensaoController.text,
+        valorTotal: _valorTotalController.text,
+        vencimento: _vencimentoController.text,
+        distanciaPista: _distancia.text,
+        executor: getIt<GlobalConfigVars>().selectedExecutor,
+        nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
+        unidadePreco: _precoUnidade);
+    if (_aplicacao.contratoPrestacaoServico?.id == null) {
+      int? idContratoPrestacaoServico = await widget._reportAplicationController
+          .createElementInTable(
+              _contratoPrestacaoServico!.toMap(), 'ContratoPrestacaoServico');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'contratoPrestacaoServico_id': idContratoPrestacaoServico},
+          'Aplicacao');
+      await _updateContratoPrestacaoServico(idContratoPrestacaoServico!);
+      return;
+    }
+    int? idContratoPrestacaoServico = _aplicacao.contratoPrestacaoServico?.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idContratoPrestacaoServico!,
+        _contratoPrestacaoServico!.toMap(),
+        'ContratoPrestacaoServico');
+    await _updateContratoPrestacaoServico(idContratoPrestacaoServico);
+  }
+
+  Future<void> _updateContratoPrestacaoServico(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'ContratoPrestacaoServico');
+
+    final contratoPrestacaoServico = ContratoPrestacaoServico.fromJson(element);
+    _contratoPrestacaoServico = contratoPrestacaoServico;
+    setState(() {});
+    _aplicacao.contratoPrestacaoServico = contratoPrestacaoServico;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_aplicacao.contratoPrestacaoServico?.executor != null) {
-        _contratoPrestacaoServico = _aplicacao.contratoPrestacaoServico!;
-        _contratoPrestacaoServico!.preco = _precoController.text;
-        _contratoPrestacaoServico!.extensao = _extensaoController.text;
-        _contratoPrestacaoServico!.valorTotal = _valorTotalController.text;
-        _contratoPrestacaoServico!.vencimento = _vencimentoController.text;
-        _contratoPrestacaoServico!.distanciaPista = _distancia.text;
-        _contratoPrestacaoServico!.preco = _preco;
+      if (_aplicacao.contratoPrestacaoServico?.id != null) {
+        _contratoPrestacaoServico = _aplicacao.contratoPrestacaoServico;
+        _distancia.text = _contratoPrestacaoServico?.distanciaPista ?? "";
+        _precoController.text = _contratoPrestacaoServico?.preco ?? "";
+        _extensaoController.text = _contratoPrestacaoServico?.extensao ?? "";
+        _valorTotalController.text =
+            _contratoPrestacaoServico?.valorTotal ?? "";
+        _vencimentoController.text =
+            _contratoPrestacaoServico?.vencimento ?? "";
+        _precoUnidade = _contratoPrestacaoServico?.unidadePreco;
         setState(() {});
       }
     });
@@ -95,12 +140,19 @@ class _ContratoPrestacaoServicoPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Contrato de prestação de\n serviços",
-          textAlign: TextAlign.center,
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Contrato de prestação de\n serviços",
+            textAlign: TextAlign.center,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _contratoPrestacaoServicoAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
@@ -138,10 +190,10 @@ class _ContratoPrestacaoServicoPageState
                       Checkbox(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          value: _preco == "ha",
+                          value: _precoUnidade == "ha",
                           onChanged: (value) {
                             setState(() {
-                              _preco = "ha";
+                              _precoUnidade = "ha";
                             });
                           }),
                     ],
@@ -154,10 +206,10 @@ class _ContratoPrestacaoServicoPageState
                       Checkbox(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          value: _preco == "h",
+                          value: _precoUnidade == "h",
                           onChanged: (value) {
                             setState(() {
-                              _preco = "h";
+                              _precoUnidade = "h";
                             });
                           }),
                     ],
@@ -166,7 +218,8 @@ class _ContratoPrestacaoServicoPageState
               ],
             ),
             const SizedBox(height: 10),
-            CustomText(text: 'Extensão ${_preco == "ha" ? "ha" : "em horas"}'),
+            CustomText(
+                text: 'Extensão ${_precoUnidade == "ha" ? "ha" : "em horas"}'),
             const SizedBox(height: 10),
             CustomTextField(
               onChanged: (value) {
