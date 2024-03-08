@@ -40,8 +40,6 @@ class RelatorioModel {
     this.numeroRelatorio,
   });
 
- 
-
   factory RelatorioModel.fromJson(Map<String, dynamic> json) => RelatorioModel(
         piloto: json["piloto"],
         finalizado: json["finalizado"],
@@ -152,150 +150,157 @@ class RelatorioModel {
         "dadosDoResponsavel": dadosDoResponsavel?.toJson(),
       };
 
-  factory RelatorioModel.fromAplicacao(Aplicacao aplicacao) => RelatorioModel(
-        piloto: aplicacao.piloto ?? '',
-        finalizado: false,
-        executor: aplicacao.executor,
-        cliente: Cliente(
-          id: aplicacao.contratante?.idContrante ?? '',
-          nome: aplicacao.contratante?.nome ?? '',
-          endereco: aplicacao.contratante?.endereco ?? '',
-          cidade: aplicacao.contratante?.cidade ?? '',
-          cpf: aplicacao.contratante?.cpf ?? '',
-          rg: aplicacao.contratante?.rg ?? '',
-          uf: aplicacao.contratante?.uf ?? '',
-          inscricaoEstadual: aplicacao.contratante?.inscricaoEstadual ?? '',
-          cnpj: aplicacao.contratante?.cnpj ?? '',
-        ),
-        areaTratada: AreaTratada(
-          uf: aplicacao.identificacaoAreaTratada?.uf ?? '',
-          cidade: aplicacao.identificacaoAreaTratada?.cidade ?? '',
-          localizacao: aplicacao.identificacaoAreaTratada?.localizacao ?? '',
-          cultura: aplicacao.identificacaoAreaTratada?.cultura ?? '',
-          extensao: aplicacao.identificacaoAreaTratada?.extensao ?? '',
-          image: aplicacao.identificacaoAreaTratada?.croquiArea,
-        ),
-        carateristicaProduto: CarateristicaProduto(
-          cultura: aplicacao.caracteristicasProdutoAplicado?.cultura ?? '',
-          nomeProduto:
-              aplicacao.caracteristicasProdutoAplicado?.nomeProduto ?? '',
-          classificacaoToxicologica: aplicacao
-                  .caracteristicasProdutoAplicado?.classificacaoToxicologica ??
-              '',
-          classe: aplicacao.caracteristicasProdutoAplicado?.classe ?? '',
-          tipoFormulacao:
-              aplicacao.caracteristicasProdutoAplicado?.tipoFormulacao ?? '',
-          alvoBiologico:
-              aplicacao.caracteristicasProdutoAplicado?.alvoBiologico ?? '',
-          dosePorHectare:
-              aplicacao.caracteristicasProdutoAplicado?.doseProdutoHectare ??
-                  '',
-          unidadeHectare: aplicacao
-                  .caracteristicasProdutoAplicado?.unidadeDoseProdutoHectare ??
-              '',
-          adjuvante: aplicacao.caracteristicasProdutoAplicado?.adjuvante ?? '',
-          tipoServico:
-              aplicacao.caracteristicasProdutoAplicado?.tipoServico ?? '',
-          image:
-              aplicacao.caracteristicasProdutoAplicado?.receiturarioAgronomico,
-        ),
-        recomendacoesTecnicas: RecomendacoesTecnicas(
-          veiculante: aplicacao.recomendacoesTecnicas?.veiculante ?? '',
-          qtdVeiculante: aplicacao.recomendacoesTecnicas?.qtdVeiculante ?? '',
-          larguraDaFaixa: aplicacao.recomendacoesTecnicas?.larguraFaixa ?? '',
-          volumeDaAplicacao:
-              aplicacao.recomendacoesTecnicas?.volumeAplicacao ?? '',
-          unidadeVolume:
-              aplicacao.recomendacoesTecnicas?.unidadevolumeAplicacao ?? '',
-          aeronave: aplicacao.recomendacoesTecnicas?.aeronave ?? '',
-          alturaDoVoo: aplicacao.recomendacoesTecnicas?.alturaVoo ?? '',
-          temperatura: aplicacao.recomendacoesTecnicas?.temperatura ?? '',
-          umidadeRelativaDoAr:
-              aplicacao.recomendacoesTecnicas?.umidadeRelativaAr ?? '',
-          velocidadeDoVento:
-              aplicacao.recomendacoesTecnicas?.velocidadeVento ?? '',
-          tipoProduto: aplicacao.recomendacoesTecnicas?.tipoProduto ?? '',
-          equipamento: aplicacao.recomendacoesTecnicas?.equipamento ?? '',
-          angulo: aplicacao.recomendacoesTecnicas?.angulo ?? '',
-        ),
-        contratoServico: ContratoServico(
-          distanciaDaPista:
-              aplicacao.contratoPrestacaoServico?.distanciaPista ?? '',
-          preco: aplicacao.contratoPrestacaoServico?.preco ?? '',
-          tipoPreco: aplicacao.contratoPrestacaoServico?.unidadePreco ?? '',
-          extensao: aplicacao.contratoPrestacaoServico?.extensao ?? '',
-          valorTotal: aplicacao.contratoPrestacaoServico?.valorTotal ?? '',
-          vencimento: aplicacao.contratoPrestacaoServico?.vencimento ?? '',
-          nomePiloto: aplicacao.contratoPrestacaoServico?.nomePiloto ?? '',
-          executor: aplicacao.contratoPrestacaoServico?.executor ?? '',
-        ),
-        dadosDoResponsavel: DadosDoResponsavel(
-            data: aplicacao.dadosResponsavel?.data ?? '',
-            uf: aplicacao.dadosResponsavel?.uf ?? '',
-            cidade: aplicacao.dadosResponsavel?.cidade ?? '',
-            nomeCompleto: aplicacao.dadosResponsavel?.nomeCompleto ?? '',
-            cpf: aplicacao.dadosResponsavel?.documento ?? '',
-            telefone: aplicacao.dadosResponsavel?.telefone ?? '',
-            imageAssinatura: aplicacao.dadosResponsavel?.assinaturaResponsavel),
-        relatorioDeAplicacao: RelatorioDeAplicacao(
-            aplicacoes: aplicacao.relatorioAplicacao?.aplicacoes != null
-                ? Aplicacoes(
-                    dataDaAplicacao: aplicacao
-                            .relatorioAplicacao?.aplicacoes![0].dataAplicacao ??
-                        '',
-                    horarioDeInicio:
-                        aplicacao.relatorioAplicacao?.aplicacoes![0].horaInicio ??
-                            '',
-                    horarioDeTermino:
-                        aplicacao.relatorioAplicacao?.aplicacoes![0].horaFinal ??
-                            '',
-                    horimetroFinal: aplicacao.relatorioAplicacao?.aplicacoes![0]
-                            .horimetroFinal ??
-                        '',
-                    horimetroInicial: aplicacao.relatorioAplicacao
-                            ?.aplicacoes![0].horimetroInicial ??
-                        '',
-                    temperaturaFinal: aplicacao.relatorioAplicacao
-                            ?.aplicacoes![0].temperaturaFinal ??
-                        '',
-                    temperaturaIncial:
-                        aplicacao.relatorioAplicacao?.aplicacoes![0].temperaturaInicial ?? '',
-                    umidadeRelativaFinal: aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArFinal ?? '',
-                    umidadeRelativaInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArInicial ?? '',
-                    ventoFinal: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoFinal ?? '',
-                    ventoInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoInicial ?? '',
-                    image: aplicacao.relatorioAplicacao?.aplicacoes![0].imagemCondicaoClimatica)
-                : Aplicacoes(
-                    dataDaAplicacao: '',
-                    horarioDeInicio: '',
-                    horarioDeTermino: '',
-                    horimetroFinal: '',
-                    horimetroInicial: '',
-                    temperaturaFinal: '',
-                    temperaturaIncial: '',
-                    umidadeRelativaFinal: '',
-                    umidadeRelativaInicial: '',
-                    ventoFinal: '',
-                    ventoInicial: '',
-                  ),
-            cultura: aplicacao.relatorioAplicacao?.cultura ?? '',
-            produtoAplicado: aplicacao.relatorioAplicacao?.produtoAplicado ?? '',
-            dosagem: aplicacao.relatorioAplicacao?.dosagem ?? '',
-            unidadeDosagem: aplicacao.relatorioAplicacao?.unidadeDosagem ?? '',
-            volumeDeAplicacao: aplicacao.relatorioAplicacao?.volumeAplicacao ?? '',
-            unidadeVolume: aplicacao.relatorioAplicacao?.unidadeVolumeAplicacao ?? '',
-            totalAreaAplicada: aplicacao.relatorioAplicacao?.totalAreaAplicada ?? '',
-            localizacaoPista: aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? '',
-            latitudeSul: aplicacao.relatorioAplicacao?.lat ?? '',
-            longitudeOeste: aplicacao.relatorioAplicacao?.long ?? '',
-            observacoes: aplicacao.relatorioAplicacao?.observacoes ?? '',
-            densidade: aplicacao.relatorioAplicacao?.densidade ?? '',
-            log: aplicacao.relatorioAplicacao?.relatorioDGPS ?? ''),
-        dashBoardState: DashBoardState.values.firstWhere(
-            (state) => state.index == aplicacao.state?.index,
-            orElse: () => DashBoardState.Incompleto),
-        numeroRelatorio: aplicacao.id ?? 0,
-      );
+  factory RelatorioModel.fromAplicacao(Aplicacao aplicacao) {
+    final dataContratante = aplicacao.dadosResponsavel!.data != null
+        ? DateTime?.fromMillisecondsSinceEpoch(
+            int.tryParse(aplicacao.dadosResponsavel!.data!)!)
+        : null;
+    return RelatorioModel(
+      piloto: aplicacao.piloto ?? '',
+      finalizado: false,
+      executor: aplicacao.executor,
+      cliente: Cliente(
+        id: aplicacao.contratante?.idContrante ?? '',
+        nome: aplicacao.contratante?.nome ?? '',
+        endereco: aplicacao.contratante?.endereco ?? '',
+        cidade: aplicacao.contratante?.cidade ?? '',
+        cpf: aplicacao.contratante?.cpf ?? '',
+        rg: aplicacao.contratante?.rg ?? '',
+        uf: aplicacao.contratante?.uf ?? '',
+        inscricaoEstadual: aplicacao.contratante?.inscricaoEstadual ?? '',
+        cnpj: aplicacao.contratante?.cnpj ?? '',
+      ),
+      areaTratada: AreaTratada(
+        uf: aplicacao.identificacaoAreaTratada?.uf ?? '',
+        cidade: aplicacao.identificacaoAreaTratada?.cidade ?? '',
+        localizacao: aplicacao.identificacaoAreaTratada?.localizacao ?? '',
+        cultura: aplicacao.identificacaoAreaTratada?.cultura ?? '',
+        extensao: aplicacao.identificacaoAreaTratada?.extensao ?? '',
+        image: aplicacao.identificacaoAreaTratada?.croquiArea,
+      ),
+      carateristicaProduto: CarateristicaProduto(
+        cultura: aplicacao.caracteristicasProdutoAplicado?.cultura ?? '',
+        nomeProduto:
+            aplicacao.caracteristicasProdutoAplicado?.nomeProduto ?? '',
+        classificacaoToxicologica: aplicacao
+                .caracteristicasProdutoAplicado?.classificacaoToxicologica ??
+            '',
+        classe: aplicacao.caracteristicasProdutoAplicado?.classe ?? '',
+        tipoFormulacao:
+            aplicacao.caracteristicasProdutoAplicado?.tipoFormulacao ?? '',
+        alvoBiologico:
+            aplicacao.caracteristicasProdutoAplicado?.alvoBiologico ?? '',
+        dosePorHectare:
+            aplicacao.caracteristicasProdutoAplicado?.doseProdutoHectare ?? '',
+        unidadeHectare: aplicacao
+                .caracteristicasProdutoAplicado?.unidadeDoseProdutoHectare ??
+            '',
+        adjuvante: aplicacao.caracteristicasProdutoAplicado?.adjuvante ?? '',
+        tipoServico:
+            aplicacao.caracteristicasProdutoAplicado?.tipoServico ?? '',
+        image: aplicacao.caracteristicasProdutoAplicado?.receiturarioAgronomico,
+      ),
+      recomendacoesTecnicas: RecomendacoesTecnicas(
+        veiculante: aplicacao.recomendacoesTecnicas?.veiculante ?? '',
+        qtdVeiculante: aplicacao.recomendacoesTecnicas?.qtdVeiculante ?? '',
+        larguraDaFaixa: aplicacao.recomendacoesTecnicas?.larguraFaixa ?? '',
+        volumeDaAplicacao:
+            aplicacao.recomendacoesTecnicas?.volumeAplicacao ?? '',
+        unidadeVolume:
+            aplicacao.recomendacoesTecnicas?.unidadevolumeAplicacao ?? '',
+        aeronave: aplicacao.recomendacoesTecnicas?.aeronave ?? '',
+        alturaDoVoo: aplicacao.recomendacoesTecnicas?.alturaVoo ?? '',
+        temperatura: aplicacao.recomendacoesTecnicas?.temperatura ?? '',
+        umidadeRelativaDoAr:
+            aplicacao.recomendacoesTecnicas?.umidadeRelativaAr ?? '',
+        velocidadeDoVento:
+            aplicacao.recomendacoesTecnicas?.velocidadeVento ?? '',
+        tipoProduto: aplicacao.recomendacoesTecnicas?.tipoProduto ?? '',
+        equipamento: aplicacao.recomendacoesTecnicas?.equipamento ?? '',
+        angulo: aplicacao.recomendacoesTecnicas?.angulo ?? '',
+      ),
+      contratoServico: ContratoServico(
+        distanciaDaPista:
+            aplicacao.contratoPrestacaoServico?.distanciaPista ?? '',
+        preco: aplicacao.contratoPrestacaoServico?.preco ?? '',
+        tipoPreco: aplicacao.contratoPrestacaoServico?.unidadePreco ?? '',
+        extensao: aplicacao.contratoPrestacaoServico?.extensao ?? '',
+        valorTotal: aplicacao.contratoPrestacaoServico?.valorTotal ?? '',
+        vencimento: aplicacao.contratoPrestacaoServico?.vencimento ?? '',
+        nomePiloto: aplicacao.contratoPrestacaoServico?.nomePiloto ?? '',
+        executor: aplicacao.contratoPrestacaoServico?.executor ?? '',
+      ),
+      dadosDoResponsavel: DadosDoResponsavel(
+          data:
+              "${dataContratante?.day}/${dataContratante?.month}/${dataContratante?.year}",
+          uf: aplicacao.dadosResponsavel?.uf ?? '',
+          cidade: aplicacao.dadosResponsavel?.cidade ?? '',
+          nomeCompleto: aplicacao.dadosResponsavel?.nomeCompleto ?? '',
+          cpf: aplicacao.dadosResponsavel?.documento ?? '',
+          telefone: aplicacao.dadosResponsavel?.telefone ?? '',
+          imageAssinatura: aplicacao.dadosResponsavel?.assinaturaResponsavel),
+      relatorioDeAplicacao: RelatorioDeAplicacao(
+          aplicacoes: aplicacao.relatorioAplicacao?.aplicacoes != null
+              ? Aplicacoes(
+                  dataDaAplicacao:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].dataAplicacao ??
+                          '',
+                  horarioDeInicio:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].horaInicio ??
+                          '',
+                  horarioDeTermino:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].horaFinal ??
+                          '',
+                  horimetroFinal:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].horimetroFinal ??
+                          '',
+                  horimetroInicial: aplicacao.relatorioAplicacao?.aplicacoes![0]
+                          .horimetroInicial ??
+                      '',
+                  temperaturaFinal:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].temperaturaFinal ??
+                          '',
+                  temperaturaIncial: aplicacao.relatorioAplicacao
+                          ?.aplicacoes![0].temperaturaInicial ??
+                      '',
+                  umidadeRelativaFinal:
+                      aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArFinal ?? '',
+                  umidadeRelativaInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArInicial ?? '',
+                  ventoFinal: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoFinal ?? '',
+                  ventoInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoInicial ?? '',
+                  image: aplicacao.relatorioAplicacao?.aplicacoes![0].imagemCondicaoClimatica)
+              : Aplicacoes(
+                  dataDaAplicacao: '',
+                  horarioDeInicio: '',
+                  horarioDeTermino: '',
+                  horimetroFinal: '',
+                  horimetroInicial: '',
+                  temperaturaFinal: '',
+                  temperaturaIncial: '',
+                  umidadeRelativaFinal: '',
+                  umidadeRelativaInicial: '',
+                  ventoFinal: '',
+                  ventoInicial: '',
+                ),
+          cultura: aplicacao.relatorioAplicacao?.cultura ?? '',
+          produtoAplicado: aplicacao.relatorioAplicacao?.produtoAplicado ?? '',
+          dosagem: aplicacao.relatorioAplicacao?.dosagem ?? '',
+          unidadeDosagem: aplicacao.relatorioAplicacao?.unidadeDosagem ?? '',
+          volumeDeAplicacao: aplicacao.relatorioAplicacao?.volumeAplicacao ?? '',
+          unidadeVolume: aplicacao.relatorioAplicacao?.unidadeVolumeAplicacao ?? '',
+          totalAreaAplicada: aplicacao.relatorioAplicacao?.totalAreaAplicada ?? '',
+          localizacaoPista: aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? '',
+          latitudeSul: aplicacao.relatorioAplicacao?.lat ?? '',
+          longitudeOeste: aplicacao.relatorioAplicacao?.long ?? '',
+          observacoes: aplicacao.relatorioAplicacao?.observacoes ?? '',
+          densidade: aplicacao.relatorioAplicacao?.densidade ?? '',
+          log: aplicacao.relatorioAplicacao?.relatorioDGPS ?? ''),
+      dashBoardState: DashBoardState.values.firstWhere(
+          (state) => state.index == aplicacao.state?.index,
+          orElse: () => DashBoardState.Incompleto),
+      numeroRelatorio: aplicacao.id ?? 0,
+    );
+  }
 }
 
 class AreaTratada {
@@ -493,28 +498,26 @@ class DadosDoResponsavel {
   String? telefone;
   String? assinatura;
   Uint8List? imageAssinatura;
-  DadosDoResponsavel({
-    this.data,
-    this.uf,
-    this.cidade,
-    this.nomeCompleto,
-    this.cpf,
-    this.telefone,
-    this.assinatura,
-      this.imageAssinatura
-  });
+  DadosDoResponsavel(
+      {this.data,
+      this.uf,
+      this.cidade,
+      this.nomeCompleto,
+      this.cpf,
+      this.telefone,
+      this.assinatura,
+      this.imageAssinatura});
 
   factory DadosDoResponsavel.fromJson(Map<String, dynamic> json) =>
       DadosDoResponsavel(
-        data: json["data"] ?? "",
-        uf: json["uf"] ?? "",
-        cidade: json["cidade"] ?? "",
-        nomeCompleto: json["nomeCompleto"] ?? "",
-        cpf: json["cpf"] ?? "",
-        telefone: json["telefone"] ?? "",
-        assinatura: json["assinatura"] ?? "",
-          imageAssinatura: json["imageAssinatura"]
-      );
+          data: json["data"] ?? "",
+          uf: json["uf"] ?? "",
+          cidade: json["cidade"] ?? "",
+          nomeCompleto: json["nomeCompleto"] ?? "",
+          cpf: json["cpf"] ?? "",
+          telefone: json["telefone"] ?? "",
+          assinatura: json["assinatura"] ?? "",
+          imageAssinatura: json["imageAssinatura"]);
 
   Map<String, dynamic> toJson() => {
         "data": data,
