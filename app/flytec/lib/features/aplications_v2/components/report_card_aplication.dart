@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
+import 'package:flytec/features/aplications/services/report_aplications_generate_service.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/pages/menu_aplication_page.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ReportCardAplication extends StatelessWidget {
   final ReportAplicationController _reportAplicationController;
@@ -58,8 +64,8 @@ class ReportCardAplication extends StatelessWidget {
   }
 
   DateTime get _date {
-    int? epoch = int.tryParse(
-        _reportAplicationController.listaAplicacao![_index].data!);
+    int? epoch =
+        int.tryParse(_reportAplicationController.listaAplicacao![_index].data!);
     if (epoch != null) {
       return DateTime.fromMillisecondsSinceEpoch(epoch);
     }
@@ -115,20 +121,20 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/cancel.svg",
                 showRightcon: false,
                 onClick: () async {
-                  // PdfGenerator pdfGenerator = ReportAplicationsGenerate(
-                  //   relatorioAplicacoes: _relatorioAplicacoes,
-                  // );
-                  // final document = await pdfGenerator.generatePdf();
-                  // final documentBytes =
-                  //     await pdfGenerator.saveDocument(document: document);
-                  // final directory = await getApplicationCacheDirectory();
-                  // File file = File(
-                  //     "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
-                  // await file.writeAsBytes(documentBytes!);
-                  // // ignore: use_build_context_synchronously
-                  // context.pop();
-                  // // ignore: use_build_context_synchronously
-                  // context.push("/reportPage", extra: file);
+                  PdfGenerator pdfGenerator = ReportAplicationsGenerate(
+                      relatorioModel: RelatorioModel.fromAplicacao(
+                          _reportAplicationController.listaAplicacao![_index]));
+                  final document = await pdfGenerator.generatePdf();
+                  final documentBytes =
+                      await pdfGenerator.saveDocument(document: document);
+                  final directory = await getApplicationCacheDirectory();
+                  File file = File(
+                      "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+                  await file.writeAsBytes(documentBytes!);
+                  // ignore: use_build_context_synchronously
+                  context.pop();
+                  // ignore: use_build_context_synchronously
+                  context.push("/reportPage", extra: file);
                 },
                 text: "Gerar Relatório",
               ),

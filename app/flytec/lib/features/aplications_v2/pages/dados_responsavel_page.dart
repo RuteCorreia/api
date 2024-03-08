@@ -217,7 +217,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
 
   Future<void> _dadosResponsavelAction() async {
     _dadosResponsavel = DadosResponsavel(
-        data: _dataSelecionada!.millisecondsSinceEpoch.toString(),
+        data: _dataSelecionada?.millisecondsSinceEpoch.toString(),
         uf: _uf,
         cidade: _cityOfUf,
         nomeCompleto: _nome.text,

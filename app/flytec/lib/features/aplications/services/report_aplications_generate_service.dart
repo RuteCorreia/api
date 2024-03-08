@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
@@ -20,28 +18,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    final fileImageAreaTratada =
-        File(relatorioModel.areaTratada?.pathImage ?? "");
-    final mapaImageAreaTratada = await fileImageAreaTratada.exists()
-        ? await fileImageAreaTratada.readAsBytes()
-        : null;
-    final fileImageCarateristicaProduto =
-        File(relatorioModel.carateristicaProduto?.pathImage ?? "");
-    final mapaImageCarateristicaProduto =
-        await fileImageCarateristicaProduto.exists()
-            ? await fileImageCarateristicaProduto.readAsBytes()
-            : null;
-    final fileImageCondicoesClimaticas =
-        File(relatorioModel.relatorioDeAplicacao?.aplicacoes?.pathImage ?? "");
-    final imageCondicoesClimaticas = await fileImageCondicoesClimaticas.exists()
-        ? await fileImageCondicoesClimaticas.readAsBytes()
-        : null;
-    final fileImageAssinaturaContratante =
-        File(relatorioModel.dadosDoResponsavel?.assinatura ?? "");
-    final imageAssinaturaContratante =
-        await fileImageAssinaturaContratante.exists()
-            ? await fileImageAssinaturaContratante.readAsBytes()
-            : null;
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -1534,7 +1511,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   height: 20,
                                   alignment: pw.Alignment.bottomCenter,
                                   child: pw.Text(
-                                      'Preço Ha: ${relatorioModel.contratoServico?.preco!}',
+                                      'Preço Ha: ${relatorioModel.contratoServico?.preco}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -1542,7 +1519,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                                   height: 20,
                                   alignment: pw.Alignment.bottomCenter,
                                   child: pw.Text(
-                                      'Valor Total: ${relatorioModel.contratoServico?.valorTotal!}',
+                                      'Valor Total: ${relatorioModel.contratoServico?.valorTotal}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -1590,7 +1567,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       const pw.EdgeInsets.only(left: 4.0, right: 4, top: 12),
                   alignment: pw.Alignment.centerRight,
                   child: pw.Text(
-                      '${relatorioModel.dadosDoResponsavel?.cidade} ${relatorioModel.dadosDoResponsavel?.uf}, ${relatorioModel.dadosDoResponsavel!.data!.isNotEmpty ? "${relatorioModel.dadosDoResponsavel?.data?.split("/")[0]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[1]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[2]}" : ""} ',
+                      '${relatorioModel.dadosDoResponsavel?.cidade} ${relatorioModel.dadosDoResponsavel?.uf}, ${relatorioModel.dadosDoResponsavel != null && relatorioModel.dadosDoResponsavel?.data != null && relatorioModel.dadosDoResponsavel!.data!.isNotEmpty ? "${relatorioModel.dadosDoResponsavel?.data?.split("/")[0]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[1]} de ${relatorioModel.dadosDoResponsavel?.data?.split("/")[2]}" : ""} ',
                       style: pw.TextStyle(fontSize: 11, font: newRoman)),
                 ),
                 pw.SizedBox(height: 5),
@@ -1604,13 +1581,16 @@ class ReportAplicationsGenerate implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                if (imageAssinaturaContratante != null)
+                                if (relatorioModel
+                                        .dadosDoResponsavel?.imageAssinatura !=
+                                    null)
                                   pw.Container(
                                     height: 22,
                                     width: 120,
                                     child: pw.Image(
                                         pw.MemoryImage(
-                                          imageAssinaturaContratante,
+                                          relatorioModel.dadosDoResponsavel!
+                                              .imageAssinatura!,
                                         ),
                                         fit: pw.BoxFit.cover),
                                   ),
@@ -1688,11 +1668,12 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (mapaImageAreaTratada != null)
+                if (relatorioModel.areaTratada?.image != null)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
-                    child: pw.Image(pw.MemoryImage(mapaImageAreaTratada),
+                    child: pw.Image(
+                        pw.MemoryImage(relatorioModel.areaTratada!.image!),
                         fit: pw.BoxFit.fill),
                   ),
               ]));
@@ -1712,14 +1693,15 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (mapaImageCarateristicaProduto != null)
+                if (relatorioModel.carateristicaProduto?.image != null)
                   pw.Container(
                     height: 700,
                     width: 700,
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
-                      pw.MemoryImage(mapaImageCarateristicaProduto),
+                      pw.MemoryImage(
+                          relatorioModel.carateristicaProduto!.image!),
                     ),
                   ),
               ]));
@@ -1739,11 +1721,13 @@ class ReportAplicationsGenerate implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (imageCondicoesClimaticas != null)
+                if (relatorioModel.relatorioDeAplicacao?.aplicacoes?.image !=
+                    null)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
-                    child: pw.Image(pw.MemoryImage(imageCondicoesClimaticas)),
+                    child: pw.Image(pw.MemoryImage(relatorioModel
+                        .relatorioDeAplicacao!.aplicacoes!.image!)),
                   ),
               ]));
         }));
