@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
@@ -44,7 +43,6 @@ class _ContrantePageState extends State<ContrantePage> {
   }
 
   Future<void> _contratanteAction() async {
-    log('--> ${_aplicacao.contratante?.id}');
     if (_aplicacao.contratante?.id == null) {
       int? idContratante = await widget._reportAplicationController
           .createElementInTable(_selectedContratante!.toMap(), 'Contratante');
@@ -62,10 +60,6 @@ class _ContrantePageState extends State<ContrantePage> {
   Future<void> _updateContrante(int id) async {
     final element = await widget._reportAplicationController
         .getElementById(id, 'Contratante');
-    if (element == null) {
-      log('--> ${_selectedContratante?.toMap()} -- ${_selectedContratante?.id}');
-      return;
-    }
     final identificacaoContratante = Contratante.fromJson(element);
     _selectedContratante = identificacaoContratante;
     setState(() {});

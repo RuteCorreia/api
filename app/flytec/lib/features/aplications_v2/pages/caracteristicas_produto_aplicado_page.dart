@@ -47,7 +47,7 @@ class _CaracteristicasProdutoAplicadoPageState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       setState(() {});
-      if (_aplicacao.caracteristicasProdutoAplicado?.tipoServico != null) {
+      if (_aplicacao.caracteristicasProdutoAplicado?.id != null) {
         _caracteristicasProdutoAplicado =
             _aplicacao.caracteristicasProdutoAplicado;
         _nomeProduto = _caracteristicasProdutoAplicado!.nomeProduto;
@@ -64,6 +64,8 @@ class _CaracteristicasProdutoAplicadoPageState
             text: _caracteristicasProdutoAplicado!.adjuvante);
         _tipoServico = TextEditingController(
             text: _caracteristicasProdutoAplicado!.tipoServico);
+        _receituarioAgronomico =
+            _caracteristicasProdutoAplicado!.receiturarioAgronomico;
         setState(() {});
       }
     });
@@ -98,21 +100,58 @@ class _CaracteristicasProdutoAplicadoPageState
       Util.toastAlerta("Insira a imagem do receituário agronômico");
       return false;
     } else {
-      _caracteristicasProdutoAplicado = CaracteristicasProdutoAplicado(
-          nomeProduto: _nomeProduto,
-          classificacaoToxicologica: _classificacaoToxicologica,
-          classe: _classe,
-          tipoFormulacao: _tipoFormulacao,
-          alvoBiologico: _alvoBiologico,
-          doseProdutoHectare: _doseProdutoComercialHectare!.text,
-          unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare!,
-          adjuvante: _adjuvante!.text,
-          tipoServico: _tipoServico!.text,
-          receiturarioAgronomico: _receituarioAgronomico);
+      await _caracteristicasProdutoAplicadoAction();
       Util.toastSucesso("Dados inseridos com sucesso");
       Navigator.pop(context);
       return true;
     }
+  }
+
+  Future<void> _caracteristicasProdutoAplicadoAction() async {
+    _caracteristicasProdutoAplicado = CaracteristicasProdutoAplicado(
+        adjuvante: _adjuvante?.text,
+        alvoBiologico: _alvoBiologico,
+        classificacaoToxicologica: _classificacaoToxicologica,
+        classe: _classe,
+        cultura: getIt<GlobalConfigVars>().selectedCultura,
+        doseProdutoHectare: _doseProdutoComercialHectare?.text,
+        nomeProduto: _nomeProduto,
+        receiturarioAgronomico: _receituarioAgronomico,
+        tipoFormulacao: _tipoFormulacao,
+        tipoServico: _tipoServico?.text,
+        unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
+    if (_aplicacao.caracteristicasProdutoAplicado?.id == null) {
+      int? idContratante = await widget._reportAplicationController
+          .createElementInTable(_caracteristicasProdutoAplicado!.toMap(),
+              'CaracteristicasProdutoAplicado');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'caracteristicasProdutoAplicado_id': idContratante},
+          'Aplicacao');
+      await _updateCaracteristicasProdutoAplicado(idContratante!);
+      return;
+    }
+    int? idCaracteristicasProdutoAplicado =
+        _aplicacao.caracteristicasProdutoAplicado!.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idCaracteristicasProdutoAplicado!,
+        _caracteristicasProdutoAplicado!.toMap(),
+        'CaracteristicasProdutoAplicado');
+    await _updateCaracteristicasProdutoAplicado(
+        idCaracteristicasProdutoAplicado);
+  }
+
+  Future<void> _updateCaracteristicasProdutoAplicado(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'CaracteristicasProdutoAplicado');
+    final idCaracteristicasProdutoAplicado =
+        CaracteristicasProdutoAplicado.fromJson(element);
+    _caracteristicasProdutoAplicado = idCaracteristicasProdutoAplicado;
+    setState(() {});
+    _aplicacao.caracteristicasProdutoAplicado =
+        idCaracteristicasProdutoAplicado;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
   }
 
   @override
@@ -124,6 +163,14 @@ class _CaracteristicasProdutoAplicadoPageState
           "Características do\nproduto a ser aplicado",
           textAlign: TextAlign.center,
         ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _caracteristicasProdutoAplicadoAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )
       ),
       body: SingleChildScrollView(
         child: Padding(
