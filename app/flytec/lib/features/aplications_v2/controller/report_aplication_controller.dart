@@ -129,7 +129,6 @@ class ReportAplicationController {
   Future<int?> createElementInTable(
       Map<String, dynamic> data, String table) async {
     int? id = await _sqlDatabaseProvider.insert(data, table);
-    log('--> ID CRIADO : $id');
     await obtainReportsAplications();
     return id;
   }

@@ -76,24 +76,58 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
       Util.toastAlerta("Selecione o ângulo");
       return false;
     } else {
-      _recomendacoesTecnicas = RecomendacoesTecnicas(
-          tipoProduto: _productType,
-          unidadevolumeAplicacao: _unidade,
-          angulo: _degree,
-          veiculante: _veiculanteType,
-          umidadeRelativaAr: _humiditySelected,
-          temperatura: _temperatureSelected,
-          alturaVoo: _flightHeight,
-          velocidadeVento: _speedWind,
-          equipamento: _selectedEquipment,
-          aeronave: _selectedAaeronave,
-          qtdVeiculante: _qtdVeiculante.text,
-          larguraFaixa: _larguraDaFaixa.text,
-          volumeAplicacao: _volumeDeAplicacao.text);
+      await _recomendacoesTecnicasAction();
       Util.toastSucesso("Dados inseridos com sucesso");
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       return true;
     }
+  }
+
+  Future<void> _recomendacoesTecnicasAction() async {
+    _recomendacoesTecnicas = RecomendacoesTecnicas(
+        tipoProduto: _productType,
+        unidadevolumeAplicacao: _unidade,
+        angulo: _degree,
+        veiculante: _veiculanteType,
+        umidadeRelativaAr: _humiditySelected,
+        temperatura: _temperatureSelected,
+        alturaVoo: _flightHeight,
+        velocidadeVento: _speedWind,
+        equipamento: _selectedEquipment,
+        aeronave: _selectedAaeronave,
+        qtdVeiculante: _qtdVeiculante.text,
+        larguraFaixa: _larguraDaFaixa.text,
+        volumeAplicacao: _volumeDeAplicacao.text);
+
+    if (_aplicacao.recomendacoesTecnicas?.id == null) {
+      int? idRecomendacoesTecnicas = await widget._reportAplicationController
+          .createElementInTable(
+              _recomendacoesTecnicas!.toMap(), 'RecomendacoesTecnicas');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'recomendacoesTecnicas_id': idRecomendacoesTecnicas},
+          'Aplicacao');
+      await _updateRecomendacoesTecnicas(idRecomendacoesTecnicas!);
+      return;
+    }
+    int? idRecomendacoesTecnicas = _aplicacao.recomendacoesTecnicas!.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idRecomendacoesTecnicas!,
+        _recomendacoesTecnicas!.toMap(),
+        'RecomendacoesTecnicas');
+    await _updateRecomendacoesTecnicas(idRecomendacoesTecnicas);
+  }
+
+  Future<void> _updateRecomendacoesTecnicas(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'RecomendacoesTecnicas');
+    final idRecomendacoesTecnicas = RecomendacoesTecnicas.fromJson(element);
+    _recomendacoesTecnicas = idRecomendacoesTecnicas;
+    setState(() {});
+    _aplicacao.recomendacoesTecnicas = idRecomendacoesTecnicas;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
   }
 
   @override
@@ -124,12 +158,19 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Recomendações técnicas",
-          textAlign: TextAlign.center,
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Recomendações técnicas",
+            textAlign: TextAlign.center,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _recomendacoesTecnicasAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(

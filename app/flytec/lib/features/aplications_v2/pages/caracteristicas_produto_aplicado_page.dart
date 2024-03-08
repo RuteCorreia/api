@@ -158,11 +158,11 @@ class _CaracteristicasProdutoAplicadoPageState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Características do\nproduto a ser aplicado",
-          textAlign: TextAlign.center,
-        ),
+          centerTitle: true,
+          title: const Text(
+            "Características do\nproduto a ser aplicado",
+            textAlign: TextAlign.center,
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
@@ -170,8 +170,7 @@ class _CaracteristicasProdutoAplicadoPageState
               // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
-          )
-      ),
+          )),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
