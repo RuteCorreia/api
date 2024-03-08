@@ -82,7 +82,7 @@ class _AreaTratadaState extends State<AreaTratada> {
       cultura: getIt<GlobalConfigVars>().selectedCultura,
     );
 
-    if (_aplicacao.identificacaoAreaTratada == null) {
+    if (_aplicacao.identificacaoAreaTratada?.id == null) {
       int? idAreaTratada = await widget._reportAplicationController
           .createElementInTable(
               _areaTratada!.toMap(), 'IdentificacaoAreaTratada');
@@ -90,16 +90,24 @@ class _AreaTratadaState extends State<AreaTratada> {
           _aplicacao.id!,
           {'identificacaoAreaTratada_id': idAreaTratada},
           'Aplicacao');
-      await widget._reportAplicationController.obtainReportsAplications();
-      _areaTratada?.id = idAreaTratada;
-      _aplicacao.identificacaoAreaTratada = _areaTratada;
-      setState(() {});
-      widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+      await _updateIdentificacao(idAreaTratada!);
       return;
     }
     int? idAreaTratada = _aplicacao.identificacaoAreaTratada!.id;
     await widget._reportAplicationController.updateElementInTable(
         idAreaTratada!, _areaTratada!.toMap(), 'IdentificacaoAreaTratada');
+    await _updateIdentificacao(idAreaTratada);
+  }
+
+  Future<void> _updateIdentificacao(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'IdentificacaoAreaTratada');
+    final identificacaoAreaTratada = IdentificacaoAreaTratada.fromJson(element);
+    _areaTratada = identificacaoAreaTratada;
+    setState(() {});
+    _aplicacao.identificacaoAreaTratada = identificacaoAreaTratada;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
   }
 
   final MapsInformationsController _mapsInformationsController =

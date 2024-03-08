@@ -29,9 +29,10 @@ class SQLDatabaseProvider implements DatabaseProvider {
   }
   
   @override
-  Future<Map<String, dynamic>> obtainElementTableById(String table, String idTable)async {
+  Future<Map<String, dynamic>?> obtainElementTableById(
+      String table, String idTable) async {
       final database = await _instance.database;
       final result = await database!.rawQuery('SELECT * FROM $table WHERE id = ?', [idTable]);
-      return result.first;
+    return result.isNotEmpty ? result.first : null;
   }
 }

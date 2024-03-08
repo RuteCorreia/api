@@ -35,7 +35,7 @@ class Contratante {
       'endereco': endereco,
       'rg': rg,
       'uf': uf,
-      'id': idContrante,
+      'contratanteRef': idContrante,
       'cidade': cidade,
       'cnpj': cnpj,
       'inscricaoEstadual': inscricaoEstadual,
@@ -52,7 +52,7 @@ class Contratante {
       uf: json['uf'],
       cidade: json['cidade'],
       cnpj: json['cnpj'],
-      idContrante: json['id'] ?? '',
+      idContrante: json['contratanteRef'] ?? '',
       inscricaoEstadual: json['inscricaoEstadual'],
       id: json['id'],
     );

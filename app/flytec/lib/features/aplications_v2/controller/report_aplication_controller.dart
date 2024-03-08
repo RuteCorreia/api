@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
@@ -47,7 +49,7 @@ class ReportAplicationController {
     _updateView!();
   }
 
-  Future<Map<String, dynamic>> getElementById(int id, String table) async {
+  Future<Map<String, dynamic>?> getElementById(int id, String table) async {
     return await _sqlDatabaseProvider.obtainElementTableById(
         table, id.toString());
   }
@@ -55,6 +57,7 @@ class ReportAplicationController {
   Future<int?> createElementInTable(
       Map<String, dynamic> data, String table) async {
     int? id = await _sqlDatabaseProvider.insert(data, table);
+    log('--> ID CRIADO : $id');
     await obtainReportsAplications();
     return id;
   }

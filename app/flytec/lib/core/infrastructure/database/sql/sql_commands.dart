@@ -26,8 +26,8 @@ CREATE TABLE Contratante (
     uf TEXT,
     cidade TEXT,
     cnpj TEXT,
-    inscricaoEstadual TEXT
-    id TEXT
+    inscricaoEstadual TEXT,
+    contratanteRef TEXT
 )
 ''';
 static String createIdentificacaoAreaTratadaTable = '''

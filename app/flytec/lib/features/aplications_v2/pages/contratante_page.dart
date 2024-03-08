@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -30,7 +32,7 @@ class _ContrantePageState extends State<ContrantePage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_aplicacao.contratante?.nome != null) {
+      if (_aplicacao.contratante?.id != null) {
         _selectedContratante = _aplicacao.contratante!;
         setState(() {});
       }
@@ -38,6 +40,37 @@ class _ContrantePageState extends State<ContrantePage> {
   }
 
   void _onAddContratanteUpdateView() {
+    setState(() {});
+  }
+
+  Future<void> _contratanteAction() async {
+    log('--> ${_aplicacao.contratante?.id}');
+    if (_aplicacao.contratante?.id == null) {
+      int? idContratante = await widget._reportAplicationController
+          .createElementInTable(_selectedContratante!.toMap(), 'Contratante');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!, {'contratante_id': idContratante}, 'Aplicacao');
+      await _updateContrante(idContratante!);
+      return;
+    }
+    int? idContratante = _aplicacao.contratante!.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idContratante!, _selectedContratante!.toMap(), 'Contratante');
+    await _updateContrante(idContratante);
+  }
+
+  Future<void> _updateContrante(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'Contratante');
+    if (element == null) {
+      log('--> ${_selectedContratante?.toMap()} -- ${_selectedContratante?.id}');
+      return;
+    }
+    final identificacaoContratante = Contratante.fromJson(element);
+    _selectedContratante = identificacaoContratante;
+    setState(() {});
+    _aplicacao.contratante = identificacaoContratante;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
     setState(() {});
   }
 
@@ -50,7 +83,15 @@ class _ContrantePageState extends State<ContrantePage> {
           "Selecionar Cliente",
           textAlign: TextAlign.center,
           style: TextStyle(),
-        ),
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _contratanteAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -105,19 +146,7 @@ class _ContrantePageState extends State<ContrantePage> {
                       return;
                     }
                     try {
-                      int? idContrante = await widget
-                          ._reportAplicationController
-                          .createElementInTable(
-                              _selectedContratante!.toMap(), 'Contratante');
-                      _selectedContratante!.id = idContrante;
-                      setState(() {});
-                      await widget._reportAplicationController
-                          .updateElementInTable(_aplicacao.id!,
-                              {'contratante_id': idContrante}, 'Aplicacao');
-                      final aplicacao = _aplicacao;
-                      aplicacao.contratante = _selectedContratante;
-                      widget._reportAplicationController
-                          .setAplicacaoSelected(aplicacao);
+                      await _contratanteAction();
                       Util.toastSucesso("Cliente selecionado");
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
