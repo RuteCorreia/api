@@ -50,12 +50,11 @@ class RelatorioAplicacao {
       'densidade': densidade,
       'observacoes': observacoes,
       'relatorioDGPS': relatorioDGPS,
-      'aplicacoes': aplicacoes?.map((x) => x.toMap()).toList(),
     };
   }
 
   factory RelatorioAplicacao.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return RelatorioAplicacao();
+    if (json == null) return RelatorioAplicacao();
     return RelatorioAplicacao(
       cultura: json['cultura'],
       produtoAplicado: json['produtoAplicado'],
@@ -70,8 +69,7 @@ class RelatorioAplicacao {
       densidade: json['densidade'],
       observacoes: json['observacoes'],
       relatorioDGPS: json['relatorioDGPS'],
-      aplicacoes: List<Aplicacoes>.from(
-          json['aplicacoes']?.map((x) => Aplicacoes.fromJson(x))),
+      
       id: json['id'],
     );
   }

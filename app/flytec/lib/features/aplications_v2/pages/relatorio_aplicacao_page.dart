@@ -50,17 +50,63 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
       Util.toastAlerta("Selecione a unidade do volume de aplicação");
       return false;
     }
-
+await _relatorioAplicacaoAction();
     setState(() {});
     Util.toastSucesso("Dados salvo com sucesso");
     return true;
+  }
+
+  Future<void> _relatorioAplicacaoAction() async {
+    _relatorioAplicacao = RelatorioAplicacao(
+        cultura: getIt<GlobalConfigVars>().selectedCultura,
+        produtoAplicado: _produtoSelecionado,
+        dosagem: _dosagemController.text,
+        unidadeDosagem: _dosagemUnidade,
+        volumeAplicacao: _volumeAplicado.text,
+        unidadeVolumeAplicacao: _volumeUnidade,
+        totalAreaAplicada: _totalAreaAplicada.text,
+        localizacaoPistaCodigoICAO: _selectedPista,
+        lat: _latitudeController.text,
+        long: _longitudeController.text,
+        densidade: _densidadeController.text,
+        observacoes: _observations.join("\n"),
+        relatorioDGPS: _selectedLog);
+    if (_aplicacao.relatorioAplicacao?.id == null) {
+      int? idRelatorioAplicacao = await widget._reportAplicationController
+          .createElementInTable(
+              _relatorioAplicacao!.toMap(), 'RelatorioAplicacao');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'relatorioAplicacao_id': idRelatorioAplicacao},
+          'Aplicacao');
+      await _updateRelatorioAplicacao(idRelatorioAplicacao!);
+      return;
+    }
+    int? idRelatorioAplicacao = _aplicacao.relatorioAplicacao?.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idRelatorioAplicacao!,
+        _relatorioAplicacao!.toMap(),
+        'RelatorioAplicacao');
+    await _updateRelatorioAplicacao(idRelatorioAplicacao);
+  }
+
+  Future<void> _updateRelatorioAplicacao(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'RelatorioAplicacao');
+
+    final relatorioAplicacao = RelatorioAplicacao.fromJson(element);
+    _relatorioAplicacao = relatorioAplicacao;
+    setState(() {});
+    _aplicacao.relatorioAplicacao = relatorioAplicacao;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_aplicacao.relatorioAplicacao?.cultura != null) {
+      if (_aplicacao.relatorioAplicacao?.id != null) {
         _relatorioAplicacao = _aplicacao.relatorioAplicacao!;
         _produtoSelecionado = _relatorioAplicacao!.produtoAplicado!;
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
@@ -87,6 +133,14 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
           "Relatório de aplicação",
           textAlign: TextAlign.center,
         ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _relatorioAplicacaoAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

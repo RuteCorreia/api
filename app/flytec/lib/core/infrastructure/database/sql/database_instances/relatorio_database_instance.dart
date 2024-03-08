@@ -39,6 +39,8 @@ class RelatorioDatabaseInstance<T> implements DatabaseInstance {
 
     await db.execute(SQLCommands.createAplicacoesTable);
 
+    await db.execute(SQLCommands.createRelatorioAplicacaoTable);
+
     await db.execute(SQLCommands.createContratoPrestacaoServicoTable);
 
     await db.execute(SQLCommands.createDadosResponsavelTable);
