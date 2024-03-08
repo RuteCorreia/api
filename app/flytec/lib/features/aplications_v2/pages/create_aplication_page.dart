@@ -13,10 +13,13 @@ import 'package:flytec/features/aplications_v2/pages/menu_aplication_page.dart';
 
 class CreateAplicationPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
+  final VoidCallback? _updateView;
   const CreateAplicationPage(
       {required ReportAplicationController reportAplicationController,
+      required VoidCallback? updateView,
       super.key})
-      : _reportAplicationController = reportAplicationController;
+      : _reportAplicationController = reportAplicationController,
+        _updateView = updateView;
 
   @override
   State<CreateAplicationPage> createState() => _CreateAplicationPageState();
@@ -40,8 +43,9 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
               await widget._reportAplicationController
                   .obtainReportsAplications();
               getIt<GlobalConfigVars>().clearGlobalConfigVars();
+              widget._updateView!();
               // ignore: use_build_context_synchronously
-              Navigator.pop(context);
+              Navigator.pop(context);              
             },
             icon: const Icon(Icons.arrow_back)),
         title: const Text(

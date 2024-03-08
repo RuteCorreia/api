@@ -22,6 +22,14 @@ class Aplicacao {
   DadosResponsavel? dadosResponsavel;
   String? refUsuario;
 
+  int? contratanteId;
+  int? identificacaoAreaTratadaId;
+  int? caracteristicasProdutoAplicadoId;
+  int? recomendacoesTecnicasId;
+  int? relatorioAplicacaoId;
+  int? contratoPrestacaoServicoId;
+  int? dadosResponsavelId;
+
   Aplicacao(
       {this.piloto,
       this.executor,
@@ -35,7 +43,14 @@ class Aplicacao {
       this.dadosResponsavel,
       this.state,
       this.data,
-      this.refUsuario});
+      this.refUsuario,
+      this.contratanteId,
+      this.identificacaoAreaTratadaId,
+      this.caracteristicasProdutoAplicadoId,
+      this.recomendacoesTecnicasId,
+      this.relatorioAplicacaoId,
+      this.contratoPrestacaoServicoId,
+      this.dadosResponsavelId});
 
   // Create toJson and toMap methods of class
   Map<String, dynamic> toMap() {
@@ -57,6 +72,14 @@ class Aplicacao {
         state: ReportDashBoardState.values.firstWhere(
             (state) => state.index == json['state'],
             orElse: () => ReportDashBoardState.Incompleto),
-        data: json['data']);
+        data: json['data'],
+        contratanteId: json['contratante_id'],
+        identificacaoAreaTratadaId: json['identificacaoAreaTratada_id'],
+        caracteristicasProdutoAplicadoId:
+            json['caracteristicasProdutoAplicado_id'],
+        recomendacoesTecnicasId: json['recomendacoesTecnicas_id'],
+        relatorioAplicacaoId: json['relatorioAplicacao_id'],
+        contratoPrestacaoServicoId: json['contratoPrestacaoServico_id'],
+        dadosResponsavelId: json['dadosResponsavel_id']);
   }
 }

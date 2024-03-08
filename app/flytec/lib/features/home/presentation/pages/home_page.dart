@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/injections/get_it.dart';
 import '../widgets/custom_action_button.dart';
 import '../widgets/custom_activity_button.dart';
 import '../widgets/custom_dialog_button.dart';
@@ -44,10 +43,26 @@ class _HomePagaState extends State<HomePaga> {
     setState(() {});
   }
 
+  ReportAplicationController? _reportAplicationController;
+
+  void _updateView() {
+    setState(() {});
+  }
+
+  Future<void> _initializationAplicationsReports() async {
+    await _reportAplicationController?.obtainReportsAplications();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    obtainWeatherCurrent();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      obtainWeatherCurrent();
+      _reportAplicationController =
+          ReportAplicationController(updateView: _updateView);
+      await _initializationAplicationsReports();
+    });
   }
 
   @override
@@ -99,8 +114,7 @@ class _HomePagaState extends State<HomePaga> {
             ),
             const SizedBox(height: 16),
             GestureDetector(
-              onTap: () async {
-              },
+              onTap: () async {},
               child: const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                 child: WelcomeText(
@@ -451,16 +465,18 @@ class _HomePagaState extends State<HomePaga> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Expanded(
-                        child: ActivityButton(
-                          text: "Relatórios",
-                          value: getIt<GlobalConfigVars>()
-                              .reportList
-                              .length
-                              .toString(),
-                          onTap: () {},
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        if (_reportAplicationController == null) {
+                          return const SizedBox();
+                        }
+                        return Expanded(
+                            child: ActivityButton(
+                                text: "Aplicações",
+                                value: _reportAplicationController!
+                                    .listaAplicacao?.length
+                                    .toString(),
+                                onTap: () {}));
+                      }),
                     ],
                   ),
                   const SizedBox(height: 22),
@@ -518,7 +534,10 @@ class _HomePagaState extends State<HomePaga> {
                                       "assets/images/icomoon_free_fire.svg",
                                   text: "Aplicação",
                                   onClick: () {
-                                    context.push("/aplications");
+                                    context.push("/aplications", extra: {
+                                      'reportAplicationController':
+                                          _reportAplicationController
+                                    });
                                   },
                                 ),
                                 const SizedBox(height: 10),

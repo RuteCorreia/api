@@ -1,47 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications_v2/components/dashboard_counter.dart';
 import 'package:flytec/features/aplications_v2/components/report_card_aplication.dart';
-import 'package:flytec/features/aplications_v2/controller/aplications_initialization_controller.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/pages/create_aplication_page.dart';
 
 class AplicationsPage extends StatefulWidget {
-  const AplicationsPage({super.key});
+  final ReportAplicationController _reportAplicationController;
+  const AplicationsPage(
+      {super.key,
+      required ReportAplicationController reportAplicationController})
+      : _reportAplicationController = reportAplicationController;
 
   @override
   State<AplicationsPage> createState() => _AplicationsPageState();
 }
 
 class _AplicationsPageState extends State<AplicationsPage> {
-  AplicationsInitializationController? _aplicationsInitializationController;
-  ReportAplicationController? _reportAplicationController;
+
+  final ScrollController _scrollController = ScrollController();
 
   void _updateView() {
     setState(() {});
   }
-
-  Future<void> _initializationAplicationsReports() async {
-    _aplicationsInitializationController =
-        AplicationsInitializationController();
-    setState(() {});
-    await _aplicationsInitializationController?.initialize();
-    _reportAplicationController?.setListRelatorioAplicacao(
-        _aplicationsInitializationController!.reportsAplications!);
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _reportAplicationController =
-          ReportAplicationController(updateView: _updateView);
-      _initializationAplicationsReports();
-    });
-  }
-
-  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +36,13 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          _reportAplicationController?.setListRelatorioAplicacao(
-              _reportAplicationController?.listaAplicacao);
+          widget._reportAplicationController.setListRelatorioAplicacao(
+              widget._reportAplicationController.listaAplicacao);
           setState(() {});
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateAplicationPage(
-              reportAplicationController: _reportAplicationController!,
+              reportAplicationController: widget._reportAplicationController,
+              updateView: _updateView,
             );
           }));
         },
@@ -68,12 +50,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       body: Builder(
         builder: (context) {
-          if (_reportAplicationController?.listaAplicacao == null) {
+          if (widget._reportAplicationController.listaAplicacao == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (_reportAplicationController!.listaAplicacao!.isEmpty) {
+          if (widget._reportAplicationController.listaAplicacao!.isEmpty) {
             return const Align(
               alignment: Alignment.center,
               child: Text(
@@ -97,7 +79,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                     children: [
                       ReportDashBoardCounter(
                         text: "Enviado",
-                        value: _reportAplicationController!
+                        value: widget._reportAplicationController
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Enviado)
                             .toString(),
@@ -105,7 +87,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Pronto",
-                        value: _reportAplicationController!
+                        value: widget._reportAplicationController
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Pronto)
                             .toString(),
@@ -113,7 +95,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Incompleto",
-                        value: _reportAplicationController!
+                        value: widget._reportAplicationController
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Incompleto)
                             .toString(),
@@ -121,7 +103,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Não enviado",
-                        value: _reportAplicationController!
+                        value: widget._reportAplicationController
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.NaoEnviado)
                             .toString(),
@@ -134,12 +116,13 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       itemCount:
-                          _reportAplicationController?.listaAplicacao!.length,
+                          widget
+                          ._reportAplicationController.listaAplicacao!.length,
                       reverse: true,
                       itemBuilder: (context, index) {
                         return ReportCardAplication(
                             reportAplicationController:
-                                _reportAplicationController!,
+                                widget._reportAplicationController,
                             index: index);
                       })
                 ],
