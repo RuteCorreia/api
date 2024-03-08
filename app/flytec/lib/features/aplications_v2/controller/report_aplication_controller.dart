@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
 
@@ -14,7 +16,7 @@ class ReportAplicationController {
       SQLDatabaseProvider(_databaseInstance);
   ReportAplicationController({required VoidCallback? updateView})
       : _updateView = updateView;
-      
+
   List<Aplicacao>? _listaAplicacao;
 
   List<Aplicacao>? get listaAplicacao => _listaAplicacao;
@@ -43,9 +45,15 @@ class ReportAplicationController {
   }
 
   Future<void> obtainReportsAplications() async {
+    final refUsuario =
+        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacao");
-    _listaAplicacao = reports.map((e) => Aplicacao.fromJson(e)).toList();
+    _listaAplicacao = reports
+        .map((e) => Aplicacao.fromJson(e))
+        .toList()
+        .where((element) => element.refUsuario == refUsuario)
+        .toList();
     _updateView!();
   }
 

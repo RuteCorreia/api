@@ -39,6 +39,7 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
             onPressed: () async {
               await widget._reportAplicationController
                   .obtainReportsAplications();
+              getIt<GlobalConfigVars>().clearGlobalConfigVars();
               // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
@@ -156,11 +157,14 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                       Util.toastAlerta("Selecione o piloto");
                       return;
                     }
+                    final refUsuario =
+                        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
                     final aplicacao = Aplicacao(
                         executor: getIt<GlobalConfigVars>().selectedExecutor,
                         piloto: getIt<GlobalConfigVars>().selectedPilot,
                         data: DateTime.now().millisecondsSinceEpoch.toString(),
-                        state: ReportDashBoardState.Incompleto);
+                        state: ReportDashBoardState.Incompleto,
+                        refUsuario: refUsuario);
                     int? idAplicacao = await widget._reportAplicationController
                         .createElementInTable(aplicacao.toMap(), "Aplicacao");
                     aplicacao.id = idAplicacao;

@@ -12,7 +12,8 @@ CREATE TABLE Aplicacao (
     recomendacoesTecnicas_id INTEGER,
     relatorioAplicacao_id INTEGER,
     contratoPrestacaoServico_id INTEGER,
-    dadosResponsavel_id INTEGER
+    dadosResponsavel_id INTEGER,
+    refUsuario TEXT
 )
 ''';
 static String createContratanteTable = '''

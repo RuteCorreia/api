@@ -20,6 +20,7 @@ class Aplicacao {
   RelatorioAplicacao? relatorioAplicacao;
   ContratoPrestacaoServico? contratoPrestacaoServico;
   DadosResponsavel? dadosResponsavel;
+  String? refUsuario;
 
   Aplicacao(
       {this.piloto,
@@ -33,22 +34,17 @@ class Aplicacao {
       this.contratoPrestacaoServico,
       this.dadosResponsavel,
       this.state,
-      this.data});
+      this.data,
+      this.refUsuario});
 
   // Create toJson and toMap methods of class
   Map<String, dynamic> toMap() {
     return {
       'piloto': piloto,
       'executor': executor,
-      // 'contratante': contratante?.toMap(),
-      // 'identificacaoAreaTratada': identificacaoAreaTratada?.toMap(),
-      // 'caracteristicasProdutoAplicado': caracteristicasProdutoAplicado?.toMap(),
-      // 'recomendacoesTecnicas': recomendacoesTecnicas?.toMap(),
-      // 'relatorioAplicacao': relatorioAplicacao?.toMap(),
-      // 'contratoPrestacaoServico': contratoPrestacaoServico?.toMap(),
-      // 'dadosResponsavel': dadosResponsavel?.toMap(),
       'state': state?.index ?? ReportDashBoardState.Incompleto.index,
-      'data': data
+      'data': data,
+      'refUsuario': refUsuario
     };
   }
 
@@ -57,6 +53,7 @@ class Aplicacao {
         piloto: json['piloto'],
         executor: json['executor'],
         id: json['id'],
+        refUsuario: json['refUsuario'],
         state: ReportDashBoardState.values.firstWhere(
             (state) => state.index == json['state'],
             orElse: () => ReportDashBoardState.Incompleto),

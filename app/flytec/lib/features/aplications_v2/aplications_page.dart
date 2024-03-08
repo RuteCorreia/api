@@ -56,7 +56,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           _reportAplicationController?.setListRelatorioAplicacao(
-              _aplicationsInitializationController?.reportsAplications);
+              _reportAplicationController?.listaAplicacao);
           setState(() {});
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateAplicationPage(
@@ -68,14 +68,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       body: Builder(
         builder: (context) {
-          if (_aplicationsInitializationController?.reportsAplications ==
-              null) {
+          if (_reportAplicationController?.listaAplicacao == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (_aplicationsInitializationController!
-              .reportsAplications!.isEmpty) {
+          if (_reportAplicationController!.listaAplicacao!.isEmpty) {
             return const Align(
               alignment: Alignment.center,
               child: Text(
