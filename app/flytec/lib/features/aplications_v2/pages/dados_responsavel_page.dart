@@ -205,6 +205,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
   }
 
   Future<bool> _verifyFields() async {
+    await _dadosResponsavelAction();
     Util.toastSucesso("Dados inseridos com sucesso");
     getIt<GlobalConfigVars>().clearGlobalConfigVars();
     Future.delayed(const Duration(seconds: 1), () {
@@ -214,16 +215,60 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
     return true;
   }
 
+  Future<void> _dadosResponsavelAction() async {
+    _dadosResponsavel = DadosResponsavel(
+        data: _dataSelecionada!.millisecondsSinceEpoch.toString(),
+        uf: _uf,
+        cidade: _cityOfUf,
+        nomeCompleto: _nome.text,
+        documento: _documento.text,
+        telefone: _telefone.text,
+        assinaturaResponsavel: _signature);
+
+    if (_aplicacao.dadosResponsavel?.id == null) {
+      int? idDadosResponsavel = await widget._reportAplicationController
+          .createElementInTable(_dadosResponsavel!.toMap(), 'DadosResponsavel');
+      await widget._reportAplicationController.updateElementInTable(
+          _aplicacao.id!,
+          {'dadosResponsavel_id': idDadosResponsavel},
+          'Aplicacao');
+      await _updateDadosResponsavel(idDadosResponsavel!);
+      return;
+    }
+    int? idDadosResponsavel = _aplicacao.dadosResponsavel!.id;
+    await widget._reportAplicationController.updateElementInTable(
+        idDadosResponsavel!, _dadosResponsavel!.toMap(), 'DadosResponsavel');
+    await _updateDadosResponsavel(idDadosResponsavel);
+  }
+
+  Future<void> _updateDadosResponsavel(int id) async {
+    final element = await widget._reportAplicationController
+        .getElementById(id, 'DadosResponsavel');
+    final idDadosResponsavel = DadosResponsavel.fromJson(element);
+    _dadosResponsavel = idDadosResponsavel;
+    setState(() {});
+    _aplicacao.dadosResponsavel = idDadosResponsavel;
+    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Dados do responsável",
-          textAlign: TextAlign.center,
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Dados do responsável",
+            textAlign: TextAlign.center,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _dadosResponsavelAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: ListView(
