@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
+import 'package:flytec/features/aplications_v2/pages/menu_aplication_page.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
@@ -99,6 +100,13 @@ class ReportCardAplication extends StatelessWidget {
                 showRightcon: false,
                 onClick: () {
                   context.pop();
+                  _reportAplicationController.setAplicacaoSelected(
+                      _reportAplicationController.listaAplicacao![_index]);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return MenuAplicationPage(
+                        reportAplicationController:
+                            _reportAplicationController);
+                  }));
                 },
                 text: "Editar",
               ),
@@ -123,6 +131,15 @@ class ReportCardAplication extends StatelessWidget {
                   // context.push("/reportPage", extra: file);
                 },
                 text: "Gerar Relatório",
+              ),
+              const SizedBox(height: 10),
+              CustomDialogButton(
+                leftIcon: "assets/images/cancel.svg",
+                showRightcon: false,
+                onClick: () async {
+                  context.pop();
+                },
+                text: "Cancelar",
               ),
               const SizedBox(height: 10),
             ],
