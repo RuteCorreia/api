@@ -3,5 +3,5 @@ abstract class DatabaseProvider {
   Future<List<Map<String, dynamic>>> obtainTableElementsList(String table);
   Future<int> update(Map<String, dynamic> values, String table,String idTable);
   Future<Map<String, dynamic>?> obtainElementTableById(
-      String table, String idTable);
+      String table, int? idTable);
 }

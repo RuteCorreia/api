@@ -27,12 +27,14 @@ class SQLDatabaseProvider implements DatabaseProvider {
     return database!
         .update(table, values, where: 'id = ?', whereArgs: [idTable]);
   }
-  
+
   @override
   Future<Map<String, dynamic>?> obtainElementTableById(
-      String table, String idTable) async {
-      final database = await _instance.database;
-      final result = await database!.rawQuery('SELECT * FROM $table WHERE id = ?', [idTable]);
+      String? table, int? idTable) async {
+    if (idTable == null) return null;
+    final database = await _instance.database;
+    final result = await database!
+        .rawQuery('SELECT * FROM $table WHERE id = ?', [idTable]);
     return result.isNotEmpty ? result.first : null;
   }
 }
