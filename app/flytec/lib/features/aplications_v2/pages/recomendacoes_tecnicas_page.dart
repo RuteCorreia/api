@@ -279,13 +279,12 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const CustomText(text: "Volume de aplicação"),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 14),
                     Container(
                       width: (MediaQuery.of(context).size.width / 2) - 40,
                       height: 50,
@@ -316,6 +315,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     ),
                   ],
                 ),
+                const SizedBox(width: 12),
                 Flexible(
                   child: Row(
                     children: [

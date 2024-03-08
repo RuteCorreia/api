@@ -203,123 +203,57 @@ class _HomePagaState extends State<HomePaga> {
                     ),
                   ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: 72,
-                        child: Stack(
+                        height: 80,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Positioned(
-                              left: 0,
-                              top: 19,
-                              child: Container(
-                                width: 29.89,
-                                height: 32,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 29.89,
-                                      height: 32,
-                                      child: Stack(children: [
-                                        SvgPicture.asset(
-                                            "assets/images/sun_foggy_fill.svg")
-                                      ]),
-                                    ),
-                                  ],
+                            SvgPicture.asset(
+                                "assets/images/sun_foggy_fill.svg"),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _weatherCurrent!
+                                      .condition.translationConditionWeather,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 121, 118, 118),
+                                    fontSize: 16,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 44.84,
-                              top: 0,
-                              child: SizedBox(
-                                width: 237.27,
-                                height: 72,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              _weatherCurrent!.condition
-                                                  .translationConditionWeather,
-                                              style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 121, 118, 118),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                                height: 0.09,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 30),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        '${_weatherCurrent!.tempC.toInt()}°',
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 32,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.05,
-                                                    ),
-                                                  ),
-                                                  const TextSpan(
-                                                    text: 'c',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 20,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${_weatherCurrent!.tempC.toInt()}°',
+                                        style: const TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 32,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const TextSpan(
+                                        text: 'c',
+                                        style: TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 20,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 289.58,
-                              top: 24,
-                              child: Container(
-                                width: 22.42,
-                                height: 24,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                              ),
+                              ],
                             ),
                           ],
                         ),
@@ -328,119 +262,123 @@ class _HomePagaState extends State<HomePaga> {
                       SizedBox(
                         width: double.infinity,
                         height: 80,
-                        child: Stack(
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Positioned(
-                              left: 0,
-                              top: 19,
-                              child: Container(
-                                width: 29.89,
-                                height: 32,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 29.89,
-                                      height: 32,
-                                      child: Stack(children: [
-                                        SvgPicture.asset(
-                                            "assets/images/home_icon.svg")
-                                      ]),
-                                    ),
-                                  ],
+                            SvgPicture.asset("assets/images/home_icon.svg"),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Direção e velocidade do vento',
+                                  maxLines: 2,
+                                  style: TextStyle(
+                                    color: Color.fromARGB(255, 121, 118, 118),
+                                    fontSize: 16,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 44.84,
-                              top: 0,
-                              child: SizedBox(
-                                width: 237.27,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.65,
-                                            child: const Text(
-                                              'Direção e velocidade do vento',
-                                              maxLines: 2,
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 121, 118, 118),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 15),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: _weatherCurrent!
-                                                        .windKph
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 32,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.05,
-                                                    ),
-                                                  ),
-                                                  const TextSpan(
-                                                    text: ' km/h',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 20,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            _weatherCurrent!.windKph.toString(),
+                                        style: const TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 32,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const TextSpan(
+                                        text: ' km/h',
+                                        style: TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 20,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Positioned(
-                              left: 289.58,
-                              top: 24,
-                              child: Container(
-                                width: 22.42,
-                                height: 24,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                              ),
-                            ),
+
+                            // SizedBox(
+                            //   width: 237.27,
+                            //   child: Row(
+                            //     mainAxisSize: MainAxisSize.min,
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     crossAxisAlignment: CrossAxisAlignment.center,
+                            //     children: [
+                            //       Expanded(
+                            //         child: Column(
+                            //           mainAxisSize: MainAxisSize.min,
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.center,
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.start,
+                            //           children: [
+                            //             SizedBox(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width *
+                            //                   0.65,
+                            //               child: const Text(
+                            //                 'Direção e velocidade do vento',
+                            //                 maxLines: 2,
+                            //                 style: TextStyle(
+                            //                   color: Color.fromARGB(
+                            //                       255, 121, 118, 118),
+                            //                   fontSize: 16,
+                            //                   fontFamily: 'Inter',
+                            //                   fontWeight: FontWeight.w700,
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //             const SizedBox(height: 15),
+                            //             SizedBox(
+                            //               width: double.infinity,
+                            //               child: Text.rich(
+                            //                 TextSpan(
+                            //                   children: [
+                            //                     TextSpan(
+                            //                       text: _weatherCurrent!.windKph
+                            //                           .toString(),
+                            //                       style: const TextStyle(
+                            //                         color: Color(0xFF00B45D),
+                            //                         fontSize: 32,
+                            //                         fontFamily: 'Inter',
+                            //                         fontWeight: FontWeight.w700,
+                            //                         height: 0.05,
+                            //                       ),
+                            //                     ),
+                            //                     const TextSpan(
+                            //                       text: ' km/h',
+                            //                       style: TextStyle(
+                            //                         color: Color(0xFF00B45D),
+                            //                         fontSize: 20,
+                            //                         fontFamily: 'Inter',
+                            //                         fontWeight: FontWeight.w700,
+                            //                         height: 0.07,
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
