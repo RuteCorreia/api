@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
@@ -8,6 +6,7 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
+import 'package:flytec/features/aplications_v2/models/aplicacoes.dart';
 import 'package:flytec/features/aplications_v2/models/caracteristicas_produto_aplicado.dart';
 import 'package:flytec/features/aplications_v2/models/contratante.dart';
 import 'package:flytec/features/aplications_v2/models/contrato_prestacao_servico.dart';
@@ -95,11 +94,13 @@ class ReportAplicationController {
       final getRelatorioAplicacao =
           await _sqlDatabaseProvider.obtainElementTableById(
               "RelatorioAplicacao", aplicacao.relatorioAplicacaoId);
-      log('--> $getRelatorioAplicacao');
       RelatorioAplicacao relatorioAplicacao =
           RelatorioAplicacao.fromJson(getRelatorioAplicacao);
+      List<Aplicacoes?> aplicacoes = await getAplicacoesByRelatorioAplicacao(
+          aplicacao.relatorioAplicacaoId!);
+      relatorioAplicacao.aplicacoes =
+          aplicacoes.map((aplicacoes) => aplicacoes!).toList();
       aplicacao.relatorioAplicacao = relatorioAplicacao;
-
       final getContratoPrestacaoServico =
           await _sqlDatabaseProvider.obtainElementTableById(
               "ContratoPrestacaoServico", aplicacao.contratoPrestacaoServicoId);
@@ -122,8 +123,7 @@ class ReportAplicationController {
   }
 
   Future<Map<String, dynamic>?> getElementById(int id, String table) async {
-    return await _sqlDatabaseProvider.obtainElementTableById(
-        table, id);
+    return await _sqlDatabaseProvider.obtainElementTableById(table, id);
   }
 
   Future<int?> createElementInTable(
@@ -137,5 +137,16 @@ class ReportAplicationController {
       int id, Map<String, dynamic> data, String table) async {
     await _sqlDatabaseProvider.update(data, table, id.toString());
     await obtainReportsAplications();
+  }
+
+  Future<List<Aplicacoes?>> getAplicacoesByRelatorioAplicacao(
+      int idAplicacao) async {
+    final getAplicacoesByDb =
+        await _sqlDatabaseProvider.obtainTableElementsList("Aplicacoes");
+    final listAplicacoes = getAplicacoesByDb.map((aplicacoes) {
+      if (aplicacoes['relatorioAplicacaoId'] != idAplicacao) return null;
+      return Aplicacoes.fromJson(aplicacoes);
+    }).toList();
+    return listAplicacoes;
   }
 }

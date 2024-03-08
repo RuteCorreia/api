@@ -69,7 +69,6 @@ class RelatorioAplicacao {
       densidade: json['densidade'],
       observacoes: json['observacoes'],
       relatorioDGPS: json['relatorioDGPS'],
-      
       id: json['id'],
     );
   }

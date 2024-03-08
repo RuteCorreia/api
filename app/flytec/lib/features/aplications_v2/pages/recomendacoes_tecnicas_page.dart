@@ -315,7 +315,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     ),
                   ],
                 ),
-                const SizedBox(width: 12),
                 Flexible(
                   child: Row(
                     children: [

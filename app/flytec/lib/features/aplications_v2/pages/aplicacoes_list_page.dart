@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
 import 'package:flytec/features/aplications_v2/models/aplicacoes.dart';
@@ -17,7 +18,7 @@ class AplicacoesListPage extends StatefulWidget {
 }
 
 class _AplicacoesListPageState extends State<AplicacoesListPage> {
-  List<Aplicacoes> _aplicacoes = [];
+  List<Aplicacoes?> _aplicacoes = [];
 
   Aplicacao get _aplicacao =>
       widget._reportAplicationController.aplicacaoSelected!;
@@ -25,11 +26,16 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
   @override
   void initState() {
     super.initState();
-    if (_aplicacao.relatorioAplicacao?.aplicacoes != null &&
-        _aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty) {
-      _aplicacoes = _aplicacao.relatorioAplicacao!.aplicacoes!;
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _aplicacoes = await widget._reportAplicationController
+          .getAplicacoesByRelatorioAplicacao(_aplicacao.relatorioAplicacaoId!);
       setState(() {});
-    }
+    });
+  }
+
+  void _newAplicacao(Aplicacoes aplicacao) {
+    _aplicacoes.add(aplicacao);
+    setState(() {});
   }
 
   @override
@@ -56,9 +62,13 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
                     child: ListView.builder(
                         itemCount: _aplicacoes.length,
                         itemBuilder: (context, index) {
+                          final epoch =
+                              int.tryParse(_aplicacoes[index]!.dataAplicacao!);
+                          final data =
+                              DateTime.fromMillisecondsSinceEpoch(epoch!);
                           return CustomCardButton(
                             title:
-                                "Aplicação ${_aplicacoes[index].dataAplicacao} ",
+                                "Aplicação ${Util.getTodayDate(date: data)} ",
                             onTap: () {},
                           );
                         }),
@@ -69,7 +79,12 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return const CreateNewAplicacaoPages();
+            return CreateNewAplicacaoPages(
+              onAplicacao: (newAplicacao) {
+                _newAplicacao(newAplicacao);
+              },
+              reportAplicationController: widget._reportAplicationController,
+            );
           }));
         },
         child: const Icon(

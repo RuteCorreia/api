@@ -261,7 +261,7 @@ class _HomePagaState extends State<HomePaga> {
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        height: 80,
+                        height: 100,
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -272,14 +272,18 @@ class _HomePagaState extends State<HomePaga> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Text(
-                                  'Direção e velocidade do vento',
-                                  maxLines: 2,
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 121, 118, 118),
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w700,
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
+                                  child: const Text(
+                                    'Direção e velocidade do vento',
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 121, 118, 118),
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
+                                    ),
                                   ),
                                 ),
                                 Text.rich(

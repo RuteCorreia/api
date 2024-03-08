@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
@@ -1062,7 +1063,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       width: 100,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${relatorioModel.relatorioDeAplicacao?.aplicacoes?.dataDaAplicacao}"),
+                          " ${Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao!)!))}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:

@@ -5,11 +5,21 @@ import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
 import 'package:flytec/features/aplications_v2/components/components_exports.dart';
+import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
+import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
+import 'package:flytec/features/aplications_v2/models/aplicacoes.dart';
 import 'package:flytec/features/aplications_v2/pages/images/upload_foto.dart';
 import 'package:intl/intl.dart';
 
 class CreateNewAplicacaoPages extends StatefulWidget {
-  const CreateNewAplicacaoPages({super.key});
+  final ReportAplicationController _reportAplicationController;
+  final void Function(Aplicacoes newAplicacao) _onAplicacao;
+  const CreateNewAplicacaoPages(
+      {required ReportAplicationController reportAplicationController,
+      required void Function(Aplicacoes newAplicacao) onAplicacao,
+      super.key})
+      : _reportAplicationController = reportAplicationController,
+        _onAplicacao = onAplicacao;
 
   @override
   State<CreateNewAplicacaoPages> createState() =>
@@ -60,23 +70,59 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
   }
 
   Future<bool> _verifyFields() async {
+    await _aplicacoesAction();
     Util.toastSucesso("  Dados inseridos com sucesso");
 
     setState(() {});
+    // ignore: use_build_context_synchronously
     Navigator.pop(context);
     return true;
+  }
+
+  Aplicacao get _aplicacao =>
+      widget._reportAplicationController.aplicacaoSelected!;
+
+  Future<void> _aplicacoesAction() async {
+    Aplicacoes aplicacoes = Aplicacoes(
+      dataAplicacao: dataSelecionada?.millisecondsSinceEpoch.toString(),
+      horaInicio: _selectedTime.to24hours(),
+      horaFinal: _selectedTimeFinal.to24hours(),
+      horimetroInicial: _horimetroInicial.text,
+      horimetroFinal: _horimetroFinal.text,
+      temperaturaInicial: _temperatureSelectedInitial,
+      temperaturaFinal: _temperatureSelectedFinal,
+      umidadeRelativaArInicial: _humiditySelectedInitial,
+      umidadeRelativaArFinal: _humiditySelectedFinal,
+      ventoInicial: _speedWindInitial,
+      ventoFinal: _speedWindFinal,
+      imagemCondicaoClimatica: _imageData,
+    );
+    int? idRelatorioAplicacao = _aplicacao.relatorioAplicacao?.id;
+    if (idRelatorioAplicacao == null) return;
+    final aplicacoesToMap = aplicacoes.toMap();
+    aplicacoesToMap.addAll({'relatorioAplicacaoId': idRelatorioAplicacao});
+    await widget._reportAplicationController
+        .createElementInTable(aplicacoesToMap, 'Aplicacoes');
+    widget._onAplicacao(aplicacoes);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Aplicações",
-          textAlign: TextAlign.center,
-        ),
-      ),
+          centerTitle: true,
+          title: const Text(
+            "Aplicações",
+            textAlign: TextAlign.center,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              await _aplicacoesAction();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+          )),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(

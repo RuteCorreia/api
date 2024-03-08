@@ -50,7 +50,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
       Util.toastAlerta("Selecione a unidade do volume de aplicação");
       return false;
     }
-await _relatorioAplicacaoAction();
+    await _relatorioAplicacaoAction();
     setState(() {});
     Util.toastSucesso("Dados salvo com sucesso");
     return true;
@@ -128,11 +128,11 @@ await _relatorioAplicacaoAction();
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Relatório de aplicação",
-          textAlign: TextAlign.center,
-        ),
+          centerTitle: true,
+          title: const Text(
+            "Relatório de aplicação",
+            textAlign: TextAlign.center,
+          ),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
@@ -140,8 +140,7 @@ await _relatorioAplicacaoAction();
               // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
-          )
-      ),
+          )),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: ListView(
