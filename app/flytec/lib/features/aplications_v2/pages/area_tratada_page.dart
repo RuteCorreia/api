@@ -323,8 +323,10 @@ class _AreaTratadaState extends State<AreaTratada> {
                   Util.closeKeyBoard();
                   await showDialog(
                       context: context,
+                      useSafeArea: true,
                       builder: (BuildContext context) {
                         return AlertDialog(
+                            scrollable: true,
                             backgroundColor: const Color(0xFFF5F5F5),
                             content: CultureSelect(onChanged: (value) {
                               getIt<GlobalConfigVars>().selectedCultura = value;

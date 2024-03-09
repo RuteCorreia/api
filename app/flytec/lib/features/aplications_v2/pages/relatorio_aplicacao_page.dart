@@ -733,12 +733,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             child: LogsSelect(onChanged: (value) {
                               setState(() {
                                 _selectedLog = value;
-                                getIt<GlobalConfigVars>()
-                                    .reportList
-                                    .last
-                                    .relatorioDeAplicacao
-                                    ?.log = value;
-                                getIt<GlobalConfigVars>().dgs = value;
+                               
                               });
                               Util.closeKeyBoard();
                             }),
@@ -749,8 +744,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             Center(
               child: CustomButton(
                 title: "APLICAÇÕES",
-                onClick: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                onClick: () async{
+                  await _relatorioAplicacaoAction();
+                  // ignore: use_build_context_synchronously
+                  await Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return AplicacoesListPage(
                         reportAplicationController:
                             widget._reportAplicationController);

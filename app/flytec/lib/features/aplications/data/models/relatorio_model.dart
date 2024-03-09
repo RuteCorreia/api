@@ -243,32 +243,32 @@ class RelatorioModel {
           aplicacoes: aplicacao.relatorioAplicacao?.aplicacoes != null
               ? Aplicacoes(
                   dataDaAplicacao:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].dataAplicacao ??
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.dataAplicacao ??
                           '',
                   horarioDeInicio:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].horaInicio ??
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.horaInicio ??
                           '',
                   horarioDeTermino:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].horaFinal ??
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.horaFinal ??
                           '',
                   horimetroFinal:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].horimetroFinal ??
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.horimetroFinal ??
                           '',
                   horimetroInicial: aplicacao.relatorioAplicacao?.aplicacoes![0]
-                          .horimetroInicial ??
+                          ?.horimetroInicial ??
                       '',
                   temperaturaFinal:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].temperaturaFinal ??
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.temperaturaFinal ??
                           '',
                   temperaturaIncial: aplicacao.relatorioAplicacao
-                          ?.aplicacoes![0].temperaturaInicial ??
+                          ?.aplicacoes![0]?.temperaturaInicial ??
                       '',
                   umidadeRelativaFinal:
-                      aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArFinal ?? '',
-                  umidadeRelativaInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].umidadeRelativaArInicial ?? '',
-                  ventoFinal: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoFinal ?? '',
-                  ventoInicial: aplicacao.relatorioAplicacao?.aplicacoes![0].ventoInicial ?? '',
-                  image: aplicacao.relatorioAplicacao?.aplicacoes![0].imagemCondicaoClimatica)
+                      aplicacao.relatorioAplicacao?.aplicacoes![0]?.umidadeRelativaArFinal ?? '',
+                  umidadeRelativaInicial: aplicacao.relatorioAplicacao?.aplicacoes![0]?.umidadeRelativaArInicial ?? '',
+                  ventoFinal: aplicacao.relatorioAplicacao?.aplicacoes![0]?.ventoFinal ?? '',
+                  ventoInicial: aplicacao.relatorioAplicacao?.aplicacoes![0]?.ventoInicial ?? '',
+                  image: aplicacao.relatorioAplicacao?.aplicacoes![0]?.imagemCondicaoClimatica)
               : Aplicacoes(
                   dataDaAplicacao: '',
                   horarioDeInicio: '',

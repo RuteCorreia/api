@@ -97,9 +97,9 @@ class ReportAplicationController {
       RelatorioAplicacao relatorioAplicacao =
           RelatorioAplicacao.fromJson(getRelatorioAplicacao);
       List<Aplicacoes?> aplicacoes = await getAplicacoesByRelatorioAplicacao(
-          aplicacao.relatorioAplicacaoId!);
+          aplicacao.relatorioAplicacaoId);
       relatorioAplicacao.aplicacoes =
-          aplicacoes.map((aplicacoes) => aplicacoes!).toList();
+          aplicacoes.map((aplicacoes) => aplicacoes).toList();
       aplicacao.relatorioAplicacao = relatorioAplicacao;
       final getContratoPrestacaoServico =
           await _sqlDatabaseProvider.obtainElementTableById(
@@ -140,7 +140,9 @@ class ReportAplicationController {
   }
 
   Future<List<Aplicacoes?>> getAplicacoesByRelatorioAplicacao(
-      int idAplicacao) async {
+      int? idAplicacao) async {
+    if (idAplicacao == null) return [];
+
     final getAplicacoesByDb =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacoes");
     final listAplicacoes = getAplicacoesByDb.map((aplicacoes) {

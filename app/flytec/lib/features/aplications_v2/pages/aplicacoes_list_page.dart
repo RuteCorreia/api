@@ -28,7 +28,7 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       _aplicacoes = await widget._reportAplicationController
-          .getAplicacoesByRelatorioAplicacao(_aplicacao.relatorioAplicacaoId!);
+          .getAplicacoesByRelatorioAplicacao(_aplicacao.relatorioAplicacaoId);
       setState(() {});
     });
   }

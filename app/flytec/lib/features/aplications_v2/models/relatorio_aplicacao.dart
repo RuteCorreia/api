@@ -14,7 +14,7 @@ class RelatorioAplicacao {
   String? observacoes;
   String? relatorioDGPS;
   String? densidade;
-  List<Aplicacoes>? aplicacoes;
+  List<Aplicacoes?>? aplicacoes;
   int? id;
 
   RelatorioAplicacao({

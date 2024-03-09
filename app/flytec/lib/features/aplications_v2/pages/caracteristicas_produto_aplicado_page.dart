@@ -96,7 +96,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_tipoServico!.text.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
       return false;
-    } else if (_receituarioAgronomico!.isEmpty) {
+    } else if (_receituarioAgronomico== null) {
       Util.toastAlerta("Insira a imagem do receituário agronômico");
       return false;
     } else {

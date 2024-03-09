@@ -19,6 +19,7 @@ class CultureSelect extends StatelessWidget {
           children: [
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.3,
+              width: double.maxFinite,
               child: ListView.builder(
                 itemCount: _culture.length,
                 shrinkWrap: true,
@@ -113,6 +114,7 @@ class CultureSelect extends StatelessWidget {
                 ],
               ),
             ),
+          
           ],
         ));
   }

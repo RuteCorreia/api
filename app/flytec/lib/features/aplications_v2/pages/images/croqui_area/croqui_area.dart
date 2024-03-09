@@ -58,6 +58,7 @@ class _CroquiAreaState extends State<CroquiArea> {
                     _imageData = null;
                     setState(() {});
                     final imagePath = await Util.obtainImagePathMaps(context);
+                    if(imagePath.isEmpty) return;
                     _imageData = await File(imagePath).readAsBytes();
                     // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
