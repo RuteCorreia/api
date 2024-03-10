@@ -1063,7 +1063,7 @@ class ReportAplicationsGenerate implements PdfGenerator {
                       width: 100,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao!)!))}"),
+                          " ${int.tryParse(relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao!)!=null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(relatorioModel.relatorioDeAplicacao!.aplicacoes!.dataDaAplicacao!)!)):""}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
