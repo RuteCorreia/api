@@ -35,8 +35,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   final TextEditingController _volumeAplicado = TextEditingController();
   final TextEditingController _totalAreaAplicada = TextEditingController();
   final TextEditingController _densidadeController = TextEditingController();
-  final List<String> _observations = [];
-  final List<int> _observationsIndex = [];
   final TextEditingController _observationTextField = TextEditingController();
   String _selectedLog = "Selecione";
   String _produtoSelecionado = "";
@@ -69,7 +67,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         lat: _latitudeController.text,
         long: _longitudeController.text,
         densidade: _densidadeController.text,
-        observacoes: _observations.join("\n"),
+        observacoes: _observationTextField.text,
         relatorioDGPS: _selectedLog);
     if (_aplicacao.relatorioAplicacao?.id == null) {
       int? idRelatorioAplicacao = await widget._reportAplicationController
@@ -111,6 +109,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         _produtoSelecionado = _relatorioAplicacao!.produtoAplicado!;
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
         _dosagemUnidade = _relatorioAplicacao!.unidadeDosagem!;
+        _selectedLog = _relatorioAplicacao!.relatorioDGPS!;
         _volumeAplicado.text = _relatorioAplicacao!.volumeAplicacao!;
         _volumeUnidade = _relatorioAplicacao!.unidadeVolumeAplicacao!;
         _totalAreaAplicada.text = _relatorioAplicacao!.totalAreaAplicada!;
@@ -118,7 +117,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         _latitudeController.text = _relatorioAplicacao!.lat!;
         _longitudeController.text = _relatorioAplicacao!.long!;
         _densidadeController.text = _relatorioAplicacao!.densidade!;
-        _observations.add(_relatorioAplicacao!.observacoes!);
+        _observationTextField.text = _relatorioAplicacao!.observacoes!;
         setState(() {});
       }
     });
@@ -591,8 +590,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 onSubmitted: (value) {
                   if (_observationTextField.text.isEmpty) return;
                   try {
-                    _observations.add(_observationTextField.text);
-                    _observationsIndex.add(_observations.length);
                     _observationTextField.clear();
                     setState(() {});
                     Util.toastSucesso("Observação adicionada com sucesso!");
@@ -732,8 +729,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             width: double.maxFinite,
                             child: LogsSelect(onChanged: (value) {
                               setState(() {
-                                _selectedLog = value;
-                               
+                                _selectedLog = value;                               
                               });
                               Util.closeKeyBoard();
                             }),

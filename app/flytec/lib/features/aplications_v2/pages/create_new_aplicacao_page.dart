@@ -250,6 +250,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                     final imageMapsPath =
                         await Util.obtainImagePathMaps(context);
                     _imageData = await File(imageMapsPath).readAsBytes();
+                    // ignore: use_build_context_synchronously
                     Navigator.push(
                         // ignore: use_build_context_synchronously
                         context,
@@ -524,15 +525,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                 child: CustomButton(
                   title: "OK",
                   onClick: () async {
-                    final verify = await _verifyFields();
-                    if (!verify) {
-                      return;
-                    }
-
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
+                    await _verifyFields();
                   },
                 ),
               ),

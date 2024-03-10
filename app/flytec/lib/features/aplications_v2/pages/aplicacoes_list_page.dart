@@ -38,6 +38,13 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
     setState(() {});
   }
 
+  DateTime? _dataByIndexAplicacao(int index) {
+    if (_aplicacoes[index]?.dataAplicacao == null) return DateTime.now();
+    final epoch = int.tryParse(_aplicacoes[index]!.dataAplicacao!);
+
+    return DateTime.fromMillisecondsSinceEpoch(epoch!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,30 +57,21 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: _aplicacoes.isEmpty
-              ? MainAxisAlignment.center
-              : MainAxisAlignment.start,
-          children: [
-            _aplicacoes.isEmpty
-                ? const Center(child: Text("Não criou nenhum relatório"))
-                : SizedBox(
-                    height: 400,
-                    child: ListView.builder(
-                        itemCount: _aplicacoes.length,
-                        itemBuilder: (context, index) {
-                          final epoch =
-                              int.tryParse(_aplicacoes[index]!.dataAplicacao!);
-                          final data =
-                              DateTime.fromMillisecondsSinceEpoch(epoch!);
-                          return CustomCardButton(
-                            title:
-                                "Aplicação ${Util.getTodayDate(date: data)} ",
-                            onTap: () {},
-                          );
-                        }),
-                  )
-          ],
+        child: SingleChildScrollView(
+          child: _aplicacoes.isEmpty
+              ? const Center(child: Text("Não criou nenhum relatório"))
+              : SizedBox(
+                  child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: _aplicacoes.length,
+                      itemBuilder: (context, index) {
+                        return CustomCardButton(
+                          title:
+                              "Aplicação ${Util.getTodayDate(date: _dataByIndexAplicacao(index))} ",
+                          onTap: () {},
+                        );
+                      }),
+                ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

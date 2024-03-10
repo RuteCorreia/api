@@ -33,10 +33,7 @@ class _LogsSelectState extends State<LogsSelect> {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      widget.onChanged(getIt<GlobalConfigVars>().logs[index]);
-                      getIt<GlobalConfigVars>()
-                          .logs
-                          .add(_textFlightHeight.text);
+                      widget.onChanged(getIt<GlobalConfigVars>().logs[index]);                    
                       setState(() {});
                       Navigator.of(context).pop();
                     },
