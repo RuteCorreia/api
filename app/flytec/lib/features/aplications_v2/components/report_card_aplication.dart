@@ -6,8 +6,7 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
-import 'package:flytec/features/aplications/services/report_aplications_generate_service.dart';
+import 'package:flytec/features/aplications/services/create_aplicacao_report_service.dart';
 import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications_v2/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications_v2/pages/menu_aplication_page.dart';
@@ -129,9 +128,9 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/cancel.svg",
                 showRightcon: false,
                 onClick: () async {
-                  PdfGenerator pdfGenerator = ReportAplicationsGenerate(
-                      relatorioModel: RelatorioModel.fromAplicacao(
-                          _reportAplicationController.listaAplicacao![_index]));
+                  PdfGenerator pdfGenerator = CreateAplicacaoReportService(
+                      aplicacao:
+                          _reportAplicationController.listaAplicacao![_index]);
                   final document = await pdfGenerator.generatePdf();
                   final documentBytes =
                       await pdfGenerator.saveDocument(document: document);
