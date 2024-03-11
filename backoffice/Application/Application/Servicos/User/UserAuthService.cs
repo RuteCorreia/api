@@ -49,8 +49,7 @@ public class UserAuthService : IUserAuthService
                     if (usuario.PrimeiroAcesso)
                         token.Append("PrimeiroAcesso");
                     else
-                        //token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
-                        token.Append(await GenerateToken(identityUser, "teste", 1));
+                        token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
 
                     return (true, token.ToString());
                 }
@@ -110,7 +109,7 @@ public class UserAuthService : IUserAuthService
             nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1,
             request.Credencial,
             request.Telefone,
-            request.Role.ToString(),
+            request.Role,
             idEmpresa
             );
 
@@ -165,15 +164,16 @@ public class UserAuthService : IUserAuthService
         => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
             .TotalSeconds);
 
-    public async Task<IEnumerable<UserListViewModel>> GetAllUsersAsync()
+    public async Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId)
     {
-        var users = await _usuarioRepository.GetAllAsync();
+        var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+        var users = await _usuarioRepository.GetAllAsync(loggedUserTblUsuario.IdEmpresa);
         return _mapper.Map<IEnumerable<UserListViewModel>>(users);
     }
 
     public async Task RemoveUserAsync(string id)
     {
-        var userToRemove = await GetUserByIdAsync(id);
+        var userToRemove = await GetUserEntityByIdAsync(id);
         if(userToRemove is not null)
         {
             userToRemove.Removido = true;
@@ -181,12 +181,18 @@ public class UserAuthService : IUserAuthService
         }
     }
 
-    public async Task<Usuario> GetUserByIdAsync(string id) => await _usuarioRepository.GetUserByIdAsync(id);
+    private async Task<Usuario> GetUserEntityByIdAsync(string id) => await _usuarioRepository.GetUserByIdAsync(id);
+
+    public async Task<UserDetailViewModel> GetUserByIdAsync(string id)
+    {
+        var obj = await _usuarioRepository.GetUserByIdAsync(id);
+        return _mapper.Map<UserDetailViewModel>(obj);
+    } 
    
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
-        var userToUpdate = await GetUserByIdAsync(id);
+        var userToUpdate = await GetUserEntityByIdAsync(id);
         if (userToUpdate is not null)
         {
             var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
@@ -217,9 +223,9 @@ public class UserAuthService : IUserAuthService
                     }
                 }
 
-                if(identityUser.UserName != request.Name)
+                if(identityUser.UserName != request.Email)
                 {
-                    identityUser.UserName = request.Name;
+                    identityUser.UserName = request.Email;
                     var updateIdentityUserResult = await _userManager.UpdateAsync(identityUser);
                     if (!updateIdentityUserResult.Succeeded)
                     {
@@ -228,7 +234,7 @@ public class UserAuthService : IUserAuthService
                     }
                 }
 
-                var requestRole = request.Role.ToString();
+                var requestRole = request.Funcao.ToString();
                 if (!identityUserRoles.Contains(requestRole))
                 {
 ;                   var roleExists = await _roleManager.RoleExistsAsync(requestRole);
@@ -247,10 +253,11 @@ public class UserAuthService : IUserAuthService
 
                 if (allOk)
                 {
-                    userToUpdate.Nome = request.Name;
+                    userToUpdate.Nome = request.Nome;
                     userToUpdate.Email = request.Email;
                     userToUpdate.Telefone = request.Telefone;
                     userToUpdate.Credencial = request.Credencial;
+                    userToUpdate.Funcao = request.Funcao;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
                     resultMsg.Append("Sucesso na atualização do usuário");
                     return (true, resultMsg.ToString());

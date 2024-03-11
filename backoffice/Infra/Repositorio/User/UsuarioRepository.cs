@@ -26,11 +26,11 @@ public class UsuarioRepository : IUsuarioRepository
         _contextBase.Usuario.Remove(usuario);
     }
 
-    public async Task<IEnumerable<Usuario>> GetAllAsync()
+    public async Task<IEnumerable<Usuario>> GetAllAsync(int? idEmpresa)
     {
        return await _contextBase.Usuario
             .AsNoTracking()
-            .Where(x => !x.Removido)
+            .Where(x => !x.Removido && x.IdEmpresa == idEmpresa)
             .ToListAsync();
     }
 

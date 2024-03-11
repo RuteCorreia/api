@@ -59,7 +59,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("users")]
-    public async Task<IActionResult> GetUsers() => Ok(await _authService.GetAllUsersAsync());
+    [Authorize]
+    public async Task<IActionResult> GetUsers()
+    {
+        var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+        return !string.IsNullOrEmpty(loggedUser.Item1) ? Ok(await _authService.GetAllUsersAsync(loggedUser.Item1)) : BadRequest();
+    }
 
     [HttpPatch("changePassword")]
     public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel user)
@@ -79,6 +84,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPut("updateUser")]
+    [Authorize]
     public async Task<IActionResult> UpdateUser(string id,[FromBody] UserUpdateViewModel user)
     {
         var resultError = new StringBuilder().Append("Falha ao atualizar usuário");
@@ -96,6 +102,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpGet("GetUserById")]
+    [Authorize]
     public async Task<IActionResult> GetUserById(string userId)
     {
         if (!string.IsNullOrEmpty(userId) && !string.IsNullOrWhiteSpace(userId))
@@ -109,6 +116,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpDelete("RemoveUser")]
+    [Authorize]
     public async Task<IActionResult> RemoveUser(string userId)
     {
         if(!string.IsNullOrEmpty(userId) && !string.IsNullOrWhiteSpace(userId))

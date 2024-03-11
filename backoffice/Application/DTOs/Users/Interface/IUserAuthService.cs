@@ -9,7 +9,7 @@ public interface IUserAuthService
     Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user, string loggedUserId);
     Task<(bool, string)> ChangeUserPasswordAsync(UserChangePasswordViewModel user);
     Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel user);
-    Task<IEnumerable<UserListViewModel>> GetAllUsersAsync();
-    Task<Usuario> GetUserByIdAsync(string id);
+    Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId);
+    Task<UserDetailViewModel> GetUserByIdAsync(string id);
     Task RemoveUserAsync(string id);
 }
