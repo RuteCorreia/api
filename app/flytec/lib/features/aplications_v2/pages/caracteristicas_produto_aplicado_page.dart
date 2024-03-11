@@ -38,6 +38,7 @@ class _CaracteristicasProdutoAplicadoPageState
   String? _tipoFormulacao = "";
   String? _alvoBiologico = "";
   TextEditingController? _doseProdutoComercialHectare;
+  String? _doseProdutoComercialHectareValue = "";
   String? _unidadeDoseProdutoComercialHectare = "";
   TextEditingController? _adjuvante;
   TextEditingController? _tipoServico;
@@ -58,6 +59,8 @@ class _CaracteristicasProdutoAplicadoPageState
         _alvoBiologico = _caracteristicasProdutoAplicado!.alvoBiologico;
         _doseProdutoComercialHectare = TextEditingController(
             text: _caracteristicasProdutoAplicado!.doseProdutoHectare);
+        _doseProdutoComercialHectareValue =
+            _caracteristicasProdutoAplicado?.doseProdutoHectare;
         _unidadeDoseProdutoComercialHectare = _aplicacao
             .caracteristicasProdutoAplicado!.unidadeDoseProdutoHectare;
         _adjuvante = TextEditingController(
@@ -87,7 +90,8 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_tipoFormulacao!.isEmpty) {
       Util.toastAlerta("Selecione o tipo de formulação");
       return false;
-    } else if (_doseProdutoComercialHectare!.text.isEmpty) {
+    } else if (_doseProdutoComercialHectareValue == null ||
+        _doseProdutoComercialHectareValue!.isEmpty) {
       Util.toastAlerta("Digite a dose do produto comercial por hectare");
       return false;
     } else if (_unidadeDoseProdutoComercialHectare!.isEmpty) {
@@ -102,6 +106,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else {
       await _caracteristicasProdutoAplicadoAction();
       Util.toastSucesso("Dados inseridos com sucesso");
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       return true;
     }
@@ -207,6 +212,7 @@ class _CaracteristicasProdutoAplicadoPageState
                   _receituarioAgronomico =
                       await File(imageMapsPath).readAsBytes();
                   setState(() {});
+                  // ignore: use_build_context_synchronously
                   Navigator.push(
                       // ignore: use_build_context_synchronously
                       context,
@@ -415,7 +421,10 @@ class _CaracteristicasProdutoAplicadoPageState
               CustomTextField(
                 textEditingController: _doseProdutoComercialHectare,
                 textInputType: TextInputType.number,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _doseProdutoComercialHectareValue = value;
+                  setState(() {});
+                },
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
