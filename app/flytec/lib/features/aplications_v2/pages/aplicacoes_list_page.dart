@@ -57,10 +57,10 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: _aplicacoes.isEmpty
-              ? const Center(child: Text("Não criou nenhum relatório"))
-              : SizedBox(
+        child: _aplicacoes.isEmpty
+            ? const Center(child: Text("Não criou nenhum relatório"))
+            : SizedBox(
+                child: SingleChildScrollView(
                   child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: _aplicacoes.length,
@@ -72,7 +72,7 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
                         );
                       }),
                 ),
-        ),
+              ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

@@ -28,7 +28,7 @@ class CreateNewAplicacaoPages extends StatefulWidget {
 
 class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
   String _speedWindInitial = '0 km/h';
-  String _speedWindFinal = '20 km/h';
+  String _speedWindFinal = '0 km/h';
   String _temperatureSelectedInitial = "20.0°C";
   String _temperatureSelectedFinal = "20.0°C";
   late DateTime? dataSelecionada = DateTime.now();
