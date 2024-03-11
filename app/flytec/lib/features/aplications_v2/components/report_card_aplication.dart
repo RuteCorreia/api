@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
@@ -108,6 +110,12 @@ class ReportCardAplication extends StatelessWidget {
                   context.pop();
                   _reportAplicationController.setAplicacaoSelected(
                       _reportAplicationController.listaAplicacao![_index]);
+                  getIt<GlobalConfigVars>().selectedExecutor =
+                      _reportAplicationController
+                          .listaAplicacao![_index].executor!;
+                  getIt<GlobalConfigVars>().selectedPilot =
+                      _reportAplicationController
+                          .listaAplicacao![_index].piloto!;
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return MenuAplicationPage(
                         reportAplicationController:
