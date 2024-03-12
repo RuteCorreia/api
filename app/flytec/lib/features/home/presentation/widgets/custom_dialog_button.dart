@@ -55,27 +55,24 @@ class CustomDialogButton extends StatelessWidget {
                 : const SizedBox(),
             const SizedBox(width: 8),
             Expanded(
-              child: Container(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        text!,
-                        style: const TextStyle(
-                          color: Color.fromARGB(255, 121, 118, 118),
-                          fontSize: 13,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w600,
-                          height: 0.09,
-                        ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      text!,
+                      style: const TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 13,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             const SizedBox(width: 8),

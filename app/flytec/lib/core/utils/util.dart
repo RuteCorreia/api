@@ -11,8 +11,8 @@ class Util {
   static String Token = "";
   static final ImagePicker _imagePicker = ImagePicker();
 
-  static String getTodayDate() {
-    final now = DateTime.now();
+  static String getTodayDate({DateTime? date}) {
+    final now = date ?? DateTime.now();
 
     final formattedDate = DateFormat('dd/MM/yyyy').format(now);
 
@@ -36,7 +36,7 @@ class Util {
         insetPadding: const EdgeInsets.all(32),
         title: const SizedBox(
           width: 244,
-          height: 30,
+          height: 50,
           child: Text(
             'Selecione de onde vem a imagem',
             textAlign: TextAlign.center,
@@ -45,7 +45,6 @@ class Util {
               fontSize: 16,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w500,
-              height: 0.09,
             ),
           ),
         ),

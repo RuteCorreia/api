@@ -12,7 +12,6 @@ import 'package:flytec/features/alvo_biologico/data/repositories/produto_reposit
 import 'package:flytec/features/alvo_biologico/domain/repositories/produto_repository.dart';
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/data/datasource/clientes_datasource.dart';
-import 'package:flytec/features/aplications/services/aplication_cache_service.dart';
 import 'package:flytec/features/aplications/services/clientes_service.dart';
 import 'package:flytec/features/auth/domain/usecases/authentication_usecase.dart';
 import 'package:flytec/features/cultura/data/datasources/remote_piloto_data_source.dart';
@@ -67,7 +66,6 @@ void setup() async {
   //CACHES SERVICES
   getIt.registerLazySingleton(() => ClienteService());
   getIt.registerLazySingleton(() => AuthService());
-  getIt.registerLazySingleton(() => ReportCacheService());
 
   getIt.registerLazySingleton(() => AuthenticationBloc());
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/presentation/pages/aplicacoes_page.dart';
-import 'package:flytec/features/aplications/presentation/widgets/aircraft_prefix_select.dart';
+import 'package:flytec/features/aplications/components/aircraft_prefix_select.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -171,22 +171,6 @@ await showDialog(
                 ),
               ),
 
-              /*  CustomComboBoxExpanded(
-                selectedName: horimetro == null
-                    ? "Selecione"
-                    : "${horimetro!.hour}:${horimetro!.minute}",
-                onTap: () async {
-                  final data = await showTimePicker(
-                      confirmText: "Selecionar hora",
-                      cancelText: "Cancelar",
-                      helpText: "",
-                      context: context,
-                      initialTime: const TimeOfDay(hour: 12, minute: 23));
-                  setState(() {
-                    horimetro = data;
-                  });
-                },
-              ), */
               const SizedBox(height: 20),
               const SizedBox(
                 width: 328,

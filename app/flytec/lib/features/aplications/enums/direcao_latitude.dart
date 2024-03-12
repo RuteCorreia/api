@@ -1,0 +1,1 @@
+enum DirecaoLatitude { NORTE, SUL }
