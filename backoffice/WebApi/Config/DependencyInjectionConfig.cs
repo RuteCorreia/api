@@ -19,6 +19,7 @@ using Application.Application.Servicos.Cadastros.Cliente;
 using Application.Application.Servicos.Cadastros.CombateIncendio;
 using Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
 using Application.Application.Servicos.Cadastros.Combustivel;
+using Application.Application.Servicos.Cadastros.Componentes;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
 using Application.Application.Servicos.Cadastros.Empresa;
@@ -27,6 +28,7 @@ using Application.Application.Servicos.Cadastros.Equipamento;
 using Application.Application.Servicos.Cadastros.Estados;
 using Application.Application.Servicos.Cadastros.Executor;
 using Application.Application.Servicos.Cadastros.Frota;
+using Application.Application.Servicos.Cadastros.ManutencaoAeronave;
 using Application.Application.Servicos.Cadastros.Menu;
 using Application.Application.Servicos.Cadastros.MenuUsuario;
 using Application.Application.Servicos.Cadastros.Piloto;
@@ -60,6 +62,7 @@ using Application.DTOs.Cadastros.Cliente.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
+using Application.DTOs.Cadastros.Componentes.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
 using Application.DTOs.Cadastros.Empresa.Interface;
@@ -68,6 +71,7 @@ using Application.DTOs.Cadastros.Equipamento.Interface;
 using Application.DTOs.Cadastros.Estados.Interface;
 using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Frota.Interface;
+using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.Menu.Interface;
 using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Application.DTOs.Cadastros.Piloto.Interface;
@@ -101,6 +105,7 @@ using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.Combustivel;
+using Domain.Interfaces.Cadastros.Componentes;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Empresa;
@@ -109,6 +114,7 @@ using Domain.Interfaces.Cadastros.Equipamento;
 using Domain.Interfaces.Cadastros.Estados;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Frota;
+using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Domain.Interfaces.Cadastros.Menu;
 using Domain.Interfaces.Cadastros.MenuUsuario;
 using Domain.Interfaces.Cadastros.Piloto;
@@ -143,6 +149,7 @@ using Infra.Repositorio.Cadastros.Cliente;
 using Infra.Repositorio.Cadastros.CombateIncendio;
 using Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
 using Infra.Repositorio.Cadastros.Combustivel;
+using Infra.Repositorio.Cadastros.Componentes;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
 using Infra.Repositorio.Cadastros.Empresa;
@@ -151,6 +158,7 @@ using Infra.Repositorio.Cadastros.Equipamento;
 using Infra.Repositorio.Cadastros.Estados;
 using Infra.Repositorio.Cadastros.Executor;
 using Infra.Repositorio.Cadastros.Frota;
+using Infra.Repositorio.Cadastros.ManutencaoAeronave;
 using Infra.Repositorio.Cadastros.Menu;
 using Infra.Repositorio.Cadastros.MenuUsuario;
 using Infra.Repositorio.Cadastros.Piloto;
@@ -162,6 +170,7 @@ using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
 using Infra.Repositorio.User;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Config;
 
@@ -214,6 +223,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<IMenuService, MenuService>();
         services.AddScoped<ISubMenuService, SubMenuService>();
         services.AddScoped<IMenuUsuarioService, MenuUsuarioService>();
+        services.AddScoped<IComponentesService, ComponentesService>();
+        services.AddScoped<IManutencaoAeronaveService, ManutencaoAeronaveService>();
 
         #endregion
 
@@ -259,10 +270,13 @@ public static class DependencyInjectionConfig
         services.AddScoped<IMenuRepository, MenuRepository>();
         services.AddScoped<ISubMenuRepository, SubMenuRepository>();
         services.AddScoped<IMenuUsuarioRepository, MenuUsuarioRepository>();
+        services.AddScoped<IComponenteRepository, ComponenteRepository>();
+        services.AddScoped<IManutencaoAeronaveRepository, ManutencaoAeronaveRepository>();
 
         #endregion
 
         services.AddScoped<ContextBase>();
+        services.AddScoped<LoggedUserInfoService>();
 
         return services;
     }

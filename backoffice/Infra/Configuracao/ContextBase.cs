@@ -7,6 +7,7 @@ using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cliente;
 using Domain.Entidades.Cadastros.CombateIncendio;
 using Domain.Entidades.Cadastros.Combustivel;
+using Domain.Entidades.Cadastros.Componentes;
 using Domain.Entidades.Cadastros.Controle_De_Frota;
 using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.Cadastros.Empresa;
@@ -15,6 +16,7 @@ using Domain.Entidades.Cadastros.Equipamento;
 using Domain.Entidades.Cadastros.Estados;
 using Domain.Entidades.Cadastros.Executor;
 using Domain.Entidades.Cadastros.Frota;
+using Domain.Entidades.Cadastros.ManutencaoAeronave;
 using Domain.Entidades.Cadastros.Menu;
 using Domain.Entidades.Cadastros.MenuUsuario;
 using Domain.Entidades.Cadastros.Piloto;
@@ -79,6 +81,8 @@ public class ContextBase : IdentityDbContext
     public DbSet<Menu> Menu { get; set; }
     public DbSet<MenuUsuario> MenuUsuario { get; set; }
     public DbSet<SubMenu> SubMenu { get; set; }
+    public DbSet<Componentes> Componente { get; set; }
+    public DbSet<ManutencaoAeronave> ManutencaoAeronave { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

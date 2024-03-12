@@ -755,7 +755,8 @@
       },
       "Helpers/1.0.0": {
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "7.0.8"
+          "Microsoft.EntityFrameworkCore": "7.0.8",
+          "Microsoft.Extensions.Identity.Core": "7.0.13"
         },
         "runtime": {
           "Helpers.dll": {}

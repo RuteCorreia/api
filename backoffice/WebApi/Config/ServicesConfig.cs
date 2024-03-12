@@ -17,5 +17,6 @@ public static class ServicesConfig
         services.AddAutoMapperConfig();
         services.AddIdentityConfig();
         services.AddAuthenticationConfig();
+        services.AddHttpContextAccessor();
     }
 }

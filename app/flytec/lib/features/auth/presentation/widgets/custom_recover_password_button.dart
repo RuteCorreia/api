@@ -12,7 +12,7 @@ class RecoverPassWordButton extends StatelessWidget {
     return InkWell(
       onTap: onClick,
       child: Container(
-        width: 210,
+        width: double.infinity,
         height: 40,
         padding: const EdgeInsets.only(
           top: 10,
@@ -27,7 +27,7 @@ class RecoverPassWordButton extends StatelessWidget {
         ),
         child: const Row(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(

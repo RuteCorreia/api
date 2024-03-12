@@ -1,0 +1,13 @@
+﻿using Application.DTOs.Users.ViewModel;
+using AutoMapper;
+using Domain.Entidades.User;
+
+namespace Application.DTOs.Users.Mappings.UserDetail;
+
+public class UsuarioDomainToDetailViewModelMappingProfile : Profile
+{
+    public UsuarioDomainToDetailViewModelMappingProfile()
+    {
+        CreateMap<Usuario, UserDetailViewModel>();
+    }
+}

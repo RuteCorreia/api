@@ -50,9 +50,6 @@ namespace Infra.Migrations
                     b.Property<string>("Fabricante")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdEmpresa")
-                        .HasColumnType("int");
-
                     b.Property<string>("Modelo")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,8 +60,6 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Aeronave");
                 });
@@ -733,6 +728,60 @@ namespace Infra.Migrations
                     b.ToTable("Combustivel");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.Componentes.Componentes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("EnumTBO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EnumTLV")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Grupo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdAeronave")
+                        .HasColumnType("int");
+
+                    b.Property<string>("NomeComponente")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PartNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PrazoParaInspecao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SerialNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TBO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TLV")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TSN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TSO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UltimaInspecao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAeronave");
+
+                    b.ToTable("Componente");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota", b =>
                 {
                     b.Property<int>("Id")
@@ -1127,6 +1176,36 @@ namespace Infra.Migrations
                     b.ToTable("Frota");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Documento")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<string>("HorasInspecao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HorasRevisao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("HorimetroInicial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdAeronave")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAeronave");
+
+                    b.ToTable("ManutencaoAeronave");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Menu.Menu", b =>
                 {
                     b.Property<int>("MenuItemId")
@@ -1373,12 +1452,21 @@ namespace Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Credencial")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Funcao")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -1387,14 +1475,22 @@ namespace Infra.Migrations
                     b.Property<int>("NrUsuario")
                         .HasColumnType("int");
 
+                    b.Property<bool>("PrimeiroAcesso")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Removido")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Telefone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Usuario");
                 });
@@ -1595,15 +1691,6 @@ namespace Infra.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Aeronave.Aeronave", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa");
-
-                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico", b =>
@@ -1837,6 +1924,15 @@ namespace Infra.Migrations
                     b.Navigation("CombateIncendio");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.Componentes.Componentes", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
+                        .WithMany()
+                        .HasForeignKey("IdAeronave");
+
+                    b.Navigation("Aeronave");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota", b =>
                 {
                     b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
@@ -1923,6 +2019,15 @@ namespace Infra.Migrations
                     b.Navigation("Empresa");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
+                        .WithMany()
+                        .HasForeignKey("IdAeronave");
+
+                    b.Navigation("Aeronave");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.MenuUsuario.MenuUsuario", b =>
                 {
                     b.HasOne("Domain.Entidades.Cadastros.SubMenu.SubMenu", "SubMenu")
@@ -1967,6 +2072,15 @@ namespace Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("MenuItem");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.User.Usuario", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
