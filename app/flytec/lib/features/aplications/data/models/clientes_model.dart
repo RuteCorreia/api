@@ -4,7 +4,7 @@
 
 import 'dart:convert';
 
-import 'package:flytec/features/aplications_v2/models/contratante.dart';
+import 'package:flytec/features/aplications/models/contratante.dart';
 
 List<ClientesModel> clientesModelFromJson(String str) =>
     List<ClientesModel>.from(
@@ -91,21 +91,20 @@ class ClientesModel {
       };
   factory ClientesModel.fromContratante(Contratante contratante) =>
       ClientesModel(
-        nomeCliente: contratante.nome,
-        idTipoCliente: contratante.tipoContratante == "Pessoa Física" ? 1 : 2,
-        cpf: contratante.cpf,
-        rg: contratante.rg,
-        cnpj: contratante.cnpj,
-        inscricaoEstadual: contratante.inscricaoEstadual,
-        cidade: contratante.cidade,
-        endereco: contratante.endereco,
-        telefone1: "",
-        telefone2: "",
-        email: "",
-        senha: "",
-        precificacao: "",
-        admin: false,
-        uf: contratante.uf,
-          idCliente: int.tryParse(contratante.idContrante!)
-      );
+          nomeCliente: contratante.nome,
+          idTipoCliente: contratante.tipoContratante == "Pessoa Física" ? 1 : 2,
+          cpf: contratante.cpf,
+          rg: contratante.rg,
+          cnpj: contratante.cnpj,
+          inscricaoEstadual: contratante.inscricaoEstadual,
+          cidade: contratante.cidade,
+          endereco: contratante.endereco,
+          telefone1: "",
+          telefone2: "",
+          email: "",
+          senha: "",
+          precificacao: "",
+          admin: false,
+          uf: contratante.uf,
+          idCliente: int.tryParse(contratante.idContrante!));
 }

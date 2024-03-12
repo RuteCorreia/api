@@ -10,7 +10,7 @@ import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/altura_voo/domain/usecases/get_altura_voo_usecase.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
-import 'package:flytec/features/aplications/presentation/pages/controllers/permission.dart';
+import 'package:flytec/features/aplications/controller/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';

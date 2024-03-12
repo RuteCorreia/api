@@ -4,10 +4,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
-import 'package:flytec/features/aplications/data/models/aplicacao_model.dart';
 import 'package:flytec/features/aplications/data/models/clientes_model.dart';
-import 'package:flytec/features/aplications/data/models/identificacao_area_model.dart';
-import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
@@ -29,11 +26,8 @@ class GlobalConfigVars {
   late List<EquipamentoModel> equipamentos = [];
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<AlturaVooModel> alturaVoo = [];
-  late List<AplicacaoModel> aplications = [];
-  List<RelatorioModel> reportList = [];
 
   List<String> logs = [];
-  IdentificacaoAreaModel? identificacaoAreaModel;
   late UserPayloadModel userPayload;
   String selectedPilot = "";
   String selectedExecutor = "";
@@ -43,11 +37,6 @@ class GlobalConfigVars {
   void setClientes({required List<ClientesModel>? clientesData}) {
     clientes = clientesData!;
   }
-
-  void setRelatorios({required List<RelatorioModel>? relatorios}) {
-    reportList = relatorios!;
-  }
-
   void setEquipamentos({required List<EquipamentoModel>? data}) {
     equipamentos = data!;
   }
@@ -94,7 +83,6 @@ class GlobalConfigVars {
   }) {
     try {
       print("SETADO COM SUCESSO ");
-      reportList = relatorioModelFromJson(preloadJson["relatorios"]);
       clientes = clientesModelFromJson(preloadJson["clientes"]);
       culturas = culturaModelFromJson(preloadJson["culturas"]);
       executores = executorModelFromJson(preloadJson["executores"]);

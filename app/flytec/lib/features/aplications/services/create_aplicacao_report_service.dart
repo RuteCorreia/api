@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flytec/core/utils/pdf_generator.dart';
-import 'package:flytec/features/aplications_v2/models/aplicacao.dart';
+import 'package:flytec/features/aplications/models/aplicacao.dart';
 
 class CreateAplicacaoReportService implements PdfGenerator {
   final Aplicacao aplicacao;
@@ -1172,7 +1172,6 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       child: pw.Text(
                           " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.ventoFinal : ''}"),
                     ),
-                  
                   ]),
                   pw.Divider(height: 1, thickness: 1.5),
                   pw.Row(children: [
@@ -1743,8 +1742,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 if (aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
                     aplicacao.relatorioAplicacao?.aplicacoes?[0]
-                        ?.imagemCondicaoClimatica !=
-                    null)
+                            ?.imagemCondicaoClimatica !=
+                        null)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),

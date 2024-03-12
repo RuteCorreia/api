@@ -2,44 +2,60 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/components/custom_button.dart';
+import 'package:flytec/features/aplications/components/custom_combo.dart';
+import 'package:flytec/features/aplications/components/executor_select.dart';
+import 'package:flytec/features/aplications/components/pilot_select.dart';
+import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
+import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/features/aplications/models/aplicacao.dart';
+import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
 
-import 'package:flytec/features/aplications/components/components_exports.dart';
-import 'package:go_router/go_router.dart';
-
-
-class AddFireFightingStepOne extends StatefulWidget {
-  const AddFireFightingStepOne({super.key});
+class CreateAplicationPage extends StatefulWidget {
+  final ReportAplicationController _reportAplicationController;
+  final VoidCallback? _updateView;
+  const CreateAplicationPage(
+      {required ReportAplicationController reportAplicationController,
+      required VoidCallback? updateView,
+      super.key})
+      : _reportAplicationController = reportAplicationController,
+        _updateView = updateView;
 
   @override
-  State<AddFireFightingStepOne> createState() => _AddFireFightingStepOneState();
+  State<CreateAplicationPage> createState() => _CreateAplicationPageState();
 }
 
-class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
-  void setPilotOrExecutoz() {
-    if (getIt<GlobalConfigVars>().userPayload.role == "Executor") {
-      getIt<GlobalConfigVars>().selectedExecutor =
-          getIt<GlobalConfigVars>().userPayload.name!;
-    } else {
-      getIt<GlobalConfigVars>().selectedPilot =
-          getIt<GlobalConfigVars>().userPayload.name!;
-    }
-  }
-
+class _CreateAplicationPageState extends State<CreateAplicationPage> {
   @override
   void initState() {
-    setPilotOrExecutoz();
     super.initState();
+    getIt<GlobalConfigVars>().selectedPilot =
+        getIt<GlobalConfigVars>().userPayload.name ?? '';
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Combate a incêndio"),
+        centerTitle: true,
+        leading: IconButton(
+            onPressed: () async {
+              await widget._reportAplicationController
+                  .obtainReportsAplications();
+              getIt<GlobalConfigVars>().clearGlobalConfigVars();
+              widget._updateView!();
+              // ignore: use_build_context_synchronously
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
+        title: const Text(
+          "Aplicações",
+          textAlign: TextAlign.center,
+        ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -66,7 +82,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                               : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -77,8 +93,6 @@ await showDialog(
                                   setState(() {
                                     getIt<GlobalConfigVars>().selectedPilot =
                                         value!;
-                                    getIt<GlobalConfigVars>().selectedPilot =
-                                        value;
                                   });
                                 }),
                               ));
@@ -110,7 +124,7 @@ await showDialog(
                               : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -121,8 +135,6 @@ await showDialog(
                                   setState(() {
                                     getIt<GlobalConfigVars>().selectedExecutor =
                                         value!;
-                                    getIt<GlobalConfigVars>().selectedExecutor =
-                                        value;
                                   });
                                 }),
                               ));
@@ -140,18 +152,36 @@ await showDialog(
               Center(
                 child: CustomButton(
                   title: "Continuar",
-                  onClick: () {
+                  onClick: () async {
                     if (getIt<GlobalConfigVars>().selectedExecutor.isEmpty) {
                       Util.toastAlerta("Selecione o executor");
-                    } else if (getIt<GlobalConfigVars>()
-                        .selectedPilot
-                        .isEmpty) {
-                      Util.toastAlerta("Selecione o piloto");
-                    } else {
-                      context.push(
-                        "/combateIncendioPasso2",
-                      );
+                      return;
                     }
+                    if (getIt<GlobalConfigVars>().selectedPilot.isEmpty) {
+                      Util.toastAlerta("Selecione o piloto");
+                      return;
+                    }
+                    final refUsuario =
+                        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+                    final aplicacao = Aplicacao(
+                        executor: getIt<GlobalConfigVars>().selectedExecutor,
+                        piloto: getIt<GlobalConfigVars>().selectedPilot,
+                        data: DateTime.now().millisecondsSinceEpoch.toString(),
+                        state: ReportDashBoardState.Incompleto,
+                        refUsuario: refUsuario);
+                    int? idAplicacao = await widget._reportAplicationController
+                        .createElementInTable(aplicacao.toMap(), "Aplicacao");
+                    aplicacao.id = idAplicacao;
+                    widget._reportAplicationController
+                        .setAplicacaoSelected(aplicacao);
+                    // ignore: use_build_context_synchronously
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return MenuAplicationPage(
+                        reportAplicationController:
+                            widget._reportAplicationController,
+                      );
+                    }));
                   },
                 ),
               ),

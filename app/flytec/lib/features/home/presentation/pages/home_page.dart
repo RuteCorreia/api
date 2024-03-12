@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/features/aplications_v2/controller/report_aplication_controller.dart';
+import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
