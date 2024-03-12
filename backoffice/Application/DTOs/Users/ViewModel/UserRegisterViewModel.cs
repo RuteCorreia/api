@@ -21,6 +21,6 @@ public class UserRegisterViewModel
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ERole Role { get; set; } 
+    //[JsonConverter(typeof(JsonStringEnumConverter))]
+    public IEnumerable<ERole> Role { get; set; } 
 }

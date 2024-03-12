@@ -1,5 +1,4 @@
 ﻿using Domain.Enums;
-using System.Text.Json.Serialization;
 
 namespace Application.DTOs.Users.ViewModel;
 
@@ -10,7 +9,5 @@ public class UserListViewModel
     public string Email { get; set; }
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
-
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ERole Funcao { get; set; }
+    public IEnumerable<ERole> Funcao { get; set; }
 }

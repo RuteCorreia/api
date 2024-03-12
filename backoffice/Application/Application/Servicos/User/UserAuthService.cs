@@ -2,11 +2,14 @@
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Entidades.User;
+using Domain.Enums;
 using Domain.Interfaces.User;
+using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 
@@ -77,13 +80,15 @@ public class UserAuthService : IUserAuthService
             if (!identityResult.Succeeded)
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
 
-            var roleExists = await _roleManager.RoleExistsAsync(request.Role.ToString());
-            if (!roleExists)
+            var roleListAsString = request.Role.Select(r => r.ToString());
+            foreach (var role in roleListAsString)
             {
-                await CreateRoleAsync(request.Role.ToString());
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                    await CreateRoleAsync(role);
             }
 
-            var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, request.Role.ToString());
+            var identityRoleResult = await _userManager.AddToRolesAsync(identityUser, roleListAsString);
             if (!identityRoleResult.Succeeded)
             {
                 await _userManager.DeleteAsync(identityUser);
@@ -107,13 +112,18 @@ public class UserAuthService : IUserAuthService
             request.Name, 
             user.Id, 
             nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1,
-            request.Credencial,
             request.Telefone,
-            request.Role,
             idEmpresa
             );
 
         await _usuarioRepository.AddAsync(usuario);
+    }
+
+    private async Task CreateUserCredencial(IdentityUser user, IEnumerable<ERole> roles, IEnumerable<string> credencial)
+    {
+        var usuario = await _usuarioRepository.GetByUserIdAsync(user.Id);
+        //CONTINUAR DAQUI
+        //var listToCreate = Enumerable.Empty<>
     }
 
     private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
@@ -168,6 +178,7 @@ public class UserAuthService : IUserAuthService
     {
         var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
         var users = await _usuarioRepository.GetAllAsync(loggedUserTblUsuario.IdEmpresa);
+        var viewModel = _mapper.Map<IEnumerable<UserListViewModel>>(users);
         return _mapper.Map<IEnumerable<UserListViewModel>>(users);
     }
 
@@ -256,8 +267,6 @@ public class UserAuthService : IUserAuthService
                     userToUpdate.Nome = request.Nome;
                     userToUpdate.Email = request.Email;
                     userToUpdate.Telefone = request.Telefone;
-                    userToUpdate.Credencial = request.Credencial;
-                    userToUpdate.Funcao = request.Funcao;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
                     resultMsg.Append("Sucesso na atualização do usuário");
                     return (true, resultMsg.ToString());
