@@ -573,7 +573,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'Altura Vôo  ${aplicacao.recomendacoesTecnicas?.alturaVoo ?? ''}',
+                              'Altura Vôo  ${aplicacao.recomendacoesTecnicas?.alturaVoo ?? ''} m',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
@@ -605,7 +605,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Text(
-                              'U.R do Ar  >${aplicacao.recomendacoesTecnicas?.umidadeRelativaAr ?? ''}',
+                              'U.R do Ar  >${aplicacao.recomendacoesTecnicas?.umidadeRelativaAr?.replaceAll('+', '') ?? ''}',
                               textAlign: pw.TextAlign.left,
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
