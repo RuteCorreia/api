@@ -6,7 +6,6 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
-import 'package:flytec/features/aplications/data/models/relatorio_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
@@ -28,7 +27,6 @@ class SaveLocalDataController {
     var preloadData = {
       "clientes":
           clientesPreloadModelToJson(getIt<GlobalConfigVars>().clientes),
-      "relatorios": relatorioModelToJson(getIt<GlobalConfigVars>().reportList),
       "token": Util.Token,
       "executores": executorModelToJson(getIt<GlobalConfigVars>().executores),
       "culturas": culturaModelToJson(getIt<GlobalConfigVars>().culturas),
