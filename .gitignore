@@ -215,3 +215,4 @@ backoffice/Helpers/obj
 /backoffice/.vs/ProjectEvaluation/flytec.projects.v7.bin
 /backoffice/WebApi/Properties/PublishProfiles/QA.pubxml.user
 /backoffice/.vs/ProjectEvaluation/flytec.metadata.v7.bin
+/backoffice/WebApi/Properties/launchSettings.json
