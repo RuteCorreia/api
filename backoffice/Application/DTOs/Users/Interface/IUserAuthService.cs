@@ -6,9 +6,10 @@ namespace Application.DTOs.Users.Interface;
 public interface IUserAuthService
 {
     Task<(bool, string)> LoginAsync(UserLoginViewModel user);
-    Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user);
-    string UpdateUserAsync(string id, UserRegisterViewModel user);
-    Task<IEnumerable<Usuario>> GetUsers();
-    Task<Usuario> GetUserById(string id);
-    Task RemoveUser(string id);
+    Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user, string loggedUserId);
+    Task<(bool, string)> ChangeUserPasswordAsync(UserChangePasswordViewModel user);
+    Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel user);
+    Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId);
+    Task<UserDetailViewModel> GetUserByIdAsync(string id);
+    Task RemoveUserAsync(string id);
 }

@@ -1,0 +1,1 @@
+enum DirecaoLongitude { ESTE, OESTE }

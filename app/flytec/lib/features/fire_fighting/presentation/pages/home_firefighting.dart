@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/combo_box.dart';
-import 'package:flytec/features/aplications/presentation/widgets/pilot_select.dart';
+import 'package:flytec/features/aplications/components/pilot_select.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 

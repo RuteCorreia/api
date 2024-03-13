@@ -170,6 +170,7 @@ using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
 using Infra.Repositorio.User;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Config;
 
@@ -275,6 +276,7 @@ public static class DependencyInjectionConfig
         #endregion
 
         services.AddScoped<ContextBase>();
+        services.AddScoped<LoggedUserInfoService>();
 
         return services;
     }

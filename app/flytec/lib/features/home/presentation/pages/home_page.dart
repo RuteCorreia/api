@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/injections/get_it.dart';
 import '../widgets/custom_action_button.dart';
 import '../widgets/custom_activity_button.dart';
 import '../widgets/custom_dialog_button.dart';
@@ -44,132 +43,32 @@ class _HomePagaState extends State<HomePaga> {
     setState(() {});
   }
 
+  ReportAplicationController? _reportAplicationController;
+
+  void _updateView() {
+    setState(() {});
+  }
+
+  Future<void> _initializationAplicationsReports() async {
+    await _reportAplicationController?.obtainReportsAplications();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
-    obtainWeatherCurrent();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      obtainWeatherCurrent();
+      _reportAplicationController =
+          ReportAplicationController(updateView: _updateView);
+      await _initializationAplicationsReports();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      /* drawer: Container(
-        width: 255,
-        height: 800,
-        decoration: const ShapeDecoration(
-          color: Colors.white,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-              topRight: Radius.circular(27),
-              bottomRight: Radius.circular(27),
-            ),
-          ),
-        ),
-        child: ListView(
-          children: [
-            const SizedBox(height: 70),
-            SizedBox(
-              width: 200,
-              height: 80,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 49,
-                    height: 49,
-                    decoration: ShapeDecoration(
-                      image: const DecorationImage(
-                          image: AssetImage(
-                        "assets/images/profile_icon.png",
-                      )),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(27),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Container(
-                    child: const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Rodrigo Freitas',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 121, 118, 118),
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            height: 0.11,
-                          ),
-                        ),
-                        SizedBox(height: 16),
-                        Text(
-                          'Editar perfil',
-                          style: TextStyle(
-                            color: Color.fromARGB(255, 121, 118, 118),
-                            fontSize: 12,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w400,
-                            height: 0.12,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: Stack(
-                      children: [
-                        SvgPicture.asset(
-                          "assets/images/arrow_right.svg",
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 50),
-            CustomDrawerButton(
-              imageUrl: "assets/images/remix_icon.svg",
-              text: "Relatório Operacional",
-              onClick: () {},
-            ),
-            const SizedBox(height: 32),
-            CustomDrawerButton(
-              imageUrl: "assets/images/map_icon.svg",
-              text: "Minhas Atividades",
-              onClick: () {},
-            ),
-            const SizedBox(height: 157),
-            CustomDrawerButton(
-              imageUrl: "assets/images/settings_icon.svg",
-              text: "Configurações",
-              onClick: () {},
-            ),
-            const SizedBox(height: 32),
-            CustomDrawerButton(
-              imageUrl: "assets/images/logout_icon.svg",
-              text: "Sair",
-              onClick: () async {
-                context.pushReplacement("/login");
-
-                SharedPreferences preferences =
-                    await SharedPreferences.getInstance();
-                await preferences.clear();
-              },
-            ),
-          ],
-        ),
-      ),
-      */
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -213,13 +112,14 @@ class _HomePagaState extends State<HomePaga> {
                 ],
               ),
             ),
-            const SizedBox(height: 26),
+            const SizedBox(height: 16),
             GestureDetector(
-              onTap: () async {
-                print(getIt<GlobalConfigVars>().userPayload.role.toString());
-              },
-              child: const WelcomeText(
-                userName: "Rodrigo",
+              onTap: () async {},
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: WelcomeText(
+                  userName: "Rodrigo",
+                ),
               ),
             ),
             Builder(
@@ -290,7 +190,6 @@ class _HomePagaState extends State<HomePaga> {
                 }
                 return Container(
                   width: double.infinity,
-                  height: 200,
                   margin:
                       const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                   padding:
@@ -304,242 +203,186 @@ class _HomePagaState extends State<HomePaga> {
                     ),
                   ),
                   child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       SizedBox(
                         width: double.infinity,
-                        height: 72,
-                        child: Stack(
+                        height: 80,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Positioned(
-                              left: 0,
-                              top: 19,
-                              child: Container(
-                                width: 29.89,
-                                height: 32,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 29.89,
-                                      height: 32,
-                                      child: Stack(children: [
-                                        SvgPicture.asset(
-                                            "assets/images/sun_foggy_fill.svg")
-                                      ]),
-                                    ),
-                                  ],
+                            SvgPicture.asset(
+                                "assets/images/sun_foggy_fill.svg"),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  _weatherCurrent!
+                                      .condition.translationConditionWeather,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 121, 118, 118),
+                                    fontSize: 16,
+                                    fontFamily: 'Inter',
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 44.84,
-                              top: 0,
-                              child: SizedBox(
-                                width: 237.27,
-                                height: 72,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              _weatherCurrent!.condition
-                                                  .translationConditionWeather,
-                                              style: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 121, 118, 118),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                                height: 0.09,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 30),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text:
-                                                        '${_weatherCurrent!.tempC.toInt()}°',
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 32,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.05,
-                                                    ),
-                                                  ),
-                                                  const TextSpan(
-                                                    text: 'c',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 20,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            '${_weatherCurrent!.tempC.toInt()}°',
+                                        style: const TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 32,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const TextSpan(
+                                        text: 'c',
+                                        style: TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 20,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 289.58,
-                              top: 24,
-                              child: Container(
-                                width: 22.42,
-                                height: 24,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                              ),
+                              ],
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        height: 72,
-                        child: Stack(
+                        height: 100,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Positioned(
-                              left: 0,
-                              top: 19,
-                              child: Container(
-                                width: 29.89,
-                                height: 32,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      width: 29.89,
-                                      height: 32,
-                                      child: Stack(children: [
-                                        SvgPicture.asset(
-                                            "assets/images/home_icon.svg")
-                                      ]),
+                            SvgPicture.asset("assets/images/home_icon.svg"),
+                            const SizedBox(width: 16),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.65,
+                                  child: const Text(
+                                    'Direção e velocidade do vento',
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                      color: Color.fromARGB(255, 121, 118, 118),
+                                      fontSize: 16,
+                                      fontFamily: 'Inter',
+                                      fontWeight: FontWeight.w700,
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
-                            Positioned(
-                              left: 44.84,
-                              top: 0,
-                              child: SizedBox(
-                                width: 237.27,
-                                height: 72,
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          const SizedBox(
-                                            width: double.infinity,
-                                            child: Text(
-                                              'Direção e velocidade do vento',
-                                              style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 121, 118, 118),
-                                                fontSize: 16,
-                                                fontFamily: 'Inter',
-                                                fontWeight: FontWeight.w700,
-                                                height: 0.09,
-                                              ),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 30),
-                                          SizedBox(
-                                            width: double.infinity,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  TextSpan(
-                                                    text: _weatherCurrent!
-                                                        .windKph
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 32,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.05,
-                                                    ),
-                                                  ),
-                                                  const TextSpan(
-                                                    text: ' km/h',
-                                                    style: TextStyle(
-                                                      color: Color(0xFF00B45D),
-                                                      fontSize: 20,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
+                                Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text:
+                                            _weatherCurrent!.windKph.toString(),
+                                        style: const TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 32,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                      const TextSpan(
+                                        text: ' km/h',
+                                        style: TextStyle(
+                                          color: Color(0xFF00B45D),
+                                          fontSize: 20,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
+                              ],
                             ),
-                            Positioned(
-                              left: 289.58,
-                              top: 24,
-                              child: Container(
-                                width: 22.42,
-                                height: 24,
-                                clipBehavior: Clip.antiAlias,
-                                decoration: const BoxDecoration(),
-                              ),
-                            ),
+
+                            // SizedBox(
+                            //   width: 237.27,
+                            //   child: Row(
+                            //     mainAxisSize: MainAxisSize.min,
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     crossAxisAlignment: CrossAxisAlignment.center,
+                            //     children: [
+                            //       Expanded(
+                            //         child: Column(
+                            //           mainAxisSize: MainAxisSize.min,
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.center,
+                            //           crossAxisAlignment:
+                            //               CrossAxisAlignment.start,
+                            //           children: [
+                            //             SizedBox(
+                            //               width: MediaQuery.of(context)
+                            //                       .size
+                            //                       .width *
+                            //                   0.65,
+                            //               child: const Text(
+                            //                 'Direção e velocidade do vento',
+                            //                 maxLines: 2,
+                            //                 style: TextStyle(
+                            //                   color: Color.fromARGB(
+                            //                       255, 121, 118, 118),
+                            //                   fontSize: 16,
+                            //                   fontFamily: 'Inter',
+                            //                   fontWeight: FontWeight.w700,
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //             const SizedBox(height: 15),
+                            //             SizedBox(
+                            //               width: double.infinity,
+                            //               child: Text.rich(
+                            //                 TextSpan(
+                            //                   children: [
+                            //                     TextSpan(
+                            //                       text: _weatherCurrent!.windKph
+                            //                           .toString(),
+                            //                       style: const TextStyle(
+                            //                         color: Color(0xFF00B45D),
+                            //                         fontSize: 32,
+                            //                         fontFamily: 'Inter',
+                            //                         fontWeight: FontWeight.w700,
+                            //                         height: 0.05,
+                            //                       ),
+                            //                     ),
+                            //                     const TextSpan(
+                            //                       text: ' km/h',
+                            //                       style: TextStyle(
+                            //                         color: Color(0xFF00B45D),
+                            //                         fontSize: 20,
+                            //                         fontFamily: 'Inter',
+                            //                         fontWeight: FontWeight.w700,
+                            //                         height: 0.07,
+                            //                       ),
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -564,16 +407,18 @@ class _HomePagaState extends State<HomePaga> {
                         ),
                       ),
                       const SizedBox(width: 8),
-                      Expanded(
-                        child: ActivityButton(
-                          text: "Relatórios",
-                          value: getIt<GlobalConfigVars>()
-                              .reportList
-                              .length
-                              .toString(),
-                          onTap: () {},
-                        ),
-                      ),
+                      Builder(builder: (context) {
+                        if (_reportAplicationController == null) {
+                          return const SizedBox();
+                        }
+                        return Expanded(
+                            child: ActivityButton(
+                                text: "Aplicações",
+                                value: _reportAplicationController!
+                                    .listaAplicacao?.length
+                                    .toString(),
+                                onTap: () {}));
+                      }),
                     ],
                   ),
                   const SizedBox(height: 22),
@@ -631,7 +476,10 @@ class _HomePagaState extends State<HomePaga> {
                                       "assets/images/icomoon_free_fire.svg",
                                   text: "Aplicação",
                                   onClick: () {
-                                    context.push("/aplications");
+                                    context.push("/aplications", extra: {
+                                      'reportAplicationController':
+                                          _reportAplicationController
+                                    });
                                   },
                                 ),
                                 const SizedBox(height: 10),
@@ -655,7 +503,8 @@ class _HomePagaState extends State<HomePaga> {
                   ),
                 ],
               ),
-            )
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),

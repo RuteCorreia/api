@@ -50,9 +50,6 @@ namespace Infra.Migrations
                     b.Property<string>("Fabricante")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdEmpresa")
-                        .HasColumnType("int");
-
                     b.Property<string>("Modelo")
                         .HasColumnType("nvarchar(max)");
 
@@ -63,8 +60,6 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Aeronave");
                 });
@@ -1464,6 +1459,9 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1471,8 +1469,14 @@ namespace Infra.Migrations
                     b.Property<int>("NrUsuario")
                         .HasColumnType("int");
 
+                    b.Property<bool>("PrimeiroAcesso")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("Removido")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Telefone")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1480,7 +1484,31 @@ namespace Infra.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdEmpresa");
+
                     b.ToTable("Usuario");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.User.UsuarioCredencial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Credencial")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Funcao")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("IdUsuario")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("UsuarioCredencial");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1679,15 +1707,6 @@ namespace Infra.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Aeronave.Aeronave", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa");
-
-                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico", b =>
@@ -2069,6 +2088,24 @@ namespace Infra.Migrations
                         .IsRequired();
 
                     b.Navigation("MenuItem");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.User.Usuario", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.User.UsuarioCredencial", b =>
+                {
+                    b.HasOne("Domain.Entidades.User.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

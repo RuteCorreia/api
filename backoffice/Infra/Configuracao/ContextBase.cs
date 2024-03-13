@@ -78,6 +78,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<TipoProduto> TipoProduto { get; set; }
     public DbSet<Veiculante> Veiculante { get; set; }
     public DbSet<Usuario> Usuario { get; set; }
+    public DbSet<UsuarioCredencial> UsuarioCredencial { get; set; }
     public DbSet<Menu> Menu { get; set; }
     public DbSet<MenuUsuario> MenuUsuario { get; set; }
     public DbSet<SubMenu> SubMenu { get; set; }

@@ -1,11 +1,15 @@
 ﻿using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
+using AutoMapper;
 using Domain.Entidades.User;
+using Domain.Enums;
 using Domain.Interfaces.User;
+using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 
@@ -17,17 +21,24 @@ public class UserAuthService : IUserAuthService
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _config;
     private readonly IUsuarioRepository _usuarioRepository;
-    public UserAuthService(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration config, IUsuarioRepository usuarioRepository)
+    private readonly IMapper _mapper;
+    public UserAuthService(
+        UserManager<IdentityUser> userManager, 
+        RoleManager<IdentityRole> roleManager,
+        IConfiguration config, 
+        IUsuarioRepository usuarioRepository,
+        IMapper mapper
+        )
     {
         _userManager = userManager;
         _roleManager = roleManager;
         _config = config;
         _usuarioRepository = usuarioRepository;
+        _mapper = mapper;
     }
 
     public async Task<(bool, string)> LoginAsync(UserLoginViewModel user)
     {
-        var resultError = "login inválido";
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if(identityUser is not null)
         {            
@@ -37,63 +48,82 @@ public class UserAuthService : IUserAuthService
                 var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
                 if (passwordCheck)
                 {
-                    var token = await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario);
-                    return (true, token);
+                    var token = new StringBuilder();
+                    if (usuario.PrimeiroAcesso)
+                        token.Append("PrimeiroAcesso");
+                    else
+                        token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
+
+                    return (true, token.ToString());
                 }
             }
         }
-        return (false, resultError);
+        return (false, "login inválido");
     }
 
-    public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request)
+    public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request, string loggedUserId)
     {
-        var identityUser = new IdentityUser
+        var resultMsg = new StringBuilder();
+        var loggedIdentityUser = await _userManager.FindByIdAsync(loggedUserId);
+        if(loggedIdentityUser is not null)
         {
-            UserName = request.Email,
-            Email = request.Email,
-            EmailConfirmed = true
-        };
+            var identityUser = new IdentityUser
+            {
+                UserName = request.Email,
+                Email = request.Email,
+                PhoneNumber = request.Telefone,
+                EmailConfirmed = true
+            };
 
-        var identityResult = await _userManager.CreateAsync(identityUser, request.Password);
+            var identityResult = await _userManager.CreateAsync(identityUser, request.Password);
 
-        if(!identityResult.Succeeded)
-        {
-            var errors = identityResult.Errors
-                .Select(x => x.Description)
-                .FirstOrDefault();
-            
-            return !string.IsNullOrEmpty(errors) ?  (false,  errors) : (false, "Erro na criação de novo usuário");
+            if (!identityResult.Succeeded)
+                return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
+
+            var roleListAsString = request.Role.Select(r => r.ToString());
+            foreach (var role in roleListAsString)
+            {
+                var roleExists = await _roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                    await CreateRoleAsync(role);
+            }
+
+            var identityRoleResult = await _userManager.AddToRolesAsync(identityUser, roleListAsString);
+            if (!identityRoleResult.Succeeded)
+            {
+                await _userManager.DeleteAsync(identityUser);
+                return (false, resultMsg.Append(GetIdentityResultErrors(identityRoleResult)).ToString());
+            }
+
+            var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+            await CreateUser(request, identityUser, loggedUserTblUsuario.IdEmpresa);
+
+            return (true, resultMsg.Append("Usuário criado com sucesso").ToString());
         }
 
-        var roleExists = await _roleManager.RoleExistsAsync(request.Role.ToString());
-        if (!roleExists)
-        {
-            var role = new IdentityRole(request.Role.ToString());
-            await _roleManager.CreateAsync(role);
-        }
-
-        var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, request.Role.ToString());
-        if (!identityRoleResult.Succeeded)
-        {
-            var errors = identityRoleResult.Errors
-                .Select(x => x.Description)
-                .FirstOrDefault();
-
-            await _userManager.DeleteAsync(identityUser);
-
-            return !string.IsNullOrEmpty(errors) ? (false, errors) : (false, "Erro na criação de novo usuário");
-        }
-
-       await CreateUser(request, identityUser);
-
-        return (true, "Usuário criado com sucesso");
+        return (false, resultMsg.Append("Não foi possível criar um usuário").ToString());
     }
 
-    private async Task CreateUser(UserRegisterViewModel request, IdentityUser user)
+    private async Task CreateUser(UserRegisterViewModel request, IdentityUser user, int? idEmpresa)
     {
         var nrUsuarioOrdem = await _usuarioRepository.GetLastAsync();
-        var usuario = new Usuario(request.Email, request.Name, user.Id, nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1);
+        var usuario = new Usuario(
+            request.Email,
+            request.Name, 
+            user.Id, 
+            nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1,
+            request.Telefone,
+            idEmpresa
+            );
+
         await _usuarioRepository.AddAsync(usuario);
+    }
+
+    private async Task CreateUserCredencial(IdentityUser user, IEnumerable<ERole> roles, IEnumerable<string> credencial)
+    {
+        var usuario = await _usuarioRepository.GetByUserIdAsync(user.Id);
+        //CONTINUAR DAQUI
+        //var listToCreate = Enumerable.Empty<>
     }
 
     private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
@@ -144,36 +174,158 @@ public class UserAuthService : IUserAuthService
         => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero))
             .TotalSeconds);
 
-    Task<IEnumerable<Usuario>> IUserAuthService.GetUsers()
+    public async Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId)
     {
-        var users = _usuarioRepository.GetAllAsync();
-        return users;
+        var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+        var users = await _usuarioRepository.GetAllAsync(loggedUserTblUsuario.IdEmpresa);
+        var viewModel = _mapper.Map<IEnumerable<UserListViewModel>>(users);
+        return _mapper.Map<IEnumerable<UserListViewModel>>(users);
     }
 
-    public async Task RemoveUser(string id)
+    public async Task RemoveUserAsync(string id)
     {
-        var userInDb = GetUserById(id).Result;
-
-        userInDb.Removido = true;
-
-        var user = _usuarioRepository.UpdateAsync(userInDb);
-        return;
+        var userToRemove = await GetUserEntityByIdAsync(id);
+        if(userToRemove is not null)
+        {
+            userToRemove.Removido = true;
+            await _usuarioRepository.UpdateAsync(userToRemove);
+        }
     }
 
-    public Task<Usuario> GetUserById(string id)
+    private async Task<Usuario> GetUserEntityByIdAsync(string id) => await _usuarioRepository.GetUserByIdAsync(id);
+
+    public async Task<UserDetailViewModel> GetUserByIdAsync(string id)
     {
-        var user = _usuarioRepository.GetUserByIdAsync(id);
-        return user;
+        var obj = await _usuarioRepository.GetUserByIdAsync(id);
+        return _mapper.Map<UserDetailViewModel>(obj);
+    } 
+   
+    public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
+    {
+        var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
+        var userToUpdate = await GetUserEntityByIdAsync(id);
+        if (userToUpdate is not null)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
+            if(identityUser is not null)
+            {
+                resultMsg.Clear();
+                bool allOk = true;
+                var identityUserRoles = await _userManager.GetRolesAsync(identityUser);
+                if (identityUser.Email != request.Email)
+                {                    
+                    var changeEmailToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Email, true);
+                    var changeEmailResult = await _userManager.ChangeEmailAsync(identityUser, request.Email, changeEmailToken);
+                    if (!changeEmailResult.Succeeded)
+                    {
+                        resultMsg.Append(GetIdentityResultErrors(changeEmailResult));
+                        allOk = false;
+                    }
+                }
+
+                if(identityUser.PhoneNumber != request.Telefone)
+                {
+                    var changePhoneToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Telefone ?? "");
+                    var changePhoneResult = await _userManager.ChangePhoneNumberAsync(identityUser, request.Telefone ?? "", changePhoneToken);
+                    if (!changePhoneResult.Succeeded)
+                    {
+                        resultMsg.Append(GetIdentityResultErrors(changePhoneResult));                        
+                        allOk = false;
+                    }
+                }
+
+                if(identityUser.UserName != request.Email)
+                {
+                    identityUser.UserName = request.Email;
+                    var updateIdentityUserResult = await _userManager.UpdateAsync(identityUser);
+                    if (!updateIdentityUserResult.Succeeded)
+                    {
+                        resultMsg.Append(GetIdentityResultErrors(updateIdentityUserResult));
+                        allOk = false;
+                    }
+                }
+
+                var requestRole = request.Funcao.ToString();
+                if (!identityUserRoles.Contains(requestRole))
+                {
+;                   var roleExists = await _roleManager.RoleExistsAsync(requestRole);
+                    if(!roleExists)
+                    {
+                        await CreateRoleAsync(requestRole);
+                    }
+                    await _userManager.RemoveFromRolesAsync(identityUser, identityUserRoles);
+                    var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, requestRole);
+                    if (!identityRoleResult.Succeeded)
+                    {
+                        resultMsg.Append(GetIdentityResultErrors(identityRoleResult));
+                        allOk = false;
+                    }
+                }
+
+                if (allOk)
+                {
+                    userToUpdate.Nome = request.Nome;
+                    userToUpdate.Email = request.Email;
+                    userToUpdate.Telefone = request.Telefone;
+                    await _usuarioRepository.UpdateAsync(userToUpdate);
+                    resultMsg.Append("Sucesso na atualização do usuário");
+                    return (true, resultMsg.ToString());
+                }
+            }
+        }
+
+        return (false, resultMsg.ToString());
     }
 
-    public string UpdateUserAsync(string id, UserRegisterViewModel user)
+    private async Task<string> GenerateChangeEmailOrPhoneTokenAsync(IdentityUser user, string item, bool email = false)
     {
-        var userInDb = GetUserById(id).Result;
+        if (email) 
+            return await _userManager.GenerateChangeEmailTokenAsync(user, item);
+        else 
+            return await _userManager.GenerateChangePhoneNumberTokenAsync(user, item);
+    }
 
-        userInDb.Nome = user.Name;
-        userInDb.Email = user.Email;
+    private string GetIdentityResultErrors(IdentityResult result)
+    {
+        var errors = result.Errors
+            .Select(x => x.Description)
+            .FirstOrDefault();
 
-        var userToUpdate = _usuarioRepository.UpdateAsync(userInDb);
-        return "OK";
+        return !string.IsNullOrEmpty(errors) ? errors : "Erro no processamento";
+    }
+
+
+    private async Task CreateRoleAsync(string roleToCreate)
+    {
+        var role = new IdentityRole(roleToCreate);
+        await _roleManager.CreateAsync(role);
+    }
+
+    public async Task<(bool, string)> ChangeUserPasswordAsync(UserChangePasswordViewModel user)
+    {
+        var resultMsg = new StringBuilder().Append("Troca de senha não foi possível");
+        var identityUser = await _userManager.FindByEmailAsync(user.Email);
+        if (identityUser is not null)
+        {
+            var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.OldPassword);
+            if (passwordCheck)
+            {
+                resultMsg.Clear();
+                bool allOk = true;
+                var identityResult = await _userManager.ChangePasswordAsync(identityUser, user.OldPassword, user.NewPassword);
+                if (!identityResult.Succeeded)
+                {
+                    resultMsg.Append(GetIdentityResultErrors(identityResult));
+                    allOk = false;
+                }
+
+                if (allOk)
+                    resultMsg.Append("Sucesso na troca de senha");
+
+                return (allOk, resultMsg.ToString());
+            }
+        }
+
+        return (false, resultMsg.ToString());
     }
 }
