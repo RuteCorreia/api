@@ -1,7 +1,4 @@
-﻿using Domain.Enums;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Users.ViewModel;
 
@@ -19,6 +16,6 @@ public class UserUpdateViewModel
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public ERole Funcao { get; set; }
+    //[JsonConverter(typeof(JsonStringEnumConverter))]
+    public IEnumerable<RoleObject> Funcoes { get; set; }
 }

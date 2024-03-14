@@ -9,8 +9,8 @@ public class UserDetailViewModel
     public string Nome { get; set; }
 
     public string Email { get; set; }
-    public string? Credencial { get; set; }
     public string? Telefone { get; set; }
 
-    public ERole Funcao { get; set; }
+    //public ERole Funcao { get; set; }
+    public IEnumerable<RoleObject> Funcoes { get; set; }
 }

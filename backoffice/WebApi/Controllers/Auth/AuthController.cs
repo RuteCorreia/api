@@ -2,6 +2,7 @@
 using Application.DTOs.Users.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 using System.Text;
 using WebApi.HttpRequestInfo;
 
@@ -113,6 +114,19 @@ public class AuthController : ControllerBase
         }
 
         return BadRequest("Falha ao buscar usuário");
+    }
+
+    [HttpGet("GetUserRoles")]
+    [Authorize]
+    public async Task<IActionResult> GetUserRoles(string userId)
+    {
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var result = await _authService.GetUserRolesAsync(userId);
+            return Ok(result);
+        }
+
+        return BadRequest("falha na busca");
     }
 
     [HttpDelete("RemoveUser")]
