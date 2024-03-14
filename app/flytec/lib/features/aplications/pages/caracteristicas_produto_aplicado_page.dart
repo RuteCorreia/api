@@ -43,6 +43,7 @@ class _CaracteristicasProdutoAplicadoPageState
   String? _unidadeDoseProdutoComercialHectare = "";
   TextEditingController? _adjuvante;
   TextEditingController? _tipoServico;
+  String? _tipoServicoText = '';
   TextEditingController? _numeroReceituarioAgronomico;
   DateTime? _dataSelecionada;
 
@@ -75,7 +76,8 @@ class _CaracteristicasProdutoAplicadoPageState
         _dataSelecionada =
             epoch != null ? DateTime.fromMillisecondsSinceEpoch(epoch) : null;
         _tipoServico = TextEditingController(
-            text: _caracteristicasProdutoAplicado!.tipoServico);
+            text: _caracteristicasProdutoAplicado?.tipoServico);
+        _tipoServicoText = _caracteristicasProdutoAplicado?.tipoServico;
         _receituarioAgronomico =
             _caracteristicasProdutoAplicado!.receiturarioAgronomico;
         setState(() {});
@@ -106,7 +108,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_unidadeDoseProdutoComercialHectare!.isEmpty) {
       Util.toastAlerta("Selecione a unidade da dosagem ");
       return false;
-    } else if (_tipoServico!.text.isEmpty) {
+    } else if (_tipoServicoText!.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
       return false;
     } else if (_receituarioAgronomico == null) {
@@ -140,7 +142,7 @@ class _CaracteristicasProdutoAplicadoPageState
         nomeProduto: _nomeProduto,
         receiturarioAgronomico: _receituarioAgronomico,
         tipoFormulacao: _tipoFormulacao,
-        tipoServico: _tipoServico?.text,
+        tipoServico: _tipoServicoText,
         unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
     if (_aplicacao.caracteristicasProdutoAplicado?.id == null) {
       int? idContratante = await widget._reportAplicationController
@@ -557,7 +559,10 @@ class _CaracteristicasProdutoAplicadoPageState
               const SizedBox(height: 10),
               CustomTextField(
                 textEditingController: _tipoServico,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _tipoServicoText = value;
+                  setState(() {});
+                },
               ),
               Center(
                 child: CustomButton(
