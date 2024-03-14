@@ -45,6 +45,7 @@ class _CaracteristicasProdutoAplicadoPageState
   TextEditingController? _tipoServico;
   String? _tipoServicoText = '';
   TextEditingController? _numeroReceituarioAgronomico;
+  String? _numeroReceituarioAgronomicoText = '';
   DateTime? _dataSelecionada;
 
   @override
@@ -71,6 +72,8 @@ class _CaracteristicasProdutoAplicadoPageState
             text: _caracteristicasProdutoAplicado!.adjuvante);
         _numeroReceituarioAgronomico = TextEditingController(
             text: _caracteristicasProdutoAplicado!.numeroReceituarioAgronomico);
+        _numeroReceituarioAgronomicoText =
+            _caracteristicasProdutoAplicado!.numeroReceituarioAgronomico;
         final epoch =
             int.tryParse(_caracteristicasProdutoAplicado!.dataEmissao!);
         _dataSelecionada =
@@ -117,7 +120,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_dataSelecionada == null) {
       Util.toastAlerta("Insira a data de emissão do receituário agronômico");
       return false;
-    } else if (_numeroReceituarioAgronomico == null) {
+    } else if (_numeroReceituarioAgronomicoText!.isEmpty) {
       Util.toastAlerta("Insira o número do receituário agronômico");
       return false;
     } else {
@@ -131,14 +134,14 @@ class _CaracteristicasProdutoAplicadoPageState
 
   Future<void> _caracteristicasProdutoAplicadoAction() async {
     _caracteristicasProdutoAplicado = CaracteristicasProdutoAplicado(
-        adjuvante: _adjuvante?.text,
+        adjuvante: _adjuvante?.value.text,
         alvoBiologico: _alvoBiologico,
         classificacaoToxicologica: _classificacaoToxicologica,
         classe: _classe,
         dataEmissao: _dataSelecionada?.millisecondsSinceEpoch.toString(),
-        numeroReceituarioAgronomico: _numeroReceituarioAgronomico?.text,
+        numeroReceituarioAgronomico: _numeroReceituarioAgronomicoText,
         cultura: getIt<GlobalConfigVars>().selectedCultura,
-        doseProdutoHectare: _doseProdutoComercialHectare?.text,
+        doseProdutoHectare: _doseProdutoComercialHectare?.value.text,
         nomeProduto: _nomeProduto,
         receiturarioAgronomico: _receituarioAgronomico,
         tipoFormulacao: _tipoFormulacao,
@@ -307,7 +310,10 @@ class _CaracteristicasProdutoAplicadoPageState
               CustomTextField(
                 textEditingController: _numeroReceituarioAgronomico,
                 textInputType: TextInputType.number,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _numeroReceituarioAgronomicoText = value;
+                  setState(() {});
+                },
               ),
               const CustomText(text: 'Data emissão receituário agronômico'),
               const SizedBox(height: 10),
