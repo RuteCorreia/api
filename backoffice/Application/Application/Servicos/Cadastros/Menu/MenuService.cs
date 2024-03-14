@@ -34,9 +34,9 @@ namespace Application.Application.Servicos.Cadastros.Menu
             await _menuRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<MenuViewModel>> GetAllAsync()
+        public IEnumerable<MenuViewModel> GetAllAsync()
         {
-            var list = await _menuRepository.GetAllAsync();
+            var list = _menuRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<MenuViewModel>>(list);
         }
 
