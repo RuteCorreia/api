@@ -10,7 +10,7 @@ namespace Application.DTOs.Cadastros.Menu.Interface
 {
     public interface IMenuService
     {
-        Task<IEnumerable<MenuViewModel>> GetAllAsync();
+        IEnumerable<MenuViewModel> GetAllAsync();
 
         Task<MenuViewModel> GetByIdAsync(int id);
 

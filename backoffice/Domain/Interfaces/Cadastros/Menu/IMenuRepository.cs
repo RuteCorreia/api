@@ -12,7 +12,7 @@ namespace Domain.Interfaces.Cadastros.Menu
         Task AddAsync(Entidades.Cadastros.Menu.Menu obj);
         Task UpdateAsync(Entidades.Cadastros.Menu.Menu obj);
         Task DeleteAsync(int id);
-        Task<IEnumerable<Entidades.Cadastros.Menu.Menu>> GetAllAsync();
+        IEnumerable<Entidades.Cadastros.Menu.Menu> GetAllAsync();
         Task<Entidades.Cadastros.Menu.Menu> GetByIdAsync(int id);
     }
 }
