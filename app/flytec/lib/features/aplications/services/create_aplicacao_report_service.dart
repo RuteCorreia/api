@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:intl/intl.dart';
@@ -25,6 +27,12 @@ class CreateAplicacaoReportService implements PdfGenerator {
         : null;
     String? dataContratante =
         "${dateTimeContratante?.day}/${dateTimeContratante?.month}/${dateTimeContratante?.year}";
+
+    log('--> ${aplicacao.relatorioAplicacao!.aplicacoes!}');
+    final aplicacoes01 = aplicacao.relatorioAplicacao?.aplicacoes?.first;
+    final aplicacoes02 = aplicacao.relatorioAplicacao?.aplicacoes?[1];
+    final aplicacoes03 = aplicacao.relatorioAplicacao?.aplicacoes?[2];
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -1061,7 +1069,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 100,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao!.aplicacoes![0]!.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes![0]!.dataAplicacao!)!)) : ""}"),
+                          " ${int.tryParse(aplicacoes01!=null? aplicacoes01.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes01!.dataAplicacao!)!)) : ""}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1082,8 +1090,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
-                              ? aplicacao.relatorioAplicacao!.aplicacoes![0]!
+                          aplicacoes01!=null
+                              ? aplicacoes01
                                   .horaInicio!
                               : '',
                         )),
@@ -1100,14 +1108,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          '${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.horaFinal! : ''}',
+                          aplicacoes01!=null? aplicacoes01.horaFinal! : '',
                         )),
                     pw.Container(
                       height: 15,
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.temperaturaInicial! : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.temperaturaInicial! : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1120,7 +1128,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.temperaturaFinal : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.temperaturaFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1133,7 +1141,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.umidadeRelativaArInicial : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.umidadeRelativaArInicial : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1146,7 +1154,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.umidadeRelativaArFinal : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.umidadeRelativaArFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1163,14 +1171,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               right: pw.BorderSide(
                                   width: 1.5, color: PdfColors.black))),
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.ventoInicial : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.ventoInicial : ''}"),
                     ),
                     pw.Container(
                       height: 15,
                       width: 67.5,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]!.ventoFinal : ''}"),
+                          " ${aplicacoes01!=null? aplicacoes01.ventoFinal : ''}"),
                     ),
                   ]),
                   pw.Divider(height: 1, thickness: 1.5),
@@ -1180,7 +1188,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 100,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao!.aplicacoes![1]!.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes![1]!.dataAplicacao!)!)) : ""}"),
+                          " ${int.tryParse(aplicacoes02!=null ? aplicacoes02.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes02!.dataAplicacao!)!)) : ""}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1201,7 +1209,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          '${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]!.horaInicio : ''}',
+                          '${aplicacoes02!=null ? aplicacoes02.horaInicio : ''}',
                         )),
                     pw.Container(
                         height: 15,
@@ -1216,14 +1224,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          '${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.horaFinal : ''}',
+                          '${aplicacoes02!=null ? aplicacoes02.horaFinal : ''}',
                         )),
                     pw.Container(
                       height: 15,
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.temperaturaInicial : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.temperaturaInicial : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1236,7 +1244,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.temperaturaFinal : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.temperaturaFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1249,7 +1257,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.umidadeRelativaArInicial : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.umidadeRelativaArInicial : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1262,7 +1270,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.umidadeRelativaArFinal : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.umidadeRelativaArFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1279,14 +1287,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               right: pw.BorderSide(
                                   width: 1.5, color: PdfColors.black))),
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.ventoInicial : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.ventoInicial : ''}"),
                     ),
                     pw.Container(
                       height: 15,
                       width: 67.5,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![1]?.ventoFinal : ''}"),
+                          " ${aplicacoes02!=null ? aplicacoes02.ventoFinal : ''}"),
                     ),
                   ]),
                   pw.Divider(height: 1, thickness: 1.5),
@@ -1296,7 +1304,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 100,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao!.aplicacoes![2]!.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.relatorioAplicacao!.aplicacoes![2]!.dataAplicacao!)!)) : ""}"),
+                          " ${int.tryParse(aplicacoes03!=null ? aplicacoes03.dataAplicacao! : '') != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes03!.dataAplicacao!)!)) : ""}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1317,7 +1325,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          '${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.horaInicio : ''}',
+                          '${aplicacoes03!=null ? aplicacoes03.horaInicio : ''}',
                         )),
                     pw.Container(
                         height: 15,
@@ -1332,14 +1340,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          '${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.horaFinal : ''}',
+                          '${aplicacoes03!=null ? aplicacoes03.horaFinal : ''}',
                         )),
                     pw.Container(
                       height: 15,
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.temperaturaInicial : ''}"),
+                          " ${aplicacoes03!=null ? aplicacoes03.temperaturaInicial : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1352,7 +1360,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 60,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.temperaturaFinal : ''}"),
+                          " ${aplicacoes03!=null ? aplicacoes03.temperaturaFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1365,7 +1373,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.umidadeRelativaArInicial : ''}"),
+                          " ${aplicacoes03!=null ? aplicacoes03.umidadeRelativaArInicial : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1378,7 +1386,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       width: 50,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.umidadeRelativaArFinal : ''}"),
+                          " ${aplicacoes03!=null ? aplicacoes03.umidadeRelativaArFinal : ''}"),
                       decoration: const pw.BoxDecoration(
                         border: pw.Border(
                           right:
@@ -1395,14 +1403,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               right: pw.BorderSide(
                                   width: 1.5, color: PdfColors.black))),
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![2]?.ventoInicial : ''}"),
+                          " ${aplicacoes03!=null ? aplicacoes03.ventoInicial : ''}"),
                     ),
                     pw.Container(
                       height: 15,
                       width: 67.5,
                       alignment: pw.Alignment.center,
                       child: pw.Text(
-                          " ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao!.aplicacoes![2]!.ventoFinal : ''}"),
+                          " ${aplicacoes03!=null? aplicacoes03.ventoFinal : ''}"),
                     ),
                   ]),
                 ]),
@@ -1448,7 +1456,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Inicial: ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]?.horaInicio : ''}',
+                        'Inicial: ${aplicacoes01!=null ?aplicacoes01.horaInicio : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1457,7 +1465,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Final:  ${aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty ? aplicacao.relatorioAplicacao?.aplicacoes![0]?.horaFinal : ''}',
+                        'Final:  ${aplicacoes01!=null ? aplicacoes01.horaFinal : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
@@ -1740,10 +1748,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
-                    aplicacao.relatorioAplicacao?.aplicacoes?[0]
-                            ?.imagemCondicaoClimatica !=
-                        null)
+                if (aplicacoes01 != null &&
+                    aplicacoes01.imagemCondicaoClimatica != null)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
