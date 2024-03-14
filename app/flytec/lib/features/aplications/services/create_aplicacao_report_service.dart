@@ -16,7 +16,10 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final pdf = pw.Document();
     final newRoman = pw.Font.times();
     final newRomanBold = pw.Font.timesBold();
-    final dateTimeNow = DateTime.now();
+    final epochDataEmissao = int.tryParse(
+        aplicacao.caracteristicasProdutoAplicado?.dataEmissao ?? '');
+    final dateDataEmissao =
+        DateTime.fromMillisecondsSinceEpoch(epochDataEmissao!);
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
@@ -138,13 +141,13 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                           children: [
                                             pw.Text('N° '),
                                             pw.Text(
-                                                '${aplicacao.id?.toString().padLeft(4, '0')} ',
+                                                '${aplicacao.caracteristicasProdutoAplicado?.numeroReceituarioAgronomico?.toString().padLeft(4, '0') ?? ''} ',
                                                 style: const pw.TextStyle(
                                                   color: PdfColors.red,
                                                 )),
                                             pw.Text(' Data '),
                                             pw.Text(DateFormat('dd/MM/yyyy')
-                                                .format(dateTimeNow)
+                                                .format(dateDataEmissao)
                                                 .toString()),
                                           ])),
                                 ]),
@@ -829,7 +832,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
+                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -844,7 +847,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          "${aplicacao.relatorioAplicacao?.densidade}",
+                          aplicacao.relatorioAplicacao?.densidade ?? '',
                         ),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -1429,7 +1432,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO}',
+                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1484,7 +1487,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.centerLeft,
                     padding: const pw.EdgeInsets.only(left: 2),
                     child: pw.Text(
-                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes}',
+                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1493,7 +1496,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
-                        'Relatório DGPS (LOG\'s): ${aplicacao.relatorioAplicacao?.relatorioDGPS}',
+                        'Relatório DGPS (LOG\'s): ${aplicacao.relatorioAplicacao?.relatorioDGPS ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
