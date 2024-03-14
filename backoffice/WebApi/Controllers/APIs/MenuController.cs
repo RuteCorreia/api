@@ -33,12 +33,12 @@ public class MenuController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<MenuViewModel>>> GetAll()
+    public ActionResult<IAsyncEnumerable<MenuViewModel>> GetAll()
     {
         try
         {
-            var menu = await _menuService.GetAllAsync();
-            var subMenu = await _subMenuService.GetAllAsync();
+            var menu = _menuService.GetAllAsync();
+            var subMenu = _subMenuService.GetAllAsync();
 
             foreach (var m in menu)
             {

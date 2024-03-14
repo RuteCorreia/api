@@ -1,4 +1,5 @@
 ﻿using Domain.Enums;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
@@ -20,7 +21,12 @@ public class UserRegisterViewModel
     public string Password { get; set; }
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
+    public IEnumerable<RoleObject> Funcoes { get; set; } 
+}
 
+public class RoleObject
+{
     //[JsonConverter(typeof(JsonStringEnumConverter))]
-    public IEnumerable<ERole> Role { get; set; } 
+    public ERole Funcao { get; set; }
+    public string? Credencial { get; set; }
 }

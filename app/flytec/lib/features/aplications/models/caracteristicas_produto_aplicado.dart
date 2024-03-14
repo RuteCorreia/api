@@ -14,6 +14,8 @@ class CaracteristicasProdutoAplicado {
   String? unidadeDoseProdutoHectare;
   String? adjuvante;
   String? tipoServico;
+  String? numeroReceituarioAgronomico;
+  String? dataEmissao;
   int? id;
 
   CaracteristicasProdutoAplicado({
@@ -28,6 +30,8 @@ class CaracteristicasProdutoAplicado {
     this.unidadeDoseProdutoHectare,
     this.adjuvante,
     this.tipoServico,
+    this.numeroReceituarioAgronomico,
+    this.dataEmissao,
     this.id,
   });
 
@@ -44,6 +48,8 @@ class CaracteristicasProdutoAplicado {
       'unidadeDoseProdutoHectare': unidadeDoseProdutoHectare,
       'adjuvante': adjuvante,
       'tipoServico': tipoServico,
+      'dataEmissao': dataEmissao,
+      'numeroReceituarioAgronomico': numeroReceituarioAgronomico,
     };
   }
 
@@ -61,6 +67,8 @@ class CaracteristicasProdutoAplicado {
       unidadeDoseProdutoHectare: json['unidadeDoseProdutoHectare'],
       adjuvante: json['adjuvante'],
       tipoServico: json['tipoServico'],
+      numeroReceituarioAgronomico: json['numeroReceituarioAgronomico'],
+      dataEmissao: json['dataEmissao'],
       id: json['id'],
     );
   }

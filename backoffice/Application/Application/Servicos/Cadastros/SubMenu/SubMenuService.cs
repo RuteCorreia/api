@@ -34,9 +34,9 @@ namespace Application.Application.Servicos.Cadastros.SubMenu
             await _subMenuRepository.DeleteAsync(id);
         }
 
-        public async Task<IEnumerable<SubMenuViewModel>> GetAllAsync()
+        public IEnumerable<SubMenuViewModel> GetAllAsync()
         {
-            var list = await _subMenuRepository.GetAllAsync();
+            var list = _subMenuRepository.GetAllAsync();
             return _mapper.Map<IEnumerable<SubMenuViewModel>>(list);
         }
 
