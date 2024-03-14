@@ -126,9 +126,8 @@ public class UserAuthService : IUserAuthService
     private async Task CreateUserCredencial(IdentityUser user, IEnumerable<RoleObject> roles)
     {
         var usuario = await _usuarioRepository.GetByUserIdAsync(user.Id);
-        var rolesToCreate = roles.Where(x => !string.IsNullOrEmpty(x.Credencial));
         var list = Enumerable.Empty<UsuarioCredencial>();
-        foreach(var role in rolesToCreate)
+        foreach(var role in roles)
         {
             var obj = new UsuarioCredencial
             {
@@ -351,5 +350,23 @@ public class UserAuthService : IUserAuthService
         }
 
         return (false, resultMsg.ToString());
+    }
+
+    public async Task<IEnumerable<RoleObject>> GetUserRolesAsync(string id)
+    {
+        var userRoles = await _usuarioCredencialRepository.GetUsuarioCredencialsAsync(Guid.Parse(id));
+        var returnList = Enumerable.Empty<RoleObject>();
+        foreach(var item in userRoles)
+        {
+            var obj = new RoleObject
+            {
+                Funcao = item.Funcao,
+                Credencial = item.Credencial
+            };
+
+            returnList = returnList.Concat(new[] { obj });
+        }
+
+        return returnList;
     }
 }
