@@ -1,4 +1,3 @@
-
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:intl/intl.dart';
@@ -18,14 +17,16 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final newRomanBold = pw.Font.timesBold();
     final epochDataEmissao = int.tryParse(
         aplicacao.caracteristicasProdutoAplicado?.dataEmissao ?? '');
-    final dateDataEmissao =
-        DateTime.fromMillisecondsSinceEpoch(epochDataEmissao!);
+    final dateDataEmissao = epochDataEmissao != null
+        ? DateTime.fromMillisecondsSinceEpoch(epochDataEmissao)
+        : null;
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    final dateTimeContratante = aplicacao.dadosResponsavel!.data != null
-        ? DateTime?.fromMillisecondsSinceEpoch(
-            int.tryParse(aplicacao.dadosResponsavel!.data!)!)
+    final epochContratante =
+        int.tryParse(aplicacao.dadosResponsavel?.data ?? '');
+    final dateTimeContratante = epochContratante != null
+        ? DateTime?.fromMillisecondsSinceEpoch(epochContratante)
         : null;
     String? dataContratante =
         "${dateTimeContratante?.day}/${dateTimeContratante?.month}/${dateTimeContratante?.year}";
@@ -146,9 +147,11 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                                   color: PdfColors.red,
                                                 )),
                                             pw.Text(' Data '),
-                                            pw.Text(DateFormat('dd/MM/yyyy')
-                                                .format(dateDataEmissao)
-                                                .toString()),
+                                            pw.Text(dateDataEmissao != null
+                                                ? DateFormat('dd/MM/yyyy')
+                                                    .format(dateDataEmissao)
+                                                    .toString()
+                                                : ''),
                                           ])),
                                 ]),
                           )),
@@ -683,7 +686,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 const pw.EdgeInsets.only(right: 5, bottom: 5),
                             width: 180,
                             child: pw.Text(
-                                ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel!.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel!.data!)!)) : ''} ',
+                                ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel?.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel?.data ?? '') ?? DateTime.now().millisecondsSinceEpoch)) : ''} ',
                                 textAlign: pw.TextAlign.right,
                                 maxLines: 1,
                                 style: pw.TextStyle(
