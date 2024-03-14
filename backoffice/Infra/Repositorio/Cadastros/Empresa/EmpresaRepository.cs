@@ -53,6 +53,7 @@ public class EmpresaRepository : IEmpresaRepository
         objeto.CNPJ = obj.CNPJ;
         objeto.InscricaoEstadual = obj.InscricaoEstadual;
         objeto.NrCDA = obj.NrCDA;
+        objeto.CEP = obj.CEP;
         objeto.Endereco = obj.Endereco;
         obj.Numero = obj.Numero;
         objeto.Estado = obj.Estado;
