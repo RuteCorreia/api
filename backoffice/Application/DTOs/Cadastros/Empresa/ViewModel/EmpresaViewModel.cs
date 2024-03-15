@@ -31,4 +31,16 @@ public class EmpresaViewModel
 
     [Required]
     public string Cidade { get; set; }
+
+    public bool? Manutencao { get; set; }
+    public bool? FrotaRelatoriosAplicacaoIncendio { get; set; }
+
+    [Required]
+    public int QtdAeronaves { get; set; }
+
+    [Required]
+    public int QtdDrones { get; set; }
+
+    [Required]
+    public int QtdVeiculos { get; set; }
 }

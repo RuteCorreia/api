@@ -58,7 +58,11 @@ public class EmpresaRepository : IEmpresaRepository
         obj.Numero = obj.Numero;
         objeto.Estado = obj.Estado;
         objeto.Cidade = obj.Cidade;
-
+        objeto.FrotaRelatoriosAplicacaoIncendio = obj.FrotaRelatoriosAplicacaoIncendio;
+        objeto.Manutencao = obj.Manutencao;
+        objeto.QtdAeronaves = obj.QtdAeronaves;
+        objeto.QtdDrones = obj.QtdDrones;
+        objeto.QtdVeiculos = obj.QtdVeiculos;
 
         _contextBase.Empresa.Update(objeto);
         await _contextBase.SaveChangesAsync();

@@ -28,8 +28,11 @@ public class Empresa
         
     [Required]
     public string Cidade { get; set; }
-
     public byte[] Imagem { get; set; }
 
-
+    public bool Manutencao { get; set; }
+    public bool FrotaRelatoriosAplicacaoIncendio { get; set; }
+    public int QtdAeronaves { get; set; }
+    public int QtdDrones { get; set; }
+    public int QtdVeiculos { get; set; }
 }
