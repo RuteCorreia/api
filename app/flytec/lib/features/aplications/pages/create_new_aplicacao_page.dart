@@ -510,7 +510,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
                                             scrollTheList: true,
-                                            scrollToIndex: 19,
+                                            scrollToIndex: 0,
                                             onChangedSpeedWind: (value) {
                                               setState(() {
                                                 _speedWindInitial = value;
@@ -540,7 +540,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
                                             scrollTheList: true,
-                                            scrollToIndex: 19,
+                                            scrollToIndex: 0,
                                             onChangedSpeedWind: (value) {
                                               setState(() {
                                                 _speedWindFinal = value;
