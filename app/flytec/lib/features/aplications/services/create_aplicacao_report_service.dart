@@ -31,13 +31,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
     String? dataContratante =
         "${dateTimeContratante?.day}/${dateTimeContratante?.month}/${dateTimeContratante?.year}";
 
-    final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao?.aplicacoes?.first != null
         ? aplicacao.relatorioAplicacao?.aplicacoes?.first
         : null;
-    final aplicacoes02 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes02 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao!.aplicacoes!.length > 1 &&
+            aplicacao.relatorioAplicacao?.aplicacoes?[1] != null
         ? aplicacao.relatorioAplicacao?.aplicacoes![1]
         : null;
-    final aplicacoes03 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes03 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao!.aplicacoes!.length > 2 &&
+            aplicacao.relatorioAplicacao?.aplicacoes?[2] != null
         ? aplicacao.relatorioAplicacao?.aplicacoes![2]
         : null;
 
