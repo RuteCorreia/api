@@ -1468,7 +1468,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Inicial: ${aplicacoes01 != null ? aplicacoes01.horaInicio : ''}',
+                        'Inicial: ${aplicacoes01 != null ? aplicacoes01.horimetroInicial : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1477,7 +1477,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Final:  ${aplicacoes01 != null ? aplicacoes01.horaFinal : ''}',
+                        'Final:  ${aplicacoes03 != null ? aplicacoes03.horimetroFinal : aplicacoes02 != null ? aplicacoes02.horimetroFinal : aplicacoes01 != null ? aplicacoes01.horimetroFinal : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
