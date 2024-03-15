@@ -45,6 +45,8 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
     return DateTime.fromMillisecondsSinceEpoch(epoch!);
   }
 
+  bool get _aplicationIsSizeMax => _aplicacoes.length < 3; 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +76,8 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
                 ),
               ),
       ),
-      floatingActionButton: FloatingActionButton(
+        floatingActionButton: _aplicationIsSizeMax
+            ? FloatingActionButton(
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateNewAplicacaoPages(
@@ -89,7 +92,8 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
           Icons.add,
           color: Colors.white,
         ),
-      ),
+              )
+            : null
     );
   }
 }
