@@ -1,12 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Buffers.Text;
-using System.Collections;
-using System.Web;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WebApi.Controllers.APIs;
 
@@ -68,22 +63,22 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult> Add([FromBody] EmpresaViewModel obj)
+    public async Task<ActionResult> Add([FromBody] EmpresaViewModel empresaViewModel)
     {
         try
         {
-            if(!string.IsNullOrEmpty(obj.ImagemBase64))
+            if(!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
             {
-                string[] parts = obj.ImagemBase64.Split(',');
+                string[] parts = empresaViewModel.ImagemBase64.Split(',');
                 string decodedBase64String = parts[1];
 
                 byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                obj.Imagem = imageDataBytes;
+                empresaViewModel.Imagem = imageDataBytes;
             }
 
             if (ModelState.IsValid)
             {
-                await _empresaService.AddAsync(obj);
+                await _empresaService.AddAsync(empresaViewModel);
                 return Ok();
             }
 
@@ -96,26 +91,26 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] EmpresaViewModel obj)
+    public async Task<ActionResult> Update(int id, [FromBody] EmpresaViewModel empresaViewModel)
     {
         try
         {
-            if (!string.IsNullOrEmpty(obj.ImagemBase64))
+            if (!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
             {
-                string[] parts = obj.ImagemBase64.Split(',');
+                string[] parts = empresaViewModel.ImagemBase64.Split(',');
                 string decodedBase64String = parts[1];
 
                 byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                obj.Imagem = imageDataBytes;
+                empresaViewModel.Imagem = imageDataBytes;
             }
             if (ModelState.IsValid)
             {
                 var objeto = await _empresaService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    obj.IdEmpresa = objeto.IdEmpresa;
+                    empresaViewModel.IdEmpresa = objeto.IdEmpresa;
 
-                    await _empresaService.UpdateAsync(obj);
+                    await _empresaService.UpdateAsync(empresaViewModel);
                     return Ok();
                 }
                 else

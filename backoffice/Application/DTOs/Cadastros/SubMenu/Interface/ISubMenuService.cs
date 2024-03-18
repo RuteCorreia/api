@@ -10,7 +10,7 @@ namespace Application.DTOs.Cadastros.SubMenu.Interface
 {
     public interface ISubMenuService
     {
-        Task<IEnumerable<SubMenuViewModel>> GetAllAsync();
+        IEnumerable<SubMenuViewModel> GetAllAsync();
 
         Task<SubMenuViewModel> GetByIdAsync(int id);
 

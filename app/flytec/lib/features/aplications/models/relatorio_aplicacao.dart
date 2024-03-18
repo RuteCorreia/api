@@ -54,22 +54,21 @@ class RelatorioAplicacao {
   }
 
   factory RelatorioAplicacao.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return RelatorioAplicacao();
     return RelatorioAplicacao(
-      cultura: json['cultura'],
-      produtoAplicado: json['produtoAplicado'],
-      dosagem: json['dosagem'],
-      unidadeDosagem: json['unidadeDosagem'],
-      volumeAplicacao: json['volumeAplicacao'],
-      unidadeVolumeAplicacao: json['unidadeVolumeAplicacao'],
-      totalAreaAplicada: json['totalAreaAplicada'],
-      localizacaoPistaCodigoICAO: json['localizacaoPistaCodigoICAO'],
-      lat: json['lat'],
-      long: json['long'],
-      densidade: json['densidade'],
-      observacoes: json['observacoes'],
-      relatorioDGPS: json['relatorioDGPS'],
-      id: json['id'],
+      cultura: json?['cultura'] ?? '',
+      produtoAplicado: json?['produtoAplicado'] ?? '',
+      dosagem: json?['dosagem'] ?? '',
+      unidadeDosagem: json?['unidadeDosagem'] ?? '',
+      volumeAplicacao: json?['volumeAplicacao'] ?? '',
+      unidadeVolumeAplicacao: json?['unidadeVolumeAplicacao'] ?? '',
+      totalAreaAplicada: json?['totalAreaAplicada'] ?? '',
+      localizacaoPistaCodigoICAO: json?['localizacaoPistaCodigoICAO'] ?? '',
+      lat: json?['lat'] ?? '',
+      long: json?['long'] ?? '',
+      densidade: json?['densidade'] ?? '',
+      observacoes: json?['observacoes'] ?? '',
+      relatorioDGPS: json?['relatorioDGPS'] ?? '',
+      id: json?['id'] ?? 0,
     );
   }
 }

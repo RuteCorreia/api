@@ -14,6 +14,8 @@ class CaracteristicasProdutoAplicado {
   String? unidadeDoseProdutoHectare;
   String? adjuvante;
   String? tipoServico;
+  String? numeroReceituarioAgronomico;
+  String? dataEmissao;
   int? id;
 
   CaracteristicasProdutoAplicado({
@@ -28,6 +30,8 @@ class CaracteristicasProdutoAplicado {
     this.unidadeDoseProdutoHectare,
     this.adjuvante,
     this.tipoServico,
+    this.numeroReceituarioAgronomico,
+    this.dataEmissao,
     this.id,
   });
 
@@ -44,24 +48,27 @@ class CaracteristicasProdutoAplicado {
       'unidadeDoseProdutoHectare': unidadeDoseProdutoHectare,
       'adjuvante': adjuvante,
       'tipoServico': tipoServico,
+      'dataEmissao': dataEmissao,
+      'numeroReceituarioAgronomico': numeroReceituarioAgronomico,
     };
   }
 
   factory CaracteristicasProdutoAplicado.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return CaracteristicasProdutoAplicado();
     return CaracteristicasProdutoAplicado(
-      cultura: json['cultura'],
-      receiturarioAgronomico: json['receiturarioAgronomico'],
-      nomeProduto: json['nomeProduto'],
-      classificacaoToxicologica: json['classificacaoToxicologica'],
-      classe: json['classe'],
-      tipoFormulacao: json['tipoFormulacao'],
-      alvoBiologico: json['alvoBiologico'],
-      doseProdutoHectare: json['doseProdutoHectare'],
-      unidadeDoseProdutoHectare: json['unidadeDoseProdutoHectare'],
-      adjuvante: json['adjuvante'],
-      tipoServico: json['tipoServico'],
-      id: json['id'],
+      cultura: json?['cultura'] ?? '',
+      receiturarioAgronomico: json?['receiturarioAgronomico'],
+      nomeProduto: json?['nomeProduto'] ?? '',
+      classificacaoToxicologica: json?['classificacaoToxicologica'] ?? '',
+      classe: json?['classe'] ?? '',
+      tipoFormulacao: json?['tipoFormulacao'] ?? '',
+      alvoBiologico: json?['alvoBiologico'] ?? '',
+      doseProdutoHectare: json?['doseProdutoHectare'] ?? '',
+      unidadeDoseProdutoHectare: json?['unidadeDoseProdutoHectare'] ?? '',
+      adjuvante: json?['adjuvante'] ?? '',
+      tipoServico: json?['tipoServico'] ?? '',
+      numeroReceituarioAgronomico: json?['numeroReceituarioAgronomico'] ?? '',
+      dataEmissao: json?['dataEmissao'] ?? '',
+      id: json?['id'] ?? 0,
     );
   }
 

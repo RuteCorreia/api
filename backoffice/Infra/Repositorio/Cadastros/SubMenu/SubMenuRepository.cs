@@ -35,9 +35,9 @@ namespace Infra.Repositorio.Cadastros.SubMenu
             }
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.SubMenu.SubMenu>> GetAllAsync()
+        public IEnumerable<Domain.Entidades.Cadastros.SubMenu.SubMenu> GetAllAsync()
         {
-            var entities = await _contextBase.SubMenu.ToListAsync();
+            var entities = _contextBase.SubMenu.ToList();
             return entities;
         }
 

@@ -21,12 +21,14 @@ public class UserAuthService : IUserAuthService
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IConfiguration _config;
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
     private readonly IMapper _mapper;
     public UserAuthService(
         UserManager<IdentityUser> userManager, 
         RoleManager<IdentityRole> roleManager,
         IConfiguration config, 
         IUsuarioRepository usuarioRepository,
+        IUsuarioCredencialRepository usuarioCredencialRepository,
         IMapper mapper
         )
     {
@@ -34,6 +36,7 @@ public class UserAuthService : IUserAuthService
         _roleManager = roleManager;
         _config = config;
         _usuarioRepository = usuarioRepository;
+        _usuarioCredencialRepository = usuarioCredencialRepository;
         _mapper = mapper;
     }
 
@@ -80,7 +83,7 @@ public class UserAuthService : IUserAuthService
             if (!identityResult.Succeeded)
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
 
-            var roleListAsString = request.Role.Select(r => r.ToString());
+            var roleListAsString = request.Funcoes.Select(r => r.Funcao.ToString());
             foreach (var role in roleListAsString)
             {
                 var roleExists = await _roleManager.RoleExistsAsync(role);
@@ -97,6 +100,7 @@ public class UserAuthService : IUserAuthService
 
             var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
             await CreateUser(request, identityUser, loggedUserTblUsuario.IdEmpresa);
+            await CreateUserCredencial(identityUser, request.Funcoes);
 
             return (true, resultMsg.Append("Usuário criado com sucesso").ToString());
         }
@@ -119,11 +123,23 @@ public class UserAuthService : IUserAuthService
         await _usuarioRepository.AddAsync(usuario);
     }
 
-    private async Task CreateUserCredencial(IdentityUser user, IEnumerable<ERole> roles, IEnumerable<string> credencial)
+    private async Task CreateUserCredencial(IdentityUser user, IEnumerable<RoleObject> roles)
     {
         var usuario = await _usuarioRepository.GetByUserIdAsync(user.Id);
-        //CONTINUAR DAQUI
-        //var listToCreate = Enumerable.Empty<>
+        var list = Enumerable.Empty<UsuarioCredencial>();
+        foreach(var role in roles)
+        {
+            var obj = new UsuarioCredencial
+            {
+                IdUsuario = usuario.Id,
+                Credencial = role.Credencial,
+                Funcao = role.Funcao
+            };
+
+            list = list.Concat(new[] { obj });
+        }
+
+        await _usuarioCredencialRepository.AddListAsync(list);
     }
 
     private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
@@ -178,7 +194,6 @@ public class UserAuthService : IUserAuthService
     {
         var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
         var users = await _usuarioRepository.GetAllAsync(loggedUserTblUsuario.IdEmpresa);
-        var viewModel = _mapper.Map<IEnumerable<UserListViewModel>>(users);
         return _mapper.Map<IEnumerable<UserListViewModel>>(users);
     }
 
@@ -197,7 +212,10 @@ public class UserAuthService : IUserAuthService
     public async Task<UserDetailViewModel> GetUserByIdAsync(string id)
     {
         var obj = await _usuarioRepository.GetUserByIdAsync(id);
-        return _mapper.Map<UserDetailViewModel>(obj);
+        var mapObjUsuario = _mapper.Map<UserDetailViewModel>(obj);
+        var usuarioCredencialList = await _usuarioCredencialRepository.GetUsuarioCredencialsAsync(obj.Id);
+        mapObjUsuario.Funcoes = _mapper.Map<IEnumerable<RoleObject>>(usuarioCredencialList);
+        return mapObjUsuario;
     } 
    
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
@@ -245,16 +263,19 @@ public class UserAuthService : IUserAuthService
                     }
                 }
 
-                var requestRole = request.Funcao.ToString();
-                if (!identityUserRoles.Contains(requestRole))
+                var requestRole = request.Funcoes.Select(r => r.Funcao.ToString());
+                var rolesNotInIdentity = requestRole.Except(identityUserRoles);
+                if (rolesNotInIdentity.Any())
                 {
-;                   var roleExists = await _roleManager.RoleExistsAsync(requestRole);
-                    if(!roleExists)
+                    foreach (var role in rolesNotInIdentity)
                     {
-                        await CreateRoleAsync(requestRole);
+                        var roleExists = await _roleManager.RoleExistsAsync(role);
+                        if (!roleExists)
+                            await CreateRoleAsync(role);
                     }
+
                     await _userManager.RemoveFromRolesAsync(identityUser, identityUserRoles);
-                    var identityRoleResult = await _userManager.AddToRoleAsync(identityUser, requestRole);
+                    var identityRoleResult = await _userManager.AddToRolesAsync(identityUser, requestRole);
                     if (!identityRoleResult.Succeeded)
                     {
                         resultMsg.Append(GetIdentityResultErrors(identityRoleResult));
@@ -268,6 +289,8 @@ public class UserAuthService : IUserAuthService
                     userToUpdate.Email = request.Email;
                     userToUpdate.Telefone = request.Telefone;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
+                    await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToUpdate.Id);
+                    await CreateUserCredencial(identityUser, request.Funcoes);
                     resultMsg.Append("Sucesso na atualização do usuário");
                     return (true, resultMsg.ToString());
                 }
@@ -327,5 +350,23 @@ public class UserAuthService : IUserAuthService
         }
 
         return (false, resultMsg.ToString());
+    }
+
+    public async Task<IEnumerable<RoleObject>> GetUserRolesAsync(string id)
+    {
+        var userRoles = await _usuarioCredencialRepository.GetUsuarioCredencialsAsync(Guid.Parse(id));
+        var returnList = Enumerable.Empty<RoleObject>();
+        foreach(var item in userRoles)
+        {
+            var obj = new RoleObject
+            {
+                Funcao = item.Funcao,
+                Credencial = item.Credencial
+            };
+
+            returnList = returnList.Concat(new[] { obj });
+        }
+
+        return returnList;
     }
 }

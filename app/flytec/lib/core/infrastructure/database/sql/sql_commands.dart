@@ -55,7 +55,9 @@ CREATE TABLE CaracteristicasProdutoAplicado (
     doseProdutoHectare TEXT,
     unidadeDoseProdutoHectare TEXT,
     adjuvante TEXT,
-    tipoServico TEXT
+    tipoServico TEXT,
+    numeroReceituarioAgronomico TEXT,
+    dataEmissao TEXT
 )
 ''';
 static String createRecomendacoesTecnicasTable = '''

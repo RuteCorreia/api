@@ -31,15 +31,14 @@ class IdentificacaoAreaTratada {
   }
 
   factory IdentificacaoAreaTratada.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return IdentificacaoAreaTratada();
     return IdentificacaoAreaTratada(
-      uf: json['uf'],
-      cidade: json['cidade'],
-      localizacao: json['localizacao'],
-      cultura: json['cultura'],
-      extensao: json['extensao'],
-      croquiArea: json['croquiArea'],
-      id: json['id'],
+      uf: json?['uf'] ?? '',
+      cidade: json?['cidade'] ?? '',
+      localizacao: json?['localizacao'] ?? '',
+      cultura: json?['cultura'] ?? '',
+      extensao: json?['extensao'] ?? '',
+      croquiArea: json?['croquiArea'],
+      id: json?['id'] ?? 0,
     );
   }
 }

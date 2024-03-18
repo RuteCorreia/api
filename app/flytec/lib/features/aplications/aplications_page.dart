@@ -6,10 +6,10 @@ import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
 import 'package:flytec/features/aplications/pages/create_aplication_page.dart';
 
 class AplicationsPage extends StatefulWidget {
-  final ReportAplicationController _reportAplicationController;
+  final ReportAplicationController? _reportAplicationController;
   const AplicationsPage(
       {super.key,
-      required ReportAplicationController reportAplicationController})
+      required ReportAplicationController? reportAplicationController})
       : _reportAplicationController = reportAplicationController;
 
   @override
@@ -20,7 +20,9 @@ class _AplicationsPageState extends State<AplicationsPage> {
   final ScrollController _scrollController = ScrollController();
 
   void _updateView() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -35,12 +37,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          widget._reportAplicationController.setListRelatorioAplicacao(
-              widget._reportAplicationController.listaAplicacao);
+          widget._reportAplicationController?.setListRelatorioAplicacao(
+              widget._reportAplicationController?.listaAplicacao);
           setState(() {});
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateAplicationPage(
-              reportAplicationController: widget._reportAplicationController,
+              reportAplicationController: widget._reportAplicationController!,
               updateView: _updateView,
             );
           }));
@@ -49,12 +51,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       body: Builder(
         builder: (context) {
-          if (widget._reportAplicationController.listaAplicacao == null) {
+          if (widget._reportAplicationController?.listaAplicacao == null) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (widget._reportAplicationController.listaAplicacao!.isEmpty) {
+          if (widget._reportAplicationController!.listaAplicacao!.isEmpty) {
             return const Align(
               alignment: Alignment.center,
               child: Text(
@@ -78,7 +80,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                     children: [
                       ReportDashBoardCounter(
                         text: "Enviado",
-                        value: widget._reportAplicationController
+                        value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Enviado)
                             .toString(),
@@ -86,7 +88,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Pronto",
-                        value: widget._reportAplicationController
+                        value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Pronto)
                             .toString(),
@@ -94,7 +96,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Incompleto",
-                        value: widget._reportAplicationController
+                        value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.Incompleto)
                             .toString(),
@@ -102,7 +104,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       ),
                       ReportDashBoardCounter(
                         text: "Não enviado",
-                        value: widget._reportAplicationController
+                        value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
                                 ReportDashBoardState.NaoEnviado)
                             .toString(),
@@ -115,12 +117,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       controller: _scrollController,
                       shrinkWrap: true,
                       itemCount: widget
-                          ._reportAplicationController.listaAplicacao!.length,
+                          ._reportAplicationController?.listaAplicacao!.length,
                       reverse: true,
                       itemBuilder: (context, index) {
                         return ReportCardAplication(
                             reportAplicationController:
-                                widget._reportAplicationController,
+                                widget._reportAplicationController!,
                             index: index);
                       })
                 ],

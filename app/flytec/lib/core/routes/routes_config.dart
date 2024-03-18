@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flytec/features/aplications/aplications_page.dart';
+import 'package:flytec/features/aplications/pages/report_aplications_page.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
@@ -82,10 +85,17 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplications',
           builder: (BuildContext context, GoRouterState state) {
-            final extra = state.extra as Map<String, dynamic>;
+            final extra = state.extra as Map<String, dynamic>?;
             return AplicationsPage(
-              reportAplicationController: extra['reportAplicationController'],
+              reportAplicationController: extra?['reportAplicationController'],
             );
+          },
+        ),
+        GoRoute(
+          path: 'reportPage',
+          builder: (BuildContext context, GoRouterState state) {
+            File file = state.extra as File;
+            return ReportAplicationsPage(report: file);
           },
         ),
       ],

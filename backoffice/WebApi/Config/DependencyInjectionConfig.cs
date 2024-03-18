@@ -272,6 +272,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IMenuUsuarioRepository, MenuUsuarioRepository>();
         services.AddScoped<IComponenteRepository, ComponenteRepository>();
         services.AddScoped<IManutencaoAeronaveRepository, ManutencaoAeronaveRepository>();
+        services.AddScoped<IUsuarioCredencialRepository, UsuarioCredencialRepository>();
 
         #endregion
 

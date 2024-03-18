@@ -58,8 +58,12 @@ class Util {
                 onClick: () async {
                   try {
                     final XFile? image = await _imagePicker.pickImage(
-                        source: ImageSource.gallery);
+                        source: ImageSource.gallery,
+                        imageQuality: 65,
+                        maxHeight: 800,
+                        maxWidth: 800);
                     pathImage = image!.path;
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                     Util.toastSucesso('Imagem adicionada com sucesso');
                   } catch (e) {
@@ -74,8 +78,12 @@ class Util {
                 onClick: () async {
                   try {
                     final XFile? image = await _imagePicker.pickImage(
-                        source: ImageSource.camera);
+                        source: ImageSource.camera,
+                        imageQuality: 65,
+                        maxHeight: 800,
+                        maxWidth: 800);
                     pathImage = image!.path;
+                    // ignore: use_build_context_synchronously
                     Navigator.pop(context);
                     Util.toastSucesso('Imagem adicionada com sucesso');
                   } catch (e) {
