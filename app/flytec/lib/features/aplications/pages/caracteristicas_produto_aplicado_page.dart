@@ -63,7 +63,7 @@ class _CaracteristicasProdutoAplicadoPageState
         _tipoFormulacao = _caracteristicasProdutoAplicado!.tipoFormulacao;
         _alvoBiologico = _caracteristicasProdutoAplicado!.alvoBiologico;
         _doseProdutoComercialHectare = TextEditingController(
-            text: _caracteristicasProdutoAplicado!.doseProdutoHectare);
+            text: _caracteristicasProdutoAplicado?.doseProdutoHectare);
         _doseProdutoComercialHectareValue =
             _caracteristicasProdutoAplicado?.doseProdutoHectare;
         _unidadeDoseProdutoComercialHectare = _aplicacao
@@ -141,12 +141,13 @@ class _CaracteristicasProdutoAplicadoPageState
         dataEmissao: _dataSelecionada?.millisecondsSinceEpoch.toString(),
         numeroReceituarioAgronomico: _numeroReceituarioAgronomicoText,
         cultura: getIt<GlobalConfigVars>().selectedCultura,
-        doseProdutoHectare: _doseProdutoComercialHectare?.value.text,
+        doseProdutoHectare: _doseProdutoComercialHectareValue,
         nomeProduto: _nomeProduto,
         receiturarioAgronomico: _receituarioAgronomico,
         tipoFormulacao: _tipoFormulacao,
         tipoServico: _tipoServicoText,
         unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
+    setState(() {});
     if (_aplicacao.caracteristicasProdutoAplicado?.id == null) {
       int? idContratante = await widget._reportAplicationController
           .createElementInTable(_caracteristicasProdutoAplicado!.toMap(),
