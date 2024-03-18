@@ -14,12 +14,15 @@ import 'package:intl/intl.dart';
 class CreateNewAplicacaoPages extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
   final void Function(Aplicacoes newAplicacao) _onAplicacao;
+  final Aplicacoes? _aplicacoes;
   const CreateNewAplicacaoPages(
       {required ReportAplicationController reportAplicationController,
       required void Function(Aplicacoes newAplicacao) onAplicacao,
+      Aplicacoes? aplicacoes,
       super.key})
       : _reportAplicationController = reportAplicationController,
-        _onAplicacao = onAplicacao;
+        _onAplicacao = onAplicacao,
+        _aplicacoes = aplicacoes;
 
   @override
   State<CreateNewAplicacaoPages> createState() =>
@@ -97,6 +100,10 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
       ventoFinal: _speedWindFinal,
       imagemCondicaoClimatica: _imageData,
     );
+    if (widget._aplicacoes != null) {
+      widget._onAplicacao(aplicacoes);
+      return;
+    }
     int? idRelatorioAplicacao = _aplicacao.relatorioAplicacao?.id;
     if (idRelatorioAplicacao == null) return;
     final aplicacoesToMap = aplicacoes.toMap();
@@ -104,6 +111,37 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
     await widget._reportAplicationController
         .createElementInTable(aplicacoesToMap, 'Aplicacoes');
     widget._onAplicacao(aplicacoes);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget._aplicacoes != null) {
+      _speedWindInitial = widget._aplicacoes?.ventoInicial ?? '0 km/h';
+      _speedWindFinal = widget._aplicacoes?.ventoFinal ?? '0 km/h';
+      _temperatureSelectedInitial =
+          widget._aplicacoes?.temperaturaInicial ?? '20.0°C';
+      _temperatureSelectedFinal =
+          widget._aplicacoes?.temperaturaFinal ?? '20.0°C';
+      dataSelecionada = widget._aplicacoes?.dataAplicacao == null
+          ? DateTime.now()
+          : DateTime.fromMillisecondsSinceEpoch(
+              int.tryParse(widget._aplicacoes?.dataAplicacao ?? '') ?? 0);
+      _humiditySelectedInitial =
+          widget._aplicacoes?.umidadeRelativaArInicial ?? '+ 55%';
+      _humiditySelectedFinal =
+          widget._aplicacoes?.umidadeRelativaArFinal ?? '+ 55%';
+      _horimetroInicial.text = widget._aplicacoes?.horimetroInicial ?? '';
+      _horimetroFinal.text = widget._aplicacoes?.horimetroFinal ?? '';
+      _selectedTime = TimeOfDay(
+          hour: int.tryParse(widget._aplicacoes!.horaInicio!.split(':')[0])!,
+          minute: int.tryParse(widget._aplicacoes!.horaInicio!.split(':')[1])!);
+      _selectedTimeFinal = TimeOfDay(
+          hour: int.tryParse(widget._aplicacoes!.horaFinal!.split(':')[0])!,
+          minute: int.tryParse(widget._aplicacoes!.horaFinal!.split(':')[1])!);
+      _imageData = widget._aplicacoes?.imagemCondicaoClimatica;
+      setState(() {});
+    }
   }
 
   @override
@@ -510,7 +548,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
                                             scrollTheList: true,
-                                            scrollToIndex: 19,
+                                            scrollToIndex: 0,
                                             onChangedSpeedWind: (value) {
                                               setState(() {
                                                 _speedWindInitial = value;
@@ -540,7 +578,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                                         width: double.maxFinite,
                                         child: SpeedWindSelect(
                                             scrollTheList: true,
-                                            scrollToIndex: 19,
+                                            scrollToIndex: 0,
                                             onChangedSpeedWind: (value) {
                                               setState(() {
                                                 _speedWindFinal = value;

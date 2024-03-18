@@ -142,13 +142,15 @@ class ReportAplicationController {
   Future<List<Aplicacoes?>> getAplicacoesByRelatorioAplicacao(
       int? idAplicacao) async {
     if (idAplicacao == null) return [];
-
     final getAplicacoesByDb =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacoes");
     final listAplicacoes = getAplicacoesByDb.map((aplicacoes) {
-      if (aplicacoes['relatorioAplicacaoId'] != idAplicacao) return null;
+      if (aplicacoes['relatorioAplicacaoId'] != idAplicacao) {
+        return null;
+      }
       return Aplicacoes.fromJson(aplicacoes);
     }).toList();
+    listAplicacoes.removeWhere((element) => element == null);
     return listAplicacoes;
   }
 }

@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240313225052_v31")]
+    partial class v31
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -980,18 +983,12 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("FrotaRelatoriosAplicacaoIncendio")
-                        .HasColumnType("bit");
-
                     b.Property<byte[]>("Imagem")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("InscricaoEstadual")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Manutencao")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -1002,15 +999,6 @@ namespace Infra.Migrations
 
                     b.Property<string>("Numero")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QtdAeronaves")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QtdDrones")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QtdVeiculos")
-                        .HasColumnType("int");
 
                     b.Property<string>("RegistroMapa")
                         .HasColumnType("nvarchar(max)");

@@ -43,7 +43,9 @@ class _CaracteristicasProdutoAplicadoPageState
   String? _unidadeDoseProdutoComercialHectare = "";
   TextEditingController? _adjuvante;
   TextEditingController? _tipoServico;
+  String? _tipoServicoText = '';
   TextEditingController? _numeroReceituarioAgronomico;
+  String? _numeroReceituarioAgronomicoText = '';
   DateTime? _dataSelecionada;
 
   @override
@@ -70,12 +72,15 @@ class _CaracteristicasProdutoAplicadoPageState
             text: _caracteristicasProdutoAplicado!.adjuvante);
         _numeroReceituarioAgronomico = TextEditingController(
             text: _caracteristicasProdutoAplicado!.numeroReceituarioAgronomico);
+        _numeroReceituarioAgronomicoText =
+            _caracteristicasProdutoAplicado!.numeroReceituarioAgronomico;
         final epoch =
             int.tryParse(_caracteristicasProdutoAplicado!.dataEmissao!);
         _dataSelecionada =
             epoch != null ? DateTime.fromMillisecondsSinceEpoch(epoch) : null;
         _tipoServico = TextEditingController(
-            text: _caracteristicasProdutoAplicado!.tipoServico);
+            text: _caracteristicasProdutoAplicado?.tipoServico);
+        _tipoServicoText = _caracteristicasProdutoAplicado?.tipoServico;
         _receituarioAgronomico =
             _caracteristicasProdutoAplicado!.receiturarioAgronomico;
         setState(() {});
@@ -106,7 +111,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_unidadeDoseProdutoComercialHectare!.isEmpty) {
       Util.toastAlerta("Selecione a unidade da dosagem ");
       return false;
-    } else if (_tipoServico!.text.isEmpty) {
+    } else if (_tipoServicoText!.isEmpty) {
       Util.toastAlerta("Digite o tipo de serviço");
       return false;
     } else if (_receituarioAgronomico == null) {
@@ -115,7 +120,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_dataSelecionada == null) {
       Util.toastAlerta("Insira a data de emissão do receituário agronômico");
       return false;
-    } else if (_numeroReceituarioAgronomico == null) {
+    } else if (_numeroReceituarioAgronomicoText!.isEmpty) {
       Util.toastAlerta("Insira o número do receituário agronômico");
       return false;
     } else {
@@ -129,18 +134,18 @@ class _CaracteristicasProdutoAplicadoPageState
 
   Future<void> _caracteristicasProdutoAplicadoAction() async {
     _caracteristicasProdutoAplicado = CaracteristicasProdutoAplicado(
-        adjuvante: _adjuvante?.text,
+        adjuvante: _adjuvante?.value.text,
         alvoBiologico: _alvoBiologico,
         classificacaoToxicologica: _classificacaoToxicologica,
         classe: _classe,
         dataEmissao: _dataSelecionada?.millisecondsSinceEpoch.toString(),
-        numeroReceituarioAgronomico: _numeroReceituarioAgronomico?.text,
+        numeroReceituarioAgronomico: _numeroReceituarioAgronomicoText,
         cultura: getIt<GlobalConfigVars>().selectedCultura,
-        doseProdutoHectare: _doseProdutoComercialHectare?.text,
+        doseProdutoHectare: _doseProdutoComercialHectare?.value.text,
         nomeProduto: _nomeProduto,
         receiturarioAgronomico: _receituarioAgronomico,
         tipoFormulacao: _tipoFormulacao,
-        tipoServico: _tipoServico?.text,
+        tipoServico: _tipoServicoText,
         unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
     if (_aplicacao.caracteristicasProdutoAplicado?.id == null) {
       int? idContratante = await widget._reportAplicationController
@@ -305,7 +310,10 @@ class _CaracteristicasProdutoAplicadoPageState
               CustomTextField(
                 textEditingController: _numeroReceituarioAgronomico,
                 textInputType: TextInputType.number,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _numeroReceituarioAgronomicoText = value;
+                  setState(() {});
+                },
               ),
               const CustomText(text: 'Data emissão receituário agronômico'),
               const SizedBox(height: 10),
@@ -557,7 +565,10 @@ class _CaracteristicasProdutoAplicadoPageState
               const SizedBox(height: 10),
               CustomTextField(
                 textEditingController: _tipoServico,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _tipoServicoText = value;
+                  setState(() {});
+                },
               ),
               Center(
                 child: CustomButton(

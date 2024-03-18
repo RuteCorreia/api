@@ -33,18 +33,21 @@ class _AreaTratadaState extends State<AreaTratada> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       _obtainStatesOfBrazil();
       _obtainCitiesOfUfBrazil('SP');
       setState(() {});
-      if (_aplicacao.identificacaoAreaTratada?.extensao != null) {
+      if (_aplicacao.identificacaoAreaTratada?.id != null) {
         _areaTratada = _aplicacao.identificacaoAreaTratada!;
         _localizacaoController =
             TextEditingController(text: _areaTratada!.localizacao);
         _extensaoController =
             TextEditingController(text: _areaTratada!.extensao.toString());
-        _uf = _areaTratada!.uf!;
-        _cityOfUf = _areaTratada!.cidade!;
+        _uf = (_areaTratada!.uf!.isNotEmpty ? _areaTratada?.uf : 'SP')!;
+        _cityOfUf = _areaTratada?.cidade ?? '';
+        if (_cityOfUf.isEmpty) {
+          await _obtainCitiesOfUfBrazil(_uf);
+        }
         _imageData = _areaTratada!.croquiArea;
         setState(() {});
       }
@@ -93,7 +96,7 @@ class _AreaTratadaState extends State<AreaTratada> {
       await _updateIdentificacao(idAreaTratada!);
       return;
     }
-    int? idAreaTratada = _aplicacao.identificacaoAreaTratada!.id;
+    int? idAreaTratada = _aplicacao.identificacaoAreaTratada?.id;
     await widget._reportAplicationController.updateElementInTable(
         idAreaTratada!, _areaTratada!.toMap(), 'IdentificacaoAreaTratada');
     await _updateIdentificacao(idAreaTratada);

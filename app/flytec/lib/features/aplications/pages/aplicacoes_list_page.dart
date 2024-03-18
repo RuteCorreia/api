@@ -45,51 +45,85 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
     return DateTime.fromMillisecondsSinceEpoch(epoch!);
   }
 
+  bool get _aplicationIsSizeMax => _aplicacoes.length < 3;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text(
-          "Aplicações",
-          textAlign: TextAlign.center,
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text(
+            "Aplicações",
+            textAlign: TextAlign.center,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: _aplicacoes.isEmpty
-            ? const Center(child: Text("Não criou nenhum relatório"))
-            : SizedBox(
-                child: SingleChildScrollView(
-                  child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _aplicacoes.length,
-                      itemBuilder: (context, index) {
-                        return CustomCardButton(
-                          title:
-                              "Aplicação ${Util.getTodayDate(date: _dataByIndexAplicacao(index))} ",
-                          onTap: () {},
-                        );
-                      }),
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: _aplicacoes.isEmpty
+              ? const Center(child: Text("Não criou nenhum relatório"))
+              : SizedBox(
+                  child: SingleChildScrollView(
+                    child: ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: _aplicacoes.length,
+                        itemBuilder: (context, index) {
+                          return CustomCardButton(
+                            title:
+                                "Aplicação ${Util.getTodayDate(date: _dataByIndexAplicacao(index))} ",
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return CreateNewAplicacaoPages(
+                                  onAplicacao: (newAplicacao) async {
+                                    _aplicacoes = await widget
+                                        ._reportAplicationController
+                                        .getAplicacoesByRelatorioAplicacao(
+                                            _aplicacao.relatorioAplicacaoId);
+                                    setState(() {});
+                                    final updateAplicacao = newAplicacao;
+                                    updateAplicacao.id = _aplicacoes[index]?.id;
+
+                                    await widget._reportAplicationController
+                                        .updateElementInTable(
+                                            updateAplicacao.id!,
+                                            updateAplicacao.toMap(),
+                                            'Aplicacoes');
+
+                                    _aplicacoes = await widget
+                                        ._reportAplicationController
+                                        .getAplicacoesByRelatorioAplicacao(
+                                            _aplicacao.relatorioAplicacaoId);
+                                    setState(() {});
+                                  },
+                                  aplicacoes: _aplicacoes[index]!,
+                                  reportAplicationController:
+                                      widget._reportAplicationController,
+                                );
+                              }));
+                            },
+                          );
+                        }),
+                  ),
                 ),
-              ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return CreateNewAplicacaoPages(
-              onAplicacao: (newAplicacao) {
-                _newAplicacao(newAplicacao);
-              },
-              reportAplicationController: widget._reportAplicationController,
-            );
-          }));
-        },
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
         ),
-      ),
-    );
+        floatingActionButton: _aplicationIsSizeMax
+            ? FloatingActionButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return CreateNewAplicacaoPages(
+                      onAplicacao: (newAplicacao) {
+                        _newAplicacao(newAplicacao);
+                      },
+                      reportAplicationController:
+                          widget._reportAplicationController,
+                    );
+                  }));
+                },
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              )
+            : null);
   }
 }

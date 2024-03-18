@@ -609,109 +609,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                     )),
               ),
             ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: () {
-                    _observationTextField.clear();
-                    setState(() {});
-                  },
-                  child: Container(
-                    height: 40,
-                    padding: const EdgeInsets.only(
-                        top: 8, left: 20, right: 24, bottom: 8),
-                    decoration: ShapeDecoration(
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                            width: 2, color: Color(0xFFC21B43)),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 24,
-                          height: 24,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(),
-                          child: Stack(children: [
-                            SvgPicture.asset(
-                              "assets/images/error_icon.svg",
-                            )
-                          ]),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'LIMPAR',
-                          style: TextStyle(
-                            color: Color(0xFF636363),
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            height: 0.11,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () async {
-                    await _verifyFields();
-                  },
-                  child: Container(
-                    height: 40,
-                    padding: const EdgeInsets.only(
-                        top: 8, left: 20, right: 24, bottom: 8),
-                    decoration: ShapeDecoration(
-                      color: Colors.green,
-                      shape: RoundedRectangleBorder(
-                        side: const BorderSide(
-                          width: 2,
-                          color: Colors.green,
-                        ),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                          width: 24,
-                          height: 24,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: const BoxDecoration(),
-                          child: Stack(children: [
-                            SvgPicture.asset(
-                              "assets/images/checkbox.svg",
-                            )
-                          ]),
-                        ),
-                        const SizedBox(width: 8),
-                        const Text(
-                          'SALVAR',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            fontFamily: 'Inter',
-                            fontWeight: FontWeight.w700,
-                            height: 0.11,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
             const CustomText(
               text: "Relatório do DGPS (Log’s)",
             ),
@@ -737,21 +634,59 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                     });
               },
             ),
-            Center(
-              child: CustomButton(
-                title: "APLICAÇÕES",
-                onClick: () async {
-                  await _relatorioAplicacaoAction();
-                  // ignore: use_build_context_synchronously
-                  await Navigator.push(context,
-                      MaterialPageRoute(builder: (context) {
-                    return AplicacoesListPage(
-                        reportAplicationController:
-                            widget._reportAplicationController);
-                  }));
-                },
-              ),
+            CustomButton(
+              title: "APLICAÇÕES",
+              onClick: () async {
+                await _relatorioAplicacaoAction();
+                // ignore: use_build_context_synchronously
+                await Navigator.push(context,
+                    MaterialPageRoute(builder: (context) {
+                  return AplicacoesListPage(
+                      reportAplicationController:
+                          widget._reportAplicationController);
+                }));
+              },
             ),
+            const SizedBox(height: 10),
+            InkWell(
+              onTap: () async {
+                await _verifyFields();
+              },
+              child: Container(
+                width: 270,
+                height: 45,
+                decoration: ShapeDecoration(
+                  color: const Color(0xFF00B45D),
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(
+                      width: 2,
+                      color: Colors.green,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/images/checkbox.svg",
+                    ),
+                    const SizedBox(width: 8),
+                    const Text(
+                      'SALVAR',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -279,6 +279,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,34 +316,54 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     ),
                   ],
                 ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      const Text("Kg/ha"),
-                      Checkbox(
-                          value: _unidade == "Kg/ha",
-                          onChanged: (value) {
-                            setState(() {
-                              _unidade = "Kg/ha";
-                            });
-                          }),
-                    ],
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 30),
+                    SizedBox(
+                      height: 50,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              const Text("Kg/ha",
+                                  style: TextStyle(fontSize: 14)),
+                              SizedBox(
+                                width: 35,
+                                child: Checkbox(
+                                    value: _unidade == "Kg/ha",
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _unidade = "Kg/ha";
+                                      });
+                                    }),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              const Text("L/ha",
+                                  style: TextStyle(fontSize: 14)),
+                              SizedBox(
+                                width: 35,
+                                child: Checkbox(
+                                    value: _unidade == "L/ha",
+                                    onChanged: (value) {
+                                      setState(() {
+                                        _unidade = "L/ha";
+                                      });
+                                    }),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    )
+                  ],
                 ),
-                Flexible(
-                  child: Row(
-                    children: [
-                      const Text("L/ha"),
-                      Checkbox(
-                          value: _unidade == "L/ha",
-                          onChanged: (value) {
-                            setState(() {
-                              _unidade = "L/ha";
-                            });
-                          }),
-                    ],
-                  ),
-                )
+                
               ],
             ),
             const SizedBox(height: 10),

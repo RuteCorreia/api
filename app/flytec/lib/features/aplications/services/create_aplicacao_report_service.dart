@@ -1,4 +1,3 @@
-
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:intl/intl.dart';
@@ -16,24 +15,34 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final pdf = pw.Document();
     final newRoman = pw.Font.times();
     final newRomanBold = pw.Font.timesBold();
-    final dateTimeNow = DateTime.now();
+    final epochDataEmissao = int.tryParse(
+        aplicacao.caracteristicasProdutoAplicado?.dataEmissao ?? '');
+    final dateDataEmissao = epochDataEmissao != null
+        ? DateTime.fromMillisecondsSinceEpoch(epochDataEmissao)
+        : null;
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    final dateTimeContratante = aplicacao.dadosResponsavel!.data != null
-        ? DateTime?.fromMillisecondsSinceEpoch(
-            int.tryParse(aplicacao.dadosResponsavel!.data!)!)
+    final epochContratante =
+        int.tryParse(aplicacao.dadosResponsavel?.data ?? '');
+    final dateTimeContratante = epochContratante != null
+        ? DateTime?.fromMillisecondsSinceEpoch(epochContratante)
         : null;
     String? dataContratante =
         "${dateTimeContratante?.day}/${dateTimeContratante?.month}/${dateTimeContratante?.year}";
 
-    final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao?.aplicacoes?.first != null
         ? aplicacao.relatorioAplicacao?.aplicacoes?.first
         : null;
-    final aplicacoes02 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes02 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao!.aplicacoes!.length > 1 &&
+            aplicacao.relatorioAplicacao?.aplicacoes?[1] != null
         ? aplicacao.relatorioAplicacao?.aplicacoes![1]
         : null;
-    final aplicacoes03 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty
+    final aplicacoes03 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
+            aplicacao.relatorioAplicacao!.aplicacoes!.length > 2 &&
+            aplicacao.relatorioAplicacao?.aplicacoes?[2] != null
         ? aplicacao.relatorioAplicacao?.aplicacoes![2]
         : null;
 
@@ -138,14 +147,16 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                           children: [
                                             pw.Text('N° '),
                                             pw.Text(
-                                                '${aplicacao.id?.toString().padLeft(4, '0')} ',
+                                                '${aplicacao.caracteristicasProdutoAplicado?.numeroReceituarioAgronomico?.toString().padLeft(4, '0') ?? ''} ',
                                                 style: const pw.TextStyle(
                                                   color: PdfColors.red,
                                                 )),
                                             pw.Text(' Data '),
-                                            pw.Text(DateFormat('dd/MM/yyyy')
-                                                .format(dateTimeNow)
-                                                .toString()),
+                                            pw.Text(dateDataEmissao != null
+                                                ? DateFormat('dd/MM/yyyy')
+                                                    .format(dateDataEmissao)
+                                                    .toString()
+                                                : ''),
                                           ])),
                                 ]),
                           )),
@@ -680,7 +691,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 const pw.EdgeInsets.only(right: 5, bottom: 5),
                             width: 180,
                             child: pw.Text(
-                                ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel!.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel!.data!)!)) : ''} ',
+                                ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel?.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel?.data ?? '') ?? DateTime.now().millisecondsSinceEpoch)) : ''} ',
                                 textAlign: pw.TextAlign.right,
                                 maxLines: 1,
                                 style: pw.TextStyle(
@@ -829,7 +840,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
+                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -844,7 +855,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                          "${aplicacao.relatorioAplicacao?.densidade}",
+                          aplicacao.relatorioAplicacao?.densidade ?? '',
                         ),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -1429,7 +1440,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO}',
+                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1457,7 +1468,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Inicial: ${aplicacoes01 != null ? aplicacoes01.horaInicio : ''}',
+                        'Inicial: ${aplicacoes01 != null ? aplicacoes01.horimetroInicial : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1466,7 +1477,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
-                        'Final:  ${aplicacoes01 != null ? aplicacoes01.horaFinal : ''}',
+                        'Final:  ${aplicacoes03 != null ? aplicacoes03.horimetroFinal : aplicacoes02 != null ? aplicacoes02.horimetroFinal : aplicacoes01 != null ? aplicacoes01.horimetroFinal : ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),
@@ -1484,7 +1495,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.centerLeft,
                     padding: const pw.EdgeInsets.only(left: 2),
                     child: pw.Text(
-                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes}',
+                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1493,7 +1504,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
-                        'Relatório DGPS (LOG\'s): ${aplicacao.relatorioAplicacao?.relatorioDGPS}',
+                        'Relatório DGPS (LOG\'s): ${aplicacao.relatorioAplicacao?.relatorioDGPS ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                 ]),

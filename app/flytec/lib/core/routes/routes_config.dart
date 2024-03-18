@@ -85,9 +85,9 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: 'aplications',
           builder: (BuildContext context, GoRouterState state) {
-            final extra = state.extra as Map<String, dynamic>;
+            final extra = state.extra as Map<String, dynamic>?;
             return AplicationsPage(
-              reportAplicationController: extra['reportAplicationController'],
+              reportAplicationController: extra?['reportAplicationController'],
             );
           },
         ),
