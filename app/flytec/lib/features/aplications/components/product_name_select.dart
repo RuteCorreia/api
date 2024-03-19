@@ -19,7 +19,7 @@ class ProductNameSelect extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
               child: ListView.builder(
-                itemCount: getIt<GlobalConfigVars>().produtos.length,
+                itemCount: getIt<GlobalConfigVars>().bulas.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => MaterialButton(
@@ -30,9 +30,9 @@ class ProductNameSelect extends StatelessWidget {
                     elevation: 0,
                     onPressed: () {
                       onChangedProductName(
-                          getIt<GlobalConfigVars>().produtos[index].nome!,
-                          CaracteristicasProdutoAplicado.fromProduto(
-                              getIt<GlobalConfigVars>().produtos[index]));
+                          getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
+                          CaracteristicasProdutoAplicado.fromBula(
+                              getIt<GlobalConfigVars>().bulas[index]));
                       Navigator.of(context).pop();
                     },
                     child: Align(
@@ -40,7 +40,7 @@ class ProductNameSelect extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              getIt<GlobalConfigVars>().produtos[index].nome!,
+                              getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
