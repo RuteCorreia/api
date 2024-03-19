@@ -17,11 +17,14 @@ import 'package:path_provider/path_provider.dart';
 class ReportCardAplication extends StatelessWidget {
   final ReportAplicationController _reportAplicationController;
   final int _index;
+  final VoidCallback _updateView;
   const ReportCardAplication(
       {super.key,
       required ReportAplicationController reportAplicationController,
+      required VoidCallback updateView,
       required int index})
       : _reportAplicationController = reportAplicationController,
+        _updateView = updateView,
         _index = index;
 
   Color get _getColorStateColor {
@@ -115,6 +118,9 @@ class ReportCardAplication extends StatelessWidget {
                   getIt<GlobalConfigVars>().selectedPilot =
                       _reportAplicationController
                           .listaAplicacao![_index].piloto!;
+                  _reportAplicationController.setUpdateUpdateView(() {
+                    _updateView();
+                  });
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return MenuAplicationPage(
                         reportAplicationController:

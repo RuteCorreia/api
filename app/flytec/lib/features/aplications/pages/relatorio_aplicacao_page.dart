@@ -69,7 +69,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         densidade: _densidadeController.text,
         observacoes: _observationTextField.text,
         relatorioDGPS: _selectedLog);
-    if (_aplicacao.relatorioAplicacao?.id == null) {
+    if (_aplicacao.relatorioAplicacao?.id == null ||
+        _aplicacao.relatorioAplicacao!.id! <= 0) {
       int? idRelatorioAplicacao = await widget._reportAplicationController
           .createElementInTable(
               _relatorioAplicacao!.toMap(), 'RelatorioAplicacao');

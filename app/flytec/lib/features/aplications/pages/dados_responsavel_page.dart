@@ -225,7 +225,8 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
         telefone: _telefone.text,
         assinaturaResponsavel: _signature);
 
-    if (_aplicacao.dadosResponsavel?.id == null) {
+    if (_aplicacao.dadosResponsavel?.id == null ||
+        _aplicacao.dadosResponsavel?.id == 0) {
       int? idDadosResponsavel = await widget._reportAplicationController
           .createElementInTable(_dadosResponsavel!.toMap(), 'DadosResponsavel');
       await widget._reportAplicationController.updateElementInTable(
