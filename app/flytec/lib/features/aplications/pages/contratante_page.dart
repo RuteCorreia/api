@@ -42,7 +42,7 @@ class _ContrantePageState extends State<ContrantePage> {
   }
 
   Future<void> _contratanteAction() async {
-    if (_aplicacao.contratante?.id == null) {
+    if (_aplicacao.contratante?.id == null || _aplicacao.contratante!.id! <= 0) {
       int? idContratante = await widget._reportAplicationController
           .createElementInTable(_selectedContratante!.toMap(), 'Contratante');
       await widget._reportAplicationController.updateElementInTable(
@@ -64,6 +64,7 @@ class _ContrantePageState extends State<ContrantePage> {
     setState(() {});
     _aplicacao.contratante = identificacaoContratante;
     widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
+    await widget._reportAplicationController.obtainReportsAplications();
     setState(() {});
   }
 

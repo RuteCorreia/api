@@ -86,7 +86,8 @@ class _ContratoPrestacaoServicoPageState
         executor: getIt<GlobalConfigVars>().selectedExecutor,
         nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
         unidadePreco: _precoUnidade);
-    if (_aplicacao.contratoPrestacaoServico?.id == null) {
+    if (_aplicacao.contratoPrestacaoServico?.id == null ||
+        _aplicacao.contratoPrestacaoServico!.id! <= 0) {
       int? idContratoPrestacaoServico = await widget._reportAplicationController
           .createElementInTable(
               _contratoPrestacaoServico!.toMap(), 'ContratoPrestacaoServico');
