@@ -32,7 +32,7 @@ class WeatherController {
     if (country.isEmpty) return null;
     try {
       final httpResponse = await http.get(Uri.parse(
-          '$_baseURLApi/current.json?key=$_tokenWeatherApi&q=$country&aqi=no'));
+          '$_baseURLApi/current.json?key=$_tokenWeatherApi&q=$country&aqi=no&lang=pt'));
       if (httpResponse.statusCode == 200) {
         return Weather.fromJson(jsonDecode(httpResponse.body));
       }
