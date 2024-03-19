@@ -49,21 +49,20 @@ class Aplicacoes {
   }
 
   factory Aplicacoes.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return Aplicacoes();
     return Aplicacoes(
-      dataAplicacao: json['dataAplicacao'],
-      horaInicio: json['horaInicio'],
-      horaFinal: json['horaFinal'],
-      horimetroInicial: json['horimetroInicial'],
-      horimetroFinal: json['horimetroFinal'],
-      imagemCondicaoClimatica: json['imagemCondicaoClimatica'],
-      temperaturaInicial: json['temperaturaInicial'],
-      temperaturaFinal: json['temperaturaFinal'],
-      umidadeRelativaArInicial: json['umidadeRelativaArInicial'],
-      umidadeRelativaArFinal: json['umidadeRelativaArFinal'],
-      ventoInicial: json['ventoInicial'],
-      ventoFinal: json['ventoFinal'],
-      id: json['id'],
+      dataAplicacao: json?['dataAplicacao'] ?? '',
+      horaInicio: json?['horaInicio'] ?? '',
+      horaFinal: json?['horaFinal'] ?? '',
+      horimetroInicial: json?['horimetroInicial'] ?? '',
+      horimetroFinal: json?['horimetroFinal'] ?? '',
+      imagemCondicaoClimatica: json?['imagemCondicaoClimatica'],
+      temperaturaInicial: json?['temperaturaInicial'] ?? '',
+      temperaturaFinal: json?['temperaturaFinal'] ?? '',
+      umidadeRelativaArInicial: json?['umidadeRelativaArInicial'] ?? '',
+      umidadeRelativaArFinal: json?['umidadeRelativaArFinal'] ?? '',
+      ventoInicial: json?['ventoInicial'] ?? '',
+      ventoFinal: json?['ventoFinal'] ?? '',
+      id: json?['id'] ?? 0,
     );
   }
 }

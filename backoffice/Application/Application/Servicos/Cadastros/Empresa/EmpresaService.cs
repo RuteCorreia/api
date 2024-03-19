@@ -28,9 +28,9 @@ public class EmpresaService : IEmpresaService
         return _mapper.Map<EmpresaViewModel>(obj);
     }
 
-    public async Task AddAsync(EmpresaViewModel obj)
+    public async Task AddAsync(EmpresaViewModel empresaViewModel)
     {
-        var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(obj);
+        var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(empresaViewModel);
         await _empresaRepository.AddAsync(mapEmpresa);
     }
 

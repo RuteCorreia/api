@@ -65,14 +65,14 @@ class Aplicacao {
 
   factory Aplicacao.fromJson(Map<String, dynamic> json) {
     return Aplicacao(
-        piloto: json['piloto'],
-        executor: json['executor'],
-        id: json['id'],
-        refUsuario: json['refUsuario'],
+        piloto: json['piloto'] ?? '',
+        executor: json['executor'] ?? '',
+        id: json['id'] ?? 0,
+        refUsuario: json['refUsuario'] ?? "'",
         state: ReportDashBoardState.values.firstWhere(
             (state) => state.index == json['state'],
             orElse: () => ReportDashBoardState.Incompleto),
-        data: json['data'],
+        data: json['data'] ?? '',
         contratanteId: json['contratante_id'],
         identificacaoAreaTratadaId: json['identificacaoAreaTratada_id'],
         caracteristicasProdutoAplicadoId:

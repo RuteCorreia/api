@@ -50,22 +50,21 @@ class RecomendacoesTecnicas{
   }
 
   factory RecomendacoesTecnicas.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return RecomendacoesTecnicas();
     return RecomendacoesTecnicas(
-      veiculante: json['veiculante'],
-      qtdVeiculante: json['qtdVeiculante'],
-      larguraFaixa: json['larguraFaixa'],
-      volumeAplicacao: json['volumeAplicacao'],
-      unidadevolumeAplicacao: json['unidadevolumeAplicacao'],
-      aeronave: json['aeronave'],
-      alturaVoo: json['alturaVoo'],
-      temperatura: json['temperatura'],
-      umidadeRelativaAr: json['umidadeRelativaAr'],
-      velocidadeVento: json['velocidadeVento'],
-      tipoProduto: json['tipoProduto'],
-      equipamento: json['equipamento'],
-      angulo: json['angulo'],
-      id: json['id'],
+      veiculante: json?['veiculante'] ?? '',
+      qtdVeiculante: json?['qtdVeiculante'] ?? '',
+      larguraFaixa: json?['larguraFaixa'] ?? '',
+      volumeAplicacao: json?['volumeAplicacao'] ?? '',
+      unidadevolumeAplicacao: json?['unidadevolumeAplicacao'] ?? '',
+      aeronave: json?['aeronave'] ?? '',
+      alturaVoo: json?['alturaVoo'] ?? '',
+      temperatura: json?['temperatura'] ?? '',
+      umidadeRelativaAr: json?['umidadeRelativaAr'] ?? '',
+      velocidadeVento: json?['velocidadeVento'] ?? '',
+      tipoProduto: json?['tipoProduto'] ?? '',
+      equipamento: json?['equipamento'] ?? '',
+      angulo: json?['angulo'] ?? '',
+      id: json?['id'] ?? 0,
     );
   }
 }

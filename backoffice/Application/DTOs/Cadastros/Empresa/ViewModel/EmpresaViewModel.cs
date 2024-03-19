@@ -22,6 +22,7 @@ public class EmpresaViewModel
     public string CNPJ { get; set; }
     public string? InscricaoEstadual { get; set; }
     public int? NrCDA { get; set; }
+    public string? CEP { get; set; }
     public string? Endereco { get; set; }
     public string? Numero { get; set; }
 
@@ -30,4 +31,16 @@ public class EmpresaViewModel
 
     [Required]
     public string Cidade { get; set; }
+
+    public bool? Manutencao { get; set; }
+    public bool? FrotaRelatoriosAplicacaoIncendio { get; set; }
+
+    [Required]
+    public int QtdAeronaves { get; set; }
+
+    [Required]
+    public int QtdDrones { get; set; }
+
+    [Required]
+    public int QtdVeiculos { get; set; }
 }

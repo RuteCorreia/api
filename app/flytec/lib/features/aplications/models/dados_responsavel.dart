@@ -34,16 +34,15 @@ class DadosResponsavel {
   }
 
   factory DadosResponsavel.fromJson(Map<String, dynamic>? json) {
-    if(json==null) return DadosResponsavel();
     return DadosResponsavel(
-      data: json['data'],
-      uf: json['uf'],
-      cidade: json['cidade'],
-      nomeCompleto: json['nomeCompleto'],
-      documento: json['documento'],
-      telefone: json['telefone'],
-      assinaturaResponsavel: json['assinaturaResponsavel'],
-      id: json['id'],
+      data: json?['data'] ?? '',
+      uf: json?['uf'] ?? '',
+      cidade: json?['cidade'] ?? '',
+      nomeCompleto: json?['nomeCompleto'] ?? '',
+      documento: json?['documento'] ?? '',
+      telefone: json?['telefone'] ?? '',
+      assinaturaResponsavel: json?['assinaturaResponsavel'],
+      id: json?['id'] ?? 0,
     );
   }
 }
