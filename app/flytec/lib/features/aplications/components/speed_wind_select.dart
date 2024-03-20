@@ -21,7 +21,7 @@ class _SpeedWindSelectState extends State<SpeedWindSelect> {
   void scrollToItem(int index) {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
-        index * 51, // Multiplica o índice pela altura do item
+        index * 38, // Multiplica o índice pela altura do item
         duration: const Duration(seconds: 1),
         curve: Curves.ease,
       );
@@ -48,26 +48,32 @@ class _SpeedWindSelectState extends State<SpeedWindSelect> {
         itemCount: _speeds.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
-        itemBuilder: (context, index) => MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-            padding: EdgeInsets.zero,
-            color: Colors.white,
-            elevation: 0,
-            onPressed: () {
-              widget.onChangedSpeedWind('${_speeds[index]} Km/h');
-              Navigator.of(context).pop();
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("${_speeds[index]} Km/h",
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600)),
-                ))),
+        itemBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical:4.0),
+          child: SizedBox(
+            height: 38,
+            child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
+                padding: EdgeInsets.zero,
+                color: Colors.white,
+                elevation: 0,
+                onPressed: () {
+                  widget.onChangedSpeedWind('${_speeds[index]} Km/h');
+                  Navigator.of(context).pop();
+                },
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("${_speeds[index]} Km/h",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                    ))),
+          ),
+        ),
       ),
     );
   }
