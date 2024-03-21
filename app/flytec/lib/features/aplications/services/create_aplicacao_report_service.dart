@@ -403,7 +403,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   width: 1.5, color: PdfColors.black),
                             ),
                           ),
-                          child: pw.Text('Quant/Ha',
+                          child: pw.Text('Quant/ha',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
@@ -962,7 +962,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 height: 17,
                                 width: 120,
                                 alignment: pw.Alignment.center,
-                                child: pw.Text('Temperatura C°',
+                                child: pw.Text('Temperatura °C',
                                     style: pw.TextStyle(
                                         fontSize: 12, font: newRoman))),
                             pw.Row(children: [
