@@ -17,7 +17,7 @@ import 'package:flytec/features/aplications/models/relatorio_aplicacao.dart';
 
 class ReportAplicationController {
   final DatabaseInstance _databaseInstance = RelatorioDatabaseInstance.instance;
-   VoidCallback? _updateView;
+  VoidCallback? _updateView;
   SQLDatabaseProvider get _sqlDatabaseProvider =>
       SQLDatabaseProvider(_databaseInstance);
   ReportAplicationController({required VoidCallback? updateView})
@@ -87,7 +87,8 @@ class ReportAplicationController {
           CaracteristicasProdutoAplicado.fromJson(
               getCaracteristicasProdutoAplicado);
       aplicacao.caracteristicasProdutoAplicado = caracteristicasProdutoAplicado;
-
+      getIt<GlobalConfigVars>().produtoAplicado =
+          caracteristicasProdutoAplicado;
       final getRecomendacoesTecnicas =
           await _sqlDatabaseProvider.obtainElementTableById(
               "RecomendacoesTecnicas", aplicacao.recomendacoesTecnicasId);
