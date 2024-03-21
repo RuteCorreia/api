@@ -325,7 +325,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   padding: const pw.EdgeInsets.only(
                                       left: 10, top: 2),
                                   child: pw.Text(
-                                      'Extensão ${aplicacao.identificacaoAreaTratada?.extensao ?? ''}h',
+                                      'Extensão ${aplicacao.identificacaoAreaTratada?.extensao ?? ''}ha',
                                       style: pw.TextStyle(
                                           fontSize: 11, font: newRoman)),
                                 ),
@@ -878,7 +878,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.totalAreaAplicada ?? ''}h"),
+                            " ${aplicacao.relatorioAplicacao?.totalAreaAplicada ?? ''}ha"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -1628,7 +1628,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     null)
                                   pw.Container(
                                     height: 22,
-                                    width: 110,
+                                    width: 100,
                                     child: pw.Image(
                                         pw.MemoryImage(
                                           aplicacao.dadosResponsavel!
