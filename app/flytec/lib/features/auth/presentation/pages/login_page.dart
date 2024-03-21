@@ -12,6 +12,8 @@ import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/controller/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
+import 'package:flytec/features/bulas/data/models/bula_model.dart';
+import 'package:flytec/features/bulas/domains/usecases/get_bula_usecase.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
@@ -162,6 +164,12 @@ class _LoginPageState extends State<LoginPage> {
                 value.fold((l) {}, (r) {
                   final tipos = r as List<TipoProdutoModel>;
                   getIt<GlobalConfigVars>().setTipoProdutos(data: tipos);
+                });
+              }),
+              getIt<GetBulasUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final bula = r as List<BulaModel>;
+                  getIt<GlobalConfigVars>().setBulas(data: bula);
                 });
               }),
             ]);

@@ -5,7 +5,9 @@ import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/aplications/data/models/clientes_model.dart';
+import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
+import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
@@ -25,6 +27,7 @@ class GlobalConfigVars {
   late List<AeroNaveModel> aeronaves = [];
   late List<EquipamentoModel> equipamentos = [];
   late List<TipoProdutoModel> tiposProdutos = [];
+  late List<BulaModel> bulas = [];
   late List<AlturaVooModel> alturaVoo = [];
 
   List<String> logs = [];
@@ -32,17 +35,23 @@ class GlobalConfigVars {
   String selectedPilot = "";
   String selectedExecutor = "";
   String selectedCultura = "";
+  CaracteristicasProdutoAplicado? produtoAplicado;
   String dgs = "";
 
   void setClientes({required List<ClientesModel>? clientesData}) {
     clientes = clientesData!;
   }
+
   void setEquipamentos({required List<EquipamentoModel>? data}) {
     equipamentos = data!;
   }
 
   void setAlturaVoo({required List<AlturaVooModel>? data}) {
     alturaVoo = data!;
+  }
+
+  void setBulas({required List<BulaModel>? data}) {
+    bulas = data!;
   }
 
   void setTipoProdutos({required List<TipoProdutoModel>? data}) {
@@ -93,6 +102,7 @@ class GlobalConfigVars {
       equipamentos = equipamentoModelFromJson(preloadJson["equipamentos"]);
       tiposProdutos = tipoProdutoModelFromJson(preloadJson["tipoprodutos"]);
       alturaVoo = alturaVooModelFromJson(preloadJson["alturavoo"]);
+      bulas = bulaModelFromJson(preloadJson["bulas"]);
 
       alvosBiologicos =
           alvoBiologicoModelFromJson(preloadJson["alvosBiologicos"]);
@@ -107,5 +117,6 @@ class GlobalConfigVars {
     selectedExecutor = "";
     selectedCultura = "";
     dgs = "";
+    produtoAplicado = null;
   }
 }

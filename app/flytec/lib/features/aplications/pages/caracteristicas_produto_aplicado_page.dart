@@ -56,11 +56,23 @@ class _CaracteristicasProdutoAplicadoPageState
       if (_aplicacao.caracteristicasProdutoAplicado?.id != null) {
         _caracteristicasProdutoAplicado =
             _aplicacao.caracteristicasProdutoAplicado;
-        _nomeProduto = _caracteristicasProdutoAplicado!.nomeProduto;
+        _nomeProduto = _caracteristicasProdutoAplicado!.nomeProduto != null &&
+                _caracteristicasProdutoAplicado!.nomeProduto!.isNotEmpty
+            ? _caracteristicasProdutoAplicado?.nomeProduto
+            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto??'';
         _classificacaoToxicologica = _aplicacao
             .caracteristicasProdutoAplicado!.classificacaoToxicologica;
         _classe = _caracteristicasProdutoAplicado!.classe;
         _tipoFormulacao = _caracteristicasProdutoAplicado!.tipoFormulacao;
+        if (_caracteristicasProdutoAplicado!.nomeProduto == null ||
+            _caracteristicasProdutoAplicado!.nomeProduto!.isEmpty) {
+          final produto = getIt<GlobalConfigVars>().produtoAplicado;
+          _nomeProduto = produto?.nomeProduto??'';
+          _classificacaoToxicologica =
+              produto?.classificacaoToxicologica?.toString()??'';
+          _classe = produto?.classe?.toString()??'';
+          _tipoFormulacao = produto?.tipoFormulacao?.toString()??'';
+        }
         _alvoBiologico = _caracteristicasProdutoAplicado!.alvoBiologico;
         _doseProdutoComercialHectare = TextEditingController(
             text: _caracteristicasProdutoAplicado?.doseProdutoHectare);
@@ -147,8 +159,10 @@ class _CaracteristicasProdutoAplicadoPageState
         tipoFormulacao: _tipoFormulacao,
         tipoServico: _tipoServicoText,
         unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
+    getIt<GlobalConfigVars>().produtoAplicado = _caracteristicasProdutoAplicado;
     setState(() {});
-    if (_aplicacao.caracteristicasProdutoAplicado?.id == null) {
+    if (_aplicacao.caracteristicasProdutoAplicado?.id == null ||
+        _aplicacao.caracteristicasProdutoAplicado?.id == 0) {
       int? idContratante = await widget._reportAplicationController
           .createElementInTable(_caracteristicasProdutoAplicado!.toMap(),
               'CaracteristicasProdutoAplicado');
@@ -359,6 +373,8 @@ class _CaracteristicasProdutoAplicadoPageState
                                   onChangedProductName: (name, produto) {
                                 setState(() {
                                   if (produto == null || name.isEmpty) return;
+                                  getIt<GlobalConfigVars>().produtoAplicado =
+                                      produto;
                                   _nomeProduto = name;
                                   _classificacaoToxicologica = produto
                                       .classificacaoToxicologica
