@@ -25,14 +25,19 @@ public class AeronaveRepository : IAeronaveRepository
         var entityToRemove = await GetByIdAsync(id);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
-            _contextBase.Remove(entityToRemove);
+            entityToRemove.Removido = true;
+            _contextBase.Aeronave.Update(entityToRemove);
             await _contextBase.SaveChangesAsync();
         }
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync()
     {
-        var entities = await _contextBase.Aeronave.ToListAsync();
+        var entities = await _contextBase.Aeronave
+            .AsNoTracking()
+            .Where(x => !x.Removido)
+            .ToListAsync();
+
         return entities;
     }
 
