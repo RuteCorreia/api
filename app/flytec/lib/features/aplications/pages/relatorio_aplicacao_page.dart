@@ -643,14 +643,15 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             CustomButton(
               title: "APLICAÇÕES",
               onClick: () async {
-                await _relatorioAplicacaoAction();
+                await _relatorioAplicacaoAction().then((value) async =>
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return AplicacoesListPage(
+                        idAplicacao: _aplicacao.relatorioAplicacao?.id,
+                          reportAplicationController:
+                              widget._reportAplicationController);
+                    })));
                 // ignore: use_build_context_synchronously
-                await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return AplicacoesListPage(
-                      reportAplicationController:
-                          widget._reportAplicationController);
-                }));
               },
             ),
             const SizedBox(height: 10),
