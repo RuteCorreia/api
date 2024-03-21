@@ -9,7 +9,6 @@ import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/contrato_prestacao_servico.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:intl/intl.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class ContratoPrestacaoServicoPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -33,12 +32,9 @@ class _ContratoPrestacaoServicoPageState
   final TextEditingController _precoController = TextEditingController();
   final TextEditingController _extensaoController = TextEditingController();
   final TextEditingController _valorTotalController = TextEditingController();
-  final TextEditingController _vencimentoController = TextEditingController();
+  DateTime? _vencimentoController;
   final TextEditingController _distancia = TextEditingController();
   String? _precoUnidade = "";
-
-  final _maskFormatter = MaskTextInputFormatter(
-      mask: '##/##/####', filter: {"#": RegExp(r'[0-9]')});
 
   String _changePrice() {
     final price = double.parse(_precoController.text
@@ -81,7 +77,7 @@ class _ContratoPrestacaoServicoPageState
         preco: _precoController.text,
         extensao: _extensaoController.text,
         valorTotal: _valorTotalController.text,
-        vencimento: _vencimentoController.text,
+        vencimento: _vencimentoController?.millisecondsSinceEpoch.toString(),
         distanciaPista: _distancia.text,
         executor: getIt<GlobalConfigVars>().selectedExecutor,
         nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
@@ -129,8 +125,10 @@ class _ContratoPrestacaoServicoPageState
         _extensaoController.text = _contratoPrestacaoServico?.extensao ?? "";
         _valorTotalController.text =
             _contratoPrestacaoServico?.valorTotal ?? "";
-        _vencimentoController.text =
-            _contratoPrestacaoServico?.vencimento ?? "";
+        final epoch = int.tryParse(_contratoPrestacaoServico!.vencimento!);
+        _vencimentoController =
+            epoch != null ? DateTime.fromMillisecondsSinceEpoch(epoch) : null;
+
         _precoUnidade = _contratoPrestacaoServico?.unidadePreco;
         setState(() {});
       }
@@ -246,14 +244,27 @@ class _ContratoPrestacaoServicoPageState
             const SizedBox(height: 10),
             const CustomText(text: 'Vencimento'),
             const SizedBox(height: 10),
-            CustomTextField(
-              onChanged: (value) {},
-              textEditingController: _vencimentoController,
-              textInputType: TextInputType.number,
-              formater: [
-                _maskFormatter,
-              ],
-              text: "DD/MM/YY",
+            CustomCombo(
+              selectedName: _vencimentoController == null
+                  ? "Selecione"
+                  : DateFormat('dd/MM/yyyy').format(_vencimentoController!),
+              onTap: () async {
+                final dataS = await showDatePicker(
+                  confirmText: "Selecionar data",
+                  cancelText: "Cancelar",
+                  helpText: "",
+                  context: context,
+                  //locale: const Locale("pt"),
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2024),
+                  lastDate: DateTime(2028),
+                );
+                Util.closeKeyBoard();
+
+                setState(() {
+                  _vencimentoController = dataS;
+                });
+              },
             ),
             const SizedBox(height: 10),
             const CustomText(text: 'Nome do piloto'),
