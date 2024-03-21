@@ -12,5 +12,6 @@ public class Aeronave
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }
+    public bool Removido { get; set; }
    
 }

@@ -85,7 +85,8 @@ class _AreaTratadaState extends State<AreaTratada> {
       cultura: getIt<GlobalConfigVars>().selectedCultura,
     );
 
-    if (_aplicacao.identificacaoAreaTratada?.id == null) {
+    if (_aplicacao.identificacaoAreaTratada?.id == null ||
+        _aplicacao.identificacaoAreaTratada!.id! <= 0) {
       int? idAreaTratada = await widget._reportAplicationController
           .createElementInTable(
               _areaTratada!.toMap(), 'IdentificacaoAreaTratada');

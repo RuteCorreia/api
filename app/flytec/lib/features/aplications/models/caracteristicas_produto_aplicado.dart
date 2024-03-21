@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/produto/data/models/produto_model.dart';
 
 class CaracteristicasProdutoAplicado {
@@ -79,5 +80,15 @@ class CaracteristicasProdutoAplicado {
         classe: produto.classe,
         tipoFormulacao: produto.tipoDeFormulacao,
         tipoServico: produto.tipoServico,
+      );
+
+  factory CaracteristicasProdutoAplicado.fromBula(BulaModel bulaModel) =>
+      CaracteristicasProdutoAplicado(
+        nomeProduto: bulaModel.nomeProduto,
+        classificacaoToxicologica:
+            bulaModel.idClassificacaoToxicologica.toString(),
+        classe: bulaModel.classe,
+        tipoFormulacao: bulaModel.tipoDeFormulacao,
+        tipoServico: bulaModel.idTipoDeServico.toString(),
       );
 }

@@ -121,6 +121,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
                       reverse: true,
                       itemBuilder: (context, index) {
                         return ReportCardAplication(
+                            updateView: _updateView,
                             reportAplicationController:
                                 widget._reportAplicationController!,
                             index: index);

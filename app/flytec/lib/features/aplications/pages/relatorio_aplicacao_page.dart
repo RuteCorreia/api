@@ -69,7 +69,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
         densidade: _densidadeController.text,
         observacoes: _observationTextField.text,
         relatorioDGPS: _selectedLog);
-    if (_aplicacao.relatorioAplicacao?.id == null) {
+    if (_aplicacao.relatorioAplicacao?.id == null ||
+        _aplicacao.relatorioAplicacao!.id! <= 0) {
       int? idRelatorioAplicacao = await widget._reportAplicationController
           .createElementInTable(
               _relatorioAplicacao!.toMap(), 'RelatorioAplicacao');
@@ -106,7 +107,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_aplicacao.relatorioAplicacao?.id != null) {
         _relatorioAplicacao = _aplicacao.relatorioAplicacao!;
-        _produtoSelecionado = _relatorioAplicacao!.produtoAplicado!;
+        _produtoSelecionado = (_relatorioAplicacao!.produtoAplicado != null &&
+                _relatorioAplicacao!.produtoAplicado!.isNotEmpty
+            ? _relatorioAplicacao?.produtoAplicado
+            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto)!;
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
         _dosagemUnidade = _relatorioAplicacao!.unidadeDosagem!;
         _selectedLog = _relatorioAplicacao!.relatorioDGPS!;
@@ -187,6 +191,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             child: ProductNameSelect(
                                 onChangedProductName: (value, produto) {
                               setState(() {
+                                getIt<GlobalConfigVars>().produtoAplicado =
+                                    produto;
                                 _produtoSelecionado = value;
                               });
                               Util.closeKeyBoard();
@@ -637,14 +643,15 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             CustomButton(
               title: "APLICAÇÕES",
               onClick: () async {
-                await _relatorioAplicacaoAction();
+                await _relatorioAplicacaoAction().then((value) async =>
+                    await Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return AplicacoesListPage(
+                        idAplicacao: _aplicacao.relatorioAplicacao?.id,
+                          reportAplicationController:
+                              widget._reportAplicationController);
+                    })));
                 // ignore: use_build_context_synchronously
-                await Navigator.push(context,
-                    MaterialPageRoute(builder: (context) {
-                  return AplicacoesListPage(
-                      reportAplicationController:
-                          widget._reportAplicationController);
-                }));
               },
             ),
             const SizedBox(height: 10),

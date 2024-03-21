@@ -27,5 +27,9 @@ namespace Helpers
         {
             return new IdentityError { Code = nameof(PasswordRequiresLower), Description = "A senha deve conter pelo menos um caracter em Caixa Baixa. Ex: Senha@123" };
         }
+        public override IdentityError DuplicateUserName(string userName)
+        {
+            return new IdentityError { Code = nameof(DuplicateUserName), Description = $"O nome de usuário '{userName}' já está em uso." };
+        }
     }
 }

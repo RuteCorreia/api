@@ -42,7 +42,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
   String _uf = 'SP';
-  late String _cityOfUf = '';
+  late String? _cityOfUf = '';
   final List<String> _citiesNamesUfBrazil = [];
   final TextEditingController _citySearchController = TextEditingController();
   final TextEditingController _nome = TextEditingController();
@@ -68,18 +68,21 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       _obtainStatesOfBrazil();
       _obtainCitiesOfUfBrazil('SP');
       setState(() {});
-      if (_aplicacao.dadosResponsavel?.data != null) {
+      if (_aplicacao.dadosResponsavel?.id != null) {
         _dadosResponsavel = _aplicacao.dadosResponsavel;
         int? epoch = int.tryParse(_dadosResponsavel!.data!);
         _dataSelecionada = epoch != null
             ? DateTime.fromMillisecondsSinceEpoch(epoch)
             : DateTime.now();
-        _uf = _dadosResponsavel!.uf!;
-        _cityOfUf = _dadosResponsavel!.cidade!;
+        _uf = (_dadosResponsavel!.uf!.isEmpty ? 'SP' : _dadosResponsavel?.uf)!;
+        _cityOfUf = _dadosResponsavel?.cidade;
+        if (_cityOfUf == null || _cityOfUf!.isEmpty) {
+          await _obtainCitiesOfUfBrazil(_uf);
+        }
         _nome.text = _dadosResponsavel!.nomeCompleto!;
         _documento.text = _dadosResponsavel!.documento!;
         _telefone.text = _dadosResponsavel!.telefone!;
@@ -225,7 +228,8 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
         telefone: _telefone.text,
         assinaturaResponsavel: _signature);
 
-    if (_aplicacao.dadosResponsavel?.id == null) {
+    if (_aplicacao.dadosResponsavel?.id == null ||
+        _aplicacao.dadosResponsavel?.id == 0) {
       int? idDadosResponsavel = await widget._reportAplicationController
           .createElementInTable(_dadosResponsavel!.toMap(), 'DadosResponsavel');
       await widget._reportAplicationController.updateElementInTable(
@@ -344,7 +348,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
                 Builder(
                   builder: (context) {
                     if (_citiesNamesUfBrazil.isNotEmpty &&
-                        _cityOfUf.isNotEmpty) {
+                        _cityOfUf!.isNotEmpty) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [

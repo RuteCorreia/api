@@ -127,6 +127,12 @@ class Condition {
         return "Neve leve com trovoadas";
       case "Moderate or heavy snow with thunder":
         return "Neve moderada ou intensa com trovoadas";
+      case "Patchy rain nearby":
+        return "Chuva irregular nas proximidades";
+      case "Patchy snow nearby":
+        return "Neve irregular nas proximidades";
+      case "Patchy sleet nearby":
+        return "Granizo irregular nas proximidades";  
       default:
         return text;
     }

@@ -100,7 +100,8 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
         larguraFaixa: _larguraDaFaixa.text,
         volumeAplicacao: _volumeDeAplicacao.text);
 
-    if (_aplicacao.recomendacoesTecnicas?.id == null) {
+    if (_aplicacao.recomendacoesTecnicas?.id == null ||
+        _aplicacao.recomendacoesTecnicas?.id == 0) {
       int? idRecomendacoesTecnicas = await widget._reportAplicationController
           .createElementInTable(
               _recomendacoesTecnicas!.toMap(), 'RecomendacoesTecnicas');

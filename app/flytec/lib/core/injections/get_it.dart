@@ -14,6 +14,10 @@ import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologic
 import 'package:flytec/features/aplications/data/datasource/clientes_datasource.dart';
 import 'package:flytec/features/aplications/services/clientes_service.dart';
 import 'package:flytec/features/auth/domain/usecases/authentication_usecase.dart';
+import 'package:flytec/features/bulas/data/datasource/remote_bula_datasource.dart';
+import 'package:flytec/features/bulas/data/repository/bula_repository_impl.dart';
+import 'package:flytec/features/bulas/domains/repository/bula_repository.dart';
+import 'package:flytec/features/bulas/domains/usecases/get_bula_usecase.dart';
 import 'package:flytec/features/cultura/data/datasources/remote_piloto_data_source.dart';
 import 'package:flytec/features/cultura/data/repositories/authentication_repository_impl.dart';
 import 'package:flytec/features/cultura/domain/repositories/executor_repository.dart';
@@ -137,6 +141,12 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
+  getIt.registerLazySingleton<RemoteBulaDataSourceImpl>(
+    () => RemoteBulaDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<RemoteTipoProdutoDataSourceImpl>(
     () => RemoteTipoProdutoDataSourceImpl(
       client: getIt(),
@@ -182,6 +192,9 @@ void setup() async {
   getIt.registerLazySingleton<ITipoProdutoRepository>(
     () => TipoProdutoRepositoryImpl(datasource: getIt()),
   );
+   getIt.registerLazySingleton<IBulaRepository>(
+    () => BulaRepositoryImpl(remoteBulaDataSourceImpl: getIt()),
+  );
   getIt.registerLazySingleton<IAlturaVooRepository>(
     () => AlturaVooRepositoryImpl(datasource: getIt()),
   );
@@ -202,6 +215,7 @@ void setup() async {
   getIt.registerLazySingleton(() => GetVeiculanteUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAeroNaveUseCase(getIt()));
   getIt.registerLazySingleton(() => GetEquipamentoUseCase(getIt()));
+   getIt.registerLazySingleton(() => GetBulasUseCase(getIt()));
   getIt.registerLazySingleton(() => GetTipoProdutosUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAlturaVooUseCase(getIt()));
 }

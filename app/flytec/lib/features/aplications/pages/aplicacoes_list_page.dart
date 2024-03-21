@@ -7,11 +7,14 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/pages/create_new_aplicacao_page.dart';
 
 class AplicacoesListPage extends StatefulWidget {
+  final int? _idAplicacao;
   final ReportAplicationController _reportAplicationController;
   const AplicacoesListPage(
       {required ReportAplicationController reportAplicationController,
+      required int? idAplicacao,
       super.key})
-      : _reportAplicationController = reportAplicationController;
+      : _reportAplicationController = reportAplicationController,
+        _idAplicacao = idAplicacao;
 
   @override
   State<AplicacoesListPage> createState() => _AplicacoesListPageState();
@@ -27,6 +30,12 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (widget._idAplicacao != null && widget._idAplicacao! > 0) {
+        _aplicacoes = await widget._reportAplicationController
+            .getAplicacoesByRelatorioAplicacao(widget._idAplicacao!);
+        setState(() {});
+        return;
+      }
       _aplicacoes = await widget._reportAplicationController
           .getAplicacoesByRelatorioAplicacao(_aplicacao.relatorioAplicacaoId);
       setState(() {});
@@ -75,25 +84,31 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
                                   MaterialPageRoute(builder: (context) {
                                 return CreateNewAplicacaoPages(
                                   onAplicacao: (newAplicacao) async {
-                                    _aplicacoes = await widget
-                                        ._reportAplicationController
-                                        .getAplicacoesByRelatorioAplicacao(
-                                            _aplicacao.relatorioAplicacaoId);
-                                    setState(() {});
-                                    final updateAplicacao = newAplicacao;
-                                    updateAplicacao.id = _aplicacoes[index]?.id;
+                                    if (widget._idAplicacao != null &&
+                                        widget._idAplicacao! > 0) {
+                                      _aplicacoes = await widget
+                                          ._reportAplicationController
+                                          .getAplicacoesByRelatorioAplicacao(
+                                              widget._idAplicacao!);
+                                      setState(() {});
 
-                                    await widget._reportAplicationController
-                                        .updateElementInTable(
-                                            updateAplicacao.id!,
-                                            updateAplicacao.toMap(),
-                                            'Aplicacoes');
+                                      final updateAplicacao = newAplicacao;
+                                      updateAplicacao.id =
+                                          _aplicacoes[index]?.id;
 
-                                    _aplicacoes = await widget
-                                        ._reportAplicationController
-                                        .getAplicacoesByRelatorioAplicacao(
-                                            _aplicacao.relatorioAplicacaoId);
-                                    setState(() {});
+                                      await widget._reportAplicationController
+                                          .updateElementInTable(
+                                              updateAplicacao.id!,
+                                              updateAplicacao.toMap(),
+                                              'Aplicacoes');
+
+                                      _aplicacoes = await widget
+                                          ._reportAplicationController
+                                          .getAplicacoesByRelatorioAplicacao(
+                                              widget._idAplicacao);
+                                      setState(() {});
+                                      return;
+                                    }
                                   },
                                   aplicacoes: _aplicacoes[index]!,
                                   reportAplicationController:

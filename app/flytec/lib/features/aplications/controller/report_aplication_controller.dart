@@ -17,7 +17,7 @@ import 'package:flytec/features/aplications/models/relatorio_aplicacao.dart';
 
 class ReportAplicationController {
   final DatabaseInstance _databaseInstance = RelatorioDatabaseInstance.instance;
-  final VoidCallback? _updateView;
+   VoidCallback? _updateView;
   SQLDatabaseProvider get _sqlDatabaseProvider =>
       SQLDatabaseProvider(_databaseInstance);
   ReportAplicationController({required VoidCallback? updateView})
@@ -32,6 +32,10 @@ class ReportAplicationController {
   Aplicacao? get aplicacaoSelected => _aplicacaoSelected;
 
   VoidCallback? get updateView => _updateView;
+
+  void setUpdateUpdateView(VoidCallback updateView) {
+    _updateView = updateView;
+  }
 
   void setAplicacaoSelected(Aplicacao? aplicacao) {
     _aplicacaoSelected = aplicacao;

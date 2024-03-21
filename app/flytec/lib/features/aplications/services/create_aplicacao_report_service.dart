@@ -28,8 +28,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final dateTimeContratante = epochContratante != null
         ? DateTime?.fromMillisecondsSinceEpoch(epochContratante)
         : null;
-    String? dataContratante =
-        "${dateTimeContratante?.day}/${dateTimeContratante?.month}/${dateTimeContratante?.year}";
+    String? dataContratante = dateTimeContratante!=null ?
+        "${dateTimeContratante.day}/${dateTimeContratante.month}/${dateTimeContratante.year}":'';
+    final vencimentoEpoch =
+        int.tryParse(aplicacao.contratoPrestacaoServico?.vencimento ?? '');
+    final dataVencimentoContrato = vencimentoEpoch != null
+        ? DateTime.fromMillisecondsSinceEpoch(vencimentoEpoch)
+        : null;
+    String? vencimentoContrato =
+        "${dataVencimentoContrato?.day}/${dataVencimentoContrato?.month}/${dataVencimentoContrato?.year}";
 
     final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
             aplicacao.relatorioAplicacao?.aplicacoes?.first != null
@@ -318,7 +325,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   padding: const pw.EdgeInsets.only(
                                       left: 10, top: 2),
                                   child: pw.Text(
-                                      'Extensão ${aplicacao.identificacaoAreaTratada?.extensao ?? ''}Ha',
+                                      'Extensão ${aplicacao.identificacaoAreaTratada?.extensao ?? ''}ha',
                                       style: pw.TextStyle(
                                           fontSize: 11, font: newRoman)),
                                 ),
@@ -871,7 +878,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.totalAreaAplicada ?? ''}Ha"),
+                            " ${aplicacao.relatorioAplicacao?.totalAreaAplicada ?? ''}ha"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -1570,8 +1577,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.Container(
                                     height: 20,
                                     alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text(
-                                        '${aplicacao.contratoPrestacaoServico?.vencimento}',
+                                    child: pw.Text('$vencimentoContrato',
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -1622,7 +1628,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     null)
                                   pw.Container(
                                     height: 22,
-                                    width: 120,
+                                    width: 100,
                                     child: pw.Image(
                                         pw.MemoryImage(
                                           aplicacao.dadosResponsavel!

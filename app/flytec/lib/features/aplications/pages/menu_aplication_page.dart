@@ -41,6 +41,12 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
           "Planejamento \nOperacional de Aplicação Aérea",
           textAlign: TextAlign.center,
         ),
+        leading: IconButton(
+            onPressed: () {
+              widget._reportAplicationController.updateView!();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
       ),
       body: SingleChildScrollView(
         child: Padding(
