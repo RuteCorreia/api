@@ -107,7 +107,10 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_aplicacao.relatorioAplicacao?.id != null) {
         _relatorioAplicacao = _aplicacao.relatorioAplicacao!;
-        _produtoSelecionado = _relatorioAplicacao!.produtoAplicado!;
+        _produtoSelecionado = (_relatorioAplicacao!.produtoAplicado != null &&
+                _relatorioAplicacao!.produtoAplicado!.isNotEmpty
+            ? _relatorioAplicacao?.produtoAplicado
+            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto)!;
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
         _dosagemUnidade = _relatorioAplicacao!.unidadeDosagem!;
         _selectedLog = _relatorioAplicacao!.relatorioDGPS!;
@@ -188,6 +191,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             child: ProductNameSelect(
                                 onChangedProductName: (value, produto) {
                               setState(() {
+                                getIt<GlobalConfigVars>().produtoAplicado =
+                                    produto;
                                 _produtoSelecionado = value;
                               });
                               Util.closeKeyBoard();
