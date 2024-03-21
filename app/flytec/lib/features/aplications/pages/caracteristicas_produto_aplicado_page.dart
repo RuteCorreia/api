@@ -159,6 +159,7 @@ class _CaracteristicasProdutoAplicadoPageState
         tipoFormulacao: _tipoFormulacao,
         tipoServico: _tipoServicoText,
         unidadeDoseProdutoHectare: _unidadeDoseProdutoComercialHectare);
+    getIt<GlobalConfigVars>().produtoAplicado = _caracteristicasProdutoAplicado;
     setState(() {});
     if (_aplicacao.caracteristicasProdutoAplicado?.id == null ||
         _aplicacao.caracteristicasProdutoAplicado?.id == 0) {
