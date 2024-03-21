@@ -59,7 +59,7 @@ class _CaracteristicasProdutoAplicadoPageState
         _nomeProduto = _caracteristicasProdutoAplicado!.nomeProduto != null &&
                 _caracteristicasProdutoAplicado!.nomeProduto!.isNotEmpty
             ? _caracteristicasProdutoAplicado?.nomeProduto
-            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto??'';
+            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto ?? '';
         _classificacaoToxicologica = _aplicacao
             .caracteristicasProdutoAplicado!.classificacaoToxicologica;
         _classe = _caracteristicasProdutoAplicado!.classe;
@@ -67,11 +67,11 @@ class _CaracteristicasProdutoAplicadoPageState
         if (_caracteristicasProdutoAplicado!.nomeProduto == null ||
             _caracteristicasProdutoAplicado!.nomeProduto!.isEmpty) {
           final produto = getIt<GlobalConfigVars>().produtoAplicado;
-          _nomeProduto = produto?.nomeProduto??'';
+          _nomeProduto = produto?.nomeProduto ?? '';
           _classificacaoToxicologica =
-              produto?.classificacaoToxicologica?.toString()??'';
-          _classe = produto?.classe?.toString()??'';
-          _tipoFormulacao = produto?.tipoFormulacao?.toString()??'';
+              produto?.classificacaoToxicologica?.toString() ?? '';
+          _classe = produto?.classe?.toString() ?? '';
+          _tipoFormulacao = produto?.tipoFormulacao?.toString() ?? '';
         }
         _alvoBiologico = _caracteristicasProdutoAplicado!.alvoBiologico;
         _doseProdutoComercialHectare = TextEditingController(
@@ -372,16 +372,25 @@ class _CaracteristicasProdutoAplicadoPageState
                               child: ProductNameSelect(
                                   onChangedProductName: (name, produto) {
                                 setState(() {
-                                  if (produto == null || name.isEmpty) return;
-                                  getIt<GlobalConfigVars>().produtoAplicado =
-                                      produto;
+                                  if (name.isEmpty) return;
+
                                   _nomeProduto = name;
-                                  _classificacaoToxicologica = produto
-                                      .classificacaoToxicologica
-                                      .toString();
-                                  _classe = produto.classe.toString();
-                                  _tipoFormulacao =
-                                      produto.tipoFormulacao.toString();
+                                  getIt<GlobalConfigVars>().produtoAplicado =
+                                      CaracteristicasProdutoAplicado(
+                                          nomeProduto: name);
+                                  _classificacaoToxicologica = '';
+                                  _classe = '';
+                                  _tipoFormulacao = '';
+                                  if (produto?.id != null) {
+                                    getIt<GlobalConfigVars>().produtoAplicado =
+                                        produto;
+                                    _classificacaoToxicologica = produto!
+                                        .classificacaoToxicologica
+                                        .toString();
+                                    _classe = produto.classe.toString();
+                                    _tipoFormulacao =
+                                        produto.tipoFormulacao.toString();
+                                  }
                                   setState(() {});
                                 });
                                 Util.closeKeyBoard();

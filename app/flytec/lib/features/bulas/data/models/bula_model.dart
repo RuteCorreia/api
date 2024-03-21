@@ -9,6 +9,20 @@ String bulaModelToJson(List<BulaModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class BulaModel extends BulaEntity {
+  BulaModel(
+      {super.idBula,
+      super.nomeProduto,
+      super.idCultura,
+      super.idClassificacaoToxicologica,
+      super.classe,
+      super.tipoDeFormulacao,
+      super.idAlvoBiologico,
+      super.doseProdutoComercial,
+      super.adjuvante,
+      super.idTipoDeServico,
+      super.tipoDeUnidade,
+      super.bulaAplicacoes});
+
   BulaModel.fromJson(Map<String, dynamic> json) {
     idBula = json['idBula'];
     nomeProduto = json['nomeProduto'];
