@@ -87,8 +87,7 @@ class ReportAplicationController {
           CaracteristicasProdutoAplicado.fromJson(
               getCaracteristicasProdutoAplicado);
       aplicacao.caracteristicasProdutoAplicado = caracteristicasProdutoAplicado;
-      getIt<GlobalConfigVars>().produtoAplicado =
-          caracteristicasProdutoAplicado;
+
       final getRecomendacoesTecnicas =
           await _sqlDatabaseProvider.obtainElementTableById(
               "RecomendacoesTecnicas", aplicacao.recomendacoesTecnicasId);

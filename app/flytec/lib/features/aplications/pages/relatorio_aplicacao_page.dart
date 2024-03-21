@@ -37,7 +37,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   final TextEditingController _densidadeController = TextEditingController();
   final TextEditingController _observationTextField = TextEditingController();
   String _selectedLog = "Selecione";
-  String _produtoSelecionado = "";
+  String? _produtoSelecionado;
   String _selectedPista = "";
 
   Future<bool> _verifyFields() async {
@@ -105,15 +105,12 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _produtoSelecionado = _relatorioAplicacao?.produtoAplicado ?? '';
-      if (_produtoSelecionado.isEmpty) {
-        _produtoSelecionado =
-            getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto ??
-                'Selecione';
-      }
+      _produtoSelecionado = _relatorioAplicacao?.produtoAplicado ??
+          getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto ??
+          'Selecione';
       setState(() {});
       if (_aplicacao.relatorioAplicacao?.id != null) {
-        _relatorioAplicacao = _aplicacao.relatorioAplicacao!;  
+        _relatorioAplicacao = _aplicacao.relatorioAplicacao!;
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
         _dosagemUnidade = _relatorioAplicacao!.unidadeDosagem!;
         _selectedLog = _relatorioAplicacao!.relatorioDGPS!;
@@ -179,9 +176,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             const CustomText(text: 'Produto aplicado'),
             const SizedBox(height: 10),
             CustomComboBoxExpanded(
-              selectedName: _produtoSelecionado.isEmpty
-                  ? "Selecione"
-                  : _produtoSelecionado,
+              selectedName: _produtoSelecionado ?? "Selecione",
               onTap: () async {
                 Util.closeKeyBoard();
                 await showDialog(
@@ -194,9 +189,15 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             child: ProductNameSelect(
                                 onChangedProductName: (value, produto) {
                               setState(() {
-                                getIt<GlobalConfigVars>().produtoAplicado =
-                                    produto;
                                 _produtoSelecionado = value;
+                                getIt<GlobalConfigVars>()
+                                    .produtoAplicado!
+                                    .nomeProduto = value;
+
+                                if (produto?.id != null) {
+                                  getIt<GlobalConfigVars>().produtoAplicado =
+                                      produto;
+                                }
                               });
                               Util.closeKeyBoard();
                             }),
@@ -650,7 +651,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                     await Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return AplicacoesListPage(
-                        idAplicacao: _aplicacao.relatorioAplicacao?.id,
+                          idAplicacao: _aplicacao.relatorioAplicacao?.id,
                           reportAplicationController:
                               widget._reportAplicationController);
                     })));
@@ -661,6 +662,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
             InkWell(
               onTap: () async {
                 await _verifyFields();
+                // ignore: use_build_context_synchronously
+                Navigator.pop(context);
               },
               child: Container(
                 width: 270,
