@@ -105,12 +105,15 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _produtoSelecionado = _relatorioAplicacao?.produtoAplicado ?? '';
+      if (_produtoSelecionado.isEmpty) {
+        _produtoSelecionado =
+            getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto ??
+                'Selecione';
+      }
+      setState(() {});
       if (_aplicacao.relatorioAplicacao?.id != null) {
-        _relatorioAplicacao = _aplicacao.relatorioAplicacao!;
-        _produtoSelecionado = (_relatorioAplicacao!.produtoAplicado != null &&
-                _relatorioAplicacao!.produtoAplicado!.isNotEmpty
-            ? _relatorioAplicacao?.produtoAplicado
-            : getIt<GlobalConfigVars>().produtoAplicado?.nomeProduto)!;
+        _relatorioAplicacao = _aplicacao.relatorioAplicacao!;  
         _dosagemController.text = _relatorioAplicacao!.dosagem!;
         _dosagemUnidade = _relatorioAplicacao!.unidadeDosagem!;
         _selectedLog = _relatorioAplicacao!.relatorioDGPS!;
