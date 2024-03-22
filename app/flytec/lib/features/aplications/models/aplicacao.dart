@@ -11,6 +11,7 @@ class Aplicacao {
   String? piloto;
   String? executor;
   int? id;
+  String? refDocument;
   ReportDashBoardState? state;
   String? data;
   Contratante? contratante;
@@ -34,6 +35,7 @@ class Aplicacao {
       {this.piloto,
       this.executor,
       this.id,
+      this.refDocument,
       this.contratante,
       this.identificacaoAreaTratada,
       this.caracteristicasProdutoAplicado,
@@ -52,7 +54,6 @@ class Aplicacao {
       this.contratoPrestacaoServicoId,
       this.dadosResponsavelId});
 
-  // Create toJson and toMap methods of class
   Map<String, dynamic> toMap() {
     return {
       'piloto': piloto,

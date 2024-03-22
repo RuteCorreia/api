@@ -26,6 +26,15 @@ class _AplicationsPageState extends State<AplicationsPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await widget._reportAplicationController?.obtainReportsAplications();
+      widget._reportAplicationController?.updateView!();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,6 +43,12 @@ class _AplicationsPageState extends State<AplicationsPage> {
           "Aplicações",
           textAlign: TextAlign.center,
         ),
+        leading: IconButton(
+            onPressed: () {
+              widget._reportAplicationController?.updateView!();
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
