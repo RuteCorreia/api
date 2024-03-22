@@ -313,76 +313,6 @@ class _HomePagaState extends State<HomePaga> {
                                 ),
                               ],
                             ),
-
-                            // SizedBox(
-                            //   width: 237.27,
-                            //   child: Row(
-                            //     mainAxisSize: MainAxisSize.min,
-                            //     mainAxisAlignment: MainAxisAlignment.center,
-                            //     crossAxisAlignment: CrossAxisAlignment.center,
-                            //     children: [
-                            //       Expanded(
-                            //         child: Column(
-                            //           mainAxisSize: MainAxisSize.min,
-                            //           mainAxisAlignment:
-                            //               MainAxisAlignment.center,
-                            //           crossAxisAlignment:
-                            //               CrossAxisAlignment.start,
-                            //           children: [
-                            //             SizedBox(
-                            //               width: MediaQuery.of(context)
-                            //                       .size
-                            //                       .width *
-                            //                   0.65,
-                            //               child: const Text(
-                            //                 'Direção e velocidade do vento',
-                            //                 maxLines: 2,
-                            //                 style: TextStyle(
-                            //                   color: Color.fromARGB(
-                            //                       255, 121, 118, 118),
-                            //                   fontSize: 16,
-                            //                   fontFamily: 'Inter',
-                            //                   fontWeight: FontWeight.w700,
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //             const SizedBox(height: 15),
-                            //             SizedBox(
-                            //               width: double.infinity,
-                            //               child: Text.rich(
-                            //                 TextSpan(
-                            //                   children: [
-                            //                     TextSpan(
-                            //                       text: _weatherCurrent!.windKph
-                            //                           .toString(),
-                            //                       style: const TextStyle(
-                            //                         color: Color(0xFF00B45D),
-                            //                         fontSize: 32,
-                            //                         fontFamily: 'Inter',
-                            //                         fontWeight: FontWeight.w700,
-                            //                         height: 0.05,
-                            //                       ),
-                            //                     ),
-                            //                     const TextSpan(
-                            //                       text: ' km/h',
-                            //                       style: TextStyle(
-                            //                         color: Color(0xFF00B45D),
-                            //                         fontSize: 20,
-                            //                         fontFamily: 'Inter',
-                            //                         fontWeight: FontWeight.w700,
-                            //                         height: 0.07,
-                            //                       ),
-                            //                     ),
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //             ),
-                            //           ],
-                            //         ),
-                            //       ),
-                            //     ],
-                            //   ),
-                            // ),
                           ],
                         ),
                       ),
@@ -476,6 +406,7 @@ class _HomePagaState extends State<HomePaga> {
                                       "assets/images/icomoon_free_fire.svg",
                                   text: "Aplicação",
                                   onClick: () {
+                                    _reportAplicationController?.setUpdateUpdateView(_updateView);
                                     context.push("/aplications", extra: {
                                       'reportAplicationController':
                                           _reportAplicationController

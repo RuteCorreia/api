@@ -12,10 +12,10 @@ import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:flytec/features/aplications/pages/relatorio_aplicacao_page.dart';
 
 class MenuAplicationPage extends StatefulWidget {
-  final ReportAplicationController _reportAplicationController;
+  final ReportAplicationController? _reportAplicationController;
 
   const MenuAplicationPage(
-      {required ReportAplicationController reportAplicationController,
+      {required ReportAplicationController? reportAplicationController,
       super.key})
       : _reportAplicationController = reportAplicationController;
 
@@ -25,7 +25,7 @@ class MenuAplicationPage extends StatefulWidget {
 
 class _MenuAplicationPageState extends State<MenuAplicationPage> {
   Aplicacao get _aplicacao =>
-      widget._reportAplicationController.aplicacaoSelected!;
+      widget._reportAplicationController!.aplicacaoSelected!;
 
   DateTime get _dataAplicacao {
     int? epoch = int.tryParse(_aplicacao.data!);
@@ -43,7 +43,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
         ),
         leading: IconButton(
             onPressed: () {
-              widget._reportAplicationController.updateView!();
+              widget._reportAplicationController?.updateView!();
               Navigator.pop(context);
             },
             icon: const Icon(Icons.arrow_back)),
@@ -58,7 +58,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'N° ${_aplicacao.id}',
+                    'N° ${_aplicacao.refDocument}',
                     textAlign: TextAlign.right,
                     style: const TextStyle(
                       color: Color(0xFF00B45D),
@@ -90,7 +90,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => ContrantePage(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -102,7 +102,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => AreaTratada(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -115,7 +115,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                         builder: (context) =>
                             CaracteristicasProdutoAplicadoPage(
                                 reportAplicationController:
-                                    widget._reportAplicationController),
+                                    widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -127,7 +127,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => RecomendacoesTecnicasPage(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -139,7 +139,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => RelatorioAplicacaoPage(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -151,7 +151,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => ContratoPrestacaoServicoPage(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),
@@ -163,7 +163,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       MaterialPageRoute(
                         builder: (context) => DadosResponsavelPage(
                             reportAplicationController:
-                                widget._reportAplicationController),
+                                widget._reportAplicationController!),
                       ));
                 },
               ),

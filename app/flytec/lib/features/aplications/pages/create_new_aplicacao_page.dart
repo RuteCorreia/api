@@ -346,7 +346,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                       children: [
                         const SizedBox(height: 15),
                         const CustomText(
-                            text: 'Imagem do Receituário Agronômico'),
+                            text: 'Imagem Condições Climáticas'),
                         const SizedBox(height: 15),
                         Container(
                             height: 300,

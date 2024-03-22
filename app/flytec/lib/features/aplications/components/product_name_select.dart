@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
+import 'package:flytec/features/bulas/data/models/bula_model.dart';
 
 class ProductNameSelect extends StatelessWidget {
   final Function(String, CaracteristicasProdutoAplicado?) onChangedProductName;
@@ -40,7 +41,9 @@ class ProductNameSelect extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
+                              getIt<GlobalConfigVars>()
+                                  .bulas[index]
+                                  .nomeProduto!,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -68,6 +71,9 @@ class ProductNameSelect extends StatelessWidget {
                       controller: _textFlightHeight,
                       keyboardType: TextInputType.text,
                       onSubmitted: (value) {
+                        getIt<GlobalConfigVars>()
+                            .bulas
+                            .add(BulaModel(nomeProduto: value));
                         onChangedProductName(_textFlightHeight.text, null);
                         Navigator.of(context).pop();
                       },
@@ -84,6 +90,9 @@ class ProductNameSelect extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
+                      getIt<GlobalConfigVars>()
+                          .bulas
+                          .add(BulaModel(nomeProduto: _textFlightHeight.text));
                       onChangedProductName(_textFlightHeight.text, null);
                       Navigator.of(context).pop();
                     },

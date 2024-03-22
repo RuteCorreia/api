@@ -17,7 +17,7 @@ import 'package:flytec/features/aplications/models/relatorio_aplicacao.dart';
 
 class ReportAplicationController {
   final DatabaseInstance _databaseInstance = RelatorioDatabaseInstance.instance;
-   VoidCallback? _updateView;
+  VoidCallback? _updateView;
   SQLDatabaseProvider get _sqlDatabaseProvider =>
       SQLDatabaseProvider(_databaseInstance);
   ReportAplicationController({required VoidCallback? updateView})
@@ -56,8 +56,9 @@ class ReportAplicationController {
 
   Future<void> obtainReportsAplications() async {
     List<Aplicacao> listaAplicacaoResult = [];
+    final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
     final refUsuario =
-        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+        '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Aplicacao");
     final listaAplicacao = reports
@@ -67,6 +68,8 @@ class ReportAplicationController {
         .toList();
     for (int i = 0; i < listaAplicacao.length; i++) {
       final aplicacao = listaAplicacao[i];
+      final idNew = '${idUsuario}_${aplicacao.id}';
+      aplicacao.refDocument = idNew; 
       final getContratanteDb = await _sqlDatabaseProvider
           .obtainElementTableById("Contratante", aplicacao.contratanteId);
       Contratante contratante = Contratante.fromJson(getContratanteDb);

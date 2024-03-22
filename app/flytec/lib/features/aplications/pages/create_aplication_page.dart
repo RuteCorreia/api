@@ -12,10 +12,10 @@ import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
 
 class CreateAplicationPage extends StatefulWidget {
-  final ReportAplicationController _reportAplicationController;
+  final ReportAplicationController? _reportAplicationController;
   final VoidCallback? _updateView;
   const CreateAplicationPage(
-      {required ReportAplicationController reportAplicationController,
+      {required ReportAplicationController? reportAplicationController,
       required VoidCallback? updateView,
       super.key})
       : _reportAplicationController = reportAplicationController,
@@ -40,7 +40,7 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
         centerTitle: true,
         leading: IconButton(
             onPressed: () async {
-              await widget._reportAplicationController
+              await widget._reportAplicationController!
                   .obtainReportsAplications();
               getIt<GlobalConfigVars>().clearGlobalConfigVars();
               widget._updateView!();
@@ -169,10 +169,11 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                         data: DateTime.now().millisecondsSinceEpoch.toString(),
                         state: ReportDashBoardState.Incompleto,
                         refUsuario: refUsuario);
-                    int? idAplicacao = await widget._reportAplicationController
+                    int? idAplicacao = await widget._reportAplicationController!
                         .createElementInTable(aplicacao.toMap(), "Aplicacao");
                     aplicacao.id = idAplicacao;
-                    widget._reportAplicationController
+                    aplicacao.refDocument = '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idAplicacao';
+                    widget._reportAplicationController!
                         .setAplicacaoSelected(aplicacao);
                     // ignore: use_build_context_synchronously
                     Navigator.push(context,
