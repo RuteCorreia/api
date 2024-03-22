@@ -28,15 +28,16 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final dateTimeContratante = epochContratante != null
         ? DateTime?.fromMillisecondsSinceEpoch(epochContratante)
         : null;
-    String? dataContratante = dateTimeContratante!=null ?
-        "${dateTimeContratante.day}/${dateTimeContratante.month}/${dateTimeContratante.year}":'';
+    String? dataContratante = dateTimeContratante != null
+        ? "${dateTimeContratante.day}/${dateTimeContratante.month}/${dateTimeContratante.year}"
+        : '';
     final vencimentoEpoch =
         int.tryParse(aplicacao.contratoPrestacaoServico?.vencimento ?? '');
     final dataVencimentoContrato = vencimentoEpoch != null
         ? DateTime.fromMillisecondsSinceEpoch(vencimentoEpoch)
         : null;
     String? vencimentoContrato =
-        "${dataVencimentoContrato?.day}/${dataVencimentoContrato?.month}/${dataVencimentoContrato?.year}";
+        "${dataVencimentoContrato?.day ?? ''}/${dataVencimentoContrato?.month ?? ''}/${dataVencimentoContrato?.year ?? ''}";
 
     final aplicacoes01 = aplicacao.relatorioAplicacao!.aplicacoes!.isNotEmpty &&
             aplicacao.relatorioAplicacao?.aplicacoes?.first != null
@@ -1577,7 +1578,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.Container(
                                     height: 20,
                                     alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text('$vencimentoContrato',
+                                    child: pw.Text(vencimentoContrato,
                                         style: pw.TextStyle(
                                             fontWeight: pw.FontWeight.bold,
                                             fontSize: 12,
@@ -1751,31 +1752,90 @@ class CreateAplicacaoReportService implements PdfGenerator {
                   ),
               ]));
         }));
-    pdf.addPage(pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        margin: const pw.EdgeInsets.all(10),
-        build: (context) {
-          return pw.Container(
-              decoration: pw.BoxDecoration(
-                  border: pw.Border.all(color: PdfColors.black, width: 1.5)),
-              child: pw.Column(children: [
-                pw.Text('Condições Climáticas',
-                    style: pw.TextStyle(
-                        fontSize: 16,
-                        font: newRomanBold,
-                        color: PdfColors.green800,
-                        fontWeight: pw.FontWeight.normal)),
-                pw.Divider(height: 1, thickness: 1.5),
-                if (aplicacoes01 != null &&
-                    aplicacoes01.imagemCondicaoClimatica != null)
-                  pw.Container(
-                    alignment: pw.Alignment.center,
-                    margin: const pw.EdgeInsets.all(10),
-                    child: pw.Image(pw.MemoryImage(aplicacao.relatorioAplicacao!
-                        .aplicacoes![0]!.imagemCondicaoClimatica!)),
-                  ),
-              ]));
-        }));
+    if (aplicacoes01 != null) {
+      pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          build: (context) {
+            return pw.Container(
+                decoration: pw.BoxDecoration(
+                    border: pw.Border.all(color: PdfColors.black, width: 1.5)),
+                child: pw.Column(children: [
+                  pw.Text('Condições Climáticas 1',
+                      style: pw.TextStyle(
+                          fontSize: 16,
+                          font: newRomanBold,
+                          color: PdfColors.green800,
+                          fontWeight: pw.FontWeight.normal)),
+                  pw.Divider(height: 1, thickness: 1.5),
+                  if (aplicacoes01.imagemCondicaoClimatica != null)
+                    pw.Container(
+                      alignment: pw.Alignment.center,
+                      margin: const pw.EdgeInsets.all(10),
+                      child: pw.Image(
+                          pw.MemoryImage(aplicacoes01.imagemCondicaoClimatica!),
+                          height: 600,
+                          width: 560),
+                    ),
+                ]));
+          }));
+    }
+    if (aplicacoes02 != null) {
+      pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          build: (context) {
+            return pw.Container(
+                decoration: pw.BoxDecoration(
+                    border: pw.Border.all(color: PdfColors.black, width: 1.5)),
+                child: pw.Column(children: [
+                  pw.Text('Condições Climáticas 2',
+                      style: pw.TextStyle(
+                          fontSize: 16,
+                          font: newRomanBold,
+                          color: PdfColors.green800,
+                          fontWeight: pw.FontWeight.normal)),
+                  pw.Divider(height: 1, thickness: 1.5),
+                  if (aplicacoes02.imagemCondicaoClimatica != null)
+                    pw.Container(
+                      alignment: pw.Alignment.center,
+                      margin: const pw.EdgeInsets.all(10),
+                      child: pw.Image(
+                          pw.MemoryImage(aplicacoes02.imagemCondicaoClimatica!),
+                          height: 600,
+                          width: 560),
+                    ),
+                ]));
+          }));
+    }
+    if (aplicacoes03 != null) {
+      pdf.addPage(pw.Page(
+          pageFormat: PdfPageFormat.a4,
+          margin: const pw.EdgeInsets.all(10),
+          build: (context) {
+            return pw.Container(
+                decoration: pw.BoxDecoration(
+                    border: pw.Border.all(color: PdfColors.black, width: 1.5)),
+                child: pw.Column(children: [
+                  pw.Text('Condições Climáticas 3',
+                      style: pw.TextStyle(
+                          fontSize: 16,
+                          font: newRomanBold,
+                          color: PdfColors.green800,
+                          fontWeight: pw.FontWeight.normal)),
+                  pw.Divider(height: 1, thickness: 1.5),
+                  if (aplicacoes03.imagemCondicaoClimatica != null)
+                    pw.Container(
+                      alignment: pw.Alignment.center,
+                      margin: const pw.EdgeInsets.all(10),
+                      child: pw.Image(
+                          pw.MemoryImage(aplicacoes03.imagemCondicaoClimatica!),
+                          height: 600,
+                          width: 560),
+                    ),
+                ]));
+          }));
+    }
     return pdf;
   }
 

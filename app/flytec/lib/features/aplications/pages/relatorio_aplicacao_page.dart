@@ -6,6 +6,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
+import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
 import 'package:flytec/features/aplications/models/relatorio_aplicacao.dart';
 import 'package:flytec/features/aplications/pages/aplicacoes_list_page.dart';
 import 'package:location/location.dart' as lct;
@@ -191,8 +192,9 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                               setState(() {
                                 _produtoSelecionado = value;
                                 getIt<GlobalConfigVars>()
-                                    .produtoAplicado!
-                                    .nomeProduto = value;
+                                    .produtoAplicado =
+                                    CaracteristicasProdutoAplicado(
+                                        nomeProduto: value);
 
                                 if (produto?.id != null) {
                                   getIt<GlobalConfigVars>().produtoAplicado =
