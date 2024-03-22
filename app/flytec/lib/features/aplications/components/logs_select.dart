@@ -72,33 +72,31 @@ class _LogsSelectState extends State<LogsSelect> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: Flexible(
-                        child: TextField(
-                          controller: _textFlightHeight,
-                          keyboardType: TextInputType.text,
-                          maxLength: 20,
-                          onSubmitted: (value) {
-                            widget.onChanged(_textFlightHeight.text);
+                      child: TextField(
+                        controller: _textFlightHeight,
+                        keyboardType: TextInputType.text,
+                        maxLength: 20,
+                        onSubmitted: (value) {
+                          widget.onChanged(_textFlightHeight.text);
 
-                            getIt<GlobalConfigVars>()
-                                .logs
-                                .add(_textFlightHeight.text);
-                            setState(() {});
-                            Navigator.of(context).pop();
-                          },
-                          textAlign: TextAlign.start,
-                          decoration: const InputDecoration(
-                              hintText: "Digite um log",
-                              border: InputBorder.none,
-                              counterText: "",
-                              hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 121, 118, 118),
-                                fontSize: 12,
-                                height: 45,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                              )),
-                        ),
+                          getIt<GlobalConfigVars>()
+                              .logs
+                              .add(_textFlightHeight.text);
+                          setState(() {});
+                          Navigator.of(context).pop();
+                        },
+                        textAlign: TextAlign.start,
+                        decoration: const InputDecoration(
+                            hintText: "Digite um log",
+                            border: InputBorder.none,
+                            counterText: "",
+                            hintStyle: TextStyle(
+                              color: Color.fromARGB(255, 121, 118, 118),
+                              fontSize: 12,
+                              height: 45,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w500,
+                            )),
                       ),
                     ),
                     InkWell(
