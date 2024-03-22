@@ -77,11 +77,11 @@ class _LogsSelectState extends State<LogsSelect> {
                         keyboardType: TextInputType.text,
                         maxLength: 20,
                         onSubmitted: (value) {
-                          widget.onChanged(_textFlightHeight.text);
-
                           getIt<GlobalConfigVars>()
                               .logs
                               .add(_textFlightHeight.text);
+                          widget.onChanged(_textFlightHeight.text);
+
                           setState(() {});
                           Navigator.of(context).pop();
                         },
@@ -101,10 +101,10 @@ class _LogsSelectState extends State<LogsSelect> {
                     ),
                     InkWell(
                       onTap: () {
-                        widget.onChanged(_textFlightHeight.text);
                         getIt<GlobalConfigVars>()
                             .logs
                             .add(_textFlightHeight.text);
+                        widget.onChanged(_textFlightHeight.text);
                         setState(() {});
                         Navigator.of(context).pop();
                       },

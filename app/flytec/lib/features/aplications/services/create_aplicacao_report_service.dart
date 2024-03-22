@@ -126,7 +126,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               style: const pw.TextStyle(
                                   color: PdfColors.black, fontSize: 10)),
                           alignment: pw.Alignment.centerRight),
-                           pw.Align(
+                      pw.Align(
                           child: pw.Text(
                               '                                   DATA: ${Util.getTodayDate(date: dataAplicacao)}',
                               style: const pw.TextStyle(
@@ -1460,7 +1460,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} ',
+                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''} -${aplicacao.relatorioAplicacao?.lat ?? ''}, -${aplicacao.relatorioAplicacao?.long ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1515,7 +1515,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.centerLeft,
                     padding: const pw.EdgeInsets.only(left: 2),
                     child: pw.Text(
-                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
+                        'Observações: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1550,55 +1550,60 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         left: pw.BorderSide(width: 1.5, color: PdfColors.black),
                       ),
                     ),
-                    child: pw.Column(children: [
-                      pw.Container(
-                        height: 15,
-                        child: pw.Text('Pagamento em Moeda',
-                            style: pw.TextStyle(fontSize: 12, font: newRoman)),
-                      ),
-                      pw.Divider(height: 1, thickness: 1.5),
-                      pw.Padding(
-                          padding: const pw.EdgeInsets.symmetric(horizontal: 5),
-                          child: pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              children: [
-                                pw.Container(
-                                  height: 20,
-                                  alignment: pw.Alignment.bottomCenter,
-                                  child: pw.Text(
-                                      'Preço Ha: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                                pw.Container(
-                                  height: 20,
-                                  alignment: pw.Alignment.bottomCenter,
-                                  child: pw.Text(
-                                      'Valor Total: ${aplicacao.contratoPrestacaoServico?.valorTotal ?? ''}',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                                pw.Row(children: [
-                                  pw.Container(
-                                    height: 20,
-                                    alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text('Vencimento:',
-                                        style: pw.TextStyle(
-                                            fontSize: 12, font: newRoman)),
-                                  ),
-                                  pw.Container(
-                                    height: 20,
-                                    alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text(vencimentoContrato,
-                                        style: pw.TextStyle(
-                                            fontWeight: pw.FontWeight.bold,
-                                            fontSize: 12,
-                                            font: newRoman)),
-                                  ),
-                                ])
-                              ]))
-                    ])),
+                    child: pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        children: [
+                          pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.symmetric(horizontal: 5),
+                              child: pw.Row(
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                        height: 20,
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text(
+                                            'Distância Da Pista: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''}',
+                                            style: pw.TextStyle(
+                                                fontSize: 12, font: newRoman))),
+                                    pw.Container(
+                                      height: 20,
+                                      alignment: pw.Alignment.bottomCenter,
+                                      child: pw.Text(
+                                          'Valor: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
+                                          style: pw.TextStyle(
+                                              fontSize: 12, font: newRoman)),
+                                    ),
+                                    pw.Container(
+                                      height: 20,
+                                      alignment: pw.Alignment.bottomCenter,
+                                      child: pw.Text(
+                                          'Valor Total: ${aplicacao.contratoPrestacaoServico?.valorTotal ?? ''}',
+                                          style: pw.TextStyle(
+                                              fontSize: 12, font: newRoman)),
+                                    ),
+                                    pw.Row(children: [
+                                      pw.Container(
+                                        height: 20,
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text('Vencimento:',
+                                            style: pw.TextStyle(
+                                                fontSize: 12, font: newRoman)),
+                                      ),
+                                      pw.Container(
+                                        height: 20,
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text(vencimentoContrato,
+                                            style: pw.TextStyle(
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12,
+                                                font: newRoman)),
+                                      ),
+                                    ])
+                                  ])),
+                        ])),
                 pw.Container(
                   height: 15,
                   margin:
