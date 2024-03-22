@@ -118,9 +118,7 @@ class ReportCardAplication extends StatelessWidget {
                   getIt<GlobalConfigVars>().selectedPilot =
                       _reportAplicationController
                           .listaAplicacao![_index].piloto!;
-                  _reportAplicationController.setUpdateUpdateView(() {
-                    _updateView();
-                  });
+                  _updateView();
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
                     return MenuAplicationPage(
                         reportAplicationController:

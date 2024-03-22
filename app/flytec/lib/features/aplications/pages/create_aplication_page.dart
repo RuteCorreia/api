@@ -172,6 +172,7 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                     int? idAplicacao = await widget._reportAplicationController!
                         .createElementInTable(aplicacao.toMap(), "Aplicacao");
                     aplicacao.id = idAplicacao;
+                    aplicacao.refDocument = '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idAplicacao';
                     widget._reportAplicationController!
                         .setAplicacaoSelected(aplicacao);
                     // ignore: use_build_context_synchronously

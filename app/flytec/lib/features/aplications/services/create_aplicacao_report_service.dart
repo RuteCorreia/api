@@ -54,6 +54,9 @@ class CreateAplicacaoReportService implements PdfGenerator {
         ? aplicacao.relatorioAplicacao?.aplicacoes![2]
         : null;
 
+    int? epochAplicacao = int.tryParse(aplicacao.data!);
+    final dataAplicacao = DateTime.fromMillisecondsSinceEpoch(epochAplicacao!);
+
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -112,13 +115,22 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         )),
                     pw.Column(children: [
                       pw.Align(
-                          child: pw.Padding(
-                              child: pw.Text(
-                                  '                           CDA N° 4046',
-                                  style:
-                                      const pw.TextStyle(color: PdfColors.red)),
-                              padding: const pw.EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 10)),
+                          child: pw.Text(
+                              '                           CDA N° 4046',
+                              style: const pw.TextStyle(
+                                  color: PdfColors.red, fontSize: 10)),
+                          alignment: pw.Alignment.centerRight),
+                      pw.Align(
+                          child: pw.Text(
+                              '                                       N° RELATÓRIO: ${aplicacao.refDocument}',
+                              style: const pw.TextStyle(
+                                  color: PdfColors.black, fontSize: 10)),
+                          alignment: pw.Alignment.centerRight),
+                           pw.Align(
+                          child: pw.Text(
+                              '                                   DATA: ${Util.getTodayDate(date: dataAplicacao)}',
+                              style: const pw.TextStyle(
+                                  color: PdfColors.black, fontSize: 10)),
                           alignment: pw.Alignment.centerRight),
                       pw.Align(
                           alignment: pw.Alignment.centerRight,
@@ -1448,7 +1460,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}, -${aplicacao.relatorioAplicacao?.lat??''}, -${aplicacao.relatorioAplicacao?.lat??''}, ${aplicacao.contratoPrestacaoServico?.distanciaPista??''} ',
+                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} ',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(

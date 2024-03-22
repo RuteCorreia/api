@@ -58,7 +58,7 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'N° ${_aplicacao.id}',
+                    'N° ${_aplicacao.refDocument}',
                     textAlign: TextAlign.right,
                     style: const TextStyle(
                       color: Color(0xFF00B45D),
