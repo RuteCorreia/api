@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
+import 'package:flytec/features/home/presentation/widgets/assinatura_select.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_button_drawer.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_drawer_button.dart';
 import 'package:go_router/go_router.dart';
 
 import '../widgets/custom_action_button.dart';
@@ -22,7 +25,7 @@ class _HomePagaState extends State<HomePaga> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _openDrawer() {
-    _scaffoldKey.currentState!.openDrawer();
+    _scaffoldKey.currentState?.openDrawer();
   }
 
   final WeatherController _weatherController = WeatherController();
@@ -65,10 +68,66 @@ class _HomePagaState extends State<HomePaga> {
     });
   }
 
+  Uint8List? _signature;
+  Future<void> _createSignature(Uint8List? signature) async {
+    _signature = signature;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      drawer: SafeArea(
+        child: Drawer(
+          backgroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(10.0),
+              bottomRight: Radius.circular(10.0),
+            ),
+          ),
+          width: MediaQuery.of(context).size.width * 0.7,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
+              children: <Widget>[
+                DrawerHeader(
+                    child: Center(
+                        child: Image.asset("assets/images/logotipo.png",
+                            height: 200))),
+                CustomDrawerButton(
+                  icon: Icons.edit,
+                  text: "Cadastrar Assinatura",
+                  onClick: () async {
+                    context.pop();
+                    if (_signature != null) {
+                      // ignore: use_build_context_synchronously
+                      await showDialog(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                scrollable: true,
+                                backgroundColor: const Color(0xFFF5F5F5),
+                                content: AssinaturaSelect(
+                                  updateSignature: _createSignature,
+                                  assinatura: _signature,
+                                ));
+                          });
+                      return;
+                    }
+                    // ignore: use_build_context_synchronously
+                    await context.push('/addsignature', extra: {
+                      'onUpdateSignature': _createSignature,
+                    });
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -406,7 +465,8 @@ class _HomePagaState extends State<HomePaga> {
                                       "assets/images/icomoon_free_fire.svg",
                                   text: "Aplicação",
                                   onClick: () {
-                                    _reportAplicationController?.setUpdateUpdateView(_updateView);
+                                    _reportAplicationController
+                                        ?.setUpdateUpdateView(_updateView);
                                     context.push("/aplications", extra: {
                                       'reportAplicationController':
                                           _reportAplicationController
