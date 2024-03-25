@@ -25,24 +25,15 @@ class CustomCombo extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Flexible(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Flexible(
-                    child: Text(
-                      selectedName,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 124, 123, 123),
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        height: 0.09,
-                      ),
-                    ),
-                  ),
-                ],
+              child: Text(
+                selectedName,
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 124, 123, 123),
+                  fontSize: 16,
+                  fontFamily: 'Inter',
+                  overflow: TextOverflow.ellipsis,
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
             const Icon(

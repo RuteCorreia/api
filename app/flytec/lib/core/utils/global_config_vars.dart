@@ -117,6 +117,7 @@ class GlobalConfigVars {
     selectedExecutor = "";
     selectedCultura = "";
     dgs = "";
+    logs.clear();
     produtoAplicado = null;
   }
 }
