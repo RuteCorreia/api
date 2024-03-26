@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:http/http.dart' as http;
@@ -25,6 +27,7 @@ class RemoteBulaDataSourceImpl implements IRemoteBulaDataSource {
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
+      log('--> ${response.body}');
       if (response.statusCode == 200) {
         return Future.value(bulaModelFromJson(response.body));
       } else {
