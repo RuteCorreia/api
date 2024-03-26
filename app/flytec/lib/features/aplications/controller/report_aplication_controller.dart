@@ -15,7 +15,7 @@ import 'package:flytec/features/aplications/models/identificacao_area_tratada.da
 import 'package:flytec/features/aplications/models/recomendacoes_tecnicas.dart';
 import 'package:flytec/features/aplications/models/relatorio_aplicacao.dart';
 
-class ReportAplicationController {
+class ReportAplicationController extends ChangeNotifier {
   final DatabaseInstance _databaseInstance = RelatorioDatabaseInstance.instance;
   VoidCallback? _updateView;
   SQLDatabaseProvider get _sqlDatabaseProvider =>
@@ -45,6 +45,7 @@ class ReportAplicationController {
   void setListRelatorioAplicacao(List<Aplicacao>? listaAplicacaoNew) {
     _listaAplicacao = listaAplicacaoNew;
     _updateView!();
+    notifyListeners();
   }
 
   int obtainQuantityReportsByState(ReportDashBoardState state) {
@@ -127,6 +128,7 @@ class ReportAplicationController {
 
     _listaAplicacao = listaAplicacaoResult;
     _updateView!();
+    notifyListeners();
   }
 
   Future<Map<String, dynamic>?> getElementById(int id, String table) async {
