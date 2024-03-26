@@ -359,20 +359,33 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     children: [
                       pw.Container(
                           height: 20,
-                          width: 115,
+                          width: 45,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               right: pw.BorderSide(
                                   width: 1.5, color: PdfColors.black),
                             ),
                           ),
-                          alignment: pw.Alignment.centerLeft,
-                          child: pw.Text('    Nome',
+                          alignment: pw.Alignment.center,
+                          child: pw.Text('Nome',
                               style:
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           height: 20,
-                          width: 80,
+                          width: 90,
+                          decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black),
+                            ),
+                          ),
+                          alignment: pw.Alignment.center,
+                          child: pw.Text('Alvo Biológico',
+                              style:
+                                  pw.TextStyle(fontSize: 12, font: newRoman))),
+                      pw.Container(
+                          height: 20,
+                          width: 70,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -385,7 +398,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           height: 20,
-                          width: 120,
+                          width: 110,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -445,7 +458,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             " ${aplicacao.caracteristicasProdutoAplicado?.nomeProduto ?? ''}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
                         height: 23,
-                        width: 115,
+                        width: 45,
                         alignment: pw.Alignment.center,
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
@@ -455,8 +468,22 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
+                          height: 23,
+                          width: 90,
+                          decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                              right: pw.BorderSide(
+                                  width: 1.5, color: PdfColors.black),
+                            ),
+                          ),
+                          alignment: pw.Alignment.center,
+                          child: pw.Text(
+                              ' ${aplicacao.caracteristicasProdutoAplicado?.alvoBiologico ?? ''}',
+                              style:
+                                  pw.TextStyle(fontSize: 12, font: newRoman))),
+                      pw.Container(
                         height: 23,
-                        width: 80,
+                        width: 70,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${aplicacao.caracteristicasProdutoAplicado?.classificacaoToxicologica ?? ''}",
@@ -472,7 +499,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       ),
                       pw.Container(
                         height: 23,
-                        width: 120,
+                        width: 110,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
                             " ${aplicacao.caracteristicasProdutoAplicado?.tipoServico ?? ''}",
