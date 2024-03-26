@@ -114,13 +114,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           ],
                         )),
                     pw.Column(children: [
-                      pw.Padding(padding:const pw.EdgeInsets.only(top: 2),child: pw.Align(
-                          child: pw.Text(
-                              '                           CDA N° 4046',
-                              style: const pw.TextStyle(
-                                  color: PdfColors.red, fontSize: 10)),
-                          alignment: pw.Alignment.centerRight), ),
-                     
+                      pw.Padding(
+                        padding: const pw.EdgeInsets.only(top: 2),
+                        child: pw.Align(
+                            child: pw.Text(
+                                '                           CDA N° 4046',
+                                style: const pw.TextStyle(
+                                    color: PdfColors.red, fontSize: 10)),
+                            alignment: pw.Alignment.centerRight),
+                      ),
                       pw.Align(
                           child: pw.Text(
                               '                                       N° RELATÓRIO: ${aplicacao.refDocument}',
@@ -688,8 +690,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       children: [
                         pw.Container(
                             width: 300,
-                            padding:
-                                const pw.EdgeInsets.only(left: 5, top: 5),
+                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
                             alignment: pw.Alignment.bottomCenter,
                             child: pw.Column(
                               mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -708,8 +709,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               ],
                             )),
                         pw.Container(
-                            padding:
-                                const pw.EdgeInsets.only(right: 5),
+                            padding: const pw.EdgeInsets.only(right: 5),
                             width: 180,
                             child: pw.Text(
                                 ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel?.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel?.data ?? '') ?? DateTime.now().millisecondsSinceEpoch)) : ''} ',
@@ -1538,8 +1538,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Container(
-                    margin: const pw.EdgeInsets.symmetric(
-                         vertical: 4.0),
+                    margin: const pw.EdgeInsets.symmetric(vertical: 4.0),
                     height: 25,
                     decoration: const pw.BoxDecoration(
                       border: pw.Border(
@@ -1559,19 +1558,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
                               padding:
                                   const pw.EdgeInsets.symmetric(horizontal: 5),
                               child: pw.Row(
-                                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                  crossAxisAlignment:
+                                      pw.CrossAxisAlignment.center,
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.spaceBetween,
                                   children: [
                                     pw.Container(
-                                        
                                         alignment: pw.Alignment.bottomCenter,
                                         child: pw.Text(
                                             'Distância Da Pista: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''}',
                                             style: pw.TextStyle(
                                                 fontSize: 12, font: newRoman))),
                                     pw.Container(
-                                      
                                       alignment: pw.Alignment.bottomCenter,
                                       child: pw.Text(
                                           'Valor: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
@@ -1579,7 +1577,6 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                               fontSize: 12, font: newRoman)),
                                     ),
                                     pw.Container(
-                                      
                                       alignment: pw.Alignment.bottomCenter,
                                       child: pw.Text(
                                           'Valor Total: ${aplicacao.contratoPrestacaoServico?.valorTotal ?? ''}',
@@ -1588,14 +1585,12 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     ),
                                     pw.Row(children: [
                                       pw.Container(
-                                        
                                         alignment: pw.Alignment.bottomCenter,
                                         child: pw.Text('Vencimento:',
                                             style: pw.TextStyle(
                                                 fontSize: 12, font: newRoman)),
                                       ),
                                       pw.Container(
-                                        
                                         alignment: pw.Alignment.bottomCenter,
                                         child: pw.Text(vencimentoContrato,
                                             style: pw.TextStyle(
@@ -1787,6 +1782,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           color: PdfColors.green800,
                           fontWeight: pw.FontWeight.normal)),
                   pw.Divider(height: 1, thickness: 1.5),
+                  pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      mainAxisAlignment: pw.MainAxisAlignment.start,
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(left: 10, top: 10),
+                          child: pw.Text(
+                              'Data:  ${aplicacoes01.dataAplicacao != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes01.dataAplicacao!)!)) : ''}',
+                              style:
+                                  pw.TextStyle(fontSize: 12, font: newRoman)),
+                        )
+                      ]),
                   if (aplicacoes01.imagemCondicaoClimatica != null)
                     pw.Container(
                       alignment: pw.Alignment.center,
@@ -1815,6 +1822,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           color: PdfColors.green800,
                           fontWeight: pw.FontWeight.normal)),
                   pw.Divider(height: 1, thickness: 1.5),
+                  pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      mainAxisAlignment: pw.MainAxisAlignment.start,
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(left: 10, top: 10),
+                          child: pw.Text(
+                              'Data:  ${aplicacoes02.dataAplicacao != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes02.dataAplicacao!)!)) : ''}',
+                              style:
+                                  pw.TextStyle(fontSize: 12, font: newRoman)),
+                        )
+                      ]),
                   if (aplicacoes02.imagemCondicaoClimatica != null)
                     pw.Container(
                       alignment: pw.Alignment.center,
@@ -1843,6 +1862,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           color: PdfColors.green800,
                           fontWeight: pw.FontWeight.normal)),
                   pw.Divider(height: 1, thickness: 1.5),
+                  pw.Row(
+                      crossAxisAlignment: pw.CrossAxisAlignment.start,
+                      mainAxisAlignment: pw.MainAxisAlignment.start,
+                      children: [
+                        pw.Padding(
+                          padding: const pw.EdgeInsets.only(left: 10, top: 10),
+                          child: pw.Text(
+                              'Data:  ${aplicacoes03.dataAplicacao != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacoes03.dataAplicacao!)!)) : ''}',
+                              style:
+                                  pw.TextStyle(fontSize: 12, font: newRoman)),
+                        )
+                      ]),
                   if (aplicacoes03.imagemCondicaoClimatica != null)
                     pw.Container(
                       alignment: pw.Alignment.center,
