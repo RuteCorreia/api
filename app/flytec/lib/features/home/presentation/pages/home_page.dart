@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
@@ -174,10 +176,10 @@ class _HomePagaState extends State<HomePaga> {
             const SizedBox(height: 16),
             GestureDetector(
               onTap: () async {},
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: WelcomeText(
-                  userName: "Rodrigo",
+                  userName: getIt<GlobalConfigVars>().userPayload.name ?? '',
                 ),
               ),
             ),
