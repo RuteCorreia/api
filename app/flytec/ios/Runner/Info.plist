@@ -27,19 +27,19 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Allow access to camera to capture photos</string>
+  <string>Permitir acesso à câmera para capturar fotos</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>some string</string>
 	<key>NSLocationAlwaysUsageDescription</key>
-	<string>the GPS feature will be activated and will work with high accuracy if we get the user's location (lat/long)</string>
+   <string>O recurso de GPS será ativado e funcionará com alta precisão se obtivermos a localização do usuário (latitude/longitude).</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your current location to know where we will find you</string>
+   <string>Por favor, permita que o aplicativo acesse sua localização enquanto estiver em uso para fornecer serviços baseados em localização.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Need microphone access for uploading audio</string>
+    <string>Para fornecer funcionalidades de gravação de áudio, precisamos acessar o microfone do dispositivo.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>*your app name* would like to save photos from the app to your gallery</string>
+   <string>Por favor, permita que o aplicativo acesse sua biblioteca de fotos para que você possa salvar imagens.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>*your app name* would like to access your photo gallery for uploading images to the app</string>
+   <string>Por favor, permita que o aplicativo acesse sua biblioteca de fotos para que você possa selecionar e compartilhar imagens.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

@@ -114,21 +114,22 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           ],
                         )),
                     pw.Column(children: [
-                      pw.Align(
+                      pw.Padding(padding:const pw.EdgeInsets.only(top: 2),child: pw.Align(
                           child: pw.Text(
                               '                           CDA N° 4046',
                               style: const pw.TextStyle(
                                   color: PdfColors.red, fontSize: 10)),
-                          alignment: pw.Alignment.centerRight),
+                          alignment: pw.Alignment.centerRight), ),
+                     
                       pw.Align(
                           child: pw.Text(
                               '                                       N° RELATÓRIO: ${aplicacao.refDocument}',
                               style: const pw.TextStyle(
                                   color: PdfColors.black, fontSize: 10)),
                           alignment: pw.Alignment.centerRight),
-                           pw.Align(
+                      pw.Align(
                           child: pw.Text(
-                              '                                   DATA: ${Util.getTodayDate(date: dataAplicacao)}',
+                              '                                  DATA: ${Util.getTodayDate(date: dataAplicacao)}',
                               style: const pw.TextStyle(
                                   color: PdfColors.black, fontSize: 10)),
                           alignment: pw.Alignment.centerRight),
@@ -441,7 +442,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         child: pw.Text(
                             " ${aplicacao.caracteristicasProdutoAplicado?.nomeProduto ?? ''}",
                             style: pw.TextStyle(fontSize: 11, font: newRoman)),
-                        height: 25,
+                        height: 23,
                         width: 115,
                         alignment: pw.Alignment.center,
                         decoration: const pw.BoxDecoration(
@@ -452,7 +453,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
-                        height: 25,
+                        height: 23,
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
@@ -468,7 +469,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
-                        height: 25,
+                        height: 23,
                         width: 120,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
@@ -484,7 +485,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
-                        height: 25,
+                        height: 23,
                         width: 100,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
@@ -501,7 +502,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
-                        height: 25,
+                        height: 23,
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
@@ -517,7 +518,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         ),
                       ),
                       pw.Container(
-                        height: 25,
+                        height: 23,
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
@@ -543,7 +544,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     children: [
                       pw.Container(
                           width: 137,
-                          height: 28,
+                          height: 18,
                           padding: const pw.EdgeInsets.only(left: 5, top: 2),
                           alignment: pw.Alignment.topLeft,
                           decoration: const pw.BoxDecoration(
@@ -559,7 +560,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 137,
-                          height: 28,
+                          height: 18,
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           decoration: const pw.BoxDecoration(
@@ -575,7 +576,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 137,
-                          height: 28,
+                          height: 18,
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           child: pw.Text(
@@ -590,7 +591,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     children: [
                       pw.Container(
                           width: 115,
-                          height: 28,
+                          height: 20,
                           padding: const pw.EdgeInsets.only(left: 5, top: 2),
                           alignment: pw.Alignment.topLeft,
                           decoration: const pw.BoxDecoration(
@@ -606,7 +607,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 115,
-                          height: 28,
+                          height: 20,
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           decoration: const pw.BoxDecoration(
@@ -622,7 +623,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 115,
-                          height: 28,
+                          height: 20,
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           decoration: const pw.BoxDecoration(
@@ -638,7 +639,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 115,
-                          height: 28,
+                          height: 20,
                           padding: const pw.EdgeInsets.only(top: 2),
                           alignment: pw.Alignment.topCenter,
                           decoration: const pw.BoxDecoration(
@@ -654,7 +655,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman))),
                       pw.Container(
                           width: 115,
-                          height: 28,
+                          height: 20,
                           padding: const pw.EdgeInsets.only(left: 5, top: 2),
                           alignment: pw.Alignment.topLeft,
                           decoration: const pw.BoxDecoration(
@@ -671,7 +672,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     ]),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Container(
-                    height: 25,
+                    height: 20,
                     padding: const pw.EdgeInsets.only(left: 5, top: 2),
                     alignment: pw.Alignment.topLeft,
                     child: pw.Text(
@@ -680,7 +681,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         style: pw.TextStyle(fontSize: 12, font: newRoman))),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
-                    height: 50,
+                    height: 38,
                     child: pw.Row(
                       crossAxisAlignment: pw.CrossAxisAlignment.center,
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
@@ -688,7 +689,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         pw.Container(
                             width: 300,
                             padding:
-                                const pw.EdgeInsets.only(left: 5, bottom: 5),
+                                const pw.EdgeInsets.only(left: 5, top: 5),
                             alignment: pw.Alignment.bottomCenter,
                             child: pw.Column(
                               mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -708,7 +709,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             )),
                         pw.Container(
                             padding:
-                                const pw.EdgeInsets.only(right: 5, bottom: 5),
+                                const pw.EdgeInsets.only(right: 5),
                             width: 180,
                             child: pw.Text(
                                 ' ${aplicacao.identificacaoAreaTratada?.cidade ?? ''} ${aplicacao.identificacaoAreaTratada?.uf ?? ''},  ${aplicacao.dadosResponsavel?.data != null ? Util.getTodayDate(date: DateTime.fromMillisecondsSinceEpoch(int.tryParse(aplicacao.dadosResponsavel?.data ?? '') ?? DateTime.now().millisecondsSinceEpoch)) : ''} ',
@@ -1460,7 +1461,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.bottomLeft,
                     padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
                     child: pw.Text(
-                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, -${aplicacao.relatorioAplicacao?.lat ?? ''}, ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} ',
+                        'Localização da Pista:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''} -${aplicacao.relatorioAplicacao?.lat ?? ''}, -${aplicacao.relatorioAplicacao?.long ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
@@ -1504,8 +1505,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Row(children: [
                   pw.Container(
-                    height: 28,
-                    width: 340,
+                    height: 55,
+                    width: 200,
                     decoration: const pw.BoxDecoration(
                       border: pw.Border(
                         right:
@@ -1515,18 +1516,18 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.centerLeft,
                     padding: const pw.EdgeInsets.only(left: 2),
                     child: pw.Text(
-                        'Alterações do Planejamento: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
+                        'Observações: ${aplicacao.relatorioAplicacao?.observacoes ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
                   ),
                   pw.Container(
-                    height: 28,
-                    width: 240,
+                    height: 55,
+                    width: 380,
                     padding: const pw.EdgeInsets.only(left: 2),
                     alignment: pw.Alignment.centerLeft,
                     child: pw.Text(
                         'Relatório DGPS (LOG\'s): ${aplicacao.relatorioAplicacao?.relatorioDGPS ?? ''}',
                         style: pw.TextStyle(fontSize: 12, font: newRoman)),
-                  ),
+                  )
                 ]),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Text('Contrato de Prestação de Serviços',
@@ -1538,8 +1539,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Container(
                     margin: const pw.EdgeInsets.symmetric(
-                        horizontal: 4.0, vertical: 4.0),
-                    height: 40,
+                         vertical: 4.0),
+                    height: 25,
                     decoration: const pw.BoxDecoration(
                       border: pw.Border(
                         right:
@@ -1550,55 +1551,61 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         left: pw.BorderSide(width: 1.5, color: PdfColors.black),
                       ),
                     ),
-                    child: pw.Column(children: [
-                      pw.Container(
-                        height: 15,
-                        child: pw.Text('Pagamento em Moeda',
-                            style: pw.TextStyle(fontSize: 12, font: newRoman)),
-                      ),
-                      pw.Divider(height: 1, thickness: 1.5),
-                      pw.Padding(
-                          padding: const pw.EdgeInsets.symmetric(horizontal: 5),
-                          child: pw.Row(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceBetween,
-                              children: [
-                                pw.Container(
-                                  height: 20,
-                                  alignment: pw.Alignment.bottomCenter,
-                                  child: pw.Text(
-                                      'Preço Ha: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                                pw.Container(
-                                  height: 20,
-                                  alignment: pw.Alignment.bottomCenter,
-                                  child: pw.Text(
-                                      'Valor Total: ${aplicacao.contratoPrestacaoServico?.valorTotal ?? ''}',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                                pw.Row(children: [
-                                  pw.Container(
-                                    height: 20,
-                                    alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text('Vencimento:',
-                                        style: pw.TextStyle(
-                                            fontSize: 12, font: newRoman)),
-                                  ),
-                                  pw.Container(
-                                    height: 20,
-                                    alignment: pw.Alignment.bottomCenter,
-                                    child: pw.Text(vencimentoContrato,
-                                        style: pw.TextStyle(
-                                            fontWeight: pw.FontWeight.bold,
-                                            fontSize: 12,
-                                            font: newRoman)),
-                                  ),
-                                ])
-                              ]))
-                    ])),
+                    child: pw.Column(
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        children: [
+                          pw.Padding(
+                              padding:
+                                  const pw.EdgeInsets.symmetric(horizontal: 5),
+                              child: pw.Row(
+                                crossAxisAlignment: pw.CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      pw.MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    pw.Container(
+                                        
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text(
+                                            'Distância Da Pista: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''}',
+                                            style: pw.TextStyle(
+                                                fontSize: 12, font: newRoman))),
+                                    pw.Container(
+                                      
+                                      alignment: pw.Alignment.bottomCenter,
+                                      child: pw.Text(
+                                          'Valor: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
+                                          style: pw.TextStyle(
+                                              fontSize: 12, font: newRoman)),
+                                    ),
+                                    pw.Container(
+                                      
+                                      alignment: pw.Alignment.bottomCenter,
+                                      child: pw.Text(
+                                          'Valor Total: ${aplicacao.contratoPrestacaoServico?.valorTotal ?? ''}',
+                                          style: pw.TextStyle(
+                                              fontSize: 12, font: newRoman)),
+                                    ),
+                                    pw.Row(children: [
+                                      pw.Container(
+                                        
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text('Vencimento:',
+                                            style: pw.TextStyle(
+                                                fontSize: 12, font: newRoman)),
+                                      ),
+                                      pw.Container(
+                                        
+                                        alignment: pw.Alignment.bottomCenter,
+                                        child: pw.Text(vencimentoContrato,
+                                            style: pw.TextStyle(
+                                                fontWeight: pw.FontWeight.bold,
+                                                fontSize: 12,
+                                                font: newRoman)),
+                                      ),
+                                    ])
+                                  ])),
+                        ])),
                 pw.Container(
                   height: 15,
                   margin:

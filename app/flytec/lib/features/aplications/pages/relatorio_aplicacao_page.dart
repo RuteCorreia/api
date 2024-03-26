@@ -191,8 +191,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                                 onChangedProductName: (value, produto) {
                               setState(() {
                                 _produtoSelecionado = value;
-                                getIt<GlobalConfigVars>()
-                                    .produtoAplicado =
+                                getIt<GlobalConfigVars>().produtoAplicado =
                                     CaracteristicasProdutoAplicado(
                                         nomeProduto: value);
 
@@ -580,7 +579,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
               ),
             ),
             const SizedBox(height: 10),
-            const CustomText(text: "Alterações do planejamento / Observações "),
+            const CustomText(text: "Observações "),
             const SizedBox(height: 10),
             Container(
               width: double.infinity,
@@ -638,7 +637,13 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             width: double.maxFinite,
                             child: LogsSelect(onChanged: (value) {
                               setState(() {
-                                _selectedLog = value;
+                                _selectedLog = '';
+                                for (String element
+                                    in getIt<GlobalConfigVars>().logs) {
+                                  _selectedLog += '$element,';
+                                }
+                                _selectedLog = _selectedLog.substring(
+                                    0, _selectedLog.length - 1);
                               });
                               Util.closeKeyBoard();
                             }),

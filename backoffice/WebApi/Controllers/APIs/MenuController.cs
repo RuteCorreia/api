@@ -1,13 +1,8 @@
-﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
-using Application.DTOs.Cadastros.Adjuvante.ViewModel;
-using Application.DTOs.Cadastros.Menu.Interface;
+﻿using Application.DTOs.Cadastros.Menu.Interface;
 using Application.DTOs.Cadastros.Menu.ViewModel;
 using Application.DTOs.Cadastros.SubMenu.Interface;
-using Application.DTOs.Cadastros.SubMenu.ViewModel;
 using AutoMapper;
-using Domain.Interfaces.Cadastros.SubMenu;
 using Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs;
@@ -77,6 +72,33 @@ public class MenuController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, $"Menu getById - {ex.Message}");
+        }
+    }
+
+    [HttpGet("dropdown")]
+    public async Task<ActionResult> GetDropdown()
+    {
+        try
+        {
+            var menu = _menuService.GetAllAsync();
+            var subMenu = _subMenuService.GetAllAsync();
+
+            foreach(var submenu in subMenu)
+            {
+                var newObj = new MenuViewModel
+                {
+                    MenuItemId = submenu.SubMenuId,
+                    Label = submenu.Label,
+                };
+
+                menu = menu.Concat(new[] { newObj });
+            }
+
+            return Ok(menu);
+        }
+        catch(Exception ex) 
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Menu dropdown - {ex.Message}");
         }
     }
 

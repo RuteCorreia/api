@@ -1,31 +1,36 @@
-﻿using Application.DTOs.Cadastros.MenuUsuario.ViewModel;
-using Application.DTOs.Cadastros.SubMenu.Interface;
+﻿using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.SubMenu.ViewModel;
 using AutoMapper;
-using Domain.Interfaces.Cadastros.MenuUsuario;
+using Domain.Interfaces.Cadastros.Menu;
 using Domain.Interfaces.Cadastros.SubMenu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Application.Servicos.Cadastros.SubMenu
 {
     public class SubMenuService : ISubMenuService
     {
         private readonly ISubMenuRepository _subMenuRepository;
+        private readonly IMenuRepository _menuRepository;
         private readonly IMapper _mapper;
 
-        public SubMenuService(ISubMenuRepository subMenuRepository, IMapper mapper)
+        public SubMenuService(ISubMenuRepository subMenuRepository, IMapper mapper, IMenuRepository menuRepository)
         {
             _subMenuRepository = subMenuRepository;
+            _menuRepository = menuRepository;
             _mapper = mapper;
         }
 
         public async Task AddAsync(SubMenuViewModel obj)
         {
+            var isMenu = await _menuRepository.GetByIdAsync(obj.MenuItemId);
+            if(isMenu is null)
+            {
+                //means that is submenu
+                var submenuId = await GetByIdAsync(obj.MenuItemId);
+                obj.SubMenuItemId = submenuId.SubMenuId;
+                obj.MenuItemId = 0;
+            }
             var mapSubMenu = _mapper.Map<Domain.Entidades.Cadastros.SubMenu.SubMenu>(obj);
+            if (isMenu is null) mapSubMenu.MenuItemId = null;
             await _subMenuRepository.AddAsync(mapSubMenu);
         }
 
@@ -43,12 +48,29 @@ namespace Application.Application.Servicos.Cadastros.SubMenu
         public async Task<SubMenuViewModel> GetByIdAsync(int id)
         {
             var obj = await _subMenuRepository.GetByIdAsync(id);
-            return _mapper.Map<SubMenuViewModel>(obj);
+            var ret = _mapper.Map<SubMenuViewModel>(obj);
+            if(obj.MenuItemId is null) ret.MenuItemId = (int)obj.SubMenuItemId;
+            return ret;
         }
 
         public async Task UpdateAsync(SubMenuViewModel obj)
         {
+            var isMenu = await _menuRepository.GetByIdAsync(obj.MenuItemId);
+            if(isMenu is null)
+            {
+                //means that is submenu
+                var submenuId = await GetByIdAsync(obj.MenuItemId);
+                obj.SubMenuItemId = submenuId.SubMenuId;
+                obj.MenuItemId = 0;
+            }
+           
             var mapSubMenu = _mapper.Map<Domain.Entidades.Cadastros.SubMenu.SubMenu>(obj);
+
+            if (isMenu is null)
+                mapSubMenu.MenuItemId = null;
+            else
+                mapSubMenu.SubMenuItemId = null;
+
             await _subMenuRepository.UpdateAsync(mapSubMenu);
         }
     }

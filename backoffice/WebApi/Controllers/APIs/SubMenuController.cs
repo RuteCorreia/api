@@ -1,11 +1,6 @@
-﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
-using Application.DTOs.Cadastros.Adjuvante.ViewModel;
-using Application.DTOs.Cadastros.Menu.Interface;
-using Application.DTOs.Cadastros.Menu.ViewModel;
-using Application.DTOs.Cadastros.SubMenu.Interface;
+﻿using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.SubMenu.ViewModel;
 using Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs;
