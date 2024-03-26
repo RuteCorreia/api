@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Domain.Entidades.Cadastros.SubMenu
 {
@@ -16,10 +11,16 @@ namespace Domain.Entidades.Cadastros.SubMenu
         public string Icon { get; set; }
 
         [ForeignKey("MenuItem")]
-        public int MenuItemId { get; set; }
+        public int? MenuItemId { get; set; }
+
+        [ForeignKey("SubMenuItem")]
+        public int? SubMenuItemId { get; set; }
 
         [JsonIgnore]
-        public virtual Entidades.Cadastros.Menu.Menu MenuItem { get; set; }
+        public virtual Menu.Menu? MenuItem { get; set; }
+
+        [JsonIgnore]
+        public virtual SubMenu? SubMenuItem { get; set; }
 
     }
 }
