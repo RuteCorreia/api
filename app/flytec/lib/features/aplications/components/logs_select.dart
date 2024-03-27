@@ -13,7 +13,7 @@ class LogsSelect extends StatefulWidget {
 class _LogsSelectState extends State<LogsSelect> {
   final TextEditingController _textFlightHeight = TextEditingController();
 
-  bool get _isCountDGPSMax => getIt<GlobalConfigVars>().logs.length > 6;
+  bool get _isCountDGPSMax => getIt<GlobalConfigVars>().logs.length > 5;
 
   @override
   Widget build(BuildContext context) {

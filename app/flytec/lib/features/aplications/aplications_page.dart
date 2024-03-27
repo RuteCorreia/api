@@ -64,8 +64,9 @@ class _AplicationsPageState extends State<AplicationsPage> {
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),
-      body: Builder(
-        builder: (context) {
+      body: ListenableBuilder(
+        listenable: widget._reportAplicationController!,
+        builder: (context, child) {
           if (widget._reportAplicationController?.listaAplicacao == null) {
             return const Center(
               child: CircularProgressIndicator(),
