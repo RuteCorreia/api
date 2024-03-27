@@ -2,14 +2,11 @@
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Entidades.User;
-using Domain.Enums;
 using Domain.Interfaces.User;
-using FluentValidation.TestHelper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Text;
 
@@ -52,9 +49,10 @@ public class UserAuthService : IUserAuthService
                 if (passwordCheck)
                 {
                     var token = new StringBuilder();
-                    if (usuario.PrimeiroAcesso)
-                        token.Append("PrimeiroAcesso");
-                    else
+                    //implementar isso aqui posteriormente
+                    //if (usuario.PrimeiroAcesso)
+                    //    token.Append("PrimeiroAcesso");
+                    //else
                         token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
 
                     return (true, token.ToString());
@@ -368,5 +366,44 @@ public class UserAuthService : IUserAuthService
         }
 
         return returnList;
+    }
+
+    public async Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId)
+    {
+        var resultMsg = new StringBuilder().Append("Não foi possível salvar assinatura");
+        try
+        {
+            var loggedIdentityUser = await _userManager.FindByIdAsync(loggedUserId);
+            if (loggedIdentityUser is not null)
+            {
+                var usuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+                if (usuario is not null)
+                {
+                    byte[] bytes = Convert.FromBase64String(obj.Assinatura);
+                    usuario.Assinatura = bytes;
+                    await _usuarioRepository.UpdateAsync(usuario);
+                    return (true, resultMsg.Clear().ToString());
+                }
+            }
+
+            return (false, resultMsg.ToString());
+        }
+        catch(Exception ex)
+        {
+            return (false, resultMsg.Clear().Append(ex.Message).ToString());
+        }
+    }
+
+    public async Task<string> GetUserSignatureAsync(string userId)
+    {
+        var result = new StringBuilder();
+        var usuario = await _usuarioRepository.GetUserByIdAsync(userId);
+        if(usuario is not null && usuario.Assinatura is not null)
+        {
+            string convertedStr = Convert.ToBase64String(usuario.Assinatura);
+            result.Append(convertedStr);
+        }
+
+        return result.ToString(); 
     }
 }

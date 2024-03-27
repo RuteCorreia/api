@@ -10,18 +10,31 @@ String bulaModelToJson(List<BulaModel> data) =>
 
 class BulaModel extends BulaEntity {
   BulaModel(
-      {super.idBula,
-      super.nomeProduto,
-      super.idCultura,
-      super.idClassificacaoToxicologica,
-      super.classe,
-      super.tipoDeFormulacao,
-      super.idAlvoBiologico,
-      super.doseProdutoComercial,
-      super.adjuvante,
-      super.idTipoDeServico,
-      super.tipoDeUnidade,
-      super.bulaAplicacoes});
+      {int? idBula,
+      String? nomeProduto,
+      int? idCultura,
+      int? idClassificacaoToxicologica,
+      String? classe,
+      String? tipoDeFormulacao,
+      int? idAlvoBiologico,
+      String? doseProdutoComercial,
+      String? adjuvante,
+      int? idTipoDeServico,
+      int? tipoDeUnidade,
+      List<BulaAplicacoesEntity>? bulaAplicacoes})
+      : super(
+            idBula: idBula,
+            nomeProduto: nomeProduto,
+            idCultura: idCultura,
+            idClassificacaoToxicologica: idClassificacaoToxicologica,
+            classe: classe,
+            tipoDeFormulacao: tipoDeFormulacao,
+            idAlvoBiologico: idAlvoBiologico,
+            doseProdutoComercial: doseProdutoComercial,
+            adjuvante: adjuvante,
+            idTipoDeServico: idTipoDeServico,
+            tipoDeUnidade: tipoDeUnidade,
+            bulaAplicacoes: bulaAplicacoes);
 
   BulaModel.fromJson(Map<String, dynamic> json) {
     idBula = json['idBula'];
@@ -35,7 +48,12 @@ class BulaModel extends BulaEntity {
     adjuvante = json['adjuvante'];
     idTipoDeServico = json['idTipoDeServico'];
     tipoDeUnidade = json['tipoDeUnidade'];
-    bulaAplicacoes = json['bulaAplicacoes'];
+    if (json['bulaAplicacoes'] != null) {
+      bulaAplicacoes = [];
+      json['bulaAplicacoes'].forEach((v) {
+        bulaAplicacoes!.add(BulaAplicacoes.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -51,7 +69,33 @@ class BulaModel extends BulaEntity {
     data['adjuvante'] = adjuvante;
     data['idTipoDeServico'] = idTipoDeServico;
     data['tipoDeUnidade'] = tipoDeUnidade;
-    data['bulaAplicacoes'] = bulaAplicacoes;
+    if (bulaAplicacoes != null) {
+      final bulas = bulaAplicacoes as List<BulaAplicacoes>;
+      data['bulaAplicacoes'] =
+          bulas.map((BulaAplicacoes v) => v.toJson()).toList();
+    }
+    return data;
+  }
+}
+
+class BulaAplicacoes extends BulaAplicacoesEntity {
+  BulaAplicacoes.fromJson(Map<String, dynamic> json) {
+    idBulaAplicacao = json['idBulaAplicacao'];
+    idCultura = json['idCultura'];
+    idAlvoBiologico = json['idAlvoBiologico'];
+    idBula = json['idBula'];
+    doseProdutoComercial = json['doseProdutoComercial'];
+    tipoDeUnidade = json['tipoDeUnidade'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['idBulaAplicacao'] = idBulaAplicacao;
+    data['idCultura'] = idCultura;
+    data['idAlvoBiologico'] = idAlvoBiologico;
+    data['idBula'] = idBula;
+    data['doseProdutoComercial'] = doseProdutoComercial;
+    data['tipoDeUnidade'] = tipoDeUnidade;
     return data;
   }
 }

@@ -34,7 +34,7 @@ class _CaracteristicasProdutoAplicadoPageState
       widget._reportAplicationController.aplicacaoSelected!;
   Uint8List? _receituarioAgronomico;
   String? _nomeProduto = "";
-  String? _classificacaoToxicologica = "";
+  int? _classificacaoToxicologica;
   String? _classe = "";
   String? _tipoFormulacao = "";
   String? _alvoBiologico = "";
@@ -68,10 +68,11 @@ class _CaracteristicasProdutoAplicadoPageState
             _caracteristicasProdutoAplicado!.nomeProduto!.isEmpty) {
           final produto = getIt<GlobalConfigVars>().produtoAplicado;
           _nomeProduto = produto?.nomeProduto ?? '';
-          _classificacaoToxicologica =
-              produto?.classificacaoToxicologica?.toString() ?? '';
+          _classificacaoToxicologica = produto?.classificacaoToxicologica;
           _classe = produto?.classe?.toString() ?? '';
           _tipoFormulacao = produto?.tipoFormulacao?.toString() ?? '';
+          _doseProdutoComercialHectare?.text =
+              produto?.doseProdutoHectare ?? '';
         }
         _alvoBiologico = _caracteristicasProdutoAplicado!.alvoBiologico;
         _doseProdutoComercialHectare = TextEditingController(
@@ -107,7 +108,7 @@ class _CaracteristicasProdutoAplicadoPageState
     } else if (_nomeProduto!.isEmpty) {
       Util.toastAlerta("Selecione a produto");
       return false;
-    } else if (_classificacaoToxicologica!.isEmpty) {
+    } else if (_classificacaoToxicologica == null) {
       Util.toastAlerta("Selecione a classificação toxicológica");
       return false;
     } else if (_classe!.isEmpty) {
@@ -195,6 +196,25 @@ class _CaracteristicasProdutoAplicadoPageState
     widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
     setState(() {});
   }
+
+  final List<ClassificacaoModel> _classfication = [
+    ClassificacaoModel(
+        nome: 'Extremamente tóxico', cor: Colors.red, categoria: "Categoria 1"),
+    ClassificacaoModel(
+        nome: 'Altamente tóxico', cor: Colors.red, categoria: "Categoria 2"),
+    ClassificacaoModel(
+        nome: 'Moderadamente tóxico',
+        cor: Colors.yellow,
+        categoria: "Categoria 3"),
+    ClassificacaoModel(
+        nome: 'Pouco tóxico', cor: Colors.blue, categoria: "Categoria 4"),
+    ClassificacaoModel(
+        nome: 'Improvável de causar dano agudo ',
+        cor: Colors.blue,
+        categoria: "Categoria 5"),
+    ClassificacaoModel(
+        nome: 'Não classificado', cor: Colors.green, categoria: "Categoria 6"),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -378,18 +398,31 @@ class _CaracteristicasProdutoAplicadoPageState
                                   getIt<GlobalConfigVars>().produtoAplicado =
                                       CaracteristicasProdutoAplicado(
                                           nomeProduto: name);
-                                  _classificacaoToxicologica = '';
+                                  _classificacaoToxicologica = null;
                                   _classe = '';
                                   _tipoFormulacao = '';
-                                  if (produto?.id != null) {
+                                  if (produto?.classificacaoToxicologica !=
+                                      null) {
                                     getIt<GlobalConfigVars>().produtoAplicado =
                                         produto;
-                                    _classificacaoToxicologica = produto!
-                                        .classificacaoToxicologica
-                                        .toString();
+                                    _classificacaoToxicologica =
+                                        produto!.classificacaoToxicologica;
                                     _classe = produto.classe.toString();
                                     _tipoFormulacao =
                                         produto.tipoFormulacao.toString();
+                                    _doseProdutoComercialHectare?.text =
+                                        produto.doseProdutoHectare ?? '';
+                                    if (produto.cultura != null &&
+                                        produto.cultura!.isNotEmpty) {
+                                      getIt<GlobalConfigVars>()
+                                          .selectedCultura = produto.cultura!;
+                                    }
+                                    _alvoBiologico = produto.alvoBiologico;
+                                    _adjuvante?.text = produto.adjuvante!;
+
+                                    _unidadeDoseProdutoComercialHectare =
+                                        produto.unidadeDoseProdutoHectare
+                                            .toString();
                                   }
                                   setState(() {});
                                 });
@@ -403,9 +436,9 @@ class _CaracteristicasProdutoAplicadoPageState
               const CustomText(text: 'Classificação Toxicológica'),
               const SizedBox(height: 10),
               CustomComboBoxExpanded(
-                selectedName: _classificacaoToxicologica!.isEmpty
+                selectedName: _classificacaoToxicologica == null
                     ? "Selecione"
-                    : _classificacaoToxicologica!,
+                    : _classfication[_classificacaoToxicologica! - 1].nome,
                 onTap: () async {
                   await showMaterialModalBottomSheet(
                       context: context,
@@ -415,11 +448,12 @@ class _CaracteristicasProdutoAplicadoPageState
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             color: const Color(0xFFF5F5F5),
                             child: ToxicologicalClassificationSelect(
+                                classfication: _classfication,
                                 onSelect: (value) {
-                              setState(() {
-                                _classificacaoToxicologica = value;
-                              });
-                            }));
+                                  setState(() {
+                                    _classificacaoToxicologica = value;
+                                  });
+                                }));
                       });
                 },
               ),

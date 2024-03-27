@@ -43,6 +43,7 @@ public class Usuario
     public int NrUsuario { get; private set; }
     public string? Telefone { get; set; }
     public bool PrimeiroAcesso { get; set; }
+    public byte[]? Assinatura { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

@@ -9,32 +9,17 @@ class ClassificacaoModel {
 }
 
 class ToxicologicalClassificationSelect extends StatelessWidget {
-  final Function(String) onSelect;
-  ToxicologicalClassificationSelect({super.key, required this.onSelect});
-
-  final List<ClassificacaoModel> _classfication = [
-    ClassificacaoModel(
-        nome: 'Extremamente tóxico', cor: Colors.red, categoria: "Categoria 1"),
-    ClassificacaoModel(
-        nome: 'Altamente tóxico', cor: Colors.red, categoria: "Categoria 2"),
-    ClassificacaoModel(
-        nome: 'Moderadamente tóxico',
-        cor: Colors.yellow,
-        categoria: "Categoria 3"),
-    ClassificacaoModel(
-        nome: 'Pouco tóxico', cor: Colors.blue, categoria: "Categoria 4"),
-    ClassificacaoModel(
-        nome: 'Improvável de causar dano agudo ',
-        cor: Colors.blue,
-        categoria: "Categoria 5"),
-    ClassificacaoModel(
-        nome: 'Não classificado', cor: Colors.green, categoria: "Categoria 6"),
-  ];
+  final Function(int?) onSelect;
+  final List<ClassificacaoModel> _classfication;
+  const ToxicologicalClassificationSelect(
+      {super.key,
+      required this.onSelect,
+      required List<ClassificacaoModel> classfication})
+      : _classfication = classfication;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: SingleChildScrollView(
+    return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -54,7 +39,7 @@ class ToxicologicalClassificationSelect extends StatelessWidget {
                     )),
                 child: TextButton(
                     onPressed: () {
-                      onSelect(_classfication[index].categoria);
+                      onSelect(index);
                       Navigator.of(context).pop();
                     },
                     child: Padding(
@@ -90,6 +75,6 @@ class ToxicologicalClassificationSelect extends StatelessWidget {
           ),
         ],
       ),
-    ));
+    );
   }
 }

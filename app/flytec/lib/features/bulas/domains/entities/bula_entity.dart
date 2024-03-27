@@ -9,8 +9,8 @@ class BulaEntity {
   String? doseProdutoComercial;
   String? adjuvante;
   int? idTipoDeServico;
-  String? tipoDeUnidade;
-  dynamic bulaAplicacoes;
+  int? tipoDeUnidade;
+  List<BulaAplicacoesEntity>? bulaAplicacoes;
 
   BulaEntity(
       {this.idBula,
@@ -25,4 +25,21 @@ class BulaEntity {
       this.idTipoDeServico,
       this.tipoDeUnidade,
       this.bulaAplicacoes});
+}
+
+class BulaAplicacoesEntity{
+  int? idBulaAplicacao;
+  int? idCultura;
+  int? idAlvoBiologico;
+  int? idBula;
+  String? doseProdutoComercial;
+  int? tipoDeUnidade;
+
+  BulaAplicacoesEntity(
+      {this.idBulaAplicacao,
+      this.idCultura,
+      this.idAlvoBiologico,
+      this.idBula,
+      this.doseProdutoComercial,
+      this.tipoDeUnidade});
 }
