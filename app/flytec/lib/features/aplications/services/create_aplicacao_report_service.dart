@@ -256,7 +256,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Container(
-                          height: 30,
+                          height: 25,
                           width: 250,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -266,31 +266,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   width: 1.5, color: PdfColors.black),
                             ),
                           ),
-                          child: pw.Column(
-                              mainAxisAlignment:
-                                  pw.MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 10),
-                                  child: pw.Text(
-                                      'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                                pw.Container(
-                                  height: 1,
-                                  color: PdfColors.black,
-                                ),
-                                pw.Padding(
-                                  padding: const pw.EdgeInsets.only(left: 10),
-                                  child: pw.Text('Telefone: ',
-                                      style: pw.TextStyle(
-                                          fontSize: 12, font: newRoman)),
-                                ),
-                              ])),
+                          child: pw.Padding(
+                            padding: const pw.EdgeInsets.only(left: 10, top: 5),
+                            child: pw.Text(
+                                'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
+                                style:
+                                    pw.TextStyle(fontSize: 12, font: newRoman)),
+                          )),
                       pw.Container(
-                          height: 30,
+                          height: 25,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               top: pw.BorderSide(
@@ -1710,6 +1694,11 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                         fontSize: 8, font: newRoman)),
                                 pw.Text(
                                     'DOCUMENTO ${aplicacao.dadosResponsavel?.documento ?? ''}',
+                                    textAlign: pw.TextAlign.left,
+                                    style: pw.TextStyle(
+                                        fontSize: 8, font: newRoman)),
+                                pw.Text(
+                                    'Telefone ${aplicacao.dadosResponsavel?.telefone ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
