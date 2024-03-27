@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Users.ViewModel;
-using Domain.Entidades.User;
 
 namespace Application.DTOs.Users.Interface;
 
@@ -13,4 +12,6 @@ public interface IUserAuthService
     Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId);
     Task<UserDetailViewModel> GetUserByIdAsync(string id);
     Task RemoveUserAsync(string id);
+    Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);
+    Task<string> GetUserSignatureAsync(string userId);
 }

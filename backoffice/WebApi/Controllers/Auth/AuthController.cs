@@ -2,7 +2,6 @@
 using Application.DTOs.Users.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Runtime.CompilerServices;
 using System.Text;
 using WebApi.HttpRequestInfo;
 
@@ -84,6 +83,28 @@ public class AuthController : ControllerBase
         return BadRequest(resultError.ToString());
     }
 
+    [HttpPatch("saveSignature")]
+    [Authorize]
+    public async Task<IActionResult> SaveUserSignature([FromBody] UserSaveSignatureViewModel obj)
+    {
+        var resultError = new StringBuilder().Append("Campos inválidos");
+        if (ModelState.IsValid)
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (!string.IsNullOrEmpty(loggedUser.Item1))
+            {
+                var result = await _authService.SaveUserSignatureAsync(obj, loggedUser.Item1);
+                if(result.Item1)
+                    return Ok();
+
+                resultError.Clear();
+                resultError.Append(result.Item2);
+            }
+        }
+
+        return BadRequest(resultError.ToString());
+    }
+
     [HttpPut("updateUser")]
     [Authorize]
     public async Task<IActionResult> UpdateUser(string id,[FromBody] UserUpdateViewModel user)
@@ -116,6 +137,19 @@ public class AuthController : ControllerBase
         return BadRequest("Falha ao buscar usuário");
     }
 
+    [HttpPost("getUserSignature")]
+    [Authorize]
+    public async Task<IActionResult> GetUserSignature([FromBody] string userId)
+    {
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var result = await _authService.GetUserSignatureAsync(userId);
+            if (result is not null) return Ok(result);
+        }
+
+        return BadRequest("Falha na busca da assinatura");
+    }
+
     [HttpGet("GetUserRoles")]
     [Authorize]
     public async Task<IActionResult> GetUserRoles(string userId)
@@ -140,5 +174,5 @@ public class AuthController : ControllerBase
         }
 
         return BadRequest();
-    }
+    }    
 }
