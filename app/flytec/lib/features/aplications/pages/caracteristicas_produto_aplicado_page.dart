@@ -42,6 +42,7 @@ class _CaracteristicasProdutoAplicadoPageState
   String? _doseProdutoComercialHectareValue = "";
   String? _unidadeDoseProdutoComercialHectare = "";
   TextEditingController? _adjuvante;
+  String? _adjuvanteText = '';
   TextEditingController? _tipoServico;
   String? _tipoServicoText = '';
   TextEditingController? _numeroReceituarioAgronomico;
@@ -81,6 +82,7 @@ class _CaracteristicasProdutoAplicadoPageState
             _caracteristicasProdutoAplicado?.doseProdutoHectare;
         _unidadeDoseProdutoComercialHectare = _aplicacao
             .caracteristicasProdutoAplicado!.unidadeDoseProdutoHectare;
+        _adjuvanteText = _caracteristicasProdutoAplicado!.adjuvante;
         _adjuvante = TextEditingController(
             text: _caracteristicasProdutoAplicado!.adjuvante);
         _numeroReceituarioAgronomico = TextEditingController(
@@ -147,7 +149,7 @@ class _CaracteristicasProdutoAplicadoPageState
 
   Future<void> _caracteristicasProdutoAplicadoAction() async {
     _caracteristicasProdutoAplicado = CaracteristicasProdutoAplicado(
-        adjuvante: _adjuvante?.value.text,
+        adjuvante: _adjuvanteText,
         alvoBiologico: _alvoBiologico,
         classificacaoToxicologica: _classificacaoToxicologica,
         classe: _classe,
@@ -419,6 +421,7 @@ class _CaracteristicasProdutoAplicadoPageState
                                     }
                                     _alvoBiologico = produto.alvoBiologico;
                                     _adjuvante?.text = produto.adjuvante!;
+                                    _adjuvanteText = produto.adjuvante!;
 
                                     _unidadeDoseProdutoComercialHectare =
                                         produto.unidadeDoseProdutoHectare
@@ -618,7 +621,10 @@ class _CaracteristicasProdutoAplicadoPageState
               const SizedBox(height: 10),
               CustomTextField(
                 textEditingController: _adjuvante,
-                onChanged: (value) {},
+                onChanged: (value) {
+                  _adjuvanteText = value;
+                  setState(() {});
+                },
               ),
               const SizedBox(height: 5),
               const CustomText(text: "Tipo de Serviço"),
