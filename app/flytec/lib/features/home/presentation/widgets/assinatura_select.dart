@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/custom_button.dart';
 import 'package:flytec/features/executor/domain/repositories/executor_repository.dart';
@@ -58,6 +59,8 @@ class AssinaturaSelect extends StatelessWidget {
                       await getIt<GetSignatureUseCase>()
                           .call(NoParams())
                           .then((value) => value.fold((l) {}, (r) {
+                                getIt<GlobalConfigVars>()
+                                    .setAssinatura(newAssinatura: r);
                                 Util.toastSucesso(
                                     'Assinatura Salva com Sucesso');
                               }));
