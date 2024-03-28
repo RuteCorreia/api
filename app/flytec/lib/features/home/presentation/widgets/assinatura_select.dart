@@ -1,8 +1,12 @@
 import 'dart:typed_data';
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/custom_button.dart';
+import 'package:flytec/features/executor/domain/repositories/executor_repository.dart';
+import 'package:flytec/features/signature/domain/usecases/get_signature_usecase.dart';
+import 'package:flytec/features/signature/domain/usecases/save_signature_usecase.dart';
 import 'package:go_router/go_router.dart';
 
 class AssinaturaSelect extends StatelessWidget {
@@ -43,8 +47,23 @@ class AssinaturaSelect extends StatelessWidget {
               fit: BoxFit.fill,
             ),
             CustomButton(
-                onClick: () {
-                  Util.toastSucesso('Assinatura Salva com Sucesso');
+                onClick: () async {
+                  final imageEncoded = base64.encode(assinatura!);
+                  await getIt<SaveSignatureUseCase>()
+                      .call(imageEncoded)
+                      .then((value) {
+                    value.fold((l) {
+                      Util.toastErro('Não foi possível salvar sua assinatura');
+                    }, (r) async {
+                      await getIt<GetSignatureUseCase>()
+                          .call(NoParams())
+                          .then((value) => value.fold((l) {}, (r) {
+                                Util.toastSucesso(
+                                    'Assinatura Salva com Sucesso');
+                              }));
+                    });
+                  });
+
                   context.pop();
                 },
                 title: 'Salvar'),

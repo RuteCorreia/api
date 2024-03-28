@@ -120,7 +120,18 @@ class _HomePagaState extends State<HomePaga> {
                     // ignore: use_build_context_synchronously
                     await context.push('/addsignature', extra: {
                       'onUpdateSignature': _createSignature,
-                    });
+                    }).whenComplete(() async => await showDialog(
+                        context: context,
+                        useSafeArea: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              scrollable: true,
+                              backgroundColor: const Color(0xFFF5F5F5),
+                              content: AssinaturaSelect(
+                                updateSignature: _createSignature,
+                                assinatura: _signature,
+                              ));
+                        }));
                   },
                 ),
               ],

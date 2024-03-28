@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
@@ -37,6 +36,7 @@ class GlobalConfigVars {
   String selectedCultura = "";
   CaracteristicasProdutoAplicado? produtoAplicado;
   String dgs = "";
+  String? assinatura = '';
 
   void setClientes({required List<ClientesModel>? clientesData}) {
     clientes = clientesData!;
@@ -85,6 +85,10 @@ class GlobalConfigVars {
 
   void setPilotos({required List<PilotoModel>? pilotosData}) {
     pilotos = pilotosData!;
+  }
+
+  void setAssinatura({required String? newAssinatura}) {
+    assinatura = newAssinatura;
   }
 
   void setPreloadDataFromJson({
