@@ -458,7 +458,7 @@ class _CaracteristicasProdutoAplicadoPageState
                                 classfication: _classfication,
                                 onSelect: (value) {
                                   setState(() {
-                                    _classificacaoToxicologica = value;
+                                    _classificacaoToxicologica = value!+1;
                                   });
                                 }));
                       });

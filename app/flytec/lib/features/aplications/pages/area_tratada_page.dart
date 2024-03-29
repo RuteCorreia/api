@@ -62,7 +62,7 @@ class _AreaTratadaState extends State<AreaTratada> {
       Util.toastAlerta("Selecione a cultura");
       return;
     } else if (_extensaoController.text.isEmpty) {
-      Util.toastAlerta("Selecione a cultura");
+      Util.toastAlerta("Selecione a extensão");
       return;
     } else if (_imageData == null) {
       Util.toastAlerta("Selecione a imagem da área");
