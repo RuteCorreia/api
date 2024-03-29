@@ -25,6 +25,7 @@ import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/domain/usecases/get_piloto_usecase.dart';
 import 'package:flytec/features/produto/data/models/produto_model.dart';
 import 'package:flytec/features/produto/domain/usecases/get_produtos_usecase.dart';
+import 'package:flytec/features/signature/domain/usecases/get_signature_usecase.dart';
 import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart';
 import 'package:flytec/features/tipo_produto/domain/usecases/get_tipo_produtos_usecase.dart';
 import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
@@ -66,8 +67,6 @@ class _LoginPageState extends State<LoginPage> {
       () {
         lct.Location local = lct.Location();
         local.getLocation().then((lc) async {
-          print("============LATITUDE=========== ${lc.latitude}");
-          print("============LONGITUDE=========== ${lc.longitude}");
           setState(() {
             currentLatitude = lc.latitude!;
             currentLongitude = lc.longitude!;
@@ -172,6 +171,11 @@ class _LoginPageState extends State<LoginPage> {
                   getIt<GlobalConfigVars>().setBulas(data: bula);
                 });
               }),
+              getIt<GetSignatureUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  getIt<GlobalConfigVars>().setAssinatura(newAssinatura: r);
+                });
+              }),
             ]);
 
             response.whenComplete(() {
@@ -179,10 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                   getIt<SaveLocalDataController>().initializeLocalData();
               getIt<SaveLocalDataController>()
                   .salvarLocalPreloadData(preloadData: preloadData)
-                  .then((value) {
-                print(
-                  "SAVED PRELOAD CACHE  ${value.toString()} ",
-                );
+                  .then((value) {           
               });
               setState(() {
                 isLoading = false;
