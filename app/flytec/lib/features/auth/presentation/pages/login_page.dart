@@ -93,7 +93,6 @@ class _LoginPageState extends State<LoginPage> {
             getIt<GlobalConfigVars>().userPayload = UserPayloadModel.fromJson(
                 JwtDecoder.decode(state.authModel!.token!));
             getIt<AuthService>().saveToken(state.authModel!.token!);
-            print("AUTHENTICATION SUCCESS ${state.authModel!.token}");
 
             final response = Future.wait([
               getIt<ClienteDataSourceImpl>().getClients().then((value) {

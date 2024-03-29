@@ -419,7 +419,11 @@ class _CaracteristicasProdutoAplicadoPageState
                                       getIt<GlobalConfigVars>()
                                           .selectedCultura = produto.cultura!;
                                     }
-                                    _alvoBiologico = produto.alvoBiologico;
+
+                                    if (produto.alvoBiologico != null &&
+                                        produto.alvoBiologico!.isNotEmpty) {
+                                      _alvoBiologico = produto.alvoBiologico;
+                                    }
                                     _adjuvante?.text = produto.adjuvante!;
                                     _adjuvanteText = produto.adjuvante!;
 

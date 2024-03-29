@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 
 class CultureSelect extends StatelessWidget {
@@ -7,7 +9,6 @@ class CultureSelect extends StatelessWidget {
 
   final TextEditingController _controller = TextEditingController();
 
-  final List<String> _culture = ['Algodão', 'Milho', 'Café'];
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class CultureSelect extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.3,
               width: double.maxFinite,
               child: ListView.builder(
-                itemCount: _culture.length,
+                itemCount: getIt<GlobalConfigVars>().culturas .length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => MaterialButton(
@@ -31,14 +32,14 @@ class CultureSelect extends StatelessWidget {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      onChanged(_culture[index]);
+                      onChanged(getIt<GlobalConfigVars>().culturas[index].nome!);
                       Navigator.of(context).pop();
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(_culture[index],
+                          child: Text(getIt<GlobalConfigVars>().culturas[index].nome!,
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
