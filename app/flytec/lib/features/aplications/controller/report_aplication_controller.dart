@@ -35,6 +35,7 @@ class ReportAplicationController extends ChangeNotifier {
 
   void setUpdateUpdateView(VoidCallback updateView) {
     _updateView = updateView;
+    notifyListeners();
   }
 
   void setAplicacaoSelected(Aplicacao? aplicacao) {

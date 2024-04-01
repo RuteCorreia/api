@@ -134,13 +134,10 @@ class _ContrantePageState extends State<ContrantePage> {
                       Util.toastAlerta("Selecione o cliente");
                       return;
                     }
-                    if (_aplicacao.contratante?.nome != null) {
-                      Navigator.pop(context);
-                      return;
-                    }
+                   
                     try {
                       await _contratanteAction();
-                      Util.toastSucesso("Cliente selecionado");
+                      widget._reportAplicationController.updateView!();
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     } catch (e) {
