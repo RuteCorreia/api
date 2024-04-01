@@ -4,6 +4,7 @@ import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 
 import 'package:flytec/features/aplications/components/components_exports.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
 
@@ -148,9 +149,61 @@ await showDialog(
                         .isEmpty) {
                       Util.toastAlerta("Selecione o piloto");
                     } else {
-                      context.push(
-                        "/combateIncendioPasso2",
-                      );
+                      showAdaptiveDialog<String>(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (BuildContext context) =>
+                              AlertDialog.adaptive(
+                                insetPadding: const EdgeInsets.all(15),
+                                content: SizedBox(
+                                  height: 245,
+                                  child: SingleChildScrollView(
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 20),
+                                        const Text(
+                                          'Selecione o contratante',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 121, 118, 118),
+                                            fontSize: 16,
+                                            fontFamily: 'Inter',
+                                            fontWeight: FontWeight.w500,
+                                            height: 0.09,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 30),
+                                        CustomDialogButton(
+                                          showLeftIcon: false,
+                                          leftIcon: "",
+                                          text: "Orgão Público",
+                                          onClick: () {
+                                            context.pop();
+                                            context.push(
+                                              "/combateIncendioPasso2",
+                                            );
+                                          },
+                                        ),
+                                        const SizedBox(height: 10),
+                                        CustomDialogButton(
+                                          showLeftIcon: false,
+                                          leftIcon: "",
+                                          onClick: () {
+                                            context.pop();
+                                            context.push(
+                                              "/combateIncendioPasso2",
+                                            );
+                                          },
+                                          text: "Privado",
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                actions: const <Widget>[],
+                              ));
+                     
                     }
                   },
                 ),
