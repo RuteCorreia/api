@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
