@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/veiculante/data/models/alvo_biologico_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class RemoteVeiculanteDataSourceImpl implements IRemoteVeiculanteDataSource {
   Future<List<VeiculanteModel>> getVeiculantes() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Veiculante"),
+        Uri.parse(Endpoints.veiculate),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -12,11 +13,10 @@ abstract class IClientDataSource {
 }
 
 class ClienteDataSourceImpl implements IClientDataSource {
-  final baseUrl = "https://flytec.keltecnologia.com.br/api/v1";
 
   @override
   Future<List<ClientesModel>> getClients() async {
-    final response = await http.get(Uri.parse("$baseUrl/Cliente"), headers: {
+    final response = await http.get(Uri.parse(Endpoints.cliente), headers: {
       'Authorization': 'Bearer ${Util.Token}',
     });
     //  getIt<ClienteService>().saveClientesLocal(response.body);
@@ -28,7 +28,7 @@ class ClienteDataSourceImpl implements IClientDataSource {
   @override
   Future<bool> addCliente({required AddClientParams? addClientParams}) async {
     final response = await http.post(
-      Uri.parse("$baseUrl/Cliente"),
+      Uri.parse(Endpoints.cliente),
       headers: {
         'Authorization': 'Bearer ${Util.Token}',
         'Content-Type': 'application/json',
@@ -52,7 +52,6 @@ class ClienteDataSourceImpl implements IClientDataSource {
         "admin": true
       }),
     );
-    print(response.body);
     if (response.statusCode == 200) {
       return true;
     } else {

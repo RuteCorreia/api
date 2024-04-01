@@ -1,3 +1,4 @@
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class RemoteAlvoBilogicoDataSourceImpl
   Future<List<AlvoBiologicoModel>> getAlvosBiologicos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/AlvoBiologico"),
+        Uri.parse(Endpoints.alvoBiologico),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',

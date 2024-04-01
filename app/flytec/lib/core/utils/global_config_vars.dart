@@ -95,7 +95,6 @@ class GlobalConfigVars {
     required Map<String, dynamic> preloadJson,
   }) {
     try {
-      print("SETADO COM SUCESSO ");
       clientes = clientesModelFromJson(preloadJson["clientes"]);
       culturas = culturaModelFromJson(preloadJson["culturas"]);
       executores = executorModelFromJson(preloadJson["executores"]);
