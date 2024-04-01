@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_database_instance.dart';
@@ -70,8 +72,9 @@ class ReportAplicationController extends ChangeNotifier {
         .toList();
     for (int i = 0; i < listaAplicacao.length; i++) {
       final aplicacao = listaAplicacao[i];
+     
       final idNew = '${idUsuario}_${aplicacao.id}';
-      aplicacao.refDocument = idNew; 
+      aplicacao.refDocument = idNew;
       final getContratanteDb = await _sqlDatabaseProvider
           .obtainElementTableById("Contratante", aplicacao.contratanteId);
       Contratante contratante = Contratante.fromJson(getContratanteDb);
@@ -123,7 +126,16 @@ class ReportAplicationController extends ChangeNotifier {
       DadosResponsavel dadosResponsavel =
           DadosResponsavel.fromJson(getDadosResponsavel);
       aplicacao.dadosResponsavel = dadosResponsavel;
-
+      final verifyFieldsMandatory =
+          aplicacao.verifyFieldsMandatory(showToast: false);
+      if (aplicacao.state == ReportDashBoardState.Incompleto &&
+          verifyFieldsMandatory) {
+        aplicacao.state = ReportDashBoardState.Pronto;
+        await _sqlDatabaseProvider.update(
+            {"state": ReportDashBoardState.Pronto.index},
+            "Aplicacao",
+            aplicacao.id.toString());
+      }
       listaAplicacaoResult.add(aplicacao);
     }
 
