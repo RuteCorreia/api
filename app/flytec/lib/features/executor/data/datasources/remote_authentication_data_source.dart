@@ -1,3 +1,5 @@
+
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:http/http.dart' as http;
@@ -19,14 +21,12 @@ class RemoteExecutorDataSourceImpl implements IRemoteExecutorDataSource {
   Future<List<ExecutorModel>> getExecutores() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Executor"),
+        Uri.parse(Endpoints.executor),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
-      print("EXECUTORES");
-      print(response.body);
       if (response.statusCode == 200) {
         return Future.value(
           executorModelFromJson(response.body),

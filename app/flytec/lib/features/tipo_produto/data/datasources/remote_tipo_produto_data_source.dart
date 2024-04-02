@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/tipo_produto/data/models/tipo_produto_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class RemoteTipoProdutoDataSourceImpl implements IRemoteTipoProdutoDataSource {
   Future<List<TipoProdutoModel>> getTipoDeProdutos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/TipoProduto"),
+        Uri.parse(Endpoints.tipoProduto),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',

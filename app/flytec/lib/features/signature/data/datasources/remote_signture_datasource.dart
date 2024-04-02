@@ -1,5 +1,7 @@
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/errors/exception.dart';
@@ -19,10 +21,8 @@ class RemoteSignatureDataSourceImpl implements RemoteSignatureDataSource {
   @override
   Future<String> getSignature() async {
     if (await netWorkInfoI!.isConnected) {
-      final response = await client.post(
-          Uri.parse(
-              "https://flytec.keltecnologia.com.br/api/v1/Auth/getUserSignature"),
-          body: {'"${getIt<GlobalConfigVars>().userPayload.jti}"'});
+      final response = await client.post(Uri.parse(Endpoints.getUserSignature),
+          body: '"${getIt<GlobalConfigVars>().userPayload.jti}"');
       if (response.statusCode == 200) {
         return Future.value(response.body);
       } else {
@@ -36,10 +36,14 @@ class RemoteSignatureDataSourceImpl implements RemoteSignatureDataSource {
   @override
   Future<void> saveSignature(String imageEncoded) async {
     if (await netWorkInfoI!.isConnected) {
-      final response = await client.patch(
-          Uri.parse(
-              "https://flytec.keltecnologia.com.br/api/v1/Auth/saveSignature"),
-          body: {"assinatura": imageEncoded});
+      final response = await client.patch(Uri.parse(Endpoints.saveSignature),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ${Util.Token}'
+          },
+          body: {
+            "assinatura": imageEncoded
+          });
       if (response.statusCode == 200) {
         return Future.value();
       } else {

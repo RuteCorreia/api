@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,14 +20,12 @@ class RemoteEquipamentoDataSourceImpl implements IRemoteEquipamentoDataSource {
   Future<List<EquipamentoModel>> getEquipamentos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Equipamento"),
+        Uri.parse(Endpoints.equipamento),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
-      debugPrint("EQUIAPAMENTOS");
-      debugPrint(response.body.toString());
       if (response.statusCode == 200) {
         return Future.value(
           equipamentoModelFromJson(response.body),

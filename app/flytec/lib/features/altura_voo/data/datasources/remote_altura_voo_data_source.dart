@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:http/http.dart' as http;
@@ -20,7 +21,7 @@ class RemoteAlturVooDataSourceImpl implements IRemoteAlturaVooDataSource {
   Future<List<AlturaVooModel>> getAlturaVoo() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/AlturaVoo"),
+        Uri.parse(Endpoints.alturaVoo),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
