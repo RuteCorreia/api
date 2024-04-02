@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -22,7 +24,12 @@ class RemoteSignatureDataSourceImpl implements RemoteSignatureDataSource {
   Future<String> getSignature() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.post(Uri.parse(Endpoints.getUserSignature),
-          body: '"${getIt<GlobalConfigVars>().userPayload.jti}"');
+          headers: {
+            'Authorization': 'Bearer ${Util.Token}',
+            'Content-Type': 'application/json',
+          },
+          body: jsonEncode(getIt<GlobalConfigVars>().userPayload.idUsuario));
+
       if (response.statusCode == 200) {
         return Future.value(response.body);
       } else {
@@ -38,12 +45,12 @@ class RemoteSignatureDataSourceImpl implements RemoteSignatureDataSource {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.patch(Uri.parse(Endpoints.saveSignature),
           headers: {
+            'Authorization': 'Bearer ${Util.Token}',
             'Content-Type': 'application/json',
-            'Authorization': 'Bearer ${Util.Token}'
           },
-          body: {
-            "assinatura": imageEncoded
-          });
+          body: jsonEncode({
+            'assinatura': imageEncoded,
+          }));
       if (response.statusCode == 200) {
         return Future.value();
       } else {
