@@ -7,6 +7,6 @@ public class EngenheiroDomainToViewModelMappingProfile : Profile
 {
     public EngenheiroDomainToViewModelMappingProfile()
     {
-        CreateMap<Domain.Entidades.Cadastros.Engenheiro.Engenheiro, EngenheiroViewModel>();
+        //CreateMap<Domain.Entidades.Cadastros.Engenheiro.Engenheiro, EngenheiroViewModel>();
     }
 }

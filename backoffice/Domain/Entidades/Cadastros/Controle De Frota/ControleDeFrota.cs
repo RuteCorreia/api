@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.Cadastros.Piloto;
+﻿using Domain.Entidades.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -29,12 +29,12 @@ public class ControleDeFrota
     public int? QtdeHectare { get; set; }
 
     [ForeignKey("Piloto")]
-    public int? IdPiloto { get; set; }
+    public Guid? IdPiloto { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }
     [JsonIgnore]
     public virtual Aeronave.Aeronave? Aeronave { get; set; }
     [JsonIgnore]
-    public virtual Piloto.Piloto? Piloto { get; set; }
+    public virtual Usuario? Piloto { get; set; }
 }

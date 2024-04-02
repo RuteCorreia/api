@@ -18,36 +18,36 @@ public class ExecutorService : IExecutorService
 
     public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync()
     {
-        var list = await _executorRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<ExecutorViewModel>>(list);
+        //var list = await _executorRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<ExecutorViewModel>>(null);
     }
 
     public async Task<ExecutorViewModel> GetByIdAsync(int id)
     {
-        var obj = await _executorRepository.GetByIdAsync(id);
-        return _mapper.Map<ExecutorViewModel>(obj);
+        //var obj = await _executorRepository.GetByIdAsync(id);
+        return _mapper.Map<ExecutorViewModel>(null);
     }
 
     public async Task<ExecutorViewModel> GetByLoginAsync(string email, string password)
     {
-        var obj = await _executorRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<ExecutorViewModel>(obj);
+        //var obj = await _executorRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<ExecutorViewModel>(null);
     }
 
     public async Task AddAsync(ExecutorViewModel obj)
     {
-        var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
-        await _executorRepository.AddAsync(mapExecutor);
+        //var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
+        //await _executorRepository.AddAsync(mapExecutor);
     }
 
     public async Task UpdateAsync(ExecutorViewModel obj)
     {
-        var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
-        await _executorRepository.UpdateAsync(mapExecutor);
+        //var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
+        //await _executorRepository.UpdateAsync(mapExecutor);
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _executorRepository.DeleteAsync(id);
+        //await _executorRepository.DeleteAsync(id);
     }
 }

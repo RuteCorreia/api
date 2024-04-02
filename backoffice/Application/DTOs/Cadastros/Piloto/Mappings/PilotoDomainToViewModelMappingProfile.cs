@@ -7,6 +7,6 @@ public class PilotoDomainToViewModelMappingProfile : Profile
 {
     public PilotoDomainToViewModelMappingProfile()
     {
-        CreateMap<Domain.Entidades.Cadastros.Piloto.Piloto, PilotoViewModel>();
+        //CreateMap<Domain.Entidades.Cadastros.Piloto.Piloto, PilotoViewModel>();
     }
 }

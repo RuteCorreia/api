@@ -18,36 +18,36 @@ public class PilotoService : IPilotoService
 
     public async Task<IEnumerable<PilotoViewModel>> GetAllAsync()
     {
-        var list = await _pilotoRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<PilotoViewModel>>(list);
+        //var list = await _pilotoRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<PilotoViewModel>>(null);
     }
 
     public async Task<PilotoViewModel> GetByIdAsync(int id)
     {
-        var obj = await _pilotoRepository.GetByIdAsync(id);
-        return _mapper.Map<PilotoViewModel>(obj);
+        //var obj = await _pilotoRepository.GetByIdAsync(id);
+        return _mapper.Map<PilotoViewModel>(null);
     }
 
     public async Task<PilotoViewModel> GetByLoginAsync(string email, string password)
     {
-        var obj = await _pilotoRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<PilotoViewModel>(obj);
+        //var obj = await _pilotoRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<PilotoViewModel>(null);
     }
 
     public async Task AddAsync(PilotoViewModel obj)
     {
-        var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        await _pilotoRepository.AddAsync(mapPiloto);
+        //var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
+        //await _pilotoRepository.AddAsync(mapPiloto);
     }
 
     public async Task UpdateAsync(PilotoViewModel obj)
     {
-        var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        await _pilotoRepository.UpdateAsync(mapPiloto);
+        //var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
+        //await _pilotoRepository.UpdateAsync(mapPiloto);
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _pilotoRepository.DeleteAsync(id);
+        //await _pilotoRepository.DeleteAsync(id);
     }
 }

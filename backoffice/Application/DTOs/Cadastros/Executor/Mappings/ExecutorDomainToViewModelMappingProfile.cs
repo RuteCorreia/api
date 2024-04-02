@@ -7,6 +7,6 @@ public class ExecutorDomainToViewModelMappingProfile : Profile
 {
     public ExecutorDomainToViewModelMappingProfile()
     {
-        CreateMap<Domain.Entidades.Cadastros.Executor.Executor, ExecutorViewModel>();
+        //CreateMap<Domain.Entidades.Cadastros.Executor.Executor, ExecutorViewModel>();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Domain.Entidades.Cadastros.Pistas;
+using Domain.Entidades.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -14,7 +15,7 @@ public class CombateIncendio
     public int? IdEmpresa { get; set; }
 
     [ForeignKey("Executor")]
-    public int? IdExecutor { get; set; }
+    public Guid? IdExecutor { get; set; }
     public bool OrgaoPublico_Privado { get; set; }
     public string? Aviso { get; set; }
 
@@ -48,7 +49,7 @@ public class CombateIncendio
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
     [JsonIgnore]
-    public virtual Executor.Executor? Executor { get; set; }
+    public virtual Usuario? Executor { get; set; }
     [JsonIgnore]
     public virtual Aeronave.Aeronave? Aeronave { get; set; }
     [JsonIgnore]

@@ -7,7 +7,7 @@ namespace Application.DTOs.Cadastros.Engenheiro.Mappings
     {
         public EngenheiroViewModelToDomainMappingProfile()
         {
-            CreateMap<EngenheiroViewModel, Domain.Entidades.Cadastros.Engenheiro.Engenheiro>();
+            //CreateMap<EngenheiroViewModel, Domain.Entidades.Cadastros.Engenheiro.Engenheiro>();
         }
     }
 }

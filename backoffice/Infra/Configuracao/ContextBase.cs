@@ -11,15 +11,12 @@ using Domain.Entidades.Cadastros.Componentes;
 using Domain.Entidades.Cadastros.Controle_De_Frota;
 using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Engenheiro;
 using Domain.Entidades.Cadastros.Equipamento;
 using Domain.Entidades.Cadastros.Estados;
-using Domain.Entidades.Cadastros.Executor;
 using Domain.Entidades.Cadastros.Frota;
 using Domain.Entidades.Cadastros.ManutencaoAeronave;
 using Domain.Entidades.Cadastros.Menu;
 using Domain.Entidades.Cadastros.MenuUsuario;
-using Domain.Entidades.Cadastros.Piloto;
 using Domain.Entidades.Cadastros.Pistas;
 using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.Cadastros.Produto;
@@ -66,12 +63,9 @@ public class ContextBase : IdentityDbContext
     public DbSet<Bula> Bula { get; set; }
     public DbSet<BulaAplicacao> BulaAplicacao { get; set; }
     public DbSet<PlanoDeContrato> PlanoDeContrato { get; set; }
-    public DbSet<Engenheiro> Engenheiro { get; set; }
     public DbSet<Equipamento> Equipamento { get; set; }
     public DbSet<Estados> Estados { get; set; }
-    public DbSet<Executor> Executor { get; set; }
     public DbSet<Frota> Frota { get; set; }
-    public DbSet<Piloto> Piloto { get; set; }
     public DbSet<Pista> Pista { get; set; }
     public DbSet<Precificacao> Precificacao { get; set; }
     public DbSet<Produto> Produto { get; set; }

@@ -7,7 +7,7 @@ namespace Application.DTOs.Cadastros.Piloto.Mappings
     {
         public PilotoViewModelToDomainMappingProfile()
         {
-            CreateMap<PilotoViewModel, Domain.Entidades.Cadastros.Piloto.Piloto>();
+            //CreateMap<PilotoViewModel, Domain.Entidades.Cadastros.Piloto.Piloto>();
         }
     }
 }
