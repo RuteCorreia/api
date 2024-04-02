@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/aplications/components/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/report_card_aplication.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
@@ -52,6 +54,7 @@ class _AplicationsPageState extends State<AplicationsPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          getIt<GlobalConfigVars>().clearGlobalConfigVars();
           widget._reportAplicationController?.setListRelatorioAplicacao(
               widget._reportAplicationController?.listaAplicacao);
           setState(() {});

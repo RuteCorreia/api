@@ -419,7 +419,11 @@ class _CaracteristicasProdutoAplicadoPageState
                                       getIt<GlobalConfigVars>()
                                           .selectedCultura = produto.cultura!;
                                     }
-                                    _alvoBiologico = produto.alvoBiologico;
+
+                                    if (produto.alvoBiologico != null &&
+                                        produto.alvoBiologico!.isNotEmpty) {
+                                      _alvoBiologico = produto.alvoBiologico;
+                                    }
                                     _adjuvante?.text = produto.adjuvante!;
                                     _adjuvanteText = produto.adjuvante!;
 
@@ -454,7 +458,7 @@ class _CaracteristicasProdutoAplicadoPageState
                                 classfication: _classfication,
                                 onSelect: (value) {
                                   setState(() {
-                                    _classificacaoToxicologica = value;
+                                    _classificacaoToxicologica = value!+1;
                                   });
                                 }));
                       });

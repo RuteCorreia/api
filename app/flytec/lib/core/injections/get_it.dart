@@ -38,6 +38,11 @@ import 'package:flytec/features/produto/data/datasources/remote_produtos_data_so
 import 'package:flytec/features/produto/data/repositories/produto_repository_impl.dart';
 import 'package:flytec/features/produto/domain/repositories/produto_repository.dart';
 import 'package:flytec/features/produto/domain/usecases/get_produtos_usecase.dart';
+import 'package:flytec/features/signature/data/datasources/remote_signture_datasource.dart';
+import 'package:flytec/features/signature/data/repositories/signature_repository_impl.dart';
+import 'package:flytec/features/signature/domain/repositories/signature_repository.dart';
+import 'package:flytec/features/signature/domain/usecases/get_signature_usecase.dart';
+import 'package:flytec/features/signature/domain/usecases/save_signature_usecase.dart';
 import 'package:flytec/features/tipo_produto/data/datasources/remote_tipo_produto_data_source.dart';
 import 'package:flytec/features/tipo_produto/data/repositories/equipamento_repository_impl.dart';
 import 'package:flytec/features/tipo_produto/domain/repositories/tipoproduto_repository.dart';
@@ -115,6 +120,12 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
+  getIt.registerLazySingleton<RemoteSignatureDataSourceImpl>(
+    () => RemoteSignatureDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
 
   getIt.registerLazySingleton<RemoteAlvoBilogicoDataSourceImpl>(
     () => RemoteAlvoBilogicoDataSourceImpl(
@@ -175,6 +186,9 @@ void setup() async {
   getIt.registerLazySingleton<IProdutoRepository>(
     () => ProdutoRepositoryImpl(remoteProdutoDataSourceImpl: getIt()),
   );
+  getIt.registerLazySingleton<SignatureRepository>(
+    () => SignatureRepositoryImpl(remoteSignatureDataSourceImpl: getIt()),
+  );
   getIt.registerLazySingleton<IAlvoBiologicoRepository>(
     () =>
         AlvoBiologicoRepositoryImpl(remoteAlvoBilogicoDataSourceImpl: getIt()),
@@ -192,7 +206,7 @@ void setup() async {
   getIt.registerLazySingleton<ITipoProdutoRepository>(
     () => TipoProdutoRepositoryImpl(datasource: getIt()),
   );
-   getIt.registerLazySingleton<IBulaRepository>(
+  getIt.registerLazySingleton<IBulaRepository>(
     () => BulaRepositoryImpl(remoteBulaDataSourceImpl: getIt()),
   );
   getIt.registerLazySingleton<IAlturaVooRepository>(
@@ -211,11 +225,13 @@ void setup() async {
   getIt.registerLazySingleton(
       () => SaveLocalDataController(preferences: getIt()));
   getIt.registerLazySingleton(() => GetProdutosUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetSignatureUseCase(getIt()));
+  getIt.registerLazySingleton(() => SaveSignatureUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAlvoBiologicoUseCase(getIt()));
   getIt.registerLazySingleton(() => GetVeiculanteUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAeroNaveUseCase(getIt()));
   getIt.registerLazySingleton(() => GetEquipamentoUseCase(getIt()));
-   getIt.registerLazySingleton(() => GetBulasUseCase(getIt()));
+  getIt.registerLazySingleton(() => GetBulasUseCase(getIt()));
   getIt.registerLazySingleton(() => GetTipoProdutosUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAlturaVooUseCase(getIt()));
 }

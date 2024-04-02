@@ -53,7 +53,7 @@ public class UserAuthService : IUserAuthService
                     //if (usuario.PrimeiroAcesso)
                     //    token.Append("PrimeiroAcesso");
                     //else
-                        token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
+                        token.Append(await GenerateToken(identityUser, usuario));
 
                     return (true, token.ToString());
                 }
@@ -140,22 +140,23 @@ public class UserAuthService : IUserAuthService
         await _usuarioCredencialRepository.AddListAsync(list);
     }
 
-    private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
+    private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
     {
-        var claims = await GetUserClaims(user, userName, nrUsuario);
+        var claims = await GetUserClaims(identityUser, usuario);
         var identityClaims = new ClaimsIdentity(claims);
         return WriteToken(identityClaims);
     }
 
-    private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser user, string userName, int nrUsuario)
+    private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser identityUser, Usuario usuario)
     {
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _userManager.GetRolesAsync(identityUser);
         var claims = new List<Claim>
         {
-            new("NrUsuario", nrUsuario.ToString()),
-            new(JwtRegisteredClaimNames.Sub, user.Id),
-            new(JwtRegisteredClaimNames.Name, userName),
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("NrUsuario", usuario.NrUsuario.ToString()),
+            new("IdUsuario", usuario.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, identityUser.Id),
+            new(JwtRegisteredClaimNames.Name, usuario.Nome),
+            new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()),
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)

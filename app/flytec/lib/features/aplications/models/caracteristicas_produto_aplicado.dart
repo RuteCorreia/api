@@ -2,7 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
+import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 
 class CaracteristicasProdutoAplicado {
   String? cultura;
@@ -75,24 +77,26 @@ class CaracteristicasProdutoAplicado {
     );
   }
 
-  factory CaracteristicasProdutoAplicado.fromBula(BulaModel bulaModel) =>
-      CaracteristicasProdutoAplicado(
-          nomeProduto: bulaModel.nomeProduto,
-          classificacaoToxicologica: bulaModel.idClassificacaoToxicologica,
-          classe: bulaModel.classe,
-          tipoFormulacao: bulaModel.tipoDeFormulacao,
-          tipoServico: bulaModel.idTipoDeServico.toString(),
-          adjuvante: bulaModel.adjuvante,
-          unidadeDoseProdutoHectare: bulaModel.tipoDeUnidade.toString(),
-          doseProdutoHectare: bulaModel.doseProdutoComercial,
-          cultura: bulaModel.bulaAplicacoes?.first != null
-              ? getIt<GlobalConfigVars>()
-                  .culturas[bulaModel.bulaAplicacoes!.first.idCultura! - 1]
-                  .nome
-              : null,
-          alvoBiologico: bulaModel.idAlvoBiologico != null
-              ? getIt<GlobalConfigVars>()
-                  .alvosBiologicos[bulaModel.idAlvoBiologico! - 1]
-                  .nome
-              : null);
+  factory CaracteristicasProdutoAplicado.fromBula(BulaModel bulaModel) {
+    AlvoBiologicoModel? alvoBiologicoModel = getIt<GlobalConfigVars>()
+        .alvosBiologicos
+        .firstWhere((element) => element.id == bulaModel.idAlvoBiologico,
+            orElse: () => AlvoBiologicoModel(nome: ''));
+    CulturaModel? culturaModel = getIt<GlobalConfigVars>().culturas.firstWhere(
+        (element) => element.idCultura == bulaModel.idCultura,
+        orElse: () => const CulturaModel(nome: ''));
+    return CaracteristicasProdutoAplicado(
+        nomeProduto: bulaModel.nomeProduto,
+        classificacaoToxicologica: bulaModel.idClassificacaoToxicologica,
+        classe: bulaModel.classe,
+        tipoFormulacao: bulaModel.tipoDeFormulacao,
+        tipoServico: bulaModel.idTipoDeServico.toString(),
+        adjuvante: bulaModel.adjuvante,
+        unidadeDoseProdutoHectare: bulaModel.tipoDeUnidade.toString(),
+        doseProdutoHectare: bulaModel.doseProdutoComercial,
+        cultura: culturaModel.nome!.isNotEmpty ? culturaModel.nome : null,
+        alvoBiologico: alvoBiologicoModel.nome!.isNotEmpty
+            ? alvoBiologicoModel.nome
+            : null);
+  }
 }
