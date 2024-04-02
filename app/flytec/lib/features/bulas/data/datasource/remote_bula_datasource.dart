@@ -1,6 +1,4 @@
-
-import 'dart:developer';
-
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:http/http.dart' as http;
@@ -21,13 +19,12 @@ class RemoteBulaDataSourceImpl implements IRemoteBulaDataSource {
   Future<List<BulaModel>> getBulas() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/bula"),
+        Uri.parse(Endpoints.bula),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
-      log('--> ${response.body}');
       if (response.statusCode == 200) {
         return Future.value(bulaModelFromJson(response.body));
       } else {

@@ -1,3 +1,4 @@
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/produto/data/models/produto_model.dart';
 import 'package:http/http.dart' as http;
@@ -19,14 +20,12 @@ class RemoteProdutoDataSourceImpl implements IRemoteProdutoDataSource {
   Future<List<ProdutoModel>> getProdutos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/produto"),
+        Uri.parse(Endpoints.produto),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
-      print("PRODUTOS");
-      print(response.body);
       if (response.statusCode == 200) {
         return Future.value(
           produtoModelFromJson(response.body),
