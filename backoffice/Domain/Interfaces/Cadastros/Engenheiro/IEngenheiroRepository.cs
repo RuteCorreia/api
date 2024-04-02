@@ -1,14 +1,14 @@
-﻿using Domain.Interfaces.Genericos;
+﻿using Domain.Entidades.User;
 
 namespace Domain.Interfaces.Cadastros.Engenheiro;
 
 public interface IEngenheiroRepository
 {
-    //Task AddAsync(Entidades.Cadastros.Engenheiro.Engenheiro obj);
-    //Task UpdateAsync(Entidades.Cadastros.Engenheiro.Engenheiro obj);
-    //Task DeleteAsync(int id);
-    //Task<IEnumerable<Entidades.Cadastros.Engenheiro.Engenheiro>> GetAllAsync();
-    //Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdAsync(int id);
-    //Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByLoginAsync(string email, string password);
-    //Task<Entidades.Cadastros.Engenheiro.Engenheiro> GetByIdEmpresaAsync(int id, int idEmpresa);
+    Task AddAsync(Usuario obj);
+    Task UpdateAsync(Usuario obj);
+    Task DeleteAsync(int id);
+    Task<IEnumerable<Usuario>> GetAllAsync();
+    Task<Usuario> GetByIdAsync(string id);
+    Task<Usuario> GetByLoginAsync(string email, string password);
+    Task<Usuario> GetByIdEmpresaAsync(int id, int idEmpresa);
 }

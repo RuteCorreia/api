@@ -7,7 +7,7 @@ public interface IExecutorService
 {
     Task<IEnumerable<ExecutorViewModel>> GetAllAsync();
 
-    Task<ExecutorViewModel> GetByIdAsync(int id);
+    Task<ExecutorViewModel> GetByIdAsync(string id);
 
     Task<ExecutorViewModel> GetByLoginAsync(string email, string password);
 

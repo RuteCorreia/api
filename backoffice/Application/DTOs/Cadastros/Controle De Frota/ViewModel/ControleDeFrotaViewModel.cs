@@ -19,5 +19,5 @@ public class ControleDeFrotaViewModel
     public string? Combustivel { get; set; }
     public int? QtdeCombustivel { get; set; }
     public int? QtdeHectare { get; set; }
-    public int? IdPiloto { get; set; }
+    public string? IdPiloto { get; set; }
 }

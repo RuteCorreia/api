@@ -6,7 +6,7 @@ public class CombateIncendioViewModel
 {
     public int Id { get; set; }
     public int? IdEmpresa { get; set; }
-    public int? IdExecutor { get; set; }
+    public string? IdExecutor { get; set; }
     public bool OrgaoPublico_Privado { get; set; }
     public string? Aviso { get; set; }
     public int? IdAeronave { get; set; }

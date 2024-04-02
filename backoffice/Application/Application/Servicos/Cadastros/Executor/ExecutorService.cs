@@ -18,14 +18,14 @@ public class ExecutorService : IExecutorService
 
     public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync()
     {
-        //var list = await _executorRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<ExecutorViewModel>>(null);
+        var list = await _executorRepository.GetAllAsync();
+        return _mapper.Map<IEnumerable<ExecutorViewModel>>(list);
     }
 
-    public async Task<ExecutorViewModel> GetByIdAsync(int id)
+    public async Task<ExecutorViewModel> GetByIdAsync(string id)
     {
-        //var obj = await _executorRepository.GetByIdAsync(id);
-        return _mapper.Map<ExecutorViewModel>(null);
+        var obj = await _executorRepository.GetByIdAsync(id);
+        return _mapper.Map<ExecutorViewModel>(obj);
     }
 
     public async Task<ExecutorViewModel> GetByLoginAsync(string email, string password)

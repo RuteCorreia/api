@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -36,15 +36,18 @@ public class EngenheiroController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<EngenheiroViewModel>> GetById(int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<EngenheiroViewModel>> GetById(string id)
     {
         try
         {
-            var engenheiro = await _engenheiroService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(engenheiro))
+            if (!string.IsNullOrEmpty(id))
             {
-                return Ok(engenheiro);
+                var engenheiro = await _engenheiroService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(engenheiro))
+                {
+                    return Ok(engenheiro);
+                }
             }
 
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
@@ -81,18 +84,21 @@ public class EngenheiroController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _engenheiroService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
-                {
-                    obj.Id = objeto.Id;
+                //VERIFICAR SE VAI SER NECESSARIO ADD ESSES USUARIOS ENGENHEIROS
+                //var objeto = await _engenheiroService.GetByIdAsync(id);
+                //if (!ObjectNullValidation.IsObjectNull(objeto))
+                //{
+                //    obj.Id = objeto.Id;
 
-                    await _engenheiroService.UpdateAsync(obj);
-                    return Ok();
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+                //    await _engenheiroService.UpdateAsync(obj);
+                //    return Ok();
+                //}
+                //else
+                //{
+                //    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                //}
+
+                return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
