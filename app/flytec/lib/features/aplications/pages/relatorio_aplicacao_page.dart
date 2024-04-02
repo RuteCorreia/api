@@ -188,7 +188,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           content: SizedBox(
                             width: double.maxFinite,
                             child: ProductNameSelect(
-                                onChangedProductName: (value, produto) {
+                                onChangedProductName: (value, produto, bulas) {
                               setState(() {
                                 _produtoSelecionado = value;
                                 getIt<GlobalConfigVars>().produtoAplicado =
