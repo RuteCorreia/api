@@ -5,7 +5,8 @@ import 'package:flytec/features/aplications/models/caracteristicas_produto_aplic
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 
 class ProductNameSelect extends StatelessWidget {
-  final Function(String, CaracteristicasProdutoAplicado?) onChangedProductName;
+  final Function(String, CaracteristicasProdutoAplicado?, BulaModel?)
+      onChangedProductName;
   ProductNameSelect({super.key, required this.onChangedProductName});
 
   final TextEditingController _textFlightHeight = TextEditingController();
@@ -33,7 +34,8 @@ class ProductNameSelect extends StatelessWidget {
                       onChangedProductName(
                           getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
                           CaracteristicasProdutoAplicado.fromBula(
-                              getIt<GlobalConfigVars>().bulas[index]));
+                              getIt<GlobalConfigVars>().bulas[index]),
+                          getIt<GlobalConfigVars>().bulas[index]);
                       Navigator.of(context).pop();
                     },
                     child: Align(
@@ -74,7 +76,8 @@ class ProductNameSelect extends StatelessWidget {
                         getIt<GlobalConfigVars>()
                             .bulas
                             .add(BulaModel(nomeProduto: value));
-                        onChangedProductName(_textFlightHeight.text, null);
+                        onChangedProductName(
+                            _textFlightHeight.text, null, null);
                         Navigator.of(context).pop();
                       },
                       decoration: const InputDecoration(
@@ -93,7 +96,7 @@ class ProductNameSelect extends StatelessWidget {
                       getIt<GlobalConfigVars>()
                           .bulas
                           .add(BulaModel(nomeProduto: _textFlightHeight.text));
-                      onChangedProductName(_textFlightHeight.text, null);
+                      onChangedProductName(_textFlightHeight.text, null, null);
                       Navigator.of(context).pop();
                     },
                     child: Container(
