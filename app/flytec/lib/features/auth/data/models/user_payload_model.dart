@@ -48,7 +48,7 @@ class UserPayloadModel {
         jti: json["jti"],
         nbf: json["nbf"],
         iat: json["iat"],
-        role: json["role"],
+        role: json["role"] is List ? json["role"][0] : json["role"],
         idUsuario: json["IdUsuario"],
         exp: json["exp"],
         iss: json["iss"],
