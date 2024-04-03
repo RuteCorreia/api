@@ -7,10 +7,12 @@ class CustomActionButton extends StatelessWidget {
     required this.imageUrl,
     required this.onClick,
     required this.text,
+    this.sizeIcon = 30,
   });
   final String? text;
   final String? imageUrl;
   final VoidCallback? onClick;
+  final double? sizeIcon;
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -54,14 +56,9 @@ class CustomActionButton extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                SizedBox(
-                                  width: 38,
-                                  height: 38,
-                                  child: Stack(children: [
-                                    SvgPicture.asset(
-                                      imageUrl!,
-                                    )
-                                  ]),
+                                SvgPicture.asset(
+                                  imageUrl!,
+                                  height: sizeIcon,
                                 ),
                               ],
                             ),
