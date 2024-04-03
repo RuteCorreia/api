@@ -7,7 +7,7 @@ namespace Application.DTOs.Cadastros.Executor.Mappings
     {
         public ExecutorViewModelToDomainMappingProfile()
         {
-            CreateMap<ExecutorViewModel, Domain.Entidades.Cadastros.Executor.Executor>();
+            //CreateMap<ExecutorViewModel, Domain.Entidades.Cadastros.Executor.Executor>();
         }
     }
 }

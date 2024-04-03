@@ -7,7 +7,7 @@ public interface IPilotoService
 {
     Task<IEnumerable<PilotoViewModel>> GetAllAsync();
 
-    Task<PilotoViewModel> GetByIdAsync(int id);
+    Task<PilotoViewModel> GetByIdAsync(string id);
 
     Task<PilotoViewModel> GetByLoginAsync(string email, string password);
 

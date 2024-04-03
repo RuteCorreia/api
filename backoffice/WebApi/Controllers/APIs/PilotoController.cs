@@ -8,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -36,15 +36,18 @@ public class PilotoController : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<PilotoViewModel>> GetById(int id)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<PilotoViewModel>> GetById(string id)
     {
         try
         {
-            var piloto = await _pilotoService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(piloto))
+            if(!string.IsNullOrEmpty(id))
             {
-                return Ok(piloto);
+                var piloto = await _pilotoService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(piloto))
+                {
+                    return Ok(piloto);
+                }
             }
 
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
@@ -60,10 +63,11 @@ public class PilotoController : ControllerBase
     {
         try
         {
+            //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
             if (ModelState.IsValid)
             {
-                await _pilotoService.AddAsync(obj);
-                return Ok();
+                //await _pilotoService.AddAsync(obj);
+                //return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -81,18 +85,19 @@ public class PilotoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _pilotoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
-                {
-                    obj.Id = objeto.Id;
+                //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
+                //var objeto = await _pilotoService.GetByIdAsync(id);
+                //if (!ObjectNullValidation.IsObjectNull(objeto))
+                //{
+                //    obj.Id = objeto.Id;
 
-                    await _pilotoService.UpdateAsync(obj);
-                    return Ok();
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+                //    await _pilotoService.UpdateAsync(obj);
+                //    return Ok();
+                //}
+                //else
+                //{
+                //    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                //}
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
@@ -108,10 +113,11 @@ public class PilotoController : ControllerBase
     {
         try
         {
+            //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
             if (id != 0)
             {
-                await _pilotoService.DeleteAsync(id);
-                return Ok();
+                //await _pilotoService.DeleteAsync(id);
+                //return Ok();
             }
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");

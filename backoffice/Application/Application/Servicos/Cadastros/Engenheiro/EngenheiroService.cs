@@ -22,7 +22,7 @@ public class EngenheiroService : IEngenheiroService
         return _mapper.Map<IEnumerable<EngenheiroViewModel>>(list);
     }
 
-    public async Task<EngenheiroViewModel> GetByIdAsync(int id)
+    public async Task<EngenheiroViewModel> GetByIdAsync(string id)
     {
         var obj = await _engenheiroRepository.GetByIdAsync(id);
         return _mapper.Map<EngenheiroViewModel>(obj);
@@ -30,46 +30,50 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task<EngenheiroViewModel> GetByLoginAsync(string email, string password)
     {
-        var obj = await _engenheiroRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<EngenheiroViewModel>(obj);
+        //var obj = await _engenheiroRepository.GetByLoginAsync(email, password);
+        return _mapper.Map<EngenheiroViewModel>(null);
     }
 
     public async Task AddAsync(EngenheiroViewModel obj)
     {
-        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
-        if(empresaJaTemEngenheiro is null)
-        {
-            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-            await _engenheiroRepository.AddAsync(mapEngenheiro);
-        }
-        else
-        {
-            throw new Exception("A empresa já possui um engenheiro");
-        }
+        //VERIFICAR SE VAI SER NECESSARIO ADD ESSES USUARIOS ENGENHEIROS
+        //var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
+        //if(empresaJaTemEngenheiro is null)
+        //{
+        //    //var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
+        //    //await _engenheiroRepository.AddAsync(mapEngenheiro);
+        //}
+        //else
+        //{
+        //    throw new Exception("A empresa já possui um engenheiro");
+        //}
     }
 
     public async Task UpdateAsync(EngenheiroViewModel obj)
     {
-        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
-        if (empresaJaTemEngenheiro is null)
-        {
-            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-            await _engenheiroRepository.UpdateAsync(mapEngenheiro);
-        }
-        else
-        {
-            throw new Exception("A empresa já possui um engenheiro");
-        }
+        //VERIFICAR SE VAI SER NECESSARIO ADD ESSES USUARIOS ENGENHEIROS
+        //var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
+        //if (empresaJaTemEngenheiro is null)
+        //{
+        //    //var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
+        //    //await _engenheiroRepository.UpdateAsync(mapEngenheiro);
+        //}
+        //else
+        //{
+        //    throw new Exception("A empresa já possui um engenheiro");
+        //}
     }
 
     public async Task DeleteAsync(int id)
     {
-        await _engenheiroRepository.DeleteAsync(id);
+        //VERIFICAR SE VAI SER NECESSARIO ADD ESSES USUARIOS ENGENHEIROS
+        //await _engenheiroRepository.DeleteAsync(id);
     }
 
     public async Task<EngenheiroViewModel> GetByIdEmpresaAsync(int id, int idEmpresa)
     {
-        var obj = await _engenheiroRepository.GetByIdEmpresaAsync(id, idEmpresa);
-        return _mapper.Map<EngenheiroViewModel>(obj);
+        //VERIFICAR SE VAI SER NECESSARIO ADD ESSES USUARIOS ENGENHEIROS
+        //var obj = await _engenheiroRepository.GetByIdEmpresaAsync(id, idEmpresa);
+        return _mapper.Map<EngenheiroViewModel>(null);
     }
 }

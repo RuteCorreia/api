@@ -1,3 +1,4 @@
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:http/http.dart' as http;
@@ -19,14 +20,13 @@ class RemotePilotoDataSourceImpl implements IRemotePilotoDataSource {
   Future<List<PilotoModel>> getPilotos() async {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
-        Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Piloto"),
+        Uri.parse(Endpoints.piloto),
         headers: {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${Util.Token}',
         },
       );
-      print("PILOTOS");
-      print(response.body);
+
       if (response.statusCode == 200) {
         return Future.value(
           pilotoModelFromJson(response.body),

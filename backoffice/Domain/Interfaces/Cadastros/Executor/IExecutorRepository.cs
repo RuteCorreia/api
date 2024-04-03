@@ -1,13 +1,14 @@
-﻿using Domain.Interfaces.Genericos;
+﻿using Domain.Entidades.User;
+using Domain.Interfaces.Genericos;
 
 namespace Domain.Interfaces.Cadastros.Executor;
 
 public interface IExecutorRepository
 {
-    Task AddAsync(Entidades.Cadastros.Executor.Executor obj);
-    Task UpdateAsync(Entidades.Cadastros.Executor.Executor obj);
+    Task AddAsync(Usuario obj);
+    Task UpdateAsync(Usuario obj);
     Task DeleteAsync(int id);
-    Task<IEnumerable<Entidades.Cadastros.Executor.Executor>> GetAllAsync();
-    Task<Entidades.Cadastros.Executor.Executor> GetByIdAsync(int id);
-    Task<Entidades.Cadastros.Executor.Executor> GetByLoginAsync(string email, string password);
+    Task<IEnumerable<Usuario>> GetAllAsync();
+    Task<Usuario> GetByIdAsync(string id);
+    Task<Usuario> GetByLoginAsync(string email, string password);
 }

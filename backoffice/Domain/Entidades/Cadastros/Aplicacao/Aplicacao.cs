@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.Cadastros.Piloto;
+﻿using Domain.Entidades.User;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -15,10 +15,10 @@ public class Aplicacao
     public string StatusEnvio { get; set; }
 
     [ForeignKey("Piloto")]
-    public int? IdPiloto { get; set; }
+    public Guid? IdPiloto { get; set; }
 
     [ForeignKey("Executor")]
-    public int? IdExecutor { get; set; }
+    public Guid? IdExecutor { get; set; }
 
     [ForeignKey("Cliente")]
     public int? IdCliente { get; set; }
@@ -29,9 +29,9 @@ public class Aplicacao
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
     [JsonIgnore]
-    public virtual Piloto.Piloto? Piloto { get; set; }
+    public virtual Usuario? Piloto { get; set; }
     [JsonIgnore]
-    public virtual Executor.Executor? Executor { get; set; }
+    public virtual Usuario? Executor { get; set; }
     [JsonIgnore]
     public virtual Cliente.Cliente? Cliente { get; set; }
     [JsonIgnore]

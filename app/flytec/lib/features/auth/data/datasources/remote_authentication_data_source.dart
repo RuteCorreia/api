@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flytec/core/infrastructure/network/endpoints.dart';
 import 'package:flytec/features/auth/data/models/auth_model.dart';
 import 'package:http/http.dart' as http;
 
@@ -21,8 +22,7 @@ class RemoteAuthenticationDataSourceImpl
   @override
   Future<AuthModel> authenticate(AuthParams authParams) async {
     if (await netWorkInfoI!.isConnected) {
-      final response = await client.post(
-          Uri.parse("https://flytec.keltecnologia.com.br/api/v1/Auth/login"),
+      final response = await client.post(Uri.parse(Endpoints.login),
           headers: {
             'Content-Type': 'application/json',
           },

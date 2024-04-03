@@ -8,6 +8,7 @@ import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 
 class CaracteristicasProdutoAplicado {
   String? cultura;
+  CulturaModel? culturaModel;
   Uint8List? receiturarioAgronomico;
   String? nomeProduto;
   int? classificacaoToxicologica;
@@ -28,6 +29,7 @@ class CaracteristicasProdutoAplicado {
     this.nomeProduto,
     this.classificacaoToxicologica,
     this.classe,
+    this.culturaModel,
     this.tipoFormulacao,
     this.alvoBiologico,
     this.doseProdutoHectare,
@@ -95,6 +97,7 @@ class CaracteristicasProdutoAplicado {
         unidadeDoseProdutoHectare: bulaModel.tipoDeUnidade.toString(),
         doseProdutoHectare: bulaModel.doseProdutoComercial,
         cultura: culturaModel.nome!.isNotEmpty ? culturaModel.nome : null,
+        culturaModel: culturaModel,
         alvoBiologico: alvoBiologicoModel.nome!.isNotEmpty
             ? alvoBiologicoModel.nome
             : null);
