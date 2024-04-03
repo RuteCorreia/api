@@ -27,31 +27,4 @@ public class PilotoService : IPilotoService
         var obj = await _pilotoRepository.GetByIdAsync(id);
         return _mapper.Map<PilotoViewModel>(obj);
     }
-
-    public async Task<PilotoViewModel> GetByLoginAsync(string email, string password)
-    {
-        //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
-        //var obj = await _pilotoRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<PilotoViewModel>(null);
-    }
-
-    public async Task AddAsync(PilotoViewModel obj)
-    {
-        //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
-        //var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        //await _pilotoRepository.AddAsync(mapPiloto);
-    }
-
-    public async Task UpdateAsync(PilotoViewModel obj)
-    {
-        //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
-        //var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        //await _pilotoRepository.UpdateAsync(mapPiloto);
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        //VERIFICAR A NECESSIDADE DA EXISTENCIA DESSE METODO
-        //await _pilotoRepository.DeleteAsync(id);
-    }
 }

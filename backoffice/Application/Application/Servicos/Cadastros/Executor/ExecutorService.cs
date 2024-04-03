@@ -27,27 +27,4 @@ public class ExecutorService : IExecutorService
         var obj = await _executorRepository.GetByIdAsync(id);
         return _mapper.Map<ExecutorViewModel>(obj);
     }
-
-    public async Task<ExecutorViewModel> GetByLoginAsync(string email, string password)
-    {
-        //var obj = await _executorRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<ExecutorViewModel>(null);
-    }
-
-    public async Task AddAsync(ExecutorViewModel obj)
-    {
-        //var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
-        //await _executorRepository.AddAsync(mapExecutor);
-    }
-
-    public async Task UpdateAsync(ExecutorViewModel obj)
-    {
-        //var mapExecutor = _mapper.Map<Domain.Entidades.Cadastros.Executor.Executor>(obj);
-        //await _executorRepository.UpdateAsync(mapExecutor);
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        //await _executorRepository.DeleteAsync(id);
-    }
 }
