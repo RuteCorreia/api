@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -67,6 +69,8 @@ class _HomePagaState extends State<HomePaga> {
       _reportAplicationController =
           ReportAplicationController(updateView: _updateView);
       await _initializationAplicationsReports();
+      _signature = base64Decode(getIt<GlobalConfigVars>().assinatura!);
+      setState(() {});
     });
   }
 
@@ -100,7 +104,9 @@ class _HomePagaState extends State<HomePaga> {
                             height: 200))),
                 CustomDrawerButton(
                   icon: Icons.edit,
-                  text: "Cadastrar Assinatura",
+                  text: _signature != null
+                      ? "Visualizar Assinatura"
+                      : "Cadastrar Assinatura",
                   onClick: () async {
                     context.pop();
                     if (_signature != null) {

@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
           if (!hasExpired) {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
             Util.Token = token;
-            debugPrint(decodedToken["role"]);
 
             getIt<SaveLocalDataController>()
                 .getLocalPreloadData()
