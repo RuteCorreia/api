@@ -1,5 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/executor/data/models/excutores_model.dart';
+import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -56,6 +61,12 @@ class CreateAplicacaoReportService implements PdfGenerator {
 
     int? epochAplicacao = int.tryParse(aplicacao.data!);
     final dataAplicacao = DateTime.fromMillisecondsSinceEpoch(epochAplicacao!);
+    final pilotoSelected = getIt<GlobalConfigVars>().pilotos.firstWhere(
+        (piloto) => aplicacao.piloto == piloto.nomePiloto,
+        orElse: () => const PilotoModel(nomePiloto: '', cdac: 'COD.ANAC'));
+    final executorSelected = getIt<GlobalConfigVars>().executores.firstWhere(
+        (executor) => aplicacao.executor == executor.nome,
+        orElse: () => const ExecutorModel(cfta: 'CFTA'));
 
     pdf.addPage(
       pw.Page(
@@ -738,7 +749,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA',
+                                pw.Text(executorSelected.cfta ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1688,7 +1699,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                         fit: pw.BoxFit.cover),
                                   ),
                                 pw.Text(
-                                    'Contratante ${aplicacao.dadosResponsavel?.nomeCompleto ?? ''}',
+                                    aplicacao.dadosResponsavel?.nomeCompleto ??
+                                        '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1721,14 +1733,23 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text('_______________________________',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('Piloto',
+                                if (pilotoSelected.assinatura != null &&
+                                    pilotoSelected.assinatura!.isNotEmpty)
+                                  pw.Container(
+                                    height: 22,
+                                    width: 100,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          base64Decode(
+                                              pilotoSelected.assinatura!),
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
+                                pw.Text(aplicacao.piloto ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('COD. ANAC',
+                                pw.Text(pilotoSelected.cdac!,
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1736,14 +1757,23 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text('_______________________________',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('Executor',
+                                if (executorSelected.assinatura != null &&
+                                    executorSelected.assinatura!.isNotEmpty)
+                                  pw.Container(
+                                    height: 22,
+                                    width: 100,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          base64Decode(
+                                              executorSelected.assinatura!),
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
+                                pw.Text(aplicacao.executor ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA',
+                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
