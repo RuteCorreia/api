@@ -106,7 +106,7 @@ class GlobalConfigVars {
       tiposProdutos = tipoProdutoModelFromJson(preloadJson["tipoprodutos"]);
       alturaVoo = alturaVooModelFromJson(preloadJson["alturavoo"]);
       bulas = bulaModelFromJson(preloadJson["bulas"]);
-
+      assinatura = preloadJson["assinatura"];
       alvosBiologicos =
           alvoBiologicoModelFromJson(preloadJson["alvosBiologicos"]);
       Util.Token = preloadJson["token"];

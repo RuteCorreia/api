@@ -43,7 +43,8 @@ class SaveLocalDataController {
           veiculanteModelToJson(getIt<GlobalConfigVars>().veiculantes),
       "alturavoo": alturaVooModelToJson(getIt<GlobalConfigVars>().alturaVoo),
       "alvosBiologicos":
-          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos)
+          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos),
+      "assinatura": getIt<GlobalConfigVars>().assinatura ?? '',
     };
     return preloadData;
   }
