@@ -548,32 +548,71 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       )),
                 ),
               ),
-              const SizedBox(height: 20),
-              const SizedBox(height: 20),
               const CustomText(text: 'Capacidade de carga da aeronave'),
               const SizedBox(height: 14),
-              CustomComboBox(
-                selectedName: "Selecione",
-                onTap: () async {
-                  /*    final data = await showTimePicker(
-                      confirmText: "Selecionar hora",
-                      cancelText: "Cancelar",
-                      helpText: "",
-                      context: context,
-                      initialTime: const TimeOfDay(hour: 12, minute: 23));
-                  setState(() {
-                    horimetro = data;
-                  }); */
-                },
+              Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: false),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: const InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
               ),
-              const SizedBox(height: 20),
               const CustomText(text: 'Total de água utilizada na operação'),
               const SizedBox(height: 14),
-              CustomComboBox(
-                selectedName: "Selecione",
-                onTap: () async {},
+              Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: false),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
+                  decoration: const InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 14),
               Center(
                 child: CustomButton(
                   title: "Próximo",
