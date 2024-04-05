@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -179,9 +180,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
+                child: TextField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatter()
+                  ],
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -226,9 +231,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                child: TextField(
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatter()
+                  ],
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -273,9 +282,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  keyboardType: TextInputType.text,
-                  decoration: InputDecoration(
+                child: TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatter()
+                  ],
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -462,7 +475,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                   )
                 ],
               ),
-              
               const Text(
                 'Nome',
                 style: TextStyle(
