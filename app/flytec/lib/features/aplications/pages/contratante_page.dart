@@ -10,9 +10,9 @@ import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/aplications/pages/create_new_contratante_page.dart';
 
 class ContrantePage extends StatefulWidget {
-  final ReportAplicationController _reportAplicationController;
+  final ReportAplicationController? _reportAplicationController;
   const ContrantePage(
-      {required ReportAplicationController reportAplicationController,
+      {required ReportAplicationController? reportAplicationController,
       super.key})
       : _reportAplicationController = reportAplicationController;
 
@@ -23,15 +23,15 @@ class ContrantePage extends StatefulWidget {
 class _ContrantePageState extends State<ContrantePage> {
   Contratante? _selectedContratante;
 
-  Aplicacao get _aplicacao =>
-      widget._reportAplicationController.aplicacaoSelected!;
+  Aplicacao? get _aplicacao =>
+      widget._reportAplicationController?.aplicacaoSelected;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_aplicacao.contratante?.id != null) {
-        _selectedContratante = _aplicacao.contratante!;
+      if (_aplicacao?.contratante?.id != null) {
+        _selectedContratante = _aplicacao?.contratante!;
         setState(() {});
       }
     });
@@ -42,29 +42,32 @@ class _ContrantePageState extends State<ContrantePage> {
   }
 
   Future<void> _contratanteAction() async {
-    if (_aplicacao.contratante?.id == null || _aplicacao.contratante!.id! <= 0) {
+    if (widget._reportAplicationController == null) return;
+    if (_aplicacao?.contratante?.id == null ||
+        _aplicacao!.contratante!.id! <= 0) {
       int? idContratante = await widget._reportAplicationController
-          .createElementInTable(_selectedContratante!.toMap(), 'Contratante');
-      await widget._reportAplicationController.updateElementInTable(
-          _aplicacao.id!, {'contratante_id': idContratante}, 'Aplicacao');
+          ?.createElementInTable(_selectedContratante!.toMap(), 'Contratante');
+      await widget._reportAplicationController?.updateElementInTable(
+          _aplicacao!.id!, {'contratante_id': idContratante}, 'Aplicacao');
       await _updateContrante(idContratante!);
       return;
     }
-    int? idContratante = _aplicacao.contratante!.id;
-    await widget._reportAplicationController.updateElementInTable(
+    int? idContratante = _aplicacao?.contratante?.id;
+    await widget._reportAplicationController?.updateElementInTable(
         idContratante!, _selectedContratante!.toMap(), 'Contratante');
-    await _updateContrante(idContratante);
+    await _updateContrante(idContratante!);
   }
 
   Future<void> _updateContrante(int id) async {
-    final element = await widget._reportAplicationController
+    if (widget._reportAplicationController == null) return;
+    final element = await widget._reportAplicationController!
         .getElementById(id, 'Contratante');
     final identificacaoContratante = Contratante.fromJson(element);
     _selectedContratante = identificacaoContratante;
     setState(() {});
-    _aplicacao.contratante = identificacaoContratante;
-    widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
-    await widget._reportAplicationController.obtainReportsAplications();
+    _aplicacao?.contratante = identificacaoContratante;
+    widget._reportAplicationController?.setAplicacaoSelected(_aplicacao);
+    await widget._reportAplicationController?.obtainReportsAplications();
     setState(() {});
   }
 
@@ -137,7 +140,7 @@ class _ContrantePageState extends State<ContrantePage> {
                    
                     try {
                       await _contratanteAction();
-                      widget._reportAplicationController.updateView!();
+                      widget._reportAplicationController?.updateView!();
                       // ignore: use_build_context_synchronously
                       Navigator.pop(context);
                     } catch (e) {
