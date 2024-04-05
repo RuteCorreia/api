@@ -20,7 +20,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   late DateTime? _dataSelecionada = DateTime.now();
   late TimeOfDay? _time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
-
+  late TimeOfDay? _horarioCorte = const TimeOfDay(hour: 12, minute: 43);
   String _airCraftPrexix = "";
   @override
   Widget build(BuildContext context) {
@@ -204,6 +204,53 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               ),
               const SizedBox(height: 20),
               const CustomText(text: 'Horímetro de chegada na pista'),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
+              ),
+              const CustomText(text: 'Horário de CORTE'),
+              const SizedBox(height: 14),
+              CustomComboBoxExpanded(
+                selectedName: _horarioCorte == null
+                    ? "Selecione"
+                    : _horarioCorte!.to24hours(),
+                onTap: () async {
+                  final data = await showTimePicker(
+                      confirmText: "Selecionar hora",
+                      cancelText: "Cancelar",
+                      helpText: "",
+                      context: context,
+                      initialTime: const TimeOfDay(hour: 12, minute: 23));
+                  setState(() {
+                    _horarioCorte = data;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              const CustomText(text: 'Horímetro de CORTE'),
               const SizedBox(height: 14),
               Container(
                 width: double.infinity,
