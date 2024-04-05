@@ -8,7 +8,6 @@ import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-
 class AddFireFightingSecondStep extends StatefulWidget {
   const AddFireFightingSecondStep({super.key});
 
@@ -18,10 +17,11 @@ class AddFireFightingSecondStep extends StatefulWidget {
 }
 
 class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
-  late DateTime? dataSelecionada = DateTime.now();
-  late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
-  late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
-  String airCraftPrexix = "";
+  late DateTime? _dataSelecionada = DateTime.now();
+  late TimeOfDay? _time = const TimeOfDay(hour: 12, minute: 43);
+  late TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
+
+  String _airCraftPrexix = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,10 +97,10 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
                   selectedName:
-                      airCraftPrexix.isEmpty ? "Selecione" : airCraftPrexix,
+                      _airCraftPrexix.isEmpty ? "Selecione" : _airCraftPrexix,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -109,7 +109,7 @@ await showDialog(
                                 width: double.maxFinite,
                                 child: AirCraftPrefixSelect(onChanged: (value) {
                                   setState(() {
-                                    airCraftPrexix = value;
+                                    _airCraftPrexix = value;
                                   });
                                   Util.closeKeyBoard();
                                 }),
@@ -120,9 +120,9 @@ await showDialog(
               const CustomText(text: 'Data'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
-                selectedName: dataSelecionada == null
+                selectedName: _dataSelecionada == null
                     ? "Selecione"
-                    : DateFormat('dd/MM/yyyy').format(dataSelecionada!),
+                    : DateFormat('dd/MM/yyyy').format(_dataSelecionada!),
                 onTap: () async {
                   final data = await showDatePicker(
                     confirmText: "Selecionar data",
@@ -134,7 +134,7 @@ await showDialog(
                     lastDate: DateTime(2028),
                   );
                   setState(() {
-                    dataSelecionada = data;
+                    _dataSelecionada = data;
                   });
                 },
               ),
@@ -142,7 +142,7 @@ await showDialog(
               const CustomText(text: 'Horário de Acionamento'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
-                selectedName: time == null ? "Selecione" : time!.to24hours(),
+                selectedName: _time == null ? "Selecione" : _time!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",
@@ -151,7 +151,7 @@ await showDialog(
                       context: context,
                       initialTime: const TimeOfDay(hour: 12, minute: 23));
                   setState(() {
-                    time = data;
+                    _time = data;
                   });
                 },
               ),
@@ -184,7 +184,53 @@ await showDialog(
                       )),
                 ),
               ),
-
+              const CustomText(text: 'Horário de chegada na pista'),
+              const SizedBox(height: 14),
+              CustomComboBoxExpanded(
+                selectedName: _horarioChegadaPista == null
+                    ? "Selecione"
+                    : _horarioChegadaPista!.to24hours(),
+                onTap: () async {
+                  final data = await showTimePicker(
+                      confirmText: "Selecionar hora",
+                      cancelText: "Cancelar",
+                      helpText: "",
+                      context: context,
+                      initialTime: const TimeOfDay(hour: 12, minute: 23));
+                  setState(() {
+                    _horarioChegadaPista = data;
+                  });
+                },
+              ),
+              const SizedBox(height: 20),
+              const CustomText(text: 'Horímetro de chegada na pista'),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: const TextField(
+                  keyboardType: TextInputType.text,
+                  decoration: InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
+              ),
               const SizedBox(height: 20),
               const SizedBox(
                 width: 328,
