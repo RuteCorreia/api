@@ -262,10 +262,10 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 child: Text(
                   'Pista de operação',
                   style: TextStyle(
-                    color: Color.fromARGB(255, 121, 118, 118),
+                    color: Color(0xFF00B45D),
                     fontSize: 14,
                     fontFamily: 'Inter',
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.bold,
                     height: 0.11,
                   ),
                 ),
@@ -274,7 +274,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               const Text(
                 'Código ICAO',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 121, 118, 118),
+                  color: Color(0xFF00B45D),
                   fontSize: 14,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w600,
@@ -434,7 +434,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               const Text(
                 'Nome',
                 style: TextStyle(
-                  color: Color.fromARGB(255, 121, 118, 118),
+                  color: Color(0xFF00B45D),
                   fontSize: 14,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w600,
@@ -478,31 +478,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 ),
               ),
               const SizedBox(height: 15),
-              Container(
-                width: double.infinity,
-                height: 50,
-                margin: const EdgeInsets.only(bottom: 20),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: const TextField(
-                  decoration: InputDecoration(
-                      hintText: "Digite aqui",
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 121, 118, 118),
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                        height: 0.09,
-                      )),
-                ),
-              ),
+             
               GestureDetector(
                 onTap: () async {
                   lct.Location local = lct.Location();
