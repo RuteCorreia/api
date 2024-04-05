@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:go_router/go_router.dart';
@@ -393,7 +394,38 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                   ],
                 ),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 20),
+              const CustomText(text: "Observações "),
+              const SizedBox(height: 10),
+              Container(
+                width: double.infinity,
+                height: 100,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  maxLength: 30,
+                  maxLines: 3,
+                  onChanged: (value) {},
+                  textInputAction: TextInputAction.done,
+                  decoration: const InputDecoration(
+                      hintText: "-",
+                      border: InputBorder.none,
+                      counterText: "",
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                      )),
+                ),
+              ),
               const CustomText(text: 'Horário final da operação'),
               const SizedBox(height: 14),
               CustomComboBox(
