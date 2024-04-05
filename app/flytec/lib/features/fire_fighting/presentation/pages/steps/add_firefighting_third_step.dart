@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
@@ -50,7 +51,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
+                    const Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -64,7 +65,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 Expanded(
-                                  child: const Column(
+                                  child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
@@ -215,10 +216,16 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                                       BorderRadius.circular(10),
                                                 ),
                                               ),
-                                              child: const TextField(
+                                              child: TextField(
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .digitsOnly,
+                                                  CustomNumberFormatter()
+                                                ],
                                                 keyboardType:
                                                     TextInputType.number,
-                                                decoration: InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                     hintText: "Digite aqui",
                                                     border: InputBorder.none,
                                                     hintStyle: TextStyle(
@@ -330,10 +337,16 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                                       BorderRadius.circular(10),
                                                 ),
                                               ),
-                                              child: const TextField(
+                                              child: TextField(
+                                                inputFormatters: [
+                                                  FilteringTextInputFormatter
+                                                      .digitsOnly,
+                                                  CustomNumberFormatter()
+                                                ],
                                                 keyboardType:
                                                     TextInputType.number,
-                                                decoration: InputDecoration(
+                                                decoration:
+                                                    const InputDecoration(
                                                     hintText: "Digite aqui",
                                                     border: InputBorder.none,
                                                     hintStyle: TextStyle(
@@ -457,9 +470,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
+                child: TextField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatter()
+                  ],
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
