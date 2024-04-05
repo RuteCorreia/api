@@ -630,6 +630,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 Util.closeKeyBoard();
                 await showDialog(
                     context: context,
+                    barrierDismissible: false,
                     builder: (BuildContext context) {
                       return AlertDialog(
                           backgroundColor: const Color(0xFFF5F5F5),
@@ -637,15 +638,8 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                             width: double.maxFinite,
                             child: LogsSelect(onChanged: (value) {
                               setState(() {
-                                _selectedLog = '';
-                                for (String element
-                                    in getIt<GlobalConfigVars>().logs) {
-                                  _selectedLog += '$element,';
-                                }
-                                _selectedLog = _selectedLog.substring(
-                                    0, _selectedLog.length - 1);
+                                _selectedLog = value;
                               });
-                              Util.closeKeyBoard();
                             }),
                           ));
                     });
@@ -662,7 +656,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           reportAplicationController:
                               widget._reportAplicationController);
                     })));
-                // ignore: use_build_context_synchronously
               },
             ),
             const SizedBox(height: 10),
