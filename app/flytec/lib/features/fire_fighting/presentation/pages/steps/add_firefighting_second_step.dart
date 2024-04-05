@@ -3,10 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/aircraft_prefix_select.dart';
+import 'package:flytec/features/aplications/components/components_exports.dart';
+import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../auth/presentation/widgets/custom_login_button.dart';
 
 class AddFireFightingSecondStep extends StatefulWidget {
   const AddFireFightingSecondStep({super.key});
@@ -50,7 +51,19 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                   )
                 ],
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 14),
+              CustomCardButton(
+                title: "Identificação do contratante",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ContrantePage(
+                            reportAplicationController: null),
+                      ));
+                },
+              ),
+              const SizedBox(height: 14),
               const CustomText(text: 'N° Aviso'),
               const SizedBox(height: 14),
               Container(
@@ -79,6 +92,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                       )),
                 ),
               ),
+              const SizedBox(height: 14),
               const CustomText(text: 'Prefixo da Aeronave'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
