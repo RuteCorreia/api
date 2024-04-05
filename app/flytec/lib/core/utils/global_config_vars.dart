@@ -5,6 +5,7 @@ import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/aplications/data/models/clientes_model.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
+import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
@@ -28,6 +29,7 @@ class GlobalConfigVars {
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<BulaModel> bulas = [];
   late List<AlturaVooModel> alturaVoo = [];
+  late Contratante? contratanteCombateIncendio;
 
   List<String> logs = [];
   late UserPayloadModel userPayload;

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/aircraft_prefix_select.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
@@ -37,6 +39,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Combate a incêndio"),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () async {
+              getIt<GlobalConfigVars>().contratanteCombateIncendio = null;
+              Navigator.pop(context);
+            },
+          )
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),

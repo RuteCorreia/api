@@ -25,11 +25,17 @@ class _ContrantePageState extends State<ContrantePage> {
 
   Aplicacao? get _aplicacao =>
       widget._reportAplicationController?.aplicacaoSelected;
-
+  
   @override
   void initState() {
+    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (getIt<GlobalConfigVars>().contratanteCombateIncendio != null) {
+        _selectedContratante =
+            getIt<GlobalConfigVars>().contratanteCombateIncendio;
+        setState(() {});
+      }
       if (_aplicacao?.contratante?.id != null) {
         _selectedContratante = _aplicacao?.contratante!;
         setState(() {});
@@ -42,7 +48,12 @@ class _ContrantePageState extends State<ContrantePage> {
   }
 
   Future<void> _contratanteAction() async {
-    if (widget._reportAplicationController == null) return;
+    if (widget._reportAplicationController == null) {
+      getIt<GlobalConfigVars>().contratanteCombateIncendio =
+          _selectedContratante;
+      setState(() {});
+      return;
+    }
     if (_aplicacao?.contratante?.id == null ||
         _aplicacao!.contratante!.id! <= 0) {
       int? idContratante = await widget._reportAplicationController
@@ -139,6 +150,7 @@ class _ContrantePageState extends State<ContrantePage> {
                     }
                    
                     try {
+                      
                       await _contratanteAction();
                       widget._reportAplicationController?.updateView!();
                       // ignore: use_build_context_synchronously
