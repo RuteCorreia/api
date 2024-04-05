@@ -139,7 +139,7 @@ await showDialog(
                 },
               ),
               const SizedBox(height: 20),
-              const CustomText(text: 'Horário inicial'),
+              const CustomText(text: 'Horário de Acionamento'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
                 selectedName: time == null ? "Selecione" : time!.to24hours(),
@@ -156,7 +156,7 @@ await showDialog(
                 },
               ),
               const SizedBox(height: 20),
-              const CustomText(text: 'Horímetro inicial'),
+              const CustomText(text: 'Horímetro de Acionamento'),
               const SizedBox(height: 14),
               Container(
                 width: double.infinity,
