@@ -908,7 +908,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
+                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeVolumeAplicacao ?? ''}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
