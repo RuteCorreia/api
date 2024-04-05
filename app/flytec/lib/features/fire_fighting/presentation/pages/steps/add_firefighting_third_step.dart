@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
@@ -20,7 +21,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
   TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
   TimeOfDay? horimetro2 = const TimeOfDay(hour: 15, minute: 43);
-
+  late TimeOfDay? _horarioCorte = const TimeOfDay(hour: 12, minute: 43);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -226,17 +227,21 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                                     TextInputType.number,
                                                 decoration:
                                                     const InputDecoration(
-                                                    hintText: "Digite aqui",
-                                                    border: InputBorder.none,
-                                                    hintStyle: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 121, 118, 118),
-                                                      fontSize: 13,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      height: 0.09,
-                                                    )),
+                                                        hintText: "Digite aqui",
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintStyle: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              121,
+                                                              118,
+                                                              118),
+                                                          fontSize: 13,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          height: 0.09,
+                                                        )),
                                               ),
                                             ),
                                           ],
@@ -347,17 +352,21 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                                                     TextInputType.number,
                                                 decoration:
                                                     const InputDecoration(
-                                                    hintText: "Digite aqui",
-                                                    border: InputBorder.none,
-                                                    hintStyle: TextStyle(
-                                                      color: Color.fromARGB(
-                                                          255, 121, 118, 118),
-                                                      fontSize: 13,
-                                                      fontFamily: 'Inter',
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      height: 0.09,
-                                                    )),
+                                                        hintText: "Digite aqui",
+                                                        border:
+                                                            InputBorder.none,
+                                                        hintStyle: TextStyle(
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              121,
+                                                              118,
+                                                              118),
+                                                          fontSize: 13,
+                                                          fontFamily: 'Inter',
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          height: 0.09,
+                                                        )),
                                               ),
                                             ),
                                           ],
@@ -488,11 +497,12 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       )),
                 ),
               ),
-
-              /*  CustomComboBox(
-                selectedName: horimetro == null
+              const CustomText(text: 'Horário de CORTE'),
+              const SizedBox(height: 14),
+              CustomComboBoxExpanded(
+                selectedName: _horarioCorte == null
                     ? "Selecione"
-                    : "${horimetro!.hour}:${horimetro!.minute}",
+                    : _horarioCorte!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",
@@ -501,11 +511,44 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       context: context,
                       initialTime: const TimeOfDay(hour: 12, minute: 23));
                   setState(() {
-                    horimetro = data;
+                    _horarioCorte = data;
                   });
                 },
               ),
-              */
+              const SizedBox(height: 20),
+              const CustomText(text: 'Horímetro de CORTE'),
+              const SizedBox(height: 14),
+              Container(
+                width: double.infinity,
+                height: 50,
+                margin: const EdgeInsets.only(bottom: 20),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                child: TextField(
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatter()
+                  ],
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                      hintText: "Digite aqui",
+                      border: InputBorder.none,
+                      hintStyle: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                        height: 0.09,
+                      )),
+                ),
+              ),
+              const SizedBox(height: 20),
               const SizedBox(height: 20),
               const CustomText(text: 'Capacidade de carga da aeronave'),
               const SizedBox(height: 14),
