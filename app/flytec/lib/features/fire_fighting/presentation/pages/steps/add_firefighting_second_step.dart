@@ -7,6 +7,7 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:location/location.dart' as lct;
 
 class AddFireFightingSecondStep extends StatefulWidget {
   const AddFireFightingSecondStep({super.key});
@@ -21,6 +22,14 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   late TimeOfDay? _time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? _horarioCorte = const TimeOfDay(hour: 12, minute: 43);
+  final TextEditingController _latitudeControllerPista =
+      TextEditingController();
+  final TextEditingController _longitudeControllerPista =
+      TextEditingController();
+  final TextEditingController _latitudeControllerLocalIncendio =
+      TextEditingController();
+  final TextEditingController _longitudeControllerLocalIncendio =
+      TextEditingController();
   String _airCraftPrexix = "";
   @override
   Widget build(BuildContext context) {
@@ -294,7 +303,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               ),
               const SizedBox(height: 40),
               const Text(
-                'Código ICAO / Coordenadas',
+                'Código ICAO',
                 style: TextStyle(
                   color: Color.fromARGB(255, 121, 118, 118),
                   fontSize: 14,
@@ -329,6 +338,131 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                       )),
                 ),
               ),
+              GestureDetector(
+                onTap: () async {
+                  lct.Location local = lct.Location();
+                  local.getLocation().then((lc) async {
+                    setState(() {
+                      _latitudeControllerPista.text = lc.latitude.toString();
+                      _longitudeControllerPista.text = lc.longitude.toString();
+                    });
+                  });
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF00B45D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.public,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Buscar pelo GPS",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          height: 0.11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(text: "Latitude - SUL"),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 50,
+                        width: (MediaQuery.of(context).size.width / 2) - 30,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: _latitudeControllerPista,
+                          onChanged: (value) {},
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: "Digite aqui",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(text: "Longitude - OESTE"),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 50,
+                        width: (MediaQuery.of(context).size.width / 2) - 30,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: _longitudeControllerPista,
+                          onChanged: (value) {},
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: "Digite aqui",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              
               const Text(
                 'Nome',
                 style: TextStyle(
@@ -366,7 +500,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 ),
               ),
               const Text(
-                'Local do incêndio / Coordenadas ',
+                'Local do incêndio ',
                 style: TextStyle(
                   color: Color(0xFF00B45D),
                   fontSize: 14,
@@ -400,6 +534,132 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         height: 0.09,
                       )),
                 ),
+              ),
+              GestureDetector(
+                onTap: () async {
+                  lct.Location local = lct.Location();
+                  local.getLocation().then((lc) async {
+                    setState(() {
+                      _latitudeControllerLocalIncendio.text =
+                          lc.latitude.toString();
+                      _longitudeControllerLocalIncendio.text =
+                          lc.longitude.toString();
+                    });
+                  });
+                },
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: 45,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                  decoration: ShapeDecoration(
+                    color: const Color(0xFF00B45D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.public,
+                        color: Colors.white,
+                      ),
+                      SizedBox(width: 10),
+                      Text(
+                        "Buscar pelo GPS",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Inter',
+                          fontWeight: FontWeight.w700,
+                          height: 0.11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(text: "Latitude - SUL"),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 50,
+                        width: (MediaQuery.of(context).size.width / 2) - 30,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: _latitudeControllerLocalIncendio,
+                          onChanged: (value) {},
+                          textInputAction: TextInputAction.done,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: "Digite aqui",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(text: "Longitude - OESTE"),
+                      const SizedBox(height: 12),
+                      Container(
+                        height: 50,
+                        width: (MediaQuery.of(context).size.width / 2) - 30,
+                        margin: const EdgeInsets.only(bottom: 20),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 10),
+                        decoration: ShapeDecoration(
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                                width: 1, color: Color(0xFF636363)),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        child: TextField(
+                          controller: _longitudeControllerLocalIncendio,
+                          onChanged: (value) {},
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                              hintText: "Digite aqui",
+                              border: InputBorder.none,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 121, 118, 118),
+                                fontSize: 16,
+                                fontFamily: 'Inter',
+                                fontWeight: FontWeight.w500,
+                                height: 0.09,
+                              )),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
               ),
               const Text(
                 'Referência',
