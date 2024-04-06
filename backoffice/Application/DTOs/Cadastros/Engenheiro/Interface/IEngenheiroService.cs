@@ -7,5 +7,5 @@ public interface IEngenheiroService
 {
     Task<IEnumerable<EngenheiroViewModel>> GetAllAsync();
 
-    Task<EngenheiroViewModel> GetByIdAsync(string id);
+    Task<EngenheiroViewModel?> GetByIdAsync(string id);
 }

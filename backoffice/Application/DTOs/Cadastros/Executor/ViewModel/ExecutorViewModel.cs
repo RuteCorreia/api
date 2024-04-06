@@ -15,9 +15,9 @@ public class ExecutorViewModel
     [EmailAddress]
     public string Email { get; set; }
 
-    //[Required]
-    //[MinLength(8)]
-    //public string CREA { get; set; }
-
     public string? Telefone { get; set; }
+
+    public string? Assinatura { get; set; }
+
+    public string? CFTA { get; set; }
 }

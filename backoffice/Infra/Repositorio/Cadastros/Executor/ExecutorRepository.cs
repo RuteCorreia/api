@@ -15,22 +15,29 @@ public class ExecutorRepository : IExecutorRepository
         _contextBase = contextBase;
     }
 
-    public async Task<IEnumerable<Usuario>> GetAllAsync()
+    public async Task<IEnumerable<UsuarioCredencial>> GetAllAsync()
     {
         var entities = await _contextBase.UsuarioCredencial
             .AsNoTracking()
-            .Where(x => x.Usuario != null && !x.Usuario.Removido && x.Funcao == ERole.TecnicoExecutor)
-            .Select(u => u.Usuario)
+            .Where(x => 
+                x.Usuario != null 
+                && !x.Usuario.Removido 
+                && x.Funcao == ERole.TecnicoExecutor)
+            .Include(u => u.Usuario)
             .ToListAsync();
 
         return entities;
     }
 
-    public async Task<Usuario> GetByIdAsync(string id)
+    public async Task<UsuarioCredencial?> GetByIdAsync(string id)
     {
         var obj = await _contextBase.UsuarioCredencial
-            .Where(x => x.Funcao == ERole.TecnicoExecutor && x.IdUsuario == Guid.Parse(id))
-            .Select(u => u.Usuario)
+            .Where(x => 
+                x.Funcao == ERole.TecnicoExecutor
+                && x.Usuario != null
+                && !x.Usuario.Removido
+                && x.IdUsuario == Guid.Parse(id))
+            .Include(u => u.Usuario)
             .FirstOrDefaultAsync();
 
         return obj;
