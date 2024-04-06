@@ -7,5 +7,5 @@ public interface IExecutorService
 {
     Task<IEnumerable<ExecutorViewModel>> GetAllAsync();
 
-    Task<ExecutorViewModel> GetByIdAsync(string id);
+    Task<ExecutorViewModel?> GetByIdAsync(string id);
 }

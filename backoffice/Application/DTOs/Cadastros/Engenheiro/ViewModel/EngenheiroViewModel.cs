@@ -17,4 +17,8 @@ public class EngenheiroViewModel
     public string Email { get; set; }
 
     public string? Telefone { get; set; }
+    public string? Assinatura { get; set; }
+
+    public string? CREA { get; set; }
+
 }

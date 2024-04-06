@@ -4,6 +4,6 @@ namespace Domain.Interfaces.Cadastros.Engenheiro;
 
 public interface IEngenheiroRepository
 {
-    Task<IEnumerable<Usuario>> GetAllAsync();
-    Task<Usuario> GetByIdAsync(string id);
+    Task<IEnumerable<UsuarioCredencial>> GetAllAsync();
+    Task<UsuarioCredencial?> GetByIdAsync(string id);
 }

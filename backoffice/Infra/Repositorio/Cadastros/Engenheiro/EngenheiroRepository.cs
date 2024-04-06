@@ -15,22 +15,29 @@ public class EngenheiroRepository : IEngenheiroRepository
         _contextBase = contextBase;
     }
 
-    public async Task<IEnumerable<Usuario>> GetAllAsync()
+    public async Task<IEnumerable<UsuarioCredencial>> GetAllAsync()
     {
         var entities = await _contextBase.UsuarioCredencial
             .AsNoTracking()
-            .Where(x => x.Usuario != null && !x.Usuario.Removido && x.Funcao == ERole.EngAgronomoCoord)
-            .Select(u => u.Usuario)
+            .Where(x => 
+                x.Usuario != null 
+                && !x.Usuario.Removido 
+                && x.Funcao == ERole.EngAgronomoCoord)
+            .Include(u => u.Usuario)
             .ToListAsync();
 
         return entities;
     }
 
-    public async Task<Usuario> GetByIdAsync(string id)
+    public async Task<UsuarioCredencial?> GetByIdAsync(string id)
     {
         var obj = await _contextBase.UsuarioCredencial
-            .Where(x => x.Funcao == ERole.EngAgronomoCoord && x.IdUsuario == Guid.Parse(id))
-            .Select(u => u.Usuario)
+            .Where(x => 
+                x.Funcao == ERole.EngAgronomoCoord 
+                && x.Usuario != null
+                && !x.Usuario.Removido 
+                && x.IdUsuario == Guid.Parse(id))
+            .Include(u => u.Usuario)
             .FirstOrDefaultAsync();
         return obj;
     }

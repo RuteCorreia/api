@@ -18,13 +18,41 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task<IEnumerable<EngenheiroViewModel>> GetAllAsync()
     {
-        var list = await _engenheiroRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<EngenheiroViewModel>>(list);
+        var usuarioCredencialList = await _engenheiroRepository.GetAllAsync();
+        var usuarioList = usuarioCredencialList
+            .Select(u => u.Usuario)
+            .ToList();
+        var mappedList = _mapper.Map<IEnumerable<EngenheiroViewModel>>(usuarioList);
+        var usuarioDict = usuarioList.ToDictionary(u => u.Id, u => u);
+        var credencialDict = usuarioCredencialList.ToDictionary(uc => uc.IdUsuario, uc => uc.Credencial);
+        
+        var returnList = mappedList.Select(x => new EngenheiroViewModel
+        {
+            Id = x.Id,
+            Nome = x.Nome,
+            Email = x.Email,
+            Telefone = x.Telefone,
+            Assinatura = usuarioDict.TryGetValue(Guid.Parse(x.Id), out var usuario) ?
+                Convert.ToBase64String(usuario?.Assinatura ?? [])
+                : null,
+            CREA = credencialDict.TryGetValue(Guid.Parse(x.Id), out var credencial) ?
+                credencial
+                : null
+        });
+        return returnList;
     }
 
-    public async Task<EngenheiroViewModel> GetByIdAsync(string id)
+    public async Task<EngenheiroViewModel?> GetByIdAsync(string id)
     {
-        var obj = await _engenheiroRepository.GetByIdAsync(id);
-        return _mapper.Map<EngenheiroViewModel>(obj);
+        var usuarioCredencialObj = await _engenheiroRepository.GetByIdAsync(id);
+        var usuarioObj = usuarioCredencialObj?.Usuario ?? null; 
+        var mappedObj = usuarioObj is not null ? _mapper.Map<EngenheiroViewModel>(usuarioObj) : null;
+        if(mappedObj is not null)
+        {
+            mappedObj.Assinatura = Convert.ToBase64String(usuarioObj?.Assinatura ?? []);
+            mappedObj.CREA = usuarioCredencialObj?.Credencial;
+        }
+        
+        return mappedObj;
     }
 }
