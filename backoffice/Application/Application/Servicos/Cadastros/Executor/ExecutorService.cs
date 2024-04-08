@@ -18,13 +18,41 @@ public class ExecutorService : IExecutorService
 
     public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync()
     {
-        var list = await _executorRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<ExecutorViewModel>>(list);
+        var usuarioCredencialList = await _executorRepository.GetAllAsync();
+        var usuarioList = usuarioCredencialList
+            .Select(u => u.Usuario)
+            .ToList();
+        var mappedList = _mapper.Map<IEnumerable<ExecutorViewModel>>(usuarioList);
+        var usuarioDict = usuarioList.ToDictionary(u => u.Id, u => u);
+        var credencialDict = usuarioCredencialList.ToDictionary(uc => uc.IdUsuario, uc => uc.Credencial);
+
+        var returnList = mappedList.Select(x => new ExecutorViewModel
+        {
+            Id = x.Id,
+            Nome = x.Nome,
+            Email = x.Email,
+            Telefone = x.Telefone,
+            Assinatura = usuarioDict.TryGetValue(Guid.Parse(x.Id), out var usuario) ?
+               Convert.ToBase64String(usuario?.Assinatura ?? [])
+               : null,
+            CFTA = credencialDict.TryGetValue(Guid.Parse(x.Id), out var credencial) ?
+               credencial
+               : null
+        });
+        return returnList;
     }
 
-    public async Task<ExecutorViewModel> GetByIdAsync(string id)
+    public async Task<ExecutorViewModel?> GetByIdAsync(string id)
     {
-        var obj = await _executorRepository.GetByIdAsync(id);
-        return _mapper.Map<ExecutorViewModel>(obj);
+        var usuarioCredencialObj = await _executorRepository.GetByIdAsync(id);
+        var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
+        var mappedObj = usuarioObj is not null ? _mapper.Map<ExecutorViewModel>(usuarioObj) : null;
+        if (mappedObj is not null)
+        {
+            mappedObj.Assinatura = Convert.ToBase64String(usuarioObj?.Assinatura ?? []);
+            mappedObj.CFTA = usuarioCredencialObj?.Credencial;
+        }
+
+        return mappedObj;
     }
 }

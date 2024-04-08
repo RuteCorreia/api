@@ -27,7 +27,8 @@ class PilotSelect extends StatelessWidget {
                     elevation: 0,
                     onPressed: () {
                       onChanged(
-                        getIt<GlobalConfigVars>().pilotos[index].nomePiloto!,
+                        getIt<GlobalConfigVars>().pilotos[index].nomePiloto ??
+                            '',
                       );
                       Navigator.of(context).pop();
                     },
@@ -37,8 +38,9 @@ class PilotSelect extends StatelessWidget {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                               getIt<GlobalConfigVars>()
-                                  .pilotos[index]
-                                  .nomePiloto!,
+                                      .pilotos[index]
+                                      .nomePiloto ??
+                                  '',
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,

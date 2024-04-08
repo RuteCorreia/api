@@ -6,5 +6,5 @@ public interface IPilotoService
 {
     Task<IEnumerable<PilotoViewModel>> GetAllAsync();
 
-    Task<PilotoViewModel> GetByIdAsync(string id);
+    Task<PilotoViewModel?> GetByIdAsync(string id);
 }
