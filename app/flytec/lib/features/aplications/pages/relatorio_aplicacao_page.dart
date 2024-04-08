@@ -636,11 +636,13 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           backgroundColor: const Color(0xFFF5F5F5),
                           content: SizedBox(
                             width: double.maxFinite,
-                            child: LogsSelect(onChanged: (value) {
-                              setState(() {
-                                _selectedLog = value;
-                              });
-                            }),
+                            child: LogsSelect(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedLog = value;
+                                  });
+                                },
+                                log: _selectedLog),
                           ));
                     });
               },
