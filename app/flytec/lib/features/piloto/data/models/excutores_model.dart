@@ -27,7 +27,7 @@ class PilotoModel extends PilotoEntity {
   factory PilotoModel.fromJson(Map<String, dynamic> json) => PilotoModel(
         idPiloto: json["idPiloto"],
         idEmpresa: json["idEmpresa"],
-        nomePiloto: json["nomePiloto"],
+        nomePiloto: json["nome"],
         email: json["email"],
         senha: json["senha"],
         cdac: json["cdac"],

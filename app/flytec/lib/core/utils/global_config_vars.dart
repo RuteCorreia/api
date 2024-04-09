@@ -9,6 +9,7 @@ import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
+import 'package:flytec/features/engenheiros/data/models/engenheiro_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
@@ -25,6 +26,7 @@ class GlobalConfigVars {
   late List<AlvoBiologicoModel> alvosBiologicos = [];
   late List<VeiculanteModel> veiculantes = [];
   late List<AeroNaveModel> aeronaves = [];
+  late List<EngenheiroModel> engenheiros = [];
   late List<EquipamentoModel> equipamentos = [];
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<BulaModel> bulas = [];
@@ -66,6 +68,10 @@ class GlobalConfigVars {
 
   void setAeroNaves({required List<AeroNaveModel>? data}) {
     aeronaves = data!;
+  }
+
+  void setEngenheiros({required List<EngenheiroModel>? data}) {
+    engenheiros = data!;
   }
 
   void setProdutos({required List<ProdutoModel>? produtosData}) {
