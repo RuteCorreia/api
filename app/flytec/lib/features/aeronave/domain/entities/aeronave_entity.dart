@@ -7,6 +7,8 @@ class AeroNaveEntity extends Equatable {
   final String? combustivel;
   final int? capacidadeDeCarga;
   final String? horimetro;
+  final String? modelo;
+  final String? serialNumber;
 
   const AeroNaveEntity({
     this.id,
@@ -15,6 +17,8 @@ class AeroNaveEntity extends Equatable {
     this.combustivel,
     this.capacidadeDeCarga,
     this.horimetro,
+    this.modelo,
+    this.serialNumber
   });
 
   @override
