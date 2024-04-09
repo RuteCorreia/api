@@ -750,7 +750,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text(executorSelected.cfta ?? '',
+                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1759,7 +1759,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text(pilotoSelected.cdac!,
+                                pw.Text('CANAC ${pilotoSelected.cdac ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
