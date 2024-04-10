@@ -7,7 +7,7 @@ import 'package:flytec/features/aplications/components/custom_combo.dart';
 import 'package:flytec/features/aplications/components/executor_select.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
 
@@ -167,7 +167,7 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                         executor: getIt<GlobalConfigVars>().selectedExecutor,
                         piloto: getIt<GlobalConfigVars>().selectedPilot,
                         data: DateTime.now().millisecondsSinceEpoch.toString(),
-                        state: ReportDashBoardState.Incompleto,
+                        state: DashBoardState.Incompleto,
                         refUsuario: refUsuario);
                     int? idAplicacao = await widget._reportAplicationController!
                         .createElementInTable(aplicacao.toMap(), "Aplicacao");

@@ -525,7 +525,9 @@ class _HomePagaState extends State<HomePaga> {
                   CustomActionButton(
                     imageUrl: "assets/images/tools.svg",
                     sizeIcon: 30,
-                    onClick: () {},
+                    onClick: () {
+                      context.push('/manutencao');
+                    },
                     text: "Manutenção",
                   ),
                   const SizedBox(height: 10),
