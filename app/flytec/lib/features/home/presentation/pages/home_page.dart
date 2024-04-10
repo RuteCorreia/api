@@ -151,18 +151,16 @@ class _HomePagaState extends State<HomePaga> {
         child: Column(
           children: [
             Container(
-              width: 360,
               height: 103,
               padding: const EdgeInsets.only(
                 top: 54,
                 left: 16,
-                right: 32,
+                right: 16,
                 bottom: 32,
               ),
               clipBehavior: Clip.antiAlias,
               decoration: const BoxDecoration(color: Colors.white),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -171,20 +169,16 @@ class _HomePagaState extends State<HomePaga> {
                       _openDrawer();
                     },
                   ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: SizedBox(
-                      child: Text(
-                        'Dashboard',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 121, 118, 118),
-                          fontSize: 20,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w600,
-                          height: 0.07,
-                        ),
-                      ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.25),
+                  const Text(
+                    'Dashboard',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                      height: 0.07,
                     ),
                   ),
                 ],

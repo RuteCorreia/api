@@ -10,24 +10,9 @@ class CustomMenuButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onClick,
-      child: Container(
-        width: 24,
-        height: 24,
-        clipBehavior: Clip.antiAlias,
-        decoration: const BoxDecoration(),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              width: 24,
-              height: 24,
-              child: Stack(
-                  children: [SvgPicture.asset("assets/images/group.svg")]),
-            ),
-          ],
-        ),
+      child: SvgPicture.asset(
+        "assets/images/group.svg",
+        fit: BoxFit.none,
       ),
     );
   }
