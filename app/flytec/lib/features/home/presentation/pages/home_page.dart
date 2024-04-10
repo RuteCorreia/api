@@ -5,7 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/save_local_controller.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
+import 'package:flytec/features/auth/service/auth_service.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/assinatura_select.dart';
@@ -96,52 +99,74 @@ class _HomePagaState extends State<HomePaga> {
           width: MediaQuery.of(context).size.width * 0.7,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ListView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 DrawerHeader(
                     child: Center(
                         child: Image.asset("assets/images/logotipo.png",
                             height: 200))),
-                CustomDrawerButton(
-                  icon: Icons.edit,
-                  text: _signature != null
-                      ? "Visualizar Assinatura"
-                      : "Cadastrar Assinatura",
-                  onClick: () async {
-                    context.pop();
-                    if (_signature != null) {
-                      // ignore: use_build_context_synchronously
-                      await showDialog(
-                          context: context,
-                          useSafeArea: true,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                                scrollable: true,
-                                backgroundColor: const Color(0xFFF5F5F5),
-                                content: AssinaturaSelect(
-                                  updateSignature: _createSignature,
-                                  assinatura: _signature,
-                                ));
-                          });
-                      return;
-                    }
-                    // ignore: use_build_context_synchronously
-                    await context.push('/addsignature', extra: {
-                      'onUpdateSignature': _createSignature,
-                    }).whenComplete(() async => await showDialog(
-                        context: context,
-                        useSafeArea: true,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                              scrollable: true,
-                              backgroundColor: const Color(0xFFF5F5F5),
-                              content: AssinaturaSelect(
-                                updateSignature: _createSignature,
-                                assinatura: _signature,
-                              ));
-                        }));
-                  },
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.65,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomDrawerButton(
+                        icon: Icons.edit,
+                        text: _signature != null
+                            ? "Visualizar Assinatura"
+                            : "Cadastrar Assinatura",
+                        onClick: () async {
+                          context.pop();
+                          if (_signature != null) {
+                            await showDialog(
+                                context: context,
+                                useSafeArea: true,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                      scrollable: true,
+                                      backgroundColor: const Color(0xFFF5F5F5),
+                                      content: AssinaturaSelect(
+                                        updateSignature: _createSignature,
+                                        assinatura: _signature,
+                                      ));
+                                });
+                            return;
+                          }
+                          await context.push('/addsignature', extra: {
+                            'onUpdateSignature': _createSignature,
+                          }).whenComplete(() async => await showDialog(
+                              context: context,
+                              useSafeArea: true,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                    scrollable: true,
+                                    backgroundColor: const Color(0xFFF5F5F5),
+                                    content: AssinaturaSelect(
+                                      updateSignature: _createSignature,
+                                      assinatura: _signature,
+                                    ));
+                              }));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
+                CustomDrawerButton(
+                  onClick: () async {
+                    await getIt<SaveLocalDataController>()
+                        .removeLocalPreloadData();
+                    Util.Token = '';
+                    getIt<GlobalConfigVars>().clearGlobalConfigVars();
+                    await getIt<AuthService>().removeToken();
+                    // ignore: use_build_context_synchronously
+                    context.pushReplacement('/login');
+                  },
+                  text: 'Sair',
+                  icon: Icons.logout,
+                )
               ],
             ),
           ),
