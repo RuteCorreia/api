@@ -107,52 +107,43 @@ class _HomePagaState extends State<HomePaga> {
                     child: Center(
                         child: Image.asset("assets/images/logotipo.png",
                             height: 200))),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.65,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CustomDrawerButton(
-                        icon: Icons.edit,
-                        text: _signature != null
-                            ? "Visualizar Assinatura"
-                            : "Cadastrar Assinatura",
-                        onClick: () async {
-                          context.pop();
-                          if (_signature != null) {
-                            await showDialog(
-                                context: context,
-                                useSafeArea: true,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                      scrollable: true,
-                                      backgroundColor: const Color(0xFFF5F5F5),
-                                      content: AssinaturaSelect(
-                                        updateSignature: _createSignature,
-                                        assinatura: _signature,
-                                      ));
-                                });
-                            return;
-                          }
-                          await context.push('/addsignature', extra: {
-                            'onUpdateSignature': _createSignature,
-                          }).whenComplete(() async => await showDialog(
-                              context: context,
-                              useSafeArea: true,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    scrollable: true,
-                                    backgroundColor: const Color(0xFFF5F5F5),
-                                    content: AssinaturaSelect(
-                                      updateSignature: _createSignature,
-                                      assinatura: _signature,
-                                    ));
-                              }));
-                        },
-                      ),
-                    ],
-                  ),
+                CustomDrawerButton(
+                  icon: Icons.edit,
+                  text: _signature != null
+                      ? "Visualizar Assinatura"
+                      : "Cadastrar Assinatura",
+                  onClick: () async {
+                    context.pop();
+                    if (_signature != null) {
+                      await showDialog(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                                scrollable: true,
+                                backgroundColor: const Color(0xFFF5F5F5),
+                                content: AssinaturaSelect(
+                                  updateSignature: _createSignature,
+                                  assinatura: _signature,
+                                ));
+                          });
+                      return;
+                    }
+                    await context.push('/addsignature', extra: {
+                      'onUpdateSignature': _createSignature,
+                    }).whenComplete(() async => await showDialog(
+                        context: context,
+                        useSafeArea: true,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                              scrollable: true,
+                              backgroundColor: const Color(0xFFF5F5F5),
+                              content: AssinaturaSelect(
+                                updateSignature: _createSignature,
+                                assinatura: _signature,
+                              ));
+                        }));
+                  },
                 ),
                 CustomDrawerButton(
                   onClick: () async {
