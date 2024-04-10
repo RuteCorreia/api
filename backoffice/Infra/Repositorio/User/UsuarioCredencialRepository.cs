@@ -1,4 +1,5 @@
 ﻿using Domain.Entidades.User;
+using Domain.Enums;
 using Domain.Interfaces.User;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -28,10 +29,37 @@ public class UsuarioCredencialRepository : IUsuarioCredencialRepository
     }
 
     public async Task RemoveAllByUserIdAsync(Guid userId)
-    {
+    { 
         var listToRemove = await GetUsuarioCredencialsAsync(userId);
         _contextBase.UsuarioCredencial.RemoveRange(listToRemove);
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task<bool> VerificarSeEmpresaPossuiEngenheiroAtivo(int? idEmpresa, string idUsuario = "")
+    {
+        bool existeEngenheiro = false;
+        if (string.IsNullOrEmpty(idUsuario))
+        {
+            existeEngenheiro = await _contextBase.UsuarioCredencial
+                .AsNoTracking()
+                .AnyAsync(x =>
+                    x.Usuario != null
+                    && x.Usuario.IdEmpresa == idEmpresa
+                    && !x.Usuario.Removido
+                    && x.Funcao == ERole.EngAgronomoCoord);
+        }
+        else
+        {
+            var guidIdUsuario = Guid.Parse(idUsuario);
+            existeEngenheiro = await _contextBase.UsuarioCredencial
+                .AsNoTracking()
+                .AnyAsync(x =>
+                    x.Usuario != null
+                    && x.Usuario.IdEmpresa == idEmpresa
+                    && !x.Usuario.Removido
+                    && x.IdUsuario != guidIdUsuario
+                    && x.Funcao == ERole.EngAgronomoCoord);
+        }
+        return existeEngenheiro;
+    }
 }

@@ -6,7 +6,8 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 
 class LogsSelect extends StatefulWidget {
   final Function(String) onChanged;
-  const LogsSelect({super.key, required this.onChanged});
+  final String log;
+  const LogsSelect({super.key, required this.onChanged, required this.log});
 
   @override
   State<LogsSelect> createState() => _LogsSelectState();
@@ -25,6 +26,15 @@ class _LogsSelectState extends State<LogsSelect> {
         _selectedLog += '$element,';
       }
       _selectedLog = _selectedLog.substring(0, _selectedLog.length - 1);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _selectedLog = widget.log;
+      setState(() {});
     });
   }
 

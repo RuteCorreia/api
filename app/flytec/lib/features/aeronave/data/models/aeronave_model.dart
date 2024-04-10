@@ -21,6 +21,8 @@ class AeroNaveModel extends AeroNaveEntity {
     super.combustivel,
     super.capacidadeDeCarga,
     super.horimetro,
+    super.modelo,
+    super.serialNumber
   });
 
   factory AeroNaveModel.fromJson(Map<String, dynamic> json) => AeroNaveModel(
@@ -30,6 +32,8 @@ class AeroNaveModel extends AeroNaveEntity {
         combustivel: json["combustivel"],
         capacidadeDeCarga: json["capacidadeDeCarga"],
         horimetro: json["horimetro"],
+        modelo: json["modelo"],
+        serialNumber: json["serialNumber"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -39,5 +43,7 @@ class AeroNaveModel extends AeroNaveEntity {
         "combustivel": combustivel,
         "capacidadeDeCarga": capacidadeDeCarga,
         "horimetro": horimetro,
+        "modelo": modelo,
+        "serialNumber": serialNumber
       };
 }

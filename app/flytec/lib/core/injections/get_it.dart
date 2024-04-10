@@ -22,6 +22,10 @@ import 'package:flytec/features/cultura/data/datasources/remote_piloto_data_sour
 import 'package:flytec/features/cultura/data/repositories/authentication_repository_impl.dart';
 import 'package:flytec/features/cultura/domain/repositories/executor_repository.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
+import 'package:flytec/features/engenheiros/data/datasources/remote_engenheiro_data_source.dart';
+import 'package:flytec/features/engenheiros/data/repositories/engenheiro_repository_impl.dart';
+import 'package:flytec/features/engenheiros/domain/repositories/engenheiro_repository.dart';
+import 'package:flytec/features/engenheiros/domain/usecases/get_engenheiro_usecase.dart';
 import 'package:flytec/features/equipamento/data/datasources/remote_equipamento_data_source.dart';
 import 'package:flytec/features/equipamento/data/repositories/equipamento_repository_impl.dart';
 import 'package:flytec/features/equipamento/domain/repositories/equipamento_repository.dart';
@@ -139,7 +143,12 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
-
+ getIt.registerLazySingleton<RemoteEngenheiroDataSourceImpl>(
+    () => RemoteEngenheiroDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
   getIt.registerLazySingleton<RemoteAeroNaveDataSourceImpl>(
     () => RemoteAeroNaveDataSourceImpl(
       client: getIt(),
@@ -193,7 +202,9 @@ void setup() async {
     () =>
         AlvoBiologicoRepositoryImpl(remoteAlvoBilogicoDataSourceImpl: getIt()),
   );
-
+  getIt.registerLazySingleton<IEngenheiroRepository>(
+    () => EngenheiroRepositoryImpl(remoteEngenheiroDataSourceImpl: getIt()),
+  );
   getIt.registerLazySingleton<IVeiculanteRepository>(
     () => VeiculanteRepositoryImpl(remoteVeiculanteDataSourceImpl: getIt()),
   );
@@ -219,7 +230,8 @@ void setup() async {
       () => GetExecutoresUseCase(getIt()));
   getIt.registerLazySingleton<GetPilotosUseCase>(
       () => GetPilotosUseCase(getIt()));
-
+  getIt.registerLazySingleton<GetEngenheiroUseCase>(
+      () => GetEngenheiroUseCase(getIt()));
   getIt.registerLazySingleton<GetCulturasUseCase>(
       () => GetCulturasUseCase(iCulturaRepository: getIt()));
   getIt.registerLazySingleton(

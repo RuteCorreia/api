@@ -2,12 +2,14 @@
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Entidades.User;
+using Domain.Enums;
 using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Application.Application.Servicos.User;
@@ -81,6 +83,19 @@ public class UserAuthService : IUserAuthService
             if (!identityResult.Succeeded)
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
 
+            var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+
+            if(request.Funcoes.Any(x => x.Funcao == ERole.EngAgronomoCoord))
+            {
+                var jaExisteEngenheiro = await _usuarioCredencialRepository.VerificarSeEmpresaPossuiEngenheiroAtivo(loggedUserTblUsuario.IdEmpresa);
+                if (jaExisteEngenheiro)
+                {
+                    await _userManager.DeleteAsync(identityUser);
+                    return (false, resultMsg.Append("Engenheiro já existente na empresa").ToString());
+                }
+            }
+
+
             var roleListAsString = request.Funcoes.Select(r => r.Funcao.ToString());
             foreach (var role in roleListAsString)
             {
@@ -96,7 +111,7 @@ public class UserAuthService : IUserAuthService
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityRoleResult)).ToString());
             }
 
-            var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+            
             await CreateUser(request, identityUser, loggedUserTblUsuario.IdEmpresa);
             await CreateUserCredencial(identityUser, request.Funcoes);
 
@@ -228,6 +243,16 @@ public class UserAuthService : IUserAuthService
             {
                 resultMsg.Clear();
                 bool allOk = true;
+
+                if (request.Funcoes.Any(x => x.Funcao == ERole.EngAgronomoCoord))
+                {
+                    var jaExisteEngenheiro = await _usuarioCredencialRepository.VerificarSeEmpresaPossuiEngenheiroAtivo(userToUpdate.IdEmpresa, userToUpdate.Id.ToString());
+                    if (jaExisteEngenheiro)
+                    {
+                        return (false, resultMsg.Append("Engenheiro já existente na empresa").ToString());
+                    }
+                }
+
                 var identityUserRoles = await _userManager.GetRolesAsync(identityUser);
                 if (identityUser.Email != request.Email)
                 {                    
@@ -260,7 +285,7 @@ public class UserAuthService : IUserAuthService
                         resultMsg.Append(GetIdentityResultErrors(updateIdentityUserResult));
                         allOk = false;
                     }
-                }
+                }                               
 
                 var requestRole = request.Funcoes.Select(r => r.Funcao.ToString());
                 var rolesNotInIdentity = requestRole.Except(identityUserRoles);

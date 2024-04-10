@@ -497,7 +497,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       )),
                 ),
               ),
-              const CustomText(text: 'Horário de CORTE'),
+              const CustomText(text: 'Horário de corte'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
                 selectedName: _horarioCorte == null
@@ -516,7 +516,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                 },
               ),
               const SizedBox(height: 20),
-              const CustomText(text: 'Horímetro de CORTE'),
+              const CustomText(text: 'Horímetro de corte'),
               const SizedBox(height: 14),
               Container(
                 width: double.infinity,
