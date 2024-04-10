@@ -6,7 +6,7 @@ export 'custom_card_button.dart';
 export 'custom_cliente_card.dart';
 export 'custom_text.dart';
 export 'custom_text_field.dart';
-export 'dashboard_counter.dart';
+export '../../../core/widgets/dashboard_counter.dart';
 export 'report_card_aplication.dart';
 export 'culture_select.dart';
 export 'custom_combo_box_expanded.dart';

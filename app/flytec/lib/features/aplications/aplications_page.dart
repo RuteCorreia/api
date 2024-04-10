@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/features/aplications/components/dashboard_counter.dart';
+import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/report_card_aplication.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/pages/create_aplication_page.dart';
 
 class AplicationsPage extends StatefulWidget {
@@ -101,33 +101,33 @@ class _AplicationsPageState extends State<AplicationsPage> {
                         text: "Enviado",
                         value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
-                                ReportDashBoardState.Enviado)
+                                DashBoardState.Enviado)
                             .toString(),
-                        state: ReportDashBoardState.Enviado,
+                        state: DashBoardState.Enviado,
                       ),
                       ReportDashBoardCounter(
                         text: "Pronto",
                         value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
-                                ReportDashBoardState.Pronto)
+                                DashBoardState.Pronto)
                             .toString(),
-                        state: ReportDashBoardState.Pronto,
+                        state: DashBoardState.Pronto,
                       ),
                       ReportDashBoardCounter(
                         text: "Incompleto",
                         value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
-                                ReportDashBoardState.Incompleto)
+                                DashBoardState.Incompleto)
                             .toString(),
-                        state: ReportDashBoardState.Incompleto,
+                        state: DashBoardState.Incompleto,
                       ),
                       ReportDashBoardCounter(
                         text: "Não enviado",
                         value: widget._reportAplicationController!
                             .obtainQuantityReportsByState(
-                                ReportDashBoardState.NaoEnviado)
+                                DashBoardState.NaoEnviado)
                             .toString(),
-                        state: ReportDashBoardState.NaoEnviado,
+                        state: DashBoardState.NaoEnviado,
                       ),
                     ],
                   ),

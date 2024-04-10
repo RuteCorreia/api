@@ -5,6 +5,7 @@ import 'package:flytec/features/aplications/aplications_page.dart';
 import 'package:flytec/features/aplications/pages/report_aplications_page.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
+import 'package:flytec/features/manutencao/manutencao_page_list.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -74,6 +75,13 @@ final GoRouter router = GoRouter(
             return AddFireFightingSignatureStep(
               onUpdateSignature: extra['onUpdateSignature'],
             );
+          },
+        ),
+        GoRoute(
+          path: 'manutencao',
+          builder: (BuildContext context, GoRouterState state) {
+            // final extra = state.extra as Map<String, dynamic>;
+            return const ManutencaoPageList();
           },
         ),
         GoRoute(

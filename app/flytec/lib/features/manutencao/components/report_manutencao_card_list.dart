@@ -1,77 +1,57 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flytec/core/injections/get_it.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/services/create_aplicacao_report_service.dart';
-import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
-import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
+import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 import 'package:go_router/go_router.dart';
-import 'package:path_provider/path_provider.dart';
 
-class ReportCardAplication extends StatelessWidget {
-  final ReportAplicationController _reportAplicationController;
+class ReportManutencaoCard extends StatelessWidget {
+  final List<ReportManutencaoModel> _reportManutencaoModel;
   final int _index;
-  final VoidCallback _updateView;
-  const ReportCardAplication(
+  const ReportManutencaoCard(
       {super.key,
-      required ReportAplicationController reportAplicationController,
-      required VoidCallback updateView,
+      required List<ReportManutencaoModel> reportManutencaoModel,
       required int index})
-      : _reportAplicationController = reportAplicationController,
-        _updateView = updateView,
+      : _reportManutencaoModel = reportManutencaoModel,
         _index = index;
 
   Color get _getColorStateColor {
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Enviado) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Enviado) {
       return Colors.blue;
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Pronto) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Pronto) {
       return Colors.green;
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Incompleto) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Incompleto) {
       return const Color(0xFFFF9900);
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.NaoEnviado) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.NaoEnviado) {
       return Colors.red;
     }
     return Colors.blue;
   }
 
   String get _getTitleStateColor {
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Enviado) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Enviado) {
       return "Relatório enviado";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Pronto) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Pronto) {
       return "Relatório pronto para envio";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Incompleto) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.Incompleto) {
       return "Relatório incompleto";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.NaoEnviado) {
+    if (_reportManutencaoModel[_index].state == DashBoardState.NaoEnviado) {
       return "Relatório não enviado";
     }
     return "Sem descrição";
   }
 
   DateTime get _date {
-    int? epoch =
-        int.tryParse(_reportAplicationController.listaAplicacao![_index].data!);
-    if (epoch != null) {
-      return DateTime.fromMillisecondsSinceEpoch(epoch);
+    if (_reportManutencaoModel[_index].createdAt != null) {
+      return DateTime.fromMillisecondsSinceEpoch(
+          _reportManutencaoModel[_index].createdAt!);
     }
     return DateTime.now();
   }
@@ -108,45 +88,14 @@ class ReportCardAplication extends StatelessWidget {
               CustomDialogButton(
                 leftIcon: "assets/images/edit.svg",
                 showRightcon: false,
-                onClick: () {
-                  context.pop();
-                  _reportAplicationController.setAplicacaoSelected(
-                      _reportAplicationController.listaAplicacao![_index]);
-                  getIt<GlobalConfigVars>().selectedExecutor =
-                      _reportAplicationController
-                          .listaAplicacao![_index].executor!;
-                  getIt<GlobalConfigVars>().selectedPilot =
-                      _reportAplicationController
-                          .listaAplicacao![_index].piloto!;
-                  _updateView();
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MenuAplicationPage(
-                        reportAplicationController:
-                            _reportAplicationController);
-                  }));
-                },
+                onClick: () {},
                 text: "Editar",
               ),
               const SizedBox(height: 10),
               CustomDialogButton(
                 leftIcon: "assets/images/cancel.svg",
                 showRightcon: false,
-                onClick: () async {
-                  PdfGenerator pdfGenerator = CreateAplicacaoReportService(
-                      aplicacao:
-                          _reportAplicationController.listaAplicacao![_index]);
-                  final document = await pdfGenerator.generatePdf();
-                  final documentBytes =
-                      await pdfGenerator.saveDocument(document: document);
-                  final directory = await getApplicationCacheDirectory();
-                  File file = File(
-                      "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
-                  await file.writeAsBytes(documentBytes!);
-                  // ignore: use_build_context_synchronously
-                  context.pop();
-                  // ignore: use_build_context_synchronously
-                  context.push("/reportPage", extra: file);
-                },
+                onClick: () async {},
                 text: "Gerar Relatório",
               ),
               const SizedBox(height: 10),
@@ -198,9 +147,7 @@ class ReportCardAplication extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _reportAplicationController
-                            .listaAplicacao![_index].contratante?.nome ??
-                        "",
+                    _reportManutencaoModel[_index].prefAeronave ?? "",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 121, 118, 118),
                       fontSize: 14,
