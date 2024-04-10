@@ -62,4 +62,9 @@ class SaveLocalDataController {
     var p = perf.getString("preload");
     return p;
   }
+
+  Future<bool> removeLocalPreloadData() async {
+    var perf = await SharedPreferences.getInstance();
+    return perf.remove("preload");
+  }
 }
