@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
-import 'package:flytec/features/manutencao/components/widgets/custom_checklist_card.dart';
+import 'package:flytec/features/manutencao/components/checklist_revisao_page.dart';
+import 'package:flytec/features/manutencao/components/widgets/custom_card_with_color.dart';
 
 class NewManutencaoPage extends StatefulWidget {
   const NewManutencaoPage({super.key});
@@ -83,9 +84,15 @@ class _NewManutencaoPageState extends State<NewManutencaoPage> {
               ),
             ),
             const SizedBox(height: 20),
-            const CustomCardWithColor(
+            CustomCardWithColor(
               title: 'CheckList Revisão',
               isSelected: true,
+              onTap: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CheckListRevisaoPage()));
+              },
             ),
             const SizedBox(height: 20),
             const CustomCardWithColor(

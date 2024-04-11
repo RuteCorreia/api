@@ -5,16 +5,17 @@ class CustomCardWithColor extends StatelessWidget {
   final String? title;
   final bool? isSelected;
   final double height;
+  final double width;
   final VoidCallback? onTap;
   const CustomCardWithColor(
-      {super.key, required this.title, this.isSelected = false, this.height = 50, this.onTap});
+      {super.key, required this.title, this.isSelected = false, this.height = 50, this.onTap,this.width=328});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
       child: Container(
-        width: 328,
+        width: width,
         height: height,
         padding: const EdgeInsets.all(10),
         decoration: ShapeDecoration(
