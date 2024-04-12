@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/manutencao/components/checklist_revisao_page.dart';
+import 'package:flytec/features/manutencao/components/manutencao_componentes_page.dart';
 import 'package:flytec/features/manutencao/components/widgets/custom_card_with_color.dart';
 
 class NewManutencaoPage extends StatefulWidget {
@@ -95,8 +96,15 @@ class _NewManutencaoPageState extends State<NewManutencaoPage> {
               },
             ),
             const SizedBox(height: 20),
-            const CustomCardWithColor(
+            CustomCardWithColor(
               height: 70,
+              onTap: () async {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const ManutencaoComponentesPage()));
+              },
               title: 'Manutenção de Componentes\ne Aeronave',
               isSelected: true,
             )
