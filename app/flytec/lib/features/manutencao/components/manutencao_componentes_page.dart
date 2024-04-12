@@ -105,6 +105,7 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                         )),
                   ),
                 ),
+                const CustomText(text: "Imagens"),
                 const SizedBox(height: 10),
                 InkWell(
                     onTap: () async {
