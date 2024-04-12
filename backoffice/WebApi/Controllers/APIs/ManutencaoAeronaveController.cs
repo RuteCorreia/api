@@ -1,11 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Aeronave.Interface;
-using Application.DTOs.Cadastros.Frota.Interface;
-using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
-using Domain.Entidades.Cadastros.Empresa;
 using Helpers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs
@@ -37,7 +33,7 @@ namespace WebApi.Controllers.APIs
                 var aeronaves = await _aeronaveService.GetAllAsync();
                 foreach (var item in manutencaoAeronave)
                 {
-                    var buscaAeronave = aeronaves.Where(x => x.Id == item.IdAeronave).FirstOrDefault();
+                    var buscaAeronave = aeronaves.FirstOrDefault(x => x.Id == item.IdAeronave);
                     if (buscaAeronave != null)
                     {
                         item.PrefixoAeronave = buscaAeronave.Prefixo;
