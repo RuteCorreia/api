@@ -195,7 +195,7 @@ class _LoginPageState extends State<LoginPage> {
                 isLoading = false;
               });
               Future.delayed(const Duration(seconds: 1), () {
-                context.push("/home");
+                context.pushReplacement("/home");
               });
             });
           }

@@ -17,4 +17,10 @@ class AuthService {
     String? token = perf.getString("token") ?? "";
     return Future.value(token);
   }
+
+  Future removeToken() async {
+    print("Removendo token do cache ...");
+    var perf = await SharedPreferences.getInstance();
+    return perf.remove("token");
+  }
 }

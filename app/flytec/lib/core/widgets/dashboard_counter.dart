@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 
 class ReportDashBoardCounter extends StatelessWidget {
   const ReportDashBoardCounter(
@@ -9,18 +9,18 @@ class ReportDashBoardCounter extends StatelessWidget {
       required this.state});
   final String value;
   final String text;
-  final ReportDashBoardState state;
-  Color getColorStateColor(ReportDashBoardState estado) {
-    if (estado == ReportDashBoardState.Enviado) {
+  final DashBoardState state;
+  Color getColorStateColor(DashBoardState estado) {
+    if (estado == DashBoardState.Enviado) {
       return Colors.blue;
     }
-    if (estado == ReportDashBoardState.Pronto) {
+    if (estado == DashBoardState.Pronto) {
       return Colors.green;
     }
-    if (estado == ReportDashBoardState.Incompleto) {
+    if (estado == DashBoardState.Incompleto) {
       return const Color(0xff0ffff9900);
     }
-    if (estado == ReportDashBoardState.NaoEnviado) {
+    if (estado == DashBoardState.NaoEnviado) {
       return Colors.red;
     } else {
       return Colors.blue;

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flytec/core/injections/get_it.dart';
-import 'package:flytec/core/utils/global_config_vars.dart';
 
-class AirCraftSelect extends StatelessWidget {
-  final Function(String) onChanged;
-  AirCraftSelect({super.key, required this.onChanged});
+class ComponenteNameSelect extends StatelessWidget {
+  final Function(String? componente) onChangeComponente;
+  ComponenteNameSelect({super.key, required this.onChangeComponente});
 
   final TextEditingController _textFlightHeight = TextEditingController();
 
+  final List<String> _components = ['Componente 1'];
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class AirCraftSelect extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
               child: ListView.builder(
-                itemCount: getIt<GlobalConfigVars>().aeronaves.length,
+                itemCount: _components.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => MaterialButton(
@@ -29,19 +28,14 @@ class AirCraftSelect extends StatelessWidget {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      onChanged(
-                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!);
+                      onChangeComponente(_components[index]);
                       Navigator.of(context).pop();
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              getIt<GlobalConfigVars>()
-                                      .aeronaves[index]
-                                      .prefixo ??
-                                  '',
+                          child: Text(_components[index],
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -69,11 +63,12 @@ class AirCraftSelect extends StatelessWidget {
                       controller: _textFlightHeight,
                       keyboardType: TextInputType.text,
                       onSubmitted: (value) {
-                        onChanged(_textFlightHeight.text);
+                        onChangeComponente(value);
+
                         Navigator.of(context).pop();
                       },
                       decoration: const InputDecoration(
-                          hintText: "Digite uma aeronave",
+                          hintText: "Digite um produto",
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             color: Color.fromARGB(255, 121, 118, 118),
@@ -85,7 +80,6 @@ class AirCraftSelect extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      onChanged(_textFlightHeight.text);
                       Navigator.of(context).pop();
                     },
                     child: Container(

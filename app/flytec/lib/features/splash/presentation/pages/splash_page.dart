@@ -40,12 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
             getIt<GlobalConfigVars>().userPayload =
                 UserPayloadModel.fromJson(decodedToken);
 
-            context.push("/home");
+            context.pushReplacement("/home");
           } else {
-            context.push("/login");
+            context.pushReplacement("/login");
           }
         } else {
-          context.push("/login");
+          context.pushReplacement("/login");
         }
       });
     });
