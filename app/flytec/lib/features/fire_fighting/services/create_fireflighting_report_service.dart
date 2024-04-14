@@ -54,12 +54,102 @@ class CreateFireflightingReportService implements PdfGenerator {
                           decoration: const pw.BoxDecoration(
                               border:
                                   pw.Border(right: pw.BorderSide(width: 1.5))),
-                          child: pw.Column(children: [])),
+                          child: pw.Column(children: [
+                            pw.Row(children: [
+                              pw.Container(
+                                  height: 35,
+                                  width: 143.5,
+                                  decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                          right: pw.BorderSide(width: 1.5),
+                                          bottom: pw.BorderSide(width: 1.5))),
+                                  child: pw.Column(children: [
+                                    pw.Text('N Aviso',
+                                        textAlign: pw.TextAlign.center,
+                                        style: const pw.TextStyle(
+                                          fontSize: 12,
+                                        )),
+                                    pw.Text(''),
+                                  ])),
+                              pw.Container(
+                                  height: 35,
+                                  width: 143.5,
+                                  decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                          bottom: pw.BorderSide(width: 1.5))),
+                                  child: pw.Column(children: [
+                                    pw.Text('HORÍMETRO DE ACIONAMENTO',
+                                        textAlign: pw.TextAlign.center,
+                                        style: const pw.TextStyle(
+                                          fontSize: 8,
+                                        )),
+                                    pw.Text(''),
+                                  ])),
+                            ]),
+                            pw.Container(
+                                height: 30,
+                                width: 287,
+                                decoration: const pw.BoxDecoration(
+                                    border: pw.Border(
+                                        right: pw.BorderSide(width: 1.5),
+                                        bottom: pw.BorderSide(width: 1.5))),
+                                child: pw.Column(children: [
+                                  pw.Text('Pista de Operação',
+                                      textAlign: pw.TextAlign.center,
+                                      style: const pw.TextStyle(
+                                        fontSize: 12,
+                                      )),
+                                  pw.Text(''),
+                                ])),
+                            pw.Row(children: [
+                              pw.Container(
+                                  height: 35,
+                                  width: 95.6,
+                                  decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                    right: pw.BorderSide(width: 1.5),
+                                  )),
+                                  child: pw.Column(children: [
+                                    pw.Text('Código ICAO',
+                                        textAlign: pw.TextAlign.center,
+                                        style: const pw.TextStyle(
+                                          fontSize: 12,
+                                        )),
+                                    pw.Text(''),
+                                  ])),
+                              pw.Container(
+                                  height: 35,
+                                  width: 95.6,
+                                  decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                    right: pw.BorderSide(width: 1.5),
+                                  )),
+                                  child: pw.Column(children: [
+                                    pw.Text('Nome',
+                                        textAlign: pw.TextAlign.center,
+                                        style: const pw.TextStyle(
+                                          fontSize: 12,
+                                        )),
+                                    pw.Text(''),
+                                  ])),
+                              pw.Container(
+                                  height: 35,
+                                  width: 95.6,
+                                  child: pw.Column(children: [
+                                    pw.Text('Coordenadas',
+                                        textAlign: pw.TextAlign.center,
+                                        style: const pw.TextStyle(
+                                          fontSize: 12,
+                                        )),
+                                    pw.Text(''),
+                                  ])),
+                            ])
+                          ])),
                       pw.Container(
                           width: 287,
                           child: pw.Column(children: [
                             pw.Container(
-                                height: 30,
+                                height: 35,
                                 width: 287,
                                 decoration: const pw.BoxDecoration(
                                     border: pw.Border(
@@ -67,13 +157,13 @@ class CreateFireflightingReportService implements PdfGenerator {
                                 child: pw.Column(children: [
                                   pw.Text('Local do Incêndio',
                                       textAlign: pw.TextAlign.center,
-                                      style: pw.TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: pw.FontWeight.bold)),
+                                      style: const pw.TextStyle(
+                                        fontSize: 12,
+                                      )),
                                   pw.Text(''),
                                 ])),
                             pw.Container(
-                                height: 70,
+                                height: 65,
                                 child: pw.Row(children: [
                                   pw.Container(
                                       width: 143.5,
@@ -81,18 +171,15 @@ class CreateFireflightingReportService implements PdfGenerator {
                                           border: pw.Border(
                                               right:
                                                   pw.BorderSide(width: 1.5))),
-                                      padding: const pw.EdgeInsets.only(
-                                          top: 4, bottom: 4),
                                       child: pw.Column(
                                           mainAxisAlignment:
                                               pw.MainAxisAlignment.spaceEvenly,
                                           children: [
                                             pw.Text('Referência',
                                                 textAlign: pw.TextAlign.center,
-                                                style: pw.TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold)),
+                                                style: const pw.TextStyle(
+                                                  fontSize: 12,
+                                                )),
                                             pw.Text(
                                               '',
                                               textAlign: pw.TextAlign.center,
@@ -100,25 +187,250 @@ class CreateFireflightingReportService implements PdfGenerator {
                                           ])),
                                   pw.Container(
                                       width: 143.5,
-                                      padding: const pw.EdgeInsets.only(
-                                          top: 4, bottom: 4),
                                       child: pw.Column(
                                           mainAxisAlignment:
                                               pw.MainAxisAlignment.spaceEvenly,
                                           children: [
                                             pw.Text('Coordenadas',
                                                 textAlign: pw.TextAlign.center,
-                                                style: pw.TextStyle(
-                                                    fontSize: 12,
-                                                    fontWeight:
-                                                        pw.FontWeight.bold)),
+                                                style: const pw.TextStyle(
+                                                  fontSize: 12,
+                                                )),
                                             pw.Text(
-                                              'Latitude: \nLongitude: ',
+                                              '',
                                               textAlign: pw.TextAlign.center,
                                             ),
                                           ])),
                                 ]))
                           ])),
+                    ])),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.SizedBox(
+                    height: 30,
+                    child: pw.Row(children: [
+                      pw.Container(
+                          height: 30,
+                          width: 191.3,
+                          decoration: const pw.BoxDecoration(
+                              border:
+                                  pw.Border(right: pw.BorderSide(width: 1.5))),
+                          child: pw.Column(children: [
+                            pw.Text('Horário de chegada na pista',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 12,
+                                )),
+                            pw.Text(''),
+                          ])),
+                      pw.Container(
+                          height: 30,
+                          width: 191.3,
+                          decoration: const pw.BoxDecoration(
+                              border:
+                                  pw.Border(right: pw.BorderSide(width: 1.5))),
+                          child: pw.Column(children: [
+                            pw.Text('Horímetro de chegada na pista',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 12,
+                                )),
+                            pw.Text(''),
+                          ])),
+                      pw.Container(
+                          height: 30,
+                          width: 191.3,
+                          child: pw.Column(children: [
+                            pw.Text('Prefixo da Aeronave',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 12,
+                                )),
+                            pw.Text(''),
+                          ])),
+                    ])),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.Row(children: [
+                  pw.Column(children: [
+                    pw.Container(
+                        height: 25,
+                        width: 287,
+                        alignment: pw.Alignment.center,
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                right: pw.BorderSide(width: 1.5),
+                                bottom: pw.BorderSide(width: 1.5))),
+                        child: pw.Text('Decolagem',
+                            textAlign: pw.TextAlign.center)),
+                    pw.Row(children: [
+                      pw.Container(
+                          height: 25,
+                          width: 143.5,
+                          alignment: pw.Alignment.center,
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  right: pw.BorderSide(width: 1.5),
+                                  bottom: pw.BorderSide(width: 1.5))),
+                          child: pw.Text('Horário',
+                              textAlign: pw.TextAlign.center)),
+                      pw.Container(
+                          height: 25,
+                          width: 143.5,
+                          alignment: pw.Alignment.center,
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  right: pw.BorderSide(width: 1.5),
+                                  bottom: pw.BorderSide(width: 1.5))),
+                          child: pw.Text('Horímetro',
+                              textAlign: pw.TextAlign.center)),
+                    ]),
+                    pw.Container(
+                        width: 287,
+                        height: 380,
+                        decoration: const pw.BoxDecoration(
+                            border:
+                                pw.Border(right: pw.BorderSide(width: 1.5))),
+                        child: pw.ListView.separated(
+                          itemBuilder: (context, index) => pw.SizedBox(
+                              width: 287,
+                              height: 18,
+                              child: pw.Row(children: [
+                                pw.Container(
+                                    width: 143.5,
+                                    alignment: pw.Alignment.centerLeft,
+                                    decoration: const pw.BoxDecoration(
+                                        border: pw.Border(
+                                            right: pw.BorderSide(width: 1.5))),
+                                    child: pw.Text('${index + 1} ',
+                                        textAlign: pw.TextAlign.center)),
+                                pw.SizedBox(
+                                    width: 143.5,
+                                    child: pw.Text('',
+                                        textAlign: pw.TextAlign.center)),
+                              ])),
+                          itemCount: 20,
+                          separatorBuilder: (context, index) =>
+                              pw.Divider(height: 1, thickness: 1.5),
+                        )),
+                  ]),
+                  pw.Column(children: [
+                    pw.Container(
+                        height: 25,
+                        width: 287,
+                        alignment: pw.Alignment.center,
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                right: pw.BorderSide(width: 1.5),
+                                bottom: pw.BorderSide(width: 1.5))),
+                        child:
+                            pw.Text('Pouso', textAlign: pw.TextAlign.center)),
+                    pw.Row(children: [
+                      pw.Container(
+                          height: 25,
+                          width: 143.5,
+                          alignment: pw.Alignment.center,
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  right: pw.BorderSide(width: 1.5),
+                                  bottom: pw.BorderSide(width: 1.5))),
+                          child: pw.Text('Horário',
+                              textAlign: pw.TextAlign.center)),
+                      pw.Container(
+                          height: 25,
+                          width: 143.5,
+                          alignment: pw.Alignment.center,
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  right: pw.BorderSide(width: 1.5),
+                                  bottom: pw.BorderSide(width: 1.5))),
+                          child: pw.Text('Horímetro',
+                              textAlign: pw.TextAlign.center)),
+                    ]),
+                    pw.SizedBox(
+                        width: 287,
+                        height: 380,
+                        child: pw.ListView.separated(
+                          itemBuilder: (context, index) => pw.SizedBox(
+                              width: 287,
+                              height: 18,
+                              child: pw.Row(children: [
+                                pw.Container(
+                                    width: 143.5,
+                                    alignment: pw.Alignment.centerLeft,
+                                    decoration: const pw.BoxDecoration(
+                                        border: pw.Border(
+                                            right: pw.BorderSide(width: 1.5))),
+                                    child: pw.Text('${index + 1}',
+                                        textAlign: pw.TextAlign.center)),
+                                pw.SizedBox(
+                                    width: 143.5,
+                                    child: pw.Text('',
+                                        textAlign: pw.TextAlign.center)),
+                              ])),
+                          itemCount: 20,
+                          separatorBuilder: (context, index) =>
+                              pw.Divider(height: 1, thickness: 1.5),
+                        ))
+                  ])
+                ]),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.SizedBox(width: 574, height: 35),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.SizedBox(
+                    width: 574,
+                    height: 40,
+                    child: pw.Row(children: [
+                      pw.Container(
+                          width: 191.3,
+                          decoration: const pw.BoxDecoration(
+                              border:
+                                  pw.Border(right: pw.BorderSide(width: 1.5))),
+                          child: pw.Column(children: [
+                            pw.Container(
+                              width: 191.3,
+                              height: 20,
+                              child: pw.Text('Horário de Término:',
+                                  style: const pw.TextStyle(fontSize: 10)),
+                              decoration: const pw.BoxDecoration(
+                                  border: pw.Border(
+                                      bottom: pw.BorderSide(width: 1.5))),
+                            ),
+                            pw.Container(
+                              width: 191.3,
+                              height: 20,
+                              child: pw.Text('Horário de Corte:',
+                                  style: const pw.TextStyle(fontSize: 10)),
+                            )
+                          ])),
+                      pw.Container(
+                          width: 191.3,
+                          decoration: const pw.BoxDecoration(
+                              border:
+                                  pw.Border(right: pw.BorderSide(width: 1.5))),
+                          child: pw.Column(children: [
+                            pw.Container(
+                              width: 191.3,
+                              height: 20,
+                              child: pw.Text('Horímetro de Término:',
+                                  style: const pw.TextStyle(fontSize: 10)),
+                              decoration: const pw.BoxDecoration(
+                                  border: pw.Border(
+                                      bottom: pw.BorderSide(width: 1.5))),
+                            ),
+                            pw.Container(
+                              width: 191.3,
+                              height: 20,
+                              child: pw.Text('Horímetro de Corte:',
+                                  style: const pw.TextStyle(fontSize: 10)),
+                            )
+                          ])),
+                      pw.Container(
+                        width: 191.3,
+                        decoration: const pw.BoxDecoration(
+                            border:
+                                pw.Border(right: pw.BorderSide(width: 1.5))),
+                        child: pw.Text('N de lançamentos:',
+                            style: const pw.TextStyle(fontSize: 10)),
+                      )
                     ])),
                 pw.Divider(height: 1, thickness: 1.5),
               ]));
