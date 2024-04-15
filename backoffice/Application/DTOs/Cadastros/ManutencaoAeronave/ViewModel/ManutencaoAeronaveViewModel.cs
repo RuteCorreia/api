@@ -1,4 +1,6 @@
-﻿namespace Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel
+﻿using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
+
+namespace Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel
 {
     public class ManutencaoAeronaveViewModel
     {
@@ -10,5 +12,6 @@
         public string? DocumentoBase64 { get; set; }
         public string? PrefixoAeronave { get; set; }
         public byte[]? Documento { get; set; }
+        public IEnumerable<ManutencaoAeronaveItemsRevisaoViewModel> ItensRevisao { get; set; }
     }
 }

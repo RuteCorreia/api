@@ -14,10 +14,11 @@ namespace Infra.Repositorio.Cadastros.ManutencaoAeronave
             _contextBase = contextBase;
         }
 
-        public async Task AddAsync(Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj)
+        public async Task<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave> AddAsync(Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj)
         {
             await _contextBase.AddAsync(obj);
             await _contextBase.SaveChangesAsync();
+            return obj;
         }
 
         public async Task DeleteAsync(int id)
