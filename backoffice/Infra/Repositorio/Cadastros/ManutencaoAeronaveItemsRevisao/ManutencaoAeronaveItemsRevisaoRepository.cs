@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Infra.Configuracao;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.ManutencaoAeronaveItemsRevisao;
 
@@ -18,9 +19,14 @@ public class ManutencaoAeronaveItemsRevisaoRepository : IManutencaoAeronaveItems
         await _contextBase.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteByIdManutencaoAeronaveAsync(int id)
     {
-        throw new NotImplementedException();
+        var itens = _contextBase.ManutencaoAeronaveItemsRevisao.Where(x => x.IdManutencaoAeronave == id);
+        if(itens.Any())
+        {
+            _contextBase.ManutencaoAeronaveItemsRevisao.RemoveRange(itens);
+            await _contextBase.SaveChangesAsync();
+        }
     }
 
     public Task<IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao>> GetAllAsync()
@@ -28,12 +34,19 @@ public class ManutencaoAeronaveItemsRevisaoRepository : IManutencaoAeronaveItems
         throw new NotImplementedException();
     }
 
-    public Task<Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao> GetByIdAsync(int id)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao>> GetAllByManutencaoAeronaveIdAsync(
+        int id
+    )
     {
-        throw new NotImplementedException();
+        var obj = await _contextBase.ManutencaoAeronaveItemsRevisao
+            .AsNoTracking()
+            .Where(x => x.IdManutencaoAeronave == id)
+            .ToListAsync();
+
+        return obj;
     }
 
-    public Task UpdateAsync(Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao obj)
+    public async Task UpdateAsync(Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao obj)
     {
         throw new NotImplementedException();
     }

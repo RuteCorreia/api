@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
@@ -32,7 +33,16 @@ namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
         public async Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id)
         {
             var obj = await _manutencaoAeronaveRepository.GetByIdAsync(id);
-            return _mapper.Map<ManutencaoAeronaveViewModel>(obj);
+            var mappedObj = _mapper.Map<ManutencaoAeronaveViewModel>(obj);
+            var itensRevisao = await _manutencaoItemsRevisaoRepository.GetAllByManutencaoAeronaveIdAsync(mappedObj.Id);
+            
+            mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
+            {
+                Id = x.Id,
+                Item = x.Descricao
+            });
+
+            return mappedObj;
         }
 
         public async Task AddAsync(ManutencaoAeronaveViewModel obj)
@@ -56,6 +66,17 @@ namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
         {
             var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
             await _manutencaoAeronaveRepository.UpdateAsync(mapManutencaoAeronave);
+            await _manutencaoItemsRevisaoRepository.DeleteByIdManutencaoAeronaveAsync(obj.Id);
+            if (obj.ItensRevisao.Any())
+            {
+                var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
+                {
+                    Descricao = x.Item,
+                    IdManutencaoAeronave = obj.Id
+                });
+
+                await _manutencaoItemsRevisaoRepository.AddAsync(itens);
+            }
         }
 
         public async Task DeleteAsync(int id)
