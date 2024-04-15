@@ -1,19 +1,12 @@
-﻿using Application.DTOs.Cadastros.Frota.ViewModel;
-using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
+﻿using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.DTOs.Cadastros.ManutencaoAeronave.Mappings
+namespace Application.DTOs.Cadastros.ManutencaoAeronave.Mappings;
+
+public class ManutencaoAeronaveViewModelToDomainMappingProfile : Profile
 {
-    public class ManutencaoAeronaveViewModelToDomainMappingProfile : Profile
+    public ManutencaoAeronaveViewModelToDomainMappingProfile()
     {
-        public ManutencaoAeronaveViewModelToDomainMappingProfile()
-        {
-            CreateMap<ManutencaoAeronaveViewModel, Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>();
-        }
+        CreateMap<ManutencaoAeronaveViewModel, Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>();
     }
 }

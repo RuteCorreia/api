@@ -3,7 +3,7 @@ using Infra.Configuracao;
 
 namespace Infra.Repositorio.Cadastros.ManutencaoAeronaveItemsRevisao;
 
-public class ManutencaoAeronaveItemsRevisaoRepository : IManutencaoAeronaveItemsRevisao
+public class ManutencaoAeronaveItemsRevisaoRepository : IManutencaoAeronaveItemsRevisaoRepository
 {
     private readonly ContextBase _contextBase;
 
@@ -12,9 +12,10 @@ public class ManutencaoAeronaveItemsRevisaoRepository : IManutencaoAeronaveItems
         _contextBase = contextBase;
     }
 
-    public Task AddAsync(Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao obj)
+    public async Task AddAsync(IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao> obj)
     {
-        throw new NotImplementedException();
+        await _contextBase.ManutencaoAeronaveItemsRevisao.AddRangeAsync(obj);
+        await _contextBase.SaveChangesAsync();
     }
 
     public Task DeleteAsync(int id)

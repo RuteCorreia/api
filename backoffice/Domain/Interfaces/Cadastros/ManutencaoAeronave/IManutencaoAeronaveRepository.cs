@@ -2,7 +2,7 @@
 
 public interface IManutencaoAeronaveRepository
 {
-    Task AddAsync(Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj);
+    Task<Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave> AddAsync(Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj);
     Task UpdateAsync(Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>> GetAllAsync();

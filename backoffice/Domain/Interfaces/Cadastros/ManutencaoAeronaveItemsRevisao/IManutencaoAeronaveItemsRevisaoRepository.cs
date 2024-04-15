@@ -1,8 +1,8 @@
 ﻿namespace Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
 
-public interface IManutencaoAeronaveItemsRevisao
+public interface IManutencaoAeronaveItemsRevisaoRepository
 {
-    Task AddAsync(Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao obj);
+    Task AddAsync(IEnumerable<Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao> obj);
     Task UpdateAsync(Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao>> GetAllAsync();
