@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/pages/images/upload_foto.dart';
+import 'package:flytec/features/manutencao/components/manutencao_componentes_list_page.dart';
 import 'package:flytec/features/manutencao/components/widgets/componente_select_widget.dart';
 
 class ManutencaoComponentesPage extends StatefulWidget {
@@ -186,7 +187,17 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                       ),
                     ],
                   ),
-                )
+                ),
+                CustomButton(
+                    onClick: () async {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                const ManutencaoComponentesListPage(),
+                          ));
+                    },
+                    title: 'Salvar'),
               ],
             )));
   }
