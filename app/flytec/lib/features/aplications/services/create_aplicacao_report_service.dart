@@ -67,7 +67,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final executorSelected = getIt<GlobalConfigVars>().executores.firstWhere(
         (executor) => aplicacao.executor == executor.nome,
         orElse: () => const ExecutorModel(cfta: 'CFTA'));
-    final engenheiroSelected = getIt<GlobalConfigVars>().engenheiros.first;
+    final engenheiroSelected =
+        getIt<GlobalConfigVars>().engenheiros.firstOrNull;
 
     pdf.addPage(
       pw.Page(
@@ -1719,8 +1720,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                if (engenheiroSelected.assinatura != null &&
-                                    engenheiroSelected.assinatura!.isNotEmpty)
+                                if (engenheiroSelected?.assinatura != null &&
+                                    engenheiroSelected!.assinatura!.isNotEmpty)
                                   pw.Container(
                                     height: 22,
                                     width: 100,
@@ -1731,11 +1732,13 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                         ),
                                         fit: pw.BoxFit.cover),
                                   ),
-                                pw.Text(engenheiroSelected.nomeEngenheiro!,
+                                pw.Text(
+                                    engenheiroSelected?.nomeEngenheiro ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CREA ${engenheiroSelected.crea}',
+                                pw.Text(
+                                    'CREA ${engenheiroSelected?.crea ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),

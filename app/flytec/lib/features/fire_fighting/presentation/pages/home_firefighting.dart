@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
+import 'package:flytec/features/fire_fighting/services/create_fireflighting_report_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import '../../../home/presentation/widgets/custom_dialog_button.dart';
@@ -458,8 +463,19 @@ await showDialog(
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push("/combateIncendioPasso1");
+        onPressed: () async {
+          //context.push("/combateIncendioPasso1");
+          PdfGenerator pdfGenerator = CreateFireflightingReportService();
+          final document = await pdfGenerator.generatePdf();
+          final documentBytes =
+              await pdfGenerator.saveDocument(document: document);
+          final directory = await getApplicationCacheDirectory();
+          File file = File(
+              "${directory.path}/relatorio_incendio_${Util.getRandomString(10)}.pdf");
+          await file.writeAsBytes(documentBytes!);
+          // ignore: use_build_context_synchronously
+          context.push("/reportPage", extra: file);
+
         },
         child: const Icon(
           Icons.add,
