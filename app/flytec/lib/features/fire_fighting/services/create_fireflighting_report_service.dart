@@ -23,7 +23,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                   border: pw.Border.all(color: PdfColors.black, width: 1.5)),
               child: pw.Column(children: [
                 pw.SizedBox(
-                    height: 100,
+                    height: 110,
                     child: pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.center,
                         children: [
@@ -35,19 +35,60 @@ class CreateFireflightingReportService implements PdfGenerator {
                             child: pw.Image(pw.MemoryImage(logoImage),
                                 fit: pw.BoxFit.contain),
                           ),
-                          pw.SizedBox(
-                            width: 430,
-                            child: pw.Text(
-                                'COMBATE A INCÊNCIO EM COBERTURA VEGETAIS\nPLANILHA DE CONTROLE DE VOOS',
-                                textAlign: pw.TextAlign.center,
-                                style: pw.TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: pw.FontWeight.bold)),
-                          )
+                          pw.SizedBox(width: 10),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              mainAxisAlignment: pw.MainAxisAlignment.start,
+                              children: [
+                                pw.SizedBox(height: 5),
+                                pw.Container(
+                                    padding: pw.EdgeInsets.only(right: 10.0),
+                                    height: 25,
+                                    width: 420,
+                                    child: pw.Text(
+                                        'COMBATE A INCÊNCIO EM COBERTURA VEGETAIS PLANILHA DE CONTROLE DE VOOS',
+                                        maxLines: 2,
+                                        textAlign: pw.TextAlign.center,
+                                        style: pw.TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: pw.FontWeight.bold))),
+                                pw.SizedBox(height: 20),
+                                pw.Column(
+                                    crossAxisAlignment:
+                                        pw.CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        pw.MainAxisAlignment.start,
+                                    children: [
+                                      pw.SizedBox(
+                                          child: pw.Text(
+                                              'IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
+                                              style: pw.TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight:
+                                                      pw.FontWeight.normal))),
+                                      pw.Text(
+                                          'MA SP - 000000-0 - CNPJ 00.000.000/0000-00 - Inscr. Est. 000.000.000.000',
+                                          maxLines: 1,
+                                          style: pw.TextStyle(
+                                              fontSize: 8,
+                                              fontWeight:
+                                                  pw.FontWeight.normal)),
+                                      pw.Text('FONE: (XX) XXXX-XXXX',
+                                          style: pw.TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: pw.FontWeight.bold)),
+                                      pw.Text(
+                                          'RUA PARANÁ, 000 - CENTRO - CEP 00000-000 - MONÇÕES - EST.SÃO PAULO',
+                                          style: pw.TextStyle(
+                                              fontSize: 8,
+                                              fontWeight:
+                                                  pw.FontWeight.normal)),
+                                    ])
+                              ]),
                         ])),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
-                    height: 100,
+                    height: 75,
                     child: pw.Row(children: [
                       pw.Container(
                           width: 287,
@@ -57,7 +98,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                           child: pw.Column(children: [
                             pw.Row(children: [
                               pw.Container(
-                                  height: 35,
+                                  height: 25,
                                   width: 143.5,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
@@ -72,7 +113,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                     pw.Text(''),
                                   ])),
                               pw.Container(
-                                  height: 35,
+                                  height: 25,
                                   width: 143.5,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
@@ -87,7 +128,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                   ])),
                             ]),
                             pw.Container(
-                                height: 30,
+                                height: 25,
                                 width: 287,
                                 decoration: const pw.BoxDecoration(
                                     border: pw.Border(
@@ -103,7 +144,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                 ])),
                             pw.Row(children: [
                               pw.Container(
-                                  height: 35,
+                                  height: 25,
                                   width: 95.6,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
@@ -118,7 +159,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                     pw.Text(''),
                                   ])),
                               pw.Container(
-                                  height: 35,
+                                  height: 25,
                                   width: 95.6,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
@@ -133,7 +174,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                     pw.Text(''),
                                   ])),
                               pw.Container(
-                                  height: 35,
+                                  height: 25,
                                   width: 95.6,
                                   child: pw.Column(children: [
                                     pw.Text('Coordenadas',
@@ -149,7 +190,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                           width: 287,
                           child: pw.Column(children: [
                             pw.Container(
-                                height: 35,
+                                height: 25,
                                 width: 287,
                                 decoration: const pw.BoxDecoration(
                                     border: pw.Border(
@@ -163,7 +204,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                                   pw.Text(''),
                                 ])),
                             pw.Container(
-                                height: 65,
+                                height: 50,
                                 child: pw.Row(children: [
                                   pw.Container(
                                       width: 143.5,
@@ -206,10 +247,10 @@ class CreateFireflightingReportService implements PdfGenerator {
                     ])),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
-                    height: 30,
+                    height: 25,
                     child: pw.Row(children: [
                       pw.Container(
-                          height: 30,
+                          height: 25,
                           width: 191.3,
                           decoration: const pw.BoxDecoration(
                               border:
@@ -223,7 +264,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                             pw.Text(''),
                           ])),
                       pw.Container(
-                          height: 30,
+                          height: 25,
                           width: 191.3,
                           decoration: const pw.BoxDecoration(
                               border:
@@ -237,7 +278,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                             pw.Text(''),
                           ])),
                       pw.Container(
-                          height: 30,
+                          height: 25,
                           width: 191.3,
                           child: pw.Column(children: [
                             pw.Text('Prefixo da Aeronave',
@@ -252,7 +293,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                 pw.Row(children: [
                   pw.Column(children: [
                     pw.Container(
-                        height: 25,
+                        height: 15,
                         width: 287,
                         alignment: pw.Alignment.center,
                         decoration: const pw.BoxDecoration(
@@ -263,7 +304,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                             textAlign: pw.TextAlign.center)),
                     pw.Row(children: [
                       pw.Container(
-                          height: 25,
+                          height: 15,
                           width: 143.5,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
@@ -273,7 +314,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                           child: pw.Text('Horário',
                               textAlign: pw.TextAlign.center)),
                       pw.Container(
-                          height: 25,
+                          height: 15,
                           width: 143.5,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
@@ -285,14 +326,14 @@ class CreateFireflightingReportService implements PdfGenerator {
                     ]),
                     pw.Container(
                         width: 287,
-                        height: 380,
+                        height: 320,
                         decoration: const pw.BoxDecoration(
                             border:
                                 pw.Border(right: pw.BorderSide(width: 1.5))),
                         child: pw.ListView.separated(
                           itemBuilder: (context, index) => pw.SizedBox(
                               width: 287,
-                              height: 18,
+                              height: 15,
                               child: pw.Row(children: [
                                 pw.Container(
                                     width: 143.5,
@@ -314,7 +355,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                   ]),
                   pw.Column(children: [
                     pw.Container(
-                        height: 25,
+                        height: 15,
                         width: 287,
                         alignment: pw.Alignment.center,
                         decoration: const pw.BoxDecoration(
@@ -325,7 +366,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                             pw.Text('Pouso', textAlign: pw.TextAlign.center)),
                     pw.Row(children: [
                       pw.Container(
-                          height: 25,
+                          height: 15,
                           width: 143.5,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
@@ -335,7 +376,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                           child: pw.Text('Horário',
                               textAlign: pw.TextAlign.center)),
                       pw.Container(
-                          height: 25,
+                          height: 15,
                           width: 143.5,
                           alignment: pw.Alignment.center,
                           decoration: const pw.BoxDecoration(
@@ -347,11 +388,11 @@ class CreateFireflightingReportService implements PdfGenerator {
                     ]),
                     pw.SizedBox(
                         width: 287,
-                        height: 380,
+                        height: 320,
                         child: pw.ListView.separated(
                           itemBuilder: (context, index) => pw.SizedBox(
                               width: 287,
-                              height: 18,
+                              height: 15,
                               child: pw.Row(children: [
                                 pw.Container(
                                     width: 143.5,
@@ -377,7 +418,7 @@ class CreateFireflightingReportService implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
                     width: 574,
-                    height: 40,
+                    height: 20,
                     child: pw.Row(children: [
                       pw.Container(
                           width: 191.3,
@@ -390,9 +431,6 @@ class CreateFireflightingReportService implements PdfGenerator {
                               height: 20,
                               child: pw.Text('Horário de Término:',
                                   style: const pw.TextStyle(fontSize: 10)),
-                              decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                      bottom: pw.BorderSide(width: 1.5))),
                             ),
                             pw.Container(
                               width: 191.3,
@@ -412,9 +450,6 @@ class CreateFireflightingReportService implements PdfGenerator {
                               height: 20,
                               child: pw.Text('Horímetro de Término:',
                                   style: const pw.TextStyle(fontSize: 10)),
-                              decoration: const pw.BoxDecoration(
-                                  border: pw.Border(
-                                      bottom: pw.BorderSide(width: 1.5))),
                             ),
                             pw.Container(
                               width: 191.3,
@@ -433,6 +468,205 @@ class CreateFireflightingReportService implements PdfGenerator {
                       )
                     ])),
                 pw.Divider(height: 1, thickness: 1.5),
+                pw.SizedBox(
+                    width: 574,
+                    child: pw.Row(children: [
+                      pw.Container(
+                        width: 287,
+                        height: 20,
+                        child: pw.Text('Capacidade de Carga da Aeronave:',
+                            style: const pw.TextStyle(fontSize: 10)),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(width: 1.5),
+                                right: pw.BorderSide(width: 1.5))),
+                      ),
+                      pw.Container(
+                          width: 287,
+                          height: 20,
+                          child: pw.Text('Capacidade de Carga da Aeronave:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5)))),
+                    ])),
+                pw.SizedBox(
+                    width: 574,
+                    child: pw.Row(children: [
+                      pw.Container(
+                        width: 287,
+                        height: 20,
+                        child: pw.Text('Coordenador da Base Operacional',
+                            textAlign: pw.TextAlign.start,
+                            style: const pw.TextStyle(fontSize: 10)),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(width: 1.5),
+                                right: pw.BorderSide(width: 1.5))),
+                      ),
+                      pw.Container(
+                          width: 287,
+                          height: 20,
+                          child: pw.Text('Comandante da Ocorrência',
+                              textAlign: pw.TextAlign.start,
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5)))),
+                    ])),
+                pw.SizedBox(
+                    width: 574,
+                    child: pw.Row(children: [
+                      pw.Container(
+                        width: 287,
+                        height: 20,
+                        child: pw.Text('Nome:',
+                            style: const pw.TextStyle(fontSize: 10)),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(width: 1.5),
+                                right: pw.BorderSide(width: 1.5))),
+                      ),
+                      pw.Container(
+                          width: 287,
+                          height: 20,
+                          child: pw.Text('Nome:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5)))),
+                    ])),
+                pw.SizedBox(
+                    width: 574,
+                    height: 20,
+                    child: pw.Row(children: [
+                      pw.Row(children: [
+                        pw.Container(
+                          width: 143.5,
+                          height: 20,
+                          child: pw.Text('Posto/Grad:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5),
+                                  right: pw.BorderSide(width: 1.5))),
+                        ),
+                        pw.Container(
+                          width: 143.5,
+                          height: 20,
+                          child: pw.Text('RE:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5),
+                                  right: pw.BorderSide(width: 1.5))),
+                        ),
+                      ]),
+                      pw.Row(children: [
+                        pw.Container(
+                          width: 143.5,
+                          height: 20,
+                          child: pw.Text('Posto/Grad:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5),
+                                  right: pw.BorderSide(width: 1.5))),
+                        ),
+                        pw.Container(
+                          width: 143.5,
+                          height: 20,
+                          child: pw.Text('RE:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5),
+                                  right: pw.BorderSide(width: 1.5))),
+                        ),
+                      ]),
+                    ])),
+                pw.SizedBox(
+                    width: 574,
+                    child: pw.Row(children: [
+                      pw.Container(
+                        width: 287,
+                        height: 30,
+                        child: pw.Text('Assinatura:',
+                            style: const pw.TextStyle(fontSize: 10)),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(width: 1.5),
+                                right: pw.BorderSide(width: 1.5))),
+                      ),
+                      pw.Container(
+                          width: 287,
+                          height: 30,
+                          child: pw.Text('Assinatura:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          decoration: const pw.BoxDecoration(
+                              border: pw.Border(
+                                  bottom: pw.BorderSide(width: 1.5)))),
+                    ])),
+                pw.SizedBox(width: 574, height: 40),
+                pw.Divider(height: 1, thickness: 1.5),
+                pw.SizedBox(
+                    width: 574,
+                    child: pw.Row(
+                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        crossAxisAlignment: pw.CrossAxisAlignment.center,
+                        children: [
+                          pw.Container(
+                            width: 191.3,
+                            child: pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(" "),
+                                pw.Divider(height: 0.5, thickness: 1.0),
+                                pw.Text('Executor',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                                pw.Text('CFTA ',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            width: 191.3,
+                            child: pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(" "),
+                                pw.Divider(height: 0.5, thickness: 1.0),
+                                pw.Text('Executor',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                                pw.Text('CFTA ',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            width: 191.3,
+                            child: pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(" "),
+                                pw.Divider(height: 0.5, thickness: 1.0),
+                                pw.Text('Executor',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                                pw.Text('CFTA ',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                        ])),
               ]));
         },
       ),
