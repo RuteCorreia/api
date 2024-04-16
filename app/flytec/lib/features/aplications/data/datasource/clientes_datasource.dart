@@ -19,7 +19,6 @@ class ClienteDataSourceImpl implements IClientDataSource {
     final response = await http.get(Uri.parse(Endpoints.cliente), headers: {
       'Authorization': 'Bearer ${Util.Token}',
     });
-    //  getIt<ClienteService>().saveClientesLocal(response.body);
     getIt<GlobalConfigVars>().clientes = clientesModelFromJson(response.body);
 
     return Future.value(clientesModelFromJson(response.body));
@@ -37,7 +36,7 @@ class ClienteDataSourceImpl implements IClientDataSource {
         "idCliente": 0,
         "nomeCliente": addClientParams!.nome.toString(),
         "idTipoCliente": 0.toString(),
-        "cpf": "0",
+        "cpf": addClientParams.cpf.toString(),
         "rg": addClientParams.rg.toString(),
         "cnpj": addClientParams.cnpj.toString(),
         "inscricaoEstadual": addClientParams.inscricaoEstadual.toString(),
@@ -63,9 +62,9 @@ class ClienteDataSourceImpl implements IClientDataSource {
 class AddClientParams {
   final String? nome;
   final int? idTipoCliente;
-  final int? cpf;
-  final int? rg;
-  final int? cnpj;
+  final String? cpf;
+  final String? rg;
+  final String? cnpj;
   final String? inscricaoEstadual;
   final String? endereco;
   final String? telefone1;
