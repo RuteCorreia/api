@@ -7,6 +7,7 @@ import 'package:flytec/features/aplications/components/custom_button.dart';
 import 'package:flytec/features/aplications/components/custom_text.dart';
 import 'package:flytec/features/aplications/components/custom_text_field.dart';
 import 'package:flytec/features/aplications/controller/maps_informations_controller.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CreateNewContratantePage extends StatefulWidget {
@@ -131,6 +132,12 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                         CustomTextField(
                           textInputType: TextInputType.number,
                           textEditingController: _cnpjController,
+                          formater: [
+                            MaskTextInputFormatter(
+                              mask: '###.###.###-##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                            )
+                          ],
                           onChanged: (String value) {},
                         ),
                         const CustomText(text: 'Endereço'),
@@ -318,6 +325,12 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                       CustomTextField(
                         textInputType: TextInputType.number,
                         textEditingController: _cnpjController,
+                        formater: [
+                          MaskTextInputFormatter(
+                            mask: '##.###.###/####-##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                          )
+                        ],
                         onChanged: (String value) {},
                       ),
                       const CustomText(text: 'Inscrição estadual'),
@@ -513,10 +526,8 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                                     rg: int.tryParse(_rgController.text) ?? 0,
                                     cnpj:
                                         int.tryParse(_cnpjController.text) ?? 0,
-                                    inscricaoEstadual: int.tryParse(
-                                            _inscricaoEstadualController
-                                                .text) ??
-                                        0,
+                                    inscricaoEstadual:
+                                        _inscricaoEstadualController.text,
                                     endereco: _enderecoController.text,
                                     telefone1: "",
                                     telefone2: "",
@@ -562,10 +573,8 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                                     cidade: _cityOfUf,
                                     cnpj:
                                         int.tryParse(_cnpjController.text) ?? 0,
-                                    inscricaoEstadual: int.tryParse(
-                                            _inscricaoEstadualController
-                                                .text) ??
-                                        0,
+                                    inscricaoEstadual:
+                                        _inscricaoEstadualController.text,
                                     endereco: _enderecoController.text,
                                     telefone1: "",
                                     telefone2: "",

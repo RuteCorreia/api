@@ -66,7 +66,7 @@ class AddClientParams {
   final int? cpf;
   final int? rg;
   final int? cnpj;
-  final int? inscricaoEstadual;
+  final String? inscricaoEstadual;
   final String? endereco;
   final String? telefone1;
   final String? telefone2;
