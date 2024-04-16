@@ -67,7 +67,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final executorSelected = getIt<GlobalConfigVars>().executores.firstWhere(
         (executor) => aplicacao.executor == executor.nome,
         orElse: () => const ExecutorModel(cfta: 'CFTA'));
-    final engenheiroSelected = getIt<GlobalConfigVars>().engenheiros.first;
+    final engenheiroSelected =
+        getIt<GlobalConfigVars>().engenheiros.firstOrNull;
 
     pdf.addPage(
       pw.Page(
@@ -268,7 +269,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           width: 250,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -279,14 +280,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Padding(
-                            padding: const pw.EdgeInsets.only(left: 10, top: 5),
+                            padding: const pw.EdgeInsets.only(left: 5, top: 2),
                             child: pw.Text(
                                 'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
+                                maxLines: 2,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               top: pw.BorderSide(
@@ -1719,8 +1721,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                if (engenheiroSelected.assinatura != null &&
-                                    engenheiroSelected.assinatura!.isNotEmpty)
+                                if (engenheiroSelected?.assinatura != null &&
+                                    engenheiroSelected!.assinatura!.isNotEmpty)
                                   pw.Container(
                                     height: 22,
                                     width: 100,
@@ -1731,11 +1733,13 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                         ),
                                         fit: pw.BoxFit.cover),
                                   ),
-                                pw.Text(engenheiroSelected.nomeEngenheiro!,
+                                pw.Text(
+                                    engenheiroSelected?.nomeEngenheiro ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CREA ${engenheiroSelected.crea}',
+                                pw.Text(
+                                    'CREA ${engenheiroSelected?.crea ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),

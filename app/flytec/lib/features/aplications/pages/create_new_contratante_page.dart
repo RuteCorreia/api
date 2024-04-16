@@ -7,6 +7,7 @@ import 'package:flytec/features/aplications/components/custom_button.dart';
 import 'package:flytec/features/aplications/components/custom_text.dart';
 import 'package:flytec/features/aplications/components/custom_text_field.dart';
 import 'package:flytec/features/aplications/controller/maps_informations_controller.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CreateNewContratantePage extends StatefulWidget {
@@ -62,7 +63,6 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
       _obtainStatesOfBrazil();
       _obtainCitiesOfUfBrazil('SP');
       widget._onAddContratanteUpdateView!();
-      ;
     });
   }
 
@@ -131,6 +131,12 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                         CustomTextField(
                           textInputType: TextInputType.number,
                           textEditingController: _cnpjController,
+                          formater: [
+                            MaskTextInputFormatter(
+                              mask: '###.###.###-##',
+                              filter: {"#": RegExp(r'[0-9]')},
+                            )
+                          ],
                           onChanged: (String value) {},
                         ),
                         const CustomText(text: 'Endereço'),
@@ -138,12 +144,14 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                         CustomTextField(
                           textEditingController: _enderecoController,
                           onChanged: (String value) {},
+                          maxLength: 50,
                         ),
                         const CustomText(text: 'Rg'),
                         const SizedBox(height: 14),
                         CustomTextField(
                           textInputType: TextInputType.number,
                           textEditingController: _rgController,
+                          maxLength: 11,
                           onChanged: (String value) {},
                         ),
                         Row(
@@ -318,6 +326,12 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                       CustomTextField(
                         textInputType: TextInputType.number,
                         textEditingController: _cnpjController,
+                        formater: [
+                          MaskTextInputFormatter(
+                            mask: '##.###.###/####-##',
+                            filter: {"#": RegExp(r'[0-9]')},
+                          )
+                        ],
                         onChanged: (String value) {},
                       ),
                       const CustomText(text: 'Inscrição estadual'),
@@ -507,16 +521,13 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                                 addClientParams: AddClientParams(
                                     nome: _nomeClienteController.text,
                                     idTipoCliente: 1,
-                                    cpf: 0,
+                                    cpf: _cnpjController.text,
                                     uf: _uf,
                                     cidade: _cityOfUf,
-                                    rg: int.tryParse(_rgController.text) ?? 0,
-                                    cnpj:
-                                        int.tryParse(_cnpjController.text) ?? 0,
-                                    inscricaoEstadual: int.tryParse(
-                                            _inscricaoEstadualController
-                                                .text) ??
-                                        0,
+                                    rg: _rgController.text,
+                                    cnpj: _cnpjController.text,
+                                    inscricaoEstadual:
+                                        _inscricaoEstadualController.text,
                                     endereco: _enderecoController.text,
                                     telefone1: "",
                                     telefone2: "",
@@ -557,15 +568,12 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                                     nome: _nomeClienteController.text,
                                     idTipoCliente: 1,
                                     uf: _uf,
-                                    cpf: 0,
-                                    rg: 0,
+                                    cpf: _cnpjController.text,
+                                    rg: _cnpjController.text,
                                     cidade: _cityOfUf,
-                                    cnpj:
-                                        int.tryParse(_cnpjController.text) ?? 0,
-                                    inscricaoEstadual: int.tryParse(
-                                            _inscricaoEstadualController
-                                                .text) ??
-                                        0,
+                                    cnpj: _cnpjController.text,
+                                    inscricaoEstadual:
+                                        _inscricaoEstadualController.text,
                                     endereco: _enderecoController.text,
                                     telefone1: "",
                                     telefone2: "",
@@ -581,7 +589,7 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                               .getClients()
                               .then((value) {
                             widget._onAddContratanteUpdateView!();
-                            ;
+                            
                             Navigator.pop(context);
                           });
                         } else {

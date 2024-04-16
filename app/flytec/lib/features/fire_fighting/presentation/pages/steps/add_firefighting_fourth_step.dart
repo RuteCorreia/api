@@ -20,7 +20,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
    
-  void _onUpdateSignature(Uint8List signature) {
+  void _onUpdateSignature(Uint8List? signature) {
     log("Signature updated $signature");
   }
 
