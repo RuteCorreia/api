@@ -24,33 +24,37 @@ class ProductNameSelect extends StatelessWidget {
                 itemCount: getIt<GlobalConfigVars>().bulas.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    padding: EdgeInsets.zero,
-                    color: Colors.white,
-                    elevation: 0,
-                    onPressed: () {
-                      onChangedProductName(
-                          getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
-                          CaracteristicasProdutoAplicado.fromBula(
-                              getIt<GlobalConfigVars>().bulas[index]),
-                          getIt<GlobalConfigVars>().bulas[index]);
-                      Navigator.of(context).pop();
-                    },
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
+                itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        padding: EdgeInsets.zero,
+                        color: Colors.white,
+                        elevation: 0,
+                        onPressed: () {
+                          onChangedProductName(
                               getIt<GlobalConfigVars>()
                                   .bulas[index]
                                   .nomeProduto!,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                        ))),
+                              CaracteristicasProdutoAplicado.fromBula(
+                                  getIt<GlobalConfigVars>().bulas[index]),
+                              getIt<GlobalConfigVars>().bulas[index]);
+                          Navigator.of(context).pop();
+                        },
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  getIt<GlobalConfigVars>()
+                                      .bulas[index]
+                                      .nomeProduto!,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                            )))),
               ),
             ),
             SizedBox(
