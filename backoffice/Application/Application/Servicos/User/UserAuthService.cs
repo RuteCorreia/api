@@ -256,7 +256,7 @@ public class UserAuthService : IUserAuthService
                 var identityUserRoles = await _userManager.GetRolesAsync(identityUser);
                 if (identityUser.Email != request.Email)
                 {                    
-                    var changeEmailToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Email, true);
+                    var changeEmailToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, request.Email, true);
                     var changeEmailResult = await _userManager.ChangeEmailAsync(identityUser, request.Email, changeEmailToken);
                     if (!changeEmailResult.Succeeded)
                     {
@@ -267,7 +267,7 @@ public class UserAuthService : IUserAuthService
 
                 if(identityUser.PhoneNumber != request.Telefone)
                 {
-                    var changePhoneToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Telefone ?? "");
+                    var changePhoneToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, request.Telefone ?? "");
                     var changePhoneResult = await _userManager.ChangePhoneNumberAsync(identityUser, request.Telefone ?? "", changePhoneToken);
                     if (!changePhoneResult.Succeeded)
                     {
