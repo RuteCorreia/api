@@ -149,7 +149,7 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                         const CustomText(text: 'Rg'),
                         const SizedBox(height: 14),
                         CustomTextField(
-                          textInputType: TextInputType.number,
+                          textInputType: TextInputType.text,
                           textEditingController: _rgController,
                           maxLength: 11,
                           onChanged: (String value) {},
