@@ -567,6 +567,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       const TextInputType.numberWithOptions(decimal: false),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatterTho()
                   ],
                   decoration: const InputDecoration(
                       hintText: "Digite aqui",
@@ -599,6 +600,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                       const TextInputType.numberWithOptions(decimal: false),
                   inputFormatters: <TextInputFormatter>[
                     FilteringTextInputFormatter.digitsOnly,
+                    CustomNumberFormatterTho()
                   ],
                   decoration: const InputDecoration(
                       hintText: "Digite aqui",
@@ -705,5 +707,31 @@ class CustomComboBox extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class CustomNumberFormatterTho extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    if (newValue.text.isEmpty) {
+      return newValue.copyWith(text: '');
+    }
+
+    final number = int.tryParse(newValue.text.replaceAll('.', ''));
+
+    if (number != null) {
+      final formattedText = number.toString().replaceAllMapped(
+            RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+            (Match match) => '${match[1]}.',
+          );
+
+      return newValue.copyWith(
+        text: formattedText,
+        selection: TextSelection.collapsed(offset: formattedText.length),
+      );
+    }
+
+    return oldValue;
   }
 }
