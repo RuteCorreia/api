@@ -269,7 +269,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           width: 250,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -280,14 +280,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Padding(
-                            padding: const pw.EdgeInsets.only(left: 10, top: 5),
+                            padding: const pw.EdgeInsets.only(left: 5, top: 2),
                             child: pw.Text(
                                 'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
+                                maxLines: 2,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               top: pw.BorderSide(
