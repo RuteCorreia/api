@@ -1,0 +1,121 @@
+import 'package:flutter/material.dart';
+import 'package:flytec/core/infrastructure/database/database_instance.dart';
+import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_firefighting_database_instance.dart';
+import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
+import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
+import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
+import 'package:flytec/features/fire_fighting/models/firefIghting.dart';
+import 'package:flytec/features/fire_fighting/models/local_firefighting.dart';
+import 'package:flytec/features/fire_fighting/models/pista_firefighting.dart';
+
+class FirefightingController extends ChangeNotifier {
+  final DatabaseInstance _databaseInstance =
+      RelatorioFirefightingDatabaseInstance.instance;
+  VoidCallback? _updateView;
+  SQLDatabaseProvider get _sqlDatabaseProvider =>
+      SQLDatabaseProvider(_databaseInstance);
+  FirefightingController({required VoidCallback? updateView})
+      : _updateView = updateView;
+  Future<Map<String, dynamic>?> getElementById(int id, String table) async {
+    return await _sqlDatabaseProvider.obtainElementTableById(table, id);
+  }
+
+  List<Firefighting>? _listaFirefighting = [];
+
+  List<Firefighting>? get listaFirefighting => _listaFirefighting;
+
+  VoidCallback? get updateView => _updateView;
+
+  void setUpdateUpdateView(VoidCallback updateView) {
+    _updateView = updateView;
+    notifyListeners();
+  }
+
+  Future<void> obtainReportsFirefightings() async {
+    List<Firefighting> firefightingListResult = [];
+    final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
+    final refUsuario =
+        '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+    final reports =
+        await _sqlDatabaseProvider.obtainTableElementsList("Firefighting");
+    final listFirefighting = reports
+        .map((e) => Firefighting.fromJson(e))
+        .toList()
+        .where((element) => element.refId == refUsuario)
+        .toList();
+    for (int i = 0; i < listFirefighting.length; i++) {
+      final firefighting = listFirefighting[i];
+      final idNew = '${idUsuario}_${firefighting.id}';
+      firefighting.refId = idNew;
+      final getPistaFirefightingDb =
+          await _sqlDatabaseProvider.obtainElementTableById(
+              "PistaFirefighting", firefighting.idPistaFirefighting);
+      PistaFirefighting pista =
+          PistaFirefighting.fromJson(getPistaFirefightingDb!);
+      firefighting.pista = pista;
+
+      final getLocalIncendioDb =
+          await _sqlDatabaseProvider.obtainElementTableById(
+              "LocalFirefighting", firefighting.idLocalFirefighting);
+      LocalFirefighting localIncendio =
+          LocalFirefighting.fromJson(getLocalIncendioDb!);
+      firefighting.localIncendio = localIncendio;
+
+      final getDecolagemPousoFirefightingListDb = await _sqlDatabaseProvider
+          .obtainTableElementsList("DecolagemPousoFirefighting");
+
+      final listDecolagemPousoFirefightingListDb =
+          getDecolagemPousoFirefightingListDb
+              .map((e) => DecolagemPousoFirefighting.fromJson(e))
+              .toList();
+
+      final selectedListDecolagemPousoFirefightingList =
+          listDecolagemPousoFirefightingListDb
+              .where((element) => element.idFirefighting == firefighting.id)
+              .toList();
+
+      firefighting.decolagemPousoFirefightingList =
+          selectedListDecolagemPousoFirefightingList;
+
+      final getCoordenadorBaseOperacionalFirefightingDb =
+          await _sqlDatabaseProvider.obtainElementTableById(
+              "CoordenadorBaseOperacionalFirefighting",
+              firefighting.idCoordenadorBaseOperacional);
+      CoordenadorBaseOperacional coordenadorBaseOperacional =
+          CoordenadorBaseOperacional.fromJson(
+              getCoordenadorBaseOperacionalFirefightingDb!);
+      firefighting.coordenadorBaseOperacional = coordenadorBaseOperacional;
+
+      final getComandanteOcorrenciaFirefightingFirefightingDb =
+          await _sqlDatabaseProvider.obtainElementTableById(
+              "ComandanteOcorrenciaFirefighting",
+              firefighting.idComandanteOcorrencia);
+      ComandanteOcorrencia comandanteOcorrenciaFirefighting =
+          ComandanteOcorrencia.fromJson(
+              getComandanteOcorrenciaFirefightingFirefightingDb!);
+      firefighting.comandanteOcorrencia = comandanteOcorrenciaFirefighting;
+
+      firefightingListResult.add(firefighting);
+    }
+
+    _listaFirefighting = firefightingListResult;
+    _updateView!();
+    notifyListeners();
+  }
+
+  Future<int?> createElementInTable(
+      Map<String, dynamic> data, String table) async {
+    int? id = await _sqlDatabaseProvider.insert(data, table);
+    await obtainReportsFirefightings();
+    return id;
+  }
+
+  Future<void> updateElementInTable(
+      int id, Map<String, dynamic> data, String table) async {
+    await _sqlDatabaseProvider.update(data, table, id.toString());
+    await obtainReportsFirefightings();
+  }
+}
