@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -27,10 +25,9 @@ class _ContrantePageState extends State<ContrantePage> {
 
   Aplicacao? get _aplicacao =>
       widget._reportAplicationController?.aplicacaoSelected;
-  
+
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (getIt<GlobalConfigVars>().contratanteCombateIncendio != null) {
@@ -125,7 +122,6 @@ class _ContrantePageState extends State<ContrantePage> {
                   itemBuilder: (ctx, index) {
                     return InkWell(
                       onTap: () {
-                        log('--> ${getIt<GlobalConfigVars>().clientes[index].toJson()}');
                         _selectedContratante = Contratante.fromCliente(
                             getIt<GlobalConfigVars>().clientes[index]);
                         setState(() {});
@@ -151,9 +147,8 @@ class _ContrantePageState extends State<ContrantePage> {
                       Util.toastAlerta("Selecione o cliente");
                       return;
                     }
-                   
+
                     try {
-                      
                       await _contratanteAction();
                       widget._reportAplicationController?.updateView!();
                       // ignore: use_build_context_synchronously

@@ -257,7 +257,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'I.E/R.G: ${aplicacao.contratante?.inscricaoEstadual != '0' ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
+                                      'I.E/R.G: ${aplicacao.contratante!.inscricaoEstadual!.isNotEmpty ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
