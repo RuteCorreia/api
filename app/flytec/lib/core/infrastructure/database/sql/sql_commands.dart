@@ -193,6 +193,7 @@ CREATE TABLE DecolagemPousoFirefighting (
     horarioPouso INTEGER,
     horimetroDecolagem TEXT,
     horimetroPouso TEXT,
+    firefightingId INTEGER,
     FOREIGN KEY (firefightingId) REFERENCES Firefighting(id)
 )
 ''';
@@ -203,7 +204,7 @@ CREATE TABLE CoordenadorBaseOperacionalFirefighting (
     nome TEXT,
     postoGraduacao TEXT,
     re TEXT,
-    assinatura TEXT,
+    assinatura TEXT
 )
 ''';
   static String createComandanteOcorrenciaFirefightingTable = '''
@@ -212,7 +213,7 @@ CREATE TABLE ComandanteOcorrenciaFirefighting (
     nome TEXT,
     postoGraduacao TEXT,
     re TEXT,
-    assinatura TEXT,
+    assinatura TEXT
 )
 ''';
 }

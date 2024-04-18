@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/infrastructure/database/database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/database_instances/relatorio_firefighting_database_instance.dart';
 import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
@@ -14,23 +16,17 @@ import 'package:flytec/features/fire_fighting/models/pista_firefighting.dart';
 class FirefightingController extends ChangeNotifier {
   final DatabaseInstance _databaseInstance =
       RelatorioFirefightingDatabaseInstance.instance;
-  VoidCallback? _updateView;
   SQLDatabaseProvider get _sqlDatabaseProvider =>
       SQLDatabaseProvider(_databaseInstance);
-  FirefightingController({required VoidCallback? updateView})
-      : _updateView = updateView;
+
   Future<Map<String, dynamic>?> getElementById(int id, String table) async {
     return await _sqlDatabaseProvider.obtainElementTableById(table, id);
   }
 
-  List<Firefighting>? _listaFirefighting = [];
-
-  List<Firefighting>? get listaFirefighting => _listaFirefighting;
-
-  VoidCallback? get updateView => _updateView;
+  final ValueNotifier<List<Firefighting>?> firefightingList =
+      ValueNotifier<List<Firefighting>?>([]);
 
   void setUpdateUpdateView(VoidCallback updateView) {
-    _updateView = updateView;
     notifyListeners();
   }
 
@@ -100,9 +96,7 @@ class FirefightingController extends ChangeNotifier {
 
       firefightingListResult.add(firefighting);
     }
-
-    _listaFirefighting = firefightingListResult;
-    _updateView!();
+    firefightingList.value = firefightingListResult;
     notifyListeners();
   }
 
@@ -118,4 +112,12 @@ class FirefightingController extends ChangeNotifier {
     await _sqlDatabaseProvider.update(data, table, id.toString());
     await obtainReportsFirefightings();
   }
+
+  int obtainQuantityReportsByState(DashBoardState state) {
+    return firefightingList.value!
+        .where((element) => element.state == state)
+        .toList()
+        .length;
+  }
+
 }

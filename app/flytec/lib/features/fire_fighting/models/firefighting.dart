@@ -1,3 +1,4 @@
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
 import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
@@ -30,6 +31,7 @@ class Firefighting {
   CoordenadorBaseOperacional? coordenadorBaseOperacional;
   int? idComandanteOcorrencia;
   ComandanteOcorrencia? comandanteOcorrencia;
+  DashBoardState? state;
 
   Firefighting(
       {this.refId,
@@ -39,6 +41,7 @@ class Firefighting {
       this.uf,
       this.cidade,
       this.data,
+      this.state,
       this.horimetroAcionamento,
       this.pista,
       this.idPistaFirefighting,
@@ -67,6 +70,7 @@ class Firefighting {
         uf: json['uf'] ?? '',
         cidade: json['cidade'] ?? '',
         data: json['data'] ?? 0,
+        state: json['state'] ?? DashBoardState.Incompleto,
         horimetroAcionamento: json['horimetroAcionamento'] ?? '',
         idPistaFirefighting: json['pista_id'] ?? 0,
         idLocalFirefighting: json['localIncendio_id'] ?? 0,

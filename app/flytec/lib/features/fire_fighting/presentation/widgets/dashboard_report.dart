@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 
-import '../pages/home_firefighting.dart';
 
 class DashBoardReport extends StatelessWidget {
   const DashBoardReport(
