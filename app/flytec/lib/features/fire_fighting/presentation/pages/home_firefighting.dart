@@ -5,6 +5,7 @@ import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
 import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/presentation/components/firefighting_report_card.dart';
 import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_step_one.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -89,6 +90,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
     super.initState();
     _initializationFirefightingReports();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -339,7 +341,10 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                       itemCount: value.length,
                       reverse: true,
                       itemBuilder: (context, index) {
-                        return Container();
+                        return FirefightingReportCard(
+                            firefightingController: _firefightingController,
+                            firefightingList: value,
+                            index: index);
                       })
                 ],
               ),

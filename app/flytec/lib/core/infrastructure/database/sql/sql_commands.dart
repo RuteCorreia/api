@@ -165,6 +165,7 @@ CREATE TABLE Firefighting (
     totalAguaUtilizadaOperacao TEXT,
     coordenadorBaseOperacional_id INTEGER,
     comandanteOcorrencia_id INTEGER,
+    cliente TEXT,
     refId TEXT
 )
 ''';

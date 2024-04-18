@@ -9,6 +9,7 @@ class Firefighting {
   String? refId;
   int? id;
   int? numeroAviso;
+  String? cliente;
   String? prefixoAeronave;
   String? uf;
   String? cidade;
@@ -38,6 +39,7 @@ class Firefighting {
   Firefighting(
       {this.refId,
       this.id,
+      this.cliente,
       this.numeroAviso,
       this.prefixoAeronave,
       this.uf,
@@ -81,6 +83,7 @@ class Firefighting {
     return Firefighting(
         refId: json['refId'] ?? '',
         id: json['id'] ?? 0,
+        cliente: json['cliente'] ?? '',
         numeroAviso: json['numeroAviso'] ?? 0,
         prefixoAeronave: json['prefixoAeronave'] ?? '',
         uf: json['uf'] ?? '',

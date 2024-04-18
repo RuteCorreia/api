@@ -4,7 +4,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flytec/core/utils/pdf_generator.dart';
 
-class CreateFireflightingReportService implements PdfGenerator {
+class CreateFirefightingReportService implements PdfGenerator {
   @override
   Future generatePdf({parameters}) async {
     final pdf = pw.Document();
