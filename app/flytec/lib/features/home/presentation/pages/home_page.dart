@@ -461,9 +461,14 @@ class _HomePagaState extends State<HomePaga> {
                     },
                     text: "Minhas Atividades",
                   ),
-                  if (getIt<GlobalConfigVars>().userPayload.role == "Piloto" ||
-                      getIt<GlobalConfigVars>().userPayload.role ==
-                          "Executor") ...[
+                  if (getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Executor")) ...[
                     const SizedBox(height: 10),
                     CustomActionButton(
                       imageUrl: "assets/images/edit_icon.svg",

@@ -7,7 +7,6 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
-
 class AddFireFightingStepOne extends StatefulWidget {
   const AddFireFightingStepOne({super.key});
 
@@ -17,7 +16,7 @@ class AddFireFightingStepOne extends StatefulWidget {
 
 class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
   void setPilotOrExecutoz() {
-    if (getIt<GlobalConfigVars>().userPayload.role == "Executor") {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor")) {
       getIt<GlobalConfigVars>().selectedExecutor =
           getIt<GlobalConfigVars>().userPayload.name!;
     } else {
@@ -56,18 +55,22 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Piloto",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Piloto"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                          ? getIt<GlobalConfigVars>().userPayload.name ?? ''
-                          : getIt<GlobalConfigVars>().selectedPilot.isEmpty
-                              ? "Selecione o piloto"
-                              : getIt<GlobalConfigVars>().selectedPilot,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto")
+                      ? getIt<GlobalConfigVars>().userPayload.name ?? ''
+                      : getIt<GlobalConfigVars>().selectedPilot.isEmpty
+                          ? "Selecione o piloto"
+                          : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -100,18 +103,22 @@ await showDialog(
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Executor",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Executor"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Executor"
-                          ? getIt<GlobalConfigVars>().userPayload.name!
-                          : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
-                              ? "Selecione o executor"
-                              : getIt<GlobalConfigVars>().selectedExecutor,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Executor")
+                      ? getIt<GlobalConfigVars>().userPayload.name!
+                      : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
+                          ? "Selecione o executor"
+                          : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -203,7 +210,6 @@ await showDialog(
                                 ),
                                 actions: const <Widget>[],
                               ));
-                     
                     }
                   },
                 ),
