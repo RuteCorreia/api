@@ -148,6 +148,8 @@ CREATE TABLE Firefighting (
     numeroAviso INTEGER,
     prefixoAeronave TEXT,
     state INTEGER,
+    piloto TEXT,
+    executor TEXT,
     uf TEXT,
     cidade TEXT,
     data INTEGER,
@@ -162,7 +164,8 @@ CREATE TABLE Firefighting (
     capacidadeCargaAeronave TEXT,
     totalAguaUtilizadaOperacao TEXT,
     coordenadorBaseOperacional_id INTEGER,
-    comandanteOcorrencia_id INTEGER
+    comandanteOcorrencia_id INTEGER,
+    refId TEXT
 )
 ''';
 

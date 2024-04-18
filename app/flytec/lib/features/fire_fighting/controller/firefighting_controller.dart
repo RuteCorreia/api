@@ -23,11 +23,16 @@ class FirefightingController extends ChangeNotifier {
     return await _sqlDatabaseProvider.obtainElementTableById(table, id);
   }
 
+  Firefighting? firefightingSelected;
   final ValueNotifier<List<Firefighting>?> firefightingList =
       ValueNotifier<List<Firefighting>?>([]);
 
   void setUpdateUpdateView(VoidCallback updateView) {
     notifyListeners();
+  }
+
+  void setFirefightinhSelected(Firefighting firefighting) {
+    firefightingSelected = firefighting;
   }
 
   Future<void> obtainReportsFirefightings() async {
@@ -50,14 +55,14 @@ class FirefightingController extends ChangeNotifier {
           await _sqlDatabaseProvider.obtainElementTableById(
               "PistaFirefighting", firefighting.idPistaFirefighting);
       PistaFirefighting pista =
-          PistaFirefighting.fromJson(getPistaFirefightingDb!);
+          PistaFirefighting.fromJson(getPistaFirefightingDb);
       firefighting.pista = pista;
 
       final getLocalIncendioDb =
           await _sqlDatabaseProvider.obtainElementTableById(
               "LocalFirefighting", firefighting.idLocalFirefighting);
       LocalFirefighting localIncendio =
-          LocalFirefighting.fromJson(getLocalIncendioDb!);
+          LocalFirefighting.fromJson(getLocalIncendioDb);
       firefighting.localIncendio = localIncendio;
 
       final getDecolagemPousoFirefightingListDb = await _sqlDatabaseProvider
@@ -82,7 +87,7 @@ class FirefightingController extends ChangeNotifier {
               firefighting.idCoordenadorBaseOperacional);
       CoordenadorBaseOperacional coordenadorBaseOperacional =
           CoordenadorBaseOperacional.fromJson(
-              getCoordenadorBaseOperacionalFirefightingDb!);
+              getCoordenadorBaseOperacionalFirefightingDb);
       firefighting.coordenadorBaseOperacional = coordenadorBaseOperacional;
 
       final getComandanteOcorrenciaFirefightingFirefightingDb =
@@ -91,7 +96,7 @@ class FirefightingController extends ChangeNotifier {
               firefighting.idComandanteOcorrencia);
       ComandanteOcorrencia comandanteOcorrenciaFirefighting =
           ComandanteOcorrencia.fromJson(
-              getComandanteOcorrenciaFirefightingFirefightingDb!);
+              getComandanteOcorrenciaFirefightingFirefightingDb);
       firefighting.comandanteOcorrencia = comandanteOcorrenciaFirefighting;
 
       firefightingListResult.add(firefighting);
@@ -119,5 +124,4 @@ class FirefightingController extends ChangeNotifier {
         .toList()
         .length;
   }
-
 }

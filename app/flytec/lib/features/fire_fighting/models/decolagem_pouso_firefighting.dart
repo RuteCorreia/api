@@ -14,7 +14,9 @@ class DecolagemPousoFirefighting {
       this.horimetroDecolagem,
       this.horimetroPouso});
 
-  factory DecolagemPousoFirefighting.fromJson(Map<String, dynamic> json) {
+  factory DecolagemPousoFirefighting.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return DecolagemPousoFirefighting();
+
     return DecolagemPousoFirefighting(
         id: json['id'] ?? 0,
         horarioDecolagem: json['horarioDecolagem'] ?? 0,

@@ -1,15 +1,20 @@
+
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
-
 import 'package:flytec/features/aplications/components/components_exports.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/models/firefIghting.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
-
 class AddFireFightingStepOne extends StatefulWidget {
-  const AddFireFightingStepOne({super.key});
+  final FirefightingController? _firefightingController;
+  const AddFireFightingStepOne(
+      {required FirefightingController? firefightingController, super.key})
+      : _firefightingController = firefightingController;
 
   @override
   State<AddFireFightingStepOne> createState() => _AddFireFightingStepOneState();
@@ -67,7 +72,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                               : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -111,7 +116,7 @@ await showDialog(
                               : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -141,7 +146,7 @@ await showDialog(
               Center(
                 child: CustomButton(
                   title: "Continuar",
-                  onClick: () {
+                  onClick: () async {
                     if (getIt<GlobalConfigVars>().selectedExecutor.isEmpty) {
                       Util.toastAlerta("Selecione o executor");
                     } else if (getIt<GlobalConfigVars>()
@@ -149,6 +154,24 @@ await showDialog(
                         .isEmpty) {
                       Util.toastAlerta("Selecione o piloto");
                     } else {
+                      final refUsuario =
+                          '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+                      final firefighting = Firefighting(
+                          executor: getIt<GlobalConfigVars>().selectedExecutor,
+                          piloto: getIt<GlobalConfigVars>().selectedPilot,
+                          data: DateTime.now().millisecondsSinceEpoch,
+                          state: DashBoardState.Incompleto,
+                          refId: refUsuario);
+                      int? idFirefighting = await widget
+                          ._firefightingController!
+                          .createElementInTable(
+                              firefighting.toMap(), "Firefighting");
+                      firefighting.id = idFirefighting;
+                      firefighting.refId =
+                          '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idFirefighting';
+                      widget._firefightingController!
+                          .setFirefightinhSelected(firefighting);
+                      // ignore: use_build_context_synchronously
                       showAdaptiveDialog<String>(
                           context: context,
                           useSafeArea: true,
@@ -203,7 +226,6 @@ await showDialog(
                                 ),
                                 actions: const <Widget>[],
                               ));
-                     
                     }
                   },
                 ),

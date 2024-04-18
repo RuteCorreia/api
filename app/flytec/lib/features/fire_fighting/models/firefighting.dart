@@ -32,6 +32,8 @@ class Firefighting {
   int? idComandanteOcorrencia;
   ComandanteOcorrencia? comandanteOcorrencia;
   DashBoardState? state;
+  String? piloto;
+  String? executor;
 
   Firefighting(
       {this.refId,
@@ -59,9 +61,23 @@ class Firefighting {
       this.idCoordenadorBaseOperacional,
       this.coordenadorBaseOperacional,
       this.idComandanteOcorrencia,
+      this.piloto,
+      this.executor,
       this.comandanteOcorrencia});
 
-  factory Firefighting.fromJson(Map<String, dynamic> json) {
+  Map<String, dynamic> toMap() {
+    return {
+      'piloto': piloto,
+      'executor': executor,
+      'state': state?.index ?? DashBoardState.Incompleto.index,
+      'data': data,
+      'refId': refId
+    };
+  }
+
+  factory Firefighting.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Firefighting();
+
     return Firefighting(
         refId: json['refId'] ?? '',
         id: json['id'] ?? 0,
@@ -69,8 +85,12 @@ class Firefighting {
         prefixoAeronave: json['prefixoAeronave'] ?? '',
         uf: json['uf'] ?? '',
         cidade: json['cidade'] ?? '',
+        piloto: json['piloto'] ?? '',
+        executor: json['executor'] ?? '',
         data: json['data'] ?? 0,
-        state: json['state'] ?? DashBoardState.Incompleto,
+        state: DashBoardState.values.firstWhere(
+            (state) => state.index == json['state'],
+            orElse: () => DashBoardState.Incompleto),
         horimetroAcionamento: json['horimetroAcionamento'] ?? '',
         idPistaFirefighting: json['pista_id'] ?? 0,
         idLocalFirefighting: json['localIncendio_id'] ?? 0,

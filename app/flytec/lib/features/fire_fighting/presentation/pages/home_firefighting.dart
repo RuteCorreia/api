@@ -5,6 +5,7 @@ import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
 import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_step_one.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -348,7 +349,10 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          context.push("/combateIncendioPasso1");
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return AddFireFightingStepOne(
+                firefightingController: _firefightingController);
+          }));
         },
         child: const Icon(
           Icons.add,

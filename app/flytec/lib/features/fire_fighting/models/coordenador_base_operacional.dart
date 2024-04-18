@@ -6,9 +6,11 @@ class CoordenadorBaseOperacional {
   final String? assinatura;
 
   CoordenadorBaseOperacional(
-     { this.nome, this.id, this.postoGraduacao, this.re, this.assinatura});
+      {this.nome, this.id, this.postoGraduacao, this.re, this.assinatura});
 
-  factory CoordenadorBaseOperacional.fromJson(Map<String, dynamic> json) {
+  factory CoordenadorBaseOperacional.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return CoordenadorBaseOperacional();
+
     return CoordenadorBaseOperacional(
         nome: json['nome'] ?? '',
         id: json['id'] ?? 0,
@@ -25,5 +27,5 @@ class CoordenadorBaseOperacional {
       're': re,
       'assinatura': assinatura
     };
-  }   
+  }
 }

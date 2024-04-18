@@ -8,7 +8,9 @@ class ComandanteOcorrencia {
   ComandanteOcorrencia(
       {this.nome, this.id, this.postoGraduacao, this.re, this.assinatura});
 
-  factory ComandanteOcorrencia.fromJson(Map<String, dynamic> json) {
+  factory ComandanteOcorrencia.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return ComandanteOcorrencia();
+
     return ComandanteOcorrencia(
         nome: json['nome'] ?? '',
         id: json['id'] ?? 0,

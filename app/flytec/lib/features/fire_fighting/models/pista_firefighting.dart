@@ -16,7 +16,8 @@ class PistaFirefighting {
       this.latPista,
       this.longPista});
 
-  factory PistaFirefighting.fromJson(Map<String, dynamic> json) {
+  factory PistaFirefighting.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return PistaFirefighting();
     return PistaFirefighting(
         id: json['id'] ?? 0,
         horarioChegadaPista: json['horarioChegadaPista'] ?? 0,

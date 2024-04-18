@@ -6,7 +6,9 @@ class LocalFirefighting {
 
   LocalFirefighting({this.id, this.lat, this.long, this.referencia});
 
-  factory LocalFirefighting.fromJson(Map<String, dynamic> json) {
+  factory LocalFirefighting.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return LocalFirefighting();
+
     return LocalFirefighting(
         id: json['id'] ?? 0,
         lat: json['lat'] ?? '',
