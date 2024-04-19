@@ -21,8 +21,12 @@ class AddFireFightingStepOne extends StatefulWidget {
 }
 
 class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
-  void setPilotOrExecutoz() {
-    if (getIt<GlobalConfigVars>().userPayload.role == "Executor") {
+  void _setPilotOrExecutoz() {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor") ||
+        getIt<GlobalConfigVars>()
+            .userPayload
+            .role!
+            .contains("TecnicoExecutor")) {
       getIt<GlobalConfigVars>().selectedExecutor =
           getIt<GlobalConfigVars>().userPayload.name!;
     } else {
@@ -33,7 +37,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
 
   @override
   void initState() {
-    setPilotOrExecutoz();
+    _setPilotOrExecutoz();
     super.initState();
   }
 
@@ -61,15 +65,19 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Piloto",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Piloto"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                          ? getIt<GlobalConfigVars>().userPayload.name ?? ''
-                          : getIt<GlobalConfigVars>().selectedPilot.isEmpty
-                              ? "Selecione o piloto"
-                              : getIt<GlobalConfigVars>().selectedPilot,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto")
+                      ? getIt<GlobalConfigVars>().userPayload.name ?? ''
+                      : getIt<GlobalConfigVars>().selectedPilot.isEmpty
+                          ? "Selecione o piloto"
+                          : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
                     await showDialog(
@@ -105,15 +113,23 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Executor",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Executor"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Executor"
-                          ? getIt<GlobalConfigVars>().userPayload.name!
-                          : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
-                              ? "Selecione o executor"
-                              : getIt<GlobalConfigVars>().selectedExecutor,
+                  selectedName: getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("Executor") ||
+                          getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("TecnicoExecutor")
+                      ? getIt<GlobalConfigVars>().userPayload.name!
+                      : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
+                          ? "Selecione o executor"
+                          : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
                     await showDialog(

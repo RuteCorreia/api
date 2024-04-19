@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace Application.Application.Servicos.User;
@@ -67,6 +66,10 @@ public class UserAuthService : IUserAuthService
     public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request, string loggedUserId)
     {
         var resultMsg = new StringBuilder();
+
+        if(VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(request.Funcoes))     
+             return (false, resultMsg.Append("Não é permitido cadastrar usuário como piloto e executor.").ToString());
+
         var loggedIdentityUser = await _userManager.FindByIdAsync(loggedUserId);
         if(loggedIdentityUser is not null)
         {
@@ -155,6 +158,11 @@ public class UserAuthService : IUserAuthService
         await _usuarioCredencialRepository.AddListAsync(list);
     }
 
+    private bool VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(IEnumerable<RoleObject> funcoes)
+    {
+        return funcoes.Any(x => x.Funcao == ERole.Piloto) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
+    }
+
     private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
     {
         var claims = await GetUserClaims(identityUser, usuario);
@@ -235,6 +243,10 @@ public class UserAuthService : IUserAuthService
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
+
+        if (VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(request.Funcoes))
+            return (false, resultMsg.Clear().Append("Não é permitido colocar o usuário como piloto e executor.").ToString());
+
         var userToUpdate = await GetUserEntityByIdAsync(id);
         if (userToUpdate is not null)
         {

@@ -19,7 +19,7 @@ class UserPayloadModel {
   final String? idUsuario;
   final int? nbf;
   final int? iat;
-  final String? role;
+  final List<String?>? role;
   final int? exp;
   final String? iss;
   final String? aud;
@@ -48,7 +48,9 @@ class UserPayloadModel {
         jti: json["jti"],
         nbf: json["nbf"],
         iat: json["iat"],
-        role: json["role"] is List ? json["role"][0] : json["role"],
+        role: json["role"] is String
+            ? [json["role"].toString()]
+            : (json["role"] as List).map((e) => e.toString()).toList(),
         idUsuario: json["IdUsuario"],
         exp: json["exp"],
         iss: json["iss"],

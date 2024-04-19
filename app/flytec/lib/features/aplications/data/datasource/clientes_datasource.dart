@@ -33,7 +33,7 @@ class ClienteDataSourceImpl implements IClientDataSource {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        "idCliente": addClientParams?.idTipoCliente.toString(),
+        "idCliente": 0.toString(),
         "nomeCliente": addClientParams!.nome.toString(),
         "idTipoCliente": 0.toString(),
         "cpf": addClientParams.cpf.toString(),
