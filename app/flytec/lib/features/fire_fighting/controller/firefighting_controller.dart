@@ -9,7 +9,7 @@ import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
 import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
-import 'package:flytec/features/fire_fighting/models/firefIghting.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/local_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/pista_firefighting.dart';
 

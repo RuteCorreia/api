@@ -6,7 +6,7 @@ import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
-import 'package:flytec/features/fire_fighting/models/firefIghting.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 

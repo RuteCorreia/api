@@ -1,10 +1,15 @@
 import 'package:flutter/services.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:intl/intl.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flytec/core/utils/pdf_generator.dart';
 
 class CreateFirefightingReportService implements PdfGenerator {
+  final Firefighting _firefighting;
+  CreateFirefightingReportService(this._firefighting);
+
   @override
   Future generatePdf({parameters}) async {
     final pdf = pw.Document();
@@ -42,7 +47,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                               children: [
                                 pw.SizedBox(height: 5),
                                 pw.Container(
-                                    padding: pw.EdgeInsets.only(right: 10.0),
+                                    padding:
+                                        const pw.EdgeInsets.only(right: 10.0),
                                     height: 25,
                                     width: 420,
                                     child: pw.Text(
@@ -110,7 +116,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         style: const pw.TextStyle(
                                           fontSize: 12,
                                         )),
-                                    pw.Text(''),
+                                    pw.Text(
+                                        _firefighting.numeroAviso?.toString() ??
+                                            ''),
                                   ])),
                               pw.Container(
                                   height: 25,
@@ -124,7 +132,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         style: const pw.TextStyle(
                                           fontSize: 8,
                                         )),
-                                    pw.Text(''),
+                                    pw.Text(
+                                        _firefighting.horimetroAcionamento ??
+                                            ''),
                                   ])),
                             ]),
                             pw.Container(
@@ -134,14 +144,11 @@ class CreateFirefightingReportService implements PdfGenerator {
                                     border: pw.Border(
                                         right: pw.BorderSide(width: 1.5),
                                         bottom: pw.BorderSide(width: 1.5))),
-                                child: pw.Column(children: [
-                                  pw.Text('Pista de Operação',
-                                      textAlign: pw.TextAlign.center,
-                                      style: const pw.TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                  pw.Text(''),
-                                ])),
+                                child: pw.Text('Pista de Operação',
+                                    textAlign: pw.TextAlign.center,
+                                    style: const pw.TextStyle(
+                                      fontSize: 12,
+                                    ))),
                             pw.Row(children: [
                               pw.Container(
                                   height: 25,
@@ -156,7 +163,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         style: const pw.TextStyle(
                                           fontSize: 12,
                                         )),
-                                    pw.Text(''),
+                                    pw.Text(
+                                        _firefighting.pista?.codigoICAOPista ??
+                                            ''),
                                   ])),
                               pw.Container(
                                   height: 25,
@@ -171,7 +180,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         style: const pw.TextStyle(
                                           fontSize: 12,
                                         )),
-                                    pw.Text(''),
+                                    pw.Text(
+                                        _firefighting.pista?.nomePista ?? ''),
                                   ])),
                               pw.Container(
                                   height: 25,
@@ -182,7 +192,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         style: const pw.TextStyle(
                                           fontSize: 12,
                                         )),
-                                    pw.Text(''),
+                                    pw.Text(
+                                        'Latitude: ${_firefighting.pista?.latPista ?? ''}\nLongitude: ${_firefighting.pista?.longPista ?? ''}'),
                                   ])),
                             ])
                           ])),
@@ -195,14 +206,11 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 decoration: const pw.BoxDecoration(
                                     border: pw.Border(
                                         bottom: pw.BorderSide(width: 1.5))),
-                                child: pw.Column(children: [
-                                  pw.Text('Local do Incêndio',
-                                      textAlign: pw.TextAlign.center,
-                                      style: const pw.TextStyle(
-                                        fontSize: 12,
-                                      )),
-                                  pw.Text(''),
-                                ])),
+                                child: pw.Text('Local do Incêndio',
+                                    textAlign: pw.TextAlign.center,
+                                    style: const pw.TextStyle(
+                                      fontSize: 12,
+                                    ))),
                             pw.Container(
                                 height: 50,
                                 child: pw.Row(children: [
@@ -221,10 +229,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                                                 style: const pw.TextStyle(
                                                   fontSize: 12,
                                                 )),
-                                            pw.Text(
-                                              '',
-                                              textAlign: pw.TextAlign.center,
-                                            ),
+                                            pw.Text(_firefighting.localIncendio
+                                                    ?.referencia ??
+                                                ''),
                                           ])),
                                   pw.Container(
                                       width: 143.5,
@@ -238,9 +245,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                                                   fontSize: 12,
                                                 )),
                                             pw.Text(
-                                              '',
-                                              textAlign: pw.TextAlign.center,
-                                            ),
+                                                'Latitude: ${_firefighting.localIncendio?.lat ?? ''}\nLongitude: ${_firefighting.localIncendio?.long ?? ''}'),
                                           ])),
                                 ]))
                           ])),
@@ -261,7 +266,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 style: const pw.TextStyle(
                                   fontSize: 12,
                                 )),
-                            pw.Text(''),
+                            pw.Text(_firefighting.pista != null &&
+                                    _firefighting.pista!.horarioChegadaPista !=
+                                        null
+                                ? DateFormat('dd/MM/yyyy')
+                                    .format(DateTime.fromMillisecondsSinceEpoch(
+                                        _firefighting
+                                            .pista!.horarioChegadaPista!))
+                                    .toString()
+                                : ''),
                           ])),
                       pw.Container(
                           height: 25,
@@ -275,7 +288,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 style: const pw.TextStyle(
                                   fontSize: 12,
                                 )),
-                            pw.Text(''),
+                            pw.Text(
+                                _firefighting.pista?.horimetroChegadaPista ??
+                                    ''),
                           ])),
                       pw.Container(
                           height: 25,
@@ -286,7 +301,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 style: const pw.TextStyle(
                                   fontSize: 12,
                                 )),
-                            pw.Text(''),
+                            pw.Text(_firefighting.prefixoAeronave ?? ''),
                           ])),
                     ])),
                 pw.Divider(height: 1, thickness: 1.5),
@@ -341,11 +356,13 @@ class CreateFirefightingReportService implements PdfGenerator {
                                     decoration: const pw.BoxDecoration(
                                         border: pw.Border(
                                             right: pw.BorderSide(width: 1.5))),
-                                    child: pw.Text('${index + 1} ',
+                                    child: pw.Text(
+                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioDecolagem != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioDecolagem!)).toString() : '' : ''}',
                                         textAlign: pw.TextAlign.center)),
                                 pw.SizedBox(
                                     width: 143.5,
-                                    child: pw.Text('',
+                                    child: pw.Text(
+                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroDecolagem : ''}',
                                         textAlign: pw.TextAlign.center)),
                               ])),
                           itemCount: 20,
@@ -400,11 +417,13 @@ class CreateFirefightingReportService implements PdfGenerator {
                                     decoration: const pw.BoxDecoration(
                                         border: pw.Border(
                                             right: pw.BorderSide(width: 1.5))),
-                                    child: pw.Text('${index + 1}',
+                                    child: pw.Text(
+                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioPouso != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioPouso!)).toString() : '' : ''}',
                                         textAlign: pw.TextAlign.center)),
                                 pw.SizedBox(
                                     width: 143.5,
-                                    child: pw.Text('',
+                                    child: pw.Text(
+                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroPouso : ''}',
                                         textAlign: pw.TextAlign.center)),
                               ])),
                           itemCount: 20,
@@ -429,13 +448,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Container(
                               width: 191.3,
                               height: 20,
-                              child: pw.Text('Horário de Término:',
+                              child: pw.Text(
+                                  'Horário de Término: ${_firefighting.horarioFinalOperacao}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             ),
                             pw.Container(
                               width: 191.3,
                               height: 20,
-                              child: pw.Text('Horário de Corte:',
+                              child: pw.Text(
+                                  'Horário de Corte: ${_firefighting.horarioCorte}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             )
                           ])),
@@ -448,13 +469,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Container(
                               width: 191.3,
                               height: 20,
-                              child: pw.Text('Horímetro de Término:',
+                              child: pw.Text(
+                                  'Horímetro de Término: ${_firefighting.horimetroFinalOperacao}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             ),
                             pw.Container(
                               width: 191.3,
                               height: 20,
-                              child: pw.Text('Horímetro de Corte:',
+                              child: pw.Text(
+                                  'Horímetro de Corte:  ${_firefighting.horimetroCorte}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             )
                           ])),
@@ -463,7 +486,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                         decoration: const pw.BoxDecoration(
                             border:
                                 pw.Border(right: pw.BorderSide(width: 1.5))),
-                        child: pw.Text('N de lançamentos:',
+                        child: pw.Text(
+                            'N de lançamentos: ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty ? _firefighting.decolagemPousoFirefightingList!.length : '0'}',
                             style: const pw.TextStyle(fontSize: 10)),
                       )
                     ])),
@@ -474,7 +498,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                       pw.Container(
                         width: 287,
                         height: 20,
-                        child: pw.Text('Capacidade de Carga da Aeronave:',
+                        child: pw.Text(
+                            'Capacidade de Carga da Aeronave: ${_firefighting.capacidadeCargaAeronave}',
                             style: const pw.TextStyle(fontSize: 10)),
                         decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -484,7 +509,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                       pw.Container(
                           width: 287,
                           height: 20,
-                          child: pw.Text('Capacidade de Carga da Aeronave:',
+                          child: pw.Text(
+                              'Total de água utilizada (capacidade x n° lançamentos): ${(_firefighting.totalAguaUtilizadaOperacao != null ? double.tryParse(_firefighting.totalAguaUtilizadaOperacao!) : 0) ?? 0 * (_firefighting.decolagemPousoFirefightingList != null ? _firefighting.decolagemPousoFirefightingList!.length : 0)}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -520,7 +546,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                       pw.Container(
                         width: 287,
                         height: 20,
-                        child: pw.Text('Nome:',
+                        child: pw.Text(
+                            'Nome: ${_firefighting.coordenadorBaseOperacional?.nome ?? ''}',
                             style: const pw.TextStyle(fontSize: 10)),
                         decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -530,7 +557,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                       pw.Container(
                           width: 287,
                           height: 20,
-                          child: pw.Text('Nome:',
+                          child: pw.Text(
+                              'Nome: ${_firefighting.comandanteOcorrencia?.nome ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -544,7 +572,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                         pw.Container(
                           width: 143.5,
                           height: 20,
-                          child: pw.Text('Posto/Grad:',
+                          child: pw.Text(
+                              'Posto/Grad: ${_firefighting.coordenadorBaseOperacional?.postoGraduacao ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -554,7 +583,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                         pw.Container(
                           width: 143.5,
                           height: 20,
-                          child: pw.Text('RE:',
+                          child: pw.Text(
+                              'RE: ${_firefighting.coordenadorBaseOperacional?.re ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -566,7 +596,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                         pw.Container(
                           width: 143.5,
                           height: 20,
-                          child: pw.Text('Posto/Grad:',
+                          child: pw.Text(
+                              'Posto/Grad: ${_firefighting.comandanteOcorrencia?.postoGraduacao ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -576,7 +607,8 @@ class CreateFirefightingReportService implements PdfGenerator {
                         pw.Container(
                           width: 143.5,
                           height: 20,
-                          child: pw.Text('RE:',
+                          child: pw.Text(
+                              'RE: ${_firefighting.comandanteOcorrencia?.re ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -623,7 +655,24 @@ class CreateFirefightingReportService implements PdfGenerator {
                               children: [
                                 pw.Text(" "),
                                 pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Executor',
+                                pw.Text('Eng Agrônomo',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                                pw.Text('CREA ',
+                                    textAlign: pw.TextAlign.left,
+                                    style: const pw.TextStyle(fontSize: 10)),
+                              ],
+                            ),
+                          ),
+                          pw.Container(
+                            width: 191.3,
+                            child: pw.Column(
+                              mainAxisAlignment: pw.MainAxisAlignment.center,
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                pw.Text(" "),
+                                pw.Divider(height: 0.5, thickness: 1.0),
+                                pw.Text('Técnico Executor',
                                     textAlign: pw.TextAlign.left,
                                     style: const pw.TextStyle(fontSize: 10)),
                                 pw.Text('CFTA ',
@@ -640,27 +689,10 @@ class CreateFirefightingReportService implements PdfGenerator {
                               children: [
                                 pw.Text(" "),
                                 pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Executor',
+                                pw.Text('Piloto',
                                     textAlign: pw.TextAlign.left,
                                     style: const pw.TextStyle(fontSize: 10)),
-                                pw.Text('CFTA ',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ],
-                            ),
-                          ),
-                          pw.Container(
-                            width: 191.3,
-                            child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text(" "),
-                                pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Executor',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                                pw.Text('CFTA ',
+                                pw.Text('CANAC ',
                                     textAlign: pw.TextAlign.left,
                                     style: const pw.TextStyle(fontSize: 10)),
                               ],

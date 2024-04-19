@@ -8,7 +8,7 @@ import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
-import 'package:flytec/features/fire_fighting/models/firefIghting.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_second_step.dart';
 import 'package:flytec/features/fire_fighting/services/create_fireflighting_report_service.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
@@ -119,7 +119,8 @@ class FirefightingReportCard extends StatelessWidget {
                 leftIcon: "assets/images/cancel.svg",
                 showRightcon: false,
                 onClick: () async {
-                  PdfGenerator pdfGenerator = CreateFirefightingReportService();
+                  PdfGenerator pdfGenerator = CreateFirefightingReportService(
+                      _firefightingList[_index]);
                   final document = await pdfGenerator.generatePdf();
                   final documentBytes =
                       await pdfGenerator.saveDocument(document: document);
