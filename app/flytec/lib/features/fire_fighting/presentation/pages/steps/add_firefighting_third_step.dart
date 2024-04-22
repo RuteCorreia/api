@@ -8,7 +8,7 @@ import 'package:flytec/features/fire_fighting/controller/firefighting_controller
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/presentation/components/decolagem_pouso_selected.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
 
@@ -69,7 +69,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
       final decolagemPousoToJson = decolagemPouso.toJson();
       decolagemPousoToJson.addAll({'firefightingId': _firefighting?.id});
       await widget._firefightingController!.createElementInTable(
-          decolagemPouso.toJson(), 'DecolagemPousoFirefighting');
+          decolagemPousoToJson, 'DecolagemPousoFirefighting');
 
       widget._firefightingController?.setFirefightingSelected(_firefighting!);
       return;
@@ -530,7 +530,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                   onClick: () async {
                     await _actionFirefighting();
                     // ignore: use_build_context_synchronously
-                    context.push("/combateIncendioPasso4");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AddFireFightingFourthtep(
+                                  firefightingController:
+                                      widget._firefightingController,
+                                )));
                   },
                 ),
               ),

@@ -57,7 +57,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
     firefighting.id = idFirefighting;
     firefighting.refId =
         '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idFirefighting';
-    widget._firefightingController!.setFirefightingSelected(firefighting);
+    widget._firefightingController?.setFirefightingSelected(firefighting);
     await widget._firefightingController?.obtainReportsFirefightings();
   }
 

@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/core/widgets/combo_box.dart';
 import 'package:flytec/features/auth/presentation/widgets/custom_login_button.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
-import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
 import 'package:go_router/go_router.dart';
 
 class DecolagemPousoSelected extends StatefulWidget {
