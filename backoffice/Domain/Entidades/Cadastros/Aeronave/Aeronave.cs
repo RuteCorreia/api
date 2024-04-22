@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entidades.Cadastros.Aeronave;
 
@@ -13,5 +12,6 @@ public class Aeronave
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }
     public bool Removido { get; set; }
+    public ETipoAeronave Tipo { get; set; }
    
 }
