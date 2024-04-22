@@ -55,6 +55,7 @@ class FirefightingController extends ChangeNotifier {
               "PistaFirefighting", firefighting.idPistaFirefighting);
       PistaFirefighting pista =
           PistaFirefighting.fromJson(getPistaFirefightingDb);
+      pista.id = firefighting.idPistaFirefighting;
       firefighting.pista = pista;
 
       final getLocalIncendioDb =
@@ -62,6 +63,7 @@ class FirefightingController extends ChangeNotifier {
               "LocalFirefighting", firefighting.idLocalFirefighting);
       LocalFirefighting localIncendio =
           LocalFirefighting.fromJson(getLocalIncendioDb);
+      localIncendio.id = firefighting.idLocalFirefighting;
       firefighting.localIncendio = localIncendio;
 
       final getDecolagemPousoFirefightingListDb = await _sqlDatabaseProvider
@@ -87,6 +89,7 @@ class FirefightingController extends ChangeNotifier {
       CoordenadorBaseOperacional coordenadorBaseOperacional =
           CoordenadorBaseOperacional.fromJson(
               getCoordenadorBaseOperacionalFirefightingDb);
+      coordenadorBaseOperacional.id = firefighting.idCoordenadorBaseOperacional;
       firefighting.coordenadorBaseOperacional = coordenadorBaseOperacional;
 
       final getComandanteOcorrenciaFirefightingFirefightingDb =
@@ -96,6 +99,7 @@ class FirefightingController extends ChangeNotifier {
       ComandanteOcorrencia comandanteOcorrenciaFirefighting =
           ComandanteOcorrencia.fromJson(
               getComandanteOcorrenciaFirefightingFirefightingDb);
+      comandanteOcorrenciaFirefighting.id = firefighting.idComandanteOcorrencia;
       firefighting.comandanteOcorrencia = comandanteOcorrenciaFirefighting;
 
       firefightingListResult.add(firefighting);

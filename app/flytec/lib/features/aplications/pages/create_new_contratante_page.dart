@@ -760,7 +760,7 @@ class _CreateNewContratantePageState extends State<CreateNewContratantePage> {
                                 .getClients()
                                 .then((value) {
                               widget._onAddContratanteUpdateView!();
-                              ;
+                              
                               Navigator.pop(context);
                             });
                           } else {

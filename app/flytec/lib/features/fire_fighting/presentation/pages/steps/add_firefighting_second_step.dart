@@ -8,6 +8,7 @@ import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/aircraft_prefix_select.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/maps_informations_controller.dart';
+import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
@@ -78,6 +79,14 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       setState(() {
         _firefighting = widget._firefightingController.firefightingSelected;
+        if (_firefighting?.cliente != null &&
+            _firefighting!.cliente!.isNotEmpty) {
+          final cliente = getIt<GlobalConfigVars>().clientes.firstWhere(
+              (element) => element.nomeCliente == _firefighting?.cliente);
+          final contratante = Contratante.fromCliente(cliente);
+          getIt<GlobalConfigVars>().contratanteCombateIncendio = contratante;
+        }
+
         _numeroAviso =
             TextEditingController(text: _firefighting?.numeroAviso?.toString());
         _airCraftPrexix = _firefighting?.prefixoAeronave ?? '';
@@ -124,37 +133,40 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   }
 
   Future<void> _actionFirefighting() async {
-    _firefighting?.cliente =
-        getIt<GlobalConfigVars>().contratanteCombateIncendio?.nome;
-    _firefighting?.numeroAviso =
-        _numeroAviso.text.isNotEmpty ? int.tryParse(_numeroAviso.text) : 0;
-    _firefighting?.prefixoAeronave = _airCraftPrexix;
-    _firefighting?.uf = _uf;
-    _firefighting?.cidade = _cityOfUf;
-    _firefighting?.data = _dataSelecionada?.millisecondsSinceEpoch;
-    _firefighting?.horarioAcionamento =
-        _horarioAcionamento?.toDateTime().millisecondsSinceEpoch;
-    _firefighting?.horimetroAcionamento = _horimetroAcionamento.text;
-    setState(() {});
+    setState(() {
+      _firefighting?.cliente =
+          getIt<GlobalConfigVars>().contratanteCombateIncendio?.nome;
+      _firefighting?.numeroAviso =
+          _numeroAviso.text.isNotEmpty ? int.tryParse(_numeroAviso.text) : 0;
+      _firefighting?.prefixoAeronave = _airCraftPrexix;
+      _firefighting?.uf = _uf;
+      _firefighting?.cidade = _cityOfUf;
+      _firefighting?.data = _dataSelecionada?.millisecondsSinceEpoch;
+      _firefighting?.horarioAcionamento =
+          _horarioAcionamento?.toDateTime().millisecondsSinceEpoch;
+      _firefighting?.horimetroAcionamento = _horimetroAcionamento.text;
+    });
     await _updateFirefighting(_firefighting!.id!, _firefighting!);
-
-    PistaFirefighting? pista;
-    pista?.horarioChegadaPista =
-        _horarioChegadaPista?.toDateTime().millisecondsSinceEpoch;
-    pista?.horimetroChegadaPista = _horimetroChegadaPista.text;
-    pista?.codigoICAOPista = _codigoICAOPista.text;
-    pista?.nomePista = _nomePista.text;
-    pista?.latPista = _latitudeControllerPista.text;
-    pista?.longPista = _longitudeControllerPista.text;
-    setState(() {});
-
+    PistaFirefighting? pista = PistaFirefighting();
+    setState(() {
+      pista = PistaFirefighting(
+          horarioChegadaPista:
+              _horarioChegadaPista?.toDateTime().millisecondsSinceEpoch,
+          horimetroChegadaPista: _horimetroChegadaPista.text,
+          codigoICAOPista: _codigoICAOPista.text,
+          nomePista: _nomePista.text,
+          latPista: _latitudeControllerPista.text,
+          longPista: _longitudeControllerPista.text);
+    });
     await _actionPistaFireghting(pista);
 
     LocalFirefighting? localIncendio;
-    localIncendio?.lat = _latitudeControllerLocalIncendio.text;
-    localIncendio?.long = _longitudeControllerLocalIncendio.text;
-    localIncendio?.referencia = _referencia.text;
-    setState(() {});
+    setState(() {
+      localIncendio = LocalFirefighting(
+          lat: _latitudeControllerLocalIncendio.text,
+          long: _longitudeControllerLocalIncendio.text,
+          referencia: _referencia.text);
+    });
 
     await _actionLocalFirefighting(localIncendio);
   }

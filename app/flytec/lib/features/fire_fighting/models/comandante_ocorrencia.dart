@@ -1,9 +1,9 @@
 class ComandanteOcorrencia {
-  final String? nome;
-  final int? id;
-  final String? postoGraduacao;
-  final String? re;
-  final String? assinatura;
+  String? nome;
+  int? id;
+  String? postoGraduacao;
+  String? re;
+  String? assinatura;
 
   ComandanteOcorrencia(
       {this.nome, this.id, this.postoGraduacao, this.re, this.assinatura});
