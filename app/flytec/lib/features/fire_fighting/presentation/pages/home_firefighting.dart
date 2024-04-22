@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -274,6 +276,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
       body: ValueListenableBuilder(
         valueListenable: _firefightingController.firefightingList,
         builder: (context, value, child) {
+          log('--> ${value}');
           if (value == null) {
             return const Center(
               child: CircularProgressIndicator(),

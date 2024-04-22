@@ -31,25 +31,24 @@ class FirefightingController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFirefightinhSelected(Firefighting firefighting) {
+  void setFirefightingSelected(Firefighting firefighting) {
     firefightingSelected = firefighting;
+    notifyListeners();
   }
 
   Future<void> obtainReportsFirefightings() async {
     List<Firefighting> firefightingListResult = [];
-    final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
-    final refUsuario =
-        '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Firefighting");
-    final listFirefighting = reports
-        .map((e) => Firefighting.fromJson(e))
-        .toList()
-        .where((element) => element.refId == refUsuario)
-        .toList();
+    final listFirefighting =
+        reports.map((e) => Firefighting.fromJson(e)).toList().where((element) {
+      final refUsuario =
+          '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${element.id}';
+      return element.refId == refUsuario;
+    }).toList();
     for (int i = 0; i < listFirefighting.length; i++) {
       final firefighting = listFirefighting[i];
-      final idNew = '${idUsuario}_${firefighting.id}';
+      final idNew = '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${firefighting.id}';
       firefighting.refId = idNew;
       final getPistaFirefightingDb =
           await _sqlDatabaseProvider.obtainElementTableById(

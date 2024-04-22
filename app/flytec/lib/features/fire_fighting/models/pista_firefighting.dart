@@ -1,11 +1,11 @@
 class PistaFirefighting {
-  final int? id;
-  final int? horarioChegadaPista;
-  final String? horimetroChegadaPista;
-  final String? codigoICAOPista;
-  final String? nomePista;
-  final String? latPista;
-  final String? longPista;
+  int? id;
+  int? horarioChegadaPista;
+  String? horimetroChegadaPista;
+  String? codigoICAOPista;
+  String? nomePista;
+  String? latPista;
+  String? longPista;
 
   PistaFirefighting(
       {this.id,
@@ -30,13 +30,12 @@ class PistaFirefighting {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
-      'horarioChegadaPista': horarioChegadaPista,
-      'horimetroChegadaPista': horimetroChegadaPista,
-      'codigoICAOPista': codigoICAOPista,
-      'nomePista': nomePista,
-      'latPista': latPista,
-      'longPista': longPista
+      'horarioChegadaPista': horarioChegadaPista??0,
+      'horimetroChegadaPista': horimetroChegadaPista??'',
+      'codigoICAOPista': codigoICAOPista??'',
+      'nomePista': nomePista??'',
+      'latPista': latPista??'',
+      'longPista': longPista??''
     };
   }
 }

@@ -15,6 +15,7 @@ class Firefighting {
   String? cidade;
   int? data;
   String? horimetroAcionamento;
+  int? horarioAcionamento;
   PistaFirefighting? pista;
   int? idPistaFirefighting;
   LocalFirefighting? localIncendio;
@@ -47,6 +48,7 @@ class Firefighting {
       this.data,
       this.state,
       this.horimetroAcionamento,
+      this.horarioAcionamento,
       this.pista,
       this.idPistaFirefighting,
       this.localIncendio,
@@ -73,7 +75,21 @@ class Firefighting {
       'executor': executor,
       'state': state?.index ?? DashBoardState.Incompleto.index,
       'data': data,
-      'refId': refId
+      'refId': refId,
+      // 'numeroAviso': numeroAviso,
+      // 'cliente': cliente,
+      // 'prefixoAeronave': prefixoAeronave,
+      // 'uf': uf,
+      // 'cidade': cidade,
+      // 'horimetroAcionamento': horimetroAcionamento,
+      // 'horarioAcionamento': horarioAcionamento,
+      // 'observacao': observacao,
+      // 'horarioFinalOperacao': horarioFinalOperacao,
+      // 'horimetroFinalOperacao': horimetroFinalOperacao,
+      // 'horarioCorte': horarioCorte,
+      // 'horimetroCorte': horimetroCorte,
+      // 'capacidadeCargaAeronave': capacidadeCargaAeronave,
+      // 'totalAguaUtilizadaOperacao': totalAguaUtilizadaOperacao,
     };
   }
 
@@ -95,6 +111,7 @@ class Firefighting {
             (state) => state.index == json['state'],
             orElse: () => DashBoardState.Incompleto),
         horimetroAcionamento: json['horimetroAcionamento'] ?? '',
+        horarioAcionamento: json['horarioAcionamento'] ?? 0,
         idPistaFirefighting: json['pista_id'] ?? 0,
         idLocalFirefighting: json['localIncendio_id'] ?? 0,
         observacao: json['observacao'] ?? '',

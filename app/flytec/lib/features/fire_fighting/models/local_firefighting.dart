@@ -1,8 +1,8 @@
 class LocalFirefighting {
-  final int? id;
-  final String? lat;
-  final String? long;
-  final String? referencia;
+  int? id;
+  String? lat;
+  String? long;
+  String? referencia;
 
   LocalFirefighting({this.id, this.lat, this.long, this.referencia});
 
@@ -15,4 +15,7 @@ class LocalFirefighting {
         long: json['long'] ?? '',
         referencia: json['referencia'] ?? '');
   }
+
+  Map<String, dynamic> toJson() =>
+      {'lat': lat, 'long': long, 'referencia': referencia};
 }

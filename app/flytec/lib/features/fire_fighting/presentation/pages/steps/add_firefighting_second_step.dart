@@ -1,7 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -10,12 +9,19 @@ import 'package:flytec/features/aplications/components/aircraft_prefix_select.da
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/maps_informations_controller.dart';
 import 'package:flytec/features/aplications/pages/contratante_page.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:flytec/features/fire_fighting/models/local_firefighting.dart';
+import 'package:flytec/features/fire_fighting/models/pista_firefighting.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as lct;
 
 class AddFireFightingSecondStep extends StatefulWidget {
-  const AddFireFightingSecondStep({super.key});
+  final FirefightingController _firefightingController;
+  const AddFireFightingSecondStep(
+      {required FirefightingController firefightingController, super.key})
+      : _firefightingController = firefightingController;
 
   @override
   State<AddFireFightingSecondStep> createState() =>
@@ -23,17 +29,22 @@ class AddFireFightingSecondStep extends StatefulWidget {
 }
 
 class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
-  late DateTime? _dataSelecionada = DateTime.now();
-  late TimeOfDay? _time = const TimeOfDay(hour: 12, minute: 43);
-  late TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
+  Firefighting? _firefighting;
 
-  final TextEditingController _latitudeControllerPista =
+  DateTime? _dataSelecionada = DateTime.now();
+  TimeOfDay? _horarioAcionamento = const TimeOfDay(hour: 12, minute: 43);
+  TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
+  TextEditingController _numeroAviso = TextEditingController();
+  TextEditingController _horimetroAcionamento = TextEditingController();
+  TextEditingController _horimetroChegadaPista = TextEditingController();
+  TextEditingController _codigoICAOPista = TextEditingController();
+  TextEditingController _nomePista = TextEditingController();
+  TextEditingController _referencia = TextEditingController();
+  TextEditingController _latitudeControllerPista = TextEditingController();
+  TextEditingController _longitudeControllerPista = TextEditingController();
+  TextEditingController _latitudeControllerLocalIncendio =
       TextEditingController();
-  final TextEditingController _longitudeControllerPista =
-      TextEditingController();
-  final TextEditingController _latitudeControllerLocalIncendio =
-      TextEditingController();
-  final TextEditingController _longitudeControllerLocalIncendio =
+  TextEditingController _longitudeControllerLocalIncendio =
       TextEditingController();
   final MapsInformationsController _mapsInformationsController =
       MapsInformationsControllerBrazil();
@@ -41,7 +52,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
 
   String _airCraftPrexix = "";
   final List<String> _citiesNamesUfBrazil = [];
-  late String _cityOfUf = '';
+  String _cityOfUf = '';
   String _uf = 'SP';
   List<String> _statesOfBrazil = [];
   void _obtainStatesOfBrazil() {
@@ -53,8 +64,10 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
     _citiesNamesUfBrazil.clear();
     List<String> cities =
         _mapsInformationsController.obtainCitiesFromStateBrazil(uf);
-    _cityOfUf = cities.first;
-    setState(() {});
+    if (_cityOfUf.isEmpty) {
+      _cityOfUf = cities.first;
+      setState(() {});
+    }
     _citiesNamesUfBrazil.addAll(cities);
     setState(() {});
   }
@@ -63,10 +76,125 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      setState(() {
+        _firefighting = widget._firefightingController.firefightingSelected;
+        _numeroAviso =
+            TextEditingController(text: _firefighting?.numeroAviso?.toString());
+        _airCraftPrexix = _firefighting?.prefixoAeronave ?? '';
+        _uf = _firefighting!.uf != null && _firefighting!.uf!.isNotEmpty
+            ? _firefighting!.uf!
+            : 'SP';
+        _cityOfUf =
+            _firefighting!.cidade != null && _firefighting!.cidade!.isNotEmpty
+                ? _firefighting!.cidade!
+                : '';
+        _dataSelecionada =
+            DateTime.fromMillisecondsSinceEpoch(_firefighting!.data!);
+        _horarioAcionamento = _firefighting!.horarioAcionamento != null
+            ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(
+                _firefighting!.horarioAcionamento!))
+            : const TimeOfDay(hour: 12, minute: 43);
+        _horimetroAcionamento =
+            TextEditingController(text: _firefighting?.horimetroAcionamento);
+        _horarioChegadaPista = _firefighting?.pista?.horarioChegadaPista != null
+            ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(
+                _firefighting!.pista!.horarioChegadaPista!))
+            : const TimeOfDay(hour: 12, minute: 43);
+        _horimetroChegadaPista = TextEditingController(
+            text: _firefighting?.pista?.horimetroChegadaPista);
+        _codigoICAOPista =
+            TextEditingController(text: _firefighting?.pista?.codigoICAOPista);
+        _latitudeControllerPista =
+            TextEditingController(text: _firefighting?.pista?.latPista);
+        _longitudeControllerPista =
+            TextEditingController(text: _firefighting?.pista?.longPista);
+        _nomePista =
+            TextEditingController(text: _firefighting?.pista?.nomePista);
+        _latitudeControllerLocalIncendio =
+            TextEditingController(text: _firefighting?.localIncendio?.lat);
+        _longitudeControllerLocalIncendio =
+            TextEditingController(text: _firefighting?.localIncendio?.long);
+        _referencia = TextEditingController(
+            text: _firefighting?.localIncendio?.referencia);
+      });
       _obtainStatesOfBrazil();
-      _obtainCitiesOfUfBrazil('SP');
+      _obtainCitiesOfUfBrazil(_uf);
       setState(() {});
     });
+  }
+
+  Future<void> _actionFirefighting() async {
+    _firefighting?.cliente =
+        getIt<GlobalConfigVars>().contratanteCombateIncendio?.nome;
+    _firefighting?.numeroAviso =
+        _numeroAviso.text.isNotEmpty ? int.tryParse(_numeroAviso.text) : 0;
+    _firefighting?.prefixoAeronave = _airCraftPrexix;
+    _firefighting?.uf = _uf;
+    _firefighting?.cidade = _cityOfUf;
+    _firefighting?.data = _dataSelecionada?.millisecondsSinceEpoch;
+    _firefighting?.horarioAcionamento =
+        _horarioAcionamento?.toDateTime().millisecondsSinceEpoch;
+    _firefighting?.horimetroAcionamento = _horimetroAcionamento.text;
+    setState(() {});
+    await _updateFirefighting(_firefighting!.id!, _firefighting!);
+
+    PistaFirefighting? pista;
+    pista?.horarioChegadaPista =
+        _horarioChegadaPista?.toDateTime().millisecondsSinceEpoch;
+    pista?.horimetroChegadaPista = _horimetroChegadaPista.text;
+    pista?.codigoICAOPista = _codigoICAOPista.text;
+    pista?.nomePista = _nomePista.text;
+    pista?.latPista = _latitudeControllerPista.text;
+    pista?.longPista = _longitudeControllerPista.text;
+    setState(() {});
+
+    await _actionPistaFireghting(pista);
+
+    LocalFirefighting? localIncendio;
+    localIncendio?.lat = _latitudeControllerLocalIncendio.text;
+    localIncendio?.long = _longitudeControllerLocalIncendio.text;
+    localIncendio?.referencia = _referencia.text;
+    setState(() {});
+
+    await _actionLocalFirefighting(localIncendio);
+  }
+
+  Future<void> _updateFirefighting(int id, Firefighting data) async {
+    await widget._firefightingController
+        .updateElementInTable(id, data.toMap(), 'Firefighting');
+
+    widget._firefightingController.setFirefightingSelected(data);
+    setState(() {});
+  }
+
+  Future<void> _actionPistaFireghting(PistaFirefighting? pista) async {
+    if (pista == null) return;
+    if (pista.id == null || (pista.id != null && pista.id! <= 0)) {
+      final idPista = await widget._firefightingController
+          .createElementInTable(pista.toJson(), 'PistaFirefighting');
+      await widget._firefightingController.updateElementInTable(
+          _firefighting!.id!, {'pista_id': idPista}, 'Firefighting');
+      widget._firefightingController.setFirefightingSelected(_firefighting!);
+      return;
+    }
+    await widget._firefightingController
+        .updateElementInTable(pista.id!, pista.toJson(), 'PistaFirefighting');
+    widget._firefightingController.setFirefightingSelected(_firefighting!);
+  }
+
+  Future<void> _actionLocalFirefighting(LocalFirefighting? local) async {
+    if (local == null) return;
+    if (local.id == null || (local.id != null && local.id! <= 0)) {
+      final idLocal = await widget._firefightingController
+          .createElementInTable(local.toJson(), 'LocalFirefighting');
+      await widget._firefightingController.updateElementInTable(
+          _firefighting!.id!, {'localIncendio_id': idLocal}, 'Firefighting');
+      widget._firefightingController.setFirefightingSelected(_firefighting!);
+      return;
+    }
+    await widget._firefightingController
+        .updateElementInTable(local.id!, local.toJson(), 'LocalFirefighting');
+    widget._firefightingController.setFirefightingSelected(_firefighting!);
   }
 
   @override
@@ -77,7 +205,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
-              getIt<GlobalConfigVars>().contratanteCombateIncendio = null;
+              await _actionFirefighting();
+              getIt<GlobalConfigVars>().clearGlobalConfigVars();
+              // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
           )),
@@ -88,13 +218,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              const Row(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
-                    'N° 1758',
+                    'N° ${_firefighting?.refId ?? ''}',
                     textAlign: TextAlign.right,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xFF00B45D),
                       fontSize: 14,
                       fontFamily: 'Inter',
@@ -131,9 +261,10 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
+                child: TextField(
                   keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
+                  controller: _numeroAviso,
+                  decoration: const InputDecoration(
                       hintText: "Número do aviso",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -336,7 +467,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               const CustomText(text: 'Horário de Acionamento'),
               const SizedBox(height: 14),
               CustomComboBoxExpanded(
-                selectedName: _time == null ? "Selecione" : _time!.to24hours(),
+                selectedName: _horarioAcionamento == null
+                    ? "Selecione"
+                    : _horarioAcionamento!.to24hours(),
                 onTap: () async {
                   final data = await showTimePicker(
                       confirmText: "Selecionar hora",
@@ -345,7 +478,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                       context: context,
                       initialTime: const TimeOfDay(hour: 12, minute: 23));
                   setState(() {
-                    _time = data;
+                    _horarioAcionamento = data;
                   });
                 },
               ),
@@ -366,6 +499,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 ),
                 child: TextField(
                   keyboardType: TextInputType.number,
+                  controller: _horimetroAcionamento,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CustomNumberFormatter()
@@ -417,6 +551,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 ),
                 child: TextField(
                   keyboardType: TextInputType.number,
+                  controller: _horimetroChegadaPista,
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,
                     CustomNumberFormatter()
@@ -470,8 +605,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _codigoICAOPista,
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -630,8 +766,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _nomePista,
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -803,8 +940,9 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: const TextField(
-                  decoration: InputDecoration(
+                child: TextField(
+                  controller: _referencia,
+                  decoration: const InputDecoration(
                       hintText: "Digite aqui",
                       border: InputBorder.none,
                       hintStyle: TextStyle(
@@ -819,92 +957,15 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               Center(
                 child: CustomButton(
                   title: "Próximo",
-                  onClick: () {
+                  onClick: () async {
+                    await _actionFirefighting();
+                    // ignore: use_build_context_synchronously
                     context.push("/combateIncendioPasso3");
                   },
                 ),
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomText extends StatelessWidget {
-  const CustomText({super.key, required this.text});
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: const TextStyle(
-        color: Color(0xFF00B45D),
-        fontSize: 14,
-        fontFamily: 'Inter',
-        fontWeight: FontWeight.w700,
-        height: 0.11,
-      ),
-    );
-  }
-}
-
-class CustomComboBoxExpanded extends StatelessWidget {
-  const CustomComboBoxExpanded(
-      {super.key, required this.selectedName, required this.onTap});
-  final String selectedName;
-  final VoidCallback? onTap;
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      child: Container(
-        width: 328,
-        height: 50,
-        padding: const EdgeInsets.all(8),
-        decoration: ShapeDecoration(
-          shape: RoundedRectangleBorder(
-            side: const BorderSide(width: 1, color: Color(0xFF636363)),
-            borderRadius: BorderRadius.circular(8),
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    selectedName,
-                    style: const TextStyle(
-                      color: Color(0xFF636363),
-                      fontSize: 14,
-                      fontFamily: 'Inter',
-                      fontWeight: FontWeight.w600,
-                      height: 0.11,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 16,
-              height: 16,
-              clipBehavior: Clip.antiAlias,
-              decoration: const BoxDecoration(),
-              child: Stack(children: [
-                SvgPicture.asset(
-                  "assets/images/arrow.svg",
-                )
-              ]),
-            ),
-          ],
         ),
       ),
     );

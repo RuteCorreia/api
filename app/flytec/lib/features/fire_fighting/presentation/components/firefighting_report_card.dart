@@ -103,13 +103,13 @@ class FirefightingReportCard extends StatelessWidget {
                 onClick: () {
                   context.pop();
                   _firefightingController
-                      .setFirefightinhSelected(_firefightingList[_index]);
+                      .setFirefightingSelected(_firefightingList[_index]);
                   getIt<GlobalConfigVars>().selectedExecutor =
                       _firefightingList[_index].executor!;
                   getIt<GlobalConfigVars>().selectedPilot =
                       _firefightingList[_index].piloto!;
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const AddFireFightingSecondStep();
+                    return  AddFireFightingSecondStep(firefightingController: _firefightingController);
                   }));
                 },
                 text: "Editar",

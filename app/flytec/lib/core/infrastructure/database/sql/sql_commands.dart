@@ -154,6 +154,7 @@ CREATE TABLE Firefighting (
     cidade TEXT,
     data INTEGER,
     horimetroAcionamento TEXT,
+    horarioAcionamento INTEGER,
     pista_id INTEGER,
     localIncendio_id INTEGER,
     observacao TEXT,
