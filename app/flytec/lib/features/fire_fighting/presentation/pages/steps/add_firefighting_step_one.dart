@@ -15,8 +15,12 @@ class AddFireFightingStepOne extends StatefulWidget {
 }
 
 class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
-  void setPilotOrExecutoz() {
-    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor")) {
+  void _setPilotOrExecutoz() {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor") ||
+        getIt<GlobalConfigVars>()
+            .userPayload
+            .role!
+            .contains("TecnicoExecutor")) {
       getIt<GlobalConfigVars>().selectedExecutor =
           getIt<GlobalConfigVars>().userPayload.name!;
     } else {
@@ -27,7 +31,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
 
   @override
   void initState() {
-    setPilotOrExecutoz();
+    _setPilotOrExecutoz();
     super.initState();
   }
 
@@ -109,9 +113,13 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                     .contains("Executor"),
                 child: CustomCombo(
                   selectedName: getIt<GlobalConfigVars>()
-                          .userPayload
-                          .role!
-                          .contains("Executor")
+                              .userPayload
+                              .role!
+                              .contains("Executor") ||
+                          getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("TecnicoExecutor")
                       ? getIt<GlobalConfigVars>().userPayload.name!
                       : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
                           ? "Selecione o executor"

@@ -26,11 +26,24 @@ class CreateAplicationPage extends StatefulWidget {
 }
 
 class _CreateAplicationPageState extends State<CreateAplicationPage> {
+  void _setPilotOrExecutoz() {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor") ||
+        getIt<GlobalConfigVars>()
+            .userPayload
+            .role!
+            .contains("TecnicoExecutor")) {
+      getIt<GlobalConfigVars>().selectedExecutor =
+          getIt<GlobalConfigVars>().userPayload.name!;
+    } else {
+      getIt<GlobalConfigVars>().selectedPilot =
+          getIt<GlobalConfigVars>().userPayload.name!;
+    }
+  }
   @override
   void initState() {
     super.initState();
-    getIt<GlobalConfigVars>().selectedPilot =
-        getIt<GlobalConfigVars>().userPayload.name ?? '';
+    _setPilotOrExecutoz();
+    
   }
 
   @override
@@ -120,12 +133,20 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                 absorbing: getIt<GlobalConfigVars>()
                     .userPayload
                     .role!
-                    .contains("Executor"),
+                        .contains("Executor") ||
+                    getIt<GlobalConfigVars>()
+                        .userPayload
+                        .role!
+                        .contains("TecnicoExecutor"),
                 child: CustomCombo(
                   selectedName: getIt<GlobalConfigVars>()
                           .userPayload
                           .role!
-                          .contains("Executor")
+                              .contains("Executor") ||
+                          getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("TecnicoExecutor")
                       ? getIt<GlobalConfigVars>().userPayload.name!
                       : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
                           ? "Selecione o executor"

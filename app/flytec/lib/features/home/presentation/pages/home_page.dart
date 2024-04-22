@@ -468,7 +468,11 @@ class _HomePagaState extends State<HomePaga> {
                       getIt<GlobalConfigVars>()
                           .userPayload
                           .role!
-                          .contains("Executor")) ...[
+                          .contains("Executor") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("TecnicoExecutor")) ...[
                     const SizedBox(height: 10),
                     CustomActionButton(
                       imageUrl: "assets/images/edit_icon.svg",
