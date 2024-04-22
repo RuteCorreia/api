@@ -37,7 +37,7 @@ class FirefightingController extends ChangeNotifier {
   }
 
   Future<void> obtainReportsFirefightings() async {
-    List<Firefighting> firefightingListResult = [];
+    List<Firefighting> firefightingListResult;
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Firefighting");
     final listFirefighting =
@@ -46,9 +46,11 @@ class FirefightingController extends ChangeNotifier {
           '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${element.id}';
       return element.refId == refUsuario;
     }).toList();
+    firefightingListResult = [];
     for (int i = 0; i < listFirefighting.length; i++) {
       final firefighting = listFirefighting[i];
-      final idNew = '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${firefighting.id}';
+      final idNew =
+          '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_${firefighting.id}';
       firefighting.refId = idNew;
       final getPistaFirefightingDb =
           await _sqlDatabaseProvider.obtainElementTableById(
