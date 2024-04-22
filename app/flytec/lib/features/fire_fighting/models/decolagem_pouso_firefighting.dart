@@ -31,7 +31,6 @@ class DecolagemPousoFirefighting {
       'id': id,
       'horarioDecolagem': horarioDecolagem,
       'horarioPouso': horarioPouso,
-      'firefightingId': idFirefighting,
       'horimetroDecolagem': horimetroDecolagem,
       'horimetroPouso': horimetroPouso
     };

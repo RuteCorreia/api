@@ -13,7 +13,6 @@ import '../../features/fire_fighting/presentation/pages/home_firefighting.dart';
 import '../../features/fire_fighting/presentation/pages/my_activity_page.dart';
 import '../../features/fire_fighting/presentation/pages/steps/add_firefighthing_signature.dart';
 import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
-import '../../features/fire_fighting/presentation/pages/steps/add_firefighting_third_step.dart';
 
 final GoRouter router = GoRouter(
   debugLogDiagnostics: true,
@@ -43,12 +42,7 @@ final GoRouter router = GoRouter(
           },
         ),
         
-        GoRoute(
-          path: 'combateIncendioPasso3',
-          builder: (BuildContext context, GoRouterState state) {
-            return const AddFireFightingThirdStep();
-          },
-        ),
+     
         GoRoute(
           path: 'combateIncendioPasso4',
           builder: (BuildContext context, GoRouterState state) {

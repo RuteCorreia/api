@@ -14,7 +14,7 @@ import 'package:flytec/features/fire_fighting/controller/firefighting_controller
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/local_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/pista_firefighting.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_third_step.dart';
 import 'package:intl/intl.dart';
 import 'package:location/location.dart' as lct;
 
@@ -972,7 +972,13 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                   onClick: () async {
                     await _actionFirefighting();
                     // ignore: use_build_context_synchronously
-                    context.push("/combateIncendioPasso3");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddFireFightingThirdStep(
+                              firefightingController:
+                                  widget._firefightingController),
+                        ));
                   },
                 ),
               ),
