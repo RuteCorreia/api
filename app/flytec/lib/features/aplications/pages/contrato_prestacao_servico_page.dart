@@ -205,10 +205,10 @@ class _ContratoPrestacaoServicoPageState
                       Checkbox(
                           materialTapTargetSize:
                               MaterialTapTargetSize.shrinkWrap,
-                          value: _precoUnidade == "h",
+                          value: _precoUnidade == "hora",
                           onChanged: (value) {
                             setState(() {
-                              _precoUnidade = "h";
+                              _precoUnidade = "hora";
                             });
                           }),
                     ],
