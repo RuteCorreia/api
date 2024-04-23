@@ -126,11 +126,11 @@ class ReportAplicationController extends ChangeNotifier {
       aplicacao.dadosResponsavel = dadosResponsavel;
       final verifyFieldsMandatory =
           aplicacao.verifyFieldsMandatory(showToast: false);
-      if (aplicacao.state == ReportDashBoardState.Incompleto &&
+      if (aplicacao.state == DashBoardState.Incompleto &&
           verifyFieldsMandatory) {
-        aplicacao.state = ReportDashBoardState.Pronto;
+        aplicacao.state = DashBoardState.Pronto;
         await _sqlDatabaseProvider.update(
-            {"state": ReportDashBoardState.Pronto.index},
+            {"state": DashBoardState.Pronto.index},
             "Aplicacao",
             aplicacao.id.toString());
       }
