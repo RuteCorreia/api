@@ -1,5 +1,6 @@
-﻿using Domain.Interfaces.Cadastros.Piloto;
-using Helpers;
+﻿using Domain.Entidades.User;
+using Domain.Enums;
+using Domain.Interfaces.Cadastros.Piloto;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,53 +14,31 @@ public class PilotoRepository : IPilotoRepository
     {
         _contextBase = contextBase;
     }
-
-    public async Task AddAsync(Domain.Entidades.Cadastros.Piloto.Piloto obj)
+    
+    public async Task<IEnumerable<UsuarioCredencial>> GetAllAsync()
     {
-        await _contextBase.AddAsync(obj);
-        await _contextBase.SaveChangesAsync();
-    }
+        var entities = await _contextBase.UsuarioCredencial
+            .AsNoTracking()
+            .Where(x =>
+                x.Usuario != null 
+                && !x.Usuario.Removido
+                && x.Funcao == ERole.Piloto)
+            .Include(u => u.Usuario)
+            .ToListAsync();
 
-    public async Task DeleteAsync(int id)
-    {
-        var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
-        {
-            _contextBase.Remove(entityToRemove);
-            await _contextBase.SaveChangesAsync();
-        }
-    }
-
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetAllAsync()
-    {
-        var entities = await _contextBase.Piloto.ToListAsync();
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Piloto.Piloto> GetByIdAsync(int id)
+    public async Task<UsuarioCredencial?> GetByIdAsync(string id)
     {
-        var obj = await _contextBase.Piloto.FindAsync(id);
+        var obj = await _contextBase.UsuarioCredencial
+           .Where(x =>
+               x.Funcao == ERole.Piloto
+               && x.Usuario != null
+               && !x.Usuario.Removido
+               && x.IdUsuario == Guid.Parse(id))
+           .Include(u => u.Usuario)
+           .FirstOrDefaultAsync();
         return obj;
-    }
-
-    public async Task<Domain.Entidades.Cadastros.Piloto.Piloto> GetByLoginAsync(string email, string password)
-    {
-        var obj = await _contextBase.Piloto.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
-        return obj;
-    }
-
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Piloto.Piloto obj)
-    {
-        var objeto = await _contextBase.Piloto.FindAsync(obj.Id);
-        objeto.Nome = obj.Nome;
-        objeto.Email = obj.Email;
-        objeto.Senha = obj.Senha;
-        objeto.CANAC = obj.CANAC;
-        objeto.Assinatura = obj.Assinatura;
-        objeto.PorcentagemComissao = obj.PorcentagemComissao;
-        objeto.Telefone = obj.Telefone;
-
-        _contextBase.Piloto.Update(objeto);
-        await _contextBase.SaveChangesAsync();
     }
 }

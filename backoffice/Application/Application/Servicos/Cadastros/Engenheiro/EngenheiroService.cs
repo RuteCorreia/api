@@ -18,58 +18,41 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task<IEnumerable<EngenheiroViewModel>> GetAllAsync()
     {
-        var list = await _engenheiroRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<EngenheiroViewModel>>(list);
-    }
-
-    public async Task<EngenheiroViewModel> GetByIdAsync(int id)
-    {
-        var obj = await _engenheiroRepository.GetByIdAsync(id);
-        return _mapper.Map<EngenheiroViewModel>(obj);
-    }
-
-    public async Task<EngenheiroViewModel> GetByLoginAsync(string email, string password)
-    {
-        var obj = await _engenheiroRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<EngenheiroViewModel>(obj);
-    }
-
-    public async Task AddAsync(EngenheiroViewModel obj)
-    {
-        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
-        if(empresaJaTemEngenheiro is null)
+        var usuarioCredencialList = await _engenheiroRepository.GetAllAsync();
+        var usuarioList = usuarioCredencialList
+            .Select(u => u.Usuario)
+            .ToList();
+        var mappedList = _mapper.Map<IEnumerable<EngenheiroViewModel>>(usuarioList);
+        var usuarioDict = usuarioList.ToDictionary(u => u.Id, u => u);
+        var credencialDict = usuarioCredencialList.ToDictionary(uc => uc.IdUsuario, uc => uc.Credencial);
+        
+        var returnList = mappedList.Select(x => new EngenheiroViewModel
         {
-            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-            await _engenheiroRepository.AddAsync(mapEngenheiro);
-        }
-        else
-        {
-            throw new Exception("A empresa já possui um engenheiro");
-        }
+            Id = x.Id,
+            Nome = x.Nome,
+            Email = x.Email,
+            Telefone = x.Telefone,
+            Assinatura = usuarioDict.TryGetValue(Guid.Parse(x.Id), out var usuario) ?
+                Convert.ToBase64String(usuario?.Assinatura ?? [])
+                : null,
+            CREA = credencialDict.TryGetValue(Guid.Parse(x.Id), out var credencial) ?
+                credencial
+                : null
+        });
+        return returnList;
     }
 
-    public async Task UpdateAsync(EngenheiroViewModel obj)
+    public async Task<EngenheiroViewModel?> GetByIdAsync(string id)
     {
-        var empresaJaTemEngenheiro = await GetByIdEmpresaAsync(obj.Id, obj.IdEmpresa);
-        if (empresaJaTemEngenheiro is null)
+        var usuarioCredencialObj = await _engenheiroRepository.GetByIdAsync(id);
+        var usuarioObj = usuarioCredencialObj?.Usuario ?? null; 
+        var mappedObj = usuarioObj is not null ? _mapper.Map<EngenheiroViewModel>(usuarioObj) : null;
+        if(mappedObj is not null)
         {
-            var mapEngenheiro = _mapper.Map<Domain.Entidades.Cadastros.Engenheiro.Engenheiro>(obj);
-            await _engenheiroRepository.UpdateAsync(mapEngenheiro);
+            mappedObj.Assinatura = Convert.ToBase64String(usuarioObj?.Assinatura ?? []);
+            mappedObj.CREA = usuarioCredencialObj?.Credencial;
         }
-        else
-        {
-            throw new Exception("A empresa já possui um engenheiro");
-        }
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        await _engenheiroRepository.DeleteAsync(id);
-    }
-
-    public async Task<EngenheiroViewModel> GetByIdEmpresaAsync(int id, int idEmpresa)
-    {
-        var obj = await _engenheiroRepository.GetByIdEmpresaAsync(id, idEmpresa);
-        return _mapper.Map<EngenheiroViewModel>(obj);
+        
+        return mappedObj;
     }
 }

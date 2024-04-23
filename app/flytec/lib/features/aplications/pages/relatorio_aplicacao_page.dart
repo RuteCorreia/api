@@ -188,7 +188,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           content: SizedBox(
                             width: double.maxFinite,
                             child: ProductNameSelect(
-                                onChangedProductName: (value, produto) {
+                                onChangedProductName: (value, produto, bulas) {
                               setState(() {
                                 _produtoSelecionado = value;
                                 getIt<GlobalConfigVars>().produtoAplicado =
@@ -630,23 +630,19 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                 Util.closeKeyBoard();
                 await showDialog(
                     context: context,
+                    barrierDismissible: false,
                     builder: (BuildContext context) {
                       return AlertDialog(
                           backgroundColor: const Color(0xFFF5F5F5),
                           content: SizedBox(
                             width: double.maxFinite,
-                            child: LogsSelect(onChanged: (value) {
-                              setState(() {
-                                _selectedLog = '';
-                                for (String element
-                                    in getIt<GlobalConfigVars>().logs) {
-                                  _selectedLog += '$element,';
-                                }
-                                _selectedLog = _selectedLog.substring(
-                                    0, _selectedLog.length - 1);
-                              });
-                              Util.closeKeyBoard();
-                            }),
+                            child: LogsSelect(
+                                onChanged: (value) {
+                                  setState(() {
+                                    _selectedLog = value;
+                                  });
+                                },
+                                log: _selectedLog),
                           ));
                     });
               },
@@ -662,7 +658,6 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                           reportAplicationController:
                               widget._reportAplicationController);
                     })));
-                // ignore: use_build_context_synchronously
               },
             ),
             const SizedBox(height: 10),

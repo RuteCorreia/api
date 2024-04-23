@@ -1,5 +1,6 @@
-﻿using Domain.Interfaces.Cadastros.Executor;
-using Helpers;
+﻿using Domain.Entidades.User;
+using Domain.Enums;
+using Domain.Interfaces.Cadastros.Executor;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 
@@ -14,51 +15,31 @@ public class ExecutorRepository : IExecutorRepository
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.Executor.Executor obj)
+    public async Task<IEnumerable<UsuarioCredencial>> GetAllAsync()
     {
-        await _contextBase.AddAsync(obj);
-        await _contextBase.SaveChangesAsync();
-    }
+        var entities = await _contextBase.UsuarioCredencial
+            .AsNoTracking()
+            .Where(x => 
+                x.Usuario != null 
+                && !x.Usuario.Removido 
+                && x.Funcao == ERole.TecnicoExecutor)
+            .Include(u => u.Usuario)
+            .ToListAsync();
 
-    public async Task DeleteAsync(int id)
-    {
-        var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
-        {
-            _contextBase.Remove(entityToRemove);
-            await _contextBase.SaveChangesAsync();
-        }
-    }
-
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Executor.Executor>> GetAllAsync()
-    {
-        var entities = await _contextBase.Executor.ToListAsync();
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Executor.Executor> GetByIdAsync(int id)
+    public async Task<UsuarioCredencial?> GetByIdAsync(string id)
     {
-        var obj = await _contextBase.Executor.FindAsync(id);
+        var obj = await _contextBase.UsuarioCredencial
+            .Where(x => 
+                x.Funcao == ERole.TecnicoExecutor
+                && x.Usuario != null
+                && !x.Usuario.Removido
+                && x.IdUsuario == Guid.Parse(id))
+            .Include(u => u.Usuario)
+            .FirstOrDefaultAsync();
+
         return obj;
-    }
-
-    public async Task<Domain.Entidades.Cadastros.Executor.Executor> GetByLoginAsync(string email, string password)
-    {
-        var obj = await _contextBase.Executor.FirstOrDefaultAsync(w => w.Email == email && w.Senha == password);
-        return obj;
-    }
-
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Executor.Executor obj)
-    {
-        var objeto = await _contextBase.Executor.FindAsync(obj.IdExecutor);
-        objeto.IdEmpresa = obj.IdEmpresa;
-        objeto.Nome = obj.Nome;
-        objeto.Email = obj.Email;
-        objeto.Senha = obj.Senha;
-        objeto.CFTA = obj.CFTA;
-        objeto.Assinatura = obj.Assinatura;
-
-        _contextBase.Executor.Update(objeto);
-        await _contextBase.SaveChangesAsync();
     }
 }

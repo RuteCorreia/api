@@ -70,8 +70,6 @@ public class BulaController : ControllerBase
             }
             if (ModelState.IsValid)
             {
-                obj.IdAlvoBiologico = 3;
-                obj.IdCultura = 2;
                 await _bulaService.AddAsync(obj);
                 var lista = await _bulaService.GetAllAsync();
                 var ultimoCriado = lista.LastOrDefault();

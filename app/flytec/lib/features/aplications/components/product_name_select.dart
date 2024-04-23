@@ -5,7 +5,8 @@ import 'package:flytec/features/aplications/models/caracteristicas_produto_aplic
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 
 class ProductNameSelect extends StatelessWidget {
-  final Function(String, CaracteristicasProdutoAplicado?) onChangedProductName;
+  final Function(String, CaracteristicasProdutoAplicado?, BulaModel?)
+      onChangedProductName;
   ProductNameSelect({super.key, required this.onChangedProductName});
 
   final TextEditingController _textFlightHeight = TextEditingController();
@@ -23,32 +24,37 @@ class ProductNameSelect extends StatelessWidget {
                 itemCount: getIt<GlobalConfigVars>().bulas.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    padding: EdgeInsets.zero,
-                    color: Colors.white,
-                    elevation: 0,
-                    onPressed: () {
-                      onChangedProductName(
-                          getIt<GlobalConfigVars>().bulas[index].nomeProduto!,
-                          CaracteristicasProdutoAplicado.fromBula(
-                              getIt<GlobalConfigVars>().bulas[index]));
-                      Navigator.of(context).pop();
-                    },
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
+                itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: MaterialButton(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.0)),
+                        padding: EdgeInsets.zero,
+                        color: Colors.white,
+                        elevation: 0,
+                        onPressed: () {
+                          onChangedProductName(
                               getIt<GlobalConfigVars>()
                                   .bulas[index]
                                   .nomeProduto!,
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                        ))),
+                              CaracteristicasProdutoAplicado.fromBula(
+                                  getIt<GlobalConfigVars>().bulas[index]),
+                              getIt<GlobalConfigVars>().bulas[index]);
+                          Navigator.of(context).pop();
+                        },
+                        child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                  getIt<GlobalConfigVars>()
+                                      .bulas[index]
+                                      .nomeProduto!,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600)),
+                            )))),
               ),
             ),
             SizedBox(
@@ -74,7 +80,8 @@ class ProductNameSelect extends StatelessWidget {
                         getIt<GlobalConfigVars>()
                             .bulas
                             .add(BulaModel(nomeProduto: value));
-                        onChangedProductName(_textFlightHeight.text, null);
+                        onChangedProductName(
+                            _textFlightHeight.text, null, null);
                         Navigator.of(context).pop();
                       },
                       decoration: const InputDecoration(
@@ -93,7 +100,7 @@ class ProductNameSelect extends StatelessWidget {
                       getIt<GlobalConfigVars>()
                           .bulas
                           .add(BulaModel(nomeProduto: _textFlightHeight.text));
-                      onChangedProductName(_textFlightHeight.text, null);
+                      onChangedProductName(_textFlightHeight.text, null, null);
                       Navigator.of(context).pop();
                     },
                     child: Container(

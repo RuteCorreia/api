@@ -1,5 +1,5 @@
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
 import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/aplications/models/contrato_prestacao_servico.dart';
@@ -13,7 +13,7 @@ class Aplicacao {
   String? executor;
   int? id;
   String? refDocument;
-  ReportDashBoardState? state;
+  DashBoardState? state;
   String? data;
   Contratante? contratante;
   IdentificacaoAreaTratada? identificacaoAreaTratada;
@@ -59,7 +59,7 @@ class Aplicacao {
     return {
       'piloto': piloto,
       'executor': executor,
-      'state': state?.index ?? ReportDashBoardState.Incompleto.index,
+      'state': state?.index ?? DashBoardState.Incompleto.index,
       'data': data,
       'refUsuario': refUsuario
     };
@@ -71,9 +71,9 @@ class Aplicacao {
         executor: json['executor'] ?? '',
         id: json['id'] ?? 0,
         refUsuario: json['refUsuario'] ?? "'",
-        state: ReportDashBoardState.values.firstWhere(
+        state: DashBoardState.values.firstWhere(
             (state) => state.index == json['state'],
-            orElse: () => ReportDashBoardState.Incompleto),
+            orElse: () => DashBoardState.Incompleto),
         data: json['data'] ?? '',
         contratanteId: json['contratante_id'],
         identificacaoAreaTratadaId: json['identificacaoAreaTratada_id'],

@@ -4,7 +4,7 @@ import 'package:flytec/core/infrastructure/database/sql/database_instances/relat
 import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/aplicacoes.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
@@ -49,7 +49,7 @@ class ReportAplicationController extends ChangeNotifier {
     notifyListeners();
   }
 
-  int obtainQuantityReportsByState(ReportDashBoardState state) {
+  int obtainQuantityReportsByState(DashBoardState state) {
     return _listaAplicacao!
         .where((element) => element.state == state)
         .toList()

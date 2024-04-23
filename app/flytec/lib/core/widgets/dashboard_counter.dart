@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 
-import '../pages/home_firefighting.dart';
-
-class CustomDashBoardCounter extends StatelessWidget {
-  const CustomDashBoardCounter(
+class ReportDashBoardCounter extends StatelessWidget {
+  const ReportDashBoardCounter(
       {super.key,
       required this.value,
       required this.text,
@@ -31,8 +30,8 @@ class CustomDashBoardCounter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 74.50,
-      height: 80,
+      width: MediaQuery.of(context).size.width * 0.22,
+      height: MediaQuery.of(context).size.height * 0.15,
       padding: const EdgeInsets.all(4),
       clipBehavior: Clip.antiAlias,
       decoration: ShapeDecoration(
@@ -46,42 +45,28 @@ class CustomDashBoardCounter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              value,
-              style: const TextStyle(
-                color: Color.fromARGB(255, 121, 118, 118),
-                fontSize: 24,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w700,
-                height: 0.06,
-              ),
+          Text(
+            value,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: Color.fromARGB(255, 121, 118, 118),
+              fontSize: 24,
+              fontFamily: 'Inter',
+              fontWeight: FontWeight.w700,
             ),
           ),
-          const SizedBox(height: 20),
-          SizedBox(
-            width: double.infinity,
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    child: Text(
-                      text,
-                      style: const TextStyle(
-                        color: Color.fromARGB(255, 121, 118, 118),
-                        fontSize: 10,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w700,
-                        height: 0.15,
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+          Flexible(
+            flex: 1,
+            child: Text(
+              text,
+              maxLines: 2,
+              style: const TextStyle(
+                color: Color.fromARGB(255, 121, 118, 118),
+                fontSize: 10,
+                fontFamily: 'Inter',
+                fontWeight: FontWeight.w700,
+              ),
             ),
           ),
         ],

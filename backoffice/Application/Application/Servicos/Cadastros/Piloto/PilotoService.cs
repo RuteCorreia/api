@@ -18,36 +18,41 @@ public class PilotoService : IPilotoService
 
     public async Task<IEnumerable<PilotoViewModel>> GetAllAsync()
     {
-        var list = await _pilotoRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<PilotoViewModel>>(list);
+        var usuarioCredencialList = await _pilotoRepository.GetAllAsync();
+        var usuarioList = usuarioCredencialList
+            .Select(u => u.Usuario)
+            .ToList();
+        var mappedList = _mapper.Map<IEnumerable<PilotoViewModel>>(usuarioList);
+        var usuarioDict = usuarioList.ToDictionary(u => u.Id, u => u);
+        var credencialDict = usuarioCredencialList.ToDictionary(uc => uc.IdUsuario, uc => uc.Credencial);
+
+        var returnList = mappedList.Select(x => new PilotoViewModel
+        {
+            Id = x.Id,
+            Nome = x.Nome,
+            Email = x.Email,
+            Telefone = x.Telefone,
+            Assinatura = usuarioDict.TryGetValue(Guid.Parse(x.Id), out var usuario) ?
+               Convert.ToBase64String(usuario?.Assinatura ?? [])
+               : null,
+            CDAC = credencialDict.TryGetValue(Guid.Parse(x.Id), out var credencial) ?
+               credencial
+               : null
+        });
+        return returnList;
     }
 
-    public async Task<PilotoViewModel> GetByIdAsync(int id)
+    public async Task<PilotoViewModel?> GetByIdAsync(string id)
     {
-        var obj = await _pilotoRepository.GetByIdAsync(id);
-        return _mapper.Map<PilotoViewModel>(obj);
-    }
+        var usuarioCredencialObj = await _pilotoRepository.GetByIdAsync(id);
+        var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
+        var mappedObj = usuarioObj is not null ? _mapper.Map<PilotoViewModel>(usuarioObj) : null;
+        if (mappedObj is not null)
+        {
+            mappedObj.Assinatura = Convert.ToBase64String(usuarioObj?.Assinatura ?? []);
+            mappedObj.CDAC = usuarioCredencialObj?.Credencial;
+        }
 
-    public async Task<PilotoViewModel> GetByLoginAsync(string email, string password)
-    {
-        var obj = await _pilotoRepository.GetByLoginAsync(email, password);
-        return _mapper.Map<PilotoViewModel>(obj);
-    }
-
-    public async Task AddAsync(PilotoViewModel obj)
-    {
-        var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        await _pilotoRepository.AddAsync(mapPiloto);
-    }
-
-    public async Task UpdateAsync(PilotoViewModel obj)
-    {
-        var mapPiloto = _mapper.Map<Domain.Entidades.Cadastros.Piloto.Piloto>(obj);
-        await _pilotoRepository.UpdateAsync(mapPiloto);
-    }
-
-    public async Task DeleteAsync(int id)
-    {
-        await _pilotoRepository.DeleteAsync(id);
+        return mappedObj;
     }
 }

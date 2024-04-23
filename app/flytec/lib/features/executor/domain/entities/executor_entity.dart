@@ -1,8 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class ExecutorEntity extends Equatable {
-  final int? idExecutor;
-  final int? idEmpresa;
+  final String? idExecutor;
   final String? nome;
   final String? email;
   final String? senha;
@@ -11,7 +10,6 @@ class ExecutorEntity extends Equatable {
 
   const ExecutorEntity({
     this.idExecutor,
-    this.idEmpresa,
     this.nome,
     this.email,
     this.senha,
@@ -21,5 +19,5 @@ class ExecutorEntity extends Equatable {
 
   @override
   List<Object?> get props =>
-      [idExecutor, idEmpresa, nome, email, senha, cfta, assinatura];
+      [idExecutor, nome, email, senha, cfta, assinatura];
 }

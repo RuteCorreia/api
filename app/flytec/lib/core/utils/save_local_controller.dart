@@ -8,6 +8,7 @@ import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
+import 'package:flytec/features/engenheiros/data/models/engenheiro_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
@@ -43,7 +44,9 @@ class SaveLocalDataController {
           veiculanteModelToJson(getIt<GlobalConfigVars>().veiculantes),
       "alturavoo": alturaVooModelToJson(getIt<GlobalConfigVars>().alturaVoo),
       "alvosBiologicos":
-          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos)
+          alvoBiologicoModelToJson(getIt<GlobalConfigVars>().alvosBiologicos),
+      "assinatura": getIt<GlobalConfigVars>().assinatura ?? '',
+      "engenheiros": engenheiroModelToJson(getIt<GlobalConfigVars>().engenheiros),
     };
     return preloadData;
   }
@@ -58,5 +61,10 @@ class SaveLocalDataController {
     var perf = await SharedPreferences.getInstance();
     var p = perf.getString("preload");
     return p;
+  }
+
+  Future<bool> removeLocalPreloadData() async {
+    var perf = await SharedPreferences.getInstance();
+    return perf.remove("preload");
   }
 }

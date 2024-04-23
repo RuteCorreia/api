@@ -48,26 +48,28 @@ class _RelativeHumiditySelectState extends State<RelativeHumiditySelect> {
         itemCount: _relativeHumidity.length,
         shrinkWrap: true,
         padding: EdgeInsets.zero,
-        itemBuilder: (context, index) => MaterialButton(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.0)),
-            padding: EdgeInsets.zero,
-            color: Colors.white,
-            elevation: 0,
-            onPressed: () {
-              widget.onChangedHumidity('+ ${_relativeHumidity[index]}%');
-              Navigator.of(context).pop();
-            },
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text("+ ${_relativeHumidity[index]}%",
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600)),
-                ))),
+        itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4.0),
+            child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
+                padding: EdgeInsets.zero,
+                color: Colors.white,
+                elevation: 0,
+                onPressed: () {
+                  widget.onChangedHumidity('+ ${_relativeHumidity[index]}%');
+                  Navigator.of(context).pop();
+                },
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("+ ${_relativeHumidity[index]}%",
+                          style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600)),
+                    )))),
       ),
     );
   }

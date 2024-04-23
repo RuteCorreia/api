@@ -8,7 +8,7 @@ import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/services/create_aplicacao_report_service.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
-import 'package:flytec/features/aplications/enums/report_dashboard_state.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
@@ -29,19 +29,19 @@ class ReportCardAplication extends StatelessWidget {
 
   Color get _getColorStateColor {
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Enviado) {
+        DashBoardState.Enviado) {
       return Colors.blue;
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Pronto) {
+        DashBoardState.Pronto) {
       return Colors.green;
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Incompleto) {
+        DashBoardState.Incompleto) {
       return const Color(0xFFFF9900);
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.NaoEnviado) {
+        DashBoardState.NaoEnviado) {
       return Colors.red;
     }
     return Colors.blue;
@@ -49,19 +49,19 @@ class ReportCardAplication extends StatelessWidget {
 
   String get _getTitleStateColor {
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Enviado) {
+        DashBoardState.Enviado) {
       return "Relatório enviado";
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Pronto) {
+        DashBoardState.Pronto) {
       return "Relatório pronto para envio";
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.Incompleto) {
+        DashBoardState.Incompleto) {
       return "Relatório incompleto";
     }
     if (_reportAplicationController.listaAplicacao![_index].state ==
-        ReportDashBoardState.NaoEnviado) {
+        DashBoardState.NaoEnviado) {
       return "Relatório não enviado";
     }
     return "Sem descrição";

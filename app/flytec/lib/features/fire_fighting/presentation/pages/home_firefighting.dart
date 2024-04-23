@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/presentation/components/firefighting_report_card.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_step_one.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import '../../../home/presentation/widgets/custom_dialog_button.dart';
-import '../widgets/dashboard_counter.dart';
-
-enum DashBoardState { Enviado, Pronto, Incompleto, NaoEnviado }
 
 class HomeFireFighting extends StatefulWidget {
   const HomeFireFighting({super.key});
@@ -22,6 +24,9 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+
+  final FirefightingController _firefightingController =
+      FirefightingController();
   String selectedPilot = "";
   void openContextMenu() {
     showAdaptiveDialog<String>(
@@ -71,6 +76,19 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
         actions: const <Widget>[],
       ),
     );
+  }
+
+  Future<void> _initializationFirefightingReports() async {
+    await _firefightingController.obtainReportsFirefightings();
+    setState(() {});
+  }
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializationFirefightingReports();
   }
 
   @override
@@ -197,7 +215,7 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
                                 : selectedPilot,
                             onTap: () async {
                               Util.closeKeyBoard();
-await showDialog(
+                              await showDialog(
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
@@ -253,213 +271,93 @@ await showDialog(
           const SizedBox(width: 10),
         ],
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ValueListenableBuilder(
+        valueListenable: _firefightingController.firefightingList,
+        builder: (context, value, child) {
+          if (value == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (value.isEmpty) {
+            return const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Nenhum relatório foi gerado",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 16.0),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
                 children: [
-                  CustomDashBoardCounter(
-                    text: "Enviado",
-                    value: "12",
-                    state: DashBoardState.Enviado,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ReportDashBoardCounter(
+                        text: "Enviado",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.Enviado)
+                            .toString(),
+                        state: DashBoardState.Enviado,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Pronto",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(DashBoardState.Pronto)
+                            .toString(),
+                        state: DashBoardState.Pronto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Incompleto",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.Incompleto)
+                            .toString(),
+                        state: DashBoardState.Incompleto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Não enviado",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.NaoEnviado)
+                            .toString(),
+                        state: DashBoardState.NaoEnviado,
+                      ),
+                    ],
                   ),
-                  CustomDashBoardCounter(
-                    text: "Pronto",
-                    value: "5",
-                    state: DashBoardState.Pronto,
-                  ),
-                  CustomDashBoardCounter(
-                    text: "Incompleto",
-                    value: "3",
-                    state: DashBoardState.Incompleto,
-                  ),
-                  CustomDashBoardCounter(
-                    text: "Não enviado",
-                    value: "2",
-                    state: DashBoardState.NaoEnviado,
-                  ),
+                  const SizedBox(height: 20),
+                  ListView.builder(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      itemCount: value.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return FirefightingReportCard(
+                            firefightingController: _firefightingController,
+                            firefightingList: value,
+                            index: index);
+                      })
                 ],
               ),
-              SizedBox(height: 80),
-              Align(
-                alignment: Alignment.center,
-                child: Text(
-                  "Nenhum relatório foi gerado",
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              )
-              /*   const SizedBox(height: 20),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                state: DashBoardState.Pronto,
-                onClick: () {
-                  openContextMenu();
-                },
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 230,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/sendicon.svg",
-                                text: "Enviar",
-                                showRightcon: false,
-                                onClick: () {},
-                              ),
-                              const SizedBox(height: 10),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/edit.svg",
-                                showRightcon: false,
-                                onClick: () {
-                                  context.pop();
-                                  context.push("/combateincendio", extra: "dd");
-                                },
-                                text: "Editar",
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.NaoEnviado,
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 130,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/edit.svg",
-                                showRightcon: false,
-                                onClick: () {
-                                  context.pop();
-                                  context.push("/combateincendio", extra: "dd");
-                                },
-                                text: "Editar",
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.Incompleto,
-              ),
-              DashBoardReport(
-                title: "Fazenda Santa Maria",
-                date: "15/10/2023",
-                hour: "15:30",
-                onClick: () {
-                  showAdaptiveDialog<String>(
-                    context: context,
-                    useSafeArea: true,
-                    builder: (BuildContext context) => AlertDialog.adaptive(
-                      insetPadding: const EdgeInsets.all(32),
-                      content: SizedBox(
-                        height: 130,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 10),
-                              const Text(
-                                'Escolha uma ação',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 121, 118, 118),
-                                  fontSize: 16,
-                                  fontFamily: 'Inter',
-                                  fontWeight: FontWeight.w500,
-                                  height: 0.09,
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              CustomDialogButton(
-                                leftIcon: "assets/images/sendicon.svg",
-                                text: "Visualizar",
-                                showRightcon: false,
-                                onClick: () {},
-                              ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                      ),
-                      actions: const <Widget>[],
-                    ),
-                  );
-                },
-                state: DashBoardState.Enviado,
-              )
-            */
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push("/combateIncendioPasso1");
+        onPressed: () async {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return AddFireFightingStepOne(
+                firefightingController: _firefightingController);
+          }));
         },
         child: const Icon(
           Icons.add,

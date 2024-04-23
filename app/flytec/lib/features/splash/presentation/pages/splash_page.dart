@@ -29,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
           if (!hasExpired) {
             Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
             Util.Token = token;
-            debugPrint(decodedToken["role"]);
 
             getIt<SaveLocalDataController>()
                 .getLocalPreloadData()
@@ -41,12 +40,12 @@ class _SplashScreenState extends State<SplashScreen> {
             getIt<GlobalConfigVars>().userPayload =
                 UserPayloadModel.fromJson(decodedToken);
 
-            context.push("/home");
+            context.pushReplacement("/home");
           } else {
-            context.push("/login");
+            context.pushReplacement("/login");
           }
         } else {
-          context.push("/login");
+          context.pushReplacement("/login");
         }
       });
     });

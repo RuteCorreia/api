@@ -1,5 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/executor/data/models/excutores_model.dart';
+import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -56,6 +61,14 @@ class CreateAplicacaoReportService implements PdfGenerator {
 
     int? epochAplicacao = int.tryParse(aplicacao.data!);
     final dataAplicacao = DateTime.fromMillisecondsSinceEpoch(epochAplicacao!);
+    final pilotoSelected = getIt<GlobalConfigVars>().pilotos.firstWhere(
+        (piloto) => aplicacao.piloto == piloto.nomePiloto,
+        orElse: () => const PilotoModel(nomePiloto: '', cdac: 'COD.ANAC'));
+    final executorSelected = getIt<GlobalConfigVars>().executores.firstWhere(
+        (executor) => aplicacao.executor == executor.nome,
+        orElse: () => const ExecutorModel(cfta: 'CFTA'));
+    final engenheiroSelected =
+        getIt<GlobalConfigVars>().engenheiros.firstOrNull;
 
     pdf.addPage(
       pw.Page(
@@ -244,7 +257,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'I.E/R.G: ${aplicacao.contratante?.inscricaoEstadual != '0' ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
+                                      'I.E/R.G: ${aplicacao.contratante!.inscricaoEstadual!.isNotEmpty ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -256,7 +269,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           width: 250,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -267,14 +280,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Padding(
-                            padding: const pw.EdgeInsets.only(left: 10, top: 5),
+                            padding: const pw.EdgeInsets.only(left: 5, top: 2),
                             child: pw.Text(
                                 'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
+                                maxLines: 2,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               top: pw.BorderSide(
@@ -738,7 +752,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA',
+                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -897,7 +911,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         width: 80,
                         alignment: pw.Alignment.center,
                         child: pw.Text(
-                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeDosagem ?? ''}"),
+                            " ${aplicacao.relatorioAplicacao?.volumeAplicacao ?? ''} ${aplicacao.relatorioAplicacao?.unidadeVolumeAplicacao ?? ''}"),
                         decoration: const pw.BoxDecoration(
                           border: pw.Border(
                             top: pw.BorderSide(
@@ -1688,7 +1702,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                         fit: pw.BoxFit.cover),
                                   ),
                                 pw.Text(
-                                    'Contratante ${aplicacao.dadosResponsavel?.nomeCompleto ?? ''}',
+                                    aplicacao.dadosResponsavel?.nomeCompleto ??
+                                        '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1706,29 +1721,25 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text('_______________________________',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('Eng. Agro',
+                                if (engenheiroSelected?.assinatura != null &&
+                                    engenheiroSelected!.assinatura!.isNotEmpty)
+                                  pw.Container(
+                                    height: 22,
+                                    width: 100,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          base64Decode(
+                                              engenheiroSelected.assinatura!),
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
+                                pw.Text(
+                                    engenheiroSelected?.nomeEngenheiro ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CREA 125458',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                              ]),
-                          pw.Column(
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text('_______________________________',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('Piloto',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('COD. ANAC',
+                                pw.Text(
+                                    'CREA ${engenheiroSelected?.crea ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
@@ -1736,14 +1747,47 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
                               children: [
-                                pw.Text('_______________________________',
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('Executor',
+                                if (pilotoSelected.assinatura != null &&
+                                    pilotoSelected.assinatura!.isNotEmpty)
+                                  pw.Container(
+                                    height: 22,
+                                    width: 100,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          base64Decode(
+                                              pilotoSelected.assinatura!),
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
+                                pw.Text(aplicacao.piloto ?? '',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA',
+                                pw.Text('CANAC ${pilotoSelected.cdac ?? ''}',
+                                    textAlign: pw.TextAlign.left,
+                                    style: pw.TextStyle(
+                                        fontSize: 8, font: newRoman)),
+                              ]),
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.start,
+                              children: [
+                                if (executorSelected.assinatura != null &&
+                                    executorSelected.assinatura!.isNotEmpty)
+                                  pw.Container(
+                                    height: 22,
+                                    width: 100,
+                                    child: pw.Image(
+                                        pw.MemoryImage(
+                                          base64Decode(
+                                              executorSelected.assinatura!),
+                                        ),
+                                        fit: pw.BoxFit.cover),
+                                  ),
+                                pw.Text(aplicacao.executor ?? '',
+                                    textAlign: pw.TextAlign.left,
+                                    style: pw.TextStyle(
+                                        fontSize: 8, font: newRoman)),
+                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),

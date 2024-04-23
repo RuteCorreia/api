@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/core/utils/save_local_controller.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
+import 'package:flytec/features/auth/service/auth_service.dart';
 import 'package:flytec/features/home/controller/weather_controller.dart';
 import 'package:flytec/features/home/models/weather.dart';
 import 'package:flytec/features/home/presentation/widgets/assinatura_select.dart';
@@ -67,6 +72,8 @@ class _HomePagaState extends State<HomePaga> {
       _reportAplicationController =
           ReportAplicationController(updateView: _updateView);
       await _initializationAplicationsReports();
+      _signature = base64Decode(getIt<GlobalConfigVars>().assinatura!);
+      setState(() {});
     });
   }
 
@@ -92,7 +99,9 @@ class _HomePagaState extends State<HomePaga> {
           width: MediaQuery.of(context).size.width * 0.7,
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ListView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 DrawerHeader(
                     child: Center(
@@ -100,11 +109,12 @@ class _HomePagaState extends State<HomePaga> {
                             height: 200))),
                 CustomDrawerButton(
                   icon: Icons.edit,
-                  text: "Cadastrar Assinatura",
+                  text: _signature != null
+                      ? "Visualizar Assinatura"
+                      : "Cadastrar Assinatura",
                   onClick: () async {
                     context.pop();
                     if (_signature != null) {
-                      // ignore: use_build_context_synchronously
                       await showDialog(
                           context: context,
                           useSafeArea: true,
@@ -119,7 +129,6 @@ class _HomePagaState extends State<HomePaga> {
                           });
                       return;
                     }
-                    // ignore: use_build_context_synchronously
                     await context.push('/addsignature', extra: {
                       'onUpdateSignature': _createSignature,
                     }).whenComplete(() async => await showDialog(
@@ -136,6 +145,19 @@ class _HomePagaState extends State<HomePaga> {
                         }));
                   },
                 ),
+                CustomDrawerButton(
+                  onClick: () async {
+                    await getIt<SaveLocalDataController>()
+                        .removeLocalPreloadData();
+                    Util.Token = '';
+                    getIt<GlobalConfigVars>().clearGlobalConfigVars();
+                    await getIt<AuthService>().removeToken();
+                    // ignore: use_build_context_synchronously
+                    context.pushReplacement('/login');
+                  },
+                  text: 'Sair',
+                  icon: Icons.logout,
+                )
               ],
             ),
           ),
@@ -145,18 +167,16 @@ class _HomePagaState extends State<HomePaga> {
         child: Column(
           children: [
             Container(
-              width: 360,
               height: 103,
               padding: const EdgeInsets.only(
                 top: 54,
                 left: 16,
-                right: 32,
+                right: 16,
                 bottom: 32,
               ),
               clipBehavior: Clip.antiAlias,
               decoration: const BoxDecoration(color: Colors.white),
               child: Row(
-                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -165,20 +185,16 @@ class _HomePagaState extends State<HomePaga> {
                       _openDrawer();
                     },
                   ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: SizedBox(
-                      child: Text(
-                        'Dashboard',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Color.fromARGB(255, 121, 118, 118),
-                          fontSize: 20,
-                          fontFamily: 'Inter',
-                          fontWeight: FontWeight.w600,
-                          height: 0.07,
-                        ),
-                      ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.25),
+                  const Text(
+                    'Dashboard',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color.fromARGB(255, 121, 118, 118),
+                      fontSize: 20,
+                      fontFamily: 'Inter',
+                      fontWeight: FontWeight.w600,
+                      height: 0.07,
                     ),
                   ),
                 ],
@@ -445,70 +461,100 @@ class _HomePagaState extends State<HomePaga> {
                     },
                     text: "Minhas Atividades",
                   ),
-                  const SizedBox(height: 10),
-                  CustomActionButton(
-                    imageUrl: "assets/images/edit_icon.svg",
-                    onClick: () {
-                      showAdaptiveDialog<String>(
-                        context: context,
-                        useSafeArea: true,
-                        builder: (BuildContext context) => AlertDialog.adaptive(
-                          insetPadding: const EdgeInsets.all(32),
-                          title: const SizedBox(
-                            width: 244,
-                            height: 30,
-                            child: Text(
-                              'Escolha o tipo de relatório',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 121, 118, 118),
-                                fontSize: 16,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                                height: 0.09,
+                  if (getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Executor") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("TecnicoExecutor")) ...[
+                    const SizedBox(height: 10),
+                    CustomActionButton(
+                      imageUrl: "assets/images/edit_icon.svg",
+                      onClick: () {
+                        showAdaptiveDialog<String>(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (BuildContext context) =>
+                              AlertDialog.adaptive(
+                            insetPadding: const EdgeInsets.all(32),
+                            title: const SizedBox(
+                              width: 244,
+                              height: 30,
+                              child: Text(
+                                'Escolha o tipo de relatório',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 121, 118, 118),
+                                  fontSize: 16,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500,
+                                  height: 0.09,
+                                ),
                               ),
                             ),
-                          ),
-                          content: SizedBox(
-                            height: 200,
-                            child: Column(
-                              children: [
-                                CustomDialogButton(
-                                  leftIcon:
-                                      "assets/images/icomoon_free_fire.svg",
-                                  text: "Aplicação",
-                                  onClick: () {
-                                    _reportAplicationController
-                                        ?.setUpdateUpdateView(_updateView);
-                                    context.push("/aplications", extra: {
-                                      'reportAplicationController':
-                                          _reportAplicationController
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                CustomDialogButton(
-                                  leftIcon: "assets/images/fire.svg",
-                                  onClick: () {
-                                    context.pop();
-                                    context.push("/combateincendio",
-                                        extra: "dd");
-                                  },
-                                  text: "Combate a incêndio",
-                                )
-                              ],
+                            content: SizedBox(
+                              height: 200,
+                              child: Column(
+                                children: [
+                                  CustomDialogButton(
+                                    leftIcon:
+                                        "assets/images/icomoon_free_fire.svg",
+                                    text: "Aplicação",
+                                    onClick: () {
+                                      _reportAplicationController
+                                          ?.setUpdateUpdateView(_updateView);
+                                      context.push("/aplications", extra: {
+                                        'reportAplicationController':
+                                            _reportAplicationController
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  CustomDialogButton(
+                                    leftIcon: "assets/images/fire.svg",
+                                    onClick: () {
+                                      context.pop();
+                                      context.push("/combateincendio",
+                                          extra: "dd");
+                                    },
+                                    text: "Combate a incêndio",
+                                  )
+                                ],
+                              ),
                             ),
+                            actions: const <Widget>[],
                           ),
-                          actions: const <Widget>[],
-                        ),
-                      );
+                        );
+                      },
+                      text: "Relatório Operacional",
+                    ),
+                  ],
+                  const SizedBox(height: 10),
+                  CustomActionButton(
+                    imageUrl: "assets/images/tools.svg",
+                    sizeIcon: 30,
+                    onClick: () {
+                      context.push('/manutencao');
                     },
-                    text: "Relatório Operacional",
+                    text: "Manutenção",
                   ),
+                  const SizedBox(height: 10),
+                  CustomActionButton(
+                    imageUrl: "assets/images/truck.svg",
+                    sizeIcon: 30,
+                    onClick: () {},
+                    text: "Frota",
+                  ),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

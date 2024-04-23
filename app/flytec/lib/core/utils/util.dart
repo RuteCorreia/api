@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -56,11 +57,12 @@ class Util {
                 text: "Galeria",
                 icon: Icons.image,
                 onClick: () async {
-                  try {
+                  try {                    
                     final XFile? image = await _imagePicker.pickImage(
                         source: ImageSource.gallery,
                         imageQuality: 65,
                         maxHeight: 800,
+                        requestFullMetadata : Platform.isAndroid,
                         maxWidth: 800);
                     pathImage = image!.path;
                     // ignore: use_build_context_synchronously

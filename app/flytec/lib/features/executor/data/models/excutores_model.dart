@@ -16,7 +16,6 @@ String executorModelToJson(List<ExecutorModel> data) =>
 class ExecutorModel extends ExecutorEntity {
   const ExecutorModel({
     super.idExecutor,
-    super.idEmpresa,
     super.nome,
     super.email,
     super.senha,
@@ -25,8 +24,7 @@ class ExecutorModel extends ExecutorEntity {
   });
 
   factory ExecutorModel.fromJson(Map<String, dynamic> json) => ExecutorModel(
-        idExecutor: json["idExecutor"],
-        idEmpresa: json["idEmpresa"],
+        idExecutor: json["id"],
         nome: json["nome"],
         email: json["email"],
         senha: json["senha"],
@@ -36,7 +34,6 @@ class ExecutorModel extends ExecutorEntity {
 
   Map<String, dynamic> toJson() => {
         "idExecutor": idExecutor,
-        "idEmpresa": idEmpresa,
         "nome": nome,
         "email": email,
         "senha": senha,

@@ -5,9 +5,11 @@ import 'package:flytec/features/altura_voo/data/models/altura_voo_model.dart';
 import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/aplications/data/models/clientes_model.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
+import 'package:flytec/features/aplications/models/contratante.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
+import 'package:flytec/features/engenheiros/data/models/engenheiro_model.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
@@ -24,10 +26,12 @@ class GlobalConfigVars {
   late List<AlvoBiologicoModel> alvosBiologicos = [];
   late List<VeiculanteModel> veiculantes = [];
   late List<AeroNaveModel> aeronaves = [];
+  late List<EngenheiroModel> engenheiros = [];
   late List<EquipamentoModel> equipamentos = [];
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<BulaModel> bulas = [];
   late List<AlturaVooModel> alturaVoo = [];
+  Contratante? contratanteCombateIncendio;
 
   List<String> logs = [];
   late UserPayloadModel userPayload;
@@ -66,6 +70,10 @@ class GlobalConfigVars {
     aeronaves = data!;
   }
 
+  void setEngenheiros({required List<EngenheiroModel>? data}) {
+    engenheiros = data!;
+  }
+
   void setProdutos({required List<ProdutoModel>? produtosData}) {
     produtos = produtosData!;
   }
@@ -95,7 +103,6 @@ class GlobalConfigVars {
     required Map<String, dynamic> preloadJson,
   }) {
     try {
-      print("SETADO COM SUCESSO ");
       clientes = clientesModelFromJson(preloadJson["clientes"]);
       culturas = culturaModelFromJson(preloadJson["culturas"]);
       executores = executorModelFromJson(preloadJson["executores"]);
@@ -107,7 +114,7 @@ class GlobalConfigVars {
       tiposProdutos = tipoProdutoModelFromJson(preloadJson["tipoprodutos"]);
       alturaVoo = alturaVooModelFromJson(preloadJson["alturavoo"]);
       bulas = bulaModelFromJson(preloadJson["bulas"]);
-
+      assinatura = preloadJson["assinatura"];
       alvosBiologicos =
           alvoBiologicoModelFromJson(preloadJson["alvosBiologicos"]);
       Util.Token = preloadJson["token"];
@@ -120,6 +127,7 @@ class GlobalConfigVars {
     selectedPilot = "";
     selectedExecutor = "";
     selectedCultura = "";
+    contratanteCombateIncendio = null;
     dgs = "";
     logs.clear();
     produtoAplicado = null;

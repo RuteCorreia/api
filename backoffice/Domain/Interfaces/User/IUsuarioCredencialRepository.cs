@@ -9,4 +9,6 @@ public interface IUsuarioCredencialRepository
     Task<IEnumerable<UsuarioCredencial>> GetUsuarioCredencialsAsync(Guid userId);
 
     Task RemoveAllByUserIdAsync(Guid userId);
+
+    Task<bool> VerificarSeEmpresaPossuiEngenheiroAtivo(int? idEmpresa, string idUsuario = "");
 }

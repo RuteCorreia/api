@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
 
 class AirCraftPrefixSelect extends StatelessWidget {
   final Function(String) onChanged;
@@ -6,11 +8,6 @@ class AirCraftPrefixSelect extends StatelessWidget {
 
   final TextEditingController _textFlightHeight = TextEditingController();
 
-  final List<String> _airCrafts = [
-    'PTX 001',
-    'PTX 002',
-    'PTX 003',
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +19,7 @@ class AirCraftPrefixSelect extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
               child: ListView.builder(
-                itemCount: _airCrafts.length,
+                itemCount: getIt<GlobalConfigVars>().aeronaves.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => MaterialButton(
@@ -32,14 +29,19 @@ class AirCraftPrefixSelect extends StatelessWidget {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      onChanged(_airCrafts[index]);
+                      onChanged(
+                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!);
                       Navigator.of(context).pop();
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(_airCrafts[index],
+                          child: Text(
+                              getIt<GlobalConfigVars>()
+                                      .aeronaves[index]
+                                      .prefixo ??
+                                  '',
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,

@@ -2,6 +2,7 @@
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Entidades.User;
+using Domain.Enums;
 using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -53,7 +54,7 @@ public class UserAuthService : IUserAuthService
                     //if (usuario.PrimeiroAcesso)
                     //    token.Append("PrimeiroAcesso");
                     //else
-                        token.Append(await GenerateToken(identityUser, usuario.Nome, usuario.NrUsuario));
+                        token.Append(await GenerateToken(identityUser, usuario));
 
                     return (true, token.ToString());
                 }
@@ -65,6 +66,10 @@ public class UserAuthService : IUserAuthService
     public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request, string loggedUserId)
     {
         var resultMsg = new StringBuilder();
+
+        if(VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(request.Funcoes))     
+             return (false, resultMsg.Append("Não é permitido cadastrar usuário como piloto e executor.").ToString());
+
         var loggedIdentityUser = await _userManager.FindByIdAsync(loggedUserId);
         if(loggedIdentityUser is not null)
         {
@@ -81,6 +86,19 @@ public class UserAuthService : IUserAuthService
             if (!identityResult.Succeeded)
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
 
+            var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+
+            if(request.Funcoes.Any(x => x.Funcao == ERole.EngAgronomoCoord))
+            {
+                var jaExisteEngenheiro = await _usuarioCredencialRepository.VerificarSeEmpresaPossuiEngenheiroAtivo(loggedUserTblUsuario.IdEmpresa);
+                if (jaExisteEngenheiro)
+                {
+                    await _userManager.DeleteAsync(identityUser);
+                    return (false, resultMsg.Append("Engenheiro já existente na empresa").ToString());
+                }
+            }
+
+
             var roleListAsString = request.Funcoes.Select(r => r.Funcao.ToString());
             foreach (var role in roleListAsString)
             {
@@ -96,7 +114,7 @@ public class UserAuthService : IUserAuthService
                 return (false, resultMsg.Append(GetIdentityResultErrors(identityRoleResult)).ToString());
             }
 
-            var loggedUserTblUsuario = await _usuarioRepository.GetByUserIdAsync(loggedUserId);
+            
             await CreateUser(request, identityUser, loggedUserTblUsuario.IdEmpresa);
             await CreateUserCredencial(identityUser, request.Funcoes);
 
@@ -140,22 +158,28 @@ public class UserAuthService : IUserAuthService
         await _usuarioCredencialRepository.AddListAsync(list);
     }
 
-    private async Task<string> GenerateToken(IdentityUser user, string userName, int nrUsuario)
+    private bool VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(IEnumerable<RoleObject> funcoes)
     {
-        var claims = await GetUserClaims(user, userName, nrUsuario);
+        return funcoes.Any(x => x.Funcao == ERole.Piloto) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
+    }
+
+    private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
+    {
+        var claims = await GetUserClaims(identityUser, usuario);
         var identityClaims = new ClaimsIdentity(claims);
         return WriteToken(identityClaims);
     }
 
-    private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser user, string userName, int nrUsuario)
+    private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser identityUser, Usuario usuario)
     {
-        var roles = await _userManager.GetRolesAsync(user);
+        var roles = await _userManager.GetRolesAsync(identityUser);
         var claims = new List<Claim>
         {
-            new("NrUsuario", nrUsuario.ToString()),
-            new(JwtRegisteredClaimNames.Sub, user.Id),
-            new(JwtRegisteredClaimNames.Name, userName),
-            new(JwtRegisteredClaimNames.Email, user.Email),
+            new("NrUsuario", usuario.NrUsuario.ToString()),
+            new("IdUsuario", usuario.Id.ToString()),
+            new(JwtRegisteredClaimNames.Sub, identityUser.Id),
+            new(JwtRegisteredClaimNames.Name, usuario.Nome),
+            new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()),
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
@@ -219,6 +243,10 @@ public class UserAuthService : IUserAuthService
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
+
+        if (VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(request.Funcoes))
+            return (false, resultMsg.Clear().Append("Não é permitido colocar o usuário como piloto e executor.").ToString());
+
         var userToUpdate = await GetUserEntityByIdAsync(id);
         if (userToUpdate is not null)
         {
@@ -227,10 +255,20 @@ public class UserAuthService : IUserAuthService
             {
                 resultMsg.Clear();
                 bool allOk = true;
+
+                if (request.Funcoes.Any(x => x.Funcao == ERole.EngAgronomoCoord))
+                {
+                    var jaExisteEngenheiro = await _usuarioCredencialRepository.VerificarSeEmpresaPossuiEngenheiroAtivo(userToUpdate.IdEmpresa, userToUpdate.Id.ToString());
+                    if (jaExisteEngenheiro)
+                    {
+                        return (false, resultMsg.Append("Engenheiro já existente na empresa").ToString());
+                    }
+                }
+
                 var identityUserRoles = await _userManager.GetRolesAsync(identityUser);
                 if (identityUser.Email != request.Email)
                 {                    
-                    var changeEmailToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Email, true);
+                    var changeEmailToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, request.Email, true);
                     var changeEmailResult = await _userManager.ChangeEmailAsync(identityUser, request.Email, changeEmailToken);
                     if (!changeEmailResult.Succeeded)
                     {
@@ -241,7 +279,7 @@ public class UserAuthService : IUserAuthService
 
                 if(identityUser.PhoneNumber != request.Telefone)
                 {
-                    var changePhoneToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, userToUpdate.Telefone ?? "");
+                    var changePhoneToken = await GenerateChangeEmailOrPhoneTokenAsync(identityUser, request.Telefone ?? "");
                     var changePhoneResult = await _userManager.ChangePhoneNumberAsync(identityUser, request.Telefone ?? "", changePhoneToken);
                     if (!changePhoneResult.Succeeded)
                     {
@@ -259,7 +297,7 @@ public class UserAuthService : IUserAuthService
                         resultMsg.Append(GetIdentityResultErrors(updateIdentityUserResult));
                         allOk = false;
                     }
-                }
+                }                               
 
                 var requestRole = request.Funcoes.Select(r => r.Funcao.ToString());
                 var rolesNotInIdentity = requestRole.Except(identityUserRoles);

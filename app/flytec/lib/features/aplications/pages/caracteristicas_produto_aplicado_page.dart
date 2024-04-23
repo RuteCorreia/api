@@ -5,11 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/caracteristicas_produto_aplicado.dart';
 import 'package:flytec/features/aplications/pages/images/upload_foto.dart';
+import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:intl/intl.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:sizer/sizer.dart';
@@ -48,7 +50,7 @@ class _CaracteristicasProdutoAplicadoPageState
   TextEditingController? _numeroReceituarioAgronomico;
   String? _numeroReceituarioAgronomicoText = '';
   DateTime? _dataSelecionada;
-
+  List<AlvoBiologicoModel> _secondaryAlvoBiologicos = [];
   @override
   void initState() {
     super.initState();
@@ -392,7 +394,7 @@ class _CaracteristicasProdutoAplicadoPageState
                             content: SizedBox(
                               width: double.maxFinite,
                               child: ProductNameSelect(
-                                  onChangedProductName: (name, produto) {
+                                  onChangedProductName: (name, produto, bula) {
                                 setState(() {
                                   if (name.isEmpty) return;
 
@@ -414,16 +416,30 @@ class _CaracteristicasProdutoAplicadoPageState
                                         produto.tipoFormulacao.toString();
                                     _doseProdutoComercialHectare?.text =
                                         produto.doseProdutoHectare ?? '';
-                                    if (produto.cultura != null &&
-                                        produto.cultura!.isNotEmpty) {
+                                    if (getIt<GlobalConfigVars>()
+                                        .selectedCultura
+                                        .isEmpty) {
                                       getIt<GlobalConfigVars>()
                                           .selectedCultura = produto.cultura!;
                                     }
 
-                                    if (produto.alvoBiologico != null &&
-                                        produto.alvoBiologico!.isNotEmpty) {
-                                      _alvoBiologico = produto.alvoBiologico;
+                                    if (bula?.bulaAplicacoes != null &&
+                                        bula!.bulaAplicacoes!.isNotEmpty) {
+                                      final bulaAplicacoes = bula.bulaAplicacoes
+                                          ?.where((bulaAplicacoes) =>
+                                              bulaAplicacoes.idCultura ==
+                                              produto.culturaModel?.idCultura)
+                                          .toList() as List<BulaAplicacoes>;
+                                      final firstBula = bulaAplicacoes.first;
+                                      _secondaryAlvoBiologicos =
+                                          getIt<GlobalConfigVars>()
+                                              .alvosBiologicos
+                                              .where((element) =>
+                                                  element.id ==
+                                                  firstBula.idAlvoBiologico)
+                                              .toList();
                                     }
+
                                     _adjuvante?.text = produto.adjuvante!;
                                     _adjuvanteText = produto.adjuvante!;
 
@@ -458,7 +474,7 @@ class _CaracteristicasProdutoAplicadoPageState
                                 classfication: _classfication,
                                 onSelect: (value) {
                                   setState(() {
-                                    _classificacaoToxicologica = value!+1;
+                                    _classificacaoToxicologica = value! + 1;
                                   });
                                 }));
                       });
@@ -529,12 +545,15 @@ class _CaracteristicasProdutoAplicadoPageState
                             backgroundColor: const Color(0xFFF5F5F5),
                             content: SizedBox(
                               width: double.maxFinite,
-                              child: BiologicTargetSelect(onChanged: (value) {
-                                setState(() {
-                                  _alvoBiologico = value;
-                                });
-                                Util.closeKeyBoard();
-                              }),
+                              child: BiologicTargetSelect(
+                                  alvosBiologicosSecondary:
+                                      _secondaryAlvoBiologicos,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      _alvoBiologico = value;
+                                    });
+                                    Util.closeKeyBoard();
+                                  }),
                             ));
                       });
                 },

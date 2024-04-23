@@ -62,6 +62,9 @@ namespace Infra.Migrations
                     b.Property<string>("SerialNumber")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("Aeronave");
@@ -127,11 +130,11 @@ namespace Infra.Migrations
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdExecutor")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdExecutor")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("IdPiloto")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdPiloto")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("StatusEnvio")
                         .IsRequired()
@@ -638,8 +641,8 @@ namespace Infra.Migrations
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdExecutor")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdExecutor")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("IdPista")
                         .HasColumnType("int");
@@ -811,8 +814,8 @@ namespace Infra.Migrations
                     b.Property<int?>("IdFrota")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdPiloto")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdPiloto")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int?>("KmFinal")
                         .HasColumnType("int");
@@ -1043,50 +1046,6 @@ namespace Infra.Migrations
                     b.ToTable("PlanoDeContrato");
                 });
 
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Engenheiro.Engenheiro", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Assinatura")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CREA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PorcentagemComissao")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.ToTable("Engenheiro");
-                });
-
             modelBuilder.Entity("Domain.Entidades.Cadastros.Equipamento.Equipamento", b =>
                 {
                     b.Property<int>("Id")
@@ -1123,44 +1082,6 @@ namespace Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Estados");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Executor.Executor", b =>
-                {
-                    b.Property<int>("IdExecutor")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdExecutor"));
-
-                    b.Property<byte[]>("Assinatura")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("CFTA")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("IdExecutor");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.ToTable("Executor");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Frota.Frota", b =>
@@ -1227,6 +1148,31 @@ namespace Infra.Migrations
                     b.ToTable("ManutencaoAeronave");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Descricao")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdManutencaoAeronave")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Revisado")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdManutencaoAeronave");
+
+                    b.ToTable("ManutencaoAeronaveItemsRevisao");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Menu.Menu", b =>
                 {
                     b.Property<int>("MenuItemId")
@@ -1274,45 +1220,6 @@ namespace Infra.Migrations
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("MenuUsuario");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Piloto.Piloto", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Assinatura")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CANAC")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PorcentagemComissao")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Piloto");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Pistas.Pista", b =>
@@ -1761,11 +1668,11 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdEmpresa");
 
-                    b.HasOne("Domain.Entidades.Cadastros.Executor.Executor", "Executor")
+                    b.HasOne("Domain.Entidades.User.Usuario", "Executor")
                         .WithMany()
                         .HasForeignKey("IdExecutor");
 
-                    b.HasOne("Domain.Entidades.Cadastros.Piloto.Piloto", "Piloto")
+                    b.HasOne("Domain.Entidades.User.Usuario", "Piloto")
                         .WithMany()
                         .HasForeignKey("IdPiloto");
 
@@ -1943,7 +1850,7 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdEmpresa");
 
-                    b.HasOne("Domain.Entidades.Cadastros.Executor.Executor", "Executor")
+                    b.HasOne("Domain.Entidades.User.Usuario", "Executor")
                         .WithMany()
                         .HasForeignKey("IdExecutor");
 
@@ -1988,7 +1895,7 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdFrota");
 
-                    b.HasOne("Domain.Entidades.Cadastros.Piloto.Piloto", "Piloto")
+                    b.HasOne("Domain.Entidades.User.Usuario", "Piloto")
                         .WithMany()
                         .HasForeignKey("IdPiloto");
 
@@ -2035,26 +1942,6 @@ namespace Infra.Migrations
                     b.Navigation("Cultura");
                 });
 
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Engenheiro.Engenheiro", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Executor.Executor", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa");
-
-                    b.Navigation("Empresa");
-                });
-
             modelBuilder.Entity("Domain.Entidades.Cadastros.Frota.Frota", b =>
                 {
                     b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
@@ -2071,6 +1958,15 @@ namespace Infra.Migrations
                         .HasForeignKey("IdAeronave");
 
                     b.Navigation("Aeronave");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", "ManutencaoAeronave")
+                        .WithMany()
+                        .HasForeignKey("IdManutencaoAeronave");
+
+                    b.Navigation("ManutencaoAeronave");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.MenuUsuario.MenuUsuario", b =>

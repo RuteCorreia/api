@@ -16,6 +16,8 @@ import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/bulas/domains/usecases/get_bula_usecase.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 import 'package:flytec/features/cultura/domain/usecases/get_culturas_usecase.dart';
+import 'package:flytec/features/engenheiros/data/models/engenheiro_model.dart';
+import 'package:flytec/features/engenheiros/domain/usecases/get_engenheiro_usecase.dart';
 import 'package:flytec/features/equipamento/data/models/equipamento_model.dart';
 import 'package:flytec/features/equipamento/domain/usecases/get_equipamentos_usecase.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
@@ -175,6 +177,12 @@ class _LoginPageState extends State<LoginPage> {
                   getIt<GlobalConfigVars>().setAssinatura(newAssinatura: r);
                 });
               }),
+              getIt<GetEngenheiroUseCase>().call(NoParams()).then((value) {
+                value.fold((l) {}, (r) {
+                  final engenheiros = r as List<EngenheiroModel>;
+                  getIt<GlobalConfigVars>().setEngenheiros(data: engenheiros);
+                });
+              }),
             ]);
 
             response.whenComplete(() {
@@ -182,13 +190,12 @@ class _LoginPageState extends State<LoginPage> {
                   getIt<SaveLocalDataController>().initializeLocalData();
               getIt<SaveLocalDataController>()
                   .salvarLocalPreloadData(preloadData: preloadData)
-                  .then((value) {           
-              });
+                  .then((value) {});
               setState(() {
                 isLoading = false;
               });
               Future.delayed(const Duration(seconds: 1), () {
-                context.push("/home");
+                context.pushReplacement("/home");
               });
             });
           }
