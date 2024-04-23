@@ -27,8 +27,8 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            var combustiveis = await _aeronaveService.GetAllAsync();
-            return Ok(combustiveis);
+            var aeronaves = await _aeronaveService.GetAllAsync();
+            return Ok(aeronaves);
         }
         catch (Exception ex)
         {
@@ -60,13 +60,17 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            if (ModelState.IsValid)
+            var aeronaves = await _aeronaveService.GetAllAsync();
+            if(!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower())))
             {
-                await _aeronaveService.AddAsync(obj);
-                return Ok();
+                if (ModelState.IsValid)
+                {
+                    await _aeronaveService.AddAsync(obj);
+                    return Ok();
+                }
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
         }
         catch (Exception ex)
         {
@@ -79,23 +83,27 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            if (ModelState.IsValid)
+            var aeronaves = await _aeronaveService.GetAllAsync();
+            if (!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower()) && x.Id != obj.Id))
             {
-                var objeto = await _aeronaveService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                if (ModelState.IsValid)
                 {
-                    obj.Id = objeto.Id;
+                    var objeto = await _aeronaveService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
 
-                    await _aeronaveService.UpdateAsync(obj);
-                    return Ok();
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                        await _aeronaveService.UpdateAsync(obj);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
                 }
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
         }
         catch (Exception ex)
         {
