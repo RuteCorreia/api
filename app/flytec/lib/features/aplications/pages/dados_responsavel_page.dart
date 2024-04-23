@@ -86,7 +86,7 @@ class _DadosResponsavelPageState extends State<DadosResponsavelPage> {
         _nome.text = _dadosResponsavel!.nomeCompleto!;
         _documento.text = _dadosResponsavel!.documento!;
         _telefone.text = _dadosResponsavel!.telefone!;
-        _signature = _dadosResponsavel!.assinaturaResponsavel!;
+        _signature = _dadosResponsavel?.assinaturaResponsavel;
         setState(() {});
       }
     });
