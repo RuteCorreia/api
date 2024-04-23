@@ -102,7 +102,15 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/sendicon.svg",
                 text: "Enviar",
                 showRightcon: false,
-                onClick: () {},
+                onClick: () {
+                  final mandatoryFields = _reportAplicationController
+                      .listaAplicacao![_index]
+                      .verifyFieldsMandatory(showToast: true);
+                  if (mandatoryFields) {
+                    Util.toastSucesso('ENVIADO');
+                  }
+                  context.pop();
+                },
               ),
               const SizedBox(height: 10),
               CustomDialogButton(
