@@ -1,6 +1,9 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
-import 'package:intl/intl.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -110,35 +113,46 @@ class CreateFirefightingReportService implements PdfGenerator {
                                       border: pw.Border(
                                           right: pw.BorderSide(width: 1.5),
                                           bottom: pw.BorderSide(width: 1.5))),
-                                  child: pw.Column(children: [
-                                    pw.Text('N Aviso',
-                                        textAlign: pw.TextAlign.center,
-                                        style: const pw.TextStyle(
-                                          fontSize: 12,
-                                        )),
-                                    pw.Text(
-                                        _firefighting.numeroAviso?.toString() ??
-                                            ''),
-                                  ])),
+                                  child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.center,
+                                      children: [
+                                        pw.Text('N Aviso',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                        pw.Text(
+                                            _firefighting.numeroAviso
+                                                    ?.toString() ??
+                                                '',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                      ])),
                               pw.Container(
                                   height: 25,
                                   width: 143.5,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           bottom: pw.BorderSide(width: 1.5))),
-                                  child: pw.Column(children: [
-                                    pw.Text('HORÍMETRO DE ACIONAMENTO',
-                                        textAlign: pw.TextAlign.center,
-                                        style: const pw.TextStyle(
-                                          fontSize: 8,
-                                        )),
-                                    pw.Text(
-                                        _firefighting.horimetroAcionamento ??
+                                  child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.center,
+                                      children: [
+                                        pw.Text('HORÍMETRO DE ACIONAMENTO',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 8,
+                                            )),
+                                        pw.Text(_firefighting
+                                                .horimetroAcionamento ??
                                             ''),
-                                  ])),
+                                      ])),
                             ]),
                             pw.Container(
-                                height: 25,
+                                height: 15,
                                 width: 287,
                                 decoration: const pw.BoxDecoration(
                                     border: pw.Border(
@@ -147,54 +161,79 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 child: pw.Text('Pista de Operação',
                                     textAlign: pw.TextAlign.center,
                                     style: const pw.TextStyle(
-                                      fontSize: 12,
+                                      fontSize: 10,
                                     ))),
                             pw.Row(children: [
                               pw.Container(
-                                  height: 25,
+                                  height: 35,
                                   width: 95.6,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                     right: pw.BorderSide(width: 1.5),
                                   )),
-                                  child: pw.Column(children: [
-                                    pw.Text('Código ICAO',
-                                        textAlign: pw.TextAlign.center,
-                                        style: const pw.TextStyle(
-                                          fontSize: 12,
-                                        )),
-                                    pw.Text(
-                                        _firefighting.pista?.codigoICAOPista ??
-                                            ''),
-                                  ])),
+                                  child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.center,
+                                      children: [
+                                        pw.Text('Código ICAO',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                        pw.Text(
+                                            _firefighting
+                                                    .pista?.codigoICAOPista ??
+                                                '',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 12,
+                                            )),
+                                      ])),
                               pw.Container(
-                                  height: 25,
-                                  width: 95.6,
+                                  height: 35,
+                                  width: 90.6,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                     right: pw.BorderSide(width: 1.5),
                                   )),
-                                  child: pw.Column(children: [
-                                    pw.Text('Nome',
-                                        textAlign: pw.TextAlign.center,
-                                        style: const pw.TextStyle(
-                                          fontSize: 12,
-                                        )),
-                                    pw.Text(
-                                        _firefighting.pista?.nomePista ?? ''),
-                                  ])),
+                                  child: pw.Column(
+                                      crossAxisAlignment:
+                                          pw.CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.center,
+                                      children: [
+                                        pw.Text('Nome',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                        pw.Text(
+                                            _firefighting.pista?.nomePista ??
+                                                '',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                      ])),
                               pw.Container(
-                                  height: 25,
-                                  width: 95.6,
-                                  child: pw.Column(children: [
-                                    pw.Text('Coordenadas',
-                                        textAlign: pw.TextAlign.center,
-                                        style: const pw.TextStyle(
-                                          fontSize: 12,
-                                        )),
-                                    pw.Text(
-                                        'Latitude: ${_firefighting.pista?.latPista ?? ''}\nLongitude: ${_firefighting.pista?.longPista ?? ''}'),
-                                  ])),
+                                  height: 35,
+                                  width: 100.6,
+                                  child: pw.Column(
+                                      mainAxisAlignment:
+                                          pw.MainAxisAlignment.center,
+                                      children: [
+                                        pw.Text('Coordenadas',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                        pw.Text(
+                                            'Latitude: ${_firefighting.pista?.latPista ?? ''}\nLongitude: ${_firefighting.pista?.longPista ?? ''}',
+                                            textAlign: pw.TextAlign.center,
+                                            style: const pw.TextStyle(
+                                              fontSize: 10,
+                                            )),
+                                      ])),
                             ])
                           ])),
                       pw.Container(
@@ -264,17 +303,24 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Text('Horário de chegada na pista',
                                 textAlign: pw.TextAlign.center,
                                 style: const pw.TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                 )),
-                            pw.Text(_firefighting.pista != null &&
-                                    _firefighting.pista!.horarioChegadaPista !=
-                                        null
-                                ? DateFormat('dd/MM/yyyy')
-                                    .format(DateTime.fromMillisecondsSinceEpoch(
+                            pw.Text(
+                                _firefighting.pista != null &&
                                         _firefighting
-                                            .pista!.horarioChegadaPista!))
-                                    .toString()
-                                : ''),
+                                                .pista!.horarioChegadaPista !=
+                                            null
+                                    ? TimeOfDay.fromDateTime(
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                                _firefighting.pista!
+                                                    .horarioChegadaPista!))
+                                        .to24hours()
+                                        .toString()
+                                    : '',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 10,
+                                )),
                           ])),
                       pw.Container(
                           height: 25,
@@ -286,11 +332,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Text('Horímetro de chegada na pista',
                                 textAlign: pw.TextAlign.center,
                                 style: const pw.TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                 )),
                             pw.Text(
                                 _firefighting.pista?.horimetroChegadaPista ??
-                                    ''),
+                                    '',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 10,
+                                )),
                           ])),
                       pw.Container(
                           height: 25,
@@ -299,9 +349,13 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Text('Prefixo da Aeronave',
                                 textAlign: pw.TextAlign.center,
                                 style: const pw.TextStyle(
-                                  fontSize: 12,
+                                  fontSize: 10,
                                 )),
-                            pw.Text(_firefighting.prefixoAeronave ?? ''),
+                            pw.Text(_firefighting.prefixoAeronave ?? '',
+                                textAlign: pw.TextAlign.center,
+                                style: const pw.TextStyle(
+                                  fontSize: 10,
+                                )),
                           ])),
                     ])),
                 pw.Divider(height: 1, thickness: 1.5),
@@ -357,12 +411,12 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         border: pw.Border(
                                             right: pw.BorderSide(width: 1.5))),
                                     child: pw.Text(
-                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioDecolagem != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioDecolagem!)).toString() : '' : ''}',
+                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index < _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioDecolagem != null ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioDecolagem!)).to24hours().toString() : '' : ''}',
                                         textAlign: pw.TextAlign.center)),
                                 pw.SizedBox(
                                     width: 143.5,
                                     child: pw.Text(
-                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroDecolagem : ''}',
+                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index < _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroDecolagem : ''}',
                                         textAlign: pw.TextAlign.center)),
                               ])),
                           itemCount: 20,
@@ -418,12 +472,12 @@ class CreateFirefightingReportService implements PdfGenerator {
                                         border: pw.Border(
                                             right: pw.BorderSide(width: 1.5))),
                                     child: pw.Text(
-                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioPouso != null ? DateFormat('dd/MM/yyyy').format(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioPouso!)).toString() : '' : ''}',
+                                        '${index + 1} ${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index < _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horarioPouso != null ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(_firefighting.decolagemPousoFirefightingList![index]!.horarioPouso!)).to24hours().toString() : '' : ''}',
                                         textAlign: pw.TextAlign.center)),
                                 pw.SizedBox(
                                     width: 143.5,
                                     child: pw.Text(
-                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index <= _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroPouso : ''}',
+                                        '${_firefighting.decolagemPousoFirefightingList != null && _firefighting.decolagemPousoFirefightingList!.isNotEmpty && index < _firefighting.decolagemPousoFirefightingList!.length ? _firefighting.decolagemPousoFirefightingList![index]?.horimetroPouso : ''}',
                                         textAlign: pw.TextAlign.center)),
                               ])),
                           itemCount: 20,
@@ -433,11 +487,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                   ])
                 ]),
                 pw.Divider(height: 1, thickness: 1.5),
-                pw.SizedBox(width: 574, height: 35),
+                pw.SizedBox(
+                    width: 574,
+                    height: 35,
+                    child: pw.Text(_firefighting.observacao ?? '',
+                        textAlign: pw.TextAlign.center)),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.SizedBox(
                     width: 574,
-                    height: 20,
+                    height: 30,
                     child: pw.Row(children: [
                       pw.Container(
                           width: 191.3,
@@ -447,16 +505,16 @@ class CreateFirefightingReportService implements PdfGenerator {
                           child: pw.Column(children: [
                             pw.Container(
                               width: 191.3,
-                              height: 20,
+                              height: 15,
                               child: pw.Text(
-                                  'Horário de Término: ${_firefighting.horarioFinalOperacao}',
+                                  'Horário de Término: ${_firefighting.horarioFinalOperacao != null ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(_firefighting.horarioFinalOperacao!)).to24hours().toString() : ''}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             ),
                             pw.Container(
                               width: 191.3,
-                              height: 20,
+                              height: 15,
                               child: pw.Text(
-                                  'Horário de Corte: ${_firefighting.horarioCorte}',
+                                  'Horário de Corte: ${_firefighting.horarioCorte != null ? TimeOfDay.fromDateTime(DateTime.fromMillisecondsSinceEpoch(_firefighting.horarioCorte!)).to24hours().toString() : ''}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             )
                           ])),
@@ -468,14 +526,14 @@ class CreateFirefightingReportService implements PdfGenerator {
                           child: pw.Column(children: [
                             pw.Container(
                               width: 191.3,
-                              height: 20,
+                              height: 15,
                               child: pw.Text(
                                   'Horímetro de Término: ${_firefighting.horimetroFinalOperacao}',
                                   style: const pw.TextStyle(fontSize: 10)),
                             ),
                             pw.Container(
                               width: 191.3,
-                              height: 20,
+                              height: 15,
                               child: pw.Text(
                                   'Horímetro de Corte:  ${_firefighting.horimetroCorte}',
                                   style: const pw.TextStyle(fontSize: 10)),
@@ -521,9 +579,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                     child: pw.Row(children: [
                       pw.Container(
                         width: 287,
-                        height: 20,
+                        height: 15,
                         child: pw.Text('Coordenador da Base Operacional',
-                            textAlign: pw.TextAlign.start,
+                            textAlign: pw.TextAlign.center,
                             style: const pw.TextStyle(fontSize: 10)),
                         decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -532,9 +590,9 @@ class CreateFirefightingReportService implements PdfGenerator {
                       ),
                       pw.Container(
                           width: 287,
-                          height: 20,
+                          height: 15,
                           child: pw.Text('Comandante da Ocorrência',
-                              textAlign: pw.TextAlign.start,
+                              textAlign: pw.TextAlign.center,
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -623,21 +681,52 @@ class CreateFirefightingReportService implements PdfGenerator {
                       pw.Container(
                         width: 287,
                         height: 30,
-                        child: pw.Text('Assinatura:',
-                            style: const pw.TextStyle(fontSize: 10)),
+                        child: pw.Row(children: [
+                          pw.Text('Assinatura:',
+                              style: const pw.TextStyle(fontSize: 10)),
+                          if (_firefighting
+                                      .coordenadorBaseOperacional?.assinatura !=
+                                  null &&
+                              _firefighting.coordenadorBaseOperacional!
+                                  .assinatura!.isNotEmpty)
+                            pw.Image(
+                                pw.MemoryImage(
+                                  base64Decode(_firefighting
+                                      .coordenadorBaseOperacional!.assinatura!),
+                                ),
+                                fit: pw.BoxFit.fill,
+                                height: 100,
+                                width: 200),
+                        ]),
                         decoration: const pw.BoxDecoration(
                             border: pw.Border(
                                 bottom: pw.BorderSide(width: 1.5),
                                 right: pw.BorderSide(width: 1.5))),
                       ),
                       pw.Container(
-                          width: 287,
-                          height: 30,
-                          child: pw.Text('Assinatura:',
+                        width: 287,
+                        height: 30,
+                        child: pw.Row(children: [
+                          pw.Text('Assinatura:',
                               style: const pw.TextStyle(fontSize: 10)),
-                          decoration: const pw.BoxDecoration(
-                              border: pw.Border(
-                                  bottom: pw.BorderSide(width: 1.5)))),
+                          if (_firefighting.comandanteOcorrencia?.assinatura !=
+                                  null &&
+                              _firefighting
+                                  .comandanteOcorrencia!.assinatura!.isNotEmpty)
+                            pw.Image(
+                                pw.MemoryImage(
+                                  base64Decode(_firefighting
+                                      .comandanteOcorrencia!.assinatura!),
+                                ),
+                                fit: pw.BoxFit.fill,
+                                height: 100,
+                                width: 200),
+                        ]),
+                        decoration: const pw.BoxDecoration(
+                            border: pw.Border(
+                                bottom: pw.BorderSide(width: 1.5),
+                                right: pw.BorderSide(width: 1.5))),
+                      ),
                     ])),
                 pw.SizedBox(width: 574, height: 40),
                 pw.Divider(height: 1, thickness: 1.5),
