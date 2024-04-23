@@ -121,6 +121,7 @@ class Firefighting {
         horimetroCorte: json['horimetroCorte'] ?? '',
         capacidadeCargaAeronave: json['capacidadeCargaAeronave'] ?? '',
         totalAguaUtilizadaOperacao: json['totalAguaUtilizadaOperacao'] ?? '',
+        idComandanteOcorrencia: json['comandanteOcorrencia_id'] ?? 0,
         idCoordenadorBaseOperacional:
             json['coordenadorBaseOperacional_id'] ?? 0);
   }
