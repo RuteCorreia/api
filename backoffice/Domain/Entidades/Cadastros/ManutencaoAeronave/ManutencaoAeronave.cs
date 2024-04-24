@@ -16,6 +16,12 @@ namespace Domain.Entidades.Cadastros.ManutencaoAeronave
         public string? HorasInspecao { get; set; }
         public byte[]? Documento { get; set; }
 
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+
         [JsonIgnore]
         public virtual Aeronave.Aeronave? Aeronave { get; set; }
     }
