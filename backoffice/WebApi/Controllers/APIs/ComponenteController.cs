@@ -1,15 +1,14 @@
-﻿using Application.DTOs.Cadastros.Aeronave.Interface;
-using Application.DTOs.Cadastros.Aeronave.ViewModel;
-using Application.DTOs.Cadastros.Componentes.Interface;
+﻿using Application.DTOs.Cadastros.Componentes.Interface;
 using Application.DTOs.Cadastros.Componentes.ViewModel;
 using Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
