@@ -1622,7 +1622,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     pw.Container(
                                       alignment: pw.Alignment.bottomCenter,
                                       child: pw.Text(
-                                          'Valor: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
+                                          'Valor/${aplicacao.contratoPrestacaoServico?.unidadePreco ?? ''}: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
                                           style: pw.TextStyle(
                                               fontSize: 12, font: newRoman)),
                                     ),

@@ -6,32 +6,23 @@ class WelcomeText extends StatelessWidget {
   final String userName;
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       width: 328,
-      height: 30,
+      height: 50,
       child: Text.rich(
         TextSpan(
           children: [
             const TextSpan(
-              text: 'Bem vindo,',
+              text: 'Bem vindo, ',
               style: TextStyle(
                 color: Color.fromARGB(255, 121, 118, 118),
                 fontSize: 20,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w600,
-                height: 0.07,
               ),
             ),
-            const TextSpan(
-              text: ' ',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w600,
-                height: 0.07,
-              ),
-            ),
+           
             TextSpan(
               text: userName,
               style: const TextStyle(
@@ -39,7 +30,6 @@ class WelcomeText extends StatelessWidget {
                 fontSize: 20,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w800,
-                height: 0.07,
               ),
             ),
           ],
