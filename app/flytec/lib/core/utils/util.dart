@@ -137,7 +137,8 @@ class Util {
     );
   }
 
-  static toastAlerta(txt) {
+  static toastAlerta(txt, {bool showToast = true}) {
+    if (!showToast) return;
     return Fluttertoast.showToast(
       msg: txt,
       toastLength: Toast.LENGTH_SHORT,
@@ -150,27 +151,24 @@ class Util {
   }
 }
 
-
-
 class CustomNumberFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
-     String newText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
+    String newText = newValue.text.replaceAll(RegExp(r'[^0-9]'), '');
 
-     if (newText.length > 9) {
+    if (newText.length > 9) {
       newText = newText.substring(0, 9);
     }
 
-     if (newText.length > 1) {
+    if (newText.length > 1) {
       newText =
           '${newText.substring(0, newText.length - 1)}.${newText.substring(newText.length - 1)}';
     }
 
-     return newValue.copyWith(
+    return newValue.copyWith(
       text: newText,
       selection: TextSelection.collapsed(offset: newText.length),
     );
   }
 }
-

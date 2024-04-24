@@ -45,6 +45,8 @@ class Condition {
         return "Neblina";
       case "Patchy rain possible":
         return "Possibilidade de chuva";
+      case "Patchy rain nearby":
+        return "Possibilidade de chuva próxima";
       case "Patchy snow possible":
         return "Possibilidade de neve";
       case "Patchy sleet possible":
@@ -129,6 +131,8 @@ class Condition {
         return "Possibilidade de neve leve com trovões";
       case "Moderate or heavy snow with thunder":
         return "Neve moderada ou pesada com trovões";
+      case "Clear":
+        return "Limpo";
       default:
         return text;
     }

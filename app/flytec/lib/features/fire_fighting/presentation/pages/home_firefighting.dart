@@ -1,20 +1,17 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flytec/core/utils/pdf_generator.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/core/widgets/combo_box.dart';
+import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/aplications/components/pilot_select.dart';
-import 'package:flytec/features/fire_fighting/services/create_fireflighting_report_service.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/presentation/components/firefighting_report_card.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_step_one.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 
 import '../../../auth/presentation/widgets/custom_login_button.dart';
 import '../../../home/presentation/widgets/custom_dialog_button.dart';
-import '../widgets/dashboard_counter.dart';
-
-enum DashBoardState { Enviado, Pronto, Incompleto, NaoEnviado }
 
 class HomeFireFighting extends StatefulWidget {
   const HomeFireFighting({super.key});
@@ -27,6 +24,9 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
   late DateTime? dataSelecionada = DateTime.now();
   late TimeOfDay? time = const TimeOfDay(hour: 12, minute: 43);
   late TimeOfDay? horimetro = const TimeOfDay(hour: 15, minute: 43);
+
+  final FirefightingController _firefightingController =
+      FirefightingController();
   String selectedPilot = "";
   void openContextMenu() {
     showAdaptiveDialog<String>(
@@ -76,6 +76,19 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
         actions: const <Widget>[],
       ),
     );
+  }
+
+  Future<void> _initializationFirefightingReports() async {
+    await _firefightingController.obtainReportsFirefightings();
+    setState(() {});
+  }
+
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initializationFirefightingReports();
   }
 
   @override
@@ -258,70 +271,93 @@ class _HomeFireFightingState extends State<HomeFireFighting> {
           const SizedBox(width: 10),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: ValueListenableBuilder(
+        valueListenable: _firefightingController.firefightingList,
+        builder: (context, value, child) {
+          if (value == null) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (value.isEmpty) {
+            return const Align(
+              alignment: Alignment.center,
+              child: Text(
+                "Nenhum relatório foi gerado",
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            );
+          }
+          return Padding(
+            padding: const EdgeInsets.only(left: 10.0, right: 10.0, top: 16.0),
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
                 children: [
-                  CustomDashBoardCounter(
-                    text: "Enviado",
-                    value: "12",
-                    state: DashBoardState.Enviado,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ReportDashBoardCounter(
+                        text: "Enviado",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.Enviado)
+                            .toString(),
+                        state: DashBoardState.Enviado,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Pronto",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(DashBoardState.Pronto)
+                            .toString(),
+                        state: DashBoardState.Pronto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Incompleto",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.Incompleto)
+                            .toString(),
+                        state: DashBoardState.Incompleto,
+                      ),
+                      ReportDashBoardCounter(
+                        text: "Não enviado",
+                        value: _firefightingController
+                            .obtainQuantityReportsByState(
+                                DashBoardState.NaoEnviado)
+                            .toString(),
+                        state: DashBoardState.NaoEnviado,
+                      ),
+                    ],
                   ),
-                  CustomDashBoardCounter(
-                    text: "Pronto",
-                    value: "5",
-                    state: DashBoardState.Pronto,
-                  ),
-                  CustomDashBoardCounter(
-                    text: "Incompleto",
-                    value: "3",
-                    state: DashBoardState.Incompleto,
-                  ),
-                  CustomDashBoardCounter(
-                    text: "Não enviado",
-                    value: "2",
-                    state: DashBoardState.NaoEnviado,
-                  ),
+                  const SizedBox(height: 20),
+                  ListView.builder(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      itemCount: value.length,
+                      reverse: true,
+                      itemBuilder: (context, index) {
+                        return FirefightingReportCard(
+                            firefightingController: _firefightingController,
+                            firefightingList: value,
+                            index: index);
+                      })
                 ],
               ),
-              const SizedBox(height: 80),
-              Align(
-                alignment: Alignment.center,
-                child: InkWell(
-                  onTap: () async {
-                    PdfGenerator pdfGenerator =
-                        CreateFireflightingReportService();
-                    final document = await pdfGenerator.generatePdf();
-                    final documentBytes =
-                        await pdfGenerator.saveDocument(document: document);
-                    final directory = await getApplicationCacheDirectory();
-                    File file = File(
-                        "${directory.path}/relatorio_incendio_${Util.getRandomString(10)}.pdf");
-                    await file.writeAsBytes(documentBytes!);
-                    // ignore: use_build_context_synchronously
-                    context.push("/reportPage", extra: file);
-                  },
-                  child: const Text(
-                    "Nenhum relatório foi gerado",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          context.push("/combateIncendioPasso1");
-          
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return AddFireFightingStepOne(
+                firefightingController: _firefightingController);
+          }));
         },
         child: const Icon(
           Icons.add,

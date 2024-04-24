@@ -31,6 +31,11 @@ public class BulaService : IBulaService
 
     public async Task AddAsync(BulaViewModel obj)
     {
+        if (obj.IdAlvoBiologico == 0)
+            obj.IdAlvoBiologico = null;
+        if(obj.IdCultura == 0)
+            obj.IdCultura = null;
+
         var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
         await _bulaRepository.AddAsync(mapBula);
     }

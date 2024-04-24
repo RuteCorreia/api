@@ -6,72 +6,64 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
-import 'package:flytec/features/aplications/services/create_aplicacao_report_service.dart';
-import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
-import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_second_step.dart';
+import 'package:flytec/features/fire_fighting/services/create_fireflighting_report_service.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 
-class ReportCardAplication extends StatelessWidget {
-  final ReportAplicationController _reportAplicationController;
+class FirefightingReportCard extends StatelessWidget {
+  final List<Firefighting> _firefightingList;
+  final FirefightingController _firefightingController;
   final int _index;
-  final VoidCallback _updateView;
-  const ReportCardAplication(
+  const FirefightingReportCard(
       {super.key,
-      required ReportAplicationController reportAplicationController,
-      required VoidCallback updateView,
+      required List<Firefighting> firefightingList,
+      required FirefightingController firefightingController,
       required int index})
-      : _reportAplicationController = reportAplicationController,
-        _updateView = updateView,
+      : _firefightingList = firefightingList,
+        _firefightingController = firefightingController,
         _index = index;
 
   Color get _getColorStateColor {
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Enviado) {
+    if (_firefightingList[_index].state == DashBoardState.Enviado) {
       return Colors.blue;
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Pronto) {
+    if (_firefightingList[_index].state == DashBoardState.Pronto) {
       return Colors.green;
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Incompleto) {
+    if (_firefightingList[_index].state == DashBoardState.Incompleto) {
       return const Color(0xFFFF9900);
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.NaoEnviado) {
+    if (_firefightingList[_index].state == DashBoardState.NaoEnviado) {
       return Colors.red;
     }
     return Colors.blue;
   }
 
   String get _getTitleStateColor {
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Enviado) {
+    if (_firefightingList[_index].state == DashBoardState.Enviado) {
       return "Relatório enviado";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Pronto) {
+    if (_firefightingList[_index].state == DashBoardState.Pronto) {
       return "Relatório pronto para envio";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.Incompleto) {
+    if (_firefightingList[_index].state == DashBoardState.Incompleto) {
       return "Relatório incompleto";
     }
-    if (_reportAplicationController.listaAplicacao![_index].state ==
-        DashBoardState.NaoEnviado) {
+    if (_firefightingList[_index].state == DashBoardState.NaoEnviado) {
       return "Relatório não enviado";
     }
     return "Sem descrição";
   }
 
   DateTime get _date {
-    int? epoch =
-        int.tryParse(_reportAplicationController.listaAplicacao![_index].data!);
-    if (epoch != null) {
-      return DateTime.fromMillisecondsSinceEpoch(epoch);
+    if (_firefightingList[_index].data != null) {
+      return DateTime.fromMillisecondsSinceEpoch(
+          _firefightingList[_index].data!);
     }
     return DateTime.now();
   }
@@ -102,15 +94,7 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/sendicon.svg",
                 text: "Enviar",
                 showRightcon: false,
-                onClick: () {
-                  final mandatoryFields = _reportAplicationController
-                      .listaAplicacao![_index]
-                      .verifyFieldsMandatory(showToast: true);
-                  if (mandatoryFields) {
-                    Util.toastSucesso('ENVIADO');
-                  }
-                  context.pop();
-                },
+                onClick: () {},
               ),
               const SizedBox(height: 10),
               CustomDialogButton(
@@ -118,19 +102,14 @@ class ReportCardAplication extends StatelessWidget {
                 showRightcon: false,
                 onClick: () {
                   context.pop();
-                  _reportAplicationController.setAplicacaoSelected(
-                      _reportAplicationController.listaAplicacao![_index]);
+                  _firefightingController
+                      .setFirefightingSelected(_firefightingList[_index]);
                   getIt<GlobalConfigVars>().selectedExecutor =
-                      _reportAplicationController
-                          .listaAplicacao![_index].executor!;
+                      _firefightingList[_index].executor!;
                   getIt<GlobalConfigVars>().selectedPilot =
-                      _reportAplicationController
-                          .listaAplicacao![_index].piloto!;
-                  _updateView();
+                      _firefightingList[_index].piloto!;
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return MenuAplicationPage(
-                        reportAplicationController:
-                            _reportAplicationController);
+                    return  AddFireFightingSecondStep(firefightingController: _firefightingController);
                   }));
                 },
                 text: "Editar",
@@ -140,15 +119,14 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/cancel.svg",
                 showRightcon: false,
                 onClick: () async {
-                  PdfGenerator pdfGenerator = CreateAplicacaoReportService(
-                      aplicacao:
-                          _reportAplicationController.listaAplicacao![_index]);
+                  PdfGenerator pdfGenerator = CreateFirefightingReportService(
+                      _firefightingList[_index]);
                   final document = await pdfGenerator.generatePdf();
                   final documentBytes =
                       await pdfGenerator.saveDocument(document: document);
                   final directory = await getApplicationCacheDirectory();
                   File file = File(
-                      "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
+                      "${directory.path}/relatorio_combate_incendio_${Util.getRandomString(10)}.pdf");
                   await file.writeAsBytes(documentBytes!);
                   // ignore: use_build_context_synchronously
                   context.pop();
@@ -206,9 +184,7 @@ class ReportCardAplication extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _reportAplicationController
-                            .listaAplicacao![_index].contratante?.nome ??
-                        "",
+                    _firefightingList[_index].cliente ?? "",
                     style: const TextStyle(
                       color: Color.fromARGB(255, 121, 118, 118),
                       fontSize: 14,

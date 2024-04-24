@@ -1,14 +1,21 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
-
 import 'package:flytec/features/aplications/components/components_exports.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_second_step.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
 class AddFireFightingStepOne extends StatefulWidget {
-  const AddFireFightingStepOne({super.key});
+  final FirefightingController? _firefightingController;
+  const AddFireFightingStepOne(
+      {required FirefightingController? firefightingController, super.key})
+      : _firefightingController = firefightingController;
 
   @override
   State<AddFireFightingStepOne> createState() => _AddFireFightingStepOneState();
@@ -33,6 +40,25 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
   void initState() {
     _setPilotOrExecutoz();
     super.initState();
+  }
+
+  Future<void> _createReportFirefighting() async {
+    final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
+    final refUsuario =
+        '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+    final firefighting = Firefighting(
+        executor: getIt<GlobalConfigVars>().selectedExecutor,
+        piloto: getIt<GlobalConfigVars>().selectedPilot,
+        data: DateTime.now().millisecondsSinceEpoch,
+        state: DashBoardState.Incompleto,
+        refId: refUsuario);
+    int? idFirefighting = await widget._firefightingController!
+        .createElementInTable(firefighting.toMap(), "Firefighting");
+    firefighting.id = idFirefighting;
+    firefighting.refId =
+        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idFirefighting';
+    widget._firefightingController?.setFirefightingSelected(firefighting);
+    await widget._firefightingController?.obtainReportsFirefightings();
   }
 
   @override
@@ -156,7 +182,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
               Center(
                 child: CustomButton(
                   title: "Continuar",
-                  onClick: () {
+                  onClick: () async {
                     if (getIt<GlobalConfigVars>().selectedExecutor.isEmpty) {
                       Util.toastAlerta("Selecione o executor");
                     } else if (getIt<GlobalConfigVars>()
@@ -193,22 +219,34 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                           showLeftIcon: false,
                                           leftIcon: "",
                                           text: "Orgão Público",
-                                          onClick: () {
+                                          onClick: () async {
+                                            await _createReportFirefighting();
                                             context.pop();
-                                            context.push(
-                                              "/combateIncendioPasso2",
-                                            );
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AddFireFightingSecondStep(
+                                                            firefightingController:
+                                                                widget
+                                                                    ._firefightingController!)));
                                           },
                                         ),
                                         const SizedBox(height: 10),
                                         CustomDialogButton(
                                           showLeftIcon: false,
                                           leftIcon: "",
-                                          onClick: () {
+                                          onClick: () async {
+                                            await _createReportFirefighting();
                                             context.pop();
-                                            context.push(
-                                              "/combateIncendioPasso2",
-                                            );
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AddFireFightingSecondStep(
+                                                            firefightingController:
+                                                                widget
+                                                                    ._firefightingController!)));
                                           },
                                           text: "Privado",
                                         )

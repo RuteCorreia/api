@@ -2,6 +2,7 @@ import 'package:flytec/features/aplications/controller/states_brazil_controller/
 
 class CitiesByStatesBrazilConstants {
   final StateBrazil _ceara = StateBrazil(sigla: 'CE', name: 'Ceará', cities: [
+    'Selecionar'
     "Abaiara",
     "Acarape",
     "Acarau",
@@ -189,6 +190,7 @@ class CitiesByStatesBrazilConstants {
   ]);
   final StateBrazil _saoPaulo =
       StateBrazil(sigla: 'SP', name: 'São Paulo', cities: [
+    'Selecionar',
     "Adamantina",
     "Adolfo",
     "Aguaí",
@@ -836,6 +838,7 @@ class CitiesByStatesBrazilConstants {
     "Estiva Gerbi"
   ]);
   final StateBrazil _rondonia = StateBrazil(cities: [
+    'Selecionar',
     "Alta Floresta D'Oeste",
     "Ariquemes",
     "Cabixi",
@@ -892,6 +895,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _acre = StateBrazil(
       name: 'Acre',
       cities: [
+        'Selecionar',
         "Acrelândia",
         "Assis Brasil",
         "Brasiléia",
@@ -918,6 +922,7 @@ class CitiesByStatesBrazilConstants {
       sigla: 'AC');
   final StateBrazil _amazonas =
       StateBrazil(sigla: 'AM', name: 'Amazônia', cities: [
+    'Selecionar',
     "Alvarães",
     "Amaturá",
     "Anamã",
@@ -983,6 +988,7 @@ class CitiesByStatesBrazilConstants {
   ]);
   final StateBrazil _roraima =
       StateBrazil(sigla: 'RR', name: 'Roraima', cities: [
+    'Selecionar',
     "Amajari",
     "Alto Alegre",
     "Boa Vista",
@@ -1000,6 +1006,7 @@ class CitiesByStatesBrazilConstants {
     "Uiramutã"
   ]);
   final StateBrazil _para = StateBrazil(name: 'Pará', sigla: 'PA', cities: [
+    'Selecionar',
     "Abaetetuba",
     "Abel Figueiredo",
     "Acará",
@@ -1148,6 +1155,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _amapa = StateBrazil(
       name: 'Amapá',
       cities: [
+        'Selecionar',
         "Serra do Navio",
         "Amapá",
         "Pedra Branca do Amapari",
@@ -1168,6 +1176,7 @@ class CitiesByStatesBrazilConstants {
       sigla: 'AP');
   final StateBrazil _tocantins =
       StateBrazil(sigla: 'TO', name: 'Tocantins', cities: [
+    'Selecionar',
     "Abreulândia",
     "Aguiarnópolis",
     "Aliança do Tocantins",
@@ -1310,6 +1319,7 @@ class CitiesByStatesBrazilConstants {
   ]);
   final StateBrazil _maranhao =
       StateBrazil(name: 'Maranhão', sigla: 'MA', cities: [
+    'Selecionar',
     "Açailândia",
     "Afonso Cunha",
     "Água Doce do Maranhão",
@@ -1529,6 +1539,7 @@ class CitiesByStatesBrazilConstants {
     "Zé Doca"
   ]);
   final StateBrazil _piaui = StateBrazil(name: 'Piauí', sigla: 'PI', cities: [
+    'Selecionar',
     "Acauã",
     "Agricolândia",
     "Água Branca",
@@ -1756,6 +1767,7 @@ class CitiesByStatesBrazilConstants {
   ]);
   final StateBrazil _rioGrandeNorte =
       StateBrazil(name: 'Rio Grande do Norte', sigla: 'RN', cities: [
+    'Selecionar',
     "Acari",
     "Açu",
     "Afonso Bezerra",
@@ -1926,6 +1938,7 @@ class CitiesByStatesBrazilConstants {
   ]);
   final StateBrazil _paraiba =
       StateBrazil(name: 'Paraíba', sigla: 'PB', cities: [
+    'Selecionar',
     "Água Branca",
     "Aguiar",
     "Alagoa Grande",
@@ -2153,6 +2166,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _pernambuco = StateBrazil(
       name: 'Pernambuco',
       cities: [
+        'Selecionar',
         "Abreu e Lima",
         "Afogados da Ingazeira",
         "Afrânio",
@@ -2342,6 +2356,7 @@ class CitiesByStatesBrazilConstants {
       sigla: 'PE');
   final StateBrazil _alagoas =
       StateBrazil(name: 'Alagoas', sigla: 'AL', cities: [
+    'Selecionar',
     "Água Branca",
     "Anadia",
     "Arapiraca",
@@ -2446,6 +2461,7 @@ class CitiesByStatesBrazilConstants {
     "Viçosa"
   ]);
   final StateBrazil _sergipe = StateBrazil(cities: [
+    'Selecionar',
     "Água Branca",
     "Anadia",
     "Arapiraca",
@@ -2552,6 +2568,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _bahia = StateBrazil(
       name: 'Bahia',
       cities: [
+        'Selecionar',
         "Abaíra",
         "Abaré",
         "Acajutiba",
@@ -2974,6 +2991,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _minasGerais = StateBrazil(
       name: 'Minas Gerais',
       cities: [
+        'Selecionar',
         "Abadia dos Dourados",
         "Abaeté",
         "Abre Campo",
@@ -3832,6 +3850,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _espiritoSanto = StateBrazil(
       name: 'Espirito Santo',
       cities: [
+        'Selecionar',
         "Afonso Cláudio",
         "Águia Branca",
         "Água Doce do Norte",
@@ -3915,6 +3934,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _rioDeJaneiro = StateBrazil(
       name: 'Rio de Janeiro',
       cities: [
+        'Selecionar',
         "Angra dos Reis",
         "Aperibé",
         "Araruama",
@@ -4012,6 +4032,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _parana = StateBrazil(
       name: 'Paraná',
       cities: [
+        'Selecionar',
         "Abatiá",
         "Adrianópolis",
         "Agudos do Sul",
@@ -4416,6 +4437,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _santaCatarina = StateBrazil(
       name: 'Santa Catarina',
       cities: [
+        'Selecionar',
         "Abdon Batista",
         "Abelardo Luz",
         "Agrolândia",
@@ -4716,6 +4738,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _rioGrandeSul = StateBrazil(
       name: 'Rio Grande do Sul',
       cities: [
+        'Selecionar',
         "Aceguá",
         "Água Santa",
         "Agudo",
@@ -5218,6 +5241,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _matoGrossoSul = StateBrazil(
       name: 'Mato Grosso do Sul',
       cities: [
+        'Selecionar',
         "Água Clara",
         "Alcinópolis",
         "Amambai",
@@ -5302,6 +5326,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _matoGrosso = StateBrazil(
       name: 'Mato Grosso',
       cities: [
+        'Selecionar',
         "Acorizal",
         "Água Boa",
         "Alta Floresta",
@@ -5448,6 +5473,7 @@ class CitiesByStatesBrazilConstants {
   final StateBrazil _goias = StateBrazil(
       name: 'Goiás',
       cities: [
+        'Selecionar',
         "Abadia de Goiás",
         "Abadiânia",
         "Acreúna",
@@ -5697,7 +5723,10 @@ class CitiesByStatesBrazilConstants {
       ],
       sigla: 'GO');
   final StateBrazil _distritoFederal =
-      StateBrazil(name: 'Distrito Federal', cities: ["Brasília"], sigla: 'DF');
+      StateBrazil(
+      name: 'Distrito Federal',
+      cities: ['Selecionar', "Brasília"],
+      sigla: 'DF');
 
   List<StateBrazil> get statesWithCities => [
         _acre,
