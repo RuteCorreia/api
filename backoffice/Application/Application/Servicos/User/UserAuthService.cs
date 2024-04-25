@@ -444,4 +444,43 @@ public class UserAuthService : IUserAuthService
 
         return result.ToString(); 
     }
+
+    public async Task<(bool, string)> RegisterUserFromEmpresaAsync(UserRegisterViewModel request, int? idEmpresa)
+    {
+        var resultMsg = new StringBuilder();
+
+        var identityUser = new IdentityUser
+        {
+            UserName = request.Email,
+            Email = request.Email,
+            PhoneNumber = request.Telefone,
+            EmailConfirmed = true
+        };
+
+        var identityResult = await _userManager.CreateAsync(identityUser, request.Password);
+
+        if (!identityResult.Succeeded)
+            return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
+
+        var roleListAsString = request.Funcoes.Select(r => r.Funcao.ToString());
+        foreach (var role in roleListAsString)
+        {
+            var roleExists = await _roleManager.RoleExistsAsync(role);
+            if (!roleExists)
+                await CreateRoleAsync(role);
+        }
+
+        var identityRoleResult = await _userManager.AddToRolesAsync(identityUser, roleListAsString);
+        if (!identityRoleResult.Succeeded)
+        {
+            await _userManager.DeleteAsync(identityUser);
+            return (false, resultMsg.Append(GetIdentityResultErrors(identityRoleResult)).ToString());
+        }
+
+
+        await CreateUser(request, identityUser, idEmpresa);
+        await CreateUserCredencial(identityUser, request.Funcoes);
+
+        return (true, resultMsg.Append("Usuário criado com sucesso").ToString());      
+    }
 }
