@@ -99,7 +99,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
   TextEditingController grausControllerLongitude = TextEditingController();
   TextEditingController minutesControllerLongitude = TextEditingController();
   TextEditingController segundosControllerLongitude = TextEditingController();
-
+  BitmapDescriptor _iconMarker = BitmapDescriptor.defaultMarker;
   @override
   void initState() {
     CheckPermissionLocation(
@@ -120,6 +120,17 @@ class _BuscarGPSState extends State<BuscarGPS> {
       },
     ).getPermission();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _iconMarker = await Container(
+        height: 10,
+        width: 10,
+        decoration: BoxDecoration(
+            color: const Color(0xFF00B45D).withOpacity(0.6),
+            shape: BoxShape.circle,
+            border: Border.all()),
+      ).toBitmapDescriptor();
+      setState(() {});
+    });
   }
 
   double x12 = 150.0,
@@ -185,22 +196,14 @@ class _BuscarGPSState extends State<BuscarGPS> {
   List<Widget> lista = [];
   bool closePoligon = false;
 
-  Future<void> _setPositionPoligon(LatLng position) async {
-    final iconMarker = await Container(
-      height: 10,
-      width: 10,
-      decoration: BoxDecoration(
-          color: const Color(0xFF00B45D).withOpacity(0.6),
-          shape: BoxShape.circle,
-          border: Border.all()),
-    ).toBitmapDescriptor();
+  void _setPositionPoligon(LatLng position) {
     setState(() {
       markers.add(
         Marker(
           markerId: MarkerId('AREA: ${position.toString()}'),
           onTap: () {},
           draggable: true,
-          icon: iconMarker,
+          icon: _iconMarker,
           consumeTapEvents: true,
           position: position,
           visible: true,
@@ -329,7 +332,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                     if (closePoligon) {
                       return;
                     }
-                    await _setPositionPoligon(
+                    _setPositionPoligon(
                         LatLng(argument.latitude, argument.longitude));
                   },
                   zoomGesturesEnabled: true,
