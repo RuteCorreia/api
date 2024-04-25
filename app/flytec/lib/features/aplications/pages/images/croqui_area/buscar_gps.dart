@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:flytec/core/extensions/widget_externsion.dart';
 import 'package:flytec/features/aplications/enums/direcao_latitude.dart';
 import 'package:flytec/features/aplications/enums/direcao_longitude.dart';
 import 'package:location/location.dart' as lct;
@@ -184,6 +185,44 @@ class _BuscarGPSState extends State<BuscarGPS> {
   List<Widget> lista = [];
   bool closePoligon = false;
 
+  Future<void> _setPositionPoligon(LatLng position) async {
+    final iconMarker = await Container(
+      height: 10,
+      width: 10,
+      decoration: BoxDecoration(
+          color: const Color(0xFF00B45D).withOpacity(0.6),
+          shape: BoxShape.circle,
+          border: Border.all()),
+    ).toBitmapDescriptor();
+    setState(() {
+      markers.add(
+        Marker(
+          markerId: MarkerId('AREA: ${position.toString()}'),
+          onTap: () {},
+          draggable: true,
+          icon: iconMarker,
+          consumeTapEvents: true,
+          position: position,
+          visible: true,
+          infoWindow: const InfoWindow(
+            title: 'Marcador',
+            snippet: 'Descrição do marcador',
+          ),
+        ),
+      );
+      points.add(position);
+      _poligone.add(Polygon(
+          fillColor: const Color(0xFF00B45D).withOpacity(0.2),
+          strokeWidth: 2,
+          visible: true,
+          geodesic: true,
+          strokeColor: const Color(0xFF00B45D),
+          polygonId: const PolygonId("1"),
+          zIndex: 0,
+          points: points));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,12 +275,22 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   return;
                 }
                 points.removeLast();
-                markers.remove(
-                  Marker(
-                    markerId: MarkerId(points.toString()),
-                    position: points.last,
-                  ),
-                );
+                if (points.isNotEmpty) {
+                  markers.remove(
+                    Marker(
+                        markerId: MarkerId(points.toString()),
+                        position: points.last),
+                  );
+                }
+                final lastElementAreaMarker = markers.lastWhere(
+                    (element) => element.markerId.value.contains('AREA'),
+                    orElse: () => markers.firstWhere(
+                        (element) => element.markerId.value.contains('AREA'),
+                        orElse: () => const Marker(markerId: MarkerId(''))));
+                if (lastElementAreaMarker.markerId.value.isNotEmpty) {
+                  markers.remove(lastElementAreaMarker);
+                }
+
                 _poligone.add(Polygon(
                     visible: true,
                     geodesic: true,
@@ -257,7 +306,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
         ],
       ),
       body: ListView(
-        // physics: const NeverScrollableScrollPhysics(),
         children: [
           Stack(
             children: [
@@ -266,7 +314,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                 height: 360,
                 child: GoogleMap(
                   indoorViewEnabled: true,
-                  scrollGesturesEnabled: true,
+                  scrollGesturesEnabled: !closePoligon,
                   gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                     Factory<OneSequenceGestureRecognizer>(
                       () => EagerGestureRecognizer(),
@@ -277,19 +325,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   onLongPress: (position) {
                     _onMapTapMarker(position);
                   },
-                  onTap: (argument) {
+                  onTap: (argument) async {
                     if (closePoligon) {
                       return;
                     }
-                    setState(() {
-                      points.add(LatLng(argument.latitude, argument.longitude));
-                      _poligone.add(Polygon(
-                          fillColor: Colors.red.withOpacity(0.2),
-                          strokeWidth: 2,
-                          strokeColor: Colors.red,
-                          polygonId: const PolygonId("1"),
-                          points: points));
-                    });
+                    await _setPositionPoligon(
+                        LatLng(argument.latitude, argument.longitude));
                   },
                   zoomGesturesEnabled: true,
                   polygons: _poligone,
