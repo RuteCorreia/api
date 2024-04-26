@@ -177,6 +177,7 @@ public class UserAuthService : IUserAuthService
         {
             new("NrUsuario", usuario.NrUsuario.ToString()),
             new("IdUsuario", usuario.Id.ToString()),
+            new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
             new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),

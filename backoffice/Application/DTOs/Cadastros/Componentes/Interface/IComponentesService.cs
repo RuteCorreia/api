@@ -10,11 +10,11 @@ namespace Application.DTOs.Cadastros.Componentes.Interface
 {
     public interface IComponentesService
     {
-        Task<IEnumerable<ComponentesViewModel>> GetAllAsync();
+        Task<IEnumerable<ComponentesViewModel>> GetAllAsync(string? idEmpresa);
 
         Task<ComponentesViewModel> GetByIdAsync(int id);
 
-        Task AddAsync(ComponentesViewModel obj);
+        Task AddAsync(ComponentesViewModel obj, string? idEmpresa);
 
         Task UpdateAsync(ComponentesViewModel obj);
 

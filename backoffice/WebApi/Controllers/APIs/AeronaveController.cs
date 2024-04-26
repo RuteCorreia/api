@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class AeronaveController : ControllerBase
 {
     private readonly IAeronaveService _aeronaveService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public AeronaveController(IAeronaveService aeronaveService)
+    public AeronaveController(IAeronaveService aeronaveService, LoggedUserInfoService loggedUserInfoService)
     {
         _aeronaveService = aeronaveService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,7 +30,8 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            var aeronaves = await _aeronaveService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
             return Ok(aeronaves);
         }
         catch (Exception ex)
@@ -60,12 +64,13 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            var aeronaves = await _aeronaveService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
             if(!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower())))
             {
                 if (ModelState.IsValid)
                 {
-                    await _aeronaveService.AddAsync(obj);
+                    await _aeronaveService.AddAsync(obj, loggedUser.Item3);
                     return Ok();
                 }
             }
@@ -83,7 +88,8 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            var aeronaves = await _aeronaveService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
             if (!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower()) && x.Id != obj.Id))
             {
                 if (ModelState.IsValid)

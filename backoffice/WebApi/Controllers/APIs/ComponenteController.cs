@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Componentes.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -16,10 +17,15 @@ namespace WebApi.Controllers.APIs
     public class ComponenteController : ControllerBase
     {
         private readonly IComponentesService _componenteService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
 
-        public ComponenteController(IComponentesService componenteService)
+        public ComponenteController(
+            IComponentesService componenteService, 
+            LoggedUserInfoService loggedUserInfoService
+        )
         {
             _componenteService = componenteService;
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
         [HttpGet]
@@ -27,8 +33,9 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var componente = await _componenteService.GetAllAsync();
-                return Ok(componente);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var componentes = await _componenteService.GetAllAsync(loggedUser.Item3);
+                return Ok(componentes);
             }
             catch (Exception ex)
             {
@@ -60,9 +67,10 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 if (ModelState.IsValid)
                 {
-                    await _componenteService.AddAsync(obj);
+                    await _componenteService.AddAsync(obj, loggedUser.Item3);
                     return Ok();
                 }
 
