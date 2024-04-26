@@ -42,7 +42,7 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync();
+                var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync(loggedUser.Item2.ToString());
                 var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
                 foreach (var item in manutencaoAeronave)
                 {
@@ -102,7 +102,9 @@ namespace WebApi.Controllers.APIs
 
                 if (ModelState.IsValid)
                 {
-                    await _manutencaoAeronaveService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                    await _manutencaoAeronaveService.AddAsync(obj, loggedUser.Item2.ToString());
                     return Ok();
                 }
 
