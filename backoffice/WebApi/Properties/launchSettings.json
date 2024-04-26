@@ -8,7 +8,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://flytec.keltecnologia.com.br"
+      "applicationUrl": "http://localhost:5105"
     },
     "https": {
       "commandName": "Project",
@@ -18,7 +18,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "https://flytec.keltecnologia.com.br"
+      "applicationUrl": "https://localhost:7221;http://localhost:5105"
     },
     "IIS Express": {
       "commandName": "IISExpress",
@@ -31,10 +31,10 @@
     "WSL": {
       "commandName": "WSL2",
       "launchBrowser": true,
-      "launchUrl": "https://flytec.keltecnologia.com.br/swagger",
+      "launchUrl": "https://localhost:7221/swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "https://flytec.keltecnologia.com.br"
+        "ASPNETCORE_URLS": "https://localhost:7221;http://localhost:5105"
       },
       "distributionName": ""
     }
@@ -44,8 +44,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "https://flytec.keltecnologia.com.br/",
-      "sslPort": 80
+      "applicationUrl": "http://localhost:34747",
+      "sslPort": 44305
     }
   }
 }

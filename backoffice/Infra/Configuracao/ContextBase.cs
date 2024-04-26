@@ -21,6 +21,7 @@ using Domain.Entidades.Cadastros.MenuUsuario;
 using Domain.Entidades.Cadastros.Pistas;
 using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.Cadastros.Produto;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Entidades.Cadastros.SubMenu;
 using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
@@ -80,6 +81,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<Componentes> Componente { get; set; }
     public DbSet<ManutencaoAeronave> ManutencaoAeronave { get; set; }
     public DbSet<ManutencaoAeronaveItemsRevisao> ManutencaoAeronaveItemsRevisao { get; set; }
+    public DbSet<RelatorioAplicacao> RelatorioAplicacao { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
