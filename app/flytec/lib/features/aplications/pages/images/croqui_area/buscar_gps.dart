@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'package:flytec/core/extensions/widget_externsion.dart';
 import 'package:flytec/features/aplications/enums/direcao_latitude.dart';
 import 'package:flytec/features/aplications/enums/direcao_longitude.dart';
+import 'package:flytec/features/aplications/pages/images/croqui_area/models/marker_maps.dart';
 import 'package:location/location.dart' as lct;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -56,13 +57,36 @@ class _BuscarGPSState extends State<BuscarGPS> {
     return latitudeDecimal;
   }
 
+  final ScrollController _scrollController = ScrollController();
+
+  List<MarkerMaps> _markersMaps = [];
+
   void _onMapTapMarker(LatLng position) {
     // Adiciona um marcador no local clicado
     setState(() {
+      _markersMaps.add(MarkerMaps(
+        isExpanded: false,
+        marker: Marker(
+          markerId: MarkerId(position.toString()),
+          onTap: () {},
+          draggable: true,
+          consumeTapEvents: true,
+          position: position,
+          visible: true,
+          infoWindow: const InfoWindow(
+            title: 'Marcador',
+            snippet: 'Descrição do marcador',
+          ),
+        ),
+      ));
       markers.add(
         Marker(
           markerId: MarkerId(position.toString()),
-          onTap: () {},
+          onTap: () {
+            _scrollController.animateTo((_markersMaps.length * 100),
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.ease);
+          },
           draggable: true,
           consumeTapEvents: true,
           position: position,
@@ -309,6 +333,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
         ],
       ),
       body: ListView(
+        controller: _scrollController,
         children: [
           Stack(
             children: [
@@ -506,6 +531,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
           ),
           const SizedBox(height: 20),
           SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 Center(
@@ -653,7 +679,164 @@ class _BuscarGPSState extends State<BuscarGPS> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                if (_markersMaps.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.fmd_good_sharp,
+                          color: Color(0xFF00B45D),
+                        ),
+                        Text(
+                          'Marcadores',
+                          style: TextStyle(
+                            color: Color(0xFF00B45D),
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w600,
+                            height: 0.09,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemCount: _markersMaps.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 4.0),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: 328,
+                          height: !_markersMaps[index].isExpanded ? 55 : 200,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4.0),
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, color: Color(0xFF00B45D)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      'Lat: ${markers.toList()[index].position.latitude}\nLong: ${markers.toList()[index].position.longitude}'),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _markersMaps[index].isExpanded =
+                                                  !_markersMaps[index]
+                                                      .isExpanded;
+                                            });
+                                          },
+                                          child: const Icon(
+                                              Icons.open_in_full_rounded,
+                                              size: 18,
+                                              color: Color(0xFF00B45D))),
+                                      InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              final item = _markersMaps[index];
+                                              markers.remove(item.marker);
+                                              _markersMaps.removeAt(index);
+                                            });
+                                          },
+                                          child: const Icon(Icons.close,
+                                              color: Colors.red)),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              if (_markersMaps[index].isExpanded) ...[
+                                const Divider(),
+                                Container(
+                                  width: double.infinity,
+                                  height: 95,
+                                  margin: const EdgeInsets.only(bottom: 05),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 05),
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 1, color: Color(0xFF636363)),
+                                      borderRadius: BorderRadius.circular(05),
+                                    ),
+                                  ),
+                                  child: TextField(
+                                    onSubmitted: (value) {
+                                      _markersMaps[index].observation = value;
+                                      setState(() {});
+                                    },
+                                    onChanged: (value) {
+                                      _markersMaps[index].observation = value;
+                                      setState(() {});
+                                    },
+                                    controller: _markersMaps[index].controller,
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintStyle: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 121, 118, 118),
+                                          fontSize: 16,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
+                                ),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _markersMaps[index].controller =
+                                          TextEditingController(
+                                              text: _markersMaps[index]
+                                                  .observation);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4.0, horizontal: 8.0),
+                                      decoration: ShapeDecoration(
+                                        color: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(05),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Salvar observação',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                ],
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(
