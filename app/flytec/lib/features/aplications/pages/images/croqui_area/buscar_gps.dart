@@ -391,12 +391,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle4++;
+                            angle4+= 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -425,12 +425,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle2 = angle2++;
+                            angle2  += 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -459,12 +459,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle3 = angle3++;
+                            angle3 += 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -479,12 +479,15 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   onPanDown: (d) {
                     x2Prev1 = x21;
                     y2Prev1 = y21;
+                    debugPrint('--> AQUI');
                   },
                   onPanUpdate: (details) {
                     setState(() {
                       x21 = x2Prev1 + details.localPosition.dx;
                       y21 = y2Prev1 + details.localPosition.dy;
                     });
+                                        debugPrint('--> AQUI 2');
+
                   },
                   child: GestureDetector(
                     /*    onScaleUpdate: (details) {
@@ -501,24 +504,13 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           child: InkWell(
                             onTap: () {
                               setState(() {
-                                angle++;
+                                angle += 0.1;
                               });
                             },
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              padding: const EdgeInsets.all(20),
-                              color: Colors.transparent,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/vento.png",
-                                    width: 50,
-                                  )
-                                ],
-                              ),
+                            child: Image.asset(
+                              "assets/images/vento.png",
+                              width: 60 ,
+                              height: 60  ,
                             ),
                           ),
                         ),
@@ -564,47 +556,32 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 40,
-                            height: 36,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.arrow_upward,
-                                  size: 20,
-                                ),
-                                Icon(
-                                  Icons.arrow_downward,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              margin: const EdgeInsets.only(top: 5),
-                              child: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                  'Inserir sentido da aplicação (tiro)',
-                                  style: TextStyle(
-                                    color: Color(0xFF151515),
-                                    fontSize: 15,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_upward,
+                                size: 20,
                               ),
+                              Icon(
+                                Icons.arrow_downward,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Inserir sentido da aplicação (tiro)',
+                            style: TextStyle(
+                              color: Color(0xFF151515),
+                              fontSize: 15,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -631,47 +608,21 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 33,
-                            height: 36,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 33,
-                                  height: 32,
-                                  child: Stack(children: [
-                                    Icon(Icons.arrow_upward),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                  'Inserir sentido do vento',
-                                  style: TextStyle(
-                                    color: Color(0xFF151515),
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0.09,
-                                  ),
-                                ),
-                              ),
+                          Stack(children: [
+                            Icon(Icons.arrow_upward),
+                          ]),
+                          Text(
+                            'Inserir sentido do vento',
+                            style: TextStyle(
+                              color: Color(0xFF151515),
+                              fontSize: 16,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
