@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
@@ -57,12 +58,12 @@ class Util {
                 text: "Galeria",
                 icon: Icons.image,
                 onClick: () async {
-                  try {                    
+                  try {
                     final XFile? image = await _imagePicker.pickImage(
                         source: ImageSource.gallery,
                         imageQuality: 65,
                         maxHeight: 800,
-                        requestFullMetadata : Platform.isAndroid,
+                        requestFullMetadata: Platform.isAndroid,
                         maxWidth: 800);
                     pathImage = image!.path;
                     // ignore: use_build_context_synchronously
@@ -148,6 +149,58 @@ class Util {
       textColor: Colors.white,
       fontSize: 16.0,
     );
+  }
+
+  static Future<Uint8List> createImageFromWidget(Widget widget,
+      {Size? logicalSize,
+      required Duration waitToRender,
+      Size? imageSize}) async {
+    final RenderRepaintBoundary repaintBoundary = RenderRepaintBoundary();
+    final view = ui.PlatformDispatcher.instance.views.first;
+    logicalSize ??= view.physicalSize / view.devicePixelRatio;
+    imageSize ??= view.physicalSize;
+
+    // assert(logicalSize.aspectRatio == imageSize.aspectRatio);
+
+    final RenderView renderView = RenderView(
+      view: view,
+      child: RenderPositionedBox(
+          alignment: Alignment.center, child: repaintBoundary),
+      configuration: ViewConfiguration(
+        size: logicalSize,
+        devicePixelRatio: 1.0,
+      ),
+    );
+
+    final PipelineOwner pipelineOwner = PipelineOwner();
+    final BuildOwner buildOwner = BuildOwner(focusManager: FocusManager());
+
+    pipelineOwner.rootNode = renderView;
+    renderView.prepareInitialFrame();
+
+    final RenderObjectToWidgetElement<RenderBox> rootElement =
+        RenderObjectToWidgetAdapter<RenderBox>(
+      container: repaintBoundary,
+      child: widget,
+    ).attachToRenderTree(buildOwner);
+
+    buildOwner.buildScope(rootElement);
+
+    await Future.delayed(waitToRender);
+
+    buildOwner.buildScope(rootElement);
+    buildOwner.finalizeTree();
+
+    pipelineOwner.flushLayout();
+    pipelineOwner.flushCompositingBits();
+    pipelineOwner.flushPaint();
+
+    final ui.Image image = await repaintBoundary.toImage(
+        pixelRatio: imageSize.width / logicalSize.width);
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+
+    return byteData!.buffer.asUint8List();
   }
 }
 

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:collection';
+import 'package:flytec/core/extensions/widget_externsion.dart';
 import 'package:flytec/features/aplications/enums/direcao_latitude.dart';
 import 'package:flytec/features/aplications/enums/direcao_longitude.dart';
+import 'package:flytec/features/aplications/pages/images/croqui_area/models/marker_maps.dart';
 import 'package:location/location.dart' as lct;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -55,13 +57,36 @@ class _BuscarGPSState extends State<BuscarGPS> {
     return latitudeDecimal;
   }
 
+  final ScrollController _scrollController = ScrollController();
+
+  List<MarkerMaps> _markersMaps = [];
+
   void _onMapTapMarker(LatLng position) {
     // Adiciona um marcador no local clicado
     setState(() {
+      _markersMaps.add(MarkerMaps(
+        isExpanded: false,
+        marker: Marker(
+          markerId: MarkerId(position.toString()),
+          onTap: () {},
+          draggable: true,
+          consumeTapEvents: true,
+          position: position,
+          visible: true,
+          infoWindow: const InfoWindow(
+            title: 'Marcador',
+            snippet: 'Descrição do marcador',
+          ),
+        ),
+      ));
       markers.add(
         Marker(
           markerId: MarkerId(position.toString()),
-          onTap: () {},
+          onTap: () {
+            _scrollController.animateTo((_markersMaps.length * 100),
+                duration: const Duration(milliseconds: 200),
+                curve: Curves.ease);
+          },
           draggable: true,
           consumeTapEvents: true,
           position: position,
@@ -98,7 +123,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
   TextEditingController grausControllerLongitude = TextEditingController();
   TextEditingController minutesControllerLongitude = TextEditingController();
   TextEditingController segundosControllerLongitude = TextEditingController();
-
+  BitmapDescriptor _iconMarker = BitmapDescriptor.defaultMarker;
   @override
   void initState() {
     CheckPermissionLocation(
@@ -119,6 +144,17 @@ class _BuscarGPSState extends State<BuscarGPS> {
       },
     ).getPermission();
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _iconMarker = await Container(
+        height: 10,
+        width: 10,
+        decoration: BoxDecoration(
+            color: const Color(0xFF00B45D).withOpacity(0.6),
+            shape: BoxShape.circle,
+            border: Border.all()),
+      ).toBitmapDescriptor();
+      setState(() {});
+    });
   }
 
   double x12 = 150.0,
@@ -184,6 +220,36 @@ class _BuscarGPSState extends State<BuscarGPS> {
   List<Widget> lista = [];
   bool closePoligon = false;
 
+  void _setPositionPoligon(LatLng position) {
+    setState(() {
+      markers.add(
+        Marker(
+          markerId: MarkerId('AREA: ${position.toString()}'),
+          onTap: () {},
+          draggable: true,
+          icon: _iconMarker,
+          consumeTapEvents: true,
+          position: position,
+          visible: true,
+          infoWindow: const InfoWindow(
+            title: 'Marcador',
+            snippet: 'Descrição do marcador',
+          ),
+        ),
+      );
+      points.add(position);
+      _poligone.add(Polygon(
+          fillColor: const Color(0xFF00B45D).withOpacity(0.2),
+          strokeWidth: 2,
+          visible: true,
+          geodesic: true,
+          strokeColor: const Color(0xFF00B45D),
+          polygonId: const PolygonId("1"),
+          zIndex: 0,
+          points: points));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -236,12 +302,22 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   return;
                 }
                 points.removeLast();
-                markers.remove(
-                  Marker(
-                    markerId: MarkerId(points.toString()),
-                    position: points.last,
-                  ),
-                );
+                if (points.isNotEmpty) {
+                  markers.remove(
+                    Marker(
+                        markerId: MarkerId(points.toString()),
+                        position: points.last),
+                  );
+                }
+                final lastElementAreaMarker = markers.lastWhere(
+                    (element) => element.markerId.value.contains('AREA'),
+                    orElse: () => markers.firstWhere(
+                        (element) => element.markerId.value.contains('AREA'),
+                        orElse: () => const Marker(markerId: MarkerId(''))));
+                if (lastElementAreaMarker.markerId.value.isNotEmpty) {
+                  markers.remove(lastElementAreaMarker);
+                }
+
                 _poligone.add(Polygon(
                     visible: true,
                     geodesic: true,
@@ -257,7 +333,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
         ],
       ),
       body: ListView(
-        // physics: const NeverScrollableScrollPhysics(),
+        controller: _scrollController,
         children: [
           Stack(
             children: [
@@ -266,7 +342,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                 height: 360,
                 child: GoogleMap(
                   indoorViewEnabled: true,
-                  scrollGesturesEnabled: true,
+                  scrollGesturesEnabled: !closePoligon,
                   gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>{
                     Factory<OneSequenceGestureRecognizer>(
                       () => EagerGestureRecognizer(),
@@ -277,19 +353,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   onLongPress: (position) {
                     _onMapTapMarker(position);
                   },
-                  onTap: (argument) {
+                  onTap: (argument) async {
                     if (closePoligon) {
                       return;
                     }
-                    setState(() {
-                      points.add(LatLng(argument.latitude, argument.longitude));
-                      _poligone.add(Polygon(
-                          fillColor: Colors.red.withOpacity(0.2),
-                          strokeWidth: 2,
-                          strokeColor: Colors.red,
-                          polygonId: const PolygonId("1"),
-                          points: points));
-                    });
+                    _setPositionPoligon(
+                        LatLng(argument.latitude, argument.longitude));
                   },
                   zoomGesturesEnabled: true,
                   polygons: _poligone,
@@ -322,12 +391,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle4++;
+                            angle4+= 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -356,12 +425,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle2 = angle2++;
+                            angle2  += 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -390,12 +459,12 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle3 = angle3++;
+                            angle3 += 0.1;
                           });
                         },
                         child: SizedBox(
-                          width: 40,
-                          height: 40,
+                          width: 50,
+                          height: 50,
                           child: Image.asset("assets/images/tiro.png"),
                         ),
                       ),
@@ -410,12 +479,15 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   onPanDown: (d) {
                     x2Prev1 = x21;
                     y2Prev1 = y21;
+                    debugPrint('--> AQUI');
                   },
                   onPanUpdate: (details) {
                     setState(() {
                       x21 = x2Prev1 + details.localPosition.dx;
                       y21 = y2Prev1 + details.localPosition.dy;
                     });
+                                        debugPrint('--> AQUI 2');
+
                   },
                   child: GestureDetector(
                     /*    onScaleUpdate: (details) {
@@ -432,24 +504,13 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           child: InkWell(
                             onTap: () {
                               setState(() {
-                                angle++;
+                                angle += 0.1;
                               });
                             },
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              padding: const EdgeInsets.all(20),
-                              color: Colors.transparent,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Image.asset(
-                                    "assets/images/vento.png",
-                                    width: 50,
-                                  )
-                                ],
-                              ),
+                            child: Image.asset(
+                              "assets/images/vento.png",
+                              width: 60 ,
+                              height: 60  ,
                             ),
                           ),
                         ),
@@ -462,6 +523,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
           ),
           const SizedBox(height: 20),
           SingleChildScrollView(
+            controller: _scrollController,
             child: Column(
               children: [
                 Center(
@@ -494,47 +556,32 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 40,
-                            height: 36,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.arrow_upward,
-                                  size: 20,
-                                ),
-                                Icon(
-                                  Icons.arrow_downward,
-                                  size: 20,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              margin: const EdgeInsets.only(top: 5),
-                              child: const Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                  'Inserir sentido da aplicação (tiro)',
-                                  style: TextStyle(
-                                    color: Color(0xFF151515),
-                                    fontSize: 15,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.arrow_upward,
+                                size: 20,
                               ),
+                              Icon(
+                                Icons.arrow_downward,
+                                size: 20,
+                              ),
+                            ],
+                          ),
+                          Text(
+                            'Inserir sentido da aplicação (tiro)',
+                            style: TextStyle(
+                              color: Color(0xFF151515),
+                              fontSize: 15,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -561,47 +608,21 @@ class _BuscarGPSState extends State<BuscarGPS> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: Row(
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 33,
-                            height: 36,
-                            clipBehavior: Clip.antiAlias,
-                            decoration: const BoxDecoration(),
-                            child: const Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 33,
-                                  height: 32,
-                                  child: Stack(children: [
-                                    Icon(Icons.arrow_upward),
-                                  ]),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const Expanded(
-                            child: SizedBox(
-                              height: 50,
-                              child: Padding(
-                                padding: EdgeInsets.all(12),
-                                child: Text(
-                                  'Inserir sentido do vento',
-                                  style: TextStyle(
-                                    color: Color(0xFF151515),
-                                    fontSize: 16,
-                                    fontFamily: 'Inter',
-                                    fontWeight: FontWeight.w600,
-                                    height: 0.09,
-                                  ),
-                                ),
-                              ),
+                          Stack(children: [
+                            Icon(Icons.arrow_upward),
+                          ]),
+                          Text(
+                            'Inserir sentido do vento',
+                            style: TextStyle(
+                              color: Color(0xFF151515),
+                              fontSize: 16,
+                              fontFamily: 'Inter',
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
                         ],
@@ -609,7 +630,164 @@ class _BuscarGPSState extends State<BuscarGPS> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                if (_markersMaps.isNotEmpty) ...[
+                  const SizedBox(height: 10),
+                  const Padding(
+                    padding: EdgeInsets.all(12),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.fmd_good_sharp,
+                          color: Color(0xFF00B45D),
+                        ),
+                        Text(
+                          'Marcadores',
+                          style: TextStyle(
+                            color: Color(0xFF00B45D),
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w600,
+                            height: 0.09,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  ListView.builder(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    itemCount: _markersMaps.length,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 4.0),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: 328,
+                          height: !_markersMaps[index].isExpanded ? 55 : 200,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4.0),
+                          decoration: ShapeDecoration(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  width: 2, color: Color(0xFF00B45D)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      'Lat: ${markers.toList()[index].position.latitude}\nLong: ${markers.toList()[index].position.longitude}'),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              _markersMaps[index].isExpanded =
+                                                  !_markersMaps[index]
+                                                      .isExpanded;
+                                            });
+                                          },
+                                          child: const Icon(
+                                              Icons.open_in_full_rounded,
+                                              size: 18,
+                                              color: Color(0xFF00B45D))),
+                                      InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              final item = _markersMaps[index];
+                                              markers.remove(item.marker);
+                                              _markersMaps.removeAt(index);
+                                            });
+                                          },
+                                          child: const Icon(Icons.close,
+                                              color: Colors.red)),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              if (_markersMaps[index].isExpanded) ...[
+                                const Divider(),
+                                Container(
+                                  width: double.infinity,
+                                  height: 95,
+                                  margin: const EdgeInsets.only(bottom: 05),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 05),
+                                  decoration: ShapeDecoration(
+                                    shape: RoundedRectangleBorder(
+                                      side: const BorderSide(
+                                          width: 1, color: Color(0xFF636363)),
+                                      borderRadius: BorderRadius.circular(05),
+                                    ),
+                                  ),
+                                  child: TextField(
+                                    onSubmitted: (value) {
+                                      _markersMaps[index].observation = value;
+                                      setState(() {});
+                                    },
+                                    onChanged: (value) {
+                                      _markersMaps[index].observation = value;
+                                      setState(() {});
+                                    },
+                                    controller: _markersMaps[index].controller,
+                                    decoration: const InputDecoration(
+                                        border: InputBorder.none,
+                                        hintStyle: TextStyle(
+                                          color: Color.fromARGB(
+                                              255, 121, 118, 118),
+                                          fontSize: 16,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
+                                ),
+                                Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      _markersMaps[index].controller =
+                                          TextEditingController(
+                                              text: _markersMaps[index]
+                                                  .observation);
+                                      setState(() {});
+                                    },
+                                    child: Container(
+                                      height: 30,
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 4.0, horizontal: 8.0),
+                                      decoration: ShapeDecoration(
+                                        color: Colors.green,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(05),
+                                        ),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'Salvar observação',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 12,
+                                          fontFamily: 'Inter',
+                                          fontWeight: FontWeight.w700,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ]
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                ],
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(15),
                   child: Column(
