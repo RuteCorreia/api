@@ -94,7 +94,7 @@ namespace WebApi.Controllers.APIs
                 if (!string.IsNullOrEmpty(obj.DocumentoBase64))
                 {
                     string[] parts = obj.DocumentoBase64.Split(',');
-                    string decodedBase64String = parts[1];
+                    string decodedBase64String = parts[1]; 
 
                     byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
                     obj.Documento = imageDataBytes;
