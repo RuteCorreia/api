@@ -29,6 +29,7 @@ using Application.Application.Servicos.Cadastros.Equipamento;
 using Application.Application.Servicos.Cadastros.Estados;
 using Application.Application.Servicos.Cadastros.Executor;
 using Application.Application.Servicos.Cadastros.Frota;
+using Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada;
 using Application.Application.Servicos.Cadastros.ManutencaoAeronave;
 using Application.Application.Servicos.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Application.Application.Servicos.Cadastros.Menu;
@@ -75,6 +76,7 @@ using Application.DTOs.Cadastros.Equipamento.Interface;
 using Application.DTOs.Cadastros.Estados.Interface;
 using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Frota.Interface;
+using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.Interface;
 using Application.DTOs.Cadastros.Menu.Interface;
@@ -121,6 +123,7 @@ using Domain.Interfaces.Cadastros.Equipamento;
 using Domain.Interfaces.Cadastros.Estados;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Frota;
+using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
 using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Domain.Interfaces.Cadastros.Menu;
@@ -168,6 +171,7 @@ using Infra.Repositorio.Cadastros.Equipamento;
 using Infra.Repositorio.Cadastros.Estados;
 using Infra.Repositorio.Cadastros.Executor;
 using Infra.Repositorio.Cadastros.Frota;
+using Infra.Repositorio.Cadastros.IdentificacaoAreaTratada;
 using Infra.Repositorio.Cadastros.ManutencaoAeronave;
 using Infra.Repositorio.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Infra.Repositorio.Cadastros.Menu;
@@ -240,6 +244,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IManutencaoAeronaveItemsRevisaoService, ManutencaoAeronaveItemsRevisaoService>();
         services.AddScoped<IContratanteService, ContratanteService>();
         services.AddScoped<IRelatorioAplicacaoService, RelatorioAplicacaoService>();
+        services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
 
         #endregion
 
@@ -291,6 +296,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IManutencaoAeronaveItemsRevisaoRepository, ManutencaoAeronaveItemsRevisaoRepository>();
         services.AddScoped<IContratanteRepository, ContratanteRepository>();
         services.AddScoped<IRelatorioAplicacaoRepository, RelatorioAplicacaoRepository>();
+        services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
 
         #endregion
 
