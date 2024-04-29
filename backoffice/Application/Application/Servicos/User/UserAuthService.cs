@@ -22,7 +22,6 @@ public class UserAuthService : IUserAuthService
     private readonly IConfiguration _config;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
-    private readonly IEmpresaService _empresaService;
     private readonly IMapper _mapper;
     public UserAuthService(
         UserManager<IdentityUser> userManager, 
@@ -30,7 +29,6 @@ public class UserAuthService : IUserAuthService
         IConfiguration config, 
         IUsuarioRepository usuarioRepository,
         IUsuarioCredencialRepository usuarioCredencialRepository,
-        IEmpresaService empresaService,
         IMapper mapper
         )
     {
@@ -39,7 +37,6 @@ public class UserAuthService : IUserAuthService
         _config = config;
         _usuarioRepository = usuarioRepository;
         _usuarioCredencialRepository = usuarioCredencialRepository;
-        _empresaService = empresaService;
         _mapper = mapper;
     }
 
