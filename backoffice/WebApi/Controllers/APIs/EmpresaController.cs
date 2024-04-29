@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -16,19 +17,27 @@ namespace WebApi.Controllers.APIs;
 public class EmpresaController : ControllerBase
 {
     private readonly IEmpresaService _empresaService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public EmpresaController(IEmpresaService empresaService)
+    public EmpresaController(IEmpresaService empresaService, LoggedUserInfoService loggedUserInfoService)
     {
         _empresaService = empresaService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<IAsyncEnumerable<EmpresaViewModel>>> GetAll()
     {
         try
         {
-            var combustiveis = await _empresaService.GetAllAsync();
-            return Ok(combustiveis);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
+            {
+                var empresas = await _empresaService.GetAllAsync();
+                return Ok(empresas);
+            }
+            return Unauthorized();
         }
         catch (Exception ex)
         {
@@ -37,25 +46,30 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<EmpresaViewModel>> GetById(int id)
     {
         try
         {
-            var empresa = await _empresaService.GetByIdAsync(id);
-            if(empresa.Imagem != null)
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
             {
-                var base64Imagem = Convert.ToBase64String(empresa.Imagem);
-                var base64Append = "data:image/jpeg;base64," + base64Imagem;
-                empresa.ImagemBase64 = base64Append;
-                
+                var empresa = await _empresaService.GetByIdAsync(id);
+                if (empresa.Imagem != null)
+                {
+                    var base64Imagem = Convert.ToBase64String(empresa.Imagem);
+                    var base64Append = "data:image/jpeg;base64," + base64Imagem;
+                    empresa.ImagemBase64 = base64Append;
+
+                }
+
+                if (!ObjectNullValidation.IsObjectNull(empresa))
+                    return Ok(empresa);
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
             }
 
-            if (!ObjectNullValidation.IsObjectNull(empresa))
-            {
-                return Ok(empresa);
-            }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            return Unauthorized();
         }
         catch (Exception ex)
         {
@@ -64,26 +78,32 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Add([FromBody] EmpresaViewModel empresaViewModel)
     {
         try
         {
-            if(!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
             {
-                string[] parts = empresaViewModel.ImagemBase64.Split(',');
-                string decodedBase64String = parts[1];
+                if (!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
+                {
+                    string[] parts = empresaViewModel.ImagemBase64.Split(',');
+                    string decodedBase64String = parts[1];
 
-                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                empresaViewModel.Imagem = imageDataBytes;
+                    byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                    empresaViewModel.Imagem = imageDataBytes;
+                }
+
+                if (ModelState.IsValid)
+                {
+                    await _empresaService.AddAsync(empresaViewModel);
+                    return Ok();
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            if (ModelState.IsValid)
-            {
-                await _empresaService.AddAsync(empresaViewModel);
-                return Ok();
-            }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return Unauthorized();
         }
         catch (Exception ex)
         {
@@ -92,35 +112,41 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Update(int id, [FromBody] EmpresaViewModel empresaViewModel)
     {
         try
         {
-            if (!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
             {
-                string[] parts = empresaViewModel.ImagemBase64.Split(',');
-                string decodedBase64String = parts[1];
-
-                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                empresaViewModel.Imagem = imageDataBytes;
-            }
-            if (ModelState.IsValid)
-            {
-                var objeto = await _empresaService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                if (!string.IsNullOrEmpty(empresaViewModel.ImagemBase64))
                 {
-                    empresaViewModel.IdEmpresa = objeto.IdEmpresa;
+                    string[] parts = empresaViewModel.ImagemBase64.Split(',');
+                    string decodedBase64String = parts[1];
 
-                    await _empresaService.UpdateAsync(empresaViewModel);
-                    return Ok();
+                    byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
+                    empresaViewModel.Imagem = imageDataBytes;
                 }
-                else
+                if (ModelState.IsValid)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
-            }
+                    var objeto = await _empresaService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        empresaViewModel.IdEmpresa = objeto.IdEmpresa;
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+                        await _empresaService.UpdateAsync(empresaViewModel);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            return Unauthorized();
         }
         catch (Exception ex)
         {
@@ -129,17 +155,23 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Delete(int id)
     {
         try
         {
-            if (id != 0)
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
             {
-                await _empresaService.DeleteAsync(id);
-                return Ok();
-            }
+                if (id != 0)
+                {
+                    await _empresaService.DeleteAsync(id);
+                    return Ok();
+                }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            return Unauthorized();
         }
         catch (Exception ex)
         {

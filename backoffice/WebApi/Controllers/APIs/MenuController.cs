@@ -5,6 +5,7 @@ using AutoMapper;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -19,22 +20,24 @@ public class MenuController : ControllerBase
 {
     private readonly IMenuService _menuService;
     private readonly ISubMenuService _subMenuService;
-    private readonly IMapper _mapper;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public MenuController(IMenuService menuService, ISubMenuService subMenuService, IMapper mapper)
+
+    public MenuController(IMenuService menuService, ISubMenuService subMenuService, LoggedUserInfoService loggedUserInfoService)
     {
         _menuService = menuService;
         _subMenuService = subMenuService;
-        _mapper = mapper;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
-    public ActionResult<IAsyncEnumerable<MenuViewModel>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<MenuViewModel>>> GetAll()
     {
         try
         {
-            var menu = _menuService.GetAllAsync();
-            var subMenu = _subMenuService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var menu = await _menuService.GetAllAsync(loggedUser.Item3);
+            var subMenu = await _subMenuService.GetAllAsync();
 
             foreach (var m in menu)
             {
@@ -43,10 +46,8 @@ public class MenuController : ControllerBase
                     if(m.MenuItemId == submenu.MenuItemId)
                     {
                         m.SubMenus.Add(submenu);
-
                     }
                 }
-
             }
 
             return Ok(menu);
@@ -81,8 +82,9 @@ public class MenuController : ControllerBase
     {
         try
         {
-            var menu = _menuService.GetAllAsync();
-            var subMenu = _subMenuService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var menu = await _menuService.GetAllAsync(loggedUser.Item3);
+            var subMenu = await _subMenuService.GetAllAsync();
 
             foreach(var submenu in subMenu)
             {

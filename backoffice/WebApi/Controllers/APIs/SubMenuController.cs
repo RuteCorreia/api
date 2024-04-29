@@ -23,11 +23,11 @@ public class SubMenuController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IAsyncEnumerable<SubMenuViewModel>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<SubMenuViewModel>>> GetAll()
     {
         try
         {
-            var subMenu = _subMenuService.GetAllAsync();
+            var subMenu = await _subMenuService.GetAllAsync();
             return Ok(subMenu);
         }
         catch (Exception ex)
