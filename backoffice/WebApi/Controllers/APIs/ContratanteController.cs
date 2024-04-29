@@ -1,5 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Adjuvante.ViewModel;
+using Application.DTOs.Cadastros.Contratante.Interface;
+using Application.DTOs.Cadastros.Contratante.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,54 +16,54 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ContratanteController : ControllerBase
     {
-        private readonly IAdjuvanteService _adjuvanteService;
+        private readonly IContratanteService _contratanteService;
 
-        public ContratanteController(IAdjuvanteService adjuvanteService)
+        public ContratanteController(IContratanteService contratanteService)
         {
-            _adjuvanteService = adjuvanteService;
+            _contratanteService = contratanteService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<AdjuvanteViewModel>>> GetAll()
+        public async Task<ActionResult<IAsyncEnumerable<ContratanteViewModel>>> GetAll()
         {
             try
             {
-                var adjuvantes = await _adjuvanteService.GetAllAsync();
-                return Ok(adjuvantes);
+                var contratante = await _contratanteService.GetAllAsync();
+                return Ok(contratante);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante getAll - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Contratante getAll - {ex.Message}");
             }
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<AdjuvanteViewModel>> GetById(int id)
+        public async Task<ActionResult<ContratanteViewModel>> GetById(int id)
         {
             try
             {
-                var adjuvante = await _adjuvanteService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(adjuvante))
+                var contratante = await _contratanteService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(contratante))
                 {
-                    return Ok(adjuvante);
+                    return Ok(contratante);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante getById - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Contratante getById - {ex.Message}");
             }
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AdjuvanteViewModel obj)
+        public async Task<ActionResult> Add([FromBody] ContratanteViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _adjuvanteService.AddAsync(obj);
+                    await _contratanteService.AddAsync(obj);
                     return Ok();
                 }
 
@@ -69,23 +71,23 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante add - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Contratante add - {ex.Message}");
             }
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] AdjuvanteViewModel obj)
+        public async Task<ActionResult> Update(int id, [FromBody] ContratanteViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _adjuvanteService.GetByIdAsync(id);
+                    var objeto = await _contratanteService.GetByIdAsync(id);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
 
-                        await _adjuvanteService.UpdateAsync(obj);
+                        await _contratanteService.UpdateAsync(obj);
                         return Ok();
                     }
                     else
@@ -98,7 +100,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante update - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Contratante update - {ex.Message}");
             }
         }
 
@@ -109,7 +111,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _adjuvanteService.DeleteAsync(id);
+                    await _contratanteService.DeleteAsync(id);
                     return Ok();
                 }
 
@@ -117,7 +119,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante delete - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Contratante delete - {ex.Message}");
             }
         }
     }

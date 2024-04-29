@@ -20,6 +20,7 @@ using Application.Application.Servicos.Cadastros.CombateIncendio;
 using Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
 using Application.Application.Servicos.Cadastros.Combustivel;
 using Application.Application.Servicos.Cadastros.Componentes;
+using Application.Application.Servicos.Cadastros.Contratante;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
 using Application.Application.Servicos.Cadastros.Empresa;
@@ -37,6 +38,7 @@ using Application.Application.Servicos.Cadastros.Pista;
 using Application.Application.Servicos.Cadastros.PlanoDeContrato;
 using Application.Application.Servicos.Cadastros.Precificacao;
 using Application.Application.Servicos.Cadastros.Produto;
+using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
 using Application.Application.Servicos.Cadastros.SubMenu;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
@@ -64,6 +66,7 @@ using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Componentes.Interface;
+using Application.DTOs.Cadastros.Contratante.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
 using Application.DTOs.Cadastros.Empresa.Interface;
@@ -81,6 +84,7 @@ using Application.DTOs.Cadastros.Pistas.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Application.DTOs.Cadastros.Precificacao.Interface;
 using Application.DTOs.Cadastros.Produto.Interface;
+using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
@@ -108,6 +112,7 @@ using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.Componentes;
+using Domain.Interfaces.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Empresa;
@@ -125,6 +130,7 @@ using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.PlanoDeContrato;
 using Domain.Interfaces.Cadastros.Precificacao;
 using Domain.Interfaces.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.SubMenu;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
@@ -153,6 +159,7 @@ using Infra.Repositorio.Cadastros.CombateIncendio;
 using Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
 using Infra.Repositorio.Cadastros.Combustivel;
 using Infra.Repositorio.Cadastros.Componentes;
+using Infra.Repositorio.Cadastros.Contratante;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
 using Infra.Repositorio.Cadastros.Empresa;
@@ -170,6 +177,7 @@ using Infra.Repositorio.Cadastros.Pistas;
 using Infra.Repositorio.Cadastros.PlanoDeContrato;
 using Infra.Repositorio.Cadastros.Precificacao;
 using Infra.Repositorio.Cadastros.Produto;
+using Infra.Repositorio.Cadastros.RelatorioAplicacao;
 using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
@@ -230,6 +238,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<IComponentesService, ComponentesService>();
         services.AddScoped<IManutencaoAeronaveService, ManutencaoAeronaveService>();
         services.AddScoped<IManutencaoAeronaveItemsRevisaoService, ManutencaoAeronaveItemsRevisaoService>();
+        services.AddScoped<IContratanteService, ContratanteService>();
+        services.AddScoped<IRelatorioAplicacaoService, RelatorioAplicacaoService>();
 
         #endregion
 
@@ -279,6 +289,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<IManutencaoAeronaveRepository, ManutencaoAeronaveRepository>();
         services.AddScoped<IUsuarioCredencialRepository, UsuarioCredencialRepository>();
         services.AddScoped<IManutencaoAeronaveItemsRevisaoRepository, ManutencaoAeronaveItemsRevisaoRepository>();
+        services.AddScoped<IContratanteRepository, ContratanteRepository>();
+        services.AddScoped<IRelatorioAplicacaoRepository, RelatorioAplicacaoRepository>();
 
         #endregion
 
