@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Users.Interface;
+﻿using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.User;
 using Domain.Enums;
 using Domain.Interfaces.User;
@@ -20,6 +22,7 @@ public class UserAuthService : IUserAuthService
     private readonly IConfiguration _config;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
+    private readonly IEmpresaService _empresaService;
     private readonly IMapper _mapper;
     public UserAuthService(
         UserManager<IdentityUser> userManager, 
@@ -27,6 +30,7 @@ public class UserAuthService : IUserAuthService
         IConfiguration config, 
         IUsuarioRepository usuarioRepository,
         IUsuarioCredencialRepository usuarioCredencialRepository,
+        IEmpresaService empresaService,
         IMapper mapper
         )
     {
@@ -35,6 +39,7 @@ public class UserAuthService : IUserAuthService
         _config = config;
         _usuarioRepository = usuarioRepository;
         _usuarioCredencialRepository = usuarioCredencialRepository;
+        _empresaService = empresaService;
         _mapper = mapper;
     }
 
@@ -173,11 +178,25 @@ public class UserAuthService : IUserAuthService
     private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser identityUser, Usuario usuario)
     {
         var roles = await _userManager.GetRolesAsync(identityUser);
+        var imgEmpresa = usuario.Empresa?.Imagem?.Length > 0 ? Convert.ToBase64String(usuario.Empresa?.Imagem ?? []) : "";
         var claims = new List<Claim>
         {
             new("NrUsuario", usuario.NrUsuario.ToString()),
             new("IdUsuario", usuario.Id.ToString()),
             new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
+            new("NomeEmpresa", usuario.Empresa?.Nome ?? ""),
+            new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
+            new("TelefoneEmpresa", usuario.Empresa?.Telefone ?? ""),
+            new("cnpj", usuario.Empresa?.CNPJ ?? ""),
+            new("inscricaoEstadualEmpresa", usuario.Empresa?.InscricaoEstadual ?? ""),
+            new("nrCDAEmpresa", usuario.Empresa?.NrCDA?.ToString() ?? ""),
+            new("registroMapaEmpresa", usuario.Empresa?.RegistroMapa ?? ""),
+            new("cepEmpresa", usuario.Empresa?.CEP ?? ""),
+            new("enderecoEmpresa", usuario.Empresa?.Endereco ?? ""),
+            new("numeroEmpresa", usuario.Empresa?.Numero ?? ""),
+            new("cidadeEmpresa", usuario.Empresa?.Cidade ?? ""),
+            new("estadoEmpresa", usuario.Empresa?.Estado ?? ""),
+            new("logoEmpresa", imgEmpresa),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
             new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),
