@@ -3,17 +3,22 @@ using Domain.Entidades.Cadastros.Aeronave;
 using Domain.Entidades.Cadastros.Altura_Voo;
 using Domain.Entidades.Cadastros.Alvo_Biologico;
 using Domain.Entidades.Cadastros.Aplicacao;
+using Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cliente;
 using Domain.Entidades.Cadastros.CombateIncendio;
 using Domain.Entidades.Cadastros.Combustivel;
 using Domain.Entidades.Cadastros.Componentes;
+using Domain.Entidades.Cadastros.Contratante;
+using Domain.Entidades.Cadastros.ContratoPrestacaoServico;
 using Domain.Entidades.Cadastros.Controle_De_Frota;
 using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.DadosResponsavel;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Equipamento;
 using Domain.Entidades.Cadastros.Estados;
 using Domain.Entidades.Cadastros.Frota;
+using Domain.Entidades.Cadastros.IdentificacaoAreaTratada;
 using Domain.Entidades.Cadastros.ManutencaoAeronave;
 using Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Domain.Entidades.Cadastros.Menu;
@@ -21,6 +26,7 @@ using Domain.Entidades.Cadastros.MenuUsuario;
 using Domain.Entidades.Cadastros.Pistas;
 using Domain.Entidades.Cadastros.Precificacao;
 using Domain.Entidades.Cadastros.Produto;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Entidades.Cadastros.SubMenu;
 using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
@@ -80,6 +86,12 @@ public class ContextBase : IdentityDbContext
     public DbSet<Componentes> Componente { get; set; }
     public DbSet<ManutencaoAeronave> ManutencaoAeronave { get; set; }
     public DbSet<ManutencaoAeronaveItemsRevisao> ManutencaoAeronaveItemsRevisao { get; set; }
+    public DbSet<RelatorioAplicacao> RelatorioAplicacao { get; set; }
+    public DbSet<Contratante> Contratante { get; set; }
+    public DbSet<IdentificacaoAreaTratada> IdentificacaoAreaTratada { get; set; }
+    public DbSet<CaracteristicasProdutoAplicado> CaracteristicasProdutoAplicado { get; set; }
+    public DbSet<ContratoPrestacaoServico> ContratoPrestacaoServico { get; set; }
+    public DbSet<DadosResponsavel> DadosResponsavel { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

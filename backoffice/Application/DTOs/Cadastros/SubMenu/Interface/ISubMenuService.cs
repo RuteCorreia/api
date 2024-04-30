@@ -1,23 +1,16 @@
-﻿using Application.DTOs.Cadastros.Menu.ViewModel;
-using Application.DTOs.Cadastros.SubMenu.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.DTOs.Cadastros.SubMenu.ViewModel;
 
-namespace Application.DTOs.Cadastros.SubMenu.Interface
+namespace Application.DTOs.Cadastros.SubMenu.Interface;
+
+public interface ISubMenuService
 {
-    public interface ISubMenuService
-    {
-        IEnumerable<SubMenuViewModel> GetAllAsync();
+    Task<IEnumerable<SubMenuViewModel>> GetAllAsync();
 
-        Task<SubMenuViewModel> GetByIdAsync(int id);
+    Task<SubMenuViewModel> GetByIdAsync(int id);
 
-        Task AddAsync(SubMenuViewModel obj);
+    Task AddAsync(SubMenuViewModel obj);
 
-        Task UpdateAsync(SubMenuViewModel obj);
+    Task UpdateAsync(SubMenuViewModel obj);
 
-        Task DeleteAsync(int id);
-    }
+    Task DeleteAsync(int id);
 }

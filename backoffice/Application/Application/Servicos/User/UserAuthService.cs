@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Users.Interface;
+﻿using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.User;
 using Domain.Enums;
 using Domain.Interfaces.User;
@@ -173,10 +175,25 @@ public class UserAuthService : IUserAuthService
     private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser identityUser, Usuario usuario)
     {
         var roles = await _userManager.GetRolesAsync(identityUser);
+        var imgEmpresa = usuario.Empresa?.Imagem?.Length > 0 ? Convert.ToBase64String(usuario.Empresa?.Imagem ?? []) : "";
         var claims = new List<Claim>
         {
             new("NrUsuario", usuario.NrUsuario.ToString()),
             new("IdUsuario", usuario.Id.ToString()),
+            new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
+            new("NomeEmpresa", usuario.Empresa?.Nome ?? ""),
+            new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
+            new("TelefoneEmpresa", usuario.Empresa?.Telefone ?? ""),
+            new("cnpj", usuario.Empresa?.CNPJ ?? ""),
+            new("inscricaoEstadualEmpresa", usuario.Empresa?.InscricaoEstadual ?? ""),
+            new("nrCDAEmpresa", usuario.Empresa?.NrCDA?.ToString() ?? ""),
+            new("registroMapaEmpresa", usuario.Empresa?.RegistroMapa ?? ""),
+            new("cepEmpresa", usuario.Empresa?.CEP ?? ""),
+            new("enderecoEmpresa", usuario.Empresa?.Endereco ?? ""),
+            new("numeroEmpresa", usuario.Empresa?.Numero ?? ""),
+            new("cidadeEmpresa", usuario.Empresa?.Cidade ?? ""),
+            new("estadoEmpresa", usuario.Empresa?.Estado ?? ""),
+            new("logoEmpresa", imgEmpresa),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
             new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),
@@ -443,5 +460,44 @@ public class UserAuthService : IUserAuthService
         }
 
         return result.ToString(); 
+    }
+
+    public async Task<(bool, string)> RegisterUserFromEmpresaAsync(UserRegisterViewModel request, int? idEmpresa)
+    {
+        var resultMsg = new StringBuilder();
+
+        var identityUser = new IdentityUser
+        {
+            UserName = request.Email,
+            Email = request.Email,
+            PhoneNumber = request.Telefone,
+            EmailConfirmed = true
+        };
+
+        var identityResult = await _userManager.CreateAsync(identityUser, request.Password);
+
+        if (!identityResult.Succeeded)
+            return (false, resultMsg.Append(GetIdentityResultErrors(identityResult)).ToString());
+
+        var roleListAsString = request.Funcoes.Select(r => r.Funcao.ToString());
+        foreach (var role in roleListAsString)
+        {
+            var roleExists = await _roleManager.RoleExistsAsync(role);
+            if (!roleExists)
+                await CreateRoleAsync(role);
+        }
+
+        var identityRoleResult = await _userManager.AddToRolesAsync(identityUser, roleListAsString);
+        if (!identityRoleResult.Succeeded)
+        {
+            await _userManager.DeleteAsync(identityUser);
+            return (false, resultMsg.Append(GetIdentityResultErrors(identityRoleResult)).ToString());
+        }
+
+
+        await CreateUser(request, identityUser, idEmpresa);
+        await CreateUserCredencial(identityUser, request.Funcoes);
+
+        return (true, resultMsg.Append("Usuário criado com sucesso").ToString());      
     }
 }

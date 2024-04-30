@@ -1,13 +1,14 @@
 ﻿using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.SubMenu.ViewModel;
 using Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -22,11 +23,11 @@ public class SubMenuController : ControllerBase
     }
 
     [HttpGet]
-    public ActionResult<IAsyncEnumerable<SubMenuViewModel>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<SubMenuViewModel>>> GetAll()
     {
         try
         {
-            var subMenu = _subMenuService.GetAllAsync();
+            var subMenu = await _subMenuService.GetAllAsync();
             return Ok(subMenu);
         }
         catch (Exception ex)

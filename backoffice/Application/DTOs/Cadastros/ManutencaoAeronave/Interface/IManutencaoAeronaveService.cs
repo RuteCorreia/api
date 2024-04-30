@@ -1,23 +1,16 @@
-﻿using Application.DTOs.Cadastros.Frota.ViewModel;
-using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 
-namespace Application.DTOs.Cadastros.ManutencaoAeronave.Interface
+namespace Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
+
+public interface IManutencaoAeronaveService
 {
-    public interface IManutencaoAeronaveService
-    {
-        Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync();
+    Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa);
 
-        Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id);
+    Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id);
 
-        Task AddAsync(ManutencaoAeronaveViewModel obj);
+    Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa);
 
-        Task UpdateAsync(ManutencaoAeronaveViewModel obj);
+    Task UpdateAsync(ManutencaoAeronaveViewModel obj);
 
-        Task DeleteAsync(int id);
-    }
+    Task DeleteAsync(int id);
 }

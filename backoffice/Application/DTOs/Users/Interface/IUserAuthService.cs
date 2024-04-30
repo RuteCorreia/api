@@ -6,6 +6,7 @@ public interface IUserAuthService
 {
     Task<(bool, string)> LoginAsync(UserLoginViewModel user);
     Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user, string loggedUserId);
+    Task<(bool, string)> RegisterUserFromEmpresaAsync(UserRegisterViewModel user, int? idEmpresa);
     Task<(bool, string)> ChangeUserPasswordAsync(UserChangePasswordViewModel user);
     Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel user);
     Task<IEnumerable<RoleObject>> GetUserRolesAsync(string id);

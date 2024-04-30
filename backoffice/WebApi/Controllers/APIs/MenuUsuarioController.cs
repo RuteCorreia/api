@@ -1,8 +1,4 @@
-﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
-using Application.DTOs.Cadastros.Adjuvante.ViewModel;
-using Application.DTOs.Cadastros.Menu.Interface;
-using Application.DTOs.Cadastros.Menu.ViewModel;
-using Application.DTOs.Cadastros.MenuUsuario.Interface;
+﻿using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Application.DTOs.Cadastros.MenuUsuario.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -12,7 +8,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]

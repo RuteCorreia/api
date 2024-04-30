@@ -3,13 +3,15 @@ using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.Interface;
 using Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -19,16 +21,19 @@ namespace WebApi.Controllers.APIs
         private readonly IManutencaoAeronaveService _manutencaoAeronaveService;
         private readonly IManutencaoAeronaveItemsRevisaoService _manutencaoAeronaveItemsRevisaoService;
         private readonly IAeronaveService _aeronaveService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
 
         public ManutencaoAeronaveController(
             IManutencaoAeronaveService manutencaoAeronaveService, 
             IManutencaoAeronaveItemsRevisaoService manutencaoAeronaveItemsRevisaoService, 
-            IAeronaveService aeronaveService
+            IAeronaveService aeronaveService,
+            LoggedUserInfoService loggedUserInfoService
         )
         {
             _manutencaoAeronaveService = manutencaoAeronaveService;
             _manutencaoAeronaveItemsRevisaoService = manutencaoAeronaveItemsRevisaoService;
             _aeronaveService = aeronaveService;
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
         [HttpGet]
@@ -36,8 +41,9 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync();
-                var aeronaves = await _aeronaveService.GetAllAsync();
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var manutencaoAeronave = await _manutencaoAeronaveService.GetAllAsync(loggedUser.Item3);
+                var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
                 foreach (var item in manutencaoAeronave)
                 {
                     var buscaAeronave = aeronaves.FirstOrDefault(x => x.Id == item.IdAeronave);
@@ -88,7 +94,7 @@ namespace WebApi.Controllers.APIs
                 if (!string.IsNullOrEmpty(obj.DocumentoBase64))
                 {
                     string[] parts = obj.DocumentoBase64.Split(',');
-                    string decodedBase64String = parts[1];
+                    string decodedBase64String = parts[1]; 
 
                     byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
                     obj.Documento = imageDataBytes;
@@ -96,7 +102,9 @@ namespace WebApi.Controllers.APIs
 
                 if (ModelState.IsValid)
                 {
-                    await _manutencaoAeronaveService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                    await _manutencaoAeronaveService.AddAsync(obj, loggedUser.Item3);
                     return Ok();
                 }
 
