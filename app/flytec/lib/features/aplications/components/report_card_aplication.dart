@@ -1,3 +1,6 @@
+// ignore_for_file: use_build_context_synchronously
+
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -6,6 +9,8 @@ import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aplications/data/models/report_aplications_model.dart';
+import 'package:flytec/features/aplications/domain/usecases/send_report_aplication_usecase.dart';
 import 'package:flytec/features/aplications/services/create_aplicacao_report_service.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
@@ -102,12 +107,25 @@ class ReportCardAplication extends StatelessWidget {
                 leftIcon: "assets/images/sendicon.svg",
                 text: "Enviar",
                 showRightcon: false,
-                onClick: () {
+                onClick: () async {
                   final mandatoryFields = _reportAplicationController
                       .listaAplicacao![_index]
                       .verifyFieldsMandatory(showToast: true);
+
                   if (mandatoryFields) {
-                    Util.toastSucesso('ENVIADO');
+                    ReportAplicationsModel reportAplication =
+                        ReportAplicationsModel.fromAplicacao(
+                            _reportAplicationController
+                                .listaAplicacao![_index]);
+                    PdfGenerator pdfGenerator = CreateAplicacaoReportService(
+                        aplicacao: _reportAplicationController
+                            .listaAplicacao![_index]);
+                    final document = await pdfGenerator.generatePdf();
+                    final documentBytes =
+                        await pdfGenerator.saveDocument(document: document);
+                    reportAplication.data = base64Encode(documentBytes!);
+                    await getIt<SendReportAplicationUseCase>()
+                        .call(reportAplication);
                   }
                   context.pop();
                 },
@@ -150,9 +168,7 @@ class ReportCardAplication extends StatelessWidget {
                   File file = File(
                       "${directory.path}/relatorio_${Util.getRandomString(10)}.pdf");
                   await file.writeAsBytes(documentBytes!);
-                  // ignore: use_build_context_synchronously
                   context.pop();
-                  // ignore: use_build_context_synchronously
                   context.push("/reportPage", extra: file);
                 },
                 text: "Gerar Relatório",

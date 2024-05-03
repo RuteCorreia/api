@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flytec/features/aplications/domain/entities/report_aplications_entity.dart';
+import 'package:flytec/features/aplications/models/aplicacao.dart';
 
 List<ReportAplicationsModel> reportAplicationsFromJson(String str) =>
     List<ReportAplicationsModel>.from(
@@ -11,19 +12,19 @@ String reportAplicationsToJson(List<ReportAplicationsModel> data) =>
 
 class ReportAplicationsModel extends ReportAplicationEntity {
   ReportAplicationsModel({
-    required id,
-    required contratanteId,
-    required identificacaoAreaTratadaId,
-    required caracteristicasProdutoAplicadoId,
-    required recomendacoesTecnicasId,
-    required relatorioAplicacaoId,
-    required contratoPrestacaoServicoId,
-    required dadosResponsavelId,
-    required piloto,
-    required executor,
-    required refDocument,
-    required data,
-    required refUsuario,
+    id,
+    contratanteId,
+    identificacaoAreaTratadaId,
+    caracteristicasProdutoAplicadoId,
+    recomendacoesTecnicasId,
+    relatorioAplicacaoId,
+    contratoPrestacaoServicoId,
+    dadosResponsavelId,
+    piloto,
+    executor,
+    refDocument,
+    data,
+    refUsuario,
   }) : super(
           id: id,
           contratanteId: contratanteId,
@@ -76,5 +77,22 @@ class ReportAplicationsModel extends ReportAplicationEntity {
       data: json['data'],
       refUsuario: json['refUsuario'],
     );
+  }
+
+  factory ReportAplicationsModel.fromAplicacao(Aplicacao aplicacao) {
+    return ReportAplicationsModel(
+        id: aplicacao.id,
+        caracteristicasProdutoAplicadoId:
+            aplicacao.caracteristicasProdutoAplicadoId,
+        contratanteId: aplicacao.contratanteId,
+        contratoPrestacaoServicoId: aplicacao.contratoPrestacaoServicoId,
+        dadosResponsavelId: aplicacao.dadosResponsavelId,
+        executor: aplicacao.executor,
+        identificacaoAreaTratadaId: aplicacao.identificacaoAreaTratadaId,
+        piloto: aplicacao.piloto,
+        recomendacoesTecnicasId: aplicacao.recomendacoesTecnicasId,
+        refDocument: aplicacao.refDocument,
+        refUsuario: aplicacao.refUsuario,
+        relatorioAplicacaoId: aplicacao.relatorioAplicacaoId);
   }
 }
