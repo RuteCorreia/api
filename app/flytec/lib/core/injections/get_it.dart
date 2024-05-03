@@ -12,6 +12,10 @@ import 'package:flytec/features/alvo_biologico/data/repositories/produto_reposit
 import 'package:flytec/features/alvo_biologico/domain/repositories/produto_repository.dart';
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/data/datasource/clientes_datasource.dart';
+import 'package:flytec/features/aplications/data/datasource/remote_report_aplications_datasource.dart';
+import 'package:flytec/features/aplications/data/repository/report_aplication_repository_impl.dart';
+import 'package:flytec/features/aplications/domain/repository/report_aplication_repository.dart';
+import 'package:flytec/features/aplications/domain/usecases/send_report_aplication_usecase.dart';
 import 'package:flytec/features/aplications/services/clientes_service.dart';
 import 'package:flytec/features/auth/domain/usecases/authentication_usecase.dart';
 import 'package:flytec/features/bulas/data/datasource/remote_bula_datasource.dart';
@@ -143,7 +147,7 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
- getIt.registerLazySingleton<RemoteEngenheiroDataSourceImpl>(
+  getIt.registerLazySingleton<RemoteEngenheiroDataSourceImpl>(
     () => RemoteEngenheiroDataSourceImpl(
       client: getIt(),
       netWorkInfoI: getIt(),
@@ -179,8 +183,17 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
+  getIt.registerLazySingleton<RemoteReportAplicationsDatasource>(
+    () => RemoteReportAplicationsDatasourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
 
   //REPOSITORES
+  getIt.registerLazySingleton<ReportAplicationRepository>(() =>
+      ReportAplicationRepositoryImpl(
+          remoteReportAplicationsDatasource: getIt()));
   getIt.registerLazySingleton<IAuthenticationRepository>(() =>
       AuthenticationRepositoryImpl(
           remoteAuthenticationDataSourceImpl: getIt()));
@@ -224,6 +237,7 @@ void setup() async {
     () => AlturaVooRepositoryImpl(datasource: getIt()),
   );
   // UseCases
+  getIt.registerLazySingleton(() => SendReportAplicationUseCase(getIt()));
   getIt.registerLazySingleton<AuthenticateUseCase>(
       () => AuthenticateUseCase(getIt()));
   getIt.registerLazySingleton<GetExecutoresUseCase>(
