@@ -102,7 +102,7 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                           fontSize: 16,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
-                          height: 0.09,
+                           
                         )),
                   ),
                 ),

@@ -231,7 +231,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),
@@ -329,7 +329,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),
@@ -393,7 +393,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),
@@ -503,7 +503,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),
@@ -539,7 +539,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),
@@ -574,7 +574,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),
@@ -616,7 +616,7 @@ class _RelatorioAplicacaoPageState extends State<RelatorioAplicacaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),

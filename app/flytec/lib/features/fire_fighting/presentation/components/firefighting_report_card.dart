@@ -86,7 +86,7 @@ class FirefightingReportCard extends StatelessWidget {
                   fontSize: 16,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
-                  height: 0.09,
+                   
                 ),
               ),
               const SizedBox(height: 20),
