@@ -14,7 +14,7 @@ class ReportAplicationRepositoryImpl implements ReportAplicationRepository {
   });
 
   @override
-  Future<Either<Failure, void>> sendReportAplication(
+  Future<Either<Failure, bool>> sendReportAplication(
       ReportAplicationEntity? reportAplicationsModel) async {
     try {
       final result =
