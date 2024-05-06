@@ -148,7 +148,7 @@ class _DecolagemPousoSelectedState extends State<DecolagemPousoSelected> {
                                   fontSize: 13,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w500,
-                                  height: 0.09,
+                                   
                                 )),
                           ),
                         ),
@@ -252,7 +252,7 @@ class _DecolagemPousoSelectedState extends State<DecolagemPousoSelected> {
                                   fontSize: 13,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w500,
-                                  height: 0.09,
+                                   
                                 )),
                           ),
                         ),

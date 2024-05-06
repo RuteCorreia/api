@@ -647,7 +647,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                             fontSize: 16,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w600,
-                            height: 0.09,
+                             
                           ),
                         ),
                       ],
@@ -818,7 +818,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                height: 0.09,
+                                 
                               )),
                         ),
                       ),
@@ -848,7 +848,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                height: 0.09,
+                                 
                               )),
                         ),
                       ),

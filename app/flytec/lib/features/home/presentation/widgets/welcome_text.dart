@@ -8,7 +8,7 @@ class WelcomeText extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return SizedBox(
-      width: 328,
+      width: 350,
       height: 50,
       child: Text.rich(
         TextSpan(

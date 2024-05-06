@@ -269,7 +269,6 @@ class _HomePagaState extends State<HomePaga> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w700,
-                                height: 0.09,
                               ),
                             ),
                           ],
@@ -485,7 +484,7 @@ class _HomePagaState extends State<HomePaga> {
                             insetPadding: const EdgeInsets.all(32),
                             title: const SizedBox(
                               width: 244,
-                              height: 30,
+                              height: 45,
                               child: Text(
                                 'Escolha o tipo de relatório',
                                 textAlign: TextAlign.center,
@@ -494,7 +493,6 @@ class _HomePagaState extends State<HomePaga> {
                                   fontSize: 16,
                                   fontFamily: 'Inter',
                                   fontWeight: FontWeight.w500,
-                                  height: 0.09,
                                 ),
                               ),
                             ),

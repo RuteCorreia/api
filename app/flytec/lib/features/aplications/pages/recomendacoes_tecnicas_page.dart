@@ -239,7 +239,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),
@@ -273,7 +273,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                      height: 0.09,
+                       
                     )),
               ),
             ),
@@ -311,7 +311,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),

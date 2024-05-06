@@ -233,7 +233,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -278,7 +278,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
