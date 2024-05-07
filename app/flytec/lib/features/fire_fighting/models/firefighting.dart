@@ -36,6 +36,7 @@ class Firefighting {
   DashBoardState? state;
   String? piloto;
   String? executor;
+  bool privado = false;
 
   Firefighting(
       {this.refId,

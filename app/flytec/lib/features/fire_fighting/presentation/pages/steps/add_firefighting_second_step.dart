@@ -20,8 +20,10 @@ import 'package:location/location.dart' as lct;
 
 class AddFireFightingSecondStep extends StatefulWidget {
   final FirefightingController _firefightingController;
+  final bool orgaoPrivado;
+
   const AddFireFightingSecondStep(
-      {required FirefightingController firefightingController, super.key})
+      {required FirefightingController firefightingController, required this.orgaoPrivado, super.key})
       : _firefightingController = firefightingController;
 
   @override
@@ -31,7 +33,6 @@ class AddFireFightingSecondStep extends StatefulWidget {
 
 class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
   Firefighting? _firefighting;
-
   DateTime? _dataSelecionada = DateTime.now();
   TimeOfDay? _horarioAcionamento = const TimeOfDay(hour: 12, minute: 43);
   TimeOfDay? _horarioChegadaPista = const TimeOfDay(hour: 12, minute: 43);
@@ -258,34 +259,42 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                       ));
                 },
               ),
-              const SizedBox(height: 14),
-              const CustomText(text: 'N° Aviso'),
-              const SizedBox(height: 14),
-              Container(
-                width: double.infinity,
-                height: 50,
-                margin: const EdgeInsets.only(bottom: 20),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: const BorderSide(width: 1, color: Color(0xFF636363)),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  controller: _numeroAviso,
-                  decoration: const InputDecoration(
-                      hintText: "Número do aviso",
-                      border: InputBorder.none,
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 121, 118, 118),
-                        fontSize: 16,
-                        fontFamily: 'Inter',
-                        fontWeight: FontWeight.w500,
-                         
-                      )),
+
+              Visibility(
+                visible: !widget.orgaoPrivado,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 14),
+                    CustomText(text: 'N° Aviso'),
+                    SizedBox(height: 14),
+                    Container(
+                      width: double.infinity,
+                      height: 50,
+                      margin: const EdgeInsets.only(bottom: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        controller: _numeroAviso,
+                        decoration: const InputDecoration(
+                          hintText: "Número do aviso",
+                          border: InputBorder.none,
+                          hintStyle: TextStyle(
+                            color: Color.fromARGB(255, 121, 118, 118),
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 14),
