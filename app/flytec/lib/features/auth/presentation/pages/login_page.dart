@@ -61,6 +61,10 @@ class _LoginPageState extends State<LoginPage> {
   double currentLatitude = 0;
   double currentLongitude = 0;
   bool isLoading = false;
+  bool mostrarSenha = false;
+  IconData visibilityIcon = Icons.visibility;
+  IconData visibilityOffIcon = Icons.visibility_off;
+
   @override
   void initState() {
     super.initState();
@@ -261,9 +265,10 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       child: TextField(
+                        obscureText: !mostrarSenha,
                         autofillHints: const [AutofillHints.password],
                         controller: _editingControllerPassword,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                             hintText: "Senha",
                             border: InputBorder.none,
                             hintStyle: TextStyle(
@@ -272,7 +277,19 @@ class _LoginPageState extends State<LoginPage> {
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
                               height: 0.09,
-                            )),
+                            ),
+                          suffixIcon: IconButton(
+                              icon: Icon(
+                              mostrarSenha ? visibilityIcon : visibilityOffIcon,
+                              color: Colors.grey,
+                              ),
+                            onPressed: (){
+                                setState(() {
+                                mostrarSenha = !mostrarSenha;
+                                });
+                            },
+                          ),
+                        ),
                       ),
                     ),
                     CustomButton(
