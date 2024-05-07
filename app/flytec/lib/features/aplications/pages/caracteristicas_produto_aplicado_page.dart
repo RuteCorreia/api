@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -35,6 +36,7 @@ class _CaracteristicasProdutoAplicadoPageState
   Aplicacao get _aplicacao =>
       widget._reportAplicationController.aplicacaoSelected!;
   Uint8List? _receituarioAgronomico;
+  int _isReceiturarioImage = 0;
   String? _nomeProduto = "";
   int? _classificacaoToxicologica;
   String? _classe = "";
@@ -100,6 +102,8 @@ class _CaracteristicasProdutoAplicadoPageState
         _tipoServicoText = _caracteristicasProdutoAplicado?.tipoServico;
         _receituarioAgronomico =
             _caracteristicasProdutoAplicado!.receiturarioAgronomico;
+        _isReceiturarioImage =
+            _caracteristicasProdutoAplicado!.isReceiturarioImage!;
         setState(() {});
       }
     });
@@ -160,6 +164,7 @@ class _CaracteristicasProdutoAplicadoPageState
         cultura: getIt<GlobalConfigVars>().selectedCultura,
         doseProdutoHectare: _doseProdutoComercialHectareValue,
         nomeProduto: _nomeProduto,
+        isReceiturarioImage: _isReceiturarioImage,
         receiturarioAgronomico: _receituarioAgronomico,
         tipoFormulacao: _tipoFormulacao,
         tipoServico: _tipoServicoText,
@@ -269,9 +274,10 @@ class _CaracteristicasProdutoAplicadoPageState
               const SizedBox(height: 10),
               InkWell(
                 onTap: () async {
-                  final imageMapsPath = await Util.obtainImagePathMaps(context);
+                  final archive = await Util.obtainImagePathMaps(context);
+                  _isReceiturarioImage = archive.isImage ? 0 : 1;
                   _receituarioAgronomico =
-                      await File(imageMapsPath).readAsBytes();
+                      await File(archive.path!).readAsBytes();
                   setState(() {});
                   // ignore: use_build_context_synchronously
                   Navigator.push(
@@ -326,7 +332,7 @@ class _CaracteristicasProdutoAplicadoPageState
                   ),
                 ),
               ),
-              if (_receituarioAgronomico != null)
+              if (_receituarioAgronomico != null && _isReceiturarioImage == 0)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -341,6 +347,22 @@ class _CaracteristicasProdutoAplicadoPageState
                               image: MemoryImage(_receituarioAgronomico!),
                               fit: BoxFit.fill),
                         )),
+                  ],
+                ),
+              if (_receituarioAgronomico != null && _isReceiturarioImage == 1)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    const CustomText(text: 'PDF do Receituário Agronômico'),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      child: PDFView(
+                        pdfData: _receituarioAgronomico,
+                      ),
+                    ),
                   ],
                 ),
               const SizedBox(height: 10),
