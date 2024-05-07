@@ -10,6 +10,7 @@ class CaracteristicasProdutoAplicado {
   String? cultura;
   CulturaModel? culturaModel;
   Uint8List? receiturarioAgronomico;
+  int? isReceiturarioImage;
   String? nomeProduto;
   int? classificacaoToxicologica;
   String? classe;
@@ -39,6 +40,7 @@ class CaracteristicasProdutoAplicado {
     this.numeroReceituarioAgronomico,
     this.dataEmissao,
     this.id,
+    this.isReceiturarioImage
   });
 
   Map<String, dynamic> toMap() {
@@ -55,6 +57,7 @@ class CaracteristicasProdutoAplicado {
       'adjuvante': adjuvante,
       'tipoServico': tipoServico,
       'dataEmissao': dataEmissao,
+      'isReceituarioImage': isReceiturarioImage,
       'numeroReceituarioAgronomico': numeroReceituarioAgronomico,
     };
   }
@@ -68,6 +71,7 @@ class CaracteristicasProdutoAplicado {
           int.tryParse(json?['classificacaoToxicologica'] ?? ''),
       classe: json?['classe'] ?? '',
       tipoFormulacao: json?['tipoFormulacao'] ?? '',
+      isReceiturarioImage: json?['isReceituarioImage'] ?? 0,
       alvoBiologico: json?['alvoBiologico'] ?? '',
       doseProdutoHectare: json?['doseProdutoHectare'] ?? '',
       unidadeDoseProdutoHectare: json?['unidadeDoseProdutoHectare'] ?? '',
