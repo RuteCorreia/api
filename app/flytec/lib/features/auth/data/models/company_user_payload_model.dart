@@ -31,20 +31,46 @@ class CompanyUserPayloadModel {
 
   factory CompanyUserPayloadModel.fromJson(Map<String, dynamic> json) {
     return CompanyUserPayloadModel(
-      idEmpresa: json["IdEmpresa"]?.toString() ?? '',
-      nomeEmpresa: json["NomeEmpresa"]?.toString() ?? '',
-      telefoneEmpresa: json["TelefoneEmpresa"]?.toString() ?? '',
-      emailEmpresa: json["EmailEmpresa"]?.toString() ?? '',
+      idEmpresa: json["IdEmpresa"].toString().isEmpty
+          ? null
+          : json["IdEmpresa"]?.toString(),
+      nomeEmpresa: json["NomeEmpresa"].toString().isEmpty
+          ? null
+          : json["NomeEmpresa"]?.toString(),
+      telefoneEmpresa: json["TelefoneEmpresa"].toString().isEmpty
+          ? null
+          : json["TelefoneEmpresa"]?.toString(),
+      emailEmpresa: json["EmailEmpresa"].toString().isEmpty
+          ? null
+          : json["EmailEmpresa"]?.toString(),
       inscricaoEstadualEmpresa:
-          json["inscricaoEstadualEmpresa"]?.toString() ?? '',
-      nrCDAEmpresa: json["nrCDAEmpresa"]?.toString() ?? '',
-      registroMapaEmpresa: json["registroMapaEmpresa"]?.toString() ?? '',
-      cepEmpresa: json["cepEmpresa"]?.toString() ?? '',
-      enderecoEmpresa: json["enderecoEmpresa"]?.toString() ?? '',
-      numeroEmpresa: json["numeroEmpresa"]?.toString() ?? '',
-      cidadeEmpresa: json["cidadeEmpresa"]?.toString() ?? '',
-      estadoEmpresa: json["estadoEmpresa"]?.toString() ?? '',
-      logoEmpresa: json["logoEmpresa"]?.toString() ?? '',
+          json["inscricaoEstadualEmpresa"].toString().isEmpty
+              ? null
+              : json["inscricaoEstadualEmpresa"]?.toString(),
+      nrCDAEmpresa: json["nrCDAEmpresa"].toString().isEmpty
+          ? null
+          : json["nrCDAEmpresa"]?.toString(),
+      registroMapaEmpresa: json["registroMapaEmpresa"].toString().isEmpty
+          ? null
+          : json["registroMapaEmpresa"]?.toString(),
+      cepEmpresa: json["cepEmpresa"].toString().isEmpty
+          ? null
+          : json["cepEmpresa"]?.toString(),
+      enderecoEmpresa: json["enderecoEmpresa"].toString().isEmpty
+          ? null
+          : json["enderecoEmpresa"]?.toString(),
+      numeroEmpresa: json["numeroEmpresa"].toString().isEmpty
+          ? null
+          : json["numeroEmpresa"]?.toString(),
+      cidadeEmpresa: json["cidadeEmpresa"].toString().isEmpty
+          ? null
+          : json["cidadeEmpresa"]?.toString(),
+      estadoEmpresa: json["estadoEmpresa"].toString().isEmpty
+          ? null
+          : json["estadoEmpresa"]?.toString(),
+      logoEmpresa: json["logoEmpresa"].toString().isEmpty
+          ? null
+          : json["logoEmpresa"]?.toString(),
     );
   }
 
