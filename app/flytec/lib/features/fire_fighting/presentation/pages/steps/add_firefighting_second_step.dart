@@ -20,11 +20,11 @@ import 'package:location/location.dart' as lct;
 
 class AddFireFightingSecondStep extends StatefulWidget {
   final FirefightingController _firefightingController;
-  final bool orgaoPrivado;
+  final bool _orgaoPrivado;
 
   const AddFireFightingSecondStep(
-      {required FirefightingController firefightingController, required this.orgaoPrivado, super.key})
-      : _firefightingController = firefightingController;
+      {required FirefightingController firefightingController, required bool orgaoPrivado, super.key})
+      : _firefightingController = firefightingController, _orgaoPrivado = orgaoPrivado;
 
   @override
   State<AddFireFightingSecondStep> createState() =>
@@ -261,7 +261,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
               ),
 
               Visibility(
-                visible: !widget.orgaoPrivado,
+                visible: !widget._orgaoPrivado,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

@@ -42,7 +42,6 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
     super.initState();
   }
 
-  bool orgaoPrivado = false;
   Future<void> _createReportFirefighting() async {
     final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
     final refUsuario =
