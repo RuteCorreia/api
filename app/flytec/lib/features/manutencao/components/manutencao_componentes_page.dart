@@ -102,7 +102,7 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                           fontSize: 16,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
-                          height: 0.09,
+                           
                         )),
                   ),
                 ),
@@ -110,10 +110,10 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                 const SizedBox(height: 10),
                 InkWell(
                     onTap: () async {
-                      final imageMapsPath =
-                          await Util.obtainImagePathMaps(context);
+                      final archive =
+                          await Util.obtainImagePathMaps(context,isPdf: false);
                       Uint8List? imageData =
-                          await File(imageMapsPath).readAsBytes();
+                          await File(archive.path!).readAsBytes();
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           // ignore: use_build_context_synchronously

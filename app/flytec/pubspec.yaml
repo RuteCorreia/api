@@ -46,6 +46,7 @@ dependencies:
   pick_or_save: ^2.2.4
   brasil_fields: ^1.14.1
   sqflite: ^2.0.0+3
+  file_picker: 
 
 dev_dependencies:
   flutter_test:

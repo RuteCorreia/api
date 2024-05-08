@@ -192,7 +192,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -220,7 +220,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -248,7 +248,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -308,7 +308,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -336,7 +336,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -364,7 +364,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -458,7 +458,7 @@ class AssignmentButton extends StatelessWidget {
                                     fontSize: 16,
                                     fontFamily: 'Inter',
                                     fontWeight: FontWeight.w600,
-                                    height: 0.09,
+                                     
                                   ),
                                 ),
                               ),

@@ -244,7 +244,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),
@@ -271,7 +271,7 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                              height: 0.09,
+                               
                             )),
                       ),
                     ),
