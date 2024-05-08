@@ -275,7 +275,19 @@ class _LoginPageState extends State<LoginPage> {
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
                               height: 0.09,
-                            )),
+                            ),
+                          suffixIcon: IconButton(
+                          icon: Icon(
+                          _mostrarSenha ? Icons.visibility : Icons.visibility_off,
+                        color: Colors.grey,
+                        ),
+                        onPressed: (){
+                          setState(() {
+                            _mostrarSenha = !_mostrarSenha;
+                          });
+                        },
+                      ),
+                        ),
                       ),
                     ),
                     CustomButton(
