@@ -61,9 +61,7 @@ class _LoginPageState extends State<LoginPage> {
   double currentLatitude = 0;
   double currentLongitude = 0;
   bool isLoading = false;
-  bool mostrarSenha = false;
-  IconData visibilityIcon = Icons.visibility;
-  IconData visibilityOffIcon = Icons.visibility_off;
+  bool _mostrarSenha = false;
 
   @override
   void initState() {
@@ -265,7 +263,7 @@ class _LoginPageState extends State<LoginPage> {
                         ),
                       ),
                       child: TextField(
-                        obscureText: !mostrarSenha,
+                        obscureText: !_mostrarSenha,
                         autofillHints: const [AutofillHints.password],
                         controller: _editingControllerPassword,
                         decoration: InputDecoration(
@@ -280,12 +278,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           suffixIcon: IconButton(
                               icon: Icon(
-                              mostrarSenha ? visibilityIcon : visibilityOffIcon,
+                              _mostrarSenha ? Icons.visibility : Icons.visibility_off,
                               color: Colors.grey,
                               ),
                             onPressed: (){
                                 setState(() {
-                                mostrarSenha = !mostrarSenha;
+                                _mostrarSenha = !_mostrarSenha;
                                 });
                             },
                           ),
