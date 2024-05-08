@@ -57,9 +57,9 @@ class _CroquiAreaState extends State<CroquiArea> {
                   onTap: () async {
                     _imageData = null;
                     setState(() {});
-                    final imagePath = await Util.obtainImagePathMaps(context);
-                    if (imagePath.isEmpty) return;
-                    _imageData = await File(imagePath).readAsBytes();
+                    final archive = await Util.obtainImagePathMaps(context,isPdf: false);
+                    if (archive.path!.isEmpty) return;
+                    _imageData = await File(archive.path!).readAsBytes();
                     // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {

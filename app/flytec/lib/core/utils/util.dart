@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flytec/core/models/archive_import.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -29,8 +31,9 @@ class Util {
         length, (_) => chars.codeUnitAt(rnd.nextInt(chars.length))));
   }
 
-  static Future<String> obtainImagePathMaps(BuildContext context) async {
-    String pathImage = "";
+  static Future<ArchiveImport> obtainImagePathMaps(BuildContext context,
+      {bool isPdf = true}) async {
+    ArchiveImport archive = ArchiveImport();
     await showAdaptiveDialog<String>(
       context: context,
       useSafeArea: true,
@@ -40,7 +43,7 @@ class Util {
           width: 244,
           height: 50,
           child: Text(
-            'Selecione de onde vem a imagem',
+            'Selecione de onde o arquivo',
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Color.fromARGB(255, 121, 118, 118),
@@ -51,58 +54,80 @@ class Util {
           ),
         ),
         content: SizedBox(
-          height: 200,
-          child: Column(
-            children: [
+          height: 300,
+          child: Column(children: [
+            CustomDialogButton(
+              text: "Galeria",
+              icon: Icons.image,
+              onClick: () async {
+                try {
+                  final XFile? image = await _imagePicker.pickImage(
+                      source: ImageSource.gallery,
+                      imageQuality: 65,
+                      maxHeight: 800,
+                      requestFullMetadata: Platform.isAndroid,
+                      maxWidth: 800);
+                  archive.path = image!.path;
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                  Util.toastSucesso('Imagem adicionada com sucesso');
+                } catch (e) {
+                  Util.toastErro(
+                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                }
+              },
+            ),
+            const SizedBox(height: 10),
+            CustomDialogButton(
+              icon: Icons.camera_alt_outlined,
+              onClick: () async {
+                try {
+                  final XFile? image = await _imagePicker.pickImage(
+                      source: ImageSource.camera,
+                      imageQuality: 65,
+                      maxHeight: 800,
+                      maxWidth: 800);
+                  archive.path = image!.path;
+                  // ignore: use_build_context_synchronously
+                  Navigator.pop(context);
+                  Util.toastSucesso('Imagem adicionada com sucesso');
+                } catch (e) {
+                  Util.toastErro(
+                      'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                }
+              },
+              text: "Câmera",
+            ),
+            if (isPdf) ...[
+              const SizedBox(height: 10),
               CustomDialogButton(
-                text: "Galeria",
-                icon: Icons.image,
+                text: "Arquivos",
+                icon: Icons.archive,
                 onClick: () async {
                   try {
-                    final XFile? image = await _imagePicker.pickImage(
-                        source: ImageSource.gallery,
-                        imageQuality: 65,
-                        maxHeight: 800,
-                        requestFullMetadata: Platform.isAndroid,
-                        maxWidth: 800);
-                    pathImage = image!.path;
+                    FilePickerResult? result =
+                        await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['pdf', 'doc'],
+                    );
+                    archive.path = result!.files.single.path!;
+                    archive.isImage = false;
                     // ignore: use_build_context_synchronously
                     Navigator.pop(context);
-                    Util.toastSucesso('Imagem adicionada com sucesso');
+                    Util.toastSucesso('Arquivo adicionada com sucesso');
                   } catch (e) {
                     Util.toastErro(
-                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
+                        'Não foi possível adicionar o arquivo. Por Favor, tente novamente');
                   }
                 },
               ),
-              const SizedBox(height: 10),
-              CustomDialogButton(
-                icon: Icons.camera_alt_outlined,
-                onClick: () async {
-                  try {
-                    final XFile? image = await _imagePicker.pickImage(
-                        source: ImageSource.camera,
-                        imageQuality: 65,
-                        maxHeight: 800,
-                        maxWidth: 800);
-                    pathImage = image!.path;
-                    // ignore: use_build_context_synchronously
-                    Navigator.pop(context);
-                    Util.toastSucesso('Imagem adicionada com sucesso');
-                  } catch (e) {
-                    Util.toastErro(
-                        'Não foi possível adicionar a imagem. Por Favor, tente novamente');
-                  }
-                },
-                text: "Câmera",
-              )
-            ],
-          ),
+            ]
+          ]),
         ),
         actions: const <Widget>[],
       ),
     );
-    return pathImage;
+    return archive;
   }
 
   static double converterMetrosPorSegundoParaKmPorHora(

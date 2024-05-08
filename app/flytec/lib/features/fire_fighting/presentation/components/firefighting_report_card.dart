@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flytec/core/extensions/datetime_extension.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/pdf_generator.dart';
@@ -86,7 +87,7 @@ class FirefightingReportCard extends StatelessWidget {
                   fontSize: 16,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
-                  height: 0.09,
+                   
                 ),
               ),
               const SizedBox(height: 20),
@@ -315,7 +316,7 @@ class FirefightingReportCard extends StatelessWidget {
                             ),
                             const SizedBox(width: 10),
                             Text(
-                              "${_date.hour}:${_date.minute}",
+                              _date.to24hours(),
                               style: const TextStyle(
                                 color: Color.fromARGB(255, 121, 118, 118),
                                 fontSize: 12,

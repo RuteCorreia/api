@@ -197,11 +197,11 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                               AlertDialog.adaptive(
                                 insetPadding: const EdgeInsets.all(15),
                                 content: SizedBox(
-                                  height: 245,
+                                  height: 250,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        const SizedBox(height: 20),
+                                        const SizedBox(height: 10),
                                         const Text(
                                           'Selecione o contratante',
                                           textAlign: TextAlign.center,
@@ -211,10 +211,10 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                             fontSize: 16,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500,
-                                            height: 0.09,
+                                             
                                           ),
                                         ),
-                                        const SizedBox(height: 30),
+                                        const SizedBox(height: 10),
                                         CustomDialogButton(
                                           showLeftIcon: false,
                                           leftIcon: "",

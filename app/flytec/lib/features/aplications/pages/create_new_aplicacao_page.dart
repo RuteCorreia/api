@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
@@ -43,6 +44,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
   String _humiditySelectedFinal = '+ 55%';
   bool isCut = true;
   Uint8List? _imageData;
+  int _isImage = 0;
   TimeOfDay _selectedTime = TimeOfDay.now();
   TimeOfDay _selectedTimeFinal = TimeOfDay.now();
 
@@ -99,6 +101,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
       ventoInicial: _speedWindInitial,
       ventoFinal: _speedWindFinal,
       imagemCondicaoClimatica: _imageData,
+      isImagemCondicaoClimatica: _isImage,
     );
     if (widget._aplicacoes != null) {
       widget._onAplicacao(aplicacoes);
@@ -140,6 +143,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
           hour: int.tryParse(widget._aplicacoes!.horaFinal!.split(':')[0])!,
           minute: int.tryParse(widget._aplicacoes!.horaFinal!.split(':')[1])!);
       _imageData = widget._aplicacoes?.imagemCondicaoClimatica;
+      _isImage = widget._aplicacoes!.isImagemCondicaoClimatica!;
       setState(() {});
     }
   }
@@ -233,7 +237,6 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
                       )),
                 ),
               ),
@@ -278,16 +281,15 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
                       )),
                 ),
               ),
               const SizedBox(height: 20),
               InkWell(
                   onTap: () async {
-                    final imageMapsPath =
-                        await Util.obtainImagePathMaps(context);
-                    _imageData = await File(imageMapsPath).readAsBytes();
+                    final archive = await Util.obtainImagePathMaps(context);
+                    _imageData = await File(archive.path!).readAsBytes();
+                    _isImage = archive.isImage ? 0 : 1;
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                         // ignore: use_build_context_synchronously
@@ -340,25 +342,39 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                       ],
                     ),
                   )),
-              _imageData != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 15),
-                        const CustomText(
-                            text: 'Imagem Condições Climáticas'),
-                        const SizedBox(height: 15),
-                        Container(
-                            height: 300,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  image: MemoryImage(_imageData!),
-                                  fit: BoxFit.fill),
-                            ))
-                      ],
+              if (_imageData != null && _isImage == 0)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    const CustomText(text: 'Imagem Condições Climáticas'),
+                    const SizedBox(height: 15),
+                    Container(
+                        height: 300,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: MemoryImage(_imageData!),
+                              fit: BoxFit.fill),
+                        ))
+                  ],
+                ),
+              if (_imageData != null && _isImage == 1)
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 15),
+                    const CustomText(text: 'PDF Condições Climáticas'),
+                    const SizedBox(height: 15),
+                    SizedBox(
+                      height: 300,
+                      width: MediaQuery.of(context).size.width,
+                      child: PDFView(
+                        pdfData: _imageData,
+                      ),
                     )
-                  : const SizedBox.shrink(),
+                  ],
+                ),
               const SizedBox(height: 24),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

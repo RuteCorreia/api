@@ -8,28 +8,17 @@ class CustomTextLogin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SizedBox(
-      width: 236,
+      width: 250,
       child: Text.rich(
         TextSpan(
           children: [
             TextSpan(
-              text: 'Faça o',
+              text: 'Faça o ',
               style: TextStyle(
                 color: Color.fromARGB(255, 121, 118, 118),
                 fontSize: 17.62,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
-                height: 0.09,
-              ),
-            ),
-            TextSpan(
-              text: ' ',
-              style: TextStyle(
-                color: Color.fromARGB(255, 121, 118, 118),
-                fontSize: 17.62,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-                height: 0.09,
               ),
             ),
             TextSpan(
@@ -39,27 +28,15 @@ class CustomTextLogin extends StatelessWidget {
                 fontSize: 17.62,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w700,
-                height: 0.09,
               ),
             ),
             TextSpan(
-              text: ' ',
-              style: TextStyle(
-                color: Color.fromARGB(255, 121, 118, 118),
-                fontSize: 17.62,
-                fontFamily: 'Inter',
-                fontWeight: FontWeight.w400,
-                height: 0.09,
-              ),
-            ),
-            TextSpan(
-              text: 'para acessar',
+              text: ' para acessar',
               style: TextStyle(
                 color: Color.fromARGB(255, 121, 118, 118),
                 fontSize: 17.62,
                 fontFamily: 'Inter',
                 fontWeight: FontWeight.w500,
-                height: 0.09,
               ),
             ),
           ],

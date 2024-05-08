@@ -99,7 +99,7 @@ class ReportCardAplication extends StatelessWidget {
                   fontSize: 16,
                   fontFamily: 'Inter',
                   fontWeight: FontWeight.w500,
-                  height: 0.09,
+                   
                 ),
               ),
               const SizedBox(height: 20),
@@ -124,8 +124,19 @@ class ReportCardAplication extends StatelessWidget {
                     final documentBytes =
                         await pdfGenerator.saveDocument(document: document);
                     reportAplication.data = base64Encode(documentBytes!);
-                    await getIt<SendReportAplicationUseCase>()
-                        .call(reportAplication);
+                    final result = await getIt<SendReportAplicationUseCase>()
+                        .call(reportAplication)
+                        .then((value) => value.fold((l) => false, (r) => true));
+                    if (!result) {
+                      Util.toastErro('Não foi possível enviar o relatório');
+                      context.pop();
+                      return;
+                    }
+                    if (result) {
+                      _reportAplicationController.listaAplicacao![_index]
+                          .state = DashBoardState.Enviado;
+                      _updateView();
+                    }
                   }
                   context.pop();
                 },

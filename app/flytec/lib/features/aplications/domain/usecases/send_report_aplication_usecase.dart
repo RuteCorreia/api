@@ -5,12 +5,12 @@ import 'package:flytec/features/aplications/domain/entities/report_aplications_e
 import 'package:flytec/features/aplications/domain/repository/report_aplication_repository.dart';
 
 class SendReportAplicationUseCase
-    extends UseCase<void, ReportAplicationEntity?> {
+    extends UseCase<bool, ReportAplicationEntity?> {
   final ReportAplicationRepository? _repository;
   SendReportAplicationUseCase(this._repository);
 
   @override
-  Future<Either<Failure, void>> call(
+  Future<Either<Failure, bool>> call(
       ReportAplicationEntity? params) async {
     final result = await _repository!.sendReportAplication(params);
     return result;

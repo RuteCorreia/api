@@ -161,7 +161,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 14,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
-                        height: 0.09,
+                         
                       ),
                     ),
                     const SizedBox(width: 1),
@@ -399,7 +399,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -451,7 +451,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -485,7 +485,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
@@ -519,7 +519,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                        height: 0.09,
+                         
                       )),
                 ),
               ),
