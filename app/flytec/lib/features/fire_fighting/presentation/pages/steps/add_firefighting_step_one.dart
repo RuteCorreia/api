@@ -229,7 +229,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                                         AddFireFightingSecondStep(
                                                             firefightingController:
                                                                 widget
-                                                                    ._firefightingController!)));
+                                                                    ._firefightingController!, orgaoPrivado: false)));
                                           },
                                         ),
                                         const SizedBox(height: 10),
@@ -246,7 +246,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                                         AddFireFightingSecondStep(
                                                             firefightingController:
                                                                 widget
-                                                                    ._firefightingController!)));
+                                                                    ._firefightingController!, orgaoPrivado: true,)));
                                           },
                                           text: "Privado",
                                         )
