@@ -474,7 +474,7 @@ await showDialog(
               "${directory.path}/relatorio_incendio_${Util.getRandomString(10)}.pdf");
           await file.writeAsBytes(documentBytes!);
           // ignore: use_build_context_synchronously
-          context.push("/reportPage", extra: file);
+          context.push("/reportCombateIncendio", extra: file);
 
         },
         child: const Icon(
