@@ -40,6 +40,7 @@ class FirefightingController extends ChangeNotifier {
     List<Firefighting> firefightingListResult;
     final reports =
         await _sqlDatabaseProvider.obtainTableElementsList("Firefighting");
+    
     final listFirefighting =
         reports.map((e) => Firefighting.fromJson(e)).toList().where((element) {
       final refUsuario =
@@ -47,6 +48,11 @@ class FirefightingController extends ChangeNotifier {
       return element.refId == refUsuario;
     }).toList();
     firefightingListResult = [];
+    if (reports.isEmpty) {
+      firefightingList.value = [];
+      notifyListeners();
+      return;
+    }
     for (int i = 0; i < listFirefighting.length; i++) {
       final firefighting = listFirefighting[i];
       final idNew =
