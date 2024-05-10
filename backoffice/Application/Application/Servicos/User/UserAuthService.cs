@@ -193,7 +193,6 @@ public class UserAuthService : IUserAuthService
             new("numeroEmpresa", usuario.Empresa?.Numero ?? ""),
             new("cidadeEmpresa", usuario.Empresa?.Cidade ?? ""),
             new("estadoEmpresa", usuario.Empresa?.Estado ?? ""),
-            new("logoEmpresa", imgEmpresa),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
             new(JwtRegisteredClaimNames.Email, identityUser.Email ?? "n/a"),

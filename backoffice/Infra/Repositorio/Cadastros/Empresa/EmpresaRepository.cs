@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Empresa;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Empresa;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,15 @@ public class EmpresaRepository : IEmpresaRepository
     {
         var obj = await _contextBase.Empresa.FindAsync(id);
         return obj;
+    }
+
+    public async Task<string> GetLogoByIdAsync(int id)
+    {
+        var base64 = "";
+        var obj = await _contextBase.Empresa.Where(x => x.IdEmpresa == id).Select(x => x.Imagem).FirstOrDefaultAsync();
+        if(obj != null) base64 = Convert.ToBase64String(obj);
+
+        return base64;
     }
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Empresa obj)
