@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class ComponenteNameSelect extends StatelessWidget {
+  final List<String> componentes;
   final Function(String? componente) onChangeComponente;
-  ComponenteNameSelect({super.key, required this.onChangeComponente});
+  final Function(String componente) onAddComponente;
+  ComponenteNameSelect(
+      {super.key,
+      required this.onChangeComponente,
+      required this.componentes,
+      required this.onAddComponente});
 
   final TextEditingController _textFlightHeight = TextEditingController();
-
-  final List<String> _components = ['Componente 1'];
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +22,7 @@ class ComponenteNameSelect extends StatelessWidget {
             SizedBox(
               height: MediaQuery.of(context).size.height * 0.2,
               child: ListView.builder(
-                itemCount: _components.length,
+                itemCount: componentes.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) => MaterialButton(
@@ -28,14 +32,14 @@ class ComponenteNameSelect extends StatelessWidget {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      onChangeComponente(_components[index]);
+                      onChangeComponente(componentes[index]);
                       Navigator.of(context).pop();
                     },
                     child: Align(
                         alignment: Alignment.centerLeft,
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(_components[index],
+                          child: Text(componentes[index],
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
@@ -62,11 +66,6 @@ class ComponenteNameSelect extends StatelessWidget {
                     child: TextField(
                       controller: _textFlightHeight,
                       keyboardType: TextInputType.text,
-                      onSubmitted: (value) {
-                        onChangeComponente(value);
-
-                        Navigator.of(context).pop();
-                      },
                       decoration: const InputDecoration(
                           hintText: "Digite um produto",
                           border: InputBorder.none,
@@ -80,6 +79,8 @@ class ComponenteNameSelect extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
+                      onChangeComponente(_textFlightHeight.text);
+                      onAddComponente(_textFlightHeight.text);
                       Navigator.of(context).pop();
                     },
                     child: Container(
