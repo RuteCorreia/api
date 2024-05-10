@@ -17,7 +17,11 @@ import 'package:flytec/features/aplications/data/repository/report_aplication_re
 import 'package:flytec/features/aplications/domain/repository/report_aplication_repository.dart';
 import 'package:flytec/features/aplications/domain/usecases/send_report_aplication_usecase.dart';
 import 'package:flytec/features/aplications/services/clientes_service.dart';
+import 'package:flytec/features/auth/data/datasources/remote_company_data_source.dart';
+import 'package:flytec/features/auth/data/repositories/company_repository_impl.dart';
+import 'package:flytec/features/auth/domain/repositories/company_repository.dart';
 import 'package:flytec/features/auth/domain/usecases/authentication_usecase.dart';
+import 'package:flytec/features/auth/domain/usecases/obtain_logo_company_usecase.dart';
 import 'package:flytec/features/bulas/data/datasource/remote_bula_datasource.dart';
 import 'package:flytec/features/bulas/data/repository/bula_repository_impl.dart';
 import 'package:flytec/features/bulas/domains/repository/bula_repository.dart';
@@ -189,6 +193,12 @@ void setup() async {
       netWorkInfoI: getIt(),
     ),
   );
+  getIt.registerLazySingleton<RemoteCompanyDataSourceImpl>(
+    () => RemoteCompanyDataSourceImpl(
+      client: getIt(),
+      netWorkInfoI: getIt(),
+    ),
+  );
 
   //REPOSITORES
   getIt.registerLazySingleton<ReportAplicationRepository>(() =>
@@ -236,6 +246,9 @@ void setup() async {
   getIt.registerLazySingleton<IAlturaVooRepository>(
     () => AlturaVooRepositoryImpl(datasource: getIt()),
   );
+  getIt.registerLazySingleton<ICompanyRepository>(
+    () => CompanyRepositoryImpl(remoteCompanyDataSourceImpl: getIt()),
+  );
   // UseCases
   getIt.registerLazySingleton(() => SendReportAplicationUseCase(getIt()));
   getIt.registerLazySingleton<AuthenticateUseCase>(
@@ -260,4 +273,5 @@ void setup() async {
   getIt.registerLazySingleton(() => GetBulasUseCase(getIt()));
   getIt.registerLazySingleton(() => GetTipoProdutosUseCase(getIt()));
   getIt.registerLazySingleton(() => GetAlturaVooUseCase(getIt()));
+  getIt.registerLazySingleton(() => ObtainLogoCompanyUseCase(getIt()));
 }
