@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flytec/features/aplications/aplications_page.dart';
 import 'package:flytec/features/aplications/pages/report_aplications_page.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/report_combate_incendio.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:flytec/features/manutencao/manutencao_page_list.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
@@ -77,6 +78,13 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             File file = state.extra as File;
             return ReportAplicationsPage(report: file);
+          },
+        ),
+        GoRoute(
+          path: 'reportCombateIncendio',
+          builder: (BuildContext context, GoRouterState state) {
+            File file = state.extra as File;
+            return ReportCombateIncendioPage(report: file);
           },
         ),
       ],
