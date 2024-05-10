@@ -7,6 +7,7 @@ public interface IEmpresaService
     Task<IEnumerable<EmpresaViewModel>> GetAllAsync();
 
     Task<EmpresaViewModel> GetByIdAsync(int id);
+    Task<string> GetLogoByIdAsync(int id);
 
     Task AddAsync(EmpresaViewModel obj);
 

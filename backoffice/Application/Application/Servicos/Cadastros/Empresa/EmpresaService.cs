@@ -82,4 +82,10 @@ public class EmpresaService : IEmpresaService
     {
         await _empresaRepository.DeleteAsync(id);
     }
+
+    public async Task<string> GetLogoByIdAsync(int id)
+    {
+        var obj = await _empresaRepository.GetLogoByIdAsync(id);
+        return obj;
+    }
 }

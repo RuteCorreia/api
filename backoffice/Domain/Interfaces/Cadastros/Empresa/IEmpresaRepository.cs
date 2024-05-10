@@ -9,4 +9,5 @@ public interface IEmpresaRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Empresa.Empresa>> GetAllAsync();
     Task<Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int id);
+    Task<string> GetLogoByIdAsync(int id);
 }
