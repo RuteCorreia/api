@@ -1,10 +1,13 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
+import 'package:flytec/core/injections/get_it.dart';
+import 'package:flytec/core/utils/global_config_vars.dart';
+import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -31,8 +34,14 @@ class CreateFirefightingReportService implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
-    log('--> ${_firefighting.totalAguaUtilizadaOperacao}');
-
+    final engenheiroSelected =
+        getIt<GlobalConfigVars>().engenheiros.firstOrNull;
+    final pilotoSelected = getIt<GlobalConfigVars>().pilotos.firstWhere(
+        (piloto) => _firefighting.piloto == piloto.nomePiloto,
+        orElse: () => const PilotoModel(nomePiloto: '', cdac: 'COD.ANAC'));
+    final executorSelected = getIt<GlobalConfigVars>().executores.firstWhere(
+        (executor) => _firefighting.executor == executor.nome,
+        orElse: () => const ExecutorModel(cfta: 'CFTA'));
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -740,10 +749,11 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 right: pw.BorderSide(width: 1.5))),
                       ),
                     ])),
-                pw.SizedBox(width: 574, height: 40),
+                pw.SizedBox(width: 574, height: 35),
                 pw.Divider(height: 1, thickness: 1.5),
-                pw.SizedBox(
+                pw.Container(
                     width: 574,
+                    padding: const pw.EdgeInsets.only(top: 5),
                     child: pw.Row(
                         mainAxisAlignment: pw.MainAxisAlignment.center,
                         crossAxisAlignment: pw.CrossAxisAlignment.center,
@@ -751,53 +761,81 @@ class CreateFirefightingReportService implements PdfGenerator {
                           pw.Container(
                             width: 191.3,
                             child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text(" "),
-                                pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Eng Agrônomo',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                                pw.Text('CREA ',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ],
-                            ),
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  if (engenheiroSelected?.assinatura != null &&
+                                      engenheiroSelected!
+                                          .assinatura!.isNotEmpty)
+                                    pw.Container(
+                                      height: 22,
+                                      width: 100,
+                                      child: pw.Image(
+                                          pw.MemoryImage(
+                                            base64Decode(
+                                                engenheiroSelected.assinatura!),
+                                          ),
+                                          fit: pw.BoxFit.cover),
+                                    ),
+                                  pw.Text(
+                                      engenheiroSelected?.nomeEngenheiro ?? '',
+                                      textAlign: pw.TextAlign.left,
+                                      style: const pw.TextStyle(fontSize: 8)),
+                                  pw.Text(
+                                      'CREA ${engenheiroSelected?.crea ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: const pw.TextStyle(fontSize: 8)),
+                                ]),
                           ),
+                          pw.Container(
+                              width: 191.3,
+                              child: pw.Column(
+                                  crossAxisAlignment:
+                                      pw.CrossAxisAlignment.start,
+                                  children: [
+                                    if (executorSelected.assinatura != null &&
+                                        executorSelected.assinatura!.isNotEmpty)
+                                      pw.Container(
+                                        height: 22,
+                                        width: 100,
+                                        child: pw.Image(
+                                            pw.MemoryImage(
+                                              base64Decode(
+                                                  executorSelected.assinatura!),
+                                            ),
+                                            fit: pw.BoxFit.cover),
+                                      ),
+                                    pw.Text(executorSelected.nome ?? '',
+                                        textAlign: pw.TextAlign.left,
+                                        style: const pw.TextStyle(fontSize: 8)),
+                                    pw.Text(
+                                        'CFTA ${executorSelected.cfta ?? ''}',
+                                        textAlign: pw.TextAlign.left,
+                                        style: const pw.TextStyle(fontSize: 8)),
+                                  ])),
                           pw.Container(
                             width: 191.3,
                             child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text(" "),
-                                pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Técnico Executor',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                                pw.Text('CFTA ',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ],
-                            ),
-                          ),
-                          pw.Container(
-                            width: 191.3,
-                            child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text(" "),
-                                pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Piloto',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                                pw.Text('CANAC ',
-                                    textAlign: pw.TextAlign.left,
-                                    style: const pw.TextStyle(fontSize: 10)),
-                              ],
-                            ),
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  if (pilotoSelected.assinatura != null &&
+                                      pilotoSelected.assinatura!.isNotEmpty)
+                                    pw.Container(
+                                      height: 22,
+                                      width: 100,
+                                      child: pw.Image(
+                                          pw.MemoryImage(
+                                            base64Decode(
+                                                pilotoSelected.assinatura!),
+                                          ),
+                                          fit: pw.BoxFit.cover),
+                                    ),
+                                  pw.Text(pilotoSelected.nomePiloto ?? '',
+                                      textAlign: pw.TextAlign.left,
+                                      style: const pw.TextStyle(fontSize: 8)),
+                                  pw.Text('CANAC ${pilotoSelected.cdac ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: const pw.TextStyle(fontSize: 8)),
+                                ]),
                           ),
                         ])),
               ]));
