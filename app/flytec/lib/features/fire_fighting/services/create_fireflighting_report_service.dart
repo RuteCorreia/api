@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -13,6 +14,16 @@ class CreateFirefightingReportService implements PdfGenerator {
   final Firefighting _firefighting;
   CreateFirefightingReportService(this._firefighting);
 
+  double get _totalAguaUtilizadaOperacao {
+    final quantidadeLancamentos =
+        _firefighting.decolagemPousoFirefightingList?.length ?? 0;
+    final totalAgua =
+        _firefighting.totalAguaUtilizadaOperacao?.replaceAll('.', '') ?? '0';
+
+    double resultado = double.parse(totalAgua) * quantidadeLancamentos;
+    return resultado;
+  }
+
   @override
   Future generatePdf({parameters}) async {
     final pdf = pw.Document();
@@ -20,6 +31,7 @@ class CreateFirefightingReportService implements PdfGenerator {
     final logoImage = (await rootBundle.load('assets/images/logo-light.png'))
         .buffer
         .asUint8List();
+    log('--> ${_firefighting.totalAguaUtilizadaOperacao}');
 
     pdf.addPage(
       pw.Page(
@@ -568,7 +580,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                           width: 287,
                           height: 20,
                           child: pw.Text(
-                              'Total de água utilizada (capacidade x n° lançamentos): ${(_firefighting.totalAguaUtilizadaOperacao != null ? double.tryParse(_firefighting.totalAguaUtilizadaOperacao!) : 0) ?? 0 * (_firefighting.decolagemPousoFirefightingList != null ? _firefighting.decolagemPousoFirefightingList!.length : 0)}',
+                              'Total de água utilizada (capacidade x n° lançamentos): $_totalAguaUtilizadaOperacao',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
