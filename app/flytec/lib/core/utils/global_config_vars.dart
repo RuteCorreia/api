@@ -31,7 +31,7 @@ class GlobalConfigVars {
   late List<TipoProdutoModel> tiposProdutos = [];
   late List<BulaModel> bulas = [];
   late List<AlturaVooModel> alturaVoo = [];
-  late Contratante? contratanteCombateIncendio;
+  Contratante? contratanteCombateIncendio;
 
   List<String> logs = [];
   late UserPayloadModel userPayload;
@@ -127,6 +127,7 @@ class GlobalConfigVars {
     selectedPilot = "";
     selectedExecutor = "";
     selectedCultura = "";
+    contratanteCombateIncendio = null;
     dgs = "";
     logs.clear();
     produtoAplicado = null;

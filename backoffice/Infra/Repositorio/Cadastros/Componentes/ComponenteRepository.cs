@@ -35,9 +35,12 @@ namespace Infra.Repositorio.Cadastros.Componentes
             }
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Componentes.Componentes>> GetAllAsync()
-        {
-            var entities = await _contextBase.Componente.ToListAsync();
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Componentes.Componentes>> GetAllAsync(int idEmpresa)
+        {            
+            var entities = await _contextBase.Componente
+                .AsNoTracking()
+                .Where(x => idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)
+                .ToListAsync();
             return entities;
         }
 

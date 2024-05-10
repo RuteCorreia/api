@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'package:flytec/features/auth/data/models/company_user_payload_model.dart';
+
 UserPayloadModel userPayloadModelFromJson(String str) =>
     UserPayloadModel.fromJson(json.decode(str));
 
@@ -19,10 +21,11 @@ class UserPayloadModel {
   final String? idUsuario;
   final int? nbf;
   final int? iat;
-  final String? role;
+  final List<String?>? role;
   final int? exp;
   final String? iss;
   final String? aud;
+  final CompanyUserPayloadModel? empresa;
 
   UserPayloadModel({
     this.nrUsuario,
@@ -37,10 +40,11 @@ class UserPayloadModel {
     this.exp,
     this.iss,
     this.aud,
+    this.empresa
   });
 
-  factory UserPayloadModel.fromJson(Map<String, dynamic> json) =>
-      UserPayloadModel(
+  factory UserPayloadModel.fromJson(Map<String, dynamic> json) {
+    return UserPayloadModel(
         nrUsuario: json["NrUsuario"],
         sub: json["sub"],
         name: json["name"],
@@ -48,12 +52,16 @@ class UserPayloadModel {
         jti: json["jti"],
         nbf: json["nbf"],
         iat: json["iat"],
-        role: json["role"] is List ? json["role"][0] : json["role"],
+        empresa: CompanyUserPayloadModel.fromJson(json),
+        role: json["role"] is String
+            ? [json["role"].toString()]
+            : (json["role"] as List).map((e) => e.toString()).toList(),
         idUsuario: json["IdUsuario"],
         exp: json["exp"],
         iss: json["iss"],
         aud: json["aud"],
       );
+  }
 
   Map<String, dynamic> toJson() => {
         "NrUsuario": nrUsuario,

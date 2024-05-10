@@ -269,7 +269,6 @@ class _HomePagaState extends State<HomePaga> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w700,
-                                height: 0.09,
                               ),
                             ),
                           ],
@@ -461,66 +460,79 @@ class _HomePagaState extends State<HomePaga> {
                     },
                     text: "Minhas Atividades",
                   ),
-                  const SizedBox(height: 10),
-                  CustomActionButton(
-                    imageUrl: "assets/images/edit_icon.svg",
-                    onClick: () {
-                      showAdaptiveDialog<String>(
-                        context: context,
-                        useSafeArea: true,
-                        builder: (BuildContext context) => AlertDialog.adaptive(
-                          insetPadding: const EdgeInsets.all(32),
-                          title: const SizedBox(
-                            width: 244,
-                            height: 30,
-                            child: Text(
-                              'Escolha o tipo de relatório',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 121, 118, 118),
-                                fontSize: 16,
-                                fontFamily: 'Inter',
-                                fontWeight: FontWeight.w500,
-                                height: 0.09,
+                  if (getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Executor") ||
+                      getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("TecnicoExecutor")) ...[
+                    const SizedBox(height: 10),
+                    CustomActionButton(
+                      imageUrl: "assets/images/edit_icon.svg",
+                      onClick: () {
+                        showAdaptiveDialog<String>(
+                          context: context,
+                          useSafeArea: true,
+                          builder: (BuildContext context) =>
+                              AlertDialog.adaptive(
+                            insetPadding: const EdgeInsets.all(32),
+                            title: const SizedBox(
+                              width: 244,
+                              height: 45,
+                              child: Text(
+                                'Escolha o tipo de relatório',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 121, 118, 118),
+                                  fontSize: 16,
+                                  fontFamily: 'Inter',
+                                  fontWeight: FontWeight.w500,
+                                ),
                               ),
                             ),
-                          ),
-                          content: SizedBox(
-                            height: 200,
-                            child: Column(
-                              children: [
-                                CustomDialogButton(
-                                  leftIcon:
-                                      "assets/images/icomoon_free_fire.svg",
-                                  text: "Aplicação",
-                                  onClick: () {
-                                    _reportAplicationController
-                                        ?.setUpdateUpdateView(_updateView);
-                                    context.push("/aplications", extra: {
-                                      'reportAplicationController':
-                                          _reportAplicationController
-                                    });
-                                  },
-                                ),
-                                const SizedBox(height: 10),
-                                CustomDialogButton(
-                                  leftIcon: "assets/images/fire.svg",
-                                  onClick: () {
-                                    context.pop();
-                                    context.push("/combateincendio",
-                                        extra: "dd");
-                                  },
-                                  text: "Combate a incêndio",
-                                )
-                              ],
+                            content: SizedBox(
+                              height: 200,
+                              child: Column(
+                                children: [
+                                  CustomDialogButton(
+                                    leftIcon:
+                                        "assets/images/icomoon_free_fire.svg",
+                                    text: "Aplicação",
+                                    onClick: () {
+                                      _reportAplicationController
+                                          ?.setUpdateUpdateView(_updateView);
+                                      context.push("/aplications", extra: {
+                                        'reportAplicationController':
+                                            _reportAplicationController
+                                      });
+                                    },
+                                  ),
+                                  const SizedBox(height: 10),
+                                  CustomDialogButton(
+                                    leftIcon: "assets/images/fire.svg",
+                                    onClick: () {
+                                      context.pop();
+                                      context.push("/combateincendio",
+                                          extra: "dd");
+                                    },
+                                    text: "Combate a incêndio",
+                                  )
+                                ],
+                              ),
                             ),
+                            actions: const <Widget>[],
                           ),
-                          actions: const <Widget>[],
-                        ),
-                      );
-                    },
-                    text: "Relatório Operacional",
-                  ),
+                        );
+                      },
+                      text: "Relatório Operacional",
+                    ),
+                  ],
                   const SizedBox(height: 10),
                   CustomActionButton(
                     imageUrl: "assets/images/tools.svg",

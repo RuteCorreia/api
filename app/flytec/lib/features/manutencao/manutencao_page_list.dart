@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/widgets/dashboard_counter.dart';
+import 'package:flytec/features/manutencao/components/new_manutencao_page.dart';
 import 'package:flytec/features/manutencao/components/report_manutencao_card_list.dart';
 import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 
@@ -33,7 +34,12 @@ class _ManutencaoPageListState extends State<ManutencaoPageList> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
+        onPressed: () async {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const NewManutencaoPage()));
+        },
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Padding(

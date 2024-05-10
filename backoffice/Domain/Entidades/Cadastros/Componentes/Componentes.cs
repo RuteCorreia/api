@@ -30,6 +30,12 @@ namespace Domain.Entidades.Cadastros.Componentes
         public string? TSN { get; set; }
         public string? TSO { get; set; }
 
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+
         [JsonIgnore]
         public virtual Aeronave.Aeronave? Aeronave { get; set; }
     }

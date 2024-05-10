@@ -3,12 +3,13 @@ using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class AeronaveController : ControllerBase
 {
     private readonly IAeronaveService _aeronaveService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public AeronaveController(IAeronaveService aeronaveService)
+    public AeronaveController(IAeronaveService aeronaveService, LoggedUserInfoService loggedUserInfoService)
     {
         _aeronaveService = aeronaveService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,8 +30,9 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            var combustiveis = await _aeronaveService.GetAllAsync();
-            return Ok(combustiveis);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
+            return Ok(aeronaves);
         }
         catch (Exception ex)
         {
@@ -60,13 +64,18 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            if (ModelState.IsValid)
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
+            if(!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower())))
             {
-                await _aeronaveService.AddAsync(obj);
-                return Ok();
+                if (ModelState.IsValid)
+                {
+                    await _aeronaveService.AddAsync(obj, loggedUser.Item3);
+                    return Ok();
+                }
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
         }
         catch (Exception ex)
         {
@@ -79,23 +88,28 @@ public class AeronaveController : ControllerBase
     {
         try
         {
-            if (ModelState.IsValid)
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
+            if (!aeronaves.Any(x => string.Equals(x.Prefixo?.ToLower(), obj.Prefixo?.ToLower()) && x.Id != obj.Id))
             {
-                var objeto = await _aeronaveService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                if (ModelState.IsValid)
                 {
-                    obj.Id = objeto.Id;
+                    var objeto = await _aeronaveService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
 
-                    await _aeronaveService.UpdateAsync(obj);
-                    return Ok();
-                }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                        await _aeronaveService.UpdateAsync(obj);
+                        return Ok();
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
                 }
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
         }
         catch (Exception ex)
         {

@@ -27,8 +27,8 @@ public class AdjuvanteController : ControllerBase
     {
         try
         {
-            var combustiveis = await _adjuvanteService.GetAllAsync();
-            return Ok(combustiveis);
+            var adjuvantes = await _adjuvanteService.GetAllAsync();
+            return Ok(adjuvantes);
         }
         catch (Exception ex)
         {

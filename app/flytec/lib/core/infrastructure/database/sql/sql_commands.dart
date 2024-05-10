@@ -16,7 +16,7 @@ CREATE TABLE Aplicacao (
     refUsuario TEXT
 )
 ''';
-static String createContratanteTable = '''
+  static String createContratanteTable = '''
 CREATE TABLE Contratante (
     id INTEGER PRIMARY KEY,
     tipoContratante TEXT,
@@ -31,7 +31,7 @@ CREATE TABLE Contratante (
     contratanteRef TEXT
 )
 ''';
-static String createIdentificacaoAreaTratadaTable = '''
+  static String createIdentificacaoAreaTratadaTable = '''
 CREATE TABLE IdentificacaoAreaTratada (
     id INTEGER PRIMARY KEY,
     uf TEXT,
@@ -42,11 +42,12 @@ CREATE TABLE IdentificacaoAreaTratada (
     croquiArea BLOB
 )
 ''';
-static String createCaracteristicasProdutoAplicadoTable = '''
+  static String createCaracteristicasProdutoAplicadoTable = '''
 CREATE TABLE CaracteristicasProdutoAplicado (
     id INTEGER PRIMARY KEY,
     cultura TEXT,
     receiturarioAgronomico BLOB,
+    isReceiturarioImage INTEGER,
     nomeProduto TEXT,
     classificacaoToxicologica TEXT,
     classe TEXT,
@@ -60,7 +61,7 @@ CREATE TABLE CaracteristicasProdutoAplicado (
     dataEmissao TEXT
 )
 ''';
-static String createRecomendacoesTecnicasTable = '''
+  static String createRecomendacoesTecnicasTable = '''
 CREATE TABLE RecomendacoesTecnicas (
     id INTEGER PRIMARY KEY,
     veiculante TEXT,
@@ -78,7 +79,7 @@ CREATE TABLE RecomendacoesTecnicas (
     angulo TEXT
 )
 ''';
-static String createAplicacoesTable = '''
+  static String createAplicacoesTable = '''
 CREATE TABLE Aplicacoes (
     id INTEGER PRIMARY KEY,
     dataAplicacao TEXT,
@@ -87,6 +88,7 @@ CREATE TABLE Aplicacoes (
     horimetroInicial TEXT,
     horimetroFinal TEXT,
     imagemCondicaoClimatica BLOB,
+    isImagemCondicaoClimatica INTEGER,
     temperaturaInicial TEXT,
     temperaturaFinal TEXT,
     umidadeRelativaArInicial TEXT,
@@ -98,7 +100,7 @@ CREATE TABLE Aplicacoes (
 )
 ''';
 
-static String createRelatorioAplicacaoTable = '''
+  static String createRelatorioAplicacaoTable = '''
 CREATE TABLE RelatorioAplicacao (
     id INTEGER PRIMARY KEY,
     cultura TEXT,
@@ -116,7 +118,7 @@ CREATE TABLE RelatorioAplicacao (
     relatorioDGPS TEXT
 )
 ''';
-static String createContratoPrestacaoServicoTable = '''
+  static String createContratoPrestacaoServicoTable = '''
 CREATE TABLE ContratoPrestacaoServico (
     id INTEGER PRIMARY KEY,
     distanciaPista TEXT,
@@ -129,7 +131,7 @@ CREATE TABLE ContratoPrestacaoServico (
     executor TEXT
 )
 ''';
-static String createDadosResponsavelTable = '''
+  static String createDadosResponsavelTable = '''
 CREATE TABLE DadosResponsavel (
     id INTEGER PRIMARY KEY,
     data TEXT,
@@ -142,4 +144,83 @@ CREATE TABLE DadosResponsavel (
 )
 ''';
 
+  static String createFirefightingTable = '''
+CREATE TABLE Firefighting (
+    id INTEGER PRIMARY KEY,
+    numeroAviso INTEGER,
+    prefixoAeronave TEXT,
+    state INTEGER,
+    piloto TEXT,
+    executor TEXT,
+    uf TEXT,
+    cidade TEXT,
+    data INTEGER,
+    horimetroAcionamento TEXT,
+    horarioAcionamento INTEGER,
+    pista_id INTEGER,
+    localIncendio_id INTEGER,
+    observacao TEXT,
+    horarioFinalOperacao INTEGER,
+    horimetroFinalOperacao TEXT,
+    horarioCorte INTEGER,
+    horimetroCorte TEXT,
+    capacidadeCargaAeronave TEXT,
+    totalAguaUtilizadaOperacao TEXT,
+    coordenadorBaseOperacional_id INTEGER,
+    comandanteOcorrencia_id INTEGER,
+    cliente TEXT,
+    refId TEXT
+)
+''';
+
+  static String createPistaFirefightingTable = '''
+CREATE TABLE PistaFirefighting (
+    id INTEGER PRIMARY KEY,
+    horarioChegadaPista INTEGER,
+    horimetroChegadaPista TEXT,
+    codigoICAOPista TEXT,
+    nomePista TEXT,
+    latPista TEXT,
+    longPista TEXT
+)
+''';
+
+  static String createLocalFirefightingTable = '''
+CREATE TABLE LocalFirefighting (
+    id INTEGER PRIMARY KEY,
+    lat TEXT,
+    long TEXT,
+    referencia TEXT
+)
+''';
+  static String createDecolagemPousoFirefightingTable = '''
+CREATE TABLE DecolagemPousoFirefighting (
+    id INTEGER PRIMARY KEY,
+    horarioDecolagem INTEGER,
+    horarioPouso INTEGER,
+    horimetroDecolagem TEXT,
+    horimetroPouso TEXT,
+    firefightingId INTEGER,
+    FOREIGN KEY (firefightingId) REFERENCES Firefighting(id)
+)
+''';
+
+  static String createCoordenadorBaseOperacionalFirefightingTable = '''
+CREATE TABLE CoordenadorBaseOperacionalFirefighting (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    postoGraduacao TEXT,
+    re TEXT,
+    assinatura TEXT
+)
+''';
+  static String createComandanteOcorrenciaFirefightingTable = '''
+CREATE TABLE ComandanteOcorrenciaFirefighting (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    postoGraduacao TEXT,
+    re TEXT,
+    assinatura TEXT
+)
+''';
 }

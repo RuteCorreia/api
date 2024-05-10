@@ -69,6 +69,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
         orElse: () => const ExecutorModel(cfta: 'CFTA'));
     final engenheiroSelected =
         getIt<GlobalConfigVars>().engenheiros.firstOrNull;
+    final empresa = getIt<GlobalConfigVars>().userPayload.empresa;
 
     pdf.addPage(
       pw.Page(
@@ -91,7 +92,12 @@ class CreateAplicacaoReportService implements PdfGenerator {
                           children: [
                             pw.Row(children: [
                               pw.Container(
-                                child: pw.Image(pw.MemoryImage(logoImage),
+                                child: pw.Image(
+                                    pw.MemoryImage(
+                                        empresa?.logoEmpresa != null &&
+                                                empresa!.logoEmpresa!.isNotEmpty
+                                            ? base64Decode(empresa.logoEmpresa!)
+                                            : logoImage),
                                     fit: pw.BoxFit.contain,
                                     width: 140,
                                     height: 140),
@@ -101,18 +107,21 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   crossAxisAlignment:
                                       pw.CrossAxisAlignment.start,
                                   children: [
-                                    pw.Text('IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
+                                    pw.Text(
+                                        empresa?.nomeEmpresa ??
+                                            'IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
                                         style: pw.TextStyle(
                                             fontSize: 14,
                                             fontWeight: pw.FontWeight.normal)),
                                     pw.Text(
-                                        'MA SP - 000000-0 - CNPJ 00.000.000/0000-00 - Inscr. Est. 000.000.000.000',
+                                        'MA SP - ${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ 00.000.000/0000-00 - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                         maxLines: 1,
                                         style: pw.TextStyle(
                                             fontSize: 8,
                                             fontWeight: pw.FontWeight.normal)),
                                     pw.SizedBox(height: 10),
-                                    pw.Text('FONE: (XX) XXXX-XXXX',
+                                    pw.Text(
+                                        'FONE: ${empresa?.telefoneEmpresa ?? '(XX) XXXX-XXXX'}',
                                         style: pw.TextStyle(
                                             fontSize: 14,
                                             fontWeight: pw.FontWeight.bold)),
@@ -120,7 +129,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ]),
                             pw.SizedBox(height: 5),
                             pw.Text(
-                                'RUA PARANÁ, 000 - CENTRO - CEP 00000-000 - MONÇÕES - EST.SÃO PAULO',
+                                '${empresa?.enderecoEmpresa ?? 'RUA PARANÁ, 000 - CENTRO'} - CEP ${empresa?.cepEmpresa ?? '00000-000'} - ${empresa?.cidadeEmpresa ?? 'MONÇÕES'} - EST.${empresa?.estadoEmpresa ?? 'SÃO PAULO'}',
                                 style: pw.TextStyle(
                                     fontSize: 8,
                                     fontWeight: pw.FontWeight.normal)),
@@ -131,7 +140,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         padding: const pw.EdgeInsets.only(top: 2),
                         child: pw.Align(
                             child: pw.Text(
-                                '                           CDA N° 4046',
+                                '                           CDA N° ${empresa?.nrCDAEmpresa ?? '4046'}',
                                 style: const pw.TextStyle(
                                     color: PdfColors.red, fontSize: 10)),
                             alignment: pw.Alignment.centerRight),
@@ -257,7 +266,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                 pw.Padding(
                                   padding: const pw.EdgeInsets.only(left: 10),
                                   child: pw.Text(
-                                      'I.E/R.G: ${aplicacao.contratante?.inscricaoEstadual != '0' ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
+                                      'I.E/R.G: ${aplicacao.contratante!.inscricaoEstadual!.isNotEmpty ? aplicacao.contratante?.inscricaoEstadual ?? '' : aplicacao.contratante?.rg ?? ''}',
                                       style: pw.TextStyle(
                                           fontSize: 12, font: newRoman)),
                                 ),
@@ -269,7 +278,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           width: 250,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -280,14 +289,15 @@ class CreateAplicacaoReportService implements PdfGenerator {
                             ),
                           ),
                           child: pw.Padding(
-                            padding: const pw.EdgeInsets.only(left: 10, top: 5),
+                            padding: const pw.EdgeInsets.only(left: 5, top: 2),
                             child: pw.Text(
                                 'Endereço: ${aplicacao.contratante?.endereco ?? ''}',
+                                maxLines: 2,
                                 style:
                                     pw.TextStyle(fontSize: 12, font: newRoman)),
                           )),
                       pw.Container(
-                          height: 25,
+                          height: 30,
                           decoration: const pw.BoxDecoration(
                             border: pw.Border(
                               top: pw.BorderSide(
@@ -1621,7 +1631,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     pw.Container(
                                       alignment: pw.Alignment.bottomCenter,
                                       child: pw.Text(
-                                          'Valor: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
+                                          'Valor/${aplicacao.contratoPrestacaoServico?.unidadePreco ?? ''}: ${aplicacao.contratoPrestacaoServico?.preco ?? ''}',
                                           style: pw.TextStyle(
                                               fontSize: 12, font: newRoman)),
                                     ),

@@ -31,11 +31,14 @@ public class AeronaveRepository : IAeronaveRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync(int idEmpresa)
     {
         var entities = await _contextBase.Aeronave
             .AsNoTracking()
-            .Where(x => !x.Removido)
+            .Where(x => 
+                !x.Removido
+                && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)
+            )
             .ToListAsync();
 
         return entities;
@@ -54,6 +57,7 @@ public class AeronaveRepository : IAeronaveRepository
         objeto.Prefixo = obj.Prefixo;
         objeto.Modelo = obj.Modelo;
         objeto.SerialNumber = obj.SerialNumber;
+        objeto.Tipo = obj.Tipo;
 
         _contextBase.Aeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();

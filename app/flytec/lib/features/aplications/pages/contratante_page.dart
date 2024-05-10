@@ -25,10 +25,9 @@ class _ContrantePageState extends State<ContrantePage> {
 
   Aplicacao? get _aplicacao =>
       widget._reportAplicationController?.aplicacaoSelected;
-  
+
   @override
   void initState() {
-    
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (getIt<GlobalConfigVars>().contratanteCombateIncendio != null) {
@@ -148,9 +147,8 @@ class _ContrantePageState extends State<ContrantePage> {
                       Util.toastAlerta("Selecione o cliente");
                       return;
                     }
-                   
+
                     try {
-                      
                       await _contratanteAction();
                       widget._reportAplicationController?.updateView!();
                       // ignore: use_build_context_synchronously

@@ -9,7 +9,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -70,8 +70,6 @@ public class BulaController : ControllerBase
             }
             if (ModelState.IsValid)
             {
-                obj.IdAlvoBiologico = 3;
-                obj.IdCultura = 2;
                 await _bulaService.AddAsync(obj);
                 var lista = await _bulaService.GetAllAsync();
                 var ultimoCriado = lista.LastOrDefault();

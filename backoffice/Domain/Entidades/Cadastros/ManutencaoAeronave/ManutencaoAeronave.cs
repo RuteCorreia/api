@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Domain.Entidades.Cadastros.ManutencaoAeronave
 {
@@ -20,6 +15,12 @@ namespace Domain.Entidades.Cadastros.ManutencaoAeronave
         public string? HorasRevisao { get; set; }
         public string? HorasInspecao { get; set; }
         public byte[]? Documento { get; set; }
+
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
 
         [JsonIgnore]
         public virtual Aeronave.Aeronave? Aeronave { get; set; }

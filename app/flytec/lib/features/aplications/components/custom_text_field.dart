@@ -8,6 +8,7 @@ class CustomTextField extends StatelessWidget {
       required this.onChanged,
       this.textInputType = TextInputType.text,
       this.disabled = false,
+      this.maxLength,
       this.text = "Digite aqui",
       this.formater = const []});
   final TextEditingController? textEditingController;
@@ -16,6 +17,7 @@ class CustomTextField extends StatelessWidget {
   final bool disabled;
   final String text;
   final List<TextInputFormatter> formater;
+  final int? maxLength;
   @override
   Widget build(BuildContext context) {
     return AbsorbPointer(
@@ -37,8 +39,10 @@ class CustomTextField extends StatelessWidget {
             controller: textEditingController,
             textAlign: TextAlign.left,
             textDirection: TextDirection.ltr,
+            maxLength: maxLength,
             decoration: InputDecoration(
                 hintText: text,
+                counterText: '',
                 border: InputBorder.none,
                 hintStyle: const TextStyle(
                   color: Color.fromARGB(255, 121, 118, 118),

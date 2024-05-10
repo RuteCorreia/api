@@ -23,9 +23,10 @@ namespace Application.Application.Servicos.Cadastros.Componentes
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ComponentesViewModel>> GetAllAsync()
+        public async Task<IEnumerable<ComponentesViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var list = await _componenteRepository.GetAllAsync();
+            var idEmpresaInt = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+            var list = await _componenteRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<ComponentesViewModel>>(list);
         }
 
@@ -35,10 +36,12 @@ namespace Application.Application.Servicos.Cadastros.Componentes
             return _mapper.Map<ComponentesViewModel>(obj);
         }
 
-        public async Task AddAsync(ComponentesViewModel obj)
+        public async Task AddAsync(ComponentesViewModel obj, string? idEmpresa)
         {
-            var mapCombustivel = _mapper.Map<Domain.Entidades.Cadastros.Componentes.Componentes>(obj);
-            await _componenteRepository.AddAsync(mapCombustivel);
+            var mapComponente = _mapper.Map<Domain.Entidades.Cadastros.Componentes.Componentes>(obj);
+            var idEmpresaAsNumber = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+            mapComponente.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
+            await _componenteRepository.AddAsync(mapComponente);
         }
 
         public async Task UpdateAsync(ComponentesViewModel obj)

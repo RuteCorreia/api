@@ -26,11 +26,24 @@ class CreateAplicationPage extends StatefulWidget {
 }
 
 class _CreateAplicationPageState extends State<CreateAplicationPage> {
+  void _setPilotOrExecutoz() {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor") ||
+        getIt<GlobalConfigVars>()
+            .userPayload
+            .role!
+            .contains("TecnicoExecutor")) {
+      getIt<GlobalConfigVars>().selectedExecutor =
+          getIt<GlobalConfigVars>().userPayload.name!;
+    } else {
+      getIt<GlobalConfigVars>().selectedPilot =
+          getIt<GlobalConfigVars>().userPayload.name!;
+    }
+  }
   @override
   void initState() {
     super.initState();
-    getIt<GlobalConfigVars>().selectedPilot =
-        getIt<GlobalConfigVars>().userPayload.name ?? '';
+    _setPilotOrExecutoz();
+    
   }
 
   @override
@@ -71,15 +84,19 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Piloto",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Piloto"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                          ? getIt<GlobalConfigVars>().userPayload.name ?? ''
-                          : getIt<GlobalConfigVars>().selectedPilot.isEmpty
-                              ? "Selecione o piloto"
-                              : getIt<GlobalConfigVars>().selectedPilot,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto")
+                      ? getIt<GlobalConfigVars>().userPayload.name ?? ''
+                      : getIt<GlobalConfigVars>().selectedPilot.isEmpty
+                          ? "Selecione o piloto"
+                          : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
                     await showDialog(
@@ -113,15 +130,27 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Executor",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                        .contains("Executor") ||
+                    getIt<GlobalConfigVars>()
+                        .userPayload
+                        .role!
+                        .contains("TecnicoExecutor"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Executor"
-                          ? getIt<GlobalConfigVars>().userPayload.name!
-                          : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
-                              ? "Selecione o executor"
-                              : getIt<GlobalConfigVars>().selectedExecutor,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                              .contains("Executor") ||
+                          getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("TecnicoExecutor")
+                      ? getIt<GlobalConfigVars>().userPayload.name!
+                      : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
+                          ? "Selecione o executor"
+                          : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
                     await showDialog(
@@ -172,7 +201,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                     int? idAplicacao = await widget._reportAplicationController!
                         .createElementInTable(aplicacao.toMap(), "Aplicacao");
                     aplicacao.id = idAplicacao;
-                    aplicacao.refDocument = '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idAplicacao';
+                    aplicacao.refDocument =
+                        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idAplicacao';
                     widget._reportAplicationController!
                         .setAplicacaoSelected(aplicacao);
                     // ignore: use_build_context_synchronously

@@ -2,11 +2,6 @@
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Repositorio.Cadastros.ManutencaoAeronave
 {
@@ -19,10 +14,11 @@ namespace Infra.Repositorio.Cadastros.ManutencaoAeronave
             _contextBase = contextBase;
         }
 
-        public async Task AddAsync(Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj)
+        public async Task<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave> AddAsync(Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave obj)
         {
             await _contextBase.AddAsync(obj);
             await _contextBase.SaveChangesAsync();
+            return obj;
         }
 
         public async Task DeleteAsync(int id)
@@ -35,9 +31,14 @@ namespace Infra.Repositorio.Cadastros.ManutencaoAeronave
             }
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>> GetAllAsync()
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>> GetAllAsync(int idEmpresa)
         {
-            var entities = await _contextBase.ManutencaoAeronave.ToListAsync();
+            var entities = await _contextBase.ManutencaoAeronave
+                .AsNoTracking()
+                .Where(x => 
+                    idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa 
+                )
+                .ToListAsync();
             return entities;
         }
 

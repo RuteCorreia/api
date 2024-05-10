@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+﻿using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
 
 namespace Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel
 {
@@ -19,5 +12,6 @@ namespace Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel
         public string? DocumentoBase64 { get; set; }
         public string? PrefixoAeronave { get; set; }
         public byte[]? Documento { get; set; }
+        public IEnumerable<ManutencaoAeronaveItemsRevisaoViewModel> ItensRevisao { get; set; }
     }
 }

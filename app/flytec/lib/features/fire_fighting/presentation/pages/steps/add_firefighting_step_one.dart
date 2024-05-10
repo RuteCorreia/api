@@ -1,23 +1,33 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:flutter/material.dart';
+import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
-
 import 'package:flytec/features/aplications/components/components_exports.dart';
+import 'package:flytec/features/fire_fighting/controller/firefighting_controller.dart';
+import 'package:flytec/features/fire_fighting/models/firefighting.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_second_step.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 import 'package:go_router/go_router.dart';
 
-
 class AddFireFightingStepOne extends StatefulWidget {
-  const AddFireFightingStepOne({super.key});
+  final FirefightingController? _firefightingController;
+  const AddFireFightingStepOne(
+      {required FirefightingController? firefightingController, super.key})
+      : _firefightingController = firefightingController;
 
   @override
   State<AddFireFightingStepOne> createState() => _AddFireFightingStepOneState();
 }
 
 class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
-  void setPilotOrExecutoz() {
-    if (getIt<GlobalConfigVars>().userPayload.role == "Executor") {
+  void _setPilotOrExecutoz() {
+    if (getIt<GlobalConfigVars>().userPayload.role!.contains("Executor") ||
+        getIt<GlobalConfigVars>()
+            .userPayload
+            .role!
+            .contains("TecnicoExecutor")) {
       getIt<GlobalConfigVars>().selectedExecutor =
           getIt<GlobalConfigVars>().userPayload.name!;
     } else {
@@ -28,8 +38,27 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
 
   @override
   void initState() {
-    setPilotOrExecutoz();
+    _setPilotOrExecutoz();
     super.initState();
+  }
+
+  Future<void> _createReportFirefighting() async {
+    final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
+    final refUsuario =
+        '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
+    final firefighting = Firefighting(
+        executor: getIt<GlobalConfigVars>().selectedExecutor,
+        piloto: getIt<GlobalConfigVars>().selectedPilot,
+        data: DateTime.now().millisecondsSinceEpoch,
+        state: DashBoardState.Incompleto,
+        refId: refUsuario);
+    int? idFirefighting = await widget._firefightingController!
+        .createElementInTable(firefighting.toMap(), "Firefighting");
+    firefighting.id = idFirefighting;
+    firefighting.refId =
+        '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idFirefighting';
+    widget._firefightingController?.setFirefightingSelected(firefighting);
+    await widget._firefightingController?.obtainReportsFirefightings();
   }
 
   @override
@@ -56,18 +85,22 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Piloto",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Piloto"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Piloto"
-                          ? getIt<GlobalConfigVars>().userPayload.name ?? ''
-                          : getIt<GlobalConfigVars>().selectedPilot.isEmpty
-                              ? "Selecione o piloto"
-                              : getIt<GlobalConfigVars>().selectedPilot,
+                  selectedName: getIt<GlobalConfigVars>()
+                          .userPayload
+                          .role!
+                          .contains("Piloto")
+                      ? getIt<GlobalConfigVars>().userPayload.name ?? ''
+                      : getIt<GlobalConfigVars>().selectedPilot.isEmpty
+                          ? "Selecione o piloto"
+                          : getIt<GlobalConfigVars>().selectedPilot,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -100,18 +133,26 @@ await showDialog(
               ),
               const SizedBox(height: 12),
               AbsorbPointer(
-                absorbing:
-                    getIt<GlobalConfigVars>().userPayload.role == "Executor",
+                absorbing: getIt<GlobalConfigVars>()
+                    .userPayload
+                    .role!
+                    .contains("Executor"),
                 child: CustomCombo(
-                  selectedName:
-                      getIt<GlobalConfigVars>().userPayload.role == "Executor"
-                          ? getIt<GlobalConfigVars>().userPayload.name!
-                          : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
-                              ? "Selecione o executor"
-                              : getIt<GlobalConfigVars>().selectedExecutor,
+                  selectedName: getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("Executor") ||
+                          getIt<GlobalConfigVars>()
+                              .userPayload
+                              .role!
+                              .contains("TecnicoExecutor")
+                      ? getIt<GlobalConfigVars>().userPayload.name!
+                      : getIt<GlobalConfigVars>().selectedExecutor.isEmpty
+                          ? "Selecione o executor"
+                          : getIt<GlobalConfigVars>().selectedExecutor,
                   onTap: () async {
                     Util.closeKeyBoard();
-await showDialog(
+                    await showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
@@ -141,7 +182,7 @@ await showDialog(
               Center(
                 child: CustomButton(
                   title: "Continuar",
-                  onClick: () {
+                  onClick: () async {
                     if (getIt<GlobalConfigVars>().selectedExecutor.isEmpty) {
                       Util.toastAlerta("Selecione o executor");
                     } else if (getIt<GlobalConfigVars>()
@@ -156,11 +197,11 @@ await showDialog(
                               AlertDialog.adaptive(
                                 insetPadding: const EdgeInsets.all(15),
                                 content: SizedBox(
-                                  height: 245,
+                                  height: 250,
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
-                                        const SizedBox(height: 20),
+                                        const SizedBox(height: 10),
                                         const Text(
                                           'Selecione o contratante',
                                           textAlign: TextAlign.center,
@@ -170,30 +211,42 @@ await showDialog(
                                             fontSize: 16,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500,
-                                            height: 0.09,
+                                             
                                           ),
                                         ),
-                                        const SizedBox(height: 30),
+                                        const SizedBox(height: 10),
                                         CustomDialogButton(
                                           showLeftIcon: false,
                                           leftIcon: "",
                                           text: "Orgão Público",
-                                          onClick: () {
+                                          onClick: () async {
+                                            await _createReportFirefighting();
                                             context.pop();
-                                            context.push(
-                                              "/combateIncendioPasso2",
-                                            );
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AddFireFightingSecondStep(
+                                                            firefightingController:
+                                                                widget
+                                                                    ._firefightingController!, orgaoPrivado: false)));
                                           },
                                         ),
                                         const SizedBox(height: 10),
                                         CustomDialogButton(
                                           showLeftIcon: false,
                                           leftIcon: "",
-                                          onClick: () {
+                                          onClick: () async {
+                                            await _createReportFirefighting();
                                             context.pop();
-                                            context.push(
-                                              "/combateIncendioPasso2",
-                                            );
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        AddFireFightingSecondStep(
+                                                            firefightingController:
+                                                                widget
+                                                                    ._firefightingController!, orgaoPrivado: true,)));
                                           },
                                           text: "Privado",
                                         )
@@ -203,7 +256,6 @@ await showDialog(
                                 ),
                                 actions: const <Widget>[],
                               ));
-                     
                     }
                   },
                 ),

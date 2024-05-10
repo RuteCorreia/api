@@ -7,6 +7,7 @@ class Aplicacoes {
   String? horimetroInicial;
   String? horimetroFinal;
   Uint8List? imagemCondicaoClimatica;
+  int? isImagemCondicaoClimatica;
   String? temperaturaInicial;
   String? temperaturaFinal;
   String? umidadeRelativaArInicial;
@@ -28,6 +29,7 @@ class Aplicacoes {
     this.umidadeRelativaArFinal,
     this.ventoInicial,
     this.ventoFinal,
+    this.isImagemCondicaoClimatica,
     this.id,
   });
 
@@ -44,6 +46,7 @@ class Aplicacoes {
       'umidadeRelativaArInicial': umidadeRelativaArInicial,
       'umidadeRelativaArFinal': umidadeRelativaArFinal,
       'ventoInicial': ventoInicial,
+      'isImagemCondicaoClimatica': isImagemCondicaoClimatica,
       'ventoFinal': ventoFinal,
     };
   }
@@ -62,6 +65,7 @@ class Aplicacoes {
       umidadeRelativaArFinal: json?['umidadeRelativaArFinal'] ?? '',
       ventoInicial: json?['ventoInicial'] ?? '',
       ventoFinal: json?['ventoFinal'] ?? '',
+      isImagemCondicaoClimatica: json?['isImagemCondicaoClimatica'] ?? 0,
       id: json?['id'] ?? 0,
     );
   }

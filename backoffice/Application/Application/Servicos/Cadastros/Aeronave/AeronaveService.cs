@@ -16,9 +16,10 @@ public class AeronaveService : IAeronaveService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AeronaveViewModel>> GetAllAsync()
+    public async Task<IEnumerable<AeronaveViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var list = await _aeronaveRepository.GetAllAsync();
+        var idEmpresaInt = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+        var list = await _aeronaveRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
 
@@ -28,9 +29,11 @@ public class AeronaveService : IAeronaveService
         return _mapper.Map<AeronaveViewModel>(obj);
     }
 
-    public async Task AddAsync(AeronaveViewModel obj)
+    public async Task AddAsync(AeronaveViewModel obj, string? idEmpresa)
     {
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
+        var idEmpresaAsNumber = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+        mapAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         await _aeronaveRepository.AddAsync(mapAeronave);
     }
 
