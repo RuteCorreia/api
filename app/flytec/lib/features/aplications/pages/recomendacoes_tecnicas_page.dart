@@ -4,6 +4,7 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/recomendacoes_tecnicas.dart';
+import 'package:file_picker/file_picker.dart';
 
 class RecomendacoesTecnicasPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -129,6 +130,19 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
     _aplicacao.recomendacoesTecnicas = idRecomendacoesTecnicas;
     widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
     setState(() {});
+  }
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      // Handle the selected file
+      print('File picked: ${file.name}');
+    } else {
+      // User canceled the file picking
+      print('User canceled the file picking.');
+    }
   }
 
   @override
@@ -391,6 +405,13 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             ));
                       });
                 }),
+            const SizedBox(height: 10),
+            const CustomText(text: 'Selecione um arquivo'),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _pickFile,
+              child: Text('Escolher Arquivo'),
+            ),
             const SizedBox(height: 10),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),

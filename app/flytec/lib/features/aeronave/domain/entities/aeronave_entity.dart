@@ -9,6 +9,8 @@ class AeroNaveEntity extends Equatable {
   final String? horimetro;
   final String? modelo;
   final String? serialNumber;
+  final int? tipo;
+
 
   const AeroNaveEntity({
     this.id,
@@ -18,10 +20,11 @@ class AeroNaveEntity extends Equatable {
     this.capacidadeDeCarga,
     this.horimetro,
     this.modelo,
-    this.serialNumber
+    this.serialNumber,
+    this.tipo
   });
 
   @override
   List<Object?> get props =>
-      [id, idEmpresa, prefixo, combustivel, capacidadeDeCarga, horimetro];
+      [id, idEmpresa, prefixo, combustivel, capacidadeDeCarga, horimetro, tipo];
 }

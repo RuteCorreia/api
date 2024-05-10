@@ -30,7 +30,7 @@ class AirCraftSelect extends StatelessWidget {
                     elevation: 0,
                     onPressed: () {
                       onChanged(
-                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!);
+                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!.toUpperCase());
                       Navigator.of(context).pop();
                     },
                     child: Align(
@@ -38,10 +38,7 @@ class AirCraftSelect extends StatelessWidget {
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
-                              getIt<GlobalConfigVars>()
-                                      .aeronaves[index]
-                                      .prefixo ??
-                                  '',
+                              '${getIt<GlobalConfigVars>().aeronaves[index]?.prefixo?.toUpperCase() ?? 'Sem Tipo Definido'} - ${getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 2 ? 'Drone' : getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 1 ? 'Aeronave' : 'Sem Tipo Definido'}',
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 16,
