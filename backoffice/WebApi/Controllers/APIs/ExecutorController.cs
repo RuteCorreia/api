@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Executor.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -16,10 +17,15 @@ namespace WebApi.Controllers.APIs;
 public class ExecutorController : ControllerBase
 {
     private readonly IExecutorService _executorService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public ExecutorController(IExecutorService executorService)
+    public ExecutorController(
+        IExecutorService executorService,
+         LoggedUserInfoService loggedUserInfoService
+    )
     {
         _executorService = executorService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,7 +33,8 @@ public class ExecutorController : ControllerBase
     {
         try
         {
-            var executores = await _executorService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var executores = await _executorService.GetAllAsync(loggedUser.Item3);
             return Ok(executores);
         }
         catch (Exception ex)
@@ -43,7 +50,8 @@ public class ExecutorController : ControllerBase
         {
             if(!string.IsNullOrEmpty(id))
             {
-                var executor = await _executorService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var executor = await _executorService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(executor))
                 {
                     return Ok(executor);

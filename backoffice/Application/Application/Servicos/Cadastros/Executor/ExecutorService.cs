@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Executor.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Executor;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Executor;
 
@@ -16,9 +17,10 @@ public class ExecutorService : IExecutorService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync()
+    public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var usuarioCredencialList = await _executorRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialList = await _executorRepository.GetAllAsync(idEmpresaInt);
         var usuarioList = usuarioCredencialList
             .Select(u => u.Usuario)
             .ToList();
@@ -42,9 +44,10 @@ public class ExecutorService : IExecutorService
         return returnList;
     }
 
-    public async Task<ExecutorViewModel?> GetByIdAsync(string id)
+    public async Task<ExecutorViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var usuarioCredencialObj = await _executorRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialObj = await _executorRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
         var mappedObj = usuarioObj is not null ? _mapper.Map<ExecutorViewModel>(usuarioObj) : null;
         if (mappedObj is not null)
