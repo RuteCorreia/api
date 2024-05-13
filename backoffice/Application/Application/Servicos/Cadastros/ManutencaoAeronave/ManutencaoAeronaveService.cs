@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
 {
@@ -26,7 +27,7 @@ namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
 
         public async Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaAsNumber = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+            var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var list = await _manutencaoAeronaveRepository.GetAllAsync(idEmpresaAsNumber);
             return _mapper.Map<IEnumerable<ManutencaoAeronaveViewModel>>(list);
         }
@@ -48,7 +49,7 @@ namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
 
         public async Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa)
         {
-            var idEmpresaAsNumber = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+            var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
             mapManutencaoAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
             var objManutencao = await _manutencaoAeronaveRepository.AddAsync(mapManutencaoAeronave);

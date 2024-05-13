@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Menu.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Menu;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Menu;
 
@@ -29,7 +30,7 @@ public class MenuService : IMenuService
 
     public async Task<IEnumerable<MenuViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var list = await _menuRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<MenuViewModel>>(list);
     }
