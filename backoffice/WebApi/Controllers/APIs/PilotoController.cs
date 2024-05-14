@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Piloto.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -16,10 +17,15 @@ namespace WebApi.Controllers.APIs;
 public class PilotoController : ControllerBase
 {
     private readonly IPilotoService _pilotoService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public PilotoController(IPilotoService pilotoService)
+    public PilotoController(
+        IPilotoService pilotoService, 
+        LoggedUserInfoService loggedUserInfoService
+    )
     {
         _pilotoService = pilotoService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,7 +33,8 @@ public class PilotoController : ControllerBase
     {
         try
         {
-            var pilotos = await _pilotoService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var pilotos = await _pilotoService.GetAllAsync(loggedUser.Item3);
             return Ok(pilotos);
         }
         catch (Exception ex)
@@ -43,7 +50,8 @@ public class PilotoController : ControllerBase
         {
             if(!string.IsNullOrEmpty(id))
             {
-                var piloto = await _pilotoService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var piloto = await _pilotoService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(piloto))
                 {
                     return Ok(piloto);

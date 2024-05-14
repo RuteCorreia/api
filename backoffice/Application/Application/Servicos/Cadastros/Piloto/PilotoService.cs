@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Piloto.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Piloto;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Piloto;
 
@@ -16,9 +17,10 @@ public class PilotoService : IPilotoService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PilotoViewModel>> GetAllAsync()
+    public async Task<IEnumerable<PilotoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var usuarioCredencialList = await _pilotoRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialList = await _pilotoRepository.GetAllAsync(idEmpresaInt);
         var usuarioList = usuarioCredencialList
             .Select(u => u.Usuario)
             .ToList();
@@ -42,9 +44,10 @@ public class PilotoService : IPilotoService
         return returnList;
     }
 
-    public async Task<PilotoViewModel?> GetByIdAsync(string id)
+    public async Task<PilotoViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var usuarioCredencialObj = await _pilotoRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialObj = await _pilotoRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
         var mappedObj = usuarioObj is not null ? _mapper.Map<PilotoViewModel>(usuarioObj) : null;
         if (mappedObj is not null)

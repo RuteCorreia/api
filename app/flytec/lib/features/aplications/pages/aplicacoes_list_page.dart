@@ -48,7 +48,8 @@ class _AplicacoesListPageState extends State<AplicacoesListPage> {
   }
 
   DateTime? _dataByIndexAplicacao(int index) {
-    if (_aplicacoes[index]?.dataAplicacao == null) return DateTime.now();
+    if (_aplicacoes[index]?.dataAplicacao == null ||
+        _aplicacoes[index]!.dataAplicacao!.isEmpty) return DateTime.now();
     final epoch = int.tryParse(_aplicacoes[index]!.dataAplicacao!);
 
     return DateTime.fromMillisecondsSinceEpoch(epoch!);

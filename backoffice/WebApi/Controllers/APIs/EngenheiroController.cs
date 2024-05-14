@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Engenheiro.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -16,10 +17,16 @@ namespace WebApi.Controllers.APIs;
 public class EngenheiroController : ControllerBase
 {
     private readonly IEngenheiroService _engenheiroService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public EngenheiroController(IEngenheiroService engenheiroService)
+
+    public EngenheiroController(
+        IEngenheiroService engenheiroService,
+        LoggedUserInfoService loggedUserInfoService
+    )
     {
         _engenheiroService = engenheiroService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,7 +34,8 @@ public class EngenheiroController : ControllerBase
     {
         try
         {
-            var engenheiros = await _engenheiroService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var engenheiros = await _engenheiroService.GetAllAsync(loggedUser.Item3);
             return Ok(engenheiros);
         }
         catch (Exception ex)
@@ -43,7 +51,8 @@ public class EngenheiroController : ControllerBase
         {
             if (!string.IsNullOrEmpty(id))
             {
-                var engenheiro = await _engenheiroService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var engenheiro = await _engenheiroService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(engenheiro))
                 {
                     return Ok(engenheiro);

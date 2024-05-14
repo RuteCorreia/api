@@ -4,7 +4,7 @@ namespace Application.DTOs.Cadastros.Piloto.Interface;
 
 public interface IPilotoService 
 {
-    Task<IEnumerable<PilotoViewModel>> GetAllAsync();
+    Task<IEnumerable<PilotoViewModel>> GetAllAsync(string? idEmpresa);
 
-    Task<PilotoViewModel?> GetByIdAsync(string id);
+    Task<PilotoViewModel?> GetByIdAsync(string id, string? idEmpresa);
 }

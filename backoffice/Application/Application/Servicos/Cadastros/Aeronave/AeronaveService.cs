@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Aeronave;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Aeronave;
 
@@ -18,7 +19,7 @@ public class AeronaveService : IAeronaveService
 
     public async Task<IEnumerable<AeronaveViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var list = await _aeronaveRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
@@ -32,7 +33,7 @@ public class AeronaveService : IAeronaveService
     public async Task AddAsync(AeronaveViewModel obj, string? idEmpresa)
     {
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
-        var idEmpresaAsNumber = !string.IsNullOrEmpty(idEmpresa) ? Convert.ToInt32(idEmpresa) : 0;
+        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         mapAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         await _aeronaveRepository.AddAsync(mapAeronave);
     }

@@ -279,6 +279,7 @@ class _CaracteristicasProdutoAplicadoPageState
                   _receituarioAgronomico =
                       await File(archive.path!).readAsBytes();
                   setState(() {});
+                  if (!archive.isImage) return;
                   // ignore: use_build_context_synchronously
                   Navigator.push(
                       // ignore: use_build_context_synchronously

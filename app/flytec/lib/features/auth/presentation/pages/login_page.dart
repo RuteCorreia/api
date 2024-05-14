@@ -12,6 +12,7 @@ import 'package:flytec/features/alvo_biologico/data/models/alvo_biologico_model.
 import 'package:flytec/features/alvo_biologico/domain/usecases/get_alvo_biologico_usecase.dart';
 import 'package:flytec/features/aplications/controller/permission.dart';
 import 'package:flytec/features/auth/data/models/user_payload_model.dart';
+import 'package:flytec/features/auth/domain/usecases/obtain_logo_company_usecase.dart';
 import 'package:flytec/features/bulas/data/models/bula_model.dart';
 import 'package:flytec/features/bulas/domains/usecases/get_bula_usecase.dart';
 import 'package:flytec/features/cultura/data/models/cultura_model.dart';
@@ -101,6 +102,17 @@ class _LoginPageState extends State<LoginPage> {
             final response = Future.wait([
               getIt<ClienteDataSourceImpl>().getClients().then((value) {
                 getIt<GlobalConfigVars>().setClientes(clientesData: value);
+              }),
+              getIt<ObtainLogoCompanyUseCase>()
+                  .call(
+                      getIt<GlobalConfigVars>().userPayload.empresa?.idEmpresa)
+                  .then((value) {
+                value.fold((left) {
+                  Util.toastErro("Ocorreu um erro ao buscar o logo da empresa");
+                }, (right) {
+                  getIt<GlobalConfigVars>().userPayload.empresa?.logoEmpresa =
+                      right ?? '';
+                });
               }),
               getIt<GetExecutoresUseCase>().call(NoParams()).then((value) {
                 value.fold((left) {
@@ -246,7 +258,6 @@ class _LoginPageState extends State<LoginPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-
                             )),
                       ),
                     ),
@@ -267,26 +278,28 @@ class _LoginPageState extends State<LoginPage> {
                         autofillHints: const [AutofillHints.password],
                         controller: _editingControllerPassword,
                         decoration: InputDecoration(
-                            hintText: "Senha",
-                            border: InputBorder.none,
-                            hintStyle: TextStyle(
-                              color: Color.fromARGB(255, 121, 118, 118),
-                              fontSize: 16,
-                              fontFamily: 'Inter',
-                              fontWeight: FontWeight.w500,
-                              height: 0.09,
-                            ),
+                          hintText: "Senha",
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(
+                            color: Color.fromARGB(255, 121, 118, 118),
+                            fontSize: 16,
+                            fontFamily: 'Inter',
+                            fontWeight: FontWeight.w500,
+                            height: 0.09,
+                          ),
                           suffixIcon: IconButton(
-                          icon: Icon(
-                          _mostrarSenha ? Icons.visibility : Icons.visibility_off,
-                        color: Colors.grey,
-                        ),
-                        onPressed: (){
-                          setState(() {
-                            _mostrarSenha = !_mostrarSenha;
-                          });
-                        },
-                      ),
+                            icon: Icon(
+                              _mostrarSenha
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: Colors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _mostrarSenha = !_mostrarSenha;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ),

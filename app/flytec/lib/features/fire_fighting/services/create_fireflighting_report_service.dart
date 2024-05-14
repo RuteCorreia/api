@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flytec/core/extensions/datetime_extension.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -23,7 +24,8 @@ class CreateFirefightingReportService implements PdfGenerator {
     final totalAgua =
         _firefighting.totalAguaUtilizadaOperacao?.replaceAll('.', '') ?? '0';
 
-    double resultado = double.parse(totalAgua) * quantidadeLancamentos;
+    double resultado = double.parse(totalAgua.isEmpty ? '0.0' : totalAgua) *
+        quantidadeLancamentos;
     return resultado;
   }
 
@@ -129,7 +131,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                             pw.Row(children: [
                               pw.Container(
                                   height: 25,
-                                  width: 143.5,
+                                  width: 95.6,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           right: pw.BorderSide(width: 1.5),
@@ -138,10 +140,10 @@ class CreateFirefightingReportService implements PdfGenerator {
                                       mainAxisAlignment:
                                           pw.MainAxisAlignment.center,
                                       children: [
-                                        pw.Text('N Aviso',
+                                        pw.Text('N° Aviso',
                                             textAlign: pw.TextAlign.center,
                                             style: const pw.TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 8,
                                             )),
                                         pw.Text(
                                             _firefighting.numeroAviso
@@ -149,28 +151,36 @@ class CreateFirefightingReportService implements PdfGenerator {
                                                 '',
                                             textAlign: pw.TextAlign.center,
                                             style: const pw.TextStyle(
-                                              fontSize: 10,
+                                              fontSize: 8,
                                             )),
                                       ])),
                               pw.Container(
                                   height: 25,
-                                  width: 143.5,
+                                  width: 95.6,
+                                  alignment: pw.Alignment.center,
+                                  decoration: const pw.BoxDecoration(
+                                      border: pw.Border(
+                                          right: pw.BorderSide(width: 1.5),
+                                          bottom: pw.BorderSide(width: 1.5))),
+                                  child: pw.Text(
+                                      'HORÁRIO DE ACIONAMENTO: ${_firefighting.horarioAcionamento != null ? DateTime.fromMillisecondsSinceEpoch(_firefighting.horarioAcionamento!).to24hours() : ''}',
+                                      textAlign: pw.TextAlign.center,
+                                      style: const pw.TextStyle(
+                                        fontSize: 8,
+                                      ))),
+                              pw.Container(
+                                  height: 25,
+                                  width: 95.6,
+                                  alignment: pw.Alignment.center,
                                   decoration: const pw.BoxDecoration(
                                       border: pw.Border(
                                           bottom: pw.BorderSide(width: 1.5))),
-                                  child: pw.Column(
-                                      mainAxisAlignment:
-                                          pw.MainAxisAlignment.center,
-                                      children: [
-                                        pw.Text('HORÍMETRO DE ACIONAMENTO',
-                                            textAlign: pw.TextAlign.center,
-                                            style: const pw.TextStyle(
-                                              fontSize: 8,
-                                            )),
-                                        pw.Text(_firefighting
-                                                .horimetroAcionamento ??
-                                            ''),
-                                      ])),
+                                  child: pw.Text(
+                                      'HORÍMETRO DE ACIONAMENTO: ${_firefighting.horimetroAcionamento ?? ''}',
+                                      textAlign: pw.TextAlign.center,
+                                      style: const pw.TextStyle(
+                                        fontSize: 8,
+                                      ))),
                             ]),
                             pw.Container(
                                 height: 15,

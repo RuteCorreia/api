@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Engenheiro.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Engenheiro;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Engenheiro;
 
@@ -16,9 +17,10 @@ public class EngenheiroService : IEngenheiroService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<EngenheiroViewModel>> GetAllAsync()
+    public async Task<IEnumerable<EngenheiroViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var usuarioCredencialList = await _engenheiroRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialList = await _engenheiroRepository.GetAllAsync(idEmpresaInt);
         var usuarioList = usuarioCredencialList
             .Select(u => u.Usuario)
             .ToList();
@@ -42,9 +44,10 @@ public class EngenheiroService : IEngenheiroService
         return returnList;
     }
 
-    public async Task<EngenheiroViewModel?> GetByIdAsync(string id)
+    public async Task<EngenheiroViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var usuarioCredencialObj = await _engenheiroRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var usuarioCredencialObj = await _engenheiroRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null; 
         var mappedObj = usuarioObj is not null ? _mapper.Map<EngenheiroViewModel>(usuarioObj) : null;
         if(mappedObj is not null)

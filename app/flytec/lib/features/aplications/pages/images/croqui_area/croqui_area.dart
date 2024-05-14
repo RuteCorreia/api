@@ -60,6 +60,8 @@ class _CroquiAreaState extends State<CroquiArea> {
                     final archive = await Util.obtainImagePathMaps(context,isPdf: false);
                     if (archive.path!.isEmpty) return;
                     _imageData = await File(archive.path!).readAsBytes();
+                    if (!archive.isImage) return;
+
                     // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {

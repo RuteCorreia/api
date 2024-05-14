@@ -22,6 +22,17 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
   String? _componenteSelecionado = 'Selecione';
   final ScrollController _scrollController = ScrollController();
   final List<String> _images = [];
+
+  final List<String> _componentes = [
+    'Componente 1',
+    'Componente 2',
+    'Componente 3'
+  ];
+
+  void _addNewComponente(String componente) {
+    _componentes.add(componente);
+    setState(() {});
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +64,8 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                               content: SizedBox(
                                 width: double.maxFinite,
                                 child: ComponenteNameSelect(
+                                  onAddComponente: _addNewComponente,
+                                  componentes: _componentes,
                                   onChangeComponente: (componente) {
                                     _componenteSelecionado = componente;
                                     setState(() {});
@@ -114,6 +127,8 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                           await Util.obtainImagePathMaps(context,isPdf: false);
                       Uint8List? imageData =
                           await File(archive.path!).readAsBytes();
+                      if (!archive.isImage) return;
+
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           // ignore: use_build_context_synchronously

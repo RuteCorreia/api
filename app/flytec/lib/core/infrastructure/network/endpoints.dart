@@ -18,4 +18,6 @@ class Endpoints {
   static const String executor = '$_baseUrl/api/v1/Executor';
   static const String engenheiro = '$_baseUrl/api/v1/Engenheiro';
   static const String reportAplications = '$_baseUrl/api/v1/RelatorioAplicacao';
+  static String logoCompany(String companyId) =>
+      '$_baseUrl/api/v1/LogoEmpresa/$companyId';
 }
