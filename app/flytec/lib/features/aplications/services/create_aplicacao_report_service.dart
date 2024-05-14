@@ -1851,7 +1851,10 @@ class CreateAplicacaoReportService implements PdfGenerator {
                 pw.Divider(height: 1, thickness: 1.5),
                 if (aplicacao.caracteristicasProdutoAplicado
                         ?.receiturarioAgronomico !=
-                    null)
+                        null &&
+                    aplicacao.caracteristicasProdutoAplicado
+                            ?.isReceiturarioImage ==
+                        0)
                   pw.Container(
                     height: 700,
                     width: 700,
@@ -1892,7 +1895,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         )
                       ]),
-                  if (aplicacoes01.imagemCondicaoClimatica != null)
+                  if (aplicacoes01.imagemCondicaoClimatica != null &&
+                      aplicacoes01.isImagemCondicaoClimatica == 0)
                     pw.Container(
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),
@@ -1932,7 +1936,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         )
                       ]),
-                  if (aplicacoes02.imagemCondicaoClimatica != null)
+                  if (aplicacoes02.imagemCondicaoClimatica != null &&
+                      aplicacoes02.isImagemCondicaoClimatica == 0)
                     pw.Container(
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),
@@ -1972,7 +1977,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   pw.TextStyle(fontSize: 12, font: newRoman)),
                         )
                       ]),
-                  if (aplicacoes03.imagemCondicaoClimatica != null)
+                  if (aplicacoes03.imagemCondicaoClimatica != null &&
+                      aplicacoes03.isImagemCondicaoClimatica == 0)
                     pw.Container(
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),

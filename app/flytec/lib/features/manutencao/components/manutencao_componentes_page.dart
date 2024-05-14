@@ -127,6 +127,8 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                           await Util.obtainImagePathMaps(context,isPdf: false);
                       Uint8List? imageData =
                           await File(archive.path!).readAsBytes();
+                      if (!archive.isImage) return;
+
                       // ignore: use_build_context_synchronously
                       Navigator.push(
                           // ignore: use_build_context_synchronously

@@ -58,6 +58,7 @@ CREATE TABLE CaracteristicasProdutoAplicado (
     adjuvante TEXT,
     tipoServico TEXT,
     numeroReceituarioAgronomico TEXT,
+    isReceituarioImage INTEGER,
     dataEmissao TEXT
 )
 ''';

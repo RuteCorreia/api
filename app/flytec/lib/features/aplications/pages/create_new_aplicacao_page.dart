@@ -288,8 +288,13 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
               InkWell(
                   onTap: () async {
                     final archive = await Util.obtainImagePathMaps(context);
+                    _imageData = null;
+                    setState(() {});
                     _imageData = await File(archive.path!).readAsBytes();
                     _isImage = archive.isImage ? 0 : 1;
+                    setState(() {});
+                    if (!archive.isImage) return;
+
                     // ignore: use_build_context_synchronously
                     Navigator.push(
                         // ignore: use_build_context_synchronously
