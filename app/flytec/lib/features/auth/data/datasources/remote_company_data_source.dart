@@ -1,4 +1,5 @@
 import 'package:flytec/core/infrastructure/network/endpoints.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../../core/errors/exception.dart';
@@ -19,7 +20,10 @@ class RemoteCompanyDataSourceImpl implements IRemoteCompanyDataSource {
     if (await netWorkInfoI!.isConnected) {
       final response = await client.get(
         Uri.parse(Endpoints.logoCompany(companyId)),
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ${Util.Token}'
+        },
       );
 
       if (response.statusCode == 200) {

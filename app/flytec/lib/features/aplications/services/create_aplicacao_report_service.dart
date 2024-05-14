@@ -99,8 +99,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                             ? base64Decode(empresa.logoEmpresa!)
                                             : logoImage),
                                     fit: pw.BoxFit.contain,
-                                    width: 140,
-                                    height: 140),
+                                    width: 60,
+                                    height: 60),
                               ),
                               pw.SizedBox(width: 10),
                               pw.Column(
@@ -114,7 +114,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                             fontSize: 14,
                                             fontWeight: pw.FontWeight.normal)),
                                     pw.Text(
-                                        'MA SP - ${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ 00.000.000/0000-00 - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
+                                        '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ 00.000.000/0000-00 - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                         maxLines: 1,
                                         style: pw.TextStyle(
                                             fontSize: 8,
