@@ -636,7 +636,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                         width: 287,
                         height: 20,
                         child: pw.Text(
-                            'Nome: ${_firefighting.coordenadorBaseOperacional?.nome ?? ''}',
+                            'Nome: ${_firefighting.dadosResponsavel?.nome ?? ''}',
                             style: const pw.TextStyle(fontSize: 10)),
                         decoration: const pw.BoxDecoration(
                             border: pw.Border(
@@ -647,7 +647,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                           width: 287,
                           height: 20,
                           child: pw.Text(
-                              'Nome: ${_firefighting.comandanteOcorrencia?.nome ?? ''}',
+                              'Nome: ${_firefighting.dadosResponsavel?.nome ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
@@ -662,48 +662,28 @@ class CreateFirefightingReportService implements PdfGenerator {
                           width: 143.5,
                           height: 20,
                           child: pw.Text(
-                              'Posto/Grad: ${_firefighting.coordenadorBaseOperacional?.postoGraduacao ?? ''}',
+                              'Posto/Grad: ${_firefighting.dadosResponsavel?.documento ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
                                   bottom: pw.BorderSide(width: 1.5),
                                   right: pw.BorderSide(width: 1.5))),
                         ),
-                        pw.Container(
-                          width: 143.5,
-                          height: 20,
-                          child: pw.Text(
-                              'RE: ${_firefighting.coordenadorBaseOperacional?.re ?? ''}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                          decoration: const pw.BoxDecoration(
-                              border: pw.Border(
-                                  bottom: pw.BorderSide(width: 1.5),
-                                  right: pw.BorderSide(width: 1.5))),
-                        ),
+                       
                       ]),
                       pw.Row(children: [
                         pw.Container(
-                          width: 143.5,
+                          width: 287,
                           height: 20,
                           child: pw.Text(
-                              'Posto/Grad: ${_firefighting.comandanteOcorrencia?.postoGraduacao ?? ''}',
+                              'Documento: ${_firefighting.dadosResponsavel?.documento ?? ''}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
                                   bottom: pw.BorderSide(width: 1.5),
                                   right: pw.BorderSide(width: 1.5))),
                         ),
-                        pw.Container(
-                          width: 143.5,
-                          height: 20,
-                          child: pw.Text(
-                              'RE: ${_firefighting.comandanteOcorrencia?.re ?? ''}',
-                              style: const pw.TextStyle(fontSize: 10)),
-                          decoration: const pw.BoxDecoration(
-                              border: pw.Border(
-                                  bottom: pw.BorderSide(width: 1.5),
-                                  right: pw.BorderSide(width: 1.5))),
-                        ),
+                       
                       ]),
                     ])),
                 pw.SizedBox(
@@ -716,14 +696,15 @@ class CreateFirefightingReportService implements PdfGenerator {
                           pw.Text('Assinatura:',
                               style: const pw.TextStyle(fontSize: 10)),
                           if (_firefighting
-                                      .coordenadorBaseOperacional?.assinatura !=
+                                      .dadosResponsavel?.assinatura !=
                                   null &&
-                              _firefighting.coordenadorBaseOperacional!
+                              _firefighting
+                                  .dadosResponsavel!
                                   .assinatura!.isNotEmpty)
                             pw.Image(
                                 pw.MemoryImage(
                                   base64Decode(_firefighting
-                                      .coordenadorBaseOperacional!.assinatura!),
+                                      .dadosResponsavel!.assinatura!),
                                 ),
                                 fit: pw.BoxFit.fill,
                                 height: 100,
@@ -734,30 +715,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                                 bottom: pw.BorderSide(width: 1.5),
                                 right: pw.BorderSide(width: 1.5))),
                       ),
-                      pw.Container(
-                        width: 287,
-                        height: 30,
-                        child: pw.Row(children: [
-                          pw.Text('Assinatura:',
-                              style: const pw.TextStyle(fontSize: 10)),
-                          if (_firefighting.comandanteOcorrencia?.assinatura !=
-                                  null &&
-                              _firefighting
-                                  .comandanteOcorrencia!.assinatura!.isNotEmpty)
-                            pw.Image(
-                                pw.MemoryImage(
-                                  base64Decode(_firefighting
-                                      .comandanteOcorrencia!.assinatura!),
-                                ),
-                                fit: pw.BoxFit.fill,
-                                height: 100,
-                                width: 200),
-                        ]),
-                        decoration: const pw.BoxDecoration(
-                            border: pw.Border(
-                                bottom: pw.BorderSide(width: 1.5),
-                                right: pw.BorderSide(width: 1.5))),
-                      ),
+                     
                     ])),
                 pw.SizedBox(width: 574, height: 35),
                 pw.Divider(height: 1, thickness: 1.5),

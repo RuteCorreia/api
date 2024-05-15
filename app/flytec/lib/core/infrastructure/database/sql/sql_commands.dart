@@ -167,8 +167,7 @@ CREATE TABLE Firefighting (
     horimetroCorte TEXT,
     capacidadeCargaAeronave TEXT,
     totalAguaUtilizadaOperacao TEXT,
-    coordenadorBaseOperacional_id INTEGER,
-    comandanteOcorrencia_id INTEGER,
+    dadosResponsavelFirefighting_id INTEGER,
     cliente TEXT,
     refId TEXT
 )
@@ -206,21 +205,11 @@ CREATE TABLE DecolagemPousoFirefighting (
 )
 ''';
 
-  static String createCoordenadorBaseOperacionalFirefightingTable = '''
-CREATE TABLE CoordenadorBaseOperacionalFirefighting (
+  static String createDadosResponsavelFirefightingTable = '''
+CREATE TABLE DadosResponsavelFirefighting (
     id INTEGER PRIMARY KEY,
     nome TEXT,
-    postoGraduacao TEXT,
-    re TEXT,
-    assinatura TEXT
-)
-''';
-  static String createComandanteOcorrenciaFirefightingTable = '''
-CREATE TABLE ComandanteOcorrenciaFirefighting (
-    id INTEGER PRIMARY KEY,
-    nome TEXT,
-    postoGraduacao TEXT,
-    re TEXT,
+    documento TEXT,
     assinatura TEXT
 )
 ''';
