@@ -46,7 +46,7 @@ CREATE TABLE IdentificacaoAreaTratada (
 CREATE TABLE CaracteristicasProdutoAplicado (
     id INTEGER PRIMARY KEY,
     cultura TEXT,
-    receiturarioAgronomico BLOB,
+    receiturarioAgronomico TEXT,
     isReceiturarioImage INTEGER,
     nomeProduto TEXT,
     classificacaoToxicologica TEXT,

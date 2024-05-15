@@ -1850,7 +1850,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
                 if (aplicacao.caracteristicasProdutoAplicado
-                        ?.receiturarioAgronomico !=
+                            ?.receiturarioAgronomico !=
                         null &&
                     aplicacao.caracteristicasProdutoAplicado
                             ?.isReceiturarioImage ==
@@ -1861,8 +1861,9 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
-                      pw.MemoryImage(aplicacao.caracteristicasProdutoAplicado!
-                          .receiturarioAgronomico!),
+                      pw.MemoryImage(base64Decode(aplicacao
+                          .caracteristicasProdutoAplicado!
+                          .receiturarioAgronomico!)),
                     ),
                   ),
               ]));

@@ -1,5 +1,5 @@
+import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
@@ -35,7 +35,7 @@ class _CaracteristicasProdutoAplicadoPageState
 
   Aplicacao get _aplicacao =>
       widget._reportAplicationController.aplicacaoSelected!;
-  Uint8List? _receituarioAgronomico;
+  String? _receituarioAgronomico;
   int _isReceiturarioImage = 0;
   String? _nomeProduto = "";
   int? _classificacaoToxicologica;
@@ -276,8 +276,8 @@ class _CaracteristicasProdutoAplicadoPageState
                 onTap: () async {
                   final archive = await Util.obtainImagePathMaps(context);
                   _isReceiturarioImage = archive.isImage ? 0 : 1;
-                  _receituarioAgronomico =
-                      await File(archive.path!).readAsBytes();
+                  final file = await File(archive.path!).readAsBytes();
+                  _receituarioAgronomico = base64Encode(file);
                   setState(() {});
                   if (!archive.isImage) return;
                   // ignore: use_build_context_synchronously
@@ -290,10 +290,11 @@ class _CaracteristicasProdutoAplicadoPageState
                                   Navigator.pop(context);
                                 },
                                 updateImageData: (data) {
-                                  _receituarioAgronomico = data;
+                                  _receituarioAgronomico = base64Encode(data);
                                   setState(() {});
                                 },
-                                imageData: _receituarioAgronomico,
+                                imageData:
+                                    base64Decode(_receituarioAgronomico!),
                               )));
                 },
                 child: Container(
@@ -345,7 +346,8 @@ class _CaracteristicasProdutoAplicadoPageState
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: MemoryImage(_receituarioAgronomico!),
+                              image: MemoryImage(
+                                  base64Decode(_receituarioAgronomico!)),
                               fit: BoxFit.fill),
                         )),
                   ],
@@ -361,7 +363,7 @@ class _CaracteristicasProdutoAplicadoPageState
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       child: PDFView(
-                        pdfData: _receituarioAgronomico,
+                        pdfData: base64Decode(_receituarioAgronomico!),
                       ),
                     ),
                   ],
