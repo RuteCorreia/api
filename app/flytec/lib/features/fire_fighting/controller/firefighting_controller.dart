@@ -6,8 +6,7 @@ import 'package:flytec/core/infrastructure/database/sql/database_instances/relat
 import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
-import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
-import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
+import 'package:flytec/features/fire_fighting/models/dados_responsavel.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/local_firefighting.dart';
@@ -90,25 +89,13 @@ class FirefightingController extends ChangeNotifier {
       firefighting.decolagemPousoFirefightingList =
           selectedListDecolagemPousoFirefightingList;
 
-      final getCoordenadorBaseOperacionalFirefightingDb =
+      final getDadosResponsavelFirefightingDb =
           await _sqlDatabaseProvider.obtainElementTableById(
-              "CoordenadorBaseOperacionalFirefighting",
-              firefighting.idCoordenadorBaseOperacional);
-      CoordenadorBaseOperacional coordenadorBaseOperacional =
-          CoordenadorBaseOperacional.fromJson(
-              getCoordenadorBaseOperacionalFirefightingDb);
-      coordenadorBaseOperacional.id = firefighting.idCoordenadorBaseOperacional;
-      firefighting.coordenadorBaseOperacional = coordenadorBaseOperacional;
-
-      final getComandanteOcorrenciaFirefightingFirefightingDb =
-          await _sqlDatabaseProvider.obtainElementTableById(
-              "ComandanteOcorrenciaFirefighting",
-              firefighting.idComandanteOcorrencia);
-      ComandanteOcorrencia comandanteOcorrenciaFirefighting =
-          ComandanteOcorrencia.fromJson(
-              getComandanteOcorrenciaFirefightingFirefightingDb);
-      comandanteOcorrenciaFirefighting.id = firefighting.idComandanteOcorrencia;
-      firefighting.comandanteOcorrencia = comandanteOcorrenciaFirefighting;
+              "DadosResponsavelFirefighting", firefighting.idDadosResponsavel);
+      DadosResponsavel dadosResponsavel =
+          DadosResponsavel.fromJson(getDadosResponsavelFirefightingDb);
+      dadosResponsavel.id = firefighting.idDadosResponsavel;
+      firefighting.dadosResponsavel = dadosResponsavel;
 
       firefightingListResult.add(firefighting);
     }
