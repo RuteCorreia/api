@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flytec/core/extensions/enum_extension.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 
@@ -7,7 +8,6 @@ class AirCraftSelect extends StatelessWidget {
   AirCraftSelect({super.key, required this.onChanged});
 
   final TextEditingController _textFlightHeight = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -22,31 +22,31 @@ class AirCraftSelect extends StatelessWidget {
                 itemCount: getIt<GlobalConfigVars>().aeronaves.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    padding: EdgeInsets.zero,
-                    color: Colors.white,
-                    elevation: 0,
-                    onPressed: () {
-                      onChanged(
-                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!);
-                      Navigator.of(context).pop();
-                    },
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              getIt<GlobalConfigVars>()
-                                      .aeronaves[index]
-                                      .prefixo ??
-                                  '',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                        ))),
+                itemBuilder: (context, index) {
+                  final aeronave = getIt<GlobalConfigVars>().aeronaves[index];
+
+                  return MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0)),
+                      padding: EdgeInsets.zero,
+                      color: Colors.white,
+                      elevation: 0,
+                      onPressed: () {
+                        onChanged(aeronave.prefixo!);
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${aeronave.prefixo ?? ''} - ${aeronave.tipoAeronave?.toName}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
+                          )));
+                },
               ),
             ),
             SizedBox(
