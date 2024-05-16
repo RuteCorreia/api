@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:flytec/features/aeronave/data/models/tipo_aeronave_enum.dart';
 
 class AeroNaveEntity extends Equatable {
   final int? id;
@@ -9,6 +10,7 @@ class AeroNaveEntity extends Equatable {
   final String? horimetro;
   final String? modelo;
   final String? serialNumber;
+  final TipoAeronaveEnum? tipoAeronave;
 
   const AeroNaveEntity({
     this.id,
@@ -18,7 +20,8 @@ class AeroNaveEntity extends Equatable {
     this.capacidadeDeCarga,
     this.horimetro,
     this.modelo,
-    this.serialNumber
+    this.serialNumber,
+    this.tipoAeronave,
   });
 
   @override
