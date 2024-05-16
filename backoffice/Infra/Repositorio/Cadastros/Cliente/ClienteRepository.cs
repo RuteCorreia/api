@@ -21,9 +21,9 @@ public class ClienteRepository : IClienteRepository
         await _contextBase.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
-        var entityToRemove = await GetByIdAsync(id);
+        var entityToRemove = await GetByIdAsync(id, idEmpresa);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
@@ -31,15 +31,18 @@ public class ClienteRepository : IClienteRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cliente.Cliente>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cliente.Cliente>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.Cliente.ToListAsync();
+        var entities = await _contextBase.Cliente
+            .AsNoTracking()
+            .Where(x => idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)
+            .ToListAsync();
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id, int idEmpresa)
     {
-        var obj = await _contextBase.Cliente.FindAsync(id);
+        var obj = await _contextBase.Cliente.FirstOrDefaultAsync(x => x.IdCliente == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
         return obj;
     }
     

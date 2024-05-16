@@ -3,12 +3,13 @@ using Application.DTOs.Cadastros.Cliente.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize]
+[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class ClienteController : ControllerBase
 {
     private readonly IClienteService _clienteService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public ClienteController(IClienteService clienteService)
+    public ClienteController(IClienteService clienteService, LoggedUserInfoService loggedUserInfoService)
     {
         _clienteService = clienteService;
+        _loggedUserInfoService = loggedUserInfoService;
     }
 
     [HttpGet]
@@ -27,7 +30,8 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            var clientes = await _clienteService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var clientes = await _clienteService.GetAllAsync(loggedUser.Item3);
             return Ok(clientes);
         }
         catch (Exception ex)
@@ -41,7 +45,8 @@ public class ClienteController : ControllerBase
     {
         try
         {
-            var cliente = await _clienteService.GetByIdAsync(id);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var cliente = await _clienteService.GetByIdAsync(id, loggedUser.Item3);
             if (!ObjectNullValidation.IsObjectNull(cliente))
             {
                 return Ok(cliente);
@@ -62,7 +67,8 @@ public class ClienteController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                await _clienteService.AddAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                await _clienteService.AddAsync(obj, loggedUser.Item3);
                 return Ok();
             }
 
@@ -81,7 +87,8 @@ public class ClienteController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _clienteService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var objeto = await _clienteService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
                     obj.IdCliente = objeto.IdCliente;
@@ -110,7 +117,8 @@ public class ClienteController : ControllerBase
         {
             if (id != 0)
             {
-                await _clienteService.DeleteAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                await _clienteService.DeleteAsync(id, loggedUser.Item3);
                 return Ok();
             }
 

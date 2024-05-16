@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -9,7 +8,7 @@ import 'package:flytec/features/cultura/data/models/cultura_model.dart';
 class CaracteristicasProdutoAplicado {
   String? cultura;
   CulturaModel? culturaModel;
-  Uint8List? receiturarioAgronomico;
+  String? receiturarioAgronomico;
   int? isReceiturarioImage;
   String? nomeProduto;
   int? classificacaoToxicologica;

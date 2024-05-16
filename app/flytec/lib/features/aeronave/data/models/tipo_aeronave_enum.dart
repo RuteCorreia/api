@@ -1,0 +1,1 @@
+enum TipoAeronaveEnum { aviao, drone }

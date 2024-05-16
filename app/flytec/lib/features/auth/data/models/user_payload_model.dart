@@ -3,6 +3,7 @@
 //     final userPayloadModel = userPayloadModelFromJson(jsonString);
 
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flytec/features/auth/data/models/company_user_payload_model.dart';
 
@@ -44,6 +45,7 @@ class UserPayloadModel {
   });
 
   factory UserPayloadModel.fromJson(Map<String, dynamic> json) {
+    log('UserPayloadModel.fromJson --> $json');
     return UserPayloadModel(
         nrUsuario: json["NrUsuario"],
         sub: json["sub"],

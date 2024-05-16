@@ -114,7 +114,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                             fontSize: 14,
                                             fontWeight: pw.FontWeight.normal)),
                                     pw.Text(
-                                        '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ 00.000.000/0000-00 - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
+                                        '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                         maxLines: 1,
                                         style: pw.TextStyle(
                                             fontSize: 8,
@@ -1850,7 +1850,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
                 if (aplicacao.caracteristicasProdutoAplicado
-                        ?.receiturarioAgronomico !=
+                            ?.receiturarioAgronomico !=
                         null &&
                     aplicacao.caracteristicasProdutoAplicado
                             ?.isReceiturarioImage ==
@@ -1861,8 +1861,9 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
-                      pw.MemoryImage(aplicacao.caracteristicasProdutoAplicado!
-                          .receiturarioAgronomico!),
+                      pw.MemoryImage(base64Decode(aplicacao
+                          .caracteristicasProdutoAplicado!
+                          .receiturarioAgronomico!)),
                     ),
                   ),
               ]));

@@ -12,6 +12,7 @@ class CompanyUserPayloadModel {
   String? cidadeEmpresa;
   String? estadoEmpresa;
   String? logoEmpresa;
+  String? cnpj;
 
   CompanyUserPayloadModel({
     this.idEmpresa,
@@ -27,6 +28,7 @@ class CompanyUserPayloadModel {
     this.cidadeEmpresa,
     this.estadoEmpresa,
     this.logoEmpresa,
+    this.cnpj,
   });
 
   factory CompanyUserPayloadModel.fromJson(Map<String, dynamic> json) {
@@ -71,6 +73,7 @@ class CompanyUserPayloadModel {
       logoEmpresa: json["logoEmpresa"].toString().isEmpty
           ? null
           : json["logoEmpresa"]?.toString(),
+      cnpj: json["cnpj"].toString().isEmpty ? null : json["cnpj"]?.toString(),
     );
   }
 
