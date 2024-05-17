@@ -34,6 +34,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
   String _speedWind = "Selecione";
   String _selectedEquipment = "";
   String _selectedAaeronave = "";
+
   final TextEditingController _qtdVeiculante = TextEditingController();
   final TextEditingController _larguraDaFaixa = TextEditingController();
   final TextEditingController _volumeDeAplicacao = TextEditingController();
@@ -405,12 +406,19 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             ));
                       });
                 }),
-            const SizedBox(height: 10),
-            const CustomText(text: 'Selecione um arquivo'),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _pickFile,
-              child: Text('Escolher Arquivo'),
+            Visibility(
+              visible: _selectedAaeronave.contains('Drone'),
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  const CustomText(text: 'Selecione um arquivo'),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _pickFile,
+                    child: Text('Escolher Arquivo'),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             const CustomText(text: 'Altura do voo (m)'),

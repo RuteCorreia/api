@@ -29,8 +29,15 @@ class AirCraftSelect extends StatelessWidget {
                     color: Colors.white,
                     elevation: 0,
                     onPressed: () {
-                      onChanged(
-                          getIt<GlobalConfigVars>().aeronaves[index].prefixo!.toUpperCase());
+                      String formattedPrefixo = getIt<GlobalConfigVars>().aeronaves[index]?.prefixo?.toUpperCase() ?? 'Sem Tipo Definido';
+                      String formattedTipo = getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 2
+                          ? 'Drone'
+                          : getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 1
+                          ? 'Aeronave'
+                          : 'Sem Tipo Definido';
+                      String result = '$formattedPrefixo - $formattedTipo';
+
+                      onChanged(result);
                       Navigator.of(context).pop();
                     },
                     child: Align(
