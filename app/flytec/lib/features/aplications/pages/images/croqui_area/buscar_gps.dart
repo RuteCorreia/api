@@ -351,7 +351,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                     _setPositionPoligon(
                         LatLng(argument.latitude, argument.longitude));
                   },
-                  zoomGesturesEnabled: true,
+                  zoomGesturesEnabled: !closePoligon,
                   polygons: _poligone,
                   mapType: MapType.satellite,
                   markers: markers,
