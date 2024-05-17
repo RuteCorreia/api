@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:collection';
 import 'package:flytec/core/extensions/widget_externsion.dart';
+import 'package:flytec/core/utils/util.dart';
 import 'package:flytec/features/aplications/enums/direcao_latitude.dart';
 import 'package:flytec/features/aplications/enums/direcao_longitude.dart';
 import 'package:flytec/features/aplications/pages/images/croqui_area/models/marker_maps.dart';
@@ -131,15 +132,14 @@ class _BuscarGPSState extends State<BuscarGPS> {
       () {
         lct.Location local = lct.Location();
         local.getLocation().then((lc) async {
-          setState(() async {
-            latitudeController.text = lc.latitude.toString();
-            longitudeController.text = lc.longitude.toString();
-            _kGooglePlex = CameraPosition(
-                target: LatLng(lc.latitude!, lc.longitude!), zoom: 17.44);
-            final GoogleMapController controller = await _controller.future;
-            await controller
-                .animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
-          });
+          latitudeController.text = lc.latitude.toString();
+          longitudeController.text = lc.longitude.toString();
+          _kGooglePlex = CameraPosition(
+              target: LatLng(lc.latitude!, lc.longitude!), zoom: 17.44);
+          final GoogleMapController controller = await _controller.future;
+          await controller
+              .animateCamera(CameraUpdate.newCameraPosition(_kGooglePlex));
+          setState(() {});
         });
       },
     ).getPermission();
@@ -298,33 +298,24 @@ class _BuscarGPSState extends State<BuscarGPS> {
           IconButton(
             onPressed: () {
               setState(() {
-                if (points.isEmpty) {
-                  return;
-                }
-                points.removeLast();
                 if (points.isNotEmpty) {
-                  markers.remove(
-                    Marker(
-                        markerId: MarkerId(points.toString()),
-                        position: points.last),
-                  );
+                  final lastElement = points.last;
+                  markers.removeWhere((marker) =>
+                      marker.markerId.value.contains('AREA') &&
+                      marker.position == lastElement);
+                  points.removeLast();
+                  _poligone.clear();
                 }
-                final lastElementAreaMarker = markers.lastWhere(
-                    (element) => element.markerId.value.contains('AREA'),
-                    orElse: () => markers.firstWhere(
-                        (element) => element.markerId.value.contains('AREA'),
-                        orElse: () => const Marker(markerId: MarkerId(''))));
-                if (lastElementAreaMarker.markerId.value.isNotEmpty) {
-                  markers.remove(lastElementAreaMarker);
-                }
+             
 
                 _poligone.add(Polygon(
+                    fillColor: const Color(0xFF00B45D).withOpacity(0.2),
+                    strokeWidth: 2,
                     visible: true,
                     geodesic: true,
-                    fillColor: Colors.red.withOpacity(0.2),
-                    strokeWidth: 2,
-                    strokeColor: Colors.red,
+                    strokeColor: const Color(0xFF00B45D),
                     polygonId: const PolygonId("1"),
+                    zIndex: 0,
                     points: points));
               });
             },
@@ -360,7 +351,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                     _setPositionPoligon(
                         LatLng(argument.latitude, argument.longitude));
                   },
-                  zoomGesturesEnabled: true,
+                  zoomGesturesEnabled: !closePoligon,
                   polygons: _poligone,
                   mapType: MapType.satellite,
                   markers: markers,
@@ -391,7 +382,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle4+= 0.1;
+                            angle4 += 0.1;
                           });
                         },
                         child: SizedBox(
@@ -425,7 +416,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       child: InkWell(
                         onTap: () {
                           setState(() {
-                            angle2  += 0.1;
+                            angle2 += 0.1;
                           });
                         },
                         child: SizedBox(
@@ -486,8 +477,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                       x21 = x2Prev1 + details.localPosition.dx;
                       y21 = y2Prev1 + details.localPosition.dy;
                     });
-                                        debugPrint('--> AQUI 2');
-
+                    debugPrint('--> AQUI 2');
                   },
                   child: GestureDetector(
                     /*    onScaleUpdate: (details) {
@@ -509,8 +499,8 @@ class _BuscarGPSState extends State<BuscarGPS> {
                             },
                             child: Image.asset(
                               "assets/images/vento.png",
-                              width: 60 ,
-                              height: 60  ,
+                              width: 60,
+                              height: 60,
                             ),
                           ),
                         ),
@@ -647,7 +637,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
                             fontSize: 16,
                             fontFamily: 'Inter',
                             fontWeight: FontWeight.w600,
-                             
                           ),
                         ),
                       ],
@@ -664,7 +653,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                         child: AnimatedContainer(
                           duration: const Duration(milliseconds: 300),
                           width: 328,
-                          height: !_markersMaps[index].isExpanded ? 55 : 200,
+                          height: !_markersMaps[index].isExpanded ? 55 : 305,
                           padding: const EdgeInsets.symmetric(
                               horizontal: 8, vertical: 4.0),
                           decoration: ShapeDecoration(
@@ -680,8 +669,26 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
-                                      'Lat: ${markers.toList()[index].position.latitude}\nLong: ${markers.toList()[index].position.longitude}'),
+                                  Row(
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              final item = _markersMaps[index];
+                                              markers.remove(item.marker);
+                                              _markersMaps.removeAt(index);
+                                            });
+                                          },
+                                          child: const Icon(
+                                            Icons.close,
+                                            color: Colors.red,
+                                            size: 15,
+                                          )),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                          'Lat: ${markers.toList()[index].position.latitude}\nLong: ${markers.toList()[index].position.longitude}'),
+                                    ],
+                                  ),
                                   Row(
                                     children: [
                                       InkWell(
@@ -694,18 +701,8 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                           },
                                           child: const Icon(
                                               Icons.open_in_full_rounded,
-                                              size: 18,
+                                              size: 25,
                                               color: Color(0xFF00B45D))),
-                                      InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              final item = _markersMaps[index];
-                                              markers.remove(item.marker);
-                                              _markersMaps.removeAt(index);
-                                            });
-                                          },
-                                          child: const Icon(Icons.close,
-                                              color: Colors.red)),
                                     ],
                                   )
                                 ],
@@ -714,7 +711,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 const Divider(),
                                 Container(
                                   width: double.infinity,
-                                  height: 95,
+                                  height: 200,
                                   margin: const EdgeInsets.only(bottom: 05),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 16, vertical: 05),
@@ -749,11 +746,16 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 Center(
                                   child: InkWell(
                                     onTap: () {
-                                      _markersMaps[index].controller =
-                                          TextEditingController(
-                                              text: _markersMaps[index]
-                                                  .observation);
-                                      setState(() {});
+                                      setState(() {
+                                        _markersMaps[index].controller =
+                                            TextEditingController(
+                                                text: _markersMaps[index]
+                                                    .observation);
+                                        _markersMaps[index].isExpanded =
+                                            !_markersMaps[index].isExpanded;
+                                      });
+                                      Util.toastSucesso(
+                                          'Comentário Salvo com sucesso');
                                     },
                                     child: Container(
                                       height: 30,
@@ -818,7 +820,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
@@ -848,7 +849,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
