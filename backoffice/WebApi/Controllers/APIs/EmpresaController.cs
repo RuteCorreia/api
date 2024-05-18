@@ -1,15 +1,17 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Empresa.ViewModel;
+using Domain.Enums;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+[Authorize(Roles = "Administrador")]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -26,7 +28,6 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<IAsyncEnumerable<EmpresaViewModel>>> GetAll()
     {
         try
@@ -46,7 +47,6 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult<EmpresaViewModel>> GetById(int id)
     {
         try
@@ -78,7 +78,6 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Add([FromBody] EmpresaViewModel empresaViewModel)
     {
         try
@@ -112,7 +111,6 @@ public class EmpresaController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Update(int id, [FromBody] EmpresaViewModel empresaViewModel)
     {
         try
@@ -154,8 +152,28 @@ public class EmpresaController : ControllerBase
         }
     }
 
+    [HttpPatch("changeStatus/{id:int}")]
+    public async Task<ActionResult> ChangeStatus(int id, [FromBody] ChangeStatusEmpresaViewModel status)
+    {
+        var returnMsg = new StringBuilder().Append("Algo deu errado");
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
+            {
+                await _empresaService.ChangeStatusAsync(id, status.Status);
+                returnMsg.Clear();
+            }
+
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
+        }
+        catch(Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Deactivate Empresa - {ex.Message}").ToString());
+        }
+    }
+
     [HttpDelete("{id:int}")]
-    [Authorize(Roles = "Administrador")]
     public async Task<ActionResult> Delete(int id)
     {
         try

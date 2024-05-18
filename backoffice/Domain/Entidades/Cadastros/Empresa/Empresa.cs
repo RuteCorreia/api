@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entidades.Cadastros.Empresa;
 
@@ -35,4 +36,5 @@ public class Empresa
     public int QtdAeronaves { get; set; }
     public int QtdDrones { get; set; }
     public int QtdVeiculos { get; set; }
+    public EStatusEmpresa Status { get; set; }
 }

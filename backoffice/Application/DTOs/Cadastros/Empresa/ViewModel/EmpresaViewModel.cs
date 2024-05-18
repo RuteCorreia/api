@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Cadastros.Empresa.ViewModel;
 
@@ -43,4 +44,6 @@ public class EmpresaViewModel
 
     [Required]
     public int QtdVeiculos { get; set; }
+
+    public EStatusEmpresa Status { get; set; }
 }
