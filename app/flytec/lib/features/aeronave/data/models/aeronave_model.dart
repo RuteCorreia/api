@@ -35,7 +35,7 @@ class AeroNaveModel extends AeroNaveEntity {
       horimetro: json["horimetro"],
       modelo: json["modelo"],
       tipoAeronave: json['tipo'] != null
-          ? TipoAeronaveEnum.values.elementAtOrNull(json['tipo'] + 1) ??
+          ? TipoAeronaveEnum.values.elementAtOrNull(json['tipo'] - 1) ??
               TipoAeronaveEnum.aviao
           : TipoAeronaveEnum.aviao,
       serialNumber: json["serialNumber"]);
