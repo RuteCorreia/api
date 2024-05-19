@@ -1,3 +1,4 @@
+// ignore_for_file: use_build_context_synchronously
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flytec/core/utils/util.dart';
@@ -8,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/pages/images/upload_foto.dart';
 
 class CroquiArea extends StatefulWidget {
-  final void Function(Uint8List data)? updateImageData;
+  final void Function(Uint8List data, bool isPdf)? updateImageData;
   const CroquiArea({super.key, required this.updateImageData});
 
   @override
@@ -57,16 +58,21 @@ class _CroquiAreaState extends State<CroquiArea> {
                   onTap: () async {
                     _imageData = null;
                     setState(() {});
-                    final archive = await Util.obtainImagePathMaps(context,isPdf: false);
+                    final archive =
+                        await Util.obtainImagePathMaps(context, isPdf: true);
                     if (archive.path!.isEmpty) return;
                     _imageData = await File(archive.path!).readAsBytes();
-                    if (!archive.isImage) return;
+                    if (!archive.isImage) {
+                      widget.updateImageData!(_imageData!,true);
+                      Navigator.pop(context);
+                      return;
+                    }
 
-                    // ignore: use_build_context_synchronously
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
                         return UploadFotos(
-                          updateImageData: widget.updateImageData,
+                          updateImageData: (Uint8List data) =>
+                              widget.updateImageData!(data, false),
                           imageData: _imageData,
                           onOkButton: () {
                             Navigator.pop(context);

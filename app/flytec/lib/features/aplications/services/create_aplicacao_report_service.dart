@@ -1902,7 +1902,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (aplicacao.identificacaoAreaTratada?.croquiArea != null)
+                if (aplicacao.identificacaoAreaTratada?.croquiArea != null &&
+                    !aplicacao.identificacaoAreaTratada!.isPdf!)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),

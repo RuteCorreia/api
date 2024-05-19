@@ -39,7 +39,8 @@ CREATE TABLE IdentificacaoAreaTratada (
     localizacao TEXT,
     cultura TEXT,
     extensao TEXT,
-    croquiArea BLOB
+    croquiArea BLOB,
+    isPdf INTEGER
 )
 ''';
   static String createCaracteristicasProdutoAplicadoTable = '''
