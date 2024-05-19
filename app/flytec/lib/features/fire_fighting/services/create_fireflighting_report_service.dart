@@ -19,16 +19,16 @@ class CreateFirefightingReportService implements PdfGenerator {
   final Firefighting _firefighting;
   CreateFirefightingReportService(this._firefighting);
 
-  double get _totalAguaUtilizadaOperacao {
-    final quantidadeLancamentos =
-        _firefighting.decolagemPousoFirefightingList?.length ?? 0;
-    final totalAgua =
-        _firefighting.totalAguaUtilizadaOperacao?.replaceAll('.', '') ?? '0';
+  // double get _totalAguaUtilizadaOperacao {
+  //   final quantidadeLancamentos =
+  //       _firefighting.decolagemPousoFirefightingList?.length ?? 0;
+  //   final totalAgua =
+  //       _firefighting.totalAguaUtilizadaOperacao?.replaceAll('.', '') ?? '0';
 
-    double resultado = double.parse(totalAgua.isEmpty ? '0.0' : totalAgua) *
-        quantidadeLancamentos;
-    return resultado;
-  }
+  //   double resultado = double.parse(totalAgua.isEmpty ? '0.0' : totalAgua) *
+  //       quantidadeLancamentos;
+  //   return resultado;
+  // }
 
   ClientesModel get cliente => getIt<GlobalConfigVars>().clientes.firstWhere(
         (cliente) => cliente.nomeCliente == _firefighting.cliente,
@@ -722,7 +722,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                           width: 287,
                           height: 15,
                           child: pw.Text(
-                              'Total de água utilizada (capacidade x n° lançamentos): $_totalAguaUtilizadaOperacao',
+                              'Total de água utilizada (capacidade x n° lançamentos): ${_firefighting.totalAguaUtilizadaOperacao}',
                               style: const pw.TextStyle(fontSize: 10)),
                           decoration: const pw.BoxDecoration(
                               border: pw.Border(
