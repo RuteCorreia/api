@@ -110,7 +110,7 @@ class FirefightingReportCard extends StatelessWidget {
                   getIt<GlobalConfigVars>().selectedPilot =
                       _firefightingList[_index].piloto!;
                   Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return  AddFireFightingSecondStep(firefightingController: _firefightingController, orgaoPrivado: false,);
+                    return  AddFireFightingSecondStep(firefightingController: _firefightingController);
                   }));
                 },
                 text: "Editar",
