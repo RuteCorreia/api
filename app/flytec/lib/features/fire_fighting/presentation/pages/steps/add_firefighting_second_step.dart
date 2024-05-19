@@ -259,7 +259,7 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                 },
               ),
               Visibility(
-                visible: widget
+                visible: !widget
                     ._firefightingController.firefightingSelected!.privado!,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

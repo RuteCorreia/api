@@ -247,24 +247,28 @@ class CreateFirefightingReportService implements PdfGenerator {
                                       border: pw.Border(
                                           right: pw.BorderSide(width: 1.5),
                                           bottom: pw.BorderSide(width: 1.5))),
-                                  child: pw.Column(
-                                      mainAxisAlignment:
-                                          pw.MainAxisAlignment.center,
-                                      children: [
-                                        pw.Text('N° Aviso',
-                                            textAlign: pw.TextAlign.center,
-                                            style: const pw.TextStyle(
-                                              fontSize: 8,
-                                            )),
-                                        pw.Text(
-                                            _firefighting.numeroAviso
-                                                    ?.toString() ??
-                                                '',
-                                            textAlign: pw.TextAlign.center,
-                                            style: const pw.TextStyle(
-                                              fontSize: 8,
-                                            )),
-                                      ])),
+                                  child: _firefighting.privado!
+                                      ? pw.SizedBox.shrink()
+                                      : pw.Column(
+                                          mainAxisAlignment:
+                                              pw.MainAxisAlignment.center,
+                                          children: [
+                                              pw.Text('N° Aviso',
+                                                  textAlign:
+                                                      pw.TextAlign.center,
+                                                  style: const pw.TextStyle(
+                                                    fontSize: 8,
+                                                  )),
+                                              pw.Text(
+                                                  _firefighting.numeroAviso
+                                                          ?.toString() ??
+                                                      '',
+                                                  textAlign:
+                                                      pw.TextAlign.center,
+                                                  style: const pw.TextStyle(
+                                                    fontSize: 8,
+                                                  )),
+                                            ])),
                               pw.Container(
                                   height: 30,
                                   width: 95.6,
