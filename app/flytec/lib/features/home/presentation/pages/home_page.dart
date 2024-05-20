@@ -546,7 +546,9 @@ class _HomePagaState extends State<HomePaga> {
                   CustomActionButton(
                     imageUrl: "assets/images/truck.svg",
                     sizeIcon: 30,
-                    onClick: () {},
+                    onClick: () {
+                      context.push('/frota');
+                    },
                     text: "Frota",
                   ),
                   const SizedBox(height: 10),
