@@ -3,9 +3,9 @@ using AutoMapper;
 
 namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Mappings;
 
-public class CaracteristicasProdutoAplicadoViewModelToDomain : Profile
+public class CaracteristicasProdutoAplicadoViewModelToDomainMappingProfile : Profile
 {
-    public CaracteristicasProdutoAplicadoViewModelToDomain()
+    public CaracteristicasProdutoAplicadoViewModelToDomainMappingProfile()
     {
         CreateMap<CaracteristicasProdutoAplicadoViewModel, Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>();
     }

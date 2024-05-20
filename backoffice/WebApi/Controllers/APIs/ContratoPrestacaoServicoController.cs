@@ -1,5 +1,8 @@
-﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -14,42 +17,43 @@ namespace WebApi.Controllers.APIs;
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class CaracteristicasProdutoAplicadoController : ControllerBase
+public class ContratoPrestacaoServicoController : ControllerBase
 {
     private readonly LoggedUserInfoService _loggedUserInfoService;
-    private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
-    public CaracteristicasProdutoAplicadoController(
+    private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+
+    public ContratoPrestacaoServicoController(
         LoggedUserInfoService loggedUserInfoService,
-        ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService
+        IContratoPrestacaoServicoService contratoPrestacaoServicoService
     )
     {
+        _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
         _loggedUserInfoService = loggedUserInfoService;
-        _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<CaracteristicasProdutoAplicadoViewModel>>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<ContratoPrestacaoServicoViewModel>>> GetAll()
     {
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var cadastros = await _caracteristicasProdutoAplicadoService.GetAllAsync(loggedUser.Item3);
+            var cadastros = await _contratoPrestacaoServicoService.GetAllAsync(loggedUser.Item3);
             return Ok(cadastros);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CaracteristicasProdutoAplicado getAll - {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"ContratoPrestacaoServico getAll - {ex.Message}");
         }
     }
 
     [HttpGet("{id:int}")]
-    public async Task<ActionResult<CaracteristicasProdutoAplicadoViewModel>> GetById(int id)
+    public async Task<ActionResult<ContratoPrestacaoServicoViewModel>> GetById(int id)
     {
         var returnMsg = new StringBuilder().Append("Não encontrado");
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var obj = await _caracteristicasProdutoAplicadoService.GetByIdAsync(id, loggedUser.Item3);
+            var obj = await _contratoPrestacaoServicoService.GetByIdAsync(id, loggedUser.Item3);
             if (obj is not null)
                 returnMsg.Clear();
 
@@ -57,12 +61,12 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"CaracteristicasProdutoAplicado getById - {ex.Message}").ToString());
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico getById - {ex.Message}").ToString());
         }
     }
 
     [HttpPost]
-    public async Task<ActionResult> Add([FromBody] CaracteristicasProdutoAplicadoViewModel obj)
+    public async Task<ActionResult> Add([FromBody] ContratoPrestacaoServicoViewModel obj)
     {
         var returnMsg = new StringBuilder().Append("Modelo inválido");
         try
@@ -70,7 +74,7 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _caracteristicasProdutoAplicadoService.AddAsync(obj, loggedUser.Item3);
+                await _contratoPrestacaoServicoService.AddAsync(obj, loggedUser.Item3);
                 returnMsg.Clear();
             }
 
@@ -78,12 +82,12 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"CaracteristicasProdutoAplicado add - {ex.Message}").ToString());
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico add - {ex.Message}").ToString());
         }
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] CaracteristicasProdutoAplicadoViewModel obj)
+    public async Task<ActionResult> Update(int id, [FromBody] ContratoPrestacaoServicoViewModel obj)
     {
         var returnMsg = new StringBuilder().Append("Modelo inválido");
         try
@@ -91,11 +95,11 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var objeto = await _caracteristicasProdutoAplicadoService.GetByIdAsync(id, loggedUser.Item3);
+                var objeto = await _contratoPrestacaoServicoService.GetByIdAsync(id, loggedUser.Item3);
                 if (objeto is not null)
                 {
                     obj.Id = objeto.Id;
-                    await _caracteristicasProdutoAplicadoService.UpdateAsync(obj);
+                    await _contratoPrestacaoServicoService.UpdateAsync(obj);
                     returnMsg.Clear();
                 }
                 else
@@ -108,7 +112,7 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"CaracteristicasProdutoAplicado update - {ex.Message}").ToString());
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
         }
     }
 
@@ -121,7 +125,7 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
             if (id != 0)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _caracteristicasProdutoAplicadoService.DeleteAsync(id, loggedUser.Item3);
+                await _contratoPrestacaoServicoService.DeleteAsync(id, loggedUser.Item3);
                 returnMsg.Clear();
             }
 
@@ -129,7 +133,7 @@ public class CaracteristicasProdutoAplicadoController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"CaracteristicasProdutoAplicado delete - {ex.Message}").ToString());
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico delete - {ex.Message}").ToString());
         }
     }
 }

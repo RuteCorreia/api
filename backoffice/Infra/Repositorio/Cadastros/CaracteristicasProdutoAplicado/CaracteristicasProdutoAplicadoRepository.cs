@@ -24,7 +24,7 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         var entityToRemove = await GetByIdAsync(id, idEmpresa);
         if(entityToRemove is not null)
         {
-            _contextBase.Remove(entityToRemove);
+            _contextBase.CaracteristicasProdutoAplicado.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
         }
     }
