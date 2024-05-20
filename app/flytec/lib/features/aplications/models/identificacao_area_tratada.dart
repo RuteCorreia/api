@@ -7,6 +7,7 @@ class IdentificacaoAreaTratada {
   String? cultura;
   String? extensao;
   Uint8List? croquiArea;
+  bool? isPdf;
   int? id;
 
   IdentificacaoAreaTratada({
@@ -16,6 +17,7 @@ class IdentificacaoAreaTratada {
     this.cultura,
     this.extensao,
     this.croquiArea,
+    this.isPdf,
     this.id,
   });
 
@@ -27,6 +29,7 @@ class IdentificacaoAreaTratada {
       'cultura': cultura,
       'extensao': extensao,
       'croquiArea': croquiArea,
+      'isPdf': isPdf! ? 1 : 0,
     };
   }
 
@@ -38,6 +41,7 @@ class IdentificacaoAreaTratada {
       cultura: json?['cultura'] ?? '',
       extensao: json?['extensao'] ?? '',
       croquiArea: json?['croquiArea'],
+      isPdf: json?['isPdf'] == 1,
       id: json?['id'] ?? 0,
     );
   }

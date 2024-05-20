@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
+using Domain.Enums;
 using Domain.Interfaces.Cadastros.Empresa;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
@@ -87,5 +88,10 @@ public class EmpresaService : IEmpresaService
     {
         var obj = await _empresaRepository.GetLogoByIdAsync(id);
         return obj;
+    }
+
+    public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
+    {
+        await _empresaRepository.ChangeStatusAsync(id, status);
     }
 }

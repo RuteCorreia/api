@@ -42,7 +42,7 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
     super.initState();
   }
 
-  Future<void> _createReportFirefighting() async {
+  Future<void> _createReportFirefighting(bool isPrivate) async {
     final idUsuario = getIt<GlobalConfigVars>().userPayload.nrUsuario;
     final refUsuario =
         '${idUsuario}_${getIt<GlobalConfigVars>().userPayload.name}';
@@ -51,13 +51,16 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
         piloto: getIt<GlobalConfigVars>().selectedPilot,
         data: DateTime.now().millisecondsSinceEpoch,
         state: DashBoardState.Incompleto,
+        privado: isPrivate,
         refId: refUsuario);
     int? idFirefighting = await widget._firefightingController!
         .createElementInTable(firefighting.toMap(), "Firefighting");
     firefighting.id = idFirefighting;
+    firefighting.privado = isPrivate;
     firefighting.refId =
         '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idFirefighting';
     widget._firefightingController?.setFirefightingSelected(firefighting);
+    setState(() {});
     await widget._firefightingController?.obtainReportsFirefightings();
   }
 
@@ -211,7 +214,6 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                             fontSize: 16,
                                             fontFamily: 'Inter',
                                             fontWeight: FontWeight.w500,
-                                             
                                           ),
                                         ),
                                         const SizedBox(height: 10),
@@ -220,16 +222,18 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                           leftIcon: "",
                                           text: "Orgão Público",
                                           onClick: () async {
-                                            await _createReportFirefighting();
+                                            await _createReportFirefighting(
+                                                false);
                                             context.pop();
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         AddFireFightingSecondStep(
-                                                            firefightingController:
-                                                                widget
-                                                                    ._firefightingController!, orgaoPrivado: false)));
+                                                          firefightingController:
+                                                              widget
+                                                                  ._firefightingController!,
+                                                        )));
                                           },
                                         ),
                                         const SizedBox(height: 10),
@@ -237,16 +241,18 @@ class _AddFireFightingStepOneState extends State<AddFireFightingStepOne> {
                                           showLeftIcon: false,
                                           leftIcon: "",
                                           onClick: () async {
-                                            await _createReportFirefighting();
+                                            await _createReportFirefighting(
+                                                true);
                                             context.pop();
                                             Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         AddFireFightingSecondStep(
-                                                            firefightingController:
-                                                                widget
-                                                                    ._firefightingController!, orgaoPrivado: true,)));
+                                                          firefightingController:
+                                                              widget
+                                                                  ._firefightingController!,
+                                                        )));
                                           },
                                           text: "Privado",
                                         )

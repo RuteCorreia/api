@@ -20,11 +20,10 @@ import 'package:location/location.dart' as lct;
 
 class AddFireFightingSecondStep extends StatefulWidget {
   final FirefightingController _firefightingController;
-  final bool _orgaoPrivado;
 
   const AddFireFightingSecondStep(
-      {required FirefightingController firefightingController, required bool orgaoPrivado, super.key})
-      : _firefightingController = firefightingController, _orgaoPrivado = orgaoPrivado;
+      {required FirefightingController firefightingController, super.key})
+      : _firefightingController = firefightingController;
 
   @override
   State<AddFireFightingSecondStep> createState() =>
@@ -259,23 +258,25 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                       ));
                 },
               ),
-
               Visibility(
-                visible: !widget._orgaoPrivado,
+                visible: !widget
+                    ._firefightingController.firefightingSelected!.privado!,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(height: 14),
-                    CustomText(text: 'N° Aviso'),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
+                    const CustomText(text: 'N° Aviso'),
+                    const SizedBox(height: 14),
                     Container(
                       width: double.infinity,
                       height: 50,
                       margin: const EdgeInsets.only(bottom: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 10),
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
-                          side: const BorderSide(width: 1, color: Color(0xFF636363)),
+                          side: const BorderSide(
+                              width: 1, color: Color(0xFF636363)),
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
@@ -533,7 +534,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -585,7 +585,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -636,7 +635,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -720,7 +718,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
@@ -756,7 +753,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
@@ -797,7 +793,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -894,7 +889,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
@@ -930,7 +924,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                                 fontSize: 16,
                                 fontFamily: 'Inter',
                                 fontWeight: FontWeight.w500,
-                                 
                               )),
                         ),
                       ),
@@ -971,7 +964,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingSecondStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),

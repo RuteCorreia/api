@@ -35,8 +35,11 @@ class RelatorioFirefightingDatabaseInstance<T> implements DatabaseInstance {
 
     await db.execute(SQLCommands.createDecolagemPousoFirefightingTable);
 
-    await db
-        .execute(SQLCommands.createDadosResponsavelFirefightingTable);
+    await db.execute(SQLCommands.createDadosResponsavelFirefightingTable);
 
+    await db
+        .execute(SQLCommands.createCoordenadorBaseOperacionalFirefightingTable);
+
+    await db.execute(SQLCommands.createComandanteOcorrenciaFirefightingTable);
   }
 }

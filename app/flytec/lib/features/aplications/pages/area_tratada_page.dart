@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
@@ -48,6 +49,7 @@ class _AreaTratadaState extends State<AreaTratada> {
         if (_cityOfUf.isEmpty) {
           await _obtainCitiesOfUfBrazil(_uf);
         }
+        _isPdf = _areaTratada!.isPdf!;
         _imageData = _areaTratada!.croquiArea;
         setState(() {});
       }
@@ -82,6 +84,7 @@ class _AreaTratadaState extends State<AreaTratada> {
       uf: _uf,
       cidade: _cityOfUf,
       croquiArea: _imageData,
+      isPdf: _isPdf,
       cultura: getIt<GlobalConfigVars>().selectedCultura,
     );
 
@@ -123,6 +126,7 @@ class _AreaTratadaState extends State<AreaTratada> {
   late String _cityOfUf = '';
   String _uf = 'SP';
   Uint8List? _imageData;
+  bool _isPdf = false;
 
   final List<String> _citiesNamesUfBrazil = [];
   List<String> _statesOfBrazil = [];
@@ -142,8 +146,9 @@ class _AreaTratadaState extends State<AreaTratada> {
     setState(() {});
   }
 
-  void _updateImageDate(Uint8List data) {
+  void _updateImageDate(Uint8List data, bool isPdf) {
     _imageData = data;
+    _isPdf = isPdf;
     setState(() {});
   }
 
@@ -350,50 +355,93 @@ class _AreaTratadaState extends State<AreaTratada> {
               ),
               const SizedBox(height: 10),
               _imageData != null
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                          const Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              child: CustomText(text: 'Imagem Selecionada'),
-                            ),
-                          ),
-                          Container(
-                              height: 300,
-                              width: MediaQuery.of(context).size.width,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: MemoryImage(_imageData!),
-                                    fit: BoxFit.fill),
-                              )),
-                          TextButton(
-                            onPressed: () {
-                              _imageData = null;
-                              setState(() {});
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => CroquiArea(
-                                            updateImageData: (Uint8List? data) {
-                                              _updateImageDate(data!);
-                                            },
-                                          )));
-                              setState(() {});
-                            },
-                            child: const CustomText(
-                                text:
-                                    'Clique aqui para selecionar outra imagem'),
-                          )
-                        ])
+                  ? _isPdf
+                      ? Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: CustomText(text: 'PDF Selecionado'),
+                                ),
+                              ),
+                              SizedBox(
+                                height: 300,
+                                width: MediaQuery.of(context).size.width,
+                                child: PDFView(
+                                  pdfData: _imageData,
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  _imageData = null;
+                                  setState(() {});
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CroquiArea(
+                                                updateImageData:
+                                                    (Uint8List? data,
+                                                        bool isPdf) {
+                                                  _updateImageDate(
+                                                      data!, isPdf);
+                                                },
+                                              )));
+                                  setState(() {});
+                                },
+                                child: const CustomText(
+                                    text:
+                                        'Clique aqui para selecionar outro PDF'),
+                              )
+                            ])
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                              const Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: EdgeInsets.only(bottom: 16.0),
+                                  child: CustomText(text: 'Imagem Selecionada'),
+                                ),
+                              ),
+                              Container(
+                                  height: 300,
+                                  width: MediaQuery.of(context).size.width,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: MemoryImage(_imageData!),
+                                        fit: BoxFit.fill),
+                                  )),
+                              TextButton(
+                                onPressed: () {
+                                  _imageData = null;
+                                  setState(() {});
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CroquiArea(
+                                                updateImageData:
+                                                    (Uint8List? data,
+                                                        bool isPdf) {
+                                                  _updateImageDate(
+                                                      data!, isPdf);
+                                                },
+                                              )));
+                                  setState(() {});
+                                },
+                                child: const CustomText(
+                                    text:
+                                        'Clique aqui para selecionar outra imagem'),
+                              )
+                            ])
                   : InkWell(
                       onTap: () {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return CroquiArea(
-                            updateImageData: (Uint8List? data) {
-                              _updateImageDate(data!);
+                            updateImageData: (Uint8List? data, bool isPdf) {
+                              _updateImageDate(data!, isPdf);
                             },
                           );
                         }));
