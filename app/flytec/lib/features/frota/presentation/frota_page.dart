@@ -3,6 +3,7 @@ import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/frota/models/report_frota_model.dart';
 import 'package:flytec/features/frota/presentation/components/report_frota_card.dart';
+import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 
 class FrotaPage extends StatefulWidget {
   const FrotaPage({super.key});
@@ -32,7 +33,42 @@ class _FrotaPageState extends State<FrotaPage> {
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () async {},
+        onPressed: () async {
+          await showAdaptiveDialog<String>(
+              context: context,
+              useSafeArea: true,
+              builder: (BuildContext context) => AlertDialog.adaptive(
+                  insetPadding: const EdgeInsets.all(32),
+                  content: SingleChildScrollView(
+                      child: Column(children: [
+                    const SizedBox(height: 10),
+                    const Text(
+                      'Selecione uma opção',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color.fromARGB(255, 121, 118, 118),
+                        fontSize: 16,
+                        fontFamily: 'Inter',
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    CustomDialogButton(
+                      showLeftIcon: false,
+                      text: "Inserir ou Remover Combustível",
+                      showRightcon: true,
+                      onClick: () {},
+                    ),
+                    const SizedBox(height: 10),
+                    CustomDialogButton(
+                      showLeftIcon: false,
+                      showRightcon: true,
+                      onClick: () {},
+                      text: "Abastecimento de Aeronave",
+                    ),
+                    const SizedBox(height: 10),
+                  ]))));
+        },
         child: const Icon(Icons.add, color: Colors.white),
       ),
       body: Padding(
