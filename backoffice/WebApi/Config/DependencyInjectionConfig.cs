@@ -25,6 +25,7 @@ using Application.Application.Servicos.Cadastros.Contratante;
 using Application.Application.Servicos.Cadastros.ContratoPrestacaoServico;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
+using Application.Application.Servicos.Cadastros.DadosResponsavel;
 using Application.Application.Servicos.Cadastros.Empresa;
 using Application.Application.Servicos.Cadastros.Engenheiro;
 using Application.Application.Servicos.Cadastros.Equipamento;
@@ -74,6 +75,7 @@ using Application.DTOs.Cadastros.Contratante.Interface;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
+using Application.DTOs.Cadastros.DadosResponsavel.Interface;
 using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Engenheiro.Interface;
 using Application.DTOs.Cadastros.Equipamento.Interface;
@@ -123,6 +125,7 @@ using Domain.Interfaces.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
+using Domain.Interfaces.Cadastros.DadosResponsavel;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Equipamento;
@@ -173,6 +176,7 @@ using Infra.Repositorio.Cadastros.Contratante;
 using Infra.Repositorio.Cadastros.ContratoPrestacaoServico;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
+using Infra.Repositorio.Cadastros.DadosResponsavel;
 using Infra.Repositorio.Cadastros.Empresa;
 using Infra.Repositorio.Cadastros.Engenheiro;
 using Infra.Repositorio.Cadastros.Equipamento;
@@ -255,6 +259,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
+        services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
 
         #endregion
 
@@ -309,6 +314,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
+        services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
 
         #endregion
 
