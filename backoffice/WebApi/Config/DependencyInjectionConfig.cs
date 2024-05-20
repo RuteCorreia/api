@@ -14,6 +14,7 @@ using Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 using Application.Application.Servicos.Cadastros.AplicacaoRelatorioItem;
 using Application.Application.Servicos.Cadastros.Bula;
 using Application.Application.Servicos.Cadastros.BulaAplicacao;
+using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 using Application.Application.Servicos.Cadastros.Cidades;
 using Application.Application.Servicos.Cadastros.Cliente;
 using Application.Application.Servicos.Cadastros.CombateIncendio;
@@ -61,6 +62,7 @@ using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.BulaAplicacao.Interface;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.Cidades.Interface;
 using Application.DTOs.Cadastros.Cliente.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
@@ -108,6 +110,7 @@ using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.Bula;
 using Domain.Interfaces.Cadastros.BulaAplicacao;
+using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Interfaces.Cadastros.Cidades;
 using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.CombateIncendio;
@@ -156,6 +159,7 @@ using Infra.Repositorio.Cadastros.AplicacaoRelatorio;
 using Infra.Repositorio.Cadastros.AplicacaoRelatorioItem;
 using Infra.Repositorio.Cadastros.Bula;
 using Infra.Repositorio.Cadastros.BulaAplicacao;
+using Infra.Repositorio.Cadastros.CaracteristicasProdutoAplicado;
 using Infra.Repositorio.Cadastros.Cidades;
 using Infra.Repositorio.Cadastros.Cliente;
 using Infra.Repositorio.Cadastros.CombateIncendio;
@@ -245,6 +249,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IContratanteService, ContratanteService>();
         services.AddScoped<IRelatorioAplicacaoService, RelatorioAplicacaoService>();
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
+        services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
 
         #endregion
 
@@ -297,6 +302,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IContratanteRepository, ContratanteRepository>();
         services.AddScoped<IRelatorioAplicacaoRepository, RelatorioAplicacaoRepository>();
         services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
+        services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
 
         #endregion
 

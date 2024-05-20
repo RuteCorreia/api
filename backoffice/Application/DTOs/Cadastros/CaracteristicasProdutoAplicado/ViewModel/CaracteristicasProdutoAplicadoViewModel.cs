@@ -1,12 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 
-namespace Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado;
-
-public class CaracteristicasProdutoAplicado
+public class CaracteristicasProdutoAplicadoViewModel
 {
-    [Key]
     public int Id { get; set; }
     public string Cultura { get; set; }
     public string ReceiturarioAgronomico { get; set; }
@@ -21,10 +16,4 @@ public class CaracteristicasProdutoAplicado
     public string TipoServico { get; set; }
     public string NumeroReceituarioAgronomico { get; set; }
     public string DataEmissao { get; set; }
-    
-    [ForeignKey("Empresa")]
-    public int? IdEmpresa { get; set; }
-
-    [JsonIgnore]
-    public virtual Empresa.Empresa? Empresa { get; set; }
 }
