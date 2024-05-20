@@ -5,6 +5,7 @@ import 'package:flytec/features/aplications/aplications_page.dart';
 import 'package:flytec/features/aplications/pages/report_aplications_page.dart';
 import 'package:flytec/features/auth/presentation/pages/login_page.dart';
 import 'package:flytec/features/fire_fighting/presentation/pages/report_combate_incendio.dart';
+import 'package:flytec/features/frota/presentation/frota_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:flytec/features/manutencao/manutencao_page_list.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
@@ -56,6 +57,13 @@ final GoRouter router = GoRouter(
           builder: (BuildContext context, GoRouterState state) {
             // final extra = state.extra as Map<String, dynamic>;
             return const ManutencaoPageList();
+          },
+        ),
+        GoRoute(
+          path: 'frota',
+          builder: (BuildContext context, GoRouterState state) {
+            // final extra = state.extra as Map<String, dynamic>;
+            return const FrotaPage();
           },
         ),
         GoRoute(
