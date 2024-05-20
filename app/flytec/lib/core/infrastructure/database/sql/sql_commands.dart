@@ -39,7 +39,8 @@ CREATE TABLE IdentificacaoAreaTratada (
     localizacao TEXT,
     cultura TEXT,
     extensao TEXT,
-    croquiArea BLOB
+    croquiArea BLOB,
+    isPdf INTEGER
 )
 ''';
   static String createCaracteristicasProdutoAplicadoTable = '''
@@ -155,6 +156,7 @@ CREATE TABLE Firefighting (
     executor TEXT,
     uf TEXT,
     cidade TEXT,
+    privado INTEGER,
     data INTEGER,
     horimetroAcionamento TEXT,
     horarioAcionamento INTEGER,
@@ -167,6 +169,8 @@ CREATE TABLE Firefighting (
     horimetroCorte TEXT,
     capacidadeCargaAeronave TEXT,
     totalAguaUtilizadaOperacao TEXT,
+    coordenadorBaseOperacional_id INTEGER,
+    comandanteOcorrencia_id INTEGER,
     dadosResponsavelFirefighting_id INTEGER,
     cliente TEXT,
     refId TEXT
@@ -210,6 +214,24 @@ CREATE TABLE DadosResponsavelFirefighting (
     id INTEGER PRIMARY KEY,
     nome TEXT,
     documento TEXT,
+    assinatura TEXT
+)
+''';
+  static String createCoordenadorBaseOperacionalFirefightingTable = '''
+CREATE TABLE CoordenadorBaseOperacionalFirefighting (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    postoGraduacao TEXT,
+    re TEXT,
+    assinatura TEXT
+)
+''';
+  static String createComandanteOcorrenciaFirefightingTable = '''
+CREATE TABLE ComandanteOcorrenciaFirefighting (
+    id INTEGER PRIMARY KEY,
+    nome TEXT,
+    postoGraduacao TEXT,
+    re TEXT,
     assinatura TEXT
 )
 ''';

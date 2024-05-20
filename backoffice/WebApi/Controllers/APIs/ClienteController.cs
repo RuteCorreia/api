@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Cliente.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
@@ -43,46 +44,47 @@ public class ClienteController : ControllerBase
     [HttpGet("{id:int}")]
     public async Task<ActionResult<ClienteViewModel>> GetById(int id)
     {
+        var returnMsg = new StringBuilder().Append("Não encontrado");
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var cliente = await _clienteService.GetByIdAsync(id, loggedUser.Item3);
             if (!ObjectNullValidation.IsObjectNull(cliente))
-            {
-                return Ok(cliente);
-            }
+                returnMsg.Clear();
 
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok(cliente) : StatusCode(StatusCodes.Status404NotFound, returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Cliente getById - {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Cliente getById - {ex.Message}").ToString());
         }
     }
 
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] ClienteViewModel obj)
     {
+        var returnMsg = new StringBuilder().Append("Modelo inválido");
         try
         {
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 await _clienteService.AddAsync(obj, loggedUser.Item3);
-                return Ok();
+                returnMsg.Clear();
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Cliente add - {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Cliente add - {ex.Message}").ToString());
         }
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, [FromBody] ClienteViewModel obj)
     {
+        var returnMsg = new StringBuilder().Append("Modelo inválido");
         try
         {
             if (ModelState.IsValid)
@@ -94,39 +96,40 @@ public class ClienteController : ControllerBase
                     obj.IdCliente = objeto.IdCliente;
 
                     await _clienteService.UpdateAsync(obj);
-                    return Ok();
+                    returnMsg.Clear();
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    returnMsg.Clear().Append("Não encontrado");
                 }
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Cliente update - {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Cliente update - {ex.Message}").ToString());
         }
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
+        var returnMsg = new StringBuilder().Append("Solicitação não foi possível de ser executada");
         try
         {
             if (id != 0)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 await _clienteService.DeleteAsync(id, loggedUser.Item3);
-                return Ok();
+                returnMsg.Clear();
             }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Cliente delete - {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Cliente delete - {ex.Message}").ToString());
         }
     }
 }

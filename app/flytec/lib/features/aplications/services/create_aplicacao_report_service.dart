@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/aeronave/data/models/aeronave_model.dart';
+import 'package:flytec/features/aeronave/data/models/tipo_aeronave_enum.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
 import 'package:intl/intl.dart';
@@ -70,6 +72,12 @@ class CreateAplicacaoReportService implements PdfGenerator {
     final engenheiroSelected =
         getIt<GlobalConfigVars>().engenheiros.firstOrNull;
     final empresa = getIt<GlobalConfigVars>().userPayload.empresa;
+    final aeronave = getIt<GlobalConfigVars>().aeronaves.firstWhere(
+        (aeronave) =>
+            aeronave.prefixo == aplicacao.recomendacoesTecnicas?.aeronave,
+        orElse: () => AeroNaveModel(
+            prefixo: aplicacao.recomendacoesTecnicas?.aeronave,
+            tipoAeronave: TipoAeronaveEnum.aviao));
 
     pdf.addPage(
       pw.Page(
@@ -747,26 +755,50 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       crossAxisAlignment: pw.CrossAxisAlignment.center,
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
-                        pw.Container(
-                            width: 300,
-                            padding: const pw.EdgeInsets.only(left: 5, top: 5),
-                            alignment: pw.Alignment.bottomCenter,
-                            child: pw.Column(
-                              mainAxisAlignment: pw.MainAxisAlignment.center,
-                              crossAxisAlignment: pw.CrossAxisAlignment.start,
-                              children: [
-                                pw.Text(" ${aplicacao.executor ?? ''}"),
-                                pw.Divider(height: 0.5, thickness: 1.0),
-                                pw.Text('Executor',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
-                              ],
-                            )),
+                        if (aeronave.tipoAeronave == TipoAeronaveEnum.aviao)
+                          pw.Container(
+                              width: 300,
+                              padding:
+                                  const pw.EdgeInsets.only(left: 5, top: 5),
+                              alignment: pw.Alignment.bottomCenter,
+                              child: pw.Column(
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Text(" ${aplicacao.executor ?? ''}"),
+                                  pw.Divider(height: 0.5, thickness: 1.0),
+                                  pw.Text('Executor',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                  pw.Text('CFTA ${executorSelected.cfta ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                ],
+                              )),
+                        if (aeronave.tipoAeronave == TipoAeronaveEnum.drone)
+                          pw.Container(
+                              width: 300,
+                              padding:
+                                  const pw.EdgeInsets.only(left: 5, top: 5),
+                              alignment: pw.Alignment.bottomCenter,
+                              child: pw.Column(
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                crossAxisAlignment: pw.CrossAxisAlignment.start,
+                                children: [
+                                  pw.Text(" ${aplicacao.executor ?? ''}"),
+                                  pw.Divider(height: 0.5, thickness: 1.0),
+                                  pw.Text('Piloto CAAR',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                  pw.Text('000.000.000-00',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                ],
+                              )),
                         pw.Container(
                             padding: const pw.EdgeInsets.only(right: 5),
                             width: 180,
@@ -1508,21 +1540,38 @@ class CreateAplicacaoReportService implements PdfGenerator {
                 ]),
                 pw.Divider(height: 1, thickness: 1.5),
                 pw.Row(children: [
-                  pw.Container(
-                    height: 25,
-                    width: 270,
-                    decoration: const pw.BoxDecoration(
-                      border: pw.Border(
-                        right:
-                            pw.BorderSide(width: 1.5, color: PdfColors.black),
+                  if (aeronave.tipoAeronave == TipoAeronaveEnum.aviao)
+                    pw.Container(
+                      height: 25,
+                      width: 270,
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
                       ),
+                      alignment: pw.Alignment.bottomLeft,
+                      padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
+                      child: pw.Text(
+                          'PISTA:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''} ${double.tryParse(aplicacao.relatorioAplicacao?.lat ?? '')?.toStringAsFixed(4) ?? ''}, ${double.tryParse(aplicacao.relatorioAplicacao?.long ?? '')?.toStringAsFixed(4) ?? ''}',
+                          style: pw.TextStyle(fontSize: 12, font: newRoman)),
                     ),
-                    alignment: pw.Alignment.bottomLeft,
-                    padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
-                    child: pw.Text(
-                        'PISTA:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''} ${double.tryParse(aplicacao.relatorioAplicacao?.lat ?? '')?.toStringAsFixed(4) ?? ''}, ${double.tryParse(aplicacao.relatorioAplicacao?.long ?? '')?.toStringAsFixed(4) ?? ''}',
-                        style: pw.TextStyle(fontSize: 12, font: newRoman)),
-                  ),
+                  if (aeronave.tipoAeronave == TipoAeronaveEnum.drone)
+                    pw.Container(
+                      height: 25,
+                      width: 270,
+                      decoration: const pw.BoxDecoration(
+                        border: pw.Border(
+                          right:
+                              pw.BorderSide(width: 1.5, color: PdfColors.black),
+                        ),
+                      ),
+                      alignment: pw.Alignment.bottomLeft,
+                      padding: const pw.EdgeInsets.only(left: 2, bottom: 2),
+                      child: pw.Text(
+                          'Pista/Ponto de Decolagem:  ${aplicacao.relatorioAplicacao?.localizacaoPistaCodigoICAO ?? ''} ${double.tryParse(aplicacao.relatorioAplicacao?.lat ?? '')?.toStringAsFixed(4) ?? ''}, ${double.tryParse(aplicacao.relatorioAplicacao?.long ?? '')?.toStringAsFixed(4) ?? ''}',
+                          style: pw.TextStyle(fontSize: 12, font: newRoman)),
+                    ),
                   pw.Container(
                     height: 25,
                     width: 70,
@@ -1622,12 +1671,24 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                   mainAxisAlignment:
                                       pw.MainAxisAlignment.spaceBetween,
                                   children: [
-                                    pw.Container(
-                                        alignment: pw.Alignment.bottomCenter,
-                                        child: pw.Text(
-                                            'Distância Da Pista: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} km',
-                                            style: pw.TextStyle(
-                                                fontSize: 12, font: newRoman))),
+                                    if (aeronave.tipoAeronave ==
+                                        TipoAeronaveEnum.aviao)
+                                      pw.Container(
+                                          alignment: pw.Alignment.bottomCenter,
+                                          child: pw.Text(
+                                              'Distância Da Pista: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} km',
+                                              style: pw.TextStyle(
+                                                  fontSize: 12,
+                                                  font: newRoman))),
+                                    if (aeronave.tipoAeronave ==
+                                        TipoAeronaveEnum.drone)
+                                      pw.Container(
+                                          alignment: pw.Alignment.bottomCenter,
+                                          child: pw.Text(
+                                              'Distância Da Pista/Ponto: ${aplicacao.contratoPrestacaoServico?.distanciaPista ?? ''} km',
+                                              style: pw.TextStyle(
+                                                  fontSize: 12,
+                                                  font: newRoman))),
                                     pw.Container(
                                       alignment: pw.Alignment.bottomCenter,
                                       child: pw.Text(
@@ -1772,10 +1833,19 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CANAC ${pilotoSelected.cdac ?? ''}',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
+                                if (aeronave.tipoAeronave ==
+                                    TipoAeronaveEnum.aviao)
+                                  pw.Text('CANAC ${pilotoSelected.cdac ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                if (aeronave.tipoAeronave ==
+                                    TipoAeronaveEnum.drone)
+                                  pw.Text(
+                                      'Piloto CAAR ${pilotoSelected.cdac ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
                               ]),
                           pw.Column(
                               crossAxisAlignment: pw.CrossAxisAlignment.start,
@@ -1796,10 +1866,19 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                     textAlign: pw.TextAlign.left,
                                     style: pw.TextStyle(
                                         fontSize: 8, font: newRoman)),
-                                pw.Text('CFTA ${executorSelected.cfta ?? ''}',
-                                    textAlign: pw.TextAlign.left,
-                                    style: pw.TextStyle(
-                                        fontSize: 8, font: newRoman)),
+                                if (aeronave.tipoAeronave ==
+                                    TipoAeronaveEnum.aviao)
+                                  pw.Text('CFTA ${executorSelected.cfta ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
+                                if (aeronave.tipoAeronave ==
+                                    TipoAeronaveEnum.drone)
+                                  pw.Text(
+                                      'Auxiliar de pista CPF ${executorSelected.cfta ?? ''}',
+                                      textAlign: pw.TextAlign.left,
+                                      style: pw.TextStyle(
+                                          fontSize: 8, font: newRoman)),
                               ])
                         ])),
               ]),
@@ -1823,7 +1902,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                         color: PdfColors.green800,
                         fontWeight: pw.FontWeight.normal)),
                 pw.Divider(height: 1, thickness: 1.5),
-                if (aplicacao.identificacaoAreaTratada?.croquiArea != null)
+                if (aplicacao.identificacaoAreaTratada?.croquiArea != null &&
+                    !aplicacao.identificacaoAreaTratada!.isPdf!)
                   pw.Container(
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),

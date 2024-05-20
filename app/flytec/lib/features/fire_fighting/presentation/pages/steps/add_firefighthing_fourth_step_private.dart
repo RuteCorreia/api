@@ -13,18 +13,18 @@ import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:go_router/go_router.dart';
 
-class AddFireFightingFourthtep extends StatefulWidget {
+class AddFireFightingFourthtepPrivate extends StatefulWidget {
   final FirefightingController? _firefightingController;
-  const AddFireFightingFourthtep(
+  const AddFireFightingFourthtepPrivate(
       {required FirefightingController? firefightingController, super.key})
       : _firefightingController = firefightingController;
 
   @override
-  State<AddFireFightingFourthtep> createState() =>
+  State<AddFireFightingFourthtepPrivate> createState() =>
       _AddFireFightingSecondStepState();
 }
 
-class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtep> {
+class _AddFireFightingSecondStepState extends State<AddFireFightingFourthtepPrivate> {
   Firefighting? _firefighting;
   TextEditingController _documentoResponsavelController =
       TextEditingController();

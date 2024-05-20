@@ -324,6 +324,7 @@ class _BuscarGPSState extends State<BuscarGPS> {
         ],
       ),
       body: ListView(
+        physics: closePoligon? const NeverScrollableScrollPhysics() : const AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
         children: [
           Stack(

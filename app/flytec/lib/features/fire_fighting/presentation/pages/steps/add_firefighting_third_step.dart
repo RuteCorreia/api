@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/extensions/time_of_day_extension.dart';
@@ -8,7 +10,8 @@ import 'package:flytec/features/fire_fighting/controller/firefighting_controller
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/presentation/components/decolagem_pouso_selected.dart';
-import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighthing_fourth_step_private.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step_public.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
 
@@ -126,7 +129,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
               await _actionFirefighting();
-              // ignore: use_build_context_synchronously
               Navigator.pop(context);
             },
           )),
@@ -161,7 +163,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 14,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w600,
-                         
                       ),
                     ),
                     const SizedBox(width: 1),
@@ -399,7 +400,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -451,7 +451,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -485,7 +484,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -519,7 +517,6 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                         fontSize: 16,
                         fontFamily: 'Inter',
                         fontWeight: FontWeight.w500,
-                         
                       )),
                 ),
               ),
@@ -529,11 +526,22 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                   title: "Próximo",
                   onClick: () async {
                     await _actionFirefighting();
-                    // ignore: use_build_context_synchronously
+                    if (_firefighting!.privado!) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  AddFireFightingFourthtepPrivate(
+                                    firefightingController:
+                                        widget._firefightingController,
+                                  )));
+                      return;
+                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddFireFightingFourthtep(
+                            builder: (context) =>
+                                AddFireFightingFourthtepPublic(
                                   firefightingController:
                                       widget._firefightingController,
                                 )));

@@ -109,6 +109,6 @@ public class ContextBase : IdentityDbContext
 
     public string ObterStringConexao()
     {
-        return "Data Source=198.38.83.200;Initial Catalog=keltec_flytec;Integrated Security=False;User ID=keltec_user_dev_kel;Password=kel@123KL!#;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        return "Data Source=tcp:flytec.database.windows.net,1433;Initial Catalog=flytec_qa;Integrated Security=False;User ID=sa_flytec;Password=fly@123FL!#;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
     }
 }

@@ -1,4 +1,4 @@
-﻿using Domain.Interfaces.Genericos;
+﻿using Domain.Enums;
 
 namespace Domain.Interfaces.Cadastros.Empresa;
 
@@ -10,4 +10,5 @@ public interface IEmpresaRepository
     Task<IEnumerable<Entidades.Cadastros.Empresa.Empresa>> GetAllAsync();
     Task<Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int id);
     Task<string> GetLogoByIdAsync(int id);
+    Task ChangeStatusAsync(int id, EStatusEmpresa status);
 }

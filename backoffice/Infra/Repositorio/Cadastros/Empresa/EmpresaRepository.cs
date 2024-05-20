@@ -1,4 +1,4 @@
-﻿using Domain.Entidades.Cadastros.Empresa;
+﻿using Domain.Enums;
 using Domain.Interfaces.Cadastros.Empresa;
 using Helpers;
 using Infra.Configuracao;
@@ -19,6 +19,21 @@ public class EmpresaRepository : IEmpresaRepository
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+    }
+
+    public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
+    {
+        var entityToBeChanged = await GetByIdAsync(id);
+        if(entityToBeChanged is not null)
+        {
+            entityToBeChanged.Status = status;
+            _contextBase.Empresa.Update(entityToBeChanged);
+            await _contextBase.SaveChangesAsync();
+        }
+        else
+        {
+            throw new Exception("Empresa não encontrada");
+        }
     }
 
     public async Task DeleteAsync(int id)
@@ -54,7 +69,7 @@ public class EmpresaRepository : IEmpresaRepository
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Empresa obj)
     {
-        var objeto = await _contextBase.Empresa.FindAsync(obj.IdEmpresa);
+        var objeto = await GetByIdAsync(obj.IdEmpresa);
         objeto.Nome = obj.Nome;
         objeto.Imagem = obj.Imagem;
         objeto.Email = obj.Email;
