@@ -4,6 +4,7 @@ import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/frota/models/report_frota_model.dart';
 import 'package:flytec/features/frota/presentation/components/report_frota_card.dart';
 import 'package:flytec/features/frota/presentation/pages/abastecimento_aeronave_page.dart';
+import 'package:flytec/features/frota/presentation/pages/adicionar_remover_combustivel.dart';
 import 'package:flytec/features/home/presentation/widgets/custom_dialog_button.dart';
 
 class FrotaPage extends StatefulWidget {
@@ -58,7 +59,14 @@ class _FrotaPageState extends State<FrotaPage> {
                       showLeftIcon: false,
                       text: "Inserir ou Remover Combustível",
                       showRightcon: true,
-                      onClick: () {},
+                      onClick: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  const AdicionarRemoverCombustivelAeronavePage(),
+                            ));
+                      },
                     ),
                     const SizedBox(height: 10),
                     CustomDialogButton(
