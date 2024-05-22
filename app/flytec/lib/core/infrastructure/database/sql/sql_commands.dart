@@ -39,7 +39,7 @@ CREATE TABLE IdentificacaoAreaTratada (
     localizacao TEXT,
     cultura TEXT,
     extensao TEXT,
-    croquiArea BLOB,
+    croquiArea TEXT,
     isPdf INTEGER
 )
 ''';
@@ -89,7 +89,7 @@ CREATE TABLE Aplicacoes (
     horaFinal TEXT,
     horimetroInicial TEXT,
     horimetroFinal TEXT,
-    imagemCondicaoClimatica BLOB,
+    imagemCondicaoClimatica TEXT,
     isImagemCondicaoClimatica INTEGER,
     temperaturaInicial TEXT,
     temperaturaFinal TEXT,

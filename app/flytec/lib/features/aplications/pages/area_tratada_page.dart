@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -13,6 +15,7 @@ import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/identificacao_area_tratada.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/pages/images/croqui_area/croqui_area.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AreaTratada extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -125,7 +128,7 @@ class _AreaTratadaState extends State<AreaTratada> {
   TextEditingController _extensaoController = TextEditingController();
   late String _cityOfUf = '';
   String _uf = 'SP';
-  Uint8List? _imageData;
+  String? _imageData;
   bool _isPdf = false;
 
   final List<String> _citiesNamesUfBrazil = [];
@@ -146,8 +149,8 @@ class _AreaTratadaState extends State<AreaTratada> {
     setState(() {});
   }
 
-  void _updateImageDate(Uint8List data, bool isPdf) {
-    _imageData = data;
+  void _updateImageDate(Uint8List data, File file, bool isPdf) {
+    _imageData = isPdf ? file.path : base64Encode(data);
     _isPdf = isPdf;
     setState(() {});
   }
@@ -370,7 +373,7 @@ class _AreaTratadaState extends State<AreaTratada> {
                                 height: 300,
                                 width: MediaQuery.of(context).size.width,
                                 child: PDFView(
-                                  pdfData: _imageData,
+                                  filePath: _imageData,
                                 ),
                               ),
                               TextButton(
@@ -383,9 +386,15 @@ class _AreaTratadaState extends State<AreaTratada> {
                                           builder: (context) => CroquiArea(
                                                 updateImageData:
                                                     (Uint8List? data,
-                                                        bool isPdf) {
+                                                        bool isPdf) async {
+                                                  final directory =
+                                                      await getApplicationCacheDirectory();
+                                                  File file = File(
+                                                      "${directory.path}/pdf_${Util.getRandomString(10)}.pdf");
+                                                  await file
+                                                      .writeAsBytes(data!);
                                                   _updateImageDate(
-                                                      data!, isPdf);
+                                                      data, file, isPdf);
                                                 },
                                               )));
                                   setState(() {});
@@ -410,7 +419,8 @@ class _AreaTratadaState extends State<AreaTratada> {
                                   width: MediaQuery.of(context).size.width,
                                   decoration: BoxDecoration(
                                     image: DecorationImage(
-                                        image: MemoryImage(_imageData!),
+                                        image: MemoryImage(
+                                            base64Decode(_imageData!)),
                                         fit: BoxFit.fill),
                                   )),
                               TextButton(
@@ -423,9 +433,15 @@ class _AreaTratadaState extends State<AreaTratada> {
                                           builder: (context) => CroquiArea(
                                                 updateImageData:
                                                     (Uint8List? data,
-                                                        bool isPdf) {
+                                                        bool isPdf) async {
+                                                  final directory =
+                                                      await getApplicationCacheDirectory();
+                                                  File file = File(
+                                                      "${directory.path}/pdf_${Util.getRandomString(10)}.pdf");
+                                                  await file
+                                                      .writeAsBytes(data!);
                                                   _updateImageDate(
-                                                      data!, isPdf);
+                                                      data, file, isPdf);
                                                 },
                                               )));
                                   setState(() {});
@@ -440,8 +456,14 @@ class _AreaTratadaState extends State<AreaTratada> {
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return CroquiArea(
-                            updateImageData: (Uint8List? data, bool isPdf) {
-                              _updateImageDate(data!, isPdf);
+                            updateImageData:
+                                (Uint8List? data, bool isPdf) async {
+                              final directory =
+                                  await getApplicationCacheDirectory();
+                              File file = File(
+                                  "${directory.path}/pdf_${Util.getRandomString(10)}.pdf");
+                              await file.writeAsBytes(data!);
+                              _updateImageDate(data, file, isPdf);
                             },
                           );
                         }));

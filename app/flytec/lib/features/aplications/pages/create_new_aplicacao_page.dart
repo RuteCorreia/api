@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
   String _humiditySelectedInitial = '+ 55%';
   String _humiditySelectedFinal = '+ 55%';
   bool isCut = true;
-  Uint8List? _imageData;
+  String? _imageData;
   int _isImage = 0;
   TimeOfDay _selectedTime = TimeOfDay.now();
   TimeOfDay _selectedTimeFinal = TimeOfDay.now();
@@ -290,7 +291,9 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                     final archive = await Util.obtainImagePathMaps(context);
                     _imageData = null;
                     setState(() {});
-                    _imageData = await File(archive.path!).readAsBytes();
+                    _imageData = archive.isImage
+                        ? base64Encode(await File(archive.path!).readAsBytes())
+                        : archive.path;
                     _isImage = archive.isImage ? 0 : 1;
                     setState(() {});
                     if (!archive.isImage) return;
@@ -302,10 +305,10 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         MaterialPageRoute(
                             builder: (context) => UploadFotos(
                                   updateImageData: (data) {
-                                    _imageData = data;
+                                    _imageData = base64Encode(data);
                                     setState(() {});
                                   },
-                                  imageData: _imageData,
+                                  imageData: base64Decode(_imageData!),
                                   onOkButton: () {
                                     Navigator.pop(context);
                                   },
@@ -359,7 +362,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                         width: MediaQuery.of(context).size.width,
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: MemoryImage(_imageData!),
+                              image: MemoryImage(base64Decode(_imageData!)),
                               fit: BoxFit.fill),
                         ))
                   ],
@@ -375,7 +378,7 @@ class _CreateNewAplicacaoPagesState extends State<CreateNewAplicacaoPages> {
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       child: PDFView(
-                        pdfData: _imageData,
+                        filePath: _imageData,
                       ),
                     )
                   ],

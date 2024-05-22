@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 class Aplicacoes {
   String? dataAplicacao;
@@ -6,7 +5,7 @@ class Aplicacoes {
   String? horaFinal;
   String? horimetroInicial;
   String? horimetroFinal;
-  Uint8List? imagemCondicaoClimatica;
+  String? imagemCondicaoClimatica;
   int? isImagemCondicaoClimatica;
   String? temperaturaInicial;
   String? temperaturaFinal;

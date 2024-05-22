@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 class IdentificacaoAreaTratada {
   String? uf;
@@ -6,7 +5,7 @@ class IdentificacaoAreaTratada {
   String? localizacao;
   String? cultura;
   String? extensao;
-  Uint8List? croquiArea;
+  String? croquiArea;
   bool? isPdf;
   int? id;
 
