@@ -31,6 +31,7 @@ namespace Application.Application.Servicos.Cadastros.SubMenu
             }
             var mapSubMenu = _mapper.Map<Domain.Entidades.Cadastros.SubMenu.SubMenu>(obj);
             if (isMenu is null) mapSubMenu.MenuItemId = null;
+            mapSubMenu.SubMenuItemId = isMenu is null ? obj.SubMenuItemId : null;
             await _subMenuRepository.AddAsync(mapSubMenu);
         }
 
