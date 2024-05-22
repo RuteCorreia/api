@@ -37,14 +37,18 @@ class _AbastecimentoAeronavePageState extends State<AbastecimentoAeronavePage> {
   DateTime? _dataSelecionada;
 
   void _obtainTotalLitros() {
-    double? gasolinaInicial = double.parse(_gasolinaInicial.text);
-    double? gasolinaFinal = double.parse(_gasolinaFinal.text);
+    double? gasolinaInicial =
+        double.parse(_gasolinaInicial.text.replaceAll('.', ''));
+    double? gasolinaFinal =
+        double.parse(_gasolinaFinal.text.replaceAll('.', ''));
     if (gasolinaFinal < gasolinaInicial) {
       _totalDeLitros.text = '0';
       return;
     }
+    
     double? totalLitros = gasolinaFinal - gasolinaInicial;
-    _totalDeLitros.text = totalLitros.toString();
+    final formmaterTotalLitros = NumberFormat('#,###').format(totalLitros);
+    _totalDeLitros.text = formmaterTotalLitros.replaceAll(",", ".");
   }
 
   String _selectedAaeronave = '';
@@ -263,7 +267,12 @@ class _AbastecimentoAeronavePageState extends State<AbastecimentoAeronavePage> {
                           _obtainTotalLitros();
                           setState(() {});
                         },
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: false),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          CustomNumberFormatterTho()
+                        ],
                         decoration: const InputDecoration(
                             hintText: "Digite aqui",
                             border: InputBorder.none,
@@ -300,7 +309,12 @@ class _AbastecimentoAeronavePageState extends State<AbastecimentoAeronavePage> {
                           _obtainTotalLitros();
                           setState(() {});
                         },
-                        keyboardType: TextInputType.datetime,
+                        keyboardType: const TextInputType.numberWithOptions(
+                            decimal: false),
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.digitsOnly,
+                          CustomNumberFormatterTho()
+                        ],
                         decoration: const InputDecoration(
                             hintText: "Digite aqui",
                             border: InputBorder.none,
@@ -332,7 +346,12 @@ class _AbastecimentoAeronavePageState extends State<AbastecimentoAeronavePage> {
               child: TextField(
                 controller: _totalDeLitros,
                 onChanged: (value) {},
-                keyboardType: TextInputType.datetime,
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: false),
+                inputFormatters: <TextInputFormatter>[
+                  FilteringTextInputFormatter.digitsOnly,
+                  CustomNumberFormatterTho()
+                ],
                 decoration: const InputDecoration(
                     hintText: "Digite aqui",
                     border: InputBorder.none,
