@@ -135,7 +135,8 @@ public class UserAuthService : IUserAuthService
             user.Id, 
             nrUsuarioOrdem is null ? 1 : nrUsuarioOrdem.NrUsuario + 1,
             request.Telefone,
-            idEmpresa
+            idEmpresa,
+            request.CPF
             );
 
         await _usuarioRepository.AddAsync(usuario);
@@ -180,6 +181,7 @@ public class UserAuthService : IUserAuthService
         {
             new("NrUsuario", usuario.NrUsuario.ToString()),
             new("IdUsuario", usuario.Id.ToString()),
+            new("cpfUsuario", usuario.CPF),
             new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
             new("NomeEmpresa", usuario.Empresa?.Nome ?? ""),
             new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
@@ -340,6 +342,7 @@ public class UserAuthService : IUserAuthService
                     userToUpdate.Nome = request.Nome;
                     userToUpdate.Email = request.Email;
                     userToUpdate.Telefone = request.Telefone;
+                    userToUpdate.CPF = request.CPF;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
                     await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToUpdate.Id);
                     await CreateUserCredencial(identityUser, request.Funcoes);

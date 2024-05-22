@@ -1,5 +1,4 @@
 ﻿using Domain.Entidades.Cadastros.Empresa;
-using Domain.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -8,7 +7,7 @@ namespace Domain.Entidades.User;
 
 public class Usuario
 {
-    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa)
+    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -20,6 +19,7 @@ public class Usuario
         PrimeiroAcesso = true;
         Telefone = telefone;
         IdEmpresa = idEmpresa;
+        CPF = cpf;
     }
 
     public Usuario(Guid id, string email, string nome, string userId, int nrUsuario)
@@ -44,6 +44,7 @@ public class Usuario
     public string? Telefone { get; set; }
     public bool PrimeiroAcesso { get; set; }
     public byte[]? Assinatura { get; set; }
+    public string CPF { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

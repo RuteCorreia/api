@@ -1,7 +1,5 @@
 ﻿using Domain.Enums;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 
 namespace Application.DTOs.Users.ViewModel;
 
@@ -21,6 +19,11 @@ public class UserRegisterViewModel
     public string Password { get; set; }
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
+
+    [Required]
+    [MinLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
+    [MaxLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
+    public string CPF { get; set; }
     public IEnumerable<RoleObject> Funcoes { get; set; } 
 }
 

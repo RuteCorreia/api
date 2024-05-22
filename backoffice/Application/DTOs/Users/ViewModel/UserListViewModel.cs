@@ -9,5 +9,6 @@ public class UserListViewModel
     public string Email { get; set; }
     public string? Credencial { get; set; }
     public string? Telefone { get; set; }
+    public string CPF { get; set; }
     public IEnumerable<ERole> Funcao { get; set; }
 }
