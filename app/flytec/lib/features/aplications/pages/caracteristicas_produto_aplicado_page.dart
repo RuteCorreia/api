@@ -274,12 +274,20 @@ class _CaracteristicasProdutoAplicadoPageState
               const SizedBox(height: 10),
               InkWell(
                 onTap: () async {
+                  _receituarioAgronomico = null;
+                  setState(() {});
+
                   final archive = await Util.obtainImagePathMaps(context);
                   _isReceiturarioImage = archive.isImage ? 0 : 1;
                   final file = await File(archive.path!).readAsBytes();
-                  _receituarioAgronomico = base64Encode(file);
+                  _receituarioAgronomico =
+                      archive.isImage ? base64Encode(file) : archive.path!;
+
                   setState(() {});
-                  if (!archive.isImage) return;
+                  if (!archive.isImage) {
+                    return;
+                  }
+                  
                   // ignore: use_build_context_synchronously
                   Navigator.push(
                       // ignore: use_build_context_synchronously
@@ -362,9 +370,7 @@ class _CaracteristicasProdutoAplicadoPageState
                     SizedBox(
                       height: 300,
                       width: MediaQuery.of(context).size.width,
-                      child: PDFView(
-                        pdfData: base64Decode(_receituarioAgronomico!),
-                      ),
+                      child: PDFView(filePath: _receituarioAgronomico),
                     ),
                   ],
                 ),

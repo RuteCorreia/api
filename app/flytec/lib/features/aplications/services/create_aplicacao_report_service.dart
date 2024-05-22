@@ -1909,7 +1909,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
                         pw.MemoryImage(
-                            aplicacao.identificacaoAreaTratada!.croquiArea!),
+                           base64Decode(
+                            aplicacao.identificacaoAreaTratada!.croquiArea!)),
                         fit: pw.BoxFit.fill),
                   ),
               ]));
@@ -1982,7 +1983,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),
                       child: pw.Image(
-                          pw.MemoryImage(aplicacoes01.imagemCondicaoClimatica!),
+                          pw.MemoryImage(base64Decode(
+                              aplicacoes01.imagemCondicaoClimatica!)),
                           height: 600,
                           width: 560),
                     ),
@@ -2023,7 +2025,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),
                       child: pw.Image(
-                          pw.MemoryImage(aplicacoes02.imagemCondicaoClimatica!),
+                          pw.MemoryImage(base64Decode(
+                              aplicacoes02.imagemCondicaoClimatica!)),
                           height: 600,
                           width: 560),
                     ),
@@ -2064,7 +2067,8 @@ class CreateAplicacaoReportService implements PdfGenerator {
                       alignment: pw.Alignment.center,
                       margin: const pw.EdgeInsets.all(10),
                       child: pw.Image(
-                          pw.MemoryImage(aplicacoes03.imagemCondicaoClimatica!),
+                          pw.MemoryImage(base64Decode(
+                              aplicacoes03.imagemCondicaoClimatica!)),
                           height: 600,
                           width: 560),
                     ),
