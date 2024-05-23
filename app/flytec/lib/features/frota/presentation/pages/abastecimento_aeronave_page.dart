@@ -42,12 +42,12 @@ class _AbastecimentoAeronavePageState extends State<AbastecimentoAeronavePage> {
         double.parse(_gasolinaInicial.text.replaceAll('.', ''));
     double? gasolinaFinal =
         double.parse(_gasolinaFinal.text.replaceAll('.', ''));
-    if (gasolinaFinal < gasolinaInicial) {
+    if (gasolinaInicial < gasolinaFinal) {
       _totalDeLitros.text = '0';
       return;
     }
     
-    double? totalLitros = gasolinaFinal - gasolinaInicial;
+    double? totalLitros = gasolinaInicial - gasolinaFinal;
     final formmaterTotalLitros = NumberFormat('#,###').format(totalLitros);
     _totalDeLitros.text = formmaterTotalLitros.replaceAll(",", ".");
   }
