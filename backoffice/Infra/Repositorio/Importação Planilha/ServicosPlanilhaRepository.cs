@@ -28,12 +28,14 @@ namespace Infra.Repositorio.Importação_Planilha
         /// <returns>A quantidade de registros no banco de dados.</returns>
         public int ContarRegistros<T>(Expression<Func<T, bool>> predicate) where T : class
         {
-            return _contextBase.Set<T>().Count(predicate);
+            var context = new ContextBase();
+            return context.Set<T>().Count(predicate);
 
         }
 
         public async void SalvarLoteRegistros<T1>(List<T1> registros) where T1 : class
-        {            
+        {
+            var context = new ContextBase();
             // Tamanho do lote para operações em lote.
             const int batchSize = 12500;
 
@@ -46,13 +48,13 @@ namespace Infra.Repositorio.Importação_Planilha
                 var batch = registros.Skip(i * batchSize).Take(batchSize);
 
                 // Utiliza EFBatchOperation para inserir todos os registros do lote de uma vez.
-                _contextBase.ChangeTracker.AutoDetectChangesEnabled = false;
-                await _contextBase.AddRangeAsync(batch);
-                await _contextBase.SaveChangesAsync();
-                _contextBase.ChangeTracker.AutoDetectChangesEnabled = true;
+                context.ChangeTracker.AutoDetectChangesEnabled = false;
+                await context.AddRangeAsync(batch);
+                await context.SaveChangesAsync();
+                context.ChangeTracker.AutoDetectChangesEnabled = true;
 
                 // Salva as mudanças no banco de dados.
-                await _contextBase.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
         }
 

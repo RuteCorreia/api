@@ -19,6 +19,7 @@ using Domain.Entidades.Importação_Planilha;
 using Infra.Repositorio.Importação_Planilha;
 using Infra.Configuracao;
 using Application.DTOs.Cadastros.BulaAplicacao.ViewModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.Application.Servicos.Importação_Planilha
 {
@@ -118,7 +119,7 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// <summary>
         /// Indica se existem modelos sem template associado.
         /// </summary>
-        private bool _modelosSemTemplante;
+        private bool _modelosSemTemplate;
 
         /// <summary>
         /// Lista que armazena o mapeamento entre colunas e propriedades.
@@ -183,12 +184,40 @@ namespace Application.Application.Servicos.Importação_Planilha
             // Create a dictionary mapping column indices to property names
             var dictionary = new Dictionary<int, string>();
 
-            for (int i = 0; i < properties.Length; i++)
+            for (int i = 0, columnIdx = 0; i < properties.Length; i++)
             {
-                dictionary[i] = properties[i].Name;
+                var property = properties[i];
+                // Check if the property has a ForeignKey attribute
+                var isForeignKey = property.GetCustomAttributes(typeof(ForeignKeyAttribute), false).Any();
+                // Check if the property is a virtual navigation property
+                var isVirtual = property.GetMethod.IsVirtual && !property.GetMethod.IsFinal;
+
+                if (!isForeignKey && !isVirtual)
+                {
+                    dictionary[columnIdx++] = property.Name;
+                }
             }
 
-            return dictionary;
+            if (properties[0].ReflectedType.Name == "Bula")
+            {
+                dictionary.Remove(0);
+                dictionary.Remove(4);
+                dictionary.Remove(5);
+                dictionary.Remove(6);
+                dictionary.Remove(7);
+                dictionary.Remove(8);
+
+                var reorderedDictionary = new Dictionary<int, string>();
+                int newIndex = 0;
+                foreach (var kvp in dictionary)
+                {
+                    reorderedDictionary[newIndex++] = kvp.Value;
+                }
+
+                return reorderedDictionary;
+            }
+            else return dictionary;
+
         }
 
         /// <summary>
@@ -203,19 +232,15 @@ namespace Application.Application.Servicos.Importação_Planilha
                 var dadosSalvo = _configuracoesPlanilha.DadosSalvos;
 
                 // Se os dados estiverem marcados como salvos e o arquivo existir, exclui o arquivo
-                if (dadosSalvo && File.Exists(endereco))
+                if (dadosSalvo && string.IsNullOrEmpty(endereco))
                 {
-                    File.Delete(endereco);
+                    throw new Exception("Sem Arquivo para Processar");
                 }
 
                 // Se o arquivo existir, valida os dados; caso contrário, atualiza a marcação de dados salvos
-                if (File.Exists(endereco))
+                if (!string.IsNullOrEmpty(endereco))
                 {
                     ProcessarEhValidarDadosPlanilha();
-                }
-                else
-                {
-                    //AtualizaDadosSalvo(true);
                 }
             }
             catch (Exception ex)
@@ -231,8 +256,10 @@ namespace Application.Application.Servicos.Importação_Planilha
         {
             try
             {
+                var bytes = Convert.FromBase64String(_configuracoesPlanilha.EnderecoPlanilha);
+
                 // Abre a planilha para leitura
-                using (var dadosPlanilha = File.OpenRead(_configuracoesPlanilha.EnderecoPlanilha))
+                using (var dadosPlanilha = new MemoryStream(bytes))
                 {
                     // Realiza a leitura dos dados da planilha
                     ExtrairEhCarregarDadosExcel(dadosPlanilha);
@@ -244,7 +271,7 @@ namespace Application.Application.Servicos.Importação_Planilha
                     }
 
                     // Calcula a quantidade de registros em falta em comparação com o banco de dados
-                    _qtdeRegistroFalta = _dadosPlanilha.RowCount - ObtenhaQtdRegistrosBanco();
+                    _qtdeRegistroFalta = _dadosPlanilha.RowCount /*- ObtenhaQtdRegistrosBanco()*/;
 
                     // Verifica se há dados a serem inseridos no banco de dados
                     if (_qtdeRegistroFalta <= 0)
@@ -267,25 +294,16 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// Extrai dados de um arquivo Excel utilizando a biblioteca IExcelDataReader e carrega-os em um DataSet.
         /// </summary>
         /// <param name="dadosPlanilha">FileStream contendo os dados da planilha Excel.</param>
-        private void ExtrairEhCarregarDadosExcel(FileStream dadosPlanilha)
+        private void ExtrairEhCarregarDadosExcel(MemoryStream dadosPlanilha)
         {
             // Cria um leitor de Excel usando a biblioteca IExcelDataReader
-            if (_configuracoesPlanilha.EnderecoPlanilha.Contains("xlsx"))
-            {
+
                 IExcelDataReader excelLeitura = ExcelReaderFactory.CreateOpenXmlReader(dadosPlanilha);
 
                 // Carrega os dados da planilha para um DataSet e mantém uma referência ao leitor
                 _dadosPlanilhaDatSet = excelLeitura.AsDataSet();
                 _dadosPlanilha = excelLeitura;
-            }
-            else
-            {
-                IExcelDataReader excelLeitura = ExcelReaderFactory.CreateBinaryReader(dadosPlanilha);
 
-                // Carrega os dados da planilha para um DataSet e mantém uma referência ao leitor
-                _dadosPlanilhaDatSet = excelLeitura.AsDataSet();
-                _dadosPlanilha = excelLeitura;
-            }
         }
 
         /// <summary>
@@ -305,7 +323,7 @@ namespace Application.Application.Servicos.Importação_Planilha
                 case "Bula":
                     // Create a predicate that always returns true to count all records
                     Expression<Func<Bula, bool>> predicate = b => true;
-                    quantidade = _servicosPlanilhaRepository.ContarRegistros(predicate);
+                    quantidade = new ServicosPlanilhaRepository<Bula>(null).ContarRegistros(predicate);
                     break;
 
                 default:
@@ -453,9 +471,7 @@ namespace Application.Application.Servicos.Importação_Planilha
         {
             return new Dictionary<string, PropertyInfo>
             {
-                { "IndexLinha", typeof(T).GetProperty("IndexLinha") },
-                { "DataCriacaoInterno", typeof(T).GetProperty("DataCriacaoInterno") },
-                { "IdEmpresaResponsavel", typeof(T).GetProperty("IdEmpresaResponsavel") },
+                { "IdClassificacaoToxicologica", typeof(T).GetProperty("IdClassificacaoToxicologica") },
             };
         }
 
@@ -483,9 +499,9 @@ namespace Application.Application.Servicos.Importação_Planilha
             {
                 // Obtém o valor da coluna na linha
                 _colunaPlaninhaAtual = linha.ItemArray[indexColuna].ToString();
-
+                _modelosSemTemplate = true; 
                 // Verifica se o modelo está sem template e, se aplicável, utiliza a variavel global _colunas que tem o mapeamento da classe toda da planilha importada'
-                if (_modelosSemTemplante)
+                if (_modelosSemTemplate)
                 {
                     // Obtém o nome da coluna no banco de dados
                     _colunaBancoAtual = _colunas[indexColuna];
@@ -530,7 +546,10 @@ namespace Application.Application.Servicos.Importação_Planilha
             foreach (var propriedade in propriedadesArray)
             {
                 // Verifica se a propriedade é nula e continua para a próxima, se for o caso
-                if (propriedade == null) { continue; }
+                if (propriedade == null)
+                {
+                    continue;
+                }
 
                 // Aplica regras específicas com base no nome da propriedade
                 switch (propriedade.Name)
@@ -549,6 +568,8 @@ namespace Application.Application.Servicos.Importação_Planilha
 
                     default:
                         // Se não houver uma regra específica, define o valor diretamente na propriedade
+                        if(_colunaBancoAtual == "IdClassificacaoToxicologica") typeof(T).GetProperty(_colunaBancoAtual).SetValue(registro, int.Parse(_colunaPlaninhaAtual));
+                        else
                         typeof(T).GetProperty(_colunaBancoAtual).SetValue(registro, _colunaPlaninhaAtual);
                         break;
                 }
@@ -712,11 +733,9 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// <param name="registros">A lista de registros a serem salvos.</param>
         private void SalveLoteRegistros(List<T> registros)
         {
-
-
             try
             {
-                _servicosPlanilhaRepository.SalvarLoteRegistros(registros);
+                new ServicosPlanilhaRepository<T>(null).SalvarLoteRegistros(registros);
             }
             catch (Exception ex)
             {
