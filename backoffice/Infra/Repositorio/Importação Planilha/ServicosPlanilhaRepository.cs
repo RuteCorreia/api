@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Importação_Planilha;
+﻿using Domain.Entidades.Importação_Planilha;
+using Domain.Interfaces.Importação_Planilha;
 using Infra.Configuracao;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,48 @@ namespace Infra.Repositorio.Importação_Planilha
                 // Salva as mudanças no banco de dados.
                 await _contextBase.SaveChangesAsync();
             }
+        }
+
+        public void SalvarPlanilha(string base64Planilha)
+        {
+            var context = new ContextBase();
+            var importacaoPlanilha = new ImportacaoPlanilhas()
+            {
+                Base64Planilha = base64Planilha,
+                DadosSalvo = false,
+                DataPlanilha = DateTime.Now,
+                Erro = false,
+                IndexUltimaLinha = 0,
+                IntPlanilhaImportada = 1,
+                MenssagensProcessamento = "",
+                QtdRegistroBanco = 0,
+                QtdRegistroPlanilha = 0,
+                DataProcessamento = DateTime.Now,
+                NomeCliente = "teste"
+            };
+
+            context.ImportacaoPlanilha.Add(importacaoPlanilha);
+            context.SaveChanges();
+        }
+
+
+        public ConfiguracaoPlanilha BuscarPlanilhaNaFila()
+        {
+            var context = new ContextBase();
+            var planilha = context.ImportacaoPlanilha.Where(x => x.DadosSalvo == false && x.Erro == false).FirstOrDefault();
+
+            var config = new ConfiguracaoPlanilha()
+            {
+                IdImportacao = planilha.Id,
+                EnderecoPlanilha = planilha.Base64Planilha,
+                QtdRegistroBanco = planilha.QtdRegistroBanco,
+                QtdRegistroPlanilha = planilha.QtdRegistroPlanilha,
+                DadosSalvos = planilha.DadosSalvo,
+                IndexLinhaUltimaCarga = planilha.IndexUltimaLinha,
+                DataPlanilha = planilha.DataPlanilha.ToString()
+            };
+
+            return config;
         }
     }
 }

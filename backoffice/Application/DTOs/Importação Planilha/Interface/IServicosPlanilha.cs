@@ -16,5 +16,7 @@ namespace Application.DTOs.Importação_Planilha
         /// Inicia o processamento de dados para o serviço da planilha.
         /// </summary>
         void IniciarProcessamento();
+
+        void SalvarPlanilha(string base64);
     }
 }

@@ -15,6 +15,10 @@ using Application.DTOs.Importação_Planilha.ViewModel;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Domain.Interfaces.Importação_Planilha;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Importação_Planilha;
+using Infra.Repositorio.Importação_Planilha;
+using Infra.Configuracao;
+using Application.DTOs.Cadastros.BulaAplicacao.ViewModel;
 
 namespace Application.Application.Servicos.Importação_Planilha
 {
@@ -102,14 +106,9 @@ namespace Application.Application.Servicos.Importação_Planilha
         private DataTable _dataTable;
 
         /// <summary>
-        /// Configuração relacionada à importação.
-        /// </summary>
-        //private Configuracao _configuracao;
-
-        /// <summary>
         /// Instância responsável por realizar a importação de planilhas.
         /// </summary>
-        //private ImportacaoPlanilhas _importacao;
+        private ImportacaoPlanilhas _importacao;
 
         /// <summary>
         /// Configurações específicas da planilha utilizadas durante o processamento.
@@ -395,7 +394,7 @@ namespace Application.Application.Servicos.Importação_Planilha
             // Verifica se atingiu a quantidade máxima de registros por processamento
             if (contadorRegistro >= _maximoRegitroPorProcessamento)
             {
-                AtualizaConfQtdRegistros();
+                //AtualizaConfQtdRegistros();
                 return;
             }
         }
@@ -746,81 +745,82 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// <summary>
         /// Atualiza as configurações de quantidade de registros com base nos dados da planilha importada.
         /// </summary>
-        private void AtualizaConfQtdRegistros()
+        //private void AtualizaConfQtdRegistros()
+        //{
+        //    // Verifica se a importação é nula e a recupera do banco de dados, se necessário.
+        //    if (_importacao == null)
+        //    {
+        //        using (DAO db = new DAO())
+        //        {
+        //            _importacao = db.ImportacaoPlanilhas.FirstOrDefault(i => i.Id == _configuracoesPlanilha.IdImportacao);
+        //        }
+        //    }
+
+        //    // Utiliza um objeto DAO para interagir com o banco de dados.
+        //    using (var db = new DAO())
+        //    {
+        //        // Inicia uma transação para garantir a consistência das atualizações.
+        //        using (var transaction = db.Database.BeginTransaction())
+        //        {
+        //            // Obtém a quantidade de registros no banco de dados e na planilha importada.
+        //            var qtdRegistrosBanco = ObtenhaQtdRegistrosBanco();
+        //            var qtdRegistrosPlanilha = _dataTable.Rows.Count;
+
+        //            try
+        //            {
+        //                // Obtém a configuração de importação.
+        //                var config = _importacao;
+
+        //                // Atualiza as propriedades da configuração com os novos valores.
+        //                config.QtdRegistroBanco = qtdRegistrosBanco;
+        //                config.QtdRegistroPlanilha = qtdRegistrosPlanilha;
+        //                config.DadosSalvo = qtdRegistrosBanco >= qtdRegistrosPlanilha;
+        //                config.IndexUltimaLinha = (int)_ultimaCargaIndexLinha;
+
+        //                // Define o estado da entidade como modificado e salva as alterações no banco de dados.
+        //                db.Entry(config).State = System.Data.Entity.EntityState.Modified;
+        //                db.SaveChanges();
+
+        //                // Atualiza a referência local do objeto _importacao.
+        //                _importacao = config;
+
+        //                // Comita a transação após o salvamento bem-sucedido.
+        //                transaction.Commit();
+
+        //                // Atualiza as configurações de quantidade de registros do objeto _configuracoesPlanilha.
+        //                _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
+        //                _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
+        //                _configuracoesPlanilha.DadosSalvos = qtdRegistrosBanco >= qtdRegistrosPlanilha;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                // Em caso de exceção, realiza rollback na transação e lança a exceção.
+        //                transaction.Rollback();
+        //                throw ex;
+        //            }
+        //        }
+        //    }
+        //}
+
+        public void SalvarPlanilha(string base64Planilha)
         {
-            // Verifica se a configuração é nula e a recupera do banco de dados, se necessário.
-            if (_configuracao == null)
-            {
-                using (DAO db = new DAO())
-                {
-                    _configuracao = db.Configuracao.AsNoTracking().SingleOrDefault();
-                }
-            }
-
-            // Utiliza um objeto DAO para interagir com o banco de dados.
-            using (var db = new DAO())
-            {
-                // Inicia uma transação para garantir a consistência das atualizações.
-                using (var transaction = db.Database.BeginTransaction())
-                {
-                    // Obtém a quantidade de registros no banco de dados.
-                    var qtdRegistrosBanco = ObterQtdRegistros();
-                    var qtdRegistrosPlanilha = _dataTable.Rows.Count;
-
-                    try
-                    {
-                        // Obtém a configuração.
-                        var config = _configuracao;
-
-                        // Utiliza reflexão para obter as propriedades relevantes da configuração.
-                        Reflection(_configuracao);
-
-                        // Atualiza as propriedades da configuração com os novos valores.
-                        _qtdRegistroBanco.SetValue(config, qtdRegistrosBanco);
-                        _qtdRegistroPlanilha.SetValue(config, qtdRegistrosPlanilha);
-                        _dadosSalvos.SetValue(config, qtdRegistrosBanco >= qtdRegistrosPlanilha);
-
-                        // Define o estado da entidade como modificado e salva as alterações no banco de dados.
-                        db.Entry(config).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-
-                        // Atualiza a referência local do objeto _configuracao.
-                        _configuracao = config;
-
-                        // Comita a transação após o salvamento bem-sucedido.
-                        transaction.Commit();
-
-                        // Atualiza as configurações de quantidade de registros do objeto _configuracoesPlanilha.
-                        _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                        _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                        _configuracoesPlanilha.DadosSalvos = qtdRegistrosBanco >= qtdRegistrosPlanilha;
-                    }
-                    catch (Exception ex)
-                    {
-                        // Em caso de exceção, realiza rollback na transação e lança a exceção.
-                        transaction.Rollback();
-                        throw ex;
-                    }
-                }
-
-            }
+            new ServicosPlanilhaRepository<Bula>(null).SalvarPlanilha(base64Planilha);
         }
 
-        /// <summary>
-        /// Utiliza reflexão para obter as propriedades relevantes da configuração com base no nome da planilha.
-        /// </summary>
-        /// <param name="configuracao">A instância de Configuracao para a qual as propriedades serão obtidas.</param>
-        private void Reflection(Configuracao configuracao)
+        public ConfiguracoesPlanilhaViewModel BuscarPlanilhaNaFila()
         {
-            // Obtém o tipo da instância de Configuracao.
-            Type tipo = configuracao.GetType();
-
-            // Atribui as propriedades relevantes com base no nome da planilha.
-            _endereceoPlanilha = tipo.GetProperty("EnderecoPlanilha" + _nomePlanilha);
-            _qtdRegistroPlanilha = tipo.GetProperty("QtdRegistroPlanilha" + _nomePlanilha);
-            _qtdRegistroBanco = tipo.GetProperty("QtdRegistroBanco" + _nomePlanilha);
-            _dadosSalvos = tipo.GetProperty("DadosSalvo" + _nomePlanilha);
-            _ultimaCargaIndexLinhaProp = tipo.GetProperty("IndexLinhaUltimaCarga" + _nomePlanilha);
+            var planilha = new ServicosPlanilhaRepository<Bula>(null).BuscarPlanilhaNaFila();
+            var config = new ConfiguracoesPlanilhaViewModel()
+            {
+                IdImportacao = planilha.IdImportacao,
+                EnderecoPlanilha = planilha.EnderecoPlanilha,
+                QtdRegistroBanco = planilha.QtdRegistroBanco,
+                QtdRegistroPlanilha = planilha.QtdRegistroPlanilha,
+                DadosSalvos = planilha.DadosSalvos,
+                IndexLinhaUltimaCarga = planilha.IndexLinhaUltimaCarga,
+                DataPlanilha = planilha.DataPlanilha.ToString()
+            };
+            return config;
         }
     }
 }
