@@ -6,6 +6,7 @@ import 'package:flytec/core/widgets/custom_text.dart';
 import 'package:flytec/features/aplications/components/custom_button.dart';
 import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_third_step.dart';
 import 'package:flytec/features/frota/presentation/components/veiculo_select.dart';
+import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:intl/intl.dart';
 
 class AdicionarRemoverCombustivelAeronavePage extends StatefulWidget {
@@ -147,7 +148,14 @@ class _AdicionarRemoverCombustivelAeronavePageState
             Center(
               child: CustomButton(
                 title: "Finalizar",
-                onClick: () async {},
+                onClick: () async {
+                  Util.toastSucesso('Criado com sucesso');
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePaga(),
+                      ));
+                },
               ),
             ),
             const SizedBox(height: 20),
