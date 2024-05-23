@@ -713,45 +713,15 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// <param name="registros">A lista de registros a serem salvos.</param>
         private void SalveLoteRegistros(List<T> registros)
         {
-            // Tamanho do lote para operações em lote.
-            const int batchSize = 12500;
+
 
             try
             {
-                // Utiliza um objeto DAO para interagir com o banco de dados.
-                using (DAO db = new DAO())
-                {
-                    // Desativa a detecção automática de mudanças e a validação ao salvar para otimizar o desempenho.
-                    db.Configuration.AutoDetectChangesEnabled = false;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.Database.CommandTimeout = 300000;
-
-                    // Calcula a quantidade de lotes necessários com base no tamanho do lote.
-                    var batchCount = Math.Ceiling((double)registros.Count / batchSize);
-
-                    // Divide a lista de registros em lotes e realiza operações em lote.
-                    for (int i = 0; i < batchCount; i++)
-                    {
-
-                        var batch = registros.Skip(i * batchSize).Take(batchSize);
-
-                        // Utiliza EFBatchOperation para inserir todos os registros do lote de uma vez.
-                        EFBatchOperation.For(db, db.Set<T>()).InsertAll(batch);
-
-                        // Salva as mudanças no banco de dados.
-                        db.SaveChanges();
-
-                        // Atualiza a configuração de quantidade de registros, se necessário.
-                        AtualizaConfQtdRegistros();
-                        Thread.Sleep(TimeSpan.FromMinutes(2));
-                    }
-                }
+                _servicosPlanilhaRepository.SalvarLoteRegistros(registros);
             }
             catch (Exception ex)
             {
-                // Registra exceção e retorna em caso de erro.
-                Logging.LogException(ex, $"{nameof(SalveLoteRegistros)}");
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
 
             // Limpa a lista de registros após o salvamento bem-sucedido.
@@ -765,15 +735,12 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// <returns>O número total de registros na tabela.</returns>
         private int ObterQtdRegistros()
         {
-            // Utiliza um objeto DAO para interagir com o banco de dados.
-            using (DAO db = new DAO())
-            {
-                // Obtém a contagem de registros na tabela associada ao tipo genérico T.
-                var quantidadeRegistros = db.Set<T>().Count();
+            // Obtém a contagem de registros na tabela associada ao tipo genérico T.
+            Expression<Func<T, bool>> predicate = b => true;
+            var quantidadeRegistros = _servicosPlanilhaRepository.ContarRegistros(predicate);
 
-                // Retorna o número total de registros na tabela.
-                return quantidadeRegistros;
-            }
+            // Retorna o número total de registros na tabela.
+            return quantidadeRegistros;
         }
 
         /// <summary>
@@ -781,214 +748,61 @@ namespace Application.Application.Servicos.Importação_Planilha
         /// </summary>
         private void AtualizaConfQtdRegistros()
         {
-            // Verifica o nome da planilha para determinar as configurações a serem atualizadas.
-            if (_nomePlanilha == "BaseMatriz" || _nomePlanilha == "OrdemServico" || _nomePlanilha == "TabelaClientes" || _nomePlanilha == "TabelaVeiculos")
+            // Verifica se a configuração é nula e a recupera do banco de dados, se necessário.
+            if (_configuracao == null)
             {
-                // Verifica se a importação é nula e a recupera do banco de dados, se necessário.
-                if (_importacao == null)
+                using (DAO db = new DAO())
                 {
-                    using (DAO db = new DAO())
-                    {
-                        _importacao = db.ImportacaoPlanilhas.FirstOrDefault(i => i.IdCliente == _configuracoesPlanilha.IdCliente && i.Id == _configuracoesPlanilha.IdImportacao);
-                    }
-                }
-
-                // Utiliza um objeto DAO para interagir com o banco de dados.
-                using (var db = new DAO())
-                {
-                    // Inicia uma transação para garantir a consistência das atualizações.
-                    using (var transaction = db.Database.BeginTransaction())
-                    {
-                        // Obtém a quantidade de registros no banco de dados e na planilha importada.
-                        var qtdRegistrosBanco = ObtenhaQtdRegistrosBanco();
-                        var qtdRegistrosPlanilha = _dataTable.Rows.Count;
-
-                        try
-                        {
-                            // Obtém a configuração de importação.
-                            var config = _importacao;
-
-                            // Atualiza as propriedades da configuração com os novos valores.
-                            config.QtdRegistroBanco = qtdRegistrosBanco;
-                            config.QtdRegistroPlanilha = qtdRegistrosPlanilha;
-                            config.DadosSalvo = qtdRegistrosBanco >= qtdRegistrosPlanilha;
-                            config.IndexUltimaLinha = (int)_ultimaCargaIndexLinha;
-
-                            // Define o estado da entidade como modificado e salva as alterações no banco de dados.
-                            db.Entry(config).State = System.Data.Entity.EntityState.Modified;
-                            db.SaveChanges();
-
-                            // Atualiza a referência local do objeto _importacao.
-                            _importacao = config;
-
-                            // Comita a transação após o salvamento bem-sucedido.
-                            transaction.Commit();
-
-                            // Atualiza as configurações de quantidade de registros do objeto _configuracoesPlanilha.
-                            _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                            _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                            _configuracoesPlanilha.DadosSalvos = qtdRegistrosBanco >= qtdRegistrosPlanilha;
-                        }
-                        catch (Exception ex)
-                        {
-                            // Em caso de exceção, realiza rollback na transação e lança a exceção.
-                            transaction.Rollback();
-                            throw ex;
-                        }
-                    }
+                    _configuracao = db.Configuracao.AsNoTracking().SingleOrDefault();
                 }
             }
-            else
+
+            // Utiliza um objeto DAO para interagir com o banco de dados.
+            using (var db = new DAO())
             {
-                // Se o nome da planilha não corresponder a nenhum caso anterior, trata como um caso genérico.
-
-                // Verifica se a configuração é nula e a recupera do banco de dados, se necessário.
-                if (_configuracao == null)
+                // Inicia uma transação para garantir a consistência das atualizações.
+                using (var transaction = db.Database.BeginTransaction())
                 {
-                    using (DAO db = new DAO())
+                    // Obtém a quantidade de registros no banco de dados.
+                    var qtdRegistrosBanco = ObterQtdRegistros();
+                    var qtdRegistrosPlanilha = _dataTable.Rows.Count;
+
+                    try
                     {
-                        _configuracao = db.Configuracao.AsNoTracking().SingleOrDefault();
+                        // Obtém a configuração.
+                        var config = _configuracao;
+
+                        // Utiliza reflexão para obter as propriedades relevantes da configuração.
+                        Reflection(_configuracao);
+
+                        // Atualiza as propriedades da configuração com os novos valores.
+                        _qtdRegistroBanco.SetValue(config, qtdRegistrosBanco);
+                        _qtdRegistroPlanilha.SetValue(config, qtdRegistrosPlanilha);
+                        _dadosSalvos.SetValue(config, qtdRegistrosBanco >= qtdRegistrosPlanilha);
+
+                        // Define o estado da entidade como modificado e salva as alterações no banco de dados.
+                        db.Entry(config).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        // Atualiza a referência local do objeto _configuracao.
+                        _configuracao = config;
+
+                        // Comita a transação após o salvamento bem-sucedido.
+                        transaction.Commit();
+
+                        // Atualiza as configurações de quantidade de registros do objeto _configuracoesPlanilha.
+                        _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
+                        _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
+                        _configuracoesPlanilha.DadosSalvos = qtdRegistrosBanco >= qtdRegistrosPlanilha;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Em caso de exceção, realiza rollback na transação e lança a exceção.
+                        transaction.Rollback();
+                        throw ex;
                     }
                 }
 
-                // Utiliza um objeto DAO para interagir com o banco de dados.
-                using (var db = new DAO())
-                {
-                    // Inicia uma transação para garantir a consistência das atualizações.
-                    using (var transaction = db.Database.BeginTransaction())
-                    {
-                        // Obtém a quantidade de registros no banco de dados.
-                        var qtdRegistrosBanco = ObterQtdRegistros();
-                        var qtdRegistrosPlanilha = _dataTable.Rows.Count;
-
-                        try
-                        {
-                            // Obtém a configuração.
-                            var config = _configuracao;
-
-                            // Utiliza reflexão para obter as propriedades relevantes da configuração.
-                            Reflection(_configuracao);
-
-                            // Atualiza as propriedades da configuração com os novos valores.
-                            _qtdRegistroBanco.SetValue(config, qtdRegistrosBanco);
-                            _qtdRegistroPlanilha.SetValue(config, qtdRegistrosPlanilha);
-                            _dadosSalvos.SetValue(config, qtdRegistrosBanco >= qtdRegistrosPlanilha);
-
-                            // Define o estado da entidade como modificado e salva as alterações no banco de dados.
-                            db.Entry(config).State = System.Data.Entity.EntityState.Modified;
-                            db.SaveChanges();
-
-                            // Atualiza a referência local do objeto _configuracao.
-                            _configuracao = config;
-
-                            // Comita a transação após o salvamento bem-sucedido.
-                            transaction.Commit();
-
-                            // Atualiza as configurações de quantidade de registros do objeto _configuracoesPlanilha.
-                            _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                            _configuracoesPlanilha.QtdRegistroBanco = qtdRegistrosBanco;
-                            _configuracoesPlanilha.DadosSalvos = qtdRegistrosBanco >= qtdRegistrosPlanilha;
-                        }
-                        catch (Exception ex)
-                        {
-                            // Em caso de exceção, realiza rollback na transação e lança a exceção.
-                            transaction.Rollback();
-                            throw ex;
-                        }
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Atualiza o status de dados salvos na configuração com base no valor fornecido.
-        /// </summary>
-        /// <param name="EhSalvo">Indica se os dados estão salvos ou não.</param>
-        private void AtualizaDadosSalvo(bool EhSalvo)
-        {
-            // Verifica o nome da planilha para determinar qual configuração atualizar.
-            if (_nomePlanilha == "BaseMatriz")
-            {
-                // Verifica se a importação é nula e a recupera do banco de dados, se necessário.
-                if (_importacao == null)
-                {
-                    using (DAO db = new DAO())
-                    {
-                        _importacao = db.ImportacaoPlanilhas
-                                        .FirstOrDefault(i => i.IdCliente == _configuracoesPlanilha.IdCliente
-                                                        && i.Id == _configuracoesPlanilha.IdImportacao);
-                    }
-                }
-
-                // Utiliza um objeto DAO para interagir com o banco de dados.
-                using (var db = new DAO())
-                {
-                    // Inicia uma transação para garantir a consistência das atualizações.
-                    using (var transaction = db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            // Obtém a configuração de importação.
-                            var config = _importacao;
-
-                            // Atualiza o status de dados salvos na configuração.
-                            config.DadosSalvo = EhSalvo;
-
-                            // Define o estado da entidade como modificado e salva as alterações no banco de dados.
-                            db.Entry(config).State = System.Data.Entity.EntityState.Modified;
-                            db.SaveChanges();
-
-                            // Comita a transação após o salvamento bem-sucedido.
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            // Em caso de exceção, realiza rollback na transação e lança a exceção.
-                            transaction.Rollback();
-                            throw ex;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // Se o nome da planilha não corresponder a "BaseMatriz", trata como um caso genérico.
-
-                // Utiliza reflexão para obter as propriedades relevantes da configuração.
-                Reflection(_configuracao);
-
-                // Utiliza um objeto DAO para interagir com o banco de dados.
-                using (var db = new DAO())
-                {
-                    // Inicia uma transação para garantir a consistência das atualizações.
-                    using (var transaction = db.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            // Obtém a configuração.
-                            var config = _configuracao;
-
-                            // Atualiza o status de dados salvos na configuração.
-                            _dadosSalvos.SetValue(config, EhSalvo);
-
-                            // Define o estado da entidade como modificado e salva as alterações no banco de dados.
-                            db.Entry(config).State = System.Data.Entity.EntityState.Modified;
-                            db.SaveChanges();
-
-                            // Atualiza a referência local do objeto _configuracao.
-                            _configuracao = config;
-
-                            // Comita a transação após o salvamento bem-sucedido.
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            // Em caso de exceção, realiza rollback na transação e lança a exceção.
-                            transaction.Rollback();
-                            throw ex;
-                        }
-                    }
-                }
             }
         }
 

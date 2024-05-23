@@ -30,5 +30,29 @@ namespace Infra.Repositorio.Importação_Planilha
             return _contextBase.Set<T>().Count(predicate);
 
         }
+
+        public async void SalvarLoteRegistros<T1>(List<T1> registros) where T1 : class
+        {            
+            // Tamanho do lote para operações em lote.
+            const int batchSize = 12500;
+
+            // Calcula a quantidade de lotes necessários com base no tamanho do lote.
+            var batchCount = Math.Ceiling((double)registros.Count / batchSize);
+
+            // Divide a lista de registros em lotes e realiza operações em lote.
+            for (int i = 0; i < batchCount; i++)
+            {
+                var batch = registros.Skip(i * batchSize).Take(batchSize);
+
+                // Utiliza EFBatchOperation para inserir todos os registros do lote de uma vez.
+                _contextBase.ChangeTracker.AutoDetectChangesEnabled = false;
+                await _contextBase.AddRangeAsync(batch);
+                await _contextBase.SaveChangesAsync();
+                _contextBase.ChangeTracker.AutoDetectChangesEnabled = true;
+
+                // Salva as mudanças no banco de dados.
+                await _contextBase.SaveChangesAsync();
+            }
+        }
     }
 }

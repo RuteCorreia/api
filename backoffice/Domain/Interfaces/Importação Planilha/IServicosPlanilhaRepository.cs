@@ -10,6 +10,6 @@ namespace Domain.Interfaces.Importação_Planilha
     public interface IServicosPlanilhaRepository<T> where T : class
     {
         int ContarRegistros<T>(Expression<Func<T, bool>> predicate) where T : class;
-       
+        void SalvarLoteRegistros<T>(List<T> registros) where T : class;
     }
 }
