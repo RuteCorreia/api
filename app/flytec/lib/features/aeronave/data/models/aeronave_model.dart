@@ -1,9 +1,9 @@
 // To parse super JSON data, do
 //
 //     final aeroNaveModel = aeroNaveModelFromJson(jsonString);
-
 import 'dart:convert';
 
+import 'package:flytec/features/aeronave/data/models/tipo_aeronave_enum.dart';
 import 'package:flytec/features/aeronave/domain/entities/aeronave_entity.dart';
 
 List<AeroNaveModel> aeroNaveModelFromJson(String str) =>
@@ -23,8 +23,9 @@ class AeroNaveModel extends AeroNaveEntity {
     super.horimetro,
     super.modelo,
     super.serialNumber,
-    super.tipo
+    super.tipoAeronave
   });
+
 
   factory AeroNaveModel.fromJson(Map<String, dynamic> json) => AeroNaveModel(
         id: json["id"],
@@ -35,8 +36,11 @@ class AeroNaveModel extends AeroNaveEntity {
         horimetro: json["horimetro"],
         modelo: json["modelo"],
         serialNumber: json["serialNumber"],
-        tipo: json["tipo"]
-      );
+    tipoAeronave: json['tipo'] != null
+        ? TipoAeronaveEnum.values.elementAtOrNull(json['tipo'] - 1) ??
+        TipoAeronaveEnum.aviao
+        : TipoAeronaveEnum.aviao,
+  );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -47,6 +51,5 @@ class AeroNaveModel extends AeroNaveEntity {
         "horimetro": horimetro,
         "modelo": modelo,
         "serialNumber": serialNumber,
-        "tipo": tipo
       };
 }

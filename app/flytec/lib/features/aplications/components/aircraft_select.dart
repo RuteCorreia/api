@@ -9,7 +9,6 @@ class AirCraftSelect extends StatelessWidget {
 
   final TextEditingController _textFlightHeight = TextEditingController();
 
-
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,35 +22,31 @@ class AirCraftSelect extends StatelessWidget {
                 itemCount: getIt<GlobalConfigVars>().aeronaves.length,
                 shrinkWrap: true,
                 padding: EdgeInsets.zero,
-                itemBuilder: (context, index) => MaterialButton(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0)),
-                    padding: EdgeInsets.zero,
-                    color: Colors.white,
-                    elevation: 0,
-                    onPressed: () {
-                      String formattedPrefixo = getIt<GlobalConfigVars>().aeronaves[index]?.prefixo?.toUpperCase() ?? 'Sem Tipo Definido';
-                      String formattedTipo = getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 2
-                          ? 'Drone'
-                          : getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 1
-                          ? 'Aeronave'
-                          : 'Sem Tipo Definido';
-                      String result = '$formattedPrefixo - $formattedTipo';
+                itemBuilder: (context, index) {
+                  final aeronave = getIt<GlobalConfigVars>().aeronaves[index];
 
-                      onChanged(result);
-                      Navigator.of(context).pop();
-                    },
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                              '${getIt<GlobalConfigVars>().aeronaves[index]?.prefixo?.toUpperCase() ?? 'Sem Tipo Definido'} - ${getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 2 ? 'Drone' : getIt<GlobalConfigVars>().aeronaves[index]?.tipo == 1 ? 'Aeronave' : 'Sem Tipo Definido'}',
-                              style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600)),
-                        ))),
+                  return MaterialButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8.0)),
+                      padding: EdgeInsets.zero,
+                      color: Colors.white,
+                      elevation: 0,
+                      onPressed: () {
+                        onChanged(aeronave.prefixo!);
+                        Navigator.of(context).pop();
+                      },
+                      child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                '${aeronave.prefixo ?? ''} - ${aeronave.tipoAeronave?.toName}',
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
+                          )));
+                },
               ),
             ),
             SizedBox(

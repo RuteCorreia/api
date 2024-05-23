@@ -4,13 +4,12 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/recomendacoes_tecnicas.dart';
-import 'package:file_picker/file_picker.dart';
 
 class RecomendacoesTecnicasPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
   const RecomendacoesTecnicasPage(
       {required ReportAplicationController reportAplicationController,
-      super.key})
+        super.key})
       : _reportAplicationController = reportAplicationController;
 
   @override
@@ -34,7 +33,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
   String _speedWind = "Selecione";
   String _selectedEquipment = "";
   String _selectedAaeronave = "";
-
   final TextEditingController _qtdVeiculante = TextEditingController();
   final TextEditingController _larguraDaFaixa = TextEditingController();
   final TextEditingController _volumeDeAplicacao = TextEditingController();
@@ -106,7 +104,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
         _aplicacao.recomendacoesTecnicas?.id == 0) {
       int? idRecomendacoesTecnicas = await widget._reportAplicationController
           .createElementInTable(
-              _recomendacoesTecnicas!.toMap(), 'RecomendacoesTecnicas');
+          _recomendacoesTecnicas!.toMap(), 'RecomendacoesTecnicas');
       await widget._reportAplicationController.updateElementInTable(
           _aplicacao.id!,
           {'recomendacoesTecnicas_id': idRecomendacoesTecnicas},
@@ -131,19 +129,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
     _aplicacao.recomendacoesTecnicas = idRecomendacoesTecnicas;
     widget._reportAplicationController.setAplicacaoSelected(_aplicacao);
     setState(() {});
-  }
-
-  Future<void> _pickFile() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-
-    if (result != null) {
-      PlatformFile file = result.files.first;
-      // Handle the selected file
-      print('File picked: ${file.name}');
-    } else {
-      // User canceled the file picking
-      print('User canceled the file picking.');
-    }
   }
 
   @override
@@ -212,10 +197,10 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                                       width: double.maxFinite,
                                       child: VeiculanteSelect(
                                           onChangeVeiculanteType: (value) {
-                                        setState(() {
-                                          _veiculanteType = value;
-                                        });
-                                      }),
+                                            setState(() {
+                                              _veiculanteType = value;
+                                            });
+                                          }),
                                     ));
                               });
                         },
@@ -254,7 +239,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                               
+
                             )),
                       ),
                     ),
@@ -288,7 +273,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                       
+
                     )),
               ),
             ),
@@ -326,7 +311,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               fontSize: 16,
                               fontFamily: 'Inter',
                               fontWeight: FontWeight.w500,
-                               
+
                             )),
                       ),
                     ),
@@ -379,7 +364,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                     )
                   ],
                 ),
-                
+
               ],
             ),
             const SizedBox(height: 10),
@@ -406,20 +391,6 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             ));
                       });
                 }),
-            Visibility(
-              visible: _selectedAaeronave.contains('Drone'),
-              child: Column(
-                children: [
-                  SizedBox(height: 10),
-                  const CustomText(text: 'Selecione um arquivo'),
-                  SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: _pickFile,
-                    child: Text('Escolher Arquivo'),
-                  ),
-                ],
-              ),
-            ),
             const SizedBox(height: 10),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),
@@ -435,16 +406,16 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               width: double.maxFinite,
                               child: FlightHeightSelect(
                                   onChangedFlightHeight: (value) {
-                                setState(() {
-                                  _flightHeight = value;
-                                });
-                              }),
+                                    setState(() {
+                                      _flightHeight = value;
+                                    });
+                                  }),
                             ));
                       });
                 },
                 child: ComboBox(
                     selectedName:
-                        _flightHeight.isEmpty ? "Selecione" : _flightHeight)),
+                    _flightHeight.isEmpty ? "Selecione" : _flightHeight)),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -526,7 +497,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             content: SizedBox(
                               width: double.maxFinite,
                               child:
-                                  SpeedWindSelect(onChangedSpeedWind: (value) {
+                              SpeedWindSelect(onChangedSpeedWind: (value) {
                                 setState(() {
                                   _speedWind = value;
                                 });
@@ -536,7 +507,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                 },
                 child: ComboBox(
                     selectedName:
-                        _speedWind.isEmpty ? "Selecione" : _speedWind)),
+                    _speedWind.isEmpty ? "Selecione" : _speedWind)),
             const SizedBox(height: 10),
             const CustomText(text: 'Tipo de produto'),
             const SizedBox(height: 10),
@@ -552,22 +523,22 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                               width: double.maxFinite,
                               child: ProductTypeSelect(
                                   onChangedProductType: (value) {
-                                setState(() {
-                                  _productType = value;
-                                });
-                              }),
+                                    setState(() {
+                                      _productType = value;
+                                    });
+                                  }),
                             ));
                       });
                 },
                 child: ComboBox(
                     selectedName:
-                        _productType.isEmpty ? "Selecione" : _productType)),
+                    _productType.isEmpty ? "Selecione" : _productType)),
             const SizedBox(height: 10),
             const CustomText(text: 'Equipamento'),
             const SizedBox(height: 10),
             CustomComboBoxExpanded(
               selectedName:
-                  _selectedEquipment.isEmpty ? "Selecione" : _selectedEquipment,
+              _selectedEquipment.isEmpty ? "Selecione" : _selectedEquipment,
               onTap: () async {
                 await showDialog(
                     context: context,
