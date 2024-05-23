@@ -4,7 +4,6 @@
 
 import 'dart:convert';
 
-import 'package:flytec/features/aeronave/data/models/tipo_aeronave_enum.dart';
 import 'package:flytec/features/aeronave/domain/entities/aeronave_entity.dart';
 
 List<AeroNaveModel> aeroNaveModelFromJson(String str) =>
@@ -15,30 +14,29 @@ String aeroNaveModelToJson(List<AeroNaveModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class AeroNaveModel extends AeroNaveEntity {
-  const AeroNaveModel(
-      {super.id,
-      super.idEmpresa,
-      super.prefixo,
-      super.combustivel,
-      super.capacidadeDeCarga,
-      super.horimetro,
-      super.modelo,
-      super.serialNumber,
-      super.tipoAeronave});
+  const AeroNaveModel({
+    super.id,
+    super.idEmpresa,
+    super.prefixo,
+    super.combustivel,
+    super.capacidadeDeCarga,
+    super.horimetro,
+    super.modelo,
+    super.serialNumber,
+    super.tipo
+  });
 
   factory AeroNaveModel.fromJson(Map<String, dynamic> json) => AeroNaveModel(
-      id: json["id"],
-      idEmpresa: json["idEmpresa"],
-      prefixo: json["prefixo"],
-      combustivel: json["combustivel"],
-      capacidadeDeCarga: json["capacidadeDeCarga"],
-      horimetro: json["horimetro"],
-      modelo: json["modelo"],
-      tipoAeronave: json['tipo'] != null
-          ? TipoAeronaveEnum.values.elementAtOrNull(json['tipo'] - 1) ??
-              TipoAeronaveEnum.aviao
-          : TipoAeronaveEnum.aviao,
-      serialNumber: json["serialNumber"]);
+        id: json["id"],
+        idEmpresa: json["idEmpresa"],
+        prefixo: json["prefixo"],
+        combustivel: json["combustivel"],
+        capacidadeDeCarga: json["capacidadeDeCarga"],
+        horimetro: json["horimetro"],
+        modelo: json["modelo"],
+        serialNumber: json["serialNumber"],
+        tipo: json["tipo"]
+      );
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -49,5 +47,6 @@ class AeroNaveModel extends AeroNaveEntity {
         "horimetro": horimetro,
         "modelo": modelo,
         "serialNumber": serialNumber,
+        "tipo": tipo
       };
 }
