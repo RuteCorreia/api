@@ -131,6 +131,19 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
     setState(() {});
   }
 
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      PlatformFile file = result.files.first;
+      // Handle the selected file
+      print('File picked: ${file.name}');
+    } else {
+      // User canceled the file picking
+      print('User canceled the file picking.');
+    }
+  }
+
   @override
   void initState() {
     super.initState();
