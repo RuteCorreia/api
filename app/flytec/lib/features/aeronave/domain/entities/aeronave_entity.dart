@@ -27,5 +27,5 @@ class AeroNaveEntity extends Equatable {
 
   @override
   List<Object?> get props =>
-      [id, idEmpresa, prefixo, combustivel, capacidadeDeCarga, horimetro];
+      [id, idEmpresa, prefixo, combustivel, capacidadeDeCarga, horimetro, tipoAeronave];
 }
