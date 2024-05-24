@@ -4,6 +4,7 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/models/recomendacoes_tecnicas.dart';
+import 'package:file_picker/file_picker.dart';
 
 class RecomendacoesTecnicasPage extends StatefulWidget {
   final ReportAplicationController _reportAplicationController;
@@ -405,7 +406,7 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                       });
                 }),
             Visibility(
-              visible: _selectedAaeronave.contains('Drone'),
+              visible: _selectedAaeronave.contains('DRONE'),
               child: Column(
                 children: [
                   SizedBox(height: 10),
