@@ -391,6 +391,20 @@ class _RecomendacoesTecnicasPageState extends State<RecomendacoesTecnicasPage> {
                             ));
                       });
                 }),
+            Visibility(
+              visible: _selectedAaeronave.contains('Drone'),
+              child: Column(
+                children: [
+                  SizedBox(height: 10),
+                  const CustomText(text: 'Selecione um arquivo'),
+                  SizedBox(height: 10),
+                  ElevatedButton(
+                    onPressed: _pickFile,
+                    child: Text('Escolher Arquivo'),
+                  ),
+                ],
+              ),
+            ),
             const SizedBox(height: 10),
             const CustomText(text: 'Altura do voo (m)'),
             const SizedBox(height: 10),
