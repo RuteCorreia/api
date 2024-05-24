@@ -217,3 +217,5 @@ backoffice/Helpers/obj
 /backoffice/.vs/ProjectEvaluation/flytec.metadata.v7.bin
 /backoffice/WebApi/Properties/launchSettings.json
 *.wsuo
+/backoffice/WebApi/Properties/PublishProfiles/AZURE-API-QA.pubxml.user
+/backoffice/WebApi/Properties/PublishProfiles/FTP-API-QA.pubxml.user
