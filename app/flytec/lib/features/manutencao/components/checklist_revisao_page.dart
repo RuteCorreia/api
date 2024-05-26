@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flytec/features/manutencao/components/widgets/custom_card_with_color_and_widget.dart';
+import 'package:flytec/features/manutencao/controller/manutencao_controller.dart';
+import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 import 'package:flytec/features/manutencao/models/revisao_model.dart';
 
 class CheckListRevisaoPage extends StatefulWidget {
-  const CheckListRevisaoPage({super.key});
+  final ManutencaoController _manutencaoController;
+  const CheckListRevisaoPage(
+      {required ManutencaoController manutencaoController, super.key})
+      : _manutencaoController = manutencaoController;
+
 
   @override
   State<CheckListRevisaoPage> createState() => _CheckListRevisaoPageState();
@@ -17,6 +23,15 @@ class _CheckListRevisaoPageState extends State<CheckListRevisaoPage> {
     RevisaoModel(isSelected: false, title: 'Item 3')
   ];
   final ScrollController _scrollController = ScrollController();
+
+    ReportManutencaoModel? _reportManutencaoModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportManutencaoModel = widget._manutencaoController.reportManutencaoModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,9 +44,9 @@ class _CheckListRevisaoPageState extends State<CheckListRevisaoPage> {
             child: ListView(
               controller: _scrollController,
               children: [
-                const Text(
-                  'Aeronave PTX-123',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                 Text(
+                  'Aeronave ${_reportManutencaoModel?.prefAeronave??''}',
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 ListView.builder(
                     controller: _scrollController,

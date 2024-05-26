@@ -5,9 +5,14 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/manutencao/components/checklist_revisao_page.dart';
 import 'package:flytec/features/manutencao/components/manutencao_componentes_page.dart';
 import 'package:flytec/features/manutencao/components/widgets/custom_card_with_color.dart';
+import 'package:flytec/features/manutencao/controller/manutencao_controller.dart';
+import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 
 class NewManutencaoPage extends StatefulWidget {
-  const NewManutencaoPage({super.key});
+  final ManutencaoController _manutencaoController;
+  const NewManutencaoPage(
+      {required ManutencaoController manutencaoController, super.key})
+      : _manutencaoController = manutencaoController;
 
   @override
   State<NewManutencaoPage> createState() => _NewManutencaoPageState();
@@ -16,6 +21,14 @@ class NewManutencaoPage extends StatefulWidget {
 class _NewManutencaoPageState extends State<NewManutencaoPage> {
   String _selectedAaeronave = '';
   final TextEditingController _horimetro = TextEditingController();
+
+  ReportManutencaoModel? _reportManutencaoModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportManutencaoModel = widget._manutencaoController.reportManutencaoModel;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,7 +93,6 @@ class _NewManutencaoPageState extends State<NewManutencaoPage> {
                       fontSize: 16,
                       fontFamily: 'Inter',
                       fontWeight: FontWeight.w500,
-                       
                     )),
               ),
             ),
@@ -92,18 +104,32 @@ class _NewManutencaoPageState extends State<NewManutencaoPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => const CheckListRevisaoPage()));
+                        builder: (context) => CheckListRevisaoPage(
+                              manutencaoController:
+                                  widget._manutencaoController,
+                            )));
               },
             ),
             const SizedBox(height: 20),
             CustomCardWithColor(
               height: 70,
               onTap: () async {
+                _reportManutencaoModel = ReportManutencaoModel(
+                    prefAeronave: _selectedAaeronave,
+                    horimetroInicial: _horimetro.text,
+                    createdAt: DateTime.now().millisecondsSinceEpoch);
+
+                widget._manutencaoController
+                    .setReportManutencaoModel(_reportManutencaoModel!);
+
+                setState(() {});
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            const ManutencaoComponentesPage()));
+                        builder: (context) => ManutencaoComponentesPage(
+                              manutencaoController:
+                                  widget._manutencaoController,
+                            )));
               },
               title: 'Manutenção de Componentes\ne Aeronave',
               isSelected: true,

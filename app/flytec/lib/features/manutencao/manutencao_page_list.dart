@@ -3,6 +3,7 @@ import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/core/widgets/dashboard_counter.dart';
 import 'package:flytec/features/manutencao/components/new_manutencao_page.dart';
 import 'package:flytec/features/manutencao/components/report_manutencao_card_list.dart';
+import 'package:flytec/features/manutencao/controller/manutencao_controller.dart';
 import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 
 class ManutencaoPageList extends StatefulWidget {
@@ -26,6 +27,8 @@ class _ManutencaoPageListState extends State<ManutencaoPageList> {
         state: DashBoardState.Incompleto)
   ];
 
+  final ManutencaoController _manutencaoController = ManutencaoController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +41,7 @@ class _ManutencaoPageListState extends State<ManutencaoPageList> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const NewManutencaoPage()));
+                  builder: (context) =>  NewManutencaoPage(manutencaoController: _manutencaoController,)));
         },
         child: const Icon(Icons.add, color: Colors.white),
       ),
