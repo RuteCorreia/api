@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoCroqui.Interface;
 using Application.DTOs.Cadastros.AplicacaoCroqui.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class AplicacaoCroquiController : ControllerBase
 {
     private readonly IAplicacaoCroquiService _aplicacaoCroquiService;
+    private readonly ILogService _logService;
 
-    public AplicacaoCroquiController(IAplicacaoCroquiService aplicacaoCroquiService)
+    public AplicacaoCroquiController(IAplicacaoCroquiService aplicacaoCroquiService, ILogService logService)
     {
         _aplicacaoCroquiService = aplicacaoCroquiService;
+        _logService = logService;
     }
 
     [HttpGet]
@@ -27,12 +30,14 @@ public class AplicacaoCroquiController : ControllerBase
     {
         try
         {
-            var combustiveis = await _aplicacaoCroquiService.GetAllAsync();
-            return Ok(combustiveis);
+            var croquis = await _aplicacaoCroquiService.GetAllAsync();
+            _logService.LogInformation("Todos os registros de Croqui de Aplicação foram obtidos com sucesso.");
+            return Ok(croquis);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoCroqui getAll - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter todos os registros de Croqui de Aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todos os registros de Croqui de Aplicação: {ex.Message}");
         }
     }
 
@@ -41,17 +46,20 @@ public class AplicacaoCroquiController : ControllerBase
     {
         try
         {
-            var aplicacaoCroqui = await _aplicacaoCroquiService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(aplicacaoCroqui))
+            var croqui = await _aplicacaoCroquiService.GetByIdAsync(id);
+            if (!ObjectNullValidation.IsObjectNull(croqui))
             {
-                return Ok(aplicacaoCroqui);
+                _logService.LogInformation($"Croqui de Aplicação com ID {id} foi obtido com sucesso.");
+                return Ok(croqui);
             }
 
+            _logService.LogWarning($"Croqui de Aplicação com ID {id} não foi encontrado.");
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoCroqui getById - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter Croqui de Aplicação com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter Croqui de Aplicação com ID {id}: {ex.Message}");
         }
     }
 
@@ -63,14 +71,17 @@ public class AplicacaoCroquiController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _aplicacaoCroquiService.AddAsync(obj);
-                return Ok("Sucesso");
+                _logService.LogInformation("Novo Croqui de Aplicação adicionado com sucesso.");
+                return Ok();
             }
 
+            _logService.LogWarning("Modelo inválido ao adicionar novo Croqui de Aplicação.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoCroqui add - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao adicionar novo Croqui de Aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo Croqui de Aplicação: {ex.Message}");
         }
     }
 
@@ -87,19 +98,23 @@ public class AplicacaoCroquiController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _aplicacaoCroquiService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    _logService.LogInformation($"Croqui de Aplicação com ID {id} atualizado com sucesso.");
+                    return Ok();
                 }
                 else
                 {
+                    _logService.LogWarning($"Croqui de Aplicação com ID {id} não encontrado para atualização.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
 
+            _logService.LogWarning("Modelo inválido ao atualizar Croqui de Aplicação.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoCroqui update - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao atualizar Croqui de Aplicação com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar Croqui de Aplicação com ID {id}: {ex.Message}");
         }
     }
 
@@ -111,14 +126,17 @@ public class AplicacaoCroquiController : ControllerBase
             if (id != 0)
             {
                 await _aplicacaoCroquiService.DeleteAsync(id);
+                _logService.LogInformation($"Croqui de Aplicação com ID {id} foi deletado com sucesso.");
                 return Ok("Deletado com sucesso");
             }
 
+            _logService.LogWarning("Solicitação para deletar Croqui de Aplicação não pôde ser executada, ID inválido.");
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoCroqui delete - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao deletar Croqui de Aplicação com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar Croqui de Aplicação: {ex.Message}");
         }
     }
 }

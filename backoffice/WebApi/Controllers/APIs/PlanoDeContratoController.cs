@@ -1,124 +1,142 @@
 ﻿using Application.DTOs.Cadastros.PlanoDeContrato.Interface;
 using Application.DTOs.Cadastros.PlanoDeContrato.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-//[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class PlanoDeContratoController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IPlanoDeContratoService _planoDeContratoService;
-
-    public PlanoDeContratoController(IPlanoDeContratoService planoDeContratoService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    //[Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class PlanoDeContratoController : ControllerBase
     {
-        _planoDeContratoService = planoDeContratoService;
-    }
+        private readonly IPlanoDeContratoService _planoDeContratoService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<PlanoDeContratoViewModel>>> GetAll()
-    {
-        try
+        public PlanoDeContratoController(IPlanoDeContratoService planoDeContratoService, ILogService logService)
         {
-            var combustiveis = await _planoDeContratoService.GetAllAsync();
-            return Ok(combustiveis);
+            _planoDeContratoService = planoDeContratoService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"PlanoDeContrato getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<PlanoDeContratoViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<PlanoDeContratoViewModel>>> GetAll()
         {
-            var planoDeContrato = await _planoDeContratoService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(planoDeContrato))
+            try
             {
-                return Ok(planoDeContrato);
+                var planos = await _planoDeContratoService.GetAllAsync();
+                _logService.LogInformation("Planos de contrato recuperados com sucesso.");
+                return Ok(planos);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"PlanoDeContrato getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] PlanoDeContratoViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _planoDeContratoService.AddAsync(obj);
-                return Ok();
+                _logService.LogError(ex, $"Erro ao recuperar planos de contrato: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar planos de contrato: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"PlanoDeContrato add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] PlanoDeContratoViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<PlanoDeContratoViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _planoDeContratoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var planoDeContrato = await _planoDeContratoService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(planoDeContrato))
                 {
-                    obj.IdPlano = objeto.IdPlano;
+                    _logService.LogInformation("Plano de contrato recuperado com sucesso.");
+                    return Ok(planoDeContrato);
+                }
 
-                    await _planoDeContratoService.UpdateAsync(obj);
+                _logService.LogWarning("Plano de contrato não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Plano de contrato não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar plano de contrato pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar plano de contrato pelo ID: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] PlanoDeContratoViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _planoDeContratoService.AddAsync(obj);
+                    _logService.LogInformation("Plano de contrato adicionado com sucesso.");
                     return Ok();
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _logService.LogWarning("Modelo inválido ao adicionar plano de contrato.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"PlanoDeContrato update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _planoDeContratoService.DeleteAsync(id);
-                return Ok();
+                _logService.LogError(ex, $"Erro ao adicionar plano de contrato: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar plano de contrato: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] PlanoDeContratoViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"PlanoDeContrato delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _planoDeContratoService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.IdPlano = objeto.IdPlano;
+                        await _planoDeContratoService.UpdateAsync(obj);
+                        _logService.LogInformation("Plano de contrato atualizado com sucesso.");
+                        return Ok();
+                    }
+                    else
+                    {
+                        _logService.LogWarning("Plano de contrato não encontrado para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Plano de contrato não encontrado");
+                    }
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar plano de contrato.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar plano de contrato: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar plano de contrato: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _planoDeContratoService.DeleteAsync(id);
+                    _logService.LogInformation("Plano de contrato deletado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Solicitação inválida para deletar plano de contrato.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação inválida");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao deletar plano de contrato: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar plano de contrato: {ex.Message}");
+            }
         }
     }
 }

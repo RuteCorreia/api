@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class CombateIncendioController : ControllerBase
 {
     private readonly ICombateIncendioService _combateIncendioService;
+    private readonly ILogService _loggerService;
 
-    public CombateIncendioController(ICombateIncendioService combateIncendioService)
+    public CombateIncendioController(ICombateIncendioService combateIncendioService, ILogService loggerService)
     {
         _combateIncendioService = combateIncendioService;
+        _loggerService = loggerService;
     }
 
     [HttpGet]
@@ -28,11 +31,13 @@ public class CombateIncendioController : ControllerBase
         try
         {
             var combustiveis = await _combateIncendioService.GetAllAsync();
+            _loggerService.LogInformation("Todos os registros de Combate a Incêndio foram recuperados com sucesso.");
             return Ok(combustiveis);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio getAll - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de Combate a Incêndio: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Combate a Incêndio: {ex.Message}");
         }
     }
 
@@ -44,14 +49,17 @@ public class CombateIncendioController : ControllerBase
             var combateIncendio = await _combateIncendioService.GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(combateIncendio))
             {
+                _loggerService.LogInformation($"Registro de Combate a Incêndio com ID {id} foi recuperado com sucesso.");
                 return Ok(combateIncendio);
             }
 
+            _loggerService.LogWarning($"Registro de Combate a Incêndio com ID {id} não encontrado.");
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio getById - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar registro de Combate a Incêndio com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar registro de Combate a Incêndio com ID {id}: {ex.Message}");
         }
     }
 
@@ -63,14 +71,17 @@ public class CombateIncendioController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _combateIncendioService.AddAsync(obj);
+                _loggerService.LogInformation("Novo registro de Combate a Incêndio adicionado com sucesso.");
                 return Ok("Sucesso");
             }
 
+            _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio add - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao adicionar novo registro de Combate a Incêndio: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo registro de Combate a Incêndio: {ex.Message}");
         }
     }
 
@@ -85,20 +96,23 @@ public class CombateIncendioController : ControllerBase
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
                     obj.Id = objeto.Id;
-
                     await _combateIncendioService.UpdateAsync(obj);
+                    _loggerService.LogInformation($"Registro de Combate a Incêndio com ID {id} atualizado com sucesso.");
                     return Ok("Sucesso");
                 }
                 else
                 {
+                    _loggerService.LogWarning($"Registro de Combate a Incêndio com ID {id} não encontrado.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
 
+            _loggerService.LogWarning("Modelo inválido ao atualizar registro de Combate a Incêndio.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
+            _loggerService.LogError(ex, $"Erro ao atualizar registro de Combate a Incêndio com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio update - {ex.Message}");
         }
     }
@@ -111,13 +125,15 @@ public class CombateIncendioController : ControllerBase
             if (id != 0)
             {
                 await _combateIncendioService.DeleteAsync(id);
+                _loggerService.LogInformation($"Registro de Combate a Incêndio com ID {id} deletado com sucesso.");
                 return Ok("Deletado com sucesso");
             }
-
+            _loggerService.LogWarning($"Registro de Combate a Incêndio com ID {id} não encontrado.");
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
+            _loggerService.LogError(ex, $"Erro ao deletar registro de Combate a Incêndio com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio delete - {ex.Message}");
         }
     }

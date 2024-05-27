@@ -1,124 +1,143 @@
 ﻿using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class TipoProdutoController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly ITipoProdutoService _tipoProdutoService;
-
-    public TipoProdutoController(ITipoProdutoService tipoProdutoService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class TipoProdutoController : ControllerBase
     {
-        _tipoProdutoService = tipoProdutoService;
-    }
+        private readonly ITipoProdutoService _tipoProdutoService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<TipoProdutoViewModel>>> GetAll()
-    {
-        try
+        public TipoProdutoController(ITipoProdutoService tipoProdutoService, ILogService logService)
         {
-            var combustiveis = await _tipoProdutoService.GetAllAsync();
-            return Ok(combustiveis);
+            _tipoProdutoService = tipoProdutoService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"TipoProduto getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<TipoProdutoViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<TipoProdutoViewModel>>> GetAll()
         {
-            var tipoProduto = await _tipoProdutoService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(tipoProduto))
+            try
             {
-                return Ok(tipoProduto);
+                var tiposProduto = await _tipoProdutoService.GetAllAsync();
+                _logService.LogInformation("Todos os tipos de produto foram recuperados com sucesso.");
+                return Ok(tiposProduto);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"TipoProduto getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] TipoProdutoViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _tipoProdutoService.AddAsync(obj);
-                return Ok("Sucesso");
+                _logService.LogError(ex, $"Erro ao recuperar todos os tipos de produto: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os tipos de produto: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"TipoProduto add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] TipoProdutoViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TipoProdutoViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _tipoProdutoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var tipoProduto = await _tipoProdutoService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(tipoProduto))
                 {
-                    obj.Id = objeto.Id;
+                    _logService.LogInformation("Tipo de produto recuperado com sucesso.");
+                    return Ok(tipoProduto);
+                }
 
-                    await _tipoProdutoService.UpdateAsync(obj);
+                _logService.LogWarning("Tipo de produto não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Tipo de produto não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar tipo de produto pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar tipo de produto pelo ID: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] TipoProdutoViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _tipoProdutoService.AddAsync(obj);
+                    _logService.LogInformation("Novo tipo de produto adicionado com sucesso.");
                     return Ok("Sucesso");
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _logService.LogWarning("Modelo inválido ao adicionar novo tipo de produto.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"TipoProduto update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _tipoProdutoService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                _logService.LogError(ex, $"Erro ao adicionar novo tipo de produto: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo tipo de produto: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] TipoProdutoViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"TipoProduto delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _tipoProdutoService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
+
+                        await _tipoProdutoService.UpdateAsync(obj);
+                        _logService.LogInformation("Tipo de produto atualizado com sucesso.");
+                        return Ok("Sucesso");
+                    }
+                    else
+                    {
+                        _logService.LogWarning("Tipo de produto não encontrado para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Tipo de produto não encontrado");
+                    }
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar tipo de produto.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar tipo de produto: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar tipo de produto: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _tipoProdutoService.DeleteAsync(id);
+                    _logService.LogInformation("Tipo de produto deletado com sucesso.");
+                    return Ok("Deletado com sucesso");
+                }
+
+                _logService.LogWarning("Solicitação inválida para deletar tipo de produto.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao deletar tipo de produto: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar tipo de produto: {ex.Message}");
+            }
         }
     }
 }

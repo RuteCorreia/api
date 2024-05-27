@@ -1,124 +1,141 @@
 ﻿using Application.DTOs.Cadastros.Estados.Interface;
 using Application.DTOs.Cadastros.Estados.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class EstadosController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IEstadosService _estadosService;
-
-    public EstadosController(IEstadosService estadosService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class EstadosController : ControllerBase
     {
-        _estadosService = estadosService;
-    }
+        private readonly IEstadosService _estadosService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<EstadosViewModel>>> GetAll()
-    {
-        try
+        public EstadosController(IEstadosService estadosService, ILogService logService)
         {
-            var combustiveis = await _estadosService.GetAllAsync();
-            return Ok(combustiveis);
+            _estadosService = estadosService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Estados getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<EstadosViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<EstadosViewModel>>> GetAll()
         {
-            var estados = await _estadosService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(estados))
+            try
             {
+                var estados = await _estadosService.GetAllAsync();
+                _logService.LogInformation("Lista de todos os estados obtida com sucesso.");
                 return Ok(estados);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Estados getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] EstadosViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _estadosService.AddAsync(obj);
-                return Ok("Sucesso");
+                _logService.LogError(ex, $"Erro ao obter todos os estados: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todos os estados: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Estados add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] EstadosViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<EstadosViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _estadosService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var estados = await _estadosService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(estados))
                 {
-                    obj.Id = objeto.Id;
+                    _logService.LogInformation($"Detalhes do estado com ID {id} obtidos com sucesso.");
+                    return Ok(estados);
+                }
 
-                    await _estadosService.UpdateAsync(obj);
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao obter detalhes do estado com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes do estado com ID {id}: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] EstadosViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _estadosService.AddAsync(obj);
+                    _logService.LogInformation("Estado adicionado com sucesso.");
                     return Ok("Sucesso");
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Estados update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _estadosService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                _logService.LogError(ex, $"Erro ao adicionar estado: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar estado: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] EstadosViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Estados delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _estadosService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
+
+                        await _estadosService.UpdateAsync(obj);
+                        _logService.LogInformation($"Estado com ID {id} atualizado com sucesso.");
+                        return Ok("Sucesso");
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar estado com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar estado com ID {id}: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _estadosService.DeleteAsync(id);
+                    _logService.LogInformation($"Estado com ID {id} excluído com sucesso.");
+                    return Ok("Deletado com sucesso");
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao excluir estado com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir estado com ID {id}: {ex.Message}");
+            }
         }
     }
 }

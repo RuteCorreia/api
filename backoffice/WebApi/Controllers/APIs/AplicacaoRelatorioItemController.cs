@@ -1,124 +1,146 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class AplicacaoRelatorioItemController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
-
-    public AplicacaoRelatorioItemController(IAplicacaoRelatorioItemService aplicacaoRelatorioItemService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class AplicacaoRelatorioItemController : ControllerBase
     {
-        _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
-    }
+        private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
+        private readonly ILogService _loggerService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll()
-    {
-        try
+        public AplicacaoRelatorioItemController(IAplicacaoRelatorioItemService aplicacaoRelatorioItemService, ILogService loggerService)
         {
-            var combustiveis = await _aplicacaoRelatorioItemService.GetAllAsync();
-            return Ok(combustiveis);
+            _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
+            _loggerService = loggerService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoRelatorioItem getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<AplicacaoRelatorioItemViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll()
         {
-            var aplicacaoRelatorioItem = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(aplicacaoRelatorioItem))
+            try
             {
-                return Ok(aplicacaoRelatorioItem);
+                var itens = await _aplicacaoRelatorioItemService.GetAllAsync();
+                _loggerService.LogInformation("Todos os itens do relatório de aplicação foram recuperados com sucesso.");
+                return Ok(itens);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoRelatorioItem getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] AplicacaoRelatorioItemViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _aplicacaoRelatorioItemService.AddAsync(obj);
-                return Ok("Sucesso");
+                _loggerService.LogError(ex, $"Erro ao buscar todos os itens do relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os itens do relatório de aplicação: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoRelatorioItem add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] AplicacaoRelatorioItemViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<AplicacaoRelatorioItemViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var item = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(item))
                 {
-                    obj.Id = objeto.Id;
+                    _loggerService.LogInformation($"O item do relatório de aplicação com ID {id} foi recuperado com sucesso.");
+                    return Ok(item);
+                }
 
-                    await _aplicacaoRelatorioItemService.UpdateAsync(obj);
+                _loggerService.LogWarning($"O item do relatório de aplicação com ID {id} não foi encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao buscar o item do relatório de aplicação com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar o item do relatório de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] AplicacaoRelatorioItemViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _aplicacaoRelatorioItemService.AddAsync(obj);
+                    _loggerService.LogInformation("Item do relatório de aplicação adicionado com sucesso.");
                     return Ok("Sucesso");
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _loggerService.LogWarning("Tentativa de adicionar um item do relatório de aplicação com um modelo inválido.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoRelatorioItem update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _aplicacaoRelatorioItemService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                _loggerService.LogError(ex, $"Erro ao adicionar item do relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar item do relatório de aplicação: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] AplicacaoRelatorioItemViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AplicacaoRelatorioItem delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingObj = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(existingObj))
+                    {
+                        obj.Id = existingObj.Id;
+                        await _aplicacaoRelatorioItemService.UpdateAsync(obj);
+                        _loggerService.LogInformation($"Item do relatório de aplicação com ID {id} atualizado com sucesso.");
+                        return Ok("Sucesso");
+                    }
+                    else
+                    {
+                        _loggerService.LogWarning($"O item do relatório de aplicação com ID {id} não foi encontrado.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                _loggerService.LogWarning("Tentativa de atualizar um item do relatório de aplicação com um modelo inválido.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao atualizar item do relatório de aplicação com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar item do relatório de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _aplicacaoRelatorioItemService.DeleteAsync(id);
+                    _loggerService.LogInformation($"Item do relatório de aplicação com ID {id} deletado com sucesso.");
+                    return Ok("Deletado com sucesso");
+                }
+
+                _loggerService.LogWarning("Solicitação para deletar item do relatório de aplicação não pôde ser executada, ID inválido.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não pôde ser executada");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao deletar item do relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar item do relatório de aplicação: {ex.Message}");
+            }
         }
     }
 }

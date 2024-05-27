@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Empresa.ViewModel;
+using Application.DTOs.Log.Interface;
 using Domain.Enums;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -20,11 +21,13 @@ public class EmpresaController : ControllerBase
 {
     private readonly IEmpresaService _empresaService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly ILogService _logService;
 
-    public EmpresaController(IEmpresaService empresaService, LoggedUserInfoService loggedUserInfoService)
+    public EmpresaController(IEmpresaService empresaService, LoggedUserInfoService loggedUserInfoService, ILogService logService)
     {
         _empresaService = empresaService;
         _loggedUserInfoService = loggedUserInfoService;
+        _logService = logService;
     }
 
     [HttpGet]
@@ -36,13 +39,15 @@ public class EmpresaController : ControllerBase
             if (string.IsNullOrEmpty(loggedUser.Item3))
             {
                 var empresas = await _empresaService.GetAllAsync();
+                _logService.LogInformation($"Listagem de todas as empresas realizada por {loggedUser.Item1}.");
                 return Ok(empresas);
             }
             return Unauthorized();
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa getAll - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter todas as empresas: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todas as empresas: {ex.Message}");
         }
     }
 
@@ -73,7 +78,8 @@ public class EmpresaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa getById - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter empresa por ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter empresa por ID {id}: {ex.Message}");
         }
     }
 
@@ -97,6 +103,7 @@ public class EmpresaController : ControllerBase
                 if (ModelState.IsValid)
                 {
                     await _empresaService.AddAsync(empresaViewModel);
+                    _logService.LogInformation($"Empresa adicionada por {loggedUser.Item1}.");
                     return Ok();
                 }
 
@@ -106,7 +113,8 @@ public class EmpresaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa add - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao adicionar empresa: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar empresa: {ex.Message}");
         }
     }
 
@@ -134,6 +142,7 @@ public class EmpresaController : ControllerBase
                         empresaViewModel.IdEmpresa = objeto.IdEmpresa;
 
                         await _empresaService.UpdateAsync(empresaViewModel);
+                        _logService.LogInformation($"Empresa com ID {id} atualizada por {loggedUser.Item1}.");
                         return Ok();
                     }
                     else
@@ -148,7 +157,8 @@ public class EmpresaController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa update - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao atualizar empresa com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar empresa com ID {id}: {ex.Message}");
         }
     }
 
@@ -162,16 +172,19 @@ public class EmpresaController : ControllerBase
             if (string.IsNullOrEmpty(loggedUser.Item3))
             {
                 await _empresaService.ChangeStatusAsync(id, status.Status);
+                _logService.LogInformation($"Status da empresa com ID {id} alterado por {loggedUser.Item1}.");
                 returnMsg.Clear();
             }
 
             return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Deactivate Empresa - {ex.Message}").ToString());
+            _logService.LogError(ex, $"Erro ao alterar status da empresa com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao alterar status da empresa com ID {id}: {ex.Message}");
         }
     }
+
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
@@ -184,15 +197,18 @@ public class EmpresaController : ControllerBase
                 if (id != 0)
                 {
                     await _empresaService.DeleteAsync(id);
+                    _logService.LogInformation($"Empresa com ID {id} deletado por {loggedUser.Item1}.");
                     return Ok();
                 }
 
+                _logService.LogWarning($"Empresa com ID {id} não pode ser deletado por {loggedUser.Item1}.");
                 return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
             }
             return Unauthorized();
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"Erro ao deletar status da empresa com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa delete - {ex.Message}");
         }
     }

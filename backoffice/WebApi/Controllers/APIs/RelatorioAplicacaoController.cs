@@ -1,7 +1,6 @@
-﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
-using Application.DTOs.Cadastros.Adjuvante.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
+﻿using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +16,12 @@ namespace WebApi.Controllers.APIs
     public class RelatorioAplicacaoController : ControllerBase
     {
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
+        private readonly ILogService _logService;
 
-        public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService)
+        public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService)
         {
             _relatorioAplicacaoService = relatorioAplicacaoService;
+            _logService = logService;
         }
 
         [HttpGet]
@@ -29,11 +30,13 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var relatorio = await _relatorioAplicacaoService.GetAllAsync();
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
                 return Ok(relatorio);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Relatorio Aplicacao getAll - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
             }
         }
 
@@ -45,14 +48,17 @@ namespace WebApi.Controllers.APIs
                 var relatorio = await _relatorioAplicacaoService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(relatorio))
                 {
+                    _logService.LogInformation("Relatório de aplicação recuperado com sucesso.");
                     return Ok(relatorio);
                 }
 
-                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                _logService.LogWarning("Relatório de aplicação não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Relatório de aplicação não encontrado");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Relatorio Aplicacao getById - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao recuperar relatório de aplicação pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar relatório de aplicação pelo ID: {ex.Message}");
             }
         }
 
@@ -64,14 +70,17 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     await _relatorioAplicacaoService.AddAsync(obj);
+                    _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
                     return Ok();
                 }
 
+                _logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
                 return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Relatorio Aplicacao add - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao adicionar novo relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo relatório de aplicação: {ex.Message}");
             }
         }
 
@@ -88,19 +97,23 @@ namespace WebApi.Controllers.APIs
                         obj.Id = objeto.Id;
 
                         await _relatorioAplicacaoService.UpdateAsync(obj);
+                        _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
                         return Ok();
                     }
                     else
                     {
-                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                        _logService.LogWarning("Relatório de aplicação não encontrado para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Relatório de aplicação não encontrado");
                     }
                 }
 
+                _logService.LogWarning("Modelo inválido ao atualizar relatório de aplicação.");
                 return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Relatorio Aplicacao update - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
             }
         }
 
@@ -112,16 +125,18 @@ namespace WebApi.Controllers.APIs
                 if (id != 0)
                 {
                     await _relatorioAplicacaoService.DeleteAsync(id);
+                    _logService.LogInformation("Relatório de aplicação deletado com sucesso.");
                     return Ok();
                 }
 
+                _logService.LogWarning("Solicitação inválida para deletar relatório de aplicação.");
                 return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Relatorio Aplicacao delete - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao deletar relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar relatório de aplicação: {ex.Message}");
             }
         }
     }
-
 }

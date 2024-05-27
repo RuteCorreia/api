@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class ControleDeFrotaController : ControllerBase
 {
     private readonly IControleDeFrotaService _controleDeFrotaService;
+    private readonly ILogService _logService; // Injete o serviço de log
 
-    public ControleDeFrotaController(IControleDeFrotaService controleDeFrotaService)
+    public ControleDeFrotaController(IControleDeFrotaService controleDeFrotaService, ILogService logService) // Adicione o serviço de log como parâmetro do construtor
     {
         _controleDeFrotaService = controleDeFrotaService;
+        _logService = logService; // Atribua o serviço de log
     }
 
     [HttpGet]
@@ -32,6 +35,7 @@ public class ControleDeFrotaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"ControleDeFrota getAll - {ex.Message}"); // Registre um erro de log
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota getAll - {ex.Message}");
         }
     }
@@ -51,6 +55,7 @@ public class ControleDeFrotaController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"ControleDeFrota getById - {ex.Message}"); // Registre um erro de log
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota getById - {ex.Message}");
         }
     }
@@ -63,13 +68,16 @@ public class ControleDeFrotaController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _controleDeFrotaService.AddAsync(obj);
+                _logService.LogInformation("ControleDeFrota adicionado com sucesso"); // Registre uma informação de log
                 return Ok("Sucesso");
             }
 
+            _logService.LogWarning("Tentativa de adição de ControleDeFrota com modelo inválido"); // Registre um aviso de log
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"Erro ao adicionar ControleDeFrota: {ex.Message}"); // Registre um erro de log
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota add - {ex.Message}");
         }
     }
@@ -87,18 +95,22 @@ public class ControleDeFrotaController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _controleDeFrotaService.UpdateAsync(obj);
+                    _logService.LogInformation("ControleDeFrota atualizado com sucesso"); // Registre uma informação de log
                     return Ok("Sucesso");
                 }
                 else
                 {
+                    _logService.LogWarning("Tentativa de atualização de ControleDeFrota não encontrada"); // Registre um aviso de log
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
 
+            _logService.LogWarning("Tentativa de atualização de ControleDeFrota com modelo inválido"); // Registre um aviso de log
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"Erro ao atualizar ControleDeFrota: {ex.Message}"); // Registre um erro de log
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota update - {ex.Message}");
         }
     }
@@ -111,13 +123,17 @@ public class ControleDeFrotaController : ControllerBase
             if (id != 0)
             {
                 await _controleDeFrotaService.DeleteAsync(id);
+                _logService.LogInformation("ControleDeFrota deletado com sucesso"); // Registre uma informação de log
                 return Ok("Deletado com sucesso");
             }
+            _logService.LogWarning($"Tentativa de deletar de ControleDeFrota com Id inválido: {id} "); // Registre um aviso de log
 
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"Erro ao deletar ControleDeFrota: {ex.Message}"); // Registre um erro de log
+
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota delete - {ex.Message}");
         }
     }

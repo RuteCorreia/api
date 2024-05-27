@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Executor.Interface;
 using Application.DTOs.Cadastros.Executor.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +19,18 @@ public class ExecutorController : ControllerBase
 {
     private readonly IExecutorService _executorService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly ILogService _logService;
 
     public ExecutorController(
         IExecutorService executorService,
-         LoggedUserInfoService loggedUserInfoService
+         LoggedUserInfoService loggedUserInfoService,
+         ILogService logService
+
     )
     {
         _executorService = executorService;
         _loggedUserInfoService = loggedUserInfoService;
+        _logService = logService;
     }
 
     [HttpGet]
@@ -35,11 +40,13 @@ public class ExecutorController : ControllerBase
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var executores = await _executorService.GetAllAsync(loggedUser.Item3);
+            _logService.LogInformation("Lista de todos os executores obtida com sucesso.");
             return Ok(executores);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Executor getAll - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter todos os executores: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todos os executores: {ex.Message}");
         }
     }
 
@@ -48,12 +55,13 @@ public class ExecutorController : ControllerBase
     {
         try
         {
-            if(!string.IsNullOrEmpty(id))
+            if (!string.IsNullOrEmpty(id))
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var executor = await _executorService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(executor))
                 {
+                    _logService.LogInformation($"Detalhes do executor com ID {id} obtidos com sucesso.");
                     return Ok(executor);
                 }
             }
@@ -62,7 +70,8 @@ public class ExecutorController : ControllerBase
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Executor getById - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao obter detalhes do executor com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes do executor com ID {id}: {ex.Message}");
         }
     }
 }

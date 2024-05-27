@@ -1,124 +1,108 @@
 ﻿using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Application.DTOs.Cadastros.MenuUsuario.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class MenuUsuarioController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IMenuUsuarioService _menuUsuarioService;
-
-    public MenuUsuarioController(IMenuUsuarioService menuUsuarioService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class MenuUsuarioController : ControllerBase
     {
-        _menuUsuarioService = menuUsuarioService;
-    }
+        private readonly IMenuUsuarioService _menuUsuarioService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<MenuUsuarioViewModel>>> GetAll()
-    {
-        try
+        public MenuUsuarioController(IMenuUsuarioService menuUsuarioService, ILogService logService)
         {
-            var menuUsuario = await _menuUsuarioService.GetAllAsync();
-            return Ok(menuUsuario);
+            _menuUsuarioService = menuUsuarioService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"MenuUsuario getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<MenuUsuarioViewModel>> GetById(string id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<MenuUsuarioViewModel>>> GetAll()
         {
-            var menuUsuario = await _menuUsuarioService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(menuUsuario))
+            try
             {
+                var menuUsuario = await _menuUsuarioService.GetAllAsync();
+                _logService.LogInformation("Registros de menu de usuário recuperados com sucesso.");
                 return Ok(menuUsuario);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"MenuUsuario getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] MenuUsuarioViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _menuUsuarioService.AddAsync(obj);
-                return Ok();
+                _logService.LogError(ex, $"Erro ao recuperar todos os registros de menu de usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os registros de menu de usuário: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
+
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<MenuUsuarioViewModel>> GetById(string id)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"MenuUsuario add - {ex.Message}");
-        }
-    }
-
-    //[HttpPut("{id:int}")]
-    //public async Task<ActionResult> Update(int id, [FromBody] MenuUsuarioViewModel obj)
-    //{
-    //    try
-    //    {
-    //        if (ModelState.IsValid)
-    //        {
-    //            var objeto = await _menuUsuarioService.GetByIdAsync(id);
-    //            if (!ObjectNullValidation.IsObjectNull(objeto))
-    //            {
-    //                obj.Id = objeto.id;
-
-    //                await _menuService.UpdateAsync(obj);
-    //                return Ok();
-    //            }
-    //            else
-    //            {
-    //                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-    //            }
-    //        }
-
-    //        return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        return StatusCode(StatusCodes.Status500InternalServerError, $"Menu update - {ex.Message}");
-    //    }
-    //}
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            try
             {
-                await _menuUsuarioService.DeleteAsync(id);
-                return Ok();
-            }
+                var menuUsuario = await _menuUsuarioService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(menuUsuario))
+                {
+                    return Ok(menuUsuario);
+                }
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+                _logService.LogWarning("Menu de usuário não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Menu de usuário não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar menu de usuário pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar menu de usuário pelo ID: {ex.Message}");
+            }
         }
-        catch (Exception ex)
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] MenuUsuarioViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"MenuUsuario delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _menuUsuarioService.AddAsync(obj);
+                    _logService.LogInformation("Menu de usuário adicionado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo de menu de usuário inválido.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo de menu de usuário inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao adicionar menu de usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar menu de usuário: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _menuUsuarioService.DeleteAsync(id);
+                    _logService.LogInformation("Menu de usuário excluído com sucesso.");
+                    return Ok();
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao excluir menu de usuário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir menu de usuário: {ex.Message}");
+            }
         }
     }
 }

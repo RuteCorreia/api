@@ -31,7 +31,6 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                throw new Exception("erro");
                 var adjuvantes = await _adjuvanteService.GetAllAsync();
                 return Ok(adjuvantes);
             }

@@ -1,9 +1,12 @@
-﻿using Application.DTOs.Cadastros.Adjuvante.Interface;
-using Application.DTOs.Cadastros.Adjuvante.ViewModel;
-using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
+﻿using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Application.DTOs.Log.Interface;
 
 namespace WebApi.Controllers.APIs
 {
@@ -17,10 +20,12 @@ namespace WebApi.Controllers.APIs
     public class IdentificacaoAreaTratadaController : ControllerBase
     {
         private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
+        private readonly ILogService _logService;
 
-        public IdentificacaoAreaTratadaController(IIdentificacaoAreaTratadaService identificacaoAreaTratadaService)
+        public IdentificacaoAreaTratadaController(IIdentificacaoAreaTratadaService identificacaoAreaTratadaService, ILogService logService)
         {
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
+            _logService = logService;
         }
 
         [HttpGet]
@@ -28,12 +33,14 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var identificacaoAreaTratada = await _identificacaoAreaTratadaService.GetAllAsync();
-                return Ok(identificacaoAreaTratada);
+                var identificacoes = await _identificacaoAreaTratadaService.GetAllAsync();
+                _logService.LogInformation("Lista de todas as identificações de área tratada obtida com sucesso.");
+                return Ok(identificacoes);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"IdentificacaoAreaTratada getAll - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao obter todas as identificações de área tratada: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todas as identificações de área tratada: {ex.Message}");
             }
         }
 
@@ -42,17 +49,19 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var identificacaoAreaTratada = await _identificacaoAreaTratadaService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(identificacaoAreaTratada))
+                var identificacao = await _identificacaoAreaTratadaService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(identificacao))
                 {
-                    return Ok(identificacaoAreaTratada);
+                    _logService.LogInformation($"Detalhes da identificação de área tratada com ID {id} obtidos com sucesso.");
+                    return Ok(identificacao);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"IdentificacaoAreaTratada getById - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
             }
         }
 
@@ -64,6 +73,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     await _identificacaoAreaTratadaService.AddAsync(obj);
+                    _logService.LogInformation("Identificação de área tratada adicionada com sucesso.");
                     return Ok();
                 }
 
@@ -71,7 +81,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"IdentificacaoAreaTratada add - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao adicionar identificação de área tratada: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar identificação de área tratada: {ex.Message}");
             }
         }
 
@@ -82,12 +93,12 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _identificacaoAreaTratadaService.GetByIdAsync(id);
-                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    var existingObj = await _identificacaoAreaTratadaService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(existingObj))
                     {
-                        obj.Id = objeto.Id;
-
+                        obj.Id = existingObj.Id;
                         await _identificacaoAreaTratadaService.UpdateAsync(obj);
+                        _logService.LogInformation($"Identificação de área tratada com ID {id} atualizada com sucesso.");
                         return Ok();
                     }
                     else
@@ -100,7 +111,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"IdentificacaoAreaTratada update - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
             }
         }
 
@@ -112,6 +124,7 @@ namespace WebApi.Controllers.APIs
                 if (id != 0)
                 {
                     await _identificacaoAreaTratadaService.DeleteAsync(id);
+                    _logService.LogInformation($"Identificação de área tratada com ID {id} excluída com sucesso.");
                     return Ok();
                 }
 
@@ -119,7 +132,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"IdentificacaoAreaTratada delete - {ex.Message}");
+                _logService.LogError(ex, $"Erro ao excluir identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir identificação de área tratada com ID {id}: {ex.Message}");
             }
         }
     }

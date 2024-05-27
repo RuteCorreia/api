@@ -1,135 +1,159 @@
 ﻿using Application.DTOs.Cadastros.AlvoBiologico.Interface;
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class AlvoBiologicoController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IAlvoBiologicoService _alvoBiologicoService;
-
-    public AlvoBiologicoController(IAlvoBiologicoService alvoBiologicoService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class AlvoBiologicoController : ControllerBase
     {
-        _alvoBiologicoService = alvoBiologicoService;
-    }
+        private readonly IAlvoBiologicoService _alvoBiologicoService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<AlvoBiologicoViewModel>>> GetAll()
-    {
-        try
+        public AlvoBiologicoController(IAlvoBiologicoService alvoBiologicoService, ILogService logService)
         {
-            var combustiveis = await _alvoBiologicoService.GetAllAsync();
-            return Ok(combustiveis);
+            _alvoBiologicoService = alvoBiologicoService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<AlvoBiologicoViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<AlvoBiologicoViewModel>>> GetAll()
         {
-            var alvoBiologico = await _alvoBiologicoService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(alvoBiologico))
+            try
             {
-                return Ok(alvoBiologico);
+                var alvosBiologicos = await _alvoBiologicoService.GetAllAsync();
+                _logService.LogInformation("Todas os alvos biológicos foram recuperados com sucesso.");
+                return Ok(alvosBiologicos);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] AlvoBiologicoViewModel obj)
-    {
-        try
-        {
-            var verificaSeAlvoBiologicoExistePeloNome = _alvoBiologicoService.GetByName(obj.Nome).Result;
-            if (verificaSeAlvoBiologicoExistePeloNome != null)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
+                _logService.LogError(ex, "Erro ao recuperar todos os alvos biológicos.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
             }
-
-            if (ModelState.IsValid)
-            {
-                await _alvoBiologicoService.AddAsync(obj);
-                return Ok();
-            }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] AlvoBiologicoViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<AlvoBiologicoViewModel>> GetById(int id)
         {
-            var verificaSeAlvoBiologicoExistePeloNome = _alvoBiologicoService.GetByName(obj.Nome).Result;
-            if (verificaSeAlvoBiologicoExistePeloNome != null && verificaSeAlvoBiologicoExistePeloNome.Id != obj.Id)
+            try
             {
-                return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
-            }
-            if (ModelState.IsValid)
-            {
-                var objeto = await _alvoBiologicoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var alvoBiologico = await _alvoBiologicoService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(alvoBiologico))
                 {
-                    obj.Id = objeto.Id;
+                    _logService.LogInformation($"Alvo biológico com ID {id} foi recuperado com sucesso.");
+                    return Ok(alvoBiologico);
+                }
 
-                    await _alvoBiologicoService.UpdateAsync(obj);
+                _logService.LogWarning($"Alvo biológico com ID {id} não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar o alvo biológico com ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getById - {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] AlvoBiologicoViewModel obj)
+        {
+            try
+            {
+                var verificaSeAlvoBiologicoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome);
+                if (verificaSeAlvoBiologicoExistePeloNome != null)
+                {
+                    _logService.LogWarning("Tentativa de adição de alvo biológico com nome já existente.");
+                    return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
+                }
+
+                if (ModelState.IsValid)
+                {
+                    await _alvoBiologicoService.AddAsync(obj);
+                    _logService.LogInformation("Novo alvo biológico adicionado com sucesso.");
                     return Ok();
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _logService.LogWarning("Modelo inválido ao tentar adicionar novo alvo biológico.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _alvoBiologicoService.DeleteAsync(id);
-                return Ok();
+                _logService.LogError(ex, "Erro ao adicionar novo alvo biológico.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico add - {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] AlvoBiologicoViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico delete - {ex.Message}");
+            try
+            {
+                var verificaSeAlvoBiologicoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome);
+                if (verificaSeAlvoBiologicoExistePeloNome != null && verificaSeAlvoBiologicoExistePeloNome.Id != obj.Id)
+                {
+                    _logService.LogWarning("Tentativa de atualização de alvo biológico com nome já existente.");
+                    return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
+                }
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _alvoBiologicoService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
+
+                        await _alvoBiologicoService.UpdateAsync(obj);
+                        _logService.LogInformation($"Alvo biológico com ID {id} atualizado com sucesso.");
+                        return Ok();
+                    }
+                    else
+                    {
+                        _logService.LogWarning($"Alvo biológico com ID {id} não encontrado para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                _logService.LogWarning("Modelo inválido ao tentar atualizar alvo biológico.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar o alvo biológico com ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico update - {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _alvoBiologicoService.DeleteAsync(id);
+                    _logService.LogInformation($"Alvo biológico com ID {id} deletado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Solicitação de exclusão com ID 0 é inválida.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao excluir o alvo biológico com ID {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico delete - {ex.Message}");
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Veiculante.Interface;
 using Application.DTOs.Cadastros.Veiculante.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class VeiculanteController : ControllerBase
 {
     private readonly IVeiculanteService _veiculanteService;
+    private readonly ILogService _logService;
 
-    public VeiculanteController(IVeiculanteService veiculanteService)
+    public VeiculanteController(IVeiculanteService veiculanteService, ILogService logService)
     {
         _veiculanteService = veiculanteService;
+        _logService = logService;
     }
 
     [HttpGet]
@@ -27,12 +30,14 @@ public class VeiculanteController : ControllerBase
     {
         try
         {
-            var combustiveis = await _veiculanteService.GetAllAsync();
-            return Ok(combustiveis);
+            var veiculantes = await _veiculanteService.GetAllAsync();
+            _logService.LogInformation("Todos os veiculantes foram recuperados com sucesso.");
+            return Ok(veiculantes);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Veiculante getAll - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao recuperar todos os veiculantes: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os veiculantes: {ex.Message}");
         }
     }
 
@@ -44,14 +49,17 @@ public class VeiculanteController : ControllerBase
             var veiculante = await _veiculanteService.GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(veiculante))
             {
+                _logService.LogInformation("Veiculante recuperado com sucesso.");
                 return Ok(veiculante);
             }
 
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            _logService.LogWarning("Veiculante não encontrado.");
+            return StatusCode(StatusCodes.Status404NotFound, "Veiculante não encontrado");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Veiculante getById - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao recuperar veiculante pelo ID: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar veiculante pelo ID: {ex.Message}");
         }
     }
 
@@ -63,14 +71,17 @@ public class VeiculanteController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _veiculanteService.AddAsync(obj);
+                _logService.LogInformation("Novo veiculante adicionado com sucesso.");
                 return Ok();
             }
 
+            _logService.LogWarning("Modelo inválido ao adicionar novo veiculante.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Veiculante add - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao adicionar novo veiculante: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo veiculante: {ex.Message}");
         }
     }
 
@@ -87,19 +98,23 @@ public class VeiculanteController : ControllerBase
                     obj.IdVeiculante = objeto.IdVeiculante;
 
                     await _veiculanteService.UpdateAsync(obj);
+                    _logService.LogInformation("Veiculante atualizado com sucesso.");
                     return Ok();
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    _logService.LogWarning("Veiculante não encontrado para atualização.");
+                    return StatusCode(StatusCodes.Status404NotFound, "Veiculante não encontrado");
                 }
             }
 
+            _logService.LogWarning("Modelo inválido ao atualizar veiculante.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Veiculante update - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao atualizar veiculante: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar veiculante: {ex.Message}");
         }
     }
 
@@ -111,14 +126,17 @@ public class VeiculanteController : ControllerBase
             if (id != 0)
             {
                 await _veiculanteService.DeleteAsync(id);
+                _logService.LogInformation("Veiculante deletado com sucesso.");
                 return Ok();
             }
 
+            _logService.LogWarning("Solicitação inválida para deletar veiculante.");
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Veiculante delete - {ex.Message}");
+            _logService.LogError(ex, $"Erro ao deletar veiculante: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar veiculante: {ex.Message}");
         }
     }
 }
