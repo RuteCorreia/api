@@ -46,6 +46,7 @@ using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
 using Application.Application.Servicos.Cadastros.SubMenu;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
+using Application.Application.Servicos.Cadastros.Veiculo;
 using Application.Application.Servicos.Genericos;
 using Application.Application.Servicos.User;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
@@ -96,6 +97,7 @@ using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
+using Application.DTOs.Cadastros.Veiculo.Interface;
 using Application.DTOs.Users.Interface;
 using Domain.Entidades.User;
 using Domain.Interfaces.Cadastros.Adjuvante;
@@ -146,6 +148,7 @@ using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.SubMenu;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
+using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.Genericos;
 using Domain.Interfaces.User;
 using Infra.Configuracao;
@@ -197,6 +200,7 @@ using Infra.Repositorio.Cadastros.RelatorioAplicacao;
 using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
+using Infra.Repositorio.Cadastros.Veiculo;
 using Infra.Repositorio.User;
 using WebApi.HttpRequestInfo;
 
@@ -260,6 +264,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
+        services.AddScoped<IVeiculoService, VeiculoService>();
 
         #endregion
 
@@ -315,6 +320,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
         services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
+        services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 
         #endregion
 
