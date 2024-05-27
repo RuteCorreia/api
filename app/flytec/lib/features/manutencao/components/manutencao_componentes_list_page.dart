@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/manutencao/components/checklist_revisao_page.dart';
 import 'package:flytec/features/manutencao/components/manutencao_componentes_page.dart';
+import 'package:flytec/features/manutencao/components/new_manutencao_page.dart';
 import 'package:flytec/features/manutencao/components/widgets/custom_card_with_color.dart';
+import 'package:flytec/features/manutencao/controller/manutencao_controller.dart';
 
 class ManutencaoComponentesListPage extends StatefulWidget {
-  const ManutencaoComponentesListPage({super.key});
+  final ManutencaoController _manutencaoController;
+  const ManutencaoComponentesListPage(
+      {required ManutencaoController manutencaoController, super.key})
+      : _manutencaoController = manutencaoController;
 
   @override
   State<ManutencaoComponentesListPage> createState() =>
@@ -37,12 +42,22 @@ class _ManutencaoComponentesListPageState
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const CheckListRevisaoPage(),
+                            builder: (context) =>  CheckListRevisaoPage(manutencaoController: widget._manutencaoController),
                           ));
                     },
                     title: 'Ir para o Checklist'),
                 const SizedBox(height: 14),
-                CustomButton(onClick: () async {}, title: 'Finalizar'),
+                CustomButton(
+                    onClick: () async {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewManutencaoPage(
+                                    manutencaoController:
+                                        widget._manutencaoController,
+                                  )));
+                    },
+                    title: 'Finalizar'),
                 const SizedBox(height: 20),
                 CustomCardWithColor(
                   title: 'Componente 1',
@@ -51,8 +66,10 @@ class _ManutencaoComponentesListPageState
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const ManutencaoComponentesPage()));
+                            builder: (context) => ManutencaoComponentesPage(
+                                  manutencaoController:
+                                      widget._manutencaoController,
+                                )));
                   },
                 ),
                 const SizedBox(height: 14),
@@ -63,8 +80,10 @@ class _ManutencaoComponentesListPageState
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                const ManutencaoComponentesPage()));
+                            builder: (context) => ManutencaoComponentesPage(
+                                  manutencaoController:
+                                      widget._manutencaoController,
+                                )));
                   },
                 ),
               ],

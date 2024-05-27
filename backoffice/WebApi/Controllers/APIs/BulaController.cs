@@ -1,15 +1,19 @@
-﻿using Application.DTOs.Cadastros.Bula.Interface;
+﻿using Application.Application.Servicos.Importação_Planilha;
+using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.Bula.ViewModel;
 using Application.DTOs.Cadastros.BulaAplicacao.Interface;
+using Application.DTOs.Importação_Planilha;
+using Domain.Entidades.Cadastros.Empresa;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Buffers.Text;
 
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize]
+//[Authorize]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -148,6 +152,62 @@ public class BulaController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, $"Bula delete - {ex.Message}");
+        }
+    }
+
+    [HttpPost("ImportarPlanilha")]
+    public async Task<ActionResult> ImportarPlanilha([FromBody] string base64)
+    {
+        try
+        {
+            var configuracao = new Application.DTOs.Importação_Planilha.ViewModel.ConfiguracoesPlanilhaViewModel()
+            {
+                IdImportacao = 0,
+                EnderecoPlanilha = base64,
+                QtdRegistroBanco = 0,
+                QtdRegistroPlanilha = 0,
+                DadosSalvos = false,
+                IdCliente = 0,
+                IndexLinhaUltimaCarga = 0,
+                DataPlanilha = DateTime.Now.ToString(),
+                
+            };
+            new ServicosPlanilha<Bula>(configuracao, "Bula").SalvarPlanilha(base64);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"ImportarPlanilha - {ex.Message}");
+        }
+    }
+
+    [HttpPost("ProcessarPlanilha")]
+    public async Task<ActionResult> ProcessarPlanilhas()
+    {
+        try
+        {
+            var configuracao = new Application.DTOs.Importação_Planilha.ViewModel.ConfiguracoesPlanilhaViewModel()
+            {
+                IdImportacao = 0,
+                EnderecoPlanilha = "",
+                QtdRegistroBanco = 0,
+                QtdRegistroPlanilha = 0,
+                DadosSalvos = false,
+                IdCliente = 0,
+                IndexLinhaUltimaCarga = 0,
+                DataPlanilha = DateTime.Now.ToString(),
+
+            };
+            var config = new ServicosPlanilha<Bula>(configuracao, "Bula").BuscarPlanilhaNaFila();
+
+            new ServicosPlanilha<Bula>(config, "Bula").IniciarProcessamento();
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"ImportarPlanilha - {ex.Message}");
         }
     }
 }

@@ -30,6 +30,7 @@ using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Entidades.Cadastros.SubMenu;
 using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
+using Domain.Entidades.Importação_Planilha;
 using Domain.Entidades.Cadastros.Veiculo;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -93,6 +94,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<CaracteristicasProdutoAplicado> CaracteristicasProdutoAplicado { get; set; }
     public DbSet<ContratoPrestacaoServico> ContratoPrestacaoServico { get; set; }
     public DbSet<DadosResponsavel> DadosResponsavel { get; set; }
+    public DbSet<ImportacaoPlanilhas> ImportacaoPlanilha { get; set; }
     public DbSet<Veiculo> Veiculo { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

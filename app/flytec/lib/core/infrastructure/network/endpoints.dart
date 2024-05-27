@@ -1,5 +1,5 @@
 class Endpoints {
-  static const String _baseUrl = 'https://flytec.keltecnologia.com.br';
+  static const String _baseUrl = 'https://flytec-api.azurewebsites.net';
   static const String veiculate = '$_baseUrl/api/v1/Veiculante';
   static const String tipoProduto = '$_baseUrl/api/v1/TipoProduto';
   static const String getUserSignature =

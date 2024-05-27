@@ -32,7 +32,9 @@ class AirCraftSelect extends StatelessWidget {
                       color: Colors.white,
                       elevation: 0,
                       onPressed: () {
-                        onChanged(aeronave.prefixo!);
+                        String concatenatedString =
+                            "${aeronave.prefixo?.toString().toUpperCase() ?? ''} - ${aeronave.tipoAeronave?.toName.toString().toUpperCase() ?? ''}";
+                        onChanged(concatenatedString);
                         Navigator.of(context).pop();
                       },
                       child: Align(
@@ -40,7 +42,7 @@ class AirCraftSelect extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                                '${aeronave.prefixo ?? ''} - ${aeronave.tipoAeronave?.toName}',
+                                '${aeronave.prefixo.toString().toUpperCase()} - ${aeronave.tipoAeronave?.toName.toString().toUpperCase()}',
                                 style: const TextStyle(
                                     color: Colors.black,
                                     fontSize: 16,

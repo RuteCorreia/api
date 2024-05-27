@@ -84,7 +84,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                                     height: 25,
                                     width: 420,
                                     child: pw.Text(
-                                        'COMBATE A INCÊNCIO EM COBERTURA VEGETAIS PLANILHA DE CONTROLE DE VOOS',
+                                        'COMBATE A INCÊNCIO EM COBERTURA VEGETAIS RELATÓRIO DE APLICAÇÃO',
                                         maxLines: 2,
                                         textAlign: pw.TextAlign.center,
                                         style: pw.TextStyle(
