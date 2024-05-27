@@ -20,10 +20,10 @@ namespace WebApi.Controllers.APIs
         private readonly IAdjuvanteService _adjuvanteService;
         private readonly ILogService _logService;
 
-        public AdjuvanteController(IAdjuvanteService adjuvanteService, ILogger<AdjuvanteController> logger)
+        public AdjuvanteController(IAdjuvanteService adjuvanteService, ILogService logService)
         {
             _adjuvanteService = adjuvanteService;
-            _logger = logger;
+            _logService = logService;
         }
 
         [HttpGet]
@@ -58,7 +58,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erro ao buscar Adjuvante com ID {id}.");
+                _logService.LogError(ex, $"Erro ao buscar Adjuvante com ID {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante getById - {ex.Message}");
             }
         }
@@ -78,7 +78,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Erro ao adicionar Adjuvante.");
+                _logService.LogError(ex, "Erro ao adicionar Adjuvante.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante add - {ex.Message}");
             }
         }
@@ -108,7 +108,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erro ao atualizar Adjuvante com ID {id}.");
+                _logService.LogError(ex, $"Erro ao atualizar Adjuvante com ID {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante update - {ex.Message}");
             }
         }
@@ -128,7 +128,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, $"Erro ao deletar Adjuvante com ID {id}.");
+                _logService.LogError(ex, $"Erro ao deletar Adjuvante com ID {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante delete - {ex.Message}");
             }
         }

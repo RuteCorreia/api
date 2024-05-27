@@ -1109,7 +1109,6 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdBula"));
 
                     b.Property<string>("Adjuvante")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Classe")
@@ -1139,7 +1138,6 @@ namespace Infra.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("TipoDeFormulacao")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("IdBula");
@@ -1771,6 +1769,30 @@ namespace Infra.Migrations
                     b.HasIndex("IdUsuario");
 
                     b.ToTable("ImportacaoPlanilha");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Log.LogEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Level")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("Domain.Entidades.User.Usuario", b =>
