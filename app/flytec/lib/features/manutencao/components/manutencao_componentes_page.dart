@@ -8,9 +8,14 @@ import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flytec/features/aplications/pages/images/upload_foto.dart';
 import 'package:flytec/features/manutencao/components/manutencao_componentes_list_page.dart';
 import 'package:flytec/features/manutencao/components/widgets/componente_select_widget.dart';
+import 'package:flytec/features/manutencao/controller/manutencao_controller.dart';
+import 'package:flytec/features/manutencao/models/report_manutencao_model.dart';
 
 class ManutencaoComponentesPage extends StatefulWidget {
-  const ManutencaoComponentesPage({super.key});
+  final ManutencaoController _manutencaoController;
+  const ManutencaoComponentesPage(
+      {required ManutencaoController manutencaoController, super.key})
+      : _manutencaoController = manutencaoController;
 
   @override
   State<ManutencaoComponentesPage> createState() =>
@@ -29,10 +34,19 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
     'Componente 3'
   ];
 
+
   void _addNewComponente(String componente) {
     _componentes.add(componente);
     setState(() {});
   }
+  ReportManutencaoModel? _reportManutencaoModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _reportManutencaoModel = widget._manutencaoController.reportManutencaoModel;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,9 +59,10 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
             child: ListView(
               controller: _scrollController,
               children: [
-                const Text(
-                  'Aeronave PTX-123',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                Text(
+                  'Aeronave ${_reportManutencaoModel?.prefAeronave ?? ''}',
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(height: 10),
                 const CustomText(text: 'Componente'),
@@ -115,7 +130,6 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                           fontSize: 16,
                           fontFamily: 'Inter',
                           fontWeight: FontWeight.w500,
-                           
                         )),
                   ),
                 ),
@@ -124,7 +138,7 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                 InkWell(
                     onTap: () async {
                       final archive =
-                          await Util.obtainImagePathMaps(context,isPdf: false);
+                          await Util.obtainImagePathMaps(context, isPdf: false);
                       Uint8List? imageData =
                           await File(archive.path!).readAsBytes();
                       if (!archive.isImage) return;
@@ -208,8 +222,9 @@ class _ManutencaoComponentesPageState extends State<ManutencaoComponentesPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                const ManutencaoComponentesListPage(),
+                            builder: (context) => ManutencaoComponentesListPage(
+                                manutencaoController:
+                                    widget._manutencaoController),
                           ));
                     },
                     title: 'Salvar'),
