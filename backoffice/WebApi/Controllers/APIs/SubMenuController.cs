@@ -1,124 +1,143 @@
 ﻿using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.SubMenu.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class SubMenuController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly ISubMenuService _subMenuService;
-
-    public SubMenuController(ISubMenuService subMenuService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class SubMenuController : ControllerBase
     {
-        _subMenuService = subMenuService;
-    }
+        private readonly ISubMenuService _subMenuService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<SubMenuViewModel>>> GetAll()
-    {
-        try
+        public SubMenuController(ISubMenuService subMenuService, ILogService logService)
         {
-            var subMenu = await _subMenuService.GetAllAsync();
-            return Ok(subMenu);
+            _subMenuService = subMenuService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"SubMenu getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<SubMenuViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<SubMenuViewModel>>> GetAll()
         {
-            var subMenu = await _subMenuService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(subMenu))
+            try
             {
+                var subMenu = await _subMenuService.GetAllAsync();
+                _logService.LogInformation("Todos os submenus foram recuperados com sucesso.");
                 return Ok(subMenu);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"SubMenu getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] SubMenuViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _subMenuService.AddAsync(obj);
-                return Ok();
+                _logService.LogError(ex, $"Erro ao recuperar todos os submenus: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os submenus: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"SubMenu add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] SubMenuViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<SubMenuViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _subMenuService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var subMenu = await _subMenuService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(subMenu))
                 {
-                    obj.SubMenuId = objeto.SubMenuId;
+                    _logService.LogInformation("SubMenu recuperado com sucesso.");
+                    return Ok(subMenu);
+                }
 
-                    await _subMenuService.UpdateAsync(obj);
+                _logService.LogWarning("SubMenu não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "SubMenu não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar SubMenu pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar SubMenu pelo ID: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] SubMenuViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _subMenuService.AddAsync(obj);
+                    _logService.LogInformation("Novo SubMenu adicionado com sucesso.");
                     return Ok();
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _logService.LogWarning("Modelo inválido ao adicionar novo SubMenu.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"SubMenu update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _subMenuService.DeleteAsync(id);
-                return Ok();
+                _logService.LogError(ex, $"Erro ao adicionar novo SubMenu: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo SubMenu: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] SubMenuViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"SubMenu delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _subMenuService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.SubMenuId = objeto.SubMenuId;
+
+                        await _subMenuService.UpdateAsync(obj);
+                        _logService.LogInformation("SubMenu atualizado com sucesso.");
+                        return Ok();
+                    }
+                    else
+                    {
+                        _logService.LogWarning("SubMenu não encontrado para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "SubMenu não encontrado");
+                    }
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar SubMenu.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar SubMenu: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar SubMenu: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _subMenuService.DeleteAsync(id);
+                    _logService.LogInformation("SubMenu deletado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Solicitação inválida para deletar SubMenu.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao deletar SubMenu: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar SubMenu: {ex.Message}");
+            }
         }
     }
 }

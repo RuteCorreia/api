@@ -49,6 +49,7 @@ using Application.Application.Servicos.Cadastros.Veiculante;
 using Application.Application.Servicos.Cadastros.Veiculo;
 using Application.Application.Servicos.Genericos;
 using Application.Application.Servicos.Importação_Planilha;
+using Application.Application.Servicos.Log;
 using Application.Application.Servicos.User;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
 using Application.DTOs.Cadastros.Aeronave.Interface;
@@ -99,6 +100,7 @@ using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
 using Application.DTOs.Importação_Planilha;
+using Application.DTOs.Log.Interface;
 using Application.DTOs.Cadastros.Veiculo.Interface;
 using Application.DTOs.Users.Interface;
 using Domain.Entidades.Cadastros.Empresa;
@@ -154,6 +156,7 @@ using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.Genericos;
 using Domain.Interfaces.Importação_Planilha;
+using Domain.Interfaces.Log;
 using Domain.Interfaces.User;
 using Infra.Configuracao;
 using Infra.Repositorio.Cadastros.Adjuvante;
@@ -206,7 +209,9 @@ using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
 using Infra.Repositorio.Importação_Planilha;
 using Infra.Repositorio.Cadastros.Veiculo;
+using Infra.Repositorio.Log;
 using Infra.Repositorio.User;
+using System.Configuration;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Config;
@@ -269,6 +274,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
+        services.AddScoped<ILogService, LogService>();
         services.AddScoped<IVeiculoService, VeiculoService>();
 
         #endregion
@@ -325,6 +331,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
         services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
+        services.AddScoped<ILogRepository, LogRepository>();
         services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 
         #endregion

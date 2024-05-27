@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class CombateIncendioDecolagemPousoController : ControllerBase
 {
     private readonly ICombateIncendioDecolagemPousoService _combateIncendioDecolagemPousoService;
+    private readonly ILogService _loggerService;
 
-    public CombateIncendioDecolagemPousoController(ICombateIncendioDecolagemPousoService combateIncendioDecolagemPousoService)
+    public CombateIncendioDecolagemPousoController(ICombateIncendioDecolagemPousoService combateIncendioDecolagemPousoService, ILogService loggerService)
     {
         _combateIncendioDecolagemPousoService = combateIncendioDecolagemPousoService;
+        _loggerService = loggerService;
     }
 
     [HttpGet]
@@ -28,11 +31,13 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         try
         {
             var combustiveis = await _combateIncendioDecolagemPousoService.GetAllAsync();
+            _loggerService.LogInformation("Todos os registros de Combate a Incêndio em Decolagem e Pouso foram recuperados com sucesso.");
             return Ok(combustiveis);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendioDecolagemPouso getAll - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
         }
     }
 
@@ -44,14 +49,17 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
             var combateIncendioDecolagemPouso = await _combateIncendioDecolagemPousoService.GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(combateIncendioDecolagemPouso))
             {
+                _loggerService.LogInformation($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} foi recuperado com sucesso.");
                 return Ok(combateIncendioDecolagemPouso);
             }
 
+            _loggerService.LogWarning($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} não encontrado.");
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendioDecolagemPouso getById - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
         }
     }
 
@@ -63,14 +71,17 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _combateIncendioDecolagemPousoService.AddAsync(obj);
+                _loggerService.LogInformation("Novo registro de Combate a Incêndio em Decolagem e Pouso adicionado com sucesso.");
                 return Ok("Sucesso");
             }
 
+            _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio em Decolagem e Pouso.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendioDecolagemPouso add - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao adicionar novo registro de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo registro de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
         }
     }
 
@@ -87,19 +98,23 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _combateIncendioDecolagemPousoService.UpdateAsync(obj);
+                    _loggerService.LogInformation($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} atualizado com sucesso.");
                     return Ok("Sucesso");
                 }
                 else
                 {
+                    _loggerService.LogWarning($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} não encontrado.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
 
+            _loggerService.LogWarning("Modelo inválido ao atualizar registro de Combate a Incêndio em Decolagem e Pouso.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendioDecolagemPouso update - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao atualizar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
         }
     }
 
@@ -111,13 +126,16 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
             if (id != 0)
             {
                 await _combateIncendioDecolagemPousoService.DeleteAsync(id);
+                _loggerService.LogInformation($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} deletado com sucesso.");
                 return Ok("Deletado com sucesso");
             }
 
+            _loggerService.LogWarning($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} não encontrado.");
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
+            _loggerService.LogError(ex, $"Erro ao deletar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendioDecolagemPouso delete - {ex.Message}");
         }
     }

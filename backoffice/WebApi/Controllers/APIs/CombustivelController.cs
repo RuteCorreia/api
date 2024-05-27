@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Combustivel.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +17,12 @@ namespace WebApi.Controllers.APIs;
 public class CombustivelController : ControllerBase
 {
     private readonly ICombustivelService _combustivelService;
+    private readonly ILogService _loggerService;
 
-    public CombustivelController(ICombustivelService combustivelService)
+    public CombustivelController(ICombustivelService combustivelService, ILogService loggerService)
     {
         _combustivelService = combustivelService;
+        _loggerService = loggerService;
     }
 
     [HttpGet]
@@ -28,11 +31,13 @@ public class CombustivelController : ControllerBase
         try
         {
             var combustiveis = await _combustivelService.GetAllAsync();
+            _loggerService.LogInformation("Todos os registros de combustível foram recuperados com sucesso.");
             return Ok(combustiveis);
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Combustivel getAll - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de combustível: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de combustível: {ex.Message}");
         }
     }
 
@@ -44,14 +49,17 @@ public class CombustivelController : ControllerBase
             var combustivel = await _combustivelService.GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(combustivel))
             {
+                _loggerService.LogInformation($"Registro de combustível com ID {id} foi recuperado com sucesso.");
                 return Ok(combustivel);
             }
 
+            _loggerService.LogWarning($"Registro de combustível com ID {id} não encontrado.");
             return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Combustivel getById - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao buscar registro de combustível com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar registro de combustível com ID {id}: {ex.Message}");
         }
     }
 
@@ -63,14 +71,17 @@ public class CombustivelController : ControllerBase
             if (ModelState.IsValid)
             {
                 await _combustivelService.AddAsync(obj);
+                _loggerService.LogInformation("Novo registro de combustível adicionado com sucesso.");
                 return Ok("Sucesso");
             }
 
+            _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de combustível.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Combustivel add - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao adicionar novo registro de combustível: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo registro de combustível: {ex.Message}");
         }
     }
 
@@ -87,19 +98,23 @@ public class CombustivelController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _combustivelService.UpdateAsync(obj);
+                    _loggerService.LogInformation($"Registro de combustível com ID {id} atualizado com sucesso.");
                     return Ok("Sucesso");
                 }
                 else
                 {
+                    _loggerService.LogWarning($"Registro de combustível com ID {id} não encontrado.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
 
+            _loggerService.LogWarning("Modelo inválido ao atualizar registro de combustível.");
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Combustivel update - {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao atualizar registro de combustível com ID {id}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar registro de combustível com ID {id}: {ex.Message}");
         }
     }
 
@@ -111,13 +126,16 @@ public class CombustivelController : ControllerBase
             if (id != 0)
             {
                 await _combustivelService.DeleteAsync(id);
+                _loggerService.LogInformation($"Registro de combustível com ID {id} deletado com sucesso.");
                 return Ok("Deletado com sucesso");
             }
 
+            _loggerService.LogWarning("ID inválido ao tentar deletar registro de combustível.");
             return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
         catch (Exception ex)
         {
+            _loggerService.LogError(ex, $"Erro ao deletar registro de combustível com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Combustivel delete - {ex.Message}");
         }
     }

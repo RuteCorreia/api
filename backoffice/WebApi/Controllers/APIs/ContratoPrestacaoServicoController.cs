@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
+using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -21,14 +22,18 @@ public class ContratoPrestacaoServicoController : ControllerBase
 {
     private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+    private readonly ILogService _logService;
 
     public ContratoPrestacaoServicoController(
         LoggedUserInfoService loggedUserInfoService,
-        IContratoPrestacaoServicoService contratoPrestacaoServicoService
+        IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+        ILogService logService // Injetar o serviço de log
     )
     {
         _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
         _loggedUserInfoService = loggedUserInfoService;
+        _logService = logService; // Atribuir o serviço de log
+
     }
 
     [HttpGet]
@@ -38,10 +43,12 @@ public class ContratoPrestacaoServicoController : ControllerBase
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var cadastros = await _contratoPrestacaoServicoService.GetAllAsync(loggedUser.Item3);
+            _logService.LogInformation("Todos os contratos de prestação de serviço foram recuperados com sucesso.");
             return Ok(cadastros);
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, $"Erro ao recuperar todos os contratos de prestação de serviço: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"ContratoPrestacaoServico getAll - {ex.Message}");
         }
     }
@@ -61,6 +68,7 @@ public class ContratoPrestacaoServicoController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico getById - {ex.Message}").ToString());
             return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico getById - {ex.Message}").ToString());
         }
     }
@@ -82,6 +90,7 @@ public class ContratoPrestacaoServicoController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico add - {ex.Message}").ToString());
             return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico add - {ex.Message}").ToString());
         }
     }
@@ -112,6 +121,7 @@ public class ContratoPrestacaoServicoController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
             return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
         }
     }
@@ -133,6 +143,7 @@ public class ContratoPrestacaoServicoController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico delete - {ex.Message}").ToString());
             return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico delete - {ex.Message}").ToString());
         }
     }

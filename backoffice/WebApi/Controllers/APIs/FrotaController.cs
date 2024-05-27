@@ -1,124 +1,141 @@
 ﻿using Application.DTOs.Cadastros.Frota.Interface;
 using Application.DTOs.Cadastros.Frota.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class FrotaController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IFrotaService _frotaService;
-
-    public FrotaController(IFrotaService frotaService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class FrotaController : ControllerBase
     {
-        _frotaService = frotaService;
-    }
+        private readonly IFrotaService _frotaService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<FrotaViewModel>>> GetAll()
-    {
-        try
+        public FrotaController(IFrotaService frotaService, ILogService logService)
         {
-            var combustiveis = await _frotaService.GetAllAsync();
-            return Ok(combustiveis);
+            _frotaService = frotaService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Frota getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<FrotaViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<FrotaViewModel>>> GetAll()
         {
-            var frota = await _frotaService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(frota))
+            try
             {
+                var frota = await _frotaService.GetAllAsync();
+                _logService.LogInformation("Lista de todos os itens da frota obtida com sucesso.");
                 return Ok(frota);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Frota getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] FrotaViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _frotaService.AddAsync(obj);
-                return Ok("Sucesso");
+                _logService.LogError(ex, $"Erro ao obter todos os itens da frota: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todos os itens da frota: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Frota add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] FrotaViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<FrotaViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _frotaService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var itemFrota = await _frotaService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(itemFrota))
                 {
-                    obj.Id = objeto.Id;
+                    _logService.LogInformation($"Detalhes do item da frota com ID {id} obtidos com sucesso.");
+                    return Ok(itemFrota);
+                }
 
-                    await _frotaService.UpdateAsync(obj);
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao obter detalhes do item da frota com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes do item da frota com ID {id}: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] FrotaViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _frotaService.AddAsync(obj);
+                    _logService.LogInformation("Item da frota adicionado com sucesso.");
                     return Ok("Sucesso");
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Frota update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _frotaService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                _logService.LogError(ex, $"Erro ao adicionar item da frota: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar item da frota: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] FrotaViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Frota delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingItem = await _frotaService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(existingItem))
+                    {
+                        obj.Id = existingItem.Id;
+                        await _frotaService.UpdateAsync(obj);
+                        _logService.LogInformation($"Item da frota com ID {id} atualizado com sucesso.");
+                        return Ok("Sucesso");
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar item da frota com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar item da frota com ID {id}: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _frotaService.DeleteAsync(id);
+                    _logService.LogInformation($"Item da frota com ID {id} excluído com sucesso.");
+                    return Ok("Deletado com sucesso");
+                }
+
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao excluir item da frota com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir item da frota com ID {id}: {ex.Message}");
+            }
         }
     }
 }

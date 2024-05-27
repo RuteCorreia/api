@@ -1,124 +1,143 @@
 ﻿using Application.DTOs.Cadastros.Precificacao.Interface;
 using Application.DTOs.Cadastros.Precificacao.ViewModel;
+using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApi.Controllers.APIs;
-
-[Route("api/v1/[controller]")]
-[ApiController]
-[Authorize]
-[ProducesResponseType(StatusCodes.Status200OK)]
-[ProducesResponseType(StatusCodes.Status400BadRequest)]
-[ProducesResponseType(StatusCodes.Status404NotFound)]
-[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-public class PrecificacaoController : ControllerBase
+namespace WebApi.Controllers.APIs
 {
-    private readonly IPrecificacaoService _precificacaoService;
-
-    public PrecificacaoController(IPrecificacaoService precificacaoService)
+    [Route("api/v1/[controller]")]
+    [ApiController]
+    [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public class PrecificacaoController : ControllerBase
     {
-        _precificacaoService = precificacaoService;
-    }
+        private readonly IPrecificacaoService _precificacaoService;
+        private readonly ILogService _logService;
 
-    [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<PrecificacaoViewModel>>> GetAll()
-    {
-        try
+        public PrecificacaoController(IPrecificacaoService precificacaoService, ILogService logService)
         {
-            var combustiveis = await _precificacaoService.GetAllAsync();
-            return Ok(combustiveis);
+            _precificacaoService = precificacaoService;
+            _logService = logService;
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Precificacao getAll - {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<PrecificacaoViewModel>> GetById(int id)
-    {
-        try
+        [HttpGet]
+        public async Task<ActionResult<IAsyncEnumerable<PrecificacaoViewModel>>> GetAll()
         {
-            var precificacao = await _precificacaoService.GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(precificacao))
+            try
             {
-                return Ok(precificacao);
+                var precificacoes = await _precificacaoService.GetAllAsync();
+                _logService.LogInformation("Lista de precificações recuperada com sucesso.");
+                return Ok(precificacoes);
             }
-
-            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Precificacao getById - {ex.Message}");
-        }
-    }
-
-    [HttpPost]
-    public async Task<ActionResult> Add([FromBody] PrecificacaoViewModel obj)
-    {
-        try
-        {
-            if (ModelState.IsValid)
+            catch (Exception ex)
             {
-                await _precificacaoService.AddAsync(obj);
-                return Ok("Sucesso");
+                _logService.LogError(ex, $"Erro ao recuperar todas as precificações: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todas as precificações: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Precificacao add - {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] PrecificacaoViewModel obj)
-    {
-        try
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<PrecificacaoViewModel>> GetById(int id)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var objeto = await _precificacaoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var precificacao = await _precificacaoService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(precificacao))
                 {
-                    obj.Id = objeto.Id;
+                    _logService.LogInformation("Precificação recuperada com sucesso.");
+                    return Ok(precificacao);
+                }
 
-                    await _precificacaoService.UpdateAsync(obj);
+                _logService.LogWarning("Precificação não encontrada.");
+                return StatusCode(StatusCodes.Status404NotFound, "Precificação não encontrada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar precificação pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar precificação pelo ID: {ex.Message}");
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody] PrecificacaoViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _precificacaoService.AddAsync(obj);
+                    _logService.LogInformation("Nova precificação adicionada com sucesso.");
                     return Ok("Sucesso");
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+
+                _logService.LogWarning("Modelo inválido ao adicionar nova precificação.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Precificacao update - {ex.Message}");
-        }
-    }
-
-    [HttpDelete("{id:int}")]
-    public async Task<ActionResult> Delete(int id)
-    {
-        try
-        {
-            if (id != 0)
+            catch (Exception ex)
             {
-                await _precificacaoService.DeleteAsync(id);
-                return Ok("Deletado com sucesso");
+                _logService.LogError(ex, $"Erro ao adicionar nova precificação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar nova precificação: {ex.Message}");
             }
-
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
         }
-        catch (Exception ex)
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] PrecificacaoViewModel obj)
         {
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Precificacao delete - {ex.Message}");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var objeto = await _precificacaoService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    {
+                        obj.Id = objeto.Id;
+
+                        await _precificacaoService.UpdateAsync(obj);
+                        _logService.LogInformation("Precificação atualizada com sucesso.");
+                        return Ok("Sucesso");
+                    }
+                    else
+                    {
+                        _logService.LogWarning("Precificação não encontrada para atualização.");
+                        return StatusCode(StatusCodes.Status404NotFound, "Precificação não encontrada");
+                    }
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar precificação.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar precificação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar precificação: {ex.Message}");
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            try
+            {
+                if (id != 0)
+                {
+                    await _precificacaoService.DeleteAsync(id);
+                    _logService.LogInformation("Precificação deletada com sucesso.");
+                    return Ok("Deletado com sucesso");
+                }
+
+                _logService.LogWarning("Solicitação inválida para deletar precificação.");
+                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao deletar precificação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar precificação: {ex.Message}");
+            }
         }
     }
 }
