@@ -32,6 +32,7 @@ using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
 using Domain.Entidades.Importação_Planilha;
 using Domain.Entidades.Log;
+using Domain.Entidades.Cadastros.Veiculo;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -96,6 +97,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<DadosResponsavel> DadosResponsavel { get; set; }
     public DbSet<ImportacaoPlanilhas> ImportacaoPlanilha { get; set; }
     public DbSet<LogEntry> Logs { get; set; }
+    public DbSet<Veiculo> Veiculo { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -108,11 +110,23 @@ public class ContextBase : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
+        builder.Entity<Veiculo>()
+            .HasIndex(x => x.Placa)
+            .IsUnique();
+
         base.OnModelCreating(builder);
     }
 
     public string ObterStringConexao()
     {
-        return "Data Source=tcp:flytec.database.windows.net,1433;Initial Catalog=flytec_qa;Integrated Security=False;User ID=sa_flytec;Password=fly@123FL!#;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        return $@"
+                Data Source=tcp:flytec.database.windows.net,1433;
+                Initial Catalog=flytec_qa;Integrated Security=False;
+                User ID=sa_flytec;
+                Password=fly@123FL!#;
+                Connect Timeout=15;
+                Encrypt=False;
+                TrustServerCertificate=False
+        ";
     }
 }

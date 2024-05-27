@@ -46,6 +46,7 @@ using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
 using Application.Application.Servicos.Cadastros.SubMenu;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
+using Application.Application.Servicos.Cadastros.Veiculo;
 using Application.Application.Servicos.Genericos;
 using Application.Application.Servicos.Importação_Planilha;
 using Application.Application.Servicos.Log;
@@ -100,6 +101,7 @@ using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
 using Application.DTOs.Importação_Planilha;
 using Application.DTOs.Log.Interface;
+using Application.DTOs.Cadastros.Veiculo.Interface;
 using Application.DTOs.Users.Interface;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.User;
@@ -151,6 +153,7 @@ using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.SubMenu;
 using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
+using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.Genericos;
 using Domain.Interfaces.Importação_Planilha;
 using Domain.Interfaces.Log;
@@ -205,6 +208,7 @@ using Infra.Repositorio.Cadastros.SubMenu;
 using Infra.Repositorio.Cadastros.Tipo_Produto;
 using Infra.Repositorio.Cadastros.Veiculante;
 using Infra.Repositorio.Importação_Planilha;
+using Infra.Repositorio.Cadastros.Veiculo;
 using Infra.Repositorio.Log;
 using Infra.Repositorio.User;
 using System.Configuration;
@@ -271,6 +275,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
         services.AddScoped<ILogService, LogService>();
+        services.AddScoped<IVeiculoService, VeiculoService>();
 
         #endregion
 
@@ -326,8 +331,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
         services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
-        services.AddScoped<ILogRepository>(provider =>
-        new LogRepository(new ContextBase().ObterStringConexao()));
+        services.AddScoped<ILogRepository, LogRepository>();
+        services.AddScoped<IVeiculoRepository, VeiculoRepository>();
 
         #endregion
 

@@ -1,5 +1,6 @@
 ﻿using Domain.Entidades.Log;
 using Domain.Interfaces.Log;
+using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
 using System;
 using System.Collections.Generic;
@@ -11,19 +12,24 @@ namespace Infra.Repositorio.Log
 {
     public class LogRepository : ILogRepository
     {
-        private readonly string _connectionString;
+        private readonly ContextBase _contextBase;
 
-        public LogRepository(string connectionString)
+        public LogRepository(ContextBase contextBase)
         {
-            _connectionString = connectionString;
+            _contextBase = contextBase;
         }
 
         public void SaveLog(LogEntry logEntry)
         {
-            using (var connection = new SqlConnection(_connectionString))
+            var log = new LogEntry()
             {
-                var sql = "INSERT INTO Logs (Level, Message, Timestamp) VALUES (@Level, @Message, @Timestamp)";
-            }
+                Level = logEntry.Level,
+                Message = logEntry.Message,
+                Timestamp = logEntry.Timestamp,
+            };
+            _contextBase.Logs.Add(log);
+            _contextBase.SaveChanges();
+
         }
     }
 }
