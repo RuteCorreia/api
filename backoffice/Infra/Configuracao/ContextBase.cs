@@ -31,6 +31,7 @@ using Domain.Entidades.Cadastros.SubMenu;
 using Domain.Entidades.Cadastros.Tipo_Produto;
 using Domain.Entidades.Cadastros.Veiculante;
 using Domain.Entidades.Importação_Planilha;
+using Domain.Entidades.Log;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -94,6 +95,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<ContratoPrestacaoServico> ContratoPrestacaoServico { get; set; }
     public DbSet<DadosResponsavel> DadosResponsavel { get; set; }
     public DbSet<ImportacaoPlanilhas> ImportacaoPlanilha { get; set; }
+    public DbSet<LogEntry> Logs { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
