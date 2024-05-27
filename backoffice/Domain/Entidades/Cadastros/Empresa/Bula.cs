@@ -16,12 +16,12 @@ public class Bula
 
     public int? IdClassificacaoToxicologica { get; set; }
     public string Classe { get; set; }
-    public string TipoDeFormulacao { get; set; }
+    public string? TipoDeFormulacao { get; set; }
 
     [ForeignKey("AlvoBiologico")]
     public int? IdAlvoBiologico { get; set; }
     public string? DoseProdutoComercial { get; set; }
-    public string Adjuvante { get; set; }
+    public string? Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public bool Removido { get; set; }
 
