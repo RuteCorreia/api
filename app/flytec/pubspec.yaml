@@ -13,7 +13,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   go_router: ^11.0.0
   flutter_svg: ^2.0.7
-  intl: ^0.18.1
+  intl: 0.18.1
   signature: ^5.4.0
   image_picker: ^1.0.4
   google_maps_flutter: ^2.5.0
@@ -33,7 +33,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   modal_progress_hud_nsn: ^0.4.0
   modal_bottom_sheet: ^3.0.0-pre
-  flutter_localization: ^0.2.0
+  flutter_localization:
   geocoding:
   mask_text_input_formatter: 
   crop_your_image: ^0.7.5
@@ -47,6 +47,8 @@ dependencies:
   brasil_fields: ^1.14.1
   sqflite: ^2.0.0+3
   file_picker: 
+  background_locator_2: ^2.0.6
+  permission_handler:
 
 dev_dependencies:
   flutter_test:

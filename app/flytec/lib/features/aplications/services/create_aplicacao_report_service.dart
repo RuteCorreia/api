@@ -1908,8 +1908,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                     alignment: pw.Alignment.center,
                     margin: const pw.EdgeInsets.all(10),
                     child: pw.Image(
-                        pw.MemoryImage(
-                           base64Decode(
+                        pw.MemoryImage(base64Decode(
                             aplicacao.identificacaoAreaTratada!.croquiArea!)),
                         fit: pw.BoxFit.fill),
                   ),

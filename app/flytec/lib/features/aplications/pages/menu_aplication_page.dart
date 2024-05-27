@@ -10,6 +10,7 @@ import 'package:flytec/features/aplications/pages/area_tratada_page.dart';
 import 'package:flytec/features/aplications/pages/caracteristicas_produto_aplicado_page.dart';
 import 'package:flytec/features/aplications/pages/contratante_page.dart';
 import 'package:flytec/features/aplications/pages/relatorio_aplicacao_page.dart';
+import 'package:flytec/features/aplications/pages/rastreamento/tracking_page.dart';
 
 class MenuAplicationPage extends StatefulWidget {
   final ReportAplicationController? _reportAplicationController;
@@ -164,6 +165,19 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                         builder: (context) => DadosResponsavelPage(
                             reportAplicationController:
                                 widget._reportAplicationController!),
+                      ));
+                },
+              ),
+              CustomCardButton(
+                title: "Rastreamento",
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TrackingPage(
+                          reportApplicationController:
+                              widget._reportAplicationController!,
+                        ),
                       ));
                 },
               ),
