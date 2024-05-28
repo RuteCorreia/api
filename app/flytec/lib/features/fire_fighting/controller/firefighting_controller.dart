@@ -7,6 +7,7 @@ import 'package:flytec/core/infrastructure/database/sql/sql_database_provider.da
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
+import 'package:flytec/features/fire_fighting/models/contrato_prestacao_servico.dart';
 import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
 import 'package:flytec/features/fire_fighting/models/dados_responsavel.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
@@ -118,6 +119,15 @@ class FirefightingController extends ChangeNotifier {
               getComandanteOcorrenciaFirefightingFirefightingDb);
       comandanteOcorrenciaFirefighting.id = firefighting.idComandanteOcorrencia;
       firefighting.comandanteOcorrencia = comandanteOcorrenciaFirefighting;
+
+      final getContratoPrestacaoServiceFirefightingDb =
+          await _sqlDatabaseProvider.obtainElementTableById(
+              "ContratoPrestacaoServicoFirefighting", firefighting.idContratoPrestacaoServico);
+      ContratoPrestacaoServico contratoPrestacaoServico =
+          ContratoPrestacaoServico.fromJson(getContratoPrestacaoServiceFirefightingDb);
+
+      contratoPrestacaoServico.id = firefighting.idContratoPrestacaoServico;
+      firefighting.contratoPrestacaoServico = contratoPrestacaoServico;
 
       firefightingListResult.add(firefighting);
     }

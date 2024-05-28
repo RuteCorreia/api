@@ -1,9 +1,11 @@
+// ignore_for_file: use_build_context_synchronously
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
+import 'package:flytec/features/fire_fighting/models/contrato_prestacao_servico.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 
 import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighthing_fourth_step_private.dart';
@@ -48,6 +50,73 @@ class _ContratoPrestacaoServicoPageState
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _firefighting = widget._firefightingController?.firefightingSelected;
+
+      if (_firefighting!.idContratoPrestacaoServico != null) {
+        final contrato = await widget._firefightingController?.getElementById(
+            _firefighting!.idContratoPrestacaoServico!,
+            'ContratoPrestacaoServicoFirefighting');
+        _firefighting?.contratoPrestacaoServico =
+            ContratoPrestacaoServico.fromJson(contrato);
+        _precoController.text =
+            _firefighting!.contratoPrestacaoServico?.preco ?? '';
+        _extensaoController.text =
+            _firefighting!.contratoPrestacaoServico?.extensao ?? '';
+        _valorTotalController.text =
+            _firefighting!.contratoPrestacaoServico?.valorTotal ?? '';
+        _vencimentoController =
+            _firefighting!.contratoPrestacaoServico?.vencimento != null
+                ? DateTime.fromMillisecondsSinceEpoch(
+                    _firefighting!.contratoPrestacaoServico!.vencimento!)
+                : DateTime.now();
+        _distancia.text =
+            _firefighting!.contratoPrestacaoServico?.distanciaPista ?? '';
+        _precoUnidade = 'hora';
+      }
+      setState(() {});
+    });
+  }
+
+  Future<void> _actionContratoPrestacaoServico() async {
+    ContratoPrestacaoServico contratoPrestacaoServico =
+        ContratoPrestacaoServico(
+      distanciaPista: _distancia.text,
+      preco: _precoController.text,
+      extensao: _extensaoController.text,
+      valorTotal: _valorTotalController.text,
+      vencimento: _vencimentoController?.millisecondsSinceEpoch,
+      nomePiloto: getIt<GlobalConfigVars>().selectedPilot,
+      executor: getIt<GlobalConfigVars>().selectedExecutor,
+    );
+    if (contratoPrestacaoServico.id == null ||
+        (contratoPrestacaoServico.id != null &&
+            contratoPrestacaoServico.id! <= 0)) {
+      final idContrato = await widget._firefightingController
+          ?.createElementInTable(contratoPrestacaoServico.toJson(),
+              'ContratoPrestacaoServicoFirefighting');
+
+      await widget._firefightingController?.updateElementInTable(
+          _firefighting!.id!,
+          {'contratoPrestacaoServicoFirefighting_id': idContrato},
+          'Firefighting');
+
+      _firefighting?.idContratoPrestacaoServico = idContrato;
+      contratoPrestacaoServico.id = idContrato;
+      _firefighting?.contratoPrestacaoServico = contratoPrestacaoServico;
+      widget._firefightingController?.setFirefightingSelected(_firefighting!);
+      return;
+    }
+    await widget._firefightingController?.updateElementInTable(
+        contratoPrestacaoServico.id!,
+        contratoPrestacaoServico.toJson(),
+        'ContratoPrestacaoServicoFirefighting');
+    widget._firefightingController?.setFirefightingSelected(_firefighting!);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +128,7 @@ class _ContratoPrestacaoServicoPageState
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () async {
+              await _actionContratoPrestacaoServico();
               Navigator.pop(context);
             },
           )),
@@ -89,20 +159,18 @@ class _ContratoPrestacaoServicoPageState
               text: "Digite aqui",
             ),
             const SizedBox(height: 10),
-            Flexible(
-              child: Row(
-                children: [
-                  const Text("Preço por hora"),
-                  Checkbox(
-                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      value: _precoUnidade == "hora",
-                      onChanged: (value) {
-                        setState(() {
-                          _precoUnidade = "hora";
-                        });
-                      }),
-                ],
-              ),
+            Row(
+              children: [
+                const Text("Preço por hora"),
+                Checkbox(
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    value: _precoUnidade == "hora",
+                    onChanged: (value) {
+                      setState(() {
+                        _precoUnidade = "hora";
+                      });
+                    }),
+              ],
             ),
             const SizedBox(height: 10),
             const CustomText(text: 'Extensão em horas'),
@@ -175,6 +243,7 @@ class _ContratoPrestacaoServicoPageState
               child: CustomButton(
                 title: "OK",
                 onClick: () async {
+                  await _actionContratoPrestacaoServico();
                   if (_firefighting!.privado!) {
                     Navigator.push(
                         context,
