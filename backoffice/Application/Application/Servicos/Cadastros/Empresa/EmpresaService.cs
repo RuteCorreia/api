@@ -55,6 +55,7 @@ public class EmpresaService : IEmpresaService
             Email = empresa.Email,
             Password = $"Flytec_{DateTime.Now.Year}_!",
             Telefone = empresa.Telefone,
+            CPF = "",
             Funcoes = GenerateEmpresaUserRolesForViewModel()
         };
 
