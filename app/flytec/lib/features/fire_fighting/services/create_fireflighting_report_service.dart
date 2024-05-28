@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flytec/core/extensions/datetime_extension.dart';
@@ -35,6 +34,8 @@ class CreateFirefightingReportService implements PdfGenerator {
         orElse: () => ClientesModel(),
       );
 
+  final empresa = getIt<GlobalConfigVars>().userPayload.empresa;
+
   @override
   Future generatePdf({parameters}) async {
     final pdf = pw.Document();
@@ -62,15 +63,17 @@ class CreateFirefightingReportService implements PdfGenerator {
                 pw.SizedBox(
                     height: 110,
                     child: pw.Row(
-                        mainAxisAlignment: pw.MainAxisAlignment.center,
+                        mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
                         children: [
                           pw.Container(
-                            height: 150,
-                            width: 150,
-                            margin: const pw.EdgeInsets.only(
-                                left: 4, top: 4, bottom: 4),
-                            child: pw.Image(pw.MemoryImage(logoImage),
-                                fit: pw.BoxFit.contain),
+                            child: pw.Image(
+                                pw.MemoryImage(empresa?.logoEmpresa != null &&
+                                        empresa!.logoEmpresa!.isNotEmpty
+                                    ? base64Decode(empresa!.logoEmpresa!)
+                                    : logoImage),
+                                fit: pw.BoxFit.cover,
+                                width: 110,
+                                height: 100),
                           ),
                           pw.SizedBox(width: 10),
                           pw.Column(
@@ -99,24 +102,26 @@ class CreateFirefightingReportService implements PdfGenerator {
                                     children: [
                                       pw.SizedBox(
                                           child: pw.Text(
-                                              'IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
+                                              empresa?.nomeEmpresa ??
+                                                  'IMAGEM AVIAÇÃO AGRÍCOLA LTDA.',
                                               style: pw.TextStyle(
                                                   fontSize: 14,
                                                   fontWeight:
                                                       pw.FontWeight.normal))),
                                       pw.Text(
-                                          'MA SP - 000000-0 - CNPJ 00.000.000/0000-00 - Inscr. Est. 000.000.000.000',
+                                          '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                           maxLines: 1,
                                           style: pw.TextStyle(
                                               fontSize: 8,
                                               fontWeight:
                                                   pw.FontWeight.normal)),
-                                      pw.Text('FONE: (XX) XXXX-XXXX',
+                                      pw.Text(
+                                          'FONE: ${empresa?.telefoneEmpresa ?? '(XX) XXXX-XXXX'}',
                                           style: pw.TextStyle(
                                               fontSize: 14,
                                               fontWeight: pw.FontWeight.bold)),
                                       pw.Text(
-                                          'RUA PARANÁ, 000 - CENTRO - CEP 00000-000 - MONÇÕES - EST.SÃO PAULO',
+                                          '${empresa?.enderecoEmpresa ?? 'RUA PARANÁ, 000 - CENTRO'} - CEP ${empresa?.cepEmpresa ?? '00000-000'} - ${empresa?.cidadeEmpresa ?? 'MONÇÕES'} - EST.${empresa?.estadoEmpresa ?? 'SÃO PAULO'}',
                                           style: pw.TextStyle(
                                               fontSize: 8,
                                               fontWeight:
