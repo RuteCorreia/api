@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_map_store.dart';
@@ -46,8 +46,9 @@ class _TrackingViewState extends State<TrackingView> {
         controller.getMyLocation(_mapController);
       },
     ).getPermission();
-
+    controller.checkPermissionsStatus();
     controller.loadTracking();
+
     super.initState();
   }
 
@@ -72,7 +73,8 @@ class _TrackingViewState extends State<TrackingView> {
                   builder: (context, state) {
                     Polyline polyline = Polyline(
                         polylineId: const PolylineId('sprint'),
-                        color: Colors.purpleAccent,
+                        color: Colors.green,
+                        width: 5,
                         points: state
                             .map((e) => LatLng(e.latitude, e.longitude))
                             .toList());
@@ -105,14 +107,6 @@ class _TrackingViewState extends State<TrackingView> {
                                     polylines: {polyline}),
                               ),
                             ),
-                            ...!state.permissao
-                                ? [
-                                    Center(
-                                      child: Text(
-                                          "Necessário autorizar localização durante todo o tempo"),
-                                    )
-                                  ]
-                                : []
                           ],
                         );
                       },
@@ -133,22 +127,16 @@ class _TrackingViewState extends State<TrackingView> {
             ),
             BlocBuilder<TrackingStore, TrackingState>(
               builder: (context, state) {
-                return state.salvando
-                    ? Center(
-                        child: CircularProgressIndicator(
-                          valueColor: AlwaysStoppedAnimation(
-                              Theme.of(context).indicatorColor),
-                        ),
-                      )
-                    : state.gravando
-                        ? _stopButtom()
-                        : (!state.gravando && state.inicio == null)
-                            ? _recordButtom()
-                            : Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [_capturarImagem(), _recordButtom()],
-                              );
+                return !state.permissao
+                    ? mensagemPermissao()
+                    : state.salvando
+                        ? Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation(
+                                  Theme.of(context).indicatorColor),
+                            ),
+                          )
+                        : _contoles();
               },
             )
           ],
@@ -278,5 +266,106 @@ class _TrackingViewState extends State<TrackingView> {
               ),
             ),
           );
+  }
+
+  _contoles() {
+    return Builder(
+      builder: (context) {
+        final state = context.read<TrackingStore>().state;
+        return state.gravando
+            ? _stopButtom()
+            : (!state.gravando && state.inicio == null)
+                ? _recordButtom()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [_capturarImagem(), _recordButtom()],
+                  );
+      },
+    );
+  }
+
+  mensagemPermissao() {
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                  child: Container(
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Column(
+                      children: [
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Material(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                const Text(
+                                  "Para gravar a navegação é necessário autorizar o acesso a localização durante todo o tempo.",
+                                  textAlign: TextAlign.center,
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                OutlinedButton(
+                                    onPressed: () async {
+                                      final controller =
+                                          getIt<TrackingUseCase>();
+                                      try {
+                                        await controller.requestPermissions();
+                                        await controller
+                                            .checkPermissionsStatus();
+                                      } catch (e) {
+                                        if (kDebugMode) {
+                                          print(e);
+                                        }
+                                      }
+                                    },
+                                    child: Text("Autorizar"))
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const Positioned(
+                        top: 20,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Material(
+                              shape: StadiumBorder(),
+                              color: Colors.white,
+                              child: Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.location_disabled_outlined,
+                                  color: Colors.black,
+                                  size: 54,
+                                ),
+                              ),
+                            )
+                          ],
+                        ))
+                  ],
+                ),
+              ))
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

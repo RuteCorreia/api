@@ -8,4 +8,6 @@ abstract class TrackingUseCase {
   Future<bool> updateImagem(Uint8List? imageData);
 
   Future<void> loadTracking();
+  Future<void> checkPermissionsStatus();
+  Future<void> requestPermissions();
 }

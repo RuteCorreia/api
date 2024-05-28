@@ -6,6 +6,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:app_settings/app_settings.dart';
 import 'package:background_locator_2/location_dto.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flytec/core/injections/get_it.dart';
@@ -56,7 +57,7 @@ class TrackingController extends TrackingUseCase {
     _executando = true;
     getIt.get<TrackingStore>().setGravando(true);
 
-    await _checkPermissionsStatus();
+    await checkPermissionsStatus();
     final store = getIt<TrackingStore>();
     if (store.state.permissao) {
       if (store.state.inicio == null) {
@@ -183,7 +184,7 @@ class TrackingController extends TrackingUseCase {
     }
   }
 
-  Future<void> _checkPermissionsStatus() async {
+  Future<void> checkPermissionsStatus() async {
     final store = getIt.get<TrackingStore>();
     if (Platform.isAndroid) {
       var status = await Permission.locationAlways.status;
@@ -281,6 +282,46 @@ class TrackingController extends TrackingUseCase {
     } catch (e) {
       if (kDebugMode) {
         print(e);
+      }
+    }
+  }
+
+  Future<void> requestPermissions() async {
+    if (Platform.isAndroid) {
+      var status = await Permission.locationAlways.status;
+      if (status.isDenied) {
+        status = await Permission.location.request();
+        if (status.isGranted) {
+          status = await Permission.locationAlways.request();
+        }
+      }
+
+      if (status.isPermanentlyDenied || status.isDenied) {
+        var abriu = await openAppSettings();
+
+        if (!abriu) {
+          //await AppSettings.openLocationSettings(asAnotherTask: true);
+          await AppSettings.openAppSettings(asAnotherTask: true);
+        }
+      }
+      ServiceStatus service = await Permission.locationAlways.serviceStatus;
+
+      if (service.isDisabled) {
+        throw "Serviço de geolocalização está desabilitado neste aparelho.";
+      } else {
+        return;
+      }
+    } else if (Platform.isIOS) {
+      var handler = LocationOnIOS();
+      if (!(await handler.hasPermission())) {
+        bool ok = await LocationOnIOS().requestPermission();
+        if (!ok) {
+          throw "Serviço de geolocalização está desabilitado neste aparelho.";
+        } else {
+          return;
+        }
+      } else {
+        return;
       }
     }
   }
