@@ -10,8 +10,7 @@ import 'package:flytec/features/fire_fighting/controller/firefighting_controller
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/fire_fighting/presentation/components/decolagem_pouso_selected.dart';
-import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighthing_fourth_step_private.dart';
-import 'package:flytec/features/fire_fighting/presentation/pages/steps/add_firefighting_fourth_step_public.dart';
+import 'package:flytec/features/fire_fighting/presentation/pages/contrato_prestacao_servico.dart';
 
 import '../../../../auth/presentation/widgets/custom_login_button.dart';
 
@@ -526,25 +525,14 @@ class _AddFireFightingSecondStepState extends State<AddFireFightingThirdStep> {
                   title: "Próximo",
                   onClick: () async {
                     await _actionFirefighting();
-                    if (_firefighting!.privado!) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  AddFireFightingFourthtepPrivate(
-                                    firefightingController:
-                                        widget._firefightingController,
-                                  )));
-                      return;
-                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                AddFireFightingFourthtepPublic(
-                                  firefightingController:
-                                      widget._firefightingController,
-                                )));
+                          builder: (context) => ContratoPrestacaoServicoPage(
+                              firefightingController:
+                                  widget._firefightingController!),
+                        ));
+                  
                   },
                 ),
               ),

@@ -173,6 +173,7 @@ CREATE TABLE Firefighting (
     comandanteOcorrencia_id INTEGER,
     dadosResponsavelFirefighting_id INTEGER,
     cliente TEXT,
+    contratoPrestacaoServicoFirefighting_id INTEGER,
     refId TEXT
 )
 ''';
@@ -215,7 +216,7 @@ CREATE TABLE DadosResponsavelFirefighting (
     nome TEXT,
     documento TEXT,
     assinatura TEXT
-)
+    )
 ''';
   static String createCoordenadorBaseOperacionalFirefightingTable = '''
 CREATE TABLE CoordenadorBaseOperacionalFirefighting (
@@ -233,6 +234,19 @@ CREATE TABLE ComandanteOcorrenciaFirefighting (
     postoGraduacao TEXT,
     re TEXT,
     assinatura TEXT
+)
+''';
+
+  static String createContratoPrestacaoServicoFirefightingTable = '''
+CREATE TABLE ContratoPrestacaoServicoFirefighting (
+    id INTEGER PRIMARY KEY,
+    distanciaPista TEXT,
+    preco TEXT,
+    extensao TEXT,
+    valorTotal TEXT,
+    vencimento INTEGER,
+    nomePiloto TEXT,
+    executor TEXT
 )
 ''';
 }

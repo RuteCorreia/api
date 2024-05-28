@@ -1,5 +1,6 @@
 import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/fire_fighting/models/comandante_ocorrencia.dart';
+import 'package:flytec/features/fire_fighting/models/contrato_prestacao_servico.dart';
 import 'package:flytec/features/fire_fighting/models/coordenador_base_operacional.dart';
 import 'package:flytec/features/fire_fighting/models/dados_responsavel.dart';
 import 'package:flytec/features/fire_fighting/models/decolagem_pouso_firefighting.dart';
@@ -40,6 +41,8 @@ class Firefighting {
   String? piloto;
   String? executor;
   bool? privado;
+  ContratoPrestacaoServico? contratoPrestacaoServico;
+  int? idContratoPrestacaoServico;
 
   Firefighting(
       {this.refId,
@@ -48,6 +51,8 @@ class Firefighting {
       this.numeroAviso,
       this.prefixoAeronave,
       this.uf,
+      this.contratoPrestacaoServico,
+      this.idContratoPrestacaoServico,
       this.cidade,
       this.privado,
       this.data,
@@ -88,7 +93,7 @@ class Firefighting {
       'prefixoAeronave': prefixoAeronave,
       'uf': uf,
       'cidade': cidade,
-      'privado' : privado! ? 1 : 0,
+      'privado': privado! ? 1 : 0,
       'horimetroAcionamento': horimetroAcionamento,
       'horarioAcionamento': horarioAcionamento,
       'observacao': observacao,
@@ -132,6 +137,7 @@ class Firefighting {
         totalAguaUtilizadaOperacao: json['totalAguaUtilizadaOperacao'] ?? '',
         idDadosResponsavel: json['dadosResponsavelFirefighting_id'] ?? 0,
         idComandanteOcorrencia: json['comandanteOcorrencia_id'] ?? 0,
+        idContratoPrestacaoServico: json['contratoPrestacaoServicoFirefighting_id'] ?? 0,
         idCoordenadorBaseOperacional:
             json['coordenadorBaseOperacional_id'] ?? 0);
   }
