@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
+import 'package:flytec/core/extensions/string_extension.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/core/utils/global_config_vars.dart';
 import 'package:flytec/core/utils/util.dart';
@@ -78,7 +79,6 @@ class CreateAplicacaoReportService implements PdfGenerator {
         orElse: () => AeroNaveModel(
             prefixo: aplicacao.recomendacoesTecnicas?.aeronave,
             tipoAeronave: TipoAeronaveEnum.aviao));
-
     pdf.addPage(
       pw.Page(
         pageFormat: PdfPageFormat.a4,
@@ -122,7 +122,7 @@ class CreateAplicacaoReportService implements PdfGenerator {
                                             fontSize: 14,
                                             fontWeight: pw.FontWeight.normal)),
                                     pw.Text(
-                                        '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
+                                        '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj?.toCNPJ ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                         maxLines: 1,
                                         style: pw.TextStyle(
                                             fontSize: 8,

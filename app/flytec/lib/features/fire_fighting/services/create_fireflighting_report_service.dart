@@ -9,7 +9,7 @@ import 'package:flytec/features/aplications/data/models/clientes_model.dart';
 import 'package:flytec/features/executor/data/models/excutores_model.dart';
 import 'package:flytec/features/fire_fighting/models/firefighting.dart';
 import 'package:flytec/features/piloto/data/models/excutores_model.dart';
-
+import 'package:flytec/core/extensions/string_extension.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flytec/core/utils/pdf_generator.dart';
@@ -109,7 +109,7 @@ class CreateFirefightingReportService implements PdfGenerator {
                                                   fontWeight:
                                                       pw.FontWeight.normal))),
                                       pw.Text(
-                                          '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
+                                          '${empresa?.numeroEmpresa ?? '000000-0'} - CNPJ ${empresa?.cnpj?.toCNPJ ?? '00.000.000/0000-00'} - Inscr. Est. ${empresa?.inscricaoEstadualEmpresa ?? '000.000.000.000'}',
                                           maxLines: 1,
                                           style: pw.TextStyle(
                                               fontSize: 8,
