@@ -13,6 +13,7 @@ import 'package:flytec/features/aplications/pages/rastreamento/tracking_usecase.
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flytec/features/aplications/controller/permission.dart';
+
 import 'package:widgets_to_image/widgets_to_image.dart';
 
 import 'tracking_store.dart';
@@ -38,20 +39,22 @@ class _TrackingViewState extends State<TrackingView> {
 
   @override
   void initState() {
+    final controller = getIt<TrackingUseCase>();
     CheckPermissionLocation(
       context,
       () {
-        final controller = getIt.get<TrackingUseCase>();
         controller.getMyLocation(_mapController);
       },
     ).getPermission();
 
+    controller.loadTracking();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
@@ -60,7 +63,8 @@ class _TrackingViewState extends State<TrackingView> {
         ),
       ),
       body: Center(
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Stack(
               children: [
@@ -81,22 +85,43 @@ class _TrackingViewState extends State<TrackingView> {
                                   zoom: await ctn.getZoomLevel()))));
                     }
 
-                    return WidgetsToImage(
-                      controller: _wtoiController,
-                      child: GoogleMap(
-                          mapType: MapType.satellite,
-                          initialCameraPosition: cameraPosition,
-                          onMapCreated: (GoogleMapController mapController) {
-                            _mapController.complete(mapController);
-                          },
-                          polylines: {polyline}),
+                    return BlocBuilder<TrackingStore, TrackingState>(
+                      builder: (context, state) {
+                        return Stack(
+                          children: [
+                            WidgetsToImage(
+                              controller: _wtoiController,
+                              child: AspectRatio(
+                                aspectRatio: 1,
+                                child: GoogleMap(
+                                    mapType: MapType.satellite,
+                                    compassEnabled: true,
+                                    mapToolbarEnabled: false,
+                                    initialCameraPosition: cameraPosition,
+                                    onMapCreated:
+                                        (GoogleMapController mapController) {
+                                      _mapController.complete(mapController);
+                                    },
+                                    polylines: {polyline}),
+                              ),
+                            ),
+                            ...!state.permissao
+                                ? [
+                                    Center(
+                                      child: Text(
+                                          "Necessário autorizar localização durante todo o tempo"),
+                                    )
+                                  ]
+                                : []
+                          ],
+                        );
+                      },
                     );
                   },
                 ),
               ],
             ),
-            Positioned(
-                child: Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 BlocBuilder<TrackingTimeStore, Duration>(
@@ -105,19 +130,27 @@ class _TrackingViewState extends State<TrackingView> {
                   },
                 ),
               ],
-            )),
-            Positioned(
-                bottom: 0,
-                left: (MediaQuery.of(context).size.width / 2) - 25,
-                child: BlocBuilder<TrackingStore, TrackingState>(
-                  builder: (context, state) {
-                    return state.gravando
+            ),
+            BlocBuilder<TrackingStore, TrackingState>(
+              builder: (context, state) {
+                return state.salvando
+                    ? Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation(
+                              Theme.of(context).indicatorColor),
+                        ),
+                      )
+                    : state.gravando
                         ? _stopButtom()
-                        : (state.track?.pontos?.isEmpty ?? true)
+                        : (!state.gravando && state.inicio == null)
                             ? _recordButtom()
-                            : _atualizarImagem();
-                  },
-                ))
+                            : Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [_capturarImagem(), _recordButtom()],
+                              );
+              },
+            )
           ],
         ),
       ),
@@ -131,7 +164,7 @@ class _TrackingViewState extends State<TrackingView> {
             mini: true,
             backgroundColor: Colors.white.withOpacity(0.8),
             onPressed: () {
-              final controller = getIt.get<TrackingUseCase>();
+              final controller = getIt<TrackingUseCase>();
               controller.getMyLocation(_mapController);
             },
             child: const Icon(
@@ -148,29 +181,34 @@ class _TrackingViewState extends State<TrackingView> {
   }
 
   _recordButtom() {
-    return IconButton.outlined(
-        onPressed: () async {
-          await getIt.get<TrackingUseCase>().startRecording();
-        },
-        icon: Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.red,
-              boxShadow: kElevationToShadow[4]),
-          child: const Center(
-              child: Text(
-            "Gravar",
-            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-          )),
-        ));
+    return Builder(builder: (context) {
+      final store = context.read<TrackingStore>();
+      final continuar = store.state.track?.pontos?.isNotEmpty ?? false;
+      return IconButton.outlined(
+          onPressed: () async {
+            await getIt<TrackingUseCase>().startRecording();
+          },
+          icon: Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.red,
+                boxShadow: kElevationToShadow[4]),
+            child: Center(
+                child: Text(
+              continuar ? "Continue" : "Gravar",
+              style: const TextStyle(
+                  fontWeight: FontWeight.bold, color: Colors.white),
+            )),
+          ));
+    });
   }
 
   _stopButtom() {
     return IconButton.outlined(
         onPressed: () async {
-          await getIt.get<TrackingUseCase>().stopRecording();
+          await getIt<TrackingUseCase>().stopRecording();
         },
         icon: Container(
           width: 60,
@@ -187,21 +225,27 @@ class _TrackingViewState extends State<TrackingView> {
         ));
   }
 
-  _atualizarImagem() {
+  _capturarImagem() {
     return IconButton.outlined(
         onPressed: () async {
+          final mapController = await _mapController.future;
+          final store = context.read<TrackingStore>();
+          store.setSalvando(true);
           Uint8List? imageData = await _wtoiController.capture();
+
           if (imageData != null) {
             try {
-              bool ok =
-                  await getIt.get<TrackingUseCase>().updateImagem(imageData);
+              bool ok = await getIt<TrackingUseCase>().updateImagem(imageData);
               if (ok) {
                 Navigator.of(context).pop();
+                Navigator.of(context).pop();
               }
+              store.setSalvando(false);
             } catch (e) {
               if (kDebugMode) {
                 print(e);
               }
+              store.setSalvando(false);
             }
           }
         },
@@ -214,7 +258,7 @@ class _TrackingViewState extends State<TrackingView> {
               boxShadow: kElevationToShadow[4]),
           child: const Center(
               child: Text(
-            "Salvar",
+            "Usar",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           )),
         ));

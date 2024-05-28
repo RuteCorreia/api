@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_controller.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service_background_locator2.dart';
@@ -30,21 +31,25 @@ class _TrackingPageState extends State<TrackingPage> {
           TrackingServiceBackgroundLocator2());
       GetIt.I.registerSingleton<TrackingUseCase>(TrackingController(
           service: getIt(), updateImageDataCallback: widget.updateImageData));
-      getIt.registerSingleton<TrackingStore>(TrackingStore());
-      getIt.registerSingleton<TrackingMapStore>(TrackingMapStore());
-      getIt.registerSingleton<TrackingTimeStore>(TrackingTimeStore());
+    } else {
+      getIt.unregister<TrackingStore>();
+      getIt.unregister<TrackingMapStore>();
+      getIt.unregister<TrackingTimeStore>();
     }
+    getIt.registerSingleton<TrackingStore>(TrackingStore());
+    getIt.registerSingleton<TrackingMapStore>(TrackingMapStore());
+    getIt.registerSingleton<TrackingTimeStore>(TrackingTimeStore());
 
     return MultiBlocProvider(
       providers: [
         BlocProvider<TrackingStore>(
-          create: (context) => getIt(),
+          create: (_) => getIt(),
         ),
         BlocProvider<TrackingMapStore>(
-          create: (context) => getIt(),
+          create: (_) => getIt(),
         ),
         BlocProvider<TrackingTimeStore>(
-          create: (context) => getIt(),
+          create: (_) => getIt(),
         )
       ],
       child: const TrackingView(),

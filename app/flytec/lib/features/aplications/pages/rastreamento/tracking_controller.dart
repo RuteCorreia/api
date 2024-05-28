@@ -8,7 +8,6 @@ import 'dart:ui';
 
 import 'package:background_locator_2/location_dto.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_point.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service.dart';
@@ -88,7 +87,13 @@ class TrackingController extends TrackingUseCase {
       store.setTrack(TrackModel());
     } else {
       var log0 = verificarArquivo(log);
-      store.setTrack(TrackModel.fromJson(log0));
+      var track = TrackModel.fromJson(log0);
+      store.setTrack(track);
+      if ((track.pontos?.first.time ?? 0.0) > 0) {
+        var startTime = DateTime.fromMillisecondsSinceEpoch(
+            track.pontos!.first.time.floor());
+        store.setInicio(startTime);
+      }
     }
   }
 
@@ -261,6 +266,22 @@ class TrackingController extends TrackingUseCase {
       return true;
     } else {
       return false;
+    }
+  }
+
+  @override
+  Future<void> loadTracking() async {
+    await _load();
+    try {
+      await _updateIsRunning();
+      final store = getIt.get<TrackingStore>();
+      if (store.state.gravando) {
+        _atualizarTempo();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 }

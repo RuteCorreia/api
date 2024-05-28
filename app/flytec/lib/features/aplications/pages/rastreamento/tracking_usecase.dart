@@ -6,4 +6,6 @@ abstract class TrackingUseCase {
   Future<void> startRecording();
   Future<void> stopRecording();
   Future<bool> updateImagem(Uint8List? imageData);
+
+  Future<void> loadTracking();
 }
