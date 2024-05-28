@@ -168,19 +168,6 @@ class _MenuAplicationPageState extends State<MenuAplicationPage> {
                       ));
                 },
               ),
-              CustomCardButton(
-                title: "Rastreamento",
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TrackingPage(
-                          reportApplicationController:
-                              widget._reportAplicationController!,
-                        ),
-                      ));
-                },
-              ),
             ])),
       ),
     );

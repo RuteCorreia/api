@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flytec/core/injections/get_it.dart';
@@ -11,6 +13,7 @@ import 'package:flytec/features/aplications/pages/rastreamento/tracking_usecase.
 
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flytec/features/aplications/controller/permission.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
 
 import 'tracking_store.dart';
 
@@ -31,6 +34,7 @@ class _TrackingViewState extends State<TrackingView> {
 
   Polyline polyline = const Polyline(
       polylineId: PolylineId('sprint'), color: Colors.purpleAccent);
+  final _wtoiController = WidgetsToImageController();
 
   @override
   void initState() {
@@ -77,13 +81,16 @@ class _TrackingViewState extends State<TrackingView> {
                                   zoom: await ctn.getZoomLevel()))));
                     }
 
-                    return GoogleMap(
-                        mapType: MapType.satellite,
-                        initialCameraPosition: cameraPosition,
-                        onMapCreated: (GoogleMapController mapController) {
-                          _mapController.complete(mapController);
-                        },
-                        polylines: {polyline});
+                    return WidgetsToImage(
+                      controller: _wtoiController,
+                      child: GoogleMap(
+                          mapType: MapType.satellite,
+                          initialCameraPosition: cameraPosition,
+                          onMapCreated: (GoogleMapController mapController) {
+                            _mapController.complete(mapController);
+                          },
+                          polylines: {polyline}),
+                    );
                   },
                 ),
               ],
@@ -104,7 +111,11 @@ class _TrackingViewState extends State<TrackingView> {
                 left: (MediaQuery.of(context).size.width / 2) - 25,
                 child: BlocBuilder<TrackingStore, TrackingState>(
                   builder: (context, state) {
-                    return state.gravando ? _stopButtom() : _recordButtom();
+                    return state.gravando
+                        ? _stopButtom()
+                        : (state.track?.pontos?.isEmpty ?? true)
+                            ? _recordButtom()
+                            : _atualizarImagem();
                   },
                 ))
           ],
@@ -171,6 +182,39 @@ class _TrackingViewState extends State<TrackingView> {
           child: const Center(
               child: Text(
             "Parar",
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          )),
+        ));
+  }
+
+  _atualizarImagem() {
+    return IconButton.outlined(
+        onPressed: () async {
+          Uint8List? imageData = await _wtoiController.capture();
+          if (imageData != null) {
+            try {
+              bool ok =
+                  await getIt.get<TrackingUseCase>().updateImagem(imageData);
+              if (ok) {
+                Navigator.of(context).pop();
+              }
+            } catch (e) {
+              if (kDebugMode) {
+                print(e);
+              }
+            }
+          }
+        },
+        icon: Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+              boxShadow: kElevationToShadow[4]),
+          child: const Center(
+              child: Text(
+            "Salvar",
             style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
           )),
         ));

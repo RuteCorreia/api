@@ -7,6 +7,7 @@ import 'package:flytec/features/aplications/pages/images/croqui_area/desenhar_ar
 import 'package:flytec/features/aplications/components/components_exports.dart';
 import 'package:flutter/material.dart';
 import 'package:flytec/features/aplications/pages/images/upload_foto.dart';
+import 'package:flytec/features/aplications/pages/rastreamento/tracking_page.dart';
 
 class CroquiArea extends StatefulWidget {
   final void Function(Uint8List data, bool isPdf)? updateImageData;
@@ -63,7 +64,7 @@ class _CroquiAreaState extends State<CroquiArea> {
                     if (archive.path!.isEmpty) return;
                     _imageData = await File(archive.path!).readAsBytes();
                     if (!archive.isImage) {
-                      widget.updateImageData!(_imageData!,true);
+                      widget.updateImageData!(_imageData!, true);
                       Navigator.pop(context);
                       return;
                     }
@@ -87,6 +88,15 @@ class _CroquiAreaState extends State<CroquiArea> {
                 CustomCardButton(
                   onTap: () {},
                   title: "Importar Log",
+                ),
+                CustomCardButton(
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) =>
+                          TrackingPage(updateImageData: widget.updateImageData),
+                    ));
+                  },
+                  title: "Gravar a área",
                 ),
                 Center(
                   child: CustomButton(

@@ -8,6 +8,7 @@ import 'dart:ui';
 
 import 'package:background_locator_2/location_dto.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flytec/core/injections/get_it.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_point.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service.dart';
@@ -29,9 +30,10 @@ class TrackingController extends TrackingUseCase {
   StreamSubscription? _stream;
   ReceivePort port = ReceivePort();
   Timer? _tmTempo;
+  final Function(Uint8List data, bool isPdf)? updateImageDataCallback;
   final TrackingService service;
 
-  TrackingController({required this.service});
+  TrackingController({required this.service, this.updateImageDataCallback});
 
   @override
   Future<void> getMyLocation(Completer<dynamic> mapController) async {
@@ -250,5 +252,15 @@ class TrackingController extends TrackingUseCase {
         title: "Rastreamento",
         msg: "Duração ${storeTime.state}",
         bigMsg: "Rastreamento ativo durante ${storeTime.state}");
+  }
+
+  @override
+  Future<bool> updateImagem(Uint8List? imageData) async {
+    if (updateImageDataCallback != null && imageData != null) {
+      updateImageDataCallback!(imageData, false);
+      return true;
+    } else {
+      return false;
+    }
   }
 }

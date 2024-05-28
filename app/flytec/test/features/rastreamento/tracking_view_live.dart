@@ -50,8 +50,6 @@ void main() {
       ),
       useMaterial3: true,
     ),
-    home: TrackingPage(
-      reportApplicationController: ReportAplicationController(updateView: null),
-    ),
+    home: TrackingPage(),
   ));
 }

@@ -49,6 +49,7 @@ dependencies:
   file_picker: 
   background_locator_2: ^2.0.6
   permission_handler:
+  widgets_to_image: ^1.0.0
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,7 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flytec/features/aplications/controller/report_aplication_controller.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_controller.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service.dart';
 import 'package:flytec/features/aplications/pages/rastreamento/tracking_service_background_locator2.dart';
@@ -13,8 +14,8 @@ import 'tracking_time_store.dart';
 import 'tracking_view.dart';
 
 class TrackingPage extends StatefulWidget {
-  final ReportAplicationController reportApplicationController;
-  const TrackingPage({super.key, required this.reportApplicationController});
+  final Function(Uint8List data, bool isPdf)? updateImageData;
+  const TrackingPage({this.updateImageData, super.key});
 
   @override
   State<TrackingPage> createState() => _TrackingPageState();
@@ -27,8 +28,8 @@ class _TrackingPageState extends State<TrackingPage> {
     if (!getIt.isRegistered<TrackingUseCase>()) {
       GetIt.I.registerSingleton<TrackingService>(
           TrackingServiceBackgroundLocator2());
-      GetIt.I.registerSingleton<TrackingUseCase>(
-          TrackingController(service: getIt()));
+      GetIt.I.registerSingleton<TrackingUseCase>(TrackingController(
+          service: getIt(), updateImageDataCallback: widget.updateImageData));
       getIt.registerSingleton<TrackingStore>(TrackingStore());
       getIt.registerSingleton<TrackingMapStore>(TrackingMapStore());
       getIt.registerSingleton<TrackingTimeStore>(TrackingTimeStore());
