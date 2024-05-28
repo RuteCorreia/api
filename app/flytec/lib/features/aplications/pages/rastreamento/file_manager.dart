@@ -23,7 +23,7 @@ class FileManager {
   }
 
   static Future<File> _getTempLogFile() async {
-    final path = await getFullPath('log');
+    final path = await getFullPath('trklog');
     final file = File(path);
     if (!await file.exists()) {
       await file.writeAsString('');
