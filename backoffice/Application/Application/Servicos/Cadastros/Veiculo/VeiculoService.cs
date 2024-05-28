@@ -23,6 +23,7 @@ public class VeiculoService : IVeiculoService
     public async Task AddAsync(VeiculoViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        obj.Placa = obj.Placa.ToUpper();
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.Veiculo.Veiculo>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;  
         await _veiculoRepository.AddAsync(mapObj);
@@ -50,6 +51,7 @@ public class VeiculoService : IVeiculoService
 
     public async Task UpdateAsync(VeiculoViewModel obj)
     {
+        obj.Placa = obj.Placa.ToUpper();
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.Veiculo.Veiculo>(obj);
         await _veiculoRepository.UpdateAsync(mapObj);
     }
