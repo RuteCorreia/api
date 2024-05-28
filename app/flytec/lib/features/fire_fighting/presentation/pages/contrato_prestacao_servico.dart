@@ -113,6 +113,9 @@ class _ContratoPrestacaoServicoPageState
         contratoPrestacaoServico.id!,
         contratoPrestacaoServico.toJson(),
         'ContratoPrestacaoServicoFirefighting');
+    _firefighting?.idContratoPrestacaoServico = contratoPrestacaoServico.id;
+    contratoPrestacaoServico.id = contratoPrestacaoServico.id;
+    _firefighting?.contratoPrestacaoServico = contratoPrestacaoServico;
     widget._firefightingController?.setFirefightingSelected(_firefighting!);
   }
 
@@ -241,7 +244,7 @@ class _ContratoPrestacaoServicoPageState
             ),
             Center(
               child: CustomButton(
-                title: "OK",
+                title: "Próximo",
                 onClick: () async {
                   await _actionContratoPrestacaoServico();
                   if (_firefighting!.privado!) {
