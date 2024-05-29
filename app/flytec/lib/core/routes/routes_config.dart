@@ -8,6 +8,7 @@ import 'package:flytec/features/fire_fighting/presentation/pages/report_combate_
 import 'package:flytec/features/frota/presentation/frota_page.dart';
 import 'package:flytec/features/home/presentation/pages/home_page.dart';
 import 'package:flytec/features/manutencao/manutencao_page_list.dart';
+import 'package:flytec/features/aplications/pages/rastreamento/tracking_page.dart';
 import 'package:flytec/features/splash/presentation/pages/splash_page.dart';
 import 'package:go_router/go_router.dart';
 
@@ -42,7 +43,6 @@ final GoRouter router = GoRouter(
             return const HomeFireFighting();
           },
         ),
-        
         GoRoute(
           path: 'addsignature',
           builder: (BuildContext context, GoRouterState state) {

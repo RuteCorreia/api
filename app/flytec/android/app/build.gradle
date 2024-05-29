@@ -28,7 +28,7 @@ def keystoreProperties = new Properties()
    }
 android {
     namespace "com.example.flytec"
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {

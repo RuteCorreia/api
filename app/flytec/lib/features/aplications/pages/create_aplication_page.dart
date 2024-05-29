@@ -10,6 +10,8 @@ import 'package:flytec/features/aplications/controller/report_aplication_control
 import 'package:flytec/core/enums/dashboard_state.dart';
 import 'package:flytec/features/aplications/models/aplicacao.dart';
 import 'package:flytec/features/aplications/pages/menu_aplication_page.dart';
+import 'package:flytec/features/aplications/pages/rastreamento/file_manager.dart'
+    as trk;
 
 class CreateAplicationPage extends StatefulWidget {
   final ReportAplicationController? _reportAplicationController;
@@ -39,11 +41,11 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
           getIt<GlobalConfigVars>().userPayload.name!;
     }
   }
+
   @override
   void initState() {
     super.initState();
     _setPilotOrExecutoz();
-    
   }
 
   @override
@@ -131,8 +133,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
               const SizedBox(height: 12),
               AbsorbPointer(
                 absorbing: getIt<GlobalConfigVars>()
-                    .userPayload
-                    .role!
+                        .userPayload
+                        .role!
                         .contains("Executor") ||
                     getIt<GlobalConfigVars>()
                         .userPayload
@@ -140,8 +142,8 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                         .contains("TecnicoExecutor"),
                 child: CustomCombo(
                   selectedName: getIt<GlobalConfigVars>()
-                          .userPayload
-                          .role!
+                              .userPayload
+                              .role!
                               .contains("Executor") ||
                           getIt<GlobalConfigVars>()
                               .userPayload
@@ -205,6 +207,10 @@ class _CreateAplicationPageState extends State<CreateAplicationPage> {
                         '${getIt<GlobalConfigVars>().userPayload.nrUsuario}_$idAplicacao';
                     widget._reportAplicationController!
                         .setAplicacaoSelected(aplicacao);
+
+                    //limpar dados da última gravação de área
+                    trk.FileManager.clearLogFile();
+
                     // ignore: use_build_context_synchronously
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {

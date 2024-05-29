@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Esse arquivo é usado pelo processo de publicação/pacote do seu projeto Web. É possível personalizar o comportamento deste processo
+ao editar este arquivo MSBuild. Para saber mais sobre isso, visite https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>C:\Users\GAMER ZONE RYZEN\Desktop\Clones\Publicaçoes\Flytec\Prod\Atual</_PublishTargetUrl>
+    <History>True|2024-03-18T14:33:05.4217334Z;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

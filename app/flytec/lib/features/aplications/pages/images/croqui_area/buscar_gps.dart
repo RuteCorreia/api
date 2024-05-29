@@ -306,7 +306,6 @@ class _BuscarGPSState extends State<BuscarGPS> {
                   points.removeLast();
                   _poligone.clear();
                 }
-             
 
                 _poligone.add(Polygon(
                     fillColor: const Color(0xFF00B45D).withOpacity(0.2),
@@ -324,7 +323,9 @@ class _BuscarGPSState extends State<BuscarGPS> {
         ],
       ),
       body: ListView(
-        physics: closePoligon? const NeverScrollableScrollPhysics() : const AlwaysScrollableScrollPhysics(),
+        physics: closePoligon
+            ? const NeverScrollableScrollPhysics()
+            : const AlwaysScrollableScrollPhysics(),
         controller: _scrollController,
         children: [
           Stack(
