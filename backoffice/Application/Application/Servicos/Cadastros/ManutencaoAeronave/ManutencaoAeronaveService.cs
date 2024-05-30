@@ -6,86 +6,104 @@ using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Domain.Interfaces.Cadastros.ManutencaoAeronaveItemsRevisao;
 using Helpers;
 
-namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave
+namespace Application.Application.Servicos.Cadastros.ManutencaoAeronave;
+
+public class ManutencaoAeronaveService : IManutencaoAeronaveService
 {
-    public class ManutencaoAeronaveService : IManutencaoAeronaveService
+    private readonly IManutencaoAeronaveRepository _manutencaoAeronaveRepository;
+    private readonly IManutencaoAeronaveItemsRevisaoRepository _manutencaoItemsRevisaoRepository;
+    private readonly IMapper _mapper;
+
+    public ManutencaoAeronaveService(
+        IMapper mapper, 
+        IManutencaoAeronaveRepository manutencaoAeronaveRepository,
+        IManutencaoAeronaveItemsRevisaoRepository manutencaoItemsRevisaoRepository
+    )
     {
-        private readonly IManutencaoAeronaveRepository _manutencaoAeronaveRepository;
-        private readonly IManutencaoAeronaveItemsRevisaoRepository _manutencaoItemsRevisaoRepository;
-        private readonly IMapper _mapper;
+        _manutencaoAeronaveRepository = manutencaoAeronaveRepository;
+        _manutencaoItemsRevisaoRepository = manutencaoItemsRevisaoRepository;
+        _mapper = mapper;
+    }
 
-        public ManutencaoAeronaveService(
-            IMapper mapper, 
-            IManutencaoAeronaveRepository manutencaoAeronaveRepository,
-            IManutencaoAeronaveItemsRevisaoRepository manutencaoItemsRevisaoRepository
-        )
-        {
-            _manutencaoAeronaveRepository = manutencaoAeronaveRepository;
-            _manutencaoItemsRevisaoRepository = manutencaoItemsRevisaoRepository;
-            _mapper = mapper;
-        }
+    public async Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa)
+    {
+        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _manutencaoAeronaveRepository.GetAllAsync(idEmpresaAsNumber);
+        return _mapper.Map<IEnumerable<ManutencaoAeronaveViewModel>>(list);
+    }
 
-        public async Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id)
+    {
+        var obj = await _manutencaoAeronaveRepository.GetByIdAsync(id);
+        var mappedObj = _mapper.Map<ManutencaoAeronaveViewModel>(obj);
+        var itensRevisao = await _manutencaoItemsRevisaoRepository.GetAllByManutencaoAeronaveIdAsync(mappedObj.Id);
+        
+        mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
         {
-            var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-            var list = await _manutencaoAeronaveRepository.GetAllAsync(idEmpresaAsNumber);
-            return _mapper.Map<IEnumerable<ManutencaoAeronaveViewModel>>(list);
-        }
+            Id = x.Id,
+            Item = x.Descricao
+        });
 
-        public async Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id)
+        if (mappedObj.Documento is not null)
+            mappedObj.DocumentoBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.Documento);
+
+        if (mappedObj.FichaInspecao is not null)
+            mappedObj.FichaInspecaoBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.FichaInspecao);
+
+        if (mappedObj.ManualAeronave is not null)
+            mappedObj.ManualAeronaveBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.ManualAeronave);
+
+        if (mappedObj.MapaComponentes is not null)
+            mappedObj.MapaComponentesBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.MapaComponentes);
+
+        return mappedObj;
+    }
+
+    private string? ConvertToBase64StringAndReturnImageConcatenaded(byte[] doc)
+    {
+        var base64Img = Convert.ToBase64String(doc);
+        var base64Append = $"data:image/jpeg;base64,{base64Img}";
+        return base64Append;
+    }
+
+    public async Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa)
+    {
+        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
+        mapManutencaoAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
+        var objManutencao = await _manutencaoAeronaveRepository.AddAsync(mapManutencaoAeronave);
+
+        if (obj.ItensRevisao.Any())
         {
-            var obj = await _manutencaoAeronaveRepository.GetByIdAsync(id);
-            var mappedObj = _mapper.Map<ManutencaoAeronaveViewModel>(obj);
-            var itensRevisao = await _manutencaoItemsRevisaoRepository.GetAllByManutencaoAeronaveIdAsync(mappedObj.Id);
-            
-            mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
+            var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
             {
-                Id = x.Id,
-                Item = x.Descricao
+                Descricao = x.Item,
+                IdManutencaoAeronave = objManutencao.Id
             });
 
-            return mappedObj;
+            await _manutencaoItemsRevisaoRepository.AddAsync(itens);
         }
+    }
 
-        public async Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa)
+    public async Task UpdateAsync(ManutencaoAeronaveViewModel obj)
+    {
+        var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
+        await _manutencaoAeronaveRepository.UpdateAsync(mapManutencaoAeronave);
+        await _manutencaoItemsRevisaoRepository.DeleteByIdManutencaoAeronaveAsync(obj.Id);
+        if (obj.ItensRevisao.Any())
         {
-            var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-            var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
-            mapManutencaoAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
-            var objManutencao = await _manutencaoAeronaveRepository.AddAsync(mapManutencaoAeronave);
-
-            if (obj.ItensRevisao.Any())
+            var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
             {
-                var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
-                {
-                    Descricao = x.Item,
-                    IdManutencaoAeronave = objManutencao.Id
-                });
+                Descricao = x.Item,
+                IdManutencaoAeronave = obj.Id
+            });
 
-                await _manutencaoItemsRevisaoRepository.AddAsync(itens);
-            }
+            await _manutencaoItemsRevisaoRepository.AddAsync(itens);
         }
+    }
 
-        public async Task UpdateAsync(ManutencaoAeronaveViewModel obj)
-        {
-            var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
-            await _manutencaoAeronaveRepository.UpdateAsync(mapManutencaoAeronave);
-            await _manutencaoItemsRevisaoRepository.DeleteByIdManutencaoAeronaveAsync(obj.Id);
-            if (obj.ItensRevisao.Any())
-            {
-                var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
-                {
-                    Descricao = x.Item,
-                    IdManutencaoAeronave = obj.Id
-                });
-
-                await _manutencaoItemsRevisaoRepository.AddAsync(itens);
-            }
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            await _manutencaoAeronaveRepository.DeleteAsync(id);
-        }
+    public async Task DeleteAsync(int id)
+    {
+        await _manutencaoAeronaveRepository.DeleteAsync(id);
     }
 }
