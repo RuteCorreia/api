@@ -35,9 +35,7 @@ public class ManutencaoAeronaveRepository : IManutencaoAeronaveRepository
     {
         var entities = await _contextBase.ManutencaoAeronave
             .AsNoTracking()
-            .Where(x => 
-                idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa 
-            )
+            .Where(x => idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)
             .ToListAsync();
         return entities;
     }

@@ -69,6 +69,19 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
     public async Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa)
     {
         var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var docBase64 = ConvertBase64StringToByteArray(obj.DocumentoBase64);
+        var fichaInspecaoBase64 = ConvertBase64StringToByteArray(obj.FichaInspecaoBase64);
+        var manualAeronaveBase64 = ConvertBase64StringToByteArray(obj.ManualAeronaveBase64);
+        var mapaComponentesBase64 = ConvertBase64StringToByteArray(obj.MapaComponentesBase64);
+        if (docBase64 is not null)
+            obj.Documento = docBase64;
+        if(fichaInspecaoBase64 is not null)
+            obj.FichaInspecao = fichaInspecaoBase64;
+        if(manualAeronaveBase64 is not null)
+            obj.ManualAeronave = manualAeronaveBase64;
+        if(mapaComponentesBase64 is not null)
+            obj.MapaComponentes = mapaComponentesBase64;
+
         var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
         mapManutencaoAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         var objManutencao = await _manutencaoAeronaveRepository.AddAsync(mapManutencaoAeronave);
@@ -85,8 +98,33 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
         }
     }
 
+    private byte[]? ConvertBase64StringToByteArray(string? doc)
+    {
+        byte[]? imageDataBytes = null;
+        if (!string.IsNullOrEmpty(doc))
+        {
+            string[] parts = doc.Split(',');
+            string decodedBase64String = parts[1];
+            imageDataBytes = Convert.FromBase64String(decodedBase64String);
+        }
+        
+        return imageDataBytes;
+    } 
+
     public async Task UpdateAsync(ManutencaoAeronaveViewModel obj)
     {
+        var docBase64 = ConvertBase64StringToByteArray(obj.DocumentoBase64);
+        var fichaInspecaoBase64 = ConvertBase64StringToByteArray(obj.FichaInspecaoBase64);
+        var manualAeronaveBase64 = ConvertBase64StringToByteArray(obj.ManualAeronaveBase64);
+        var mapaComponentesBase64 = ConvertBase64StringToByteArray(obj.MapaComponentesBase64);
+        if (docBase64 is not null)
+            obj.Documento = docBase64;
+        if (fichaInspecaoBase64 is not null)
+            obj.FichaInspecao = fichaInspecaoBase64;
+        if (manualAeronaveBase64 is not null)
+            obj.ManualAeronave = manualAeronaveBase64;
+        if (mapaComponentesBase64 is not null)
+            obj.MapaComponentes = mapaComponentesBase64;
         var mapManutencaoAeronave = _mapper.Map<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>(obj);
         await _manutencaoAeronaveRepository.UpdateAsync(mapManutencaoAeronave);
         await _manutencaoItemsRevisaoRepository.DeleteByIdManutencaoAeronaveAsync(obj.Id);

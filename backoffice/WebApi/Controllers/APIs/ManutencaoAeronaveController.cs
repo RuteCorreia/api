@@ -3,7 +3,6 @@ using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.Interface;
 using Application.DTOs.Log.Interface;
-using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -44,6 +43,7 @@ public class ManutencaoAeronaveController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IAsyncEnumerable<ManutencaoAeronaveViewModel>>> GetAll()
     {
+        var returnMsg = new StringBuilder().Append("Registros de manutenção recuperados com sucesso.");
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
@@ -52,19 +52,18 @@ public class ManutencaoAeronaveController : ControllerBase
             foreach (var item in manutencaoAeronave)
             {
                 var buscaAeronave = aeronaves.FirstOrDefault(x => x.Id == item.IdAeronave);
-                if (buscaAeronave != null)
-                {
+                if (buscaAeronave is not null)
                     item.PrefixoAeronave = buscaAeronave.Prefixo;
-                }
             }
 
-            _logService.LogInformation("Registros de manutenção recuperados com sucesso.");
+            _logService.LogInformation(returnMsg.ToString());
             return Ok(manutencaoAeronave);
         }
         catch (Exception ex)
         {
-            _logService.LogError(ex, $"Erro ao recuperar todos os registros de manutenção: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os registros de manutenção: {ex.Message}");
+            var errorMsg = returnMsg.Clear().Append($"Erro ao recuperar todos os registros de manutenção: {ex.Message}").ToString();
+            _logService.LogError(ex, errorMsg);
+            return StatusCode(StatusCodes.Status500InternalServerError, errorMsg);
         }
     }
 
@@ -93,98 +92,89 @@ public class ManutencaoAeronaveController : ControllerBase
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] ManutencaoAeronaveViewModel obj)
     {
+        var returnMsg = new StringBuilder().Append("Modelo de registro de manutenção inválido.");
         try
         {
-            if (!string.IsNullOrEmpty(obj.DocumentoBase64))
-            {
-                string[] parts = obj.DocumentoBase64.Split(',');
-                string decodedBase64String = parts[1];
-
-                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                obj.Documento = imageDataBytes;
-            }
-
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-
                 await _manutencaoAeronaveService.AddAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("Registro de manutenção adicionado com sucesso.");
-                return Ok();
+                returnMsg.Clear();
             }
 
-            _logService.LogWarning("Modelo de registro de manutenção inválido.");
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo de registro de manutenção inválido");
+            if(!string.IsNullOrEmpty(returnMsg.ToString()))
+                _logService.LogWarning(returnMsg.ToString());
+
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : BadRequest(returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            _logService.LogError(ex, $"Erro ao adicionar registro de manutenção: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar registro de manutenção: {ex.Message}");
+            var errorMsg = returnMsg.Clear().Append($"Erro ao adicionar registro de manutenção: {ex.Message}").ToString();
+            _logService.LogError(ex, errorMsg);
+            return StatusCode(StatusCodes.Status500InternalServerError, errorMsg);
         }
     }
 
     [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, [FromBody] ManutencaoAeronaveViewModel obj)
     {
+        var returnMsg = new StringBuilder().Append("Modelo de registro de manutenção inválido.");
         try
         {
-            if (!string.IsNullOrEmpty(obj.DocumentoBase64))
-            {
-                string[] parts = obj.DocumentoBase64.Split(',');
-                string decodedBase64String = parts[1];
-
-                byte[] imageDataBytes = Convert.FromBase64String(decodedBase64String);
-                obj.Documento = imageDataBytes;
-            }
-
             if (ModelState.IsValid)
             {
                 var objeto = await _manutencaoAeronaveService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                if (objeto is not null)
                 {
                     obj.Id = objeto.Id;
-
                     await _manutencaoAeronaveService.UpdateAsync(obj);
-                    _logService.LogInformation("Registro de manutenção atualizado com sucesso.");
-                    return Ok();
+                    _logService.LogInformation(returnMsg.Clear().Append("Registro de manutenção atualizado com sucesso.").ToString());
+                    returnMsg.Clear();
                 }
                 else
                 {
-                    _logService.LogWarning("Registro de manutenção não encontrado.");
-                    return StatusCode(StatusCodes.Status404NotFound, "Registro de manutenção não encontrado");
+                    _logService.LogWarning(returnMsg.Clear().Append("Registro de manutenção não encontrado.").ToString());
+                    return NotFound(returnMsg.ToString());
                 }
             }
 
-            _logService.LogWarning("Modelo de registro de manutenção inválido.");
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo de registro de manutenção inválido");
+            if(!string.IsNullOrEmpty(returnMsg.ToString()))
+                _logService.LogWarning("Modelo de registro de manutenção inválido.");
+
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : BadRequest(returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            _logService.LogError(ex, $"Erro ao atualizar registro de manutenção: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar registro de manutenção: {ex.Message}");
+            var errorMsg = returnMsg.Clear().Append($"Erro ao atualizar registro de manutenção: {ex.Message}").ToString();
+            _logService.LogError(ex, errorMsg);
+            return StatusCode(StatusCodes.Status500InternalServerError, errorMsg);
         }
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
+        var returnMsg = new StringBuilder().Append($"Erro ao deletar registro de manutenção com Id: {id}");
         try
         {
             if (id != 0)
             {
                 await _manutencaoAeronaveService.DeleteAsync(id);
-                _logService.LogInformation("Registro de manutenção deletado com sucesso.");
-                return Ok();
+                _logService.LogInformation(returnMsg.Clear().Append("Registro de manutenção deletado com sucesso.").ToString());
+                returnMsg.Clear();
             }
-            _logService.LogWarning($"Erro ao deletar registro de manutenção com Id: {id}");
 
-            return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+            if(!string.IsNullOrEmpty(returnMsg.ToString()))
+                _logService.LogWarning(returnMsg.ToString());
+
+            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : BadRequest(returnMsg.ToString());
         }
         catch (Exception ex)
         {
-            _logService.LogError(ex, $"Erro ao deletar registro de manutenção: {ex.Message}");
-
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Manutenção Aeronave delete - {ex.Message}");
+            var errorMsg = returnMsg.Clear().Append($"Erro ao deletar registro de manutenção: {ex.Message}").ToString();
+            _logService.LogError(ex, errorMsg);
+            return StatusCode(StatusCodes.Status500InternalServerError, errorMsg);
         }
     }
 }
