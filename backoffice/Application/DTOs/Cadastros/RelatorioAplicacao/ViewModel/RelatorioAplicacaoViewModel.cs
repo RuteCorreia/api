@@ -10,13 +10,13 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
     public class RelatorioAplicacaoViewModel
     {
         public int Id { get; set; }
-        public int ContratanteId { get; set; }
-        public int IdentificacaoAreaTratadaId { get; set; }
-        public int CaracteristicasProdutoAplicadoId { get; set; }
-        public int RecomendacoesTecnicasId { get; set; }
-        public int RelatorioAplicacaoId { get; set; }
-        public int ContratoPrestacaoServicoId { get; set; }
-        public int DadosResponsavelId { get; set; }
+        public int? ContratanteId { get; set; }
+        public int? IdentificacaoAreaTratadaId { get; set; }
+        public int? CaracteristicasProdutoAplicadoId { get; set; }
+        public int? RecomendacoesTecnicasId { get; set; }
+        public int? RelatorioAplicacaoId { get; set; }
+        public int? ContratoPrestacaoServicoId { get; set; }
+        public int? DadosResponsavelId { get; set; }
         public string Piloto { get; set; }
         public string Executor { get; set; }
         public string RefDocument { get; set; }
