@@ -1,4 +1,11 @@
-﻿using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
+﻿using Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.Contratante.Interface;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
+using Application.DTOs.Cadastros.DadosResponsavel.Interface;
+using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
+using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
 using Helpers;
@@ -16,6 +23,12 @@ namespace WebApi.Controllers.APIs
     public class RelatorioAplicacaoController : ControllerBase
     {
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
+        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
+        private readonly IContratanteService _contratanteService;
+        private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
+        private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
+        private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+        private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly ILogService _logService;
 
         public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService)
@@ -69,6 +82,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
+                    //var contratoPrestacaoServico = _
                     await _relatorioAplicacaoService.AddAsync(obj);
                     _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
                     return Ok();
