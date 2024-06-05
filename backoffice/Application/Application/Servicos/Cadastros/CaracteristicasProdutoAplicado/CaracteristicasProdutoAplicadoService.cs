@@ -20,12 +20,13 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
     }
 
-    public async Task AddAsync(CaracteristicasProdutoAplicadoViewModel obj, string? idEmpresa)
+    public async Task<int> AddAsync(CaracteristicasProdutoAplicadoViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        await _caracteristicasProdutoAplicadoRepository.AddAsync(mapObj);
+        var caracteristicasProdutoAplicado = _caracteristicasProdutoAplicadoRepository.AddAsync(mapObj);
+        return caracteristicasProdutoAplicado.Id;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)

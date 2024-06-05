@@ -8,7 +8,7 @@ namespace Domain.Interfaces.Cadastros.IdentificacaoAreaTratada
 {
     public interface IIdentificacaoAreaTratadaRepository
     {
-        Task AddAsync(Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj);
+        Task<int> AddAsync(Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj);
         Task UpdateAsync(Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>> GetAllAsync();

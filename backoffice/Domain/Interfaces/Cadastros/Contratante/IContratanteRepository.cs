@@ -8,7 +8,7 @@ namespace Domain.Interfaces.Cadastros.Contratante
 {
     public interface IContratanteRepository
     {
-        Task AddAsync(Entidades.Cadastros.Contratante.Contratante obj);
+        Task<int> AddAsync(Entidades.Cadastros.Contratante.Contratante obj);
         Task UpdateAsync(Entidades.Cadastros.Contratante.Contratante obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Contratante.Contratante>> GetAllAsync();

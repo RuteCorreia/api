@@ -2,7 +2,7 @@
 
 public interface IDadosResponsavelRepository
 {
-    Task AddAsync(Entidades.Cadastros.DadosResponsavel.DadosResponsavel obj);
+    Task<int> AddAsync(Entidades.Cadastros.DadosResponsavel.DadosResponsavel obj);
     Task UpdateAsync(Entidades.Cadastros.DadosResponsavel.DadosResponsavel obj);
     Task DeleteAsync(int id, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.DadosResponsavel.DadosResponsavel>> GetAllAsync(int idEmpresa);

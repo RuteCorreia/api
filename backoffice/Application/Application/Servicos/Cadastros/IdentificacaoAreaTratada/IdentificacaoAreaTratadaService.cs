@@ -35,10 +35,11 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             return _mapper.Map<IdentificacaoAreaTratadaViewModel>(obj);
         }
 
-        public async Task AddAsync(IdentificacaoAreaTratadaViewModel obj)
+        public async Task<int> AddAsync(IdentificacaoAreaTratadaViewModel obj)
         {
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
-            await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+            var identificacaoAreaTratada = _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+            return identificacaoAreaTratada.Id;
         }
 
         public async Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj)

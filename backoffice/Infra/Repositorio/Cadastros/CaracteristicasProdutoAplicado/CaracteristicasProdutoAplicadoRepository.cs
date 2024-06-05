@@ -13,10 +13,11 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado obj)
+    public async Task<int> AddAsync(Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado obj)
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        return obj.Id;
     }
 
     public async Task DeleteAsync(int id, int idEmpresa)

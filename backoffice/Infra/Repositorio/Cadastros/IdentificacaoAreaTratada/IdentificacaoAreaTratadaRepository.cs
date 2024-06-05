@@ -19,10 +19,11 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
             _contextBase = contextBase;
         }
 
-        public async Task AddAsync(Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj)
+        public async Task<int> AddAsync(Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj)
         {
             await _contextBase.AddAsync(obj);
             await _contextBase.SaveChangesAsync();
+            return obj.Id;
         }
 
         public async Task DeleteAsync(int id)

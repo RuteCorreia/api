@@ -8,7 +8,7 @@ public interface IContratoPrestacaoServicoService
 
     Task<ContratoPrestacaoServicoViewModel> GetByIdAsync(int id, string? idEmpresa);
 
-    Task AddAsync(ContratoPrestacaoServicoViewModel obj, string? idEmpresa);
+    Task<int> AddAsync(ContratoPrestacaoServicoViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(ContratoPrestacaoServicoViewModel obj);
 

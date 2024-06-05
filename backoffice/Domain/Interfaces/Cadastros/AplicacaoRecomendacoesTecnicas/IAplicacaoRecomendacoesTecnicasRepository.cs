@@ -4,7 +4,7 @@ namespace Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 
 public interface IAplicacaoRecomendacoesTecnicasRepository
 {
-    Task AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
+    Task<int> AddAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
     Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>> GetAllAsync();

@@ -14,7 +14,7 @@ namespace Application.DTOs.Cadastros.Contratante.Interface
 
         Task<ContratanteViewModel> GetByIdAsync(int id);
 
-        Task AddAsync(ContratanteViewModel obj);
+        Task<int> AddAsync(ContratanteViewModel obj);
 
         Task UpdateAsync(ContratanteViewModel obj);
 

@@ -14,10 +14,11 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)
+    public async Task<int> AddAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        return obj.Id;
     }
 
     public async Task DeleteAsync(int id)

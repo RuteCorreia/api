@@ -8,7 +8,7 @@ public interface IDadosResponsavelService
 
     Task<DadosResponsavelViewModel?> GetByIdAsync(int id, string? idEmpresa);
 
-    Task AddAsync(DadosResponsavelViewModel obj, string? idEmpresa);
+    Task<int> AddAsync(DadosResponsavelViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(DadosResponsavelViewModel obj);
 

@@ -10,6 +10,7 @@ using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -30,6 +31,8 @@ namespace WebApi.Controllers.APIs
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly ILogService _logService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
+
 
         public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService)
         {
@@ -82,7 +85,29 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    //var contratoPrestacaoServico = _
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(obj.ContratoPrestacaoServico, loggedUser.Item3);
+                    var contratanteService = _contratanteService.AddAsync(obj.Contratante);
+                    var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(obj.IdentificacaoAreaTratada);
+                    var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(obj.AplicacaoRecomendacoesTecnicas);
+                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(obj.CaracteristicasProdutoAplicado, loggedUser.Item3);
+                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(obj.DadosResponsavel, loggedUser.Item3);
+
+                    obj.ContratoPrestacaoServicoId = contratoPrestacaoServico.Id;
+                    obj.ContratanteId = contratanteService.Id;
+                    obj.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Id;
+                    obj.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Id;
+                    obj.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Id;
+                    obj.DadosResponsavelId = dadosResponsavelService.Id;
+
+                    obj.AplicacaoRecomendacoesTecnicas = null;
+                    obj.Contratante = null;
+                    obj.IdentificacaoAreaTratada = null;
+                    obj.CaracteristicasProdutoAplicado = null;
+                    obj.ContratoPrestacaoServico = null;
+                    obj.DadosResponsavel = null;
+
                     await _relatorioAplicacaoService.AddAsync(obj);
                     _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
                     return Ok();

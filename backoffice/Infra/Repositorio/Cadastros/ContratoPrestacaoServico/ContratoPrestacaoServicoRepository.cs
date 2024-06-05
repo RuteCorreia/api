@@ -13,10 +13,11 @@ public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepos
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico obj)
+    public async Task<int> AddAsync(Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico obj)
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        return obj.Id;
     }
 
     public async Task DeleteAsync(int id, int idEmpresa)

@@ -8,7 +8,7 @@ public interface ICaracteristicasProdutoAplicadoService
 
     Task<CaracteristicasProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa);
 
-    Task AddAsync(CaracteristicasProdutoAplicadoViewModel obj, string? idEmpresa);
+    Task<int> AddAsync(CaracteristicasProdutoAplicadoViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj);
 

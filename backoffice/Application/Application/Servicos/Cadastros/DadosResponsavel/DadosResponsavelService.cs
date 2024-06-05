@@ -20,7 +20,7 @@ public class DadosResponsavelService : IDadosResponsavelService
         _mapper = mapper;
     }
 
-    public async Task AddAsync(DadosResponsavelViewModel obj, string? idEmpresa)
+    public async Task<int> AddAsync(DadosResponsavelViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var entityToCreate = new Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel
@@ -35,7 +35,8 @@ public class DadosResponsavelService : IDadosResponsavelService
             assinaturaResponsavel = Convert.FromBase64String(obj.assinaturaResponsavel),
             IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt
         };
-        await _dadosResponsavelRepository.AddAsync(entityToCreate);
+        var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
+        return dadosResponsavel.Id;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
