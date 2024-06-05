@@ -21,8 +21,8 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj)
         {
-            await _contextBase.AddAsync(obj);
-            await _contextBase.SaveChangesAsync();
+            _contextBase.Add(obj);
+            _contextBase.SaveChanges();
             return obj.Id;
         }
 

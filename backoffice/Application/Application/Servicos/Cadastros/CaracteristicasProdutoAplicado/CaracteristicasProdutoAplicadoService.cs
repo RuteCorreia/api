@@ -26,7 +26,7 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var caracteristicasProdutoAplicado = _caracteristicasProdutoAplicadoRepository.AddAsync(mapObj);
-        return caracteristicasProdutoAplicado.Id;
+        return caracteristicasProdutoAplicado.Result;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)

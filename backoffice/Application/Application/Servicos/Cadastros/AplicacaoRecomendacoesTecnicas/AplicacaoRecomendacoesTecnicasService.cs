@@ -32,7 +32,7 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     {
         var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
         var aplicacaoRecomendacoesTecnicas = _aplicacaoRecomendacoesTecnicasRepository.AddAsync(mapAplicacaoRecomendacoesTecnicas);
-        return aplicacaoRecomendacoesTecnicas.Id;
+        return aplicacaoRecomendacoesTecnicas.Result;
     }
 
     public async Task UpdateAsync(AplicacaoRecomendacoesTecnicasViewModel obj)

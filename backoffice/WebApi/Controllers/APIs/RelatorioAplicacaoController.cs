@@ -100,6 +100,12 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    obj.AplicacaoRecomendacoesTecnicas.IdAlturaVoo = null;
+                    obj.AplicacaoRecomendacoesTecnicas.IdAeronave = null;
+                    obj.AplicacaoRecomendacoesTecnicas.IdTipoDeProduto = null;
+                    obj.AplicacaoRecomendacoesTecnicas.IdAplicacao = null;
+                    obj.AplicacaoRecomendacoesTecnicas.IdEquipamento = null;
+                    obj.AplicacaoRecomendacoesTecnicas.IdVeiculante = null;
 
                     var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(obj.ContratoPrestacaoServico, "20");
                     var contratanteService = _contratanteService.AddAsync(obj.Contratante);
@@ -108,12 +114,13 @@ namespace WebApi.Controllers.APIs
                     var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(obj.CaracteristicasProdutoAplicado, "20");
                     var dadosResponsavelService = _dadosResponsavelService.AddAsync(obj.DadosResponsavel, "20");
 
-                    obj.ContratoPrestacaoServicoId = contratoPrestacaoServico.Id;
-                    obj.ContratanteId = contratanteService.Id;
-                    obj.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Id;
-                    obj.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Id;
-                    obj.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Id;
-                    obj.DadosResponsavelId = dadosResponsavelService.Id;
+                    obj.ContratoPrestacaoServicoId = contratoPrestacaoServico.Result;
+                    obj.ContratanteId = contratanteService.Result;
+                    obj.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Result;
+                    obj.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Result;
+                    obj.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Result;
+                    obj.DadosResponsavelId = dadosResponsavelService.Result;
+                    obj.Id = 0;
 
                     obj.AplicacaoRecomendacoesTecnicas = null;
                     obj.Contratante = null;

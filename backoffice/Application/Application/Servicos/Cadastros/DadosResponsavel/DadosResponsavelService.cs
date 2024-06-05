@@ -36,7 +36,7 @@ public class DadosResponsavelService : IDadosResponsavelService
             IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt
         };
         var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
-        return dadosResponsavel.Id;
+        return dadosResponsavel.Result;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)

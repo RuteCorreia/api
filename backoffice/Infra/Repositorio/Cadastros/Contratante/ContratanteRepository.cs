@@ -21,8 +21,8 @@ namespace Infra.Repositorio.Cadastros.Contratante
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.Contratante.Contratante obj)
         {
-            await _contextBase.AddAsync(obj);
-            await _contextBase.SaveChangesAsync();
+            _contextBase.Add(obj);
+            _contextBase.SaveChanges();
             return obj.Id;
         }
 

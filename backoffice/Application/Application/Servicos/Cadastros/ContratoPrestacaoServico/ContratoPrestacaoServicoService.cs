@@ -26,7 +26,7 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var contratoPrestacaoServico = _contratoPrestacaoServicoRepository.AddAsync(mapObj);
-        return contratoPrestacaoServico.Id;
+        return contratoPrestacaoServico.Result;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)

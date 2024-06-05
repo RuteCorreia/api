@@ -39,7 +39,7 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
         {
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             var identificacaoAreaTratada = _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
-            return identificacaoAreaTratada.Id;
+            return identificacaoAreaTratada.Result;
         }
 
         public async Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj)

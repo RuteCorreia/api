@@ -16,8 +16,8 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
 
     public async Task<int> AddAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)
     {
-        await _contextBase.AddAsync(obj);
-        await _contextBase.SaveChangesAsync();
+        _contextBase.Add(obj);
+        _contextBase.SaveChanges();
         return obj.Id;
     }
 
