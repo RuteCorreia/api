@@ -20,12 +20,13 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
         _contratoPrestacaoServicoRepository = contratoPrestacaoServicoRepository;
     }
 
-    public async Task AddAsync(ContratoPrestacaoServicoViewModel obj, string? idEmpresa)
+    public async Task<int> AddAsync(ContratoPrestacaoServicoViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        await _contratoPrestacaoServicoRepository.AddAsync(mapObj);
+        var contratoPrestacaoServico = _contratoPrestacaoServicoRepository.AddAsync(mapObj);
+        return contratoPrestacaoServico.Id;
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
