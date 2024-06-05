@@ -18,5 +18,6 @@ namespace Application.DTOs.Cadastros.Contratante.ViewModel
         public string Cidade { get; set; }
         public string CNPJ { get; set; }
         public string InscricaoEstadual { get; set; }
+        public string ContratanteRef { get; set; }
     }
 }
