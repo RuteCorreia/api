@@ -34,10 +34,24 @@ namespace WebApi.Controllers.APIs
         private readonly LoggedUserInfoService _loggedUserInfoService;
 
 
-        public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService)
+        public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService,
+                                            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
+                                            IContratanteService contratanteService,
+                                            IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
+                                            ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+                                            IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+                                            IDadosResponsavelService dadosResponsavelService,
+                                            LoggedUserInfoService loggedUserInfoService)
         {
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _logService = logService;
+            _identificacaoAreaTratadaServiceService = identificacaoAreaTratadaServiceService;
+            _contratanteService = contratanteService;
+            _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
+            _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
+            _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
+            _dadosResponsavelService = dadosResponsavelService;
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
         [HttpGet]
@@ -85,14 +99,14 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
-                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(obj.ContratoPrestacaoServico, loggedUser.Item3);
+                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(obj.ContratoPrestacaoServico, "20");
                     var contratanteService = _contratanteService.AddAsync(obj.Contratante);
                     var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(obj.IdentificacaoAreaTratada);
                     var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(obj.AplicacaoRecomendacoesTecnicas);
-                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(obj.CaracteristicasProdutoAplicado, loggedUser.Item3);
-                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(obj.DadosResponsavel, loggedUser.Item3);
+                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(obj.CaracteristicasProdutoAplicado, "20");
+                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(obj.DadosResponsavel, "20");
 
                     obj.ContratoPrestacaoServicoId = contratoPrestacaoServico.Id;
                     obj.ContratanteId = contratanteService.Id;
@@ -108,7 +122,7 @@ namespace WebApi.Controllers.APIs
                     obj.ContratoPrestacaoServico = null;
                     obj.DadosResponsavel = null;
 
-                    await _relatorioAplicacaoService.AddAsync(obj);
+                    _relatorioAplicacaoService.AddAsync(obj);
                     _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
                     return Ok();
                 }
