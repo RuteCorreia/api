@@ -185,7 +185,7 @@ public class EmpresaController : ControllerBase
         }
     }
 
-    [HttpGet("getByName/{name:string}")]
+    [HttpGet("getByName/{name}")]
     public async Task<ActionResult<IAsyncEnumerable<EmpresaViewModel>>> GetByName(string name)
     {
         try
