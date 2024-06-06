@@ -36,6 +36,12 @@ public class EmpresaRepository : IEmpresaRepository
         }
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Empresa>> GetByNameAsync(string name)
+    {
+        var obj = await _contextBase.Empresa.Where(w => w.Nome == name).ToListAsync();
+        return obj;
+    }
+
     public async Task DeleteAsync(int id)
     {
         var entityToRemove = await GetByIdAsync(id);

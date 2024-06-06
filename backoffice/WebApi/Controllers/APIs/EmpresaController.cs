@@ -12,7 +12,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-[Authorize(Roles = "Administrador")]
+//[Authorize(Roles = "Administrador")]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -185,6 +185,39 @@ public class EmpresaController : ControllerBase
         }
     }
 
+    [HttpGet("getByName/{name:string}")]
+    public async Task<ActionResult<IAsyncEnumerable<EmpresaViewModel>>> GetByName(string name)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            if (string.IsNullOrEmpty(loggedUser.Item3))
+            {
+                var empresas = await _empresaService.GetByNameAsync(name);
+                foreach (var empresa in empresas)
+                {
+                    if (empresa.Imagem != null)
+                    {
+                        var base64Imagem = Convert.ToBase64String(empresa.Imagem);
+                        var base64Append = "data:image/jpeg;base64," + base64Imagem;
+                        empresa.ImagemBase64 = base64Append;
+
+                    }
+                }
+                
+                if (!ObjectNullValidation.IsObjectNull(empresas))
+                    return Ok(empresas);
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+
+            return Unauthorized();
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Empresa getByName - {ex.Message}");
+        }
+    }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
