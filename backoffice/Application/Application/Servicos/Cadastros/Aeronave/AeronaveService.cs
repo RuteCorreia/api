@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Helpers;
+using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.Aeronave;
 
@@ -42,6 +43,12 @@ public class AeronaveService : IAeronaveService
     {
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
         await _aeronaveRepository.UpdateAsync(mapAeronave);
+    }
+
+    public async Task<IEnumerable<AeronaveViewModel>> GetByNameAsync(string name)
+    {
+        var list = await _aeronaveRepository.GetByNameAsync(name);
+        return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
 
     public async Task DeleteAsync(int id)
