@@ -25,17 +25,17 @@ public class AplicacaoRecomendacoesTecnicas
 
     [ForeignKey("AlturaVoo")]
     public int? IdAlturaVoo { get; set; }
-    public string AlturaVooCustom { get; set; }
-    public int? Temperatura { get; set; }
+    public string? AlturaVooCustom { get; set; }
+    public string? Temperatura { get; set; }
     public int? UrDoAR { get; set; }
-    public int? VelocidadeVento { get; set; }
+    public string? VelocidadeVento { get; set; }
 
     [ForeignKey("TipoProduto")]
     public int? IdTipoDeProduto { get; set; }
 
     [ForeignKey("Equipamento")]
     public int? IdEquipamento { get; set; }
-    public int? Angulo { get; set; }
+    public string? Angulo { get; set; }
 
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
