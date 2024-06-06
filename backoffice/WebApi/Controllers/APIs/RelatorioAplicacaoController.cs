@@ -1,15 +1,25 @@
 ﻿using Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.Contratante.Interface;
+using Application.DTOs.Cadastros.Contratante.ViewModel;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.Interface;
+using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
+using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.Aplicacao;
+using Domain.Entidades.Cadastros.ContratoPrestacaoServico;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
@@ -93,49 +103,77 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] RelatorioAplicacaoViewModel obj)
+        public async Task<ActionResult> Add([FromBody] dynamic obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
+
+                    var id = obj.GetProperty("id").GetInt32();
+                    var contratanteJson = obj.GetProperty("contratante").ToString();
+                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
+                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
+                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
+                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
+                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
+                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
+                    var piloto = obj.GetProperty("piloto").GetString();
+                    var executor = obj.GetProperty("executor").GetString();
+                    var refDocument = obj.GetProperty("refDocument").GetString();
+                    var data = obj.GetProperty("data").GetString();
+                    var refUsuario = obj.GetProperty("refUsuario").GetString();
+
+
+                    // Accessing properties dynamically
+                    var contratanteDeserializado = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
+                    var identificacaoAreaTratadaDeserializado = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
+                    var caracteristicasProdutoAplicadoDeserializado = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
+                    var recomendacoesTecnicasDeserializado = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
+                    var relatorioAplicacaoDeserializado = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
+                    var contratoPrestacaoServicoDeserializado = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
+                    var dadosResponsavelDeserializado = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
+
+                    // Log some properties
+                    _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
+
+
                     //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    if (obj.AplicacaoRecomendacoesTecnicas != null) 
+                    if (recomendacoesTecnicasDeserializado != null)
                     {
-                        obj.AplicacaoRecomendacoesTecnicas.IdAlturaVoo = null;
-                        obj.AplicacaoRecomendacoesTecnicas.IdAeronave = null;
-                        obj.AplicacaoRecomendacoesTecnicas.IdTipoDeProduto = null;
-                        obj.AplicacaoRecomendacoesTecnicas.IdAplicacao = null;
-                        obj.AplicacaoRecomendacoesTecnicas.IdEquipamento = null;
-                        obj.AplicacaoRecomendacoesTecnicas.IdVeiculante = null;
+                        recomendacoesTecnicasDeserializado.IdAlturaVoo = null;
+                        recomendacoesTecnicasDeserializado.IdAeronave = null;
+                        recomendacoesTecnicasDeserializado.IdTipoDeProduto = null;
+                        recomendacoesTecnicasDeserializado.IdAplicacao = null;
+                        recomendacoesTecnicasDeserializado.IdEquipamento = null;
+                        recomendacoesTecnicasDeserializado.IdVeiculante = null;
                     }
 
-                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(obj.ContratoPrestacaoServico, "20");
-                    var contratanteService = _contratanteService.AddAsync(obj.Contratante);
-                    var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(obj.IdentificacaoAreaTratada);
-                    var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(obj.AplicacaoRecomendacoesTecnicas);
-                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(obj.CaracteristicasProdutoAplicado, "20");
-                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(obj.DadosResponsavel, "20");
+                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoDeserializado, "20");
+                    var contratanteService = _contratanteService.AddAsync(contratanteDeserializado);
+                    var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(identificacaoAreaTratadaDeserializado);
+                    var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(recomendacoesTecnicasDeserializado);
+                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(caracteristicasProdutoAplicadoDeserializado, "20");
+                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(dadosResponsavelDeserializado, "20");
 
-                    obj.ContratoPrestacaoServicoId = contratoPrestacaoServico.Result;
-                    obj.ContratanteId = contratanteService.Result;
-                    obj.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Result;
-                    if (obj.AplicacaoRecomendacoesTecnicas != null)
+                    relatorioAplicacaoDeserializado.ContratoPrestacaoServicoId = contratoPrestacaoServico.Result;
+                    relatorioAplicacaoDeserializado.ContratanteId = contratanteService.Result;
+                    relatorioAplicacaoDeserializado.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Result;
+                    if (recomendacoesTecnicasDeserializado != null)
                     {
-                        obj.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Result;
+                        relatorioAplicacaoDeserializado.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Result;
                     }
-                    obj.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Result;
-                    obj.DadosResponsavelId = dadosResponsavelService.Result;
-                    obj.Id = 0;
+                    relatorioAplicacaoDeserializado.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Result;
+                    relatorioAplicacaoDeserializado.DadosResponsavelId = dadosResponsavelService.Result;
+                    relatorioAplicacaoDeserializado.Id = 0;
+                    relatorioAplicacaoDeserializado.Piloto = piloto;
+                    relatorioAplicacaoDeserializado.Executor = executor;
+                    relatorioAplicacaoDeserializado.RefDocument = refDocument;
+                    relatorioAplicacaoDeserializado.Data = data;
+                    relatorioAplicacaoDeserializado.RefUsuario = refUsuario;
 
-                    obj.AplicacaoRecomendacoesTecnicas = null;
-                    obj.Contratante = null;
-                    obj.IdentificacaoAreaTratada = null;
-                    obj.CaracteristicasProdutoAplicado = null;
-                    obj.ContratoPrestacaoServico = null;
-                    obj.DadosResponsavel = null;
-
-                    _relatorioAplicacaoService.AddAsync(obj);
+                    _relatorioAplicacaoService.AddAsync(relatorioAplicacaoDeserializado);
                     _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
                     return Ok();
                 }

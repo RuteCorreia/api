@@ -13,10 +13,10 @@ public class AplicacaoRecomendacoesTecnicasViewModel
     public int? IdAeronave { get; set; }
     public int? IdAlturaVoo { get; set; }
     public string AlturaVooCustom { get; set; }
-    public double? Temperatura { get; set; }
+    public string Temperatura { get; set; }
     public int? UrDoAR { get; set; }
-    public int? VelocidadeVento { get; set; }
+    public string VelocidadeVento { get; set; }
     public int? IdTipoDeProduto { get; set; }
     public int? IdEquipamento { get; set; }
-    public int? Angulo { get; set; }
+    public string Angulo { get; set; }
 }
