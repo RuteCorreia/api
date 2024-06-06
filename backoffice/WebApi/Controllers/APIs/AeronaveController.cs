@@ -8,6 +8,7 @@ using WebApi.HttpRequestInfo;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Application.DTOs.Cadastros.Empresa.ViewModel;
 
 namespace WebApi.Controllers.APIs
 {
@@ -132,6 +133,28 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao atualizar aeronave com ID {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Aeronave update - {ex.Message}");
+            }
+        }
+
+        [HttpGet("getByName/{name}")]
+        public async Task<ActionResult<IAsyncEnumerable<AeronaveViewModel>>> GetByName(string name)
+        {
+            try
+            {
+                var aeronaves = await _aeronaveService.GetByNameAsync(name);
+                if (!ObjectNullValidation.IsObjectNull(aeronaves))
+                {
+                    _logService.LogInformation($"Aeronaves com Nome {name} foram recuperadas com sucesso.");
+                    return Ok(aeronaves);
+                }
+
+                _logService.LogWarning($"Aeronaves com Nome {name} não encontradas.");
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar as aeronaves com Nome {name}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Aeronave getByName - {ex.Message}");
             }
         }
 

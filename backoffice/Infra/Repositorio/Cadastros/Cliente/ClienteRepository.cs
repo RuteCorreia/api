@@ -72,4 +72,10 @@ public class ClienteRepository : IClienteRepository
         _contextBase.Cliente.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cliente.Cliente>> GetByNameAsync(string name, int idEmpresa)
+    {
+        var obj = await _contextBase.Cliente.Where(x => x.NomeCliente.Contains(name) && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)).ToListAsync();
+        return obj;
+    }
 }

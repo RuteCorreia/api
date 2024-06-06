@@ -8,6 +8,7 @@ public interface IEmpresaService
     Task<IEnumerable<EmpresaViewModel>> GetAllAsync();
 
     Task<EmpresaViewModel> GetByIdAsync(int id);
+
     Task<string> GetLogoByIdAsync(int id);
 
     Task AddAsync(EmpresaViewModel obj);
@@ -15,5 +16,8 @@ public interface IEmpresaService
     Task UpdateAsync(EmpresaViewModel obj);
 
     Task ChangeStatusAsync(int id, EStatusEmpresa status);
+
+    Task<IEnumerable<EmpresaViewModel>> GetByNameAsync(string name);
+
     Task DeleteAsync(int id);
 }

@@ -12,5 +12,7 @@ public interface IAeronaveService
 
     Task UpdateAsync(AeronaveViewModel obj);
 
+    Task<IEnumerable<AeronaveViewModel>> GetByNameAsync(string name);
+
     Task DeleteAsync(int id);
 }

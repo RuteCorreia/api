@@ -125,6 +125,26 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getByName/{name}")]
+        public async Task<ActionResult<IAsyncEnumerable<ClienteViewModel>>> GetByName(string name)
+        {
+            var returnMsg = new StringBuilder().Append("Não encontrados");
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var cliente = await _clienteService.GetByNameAsync(name, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(cliente))
+                    returnMsg.Clear();
+
+                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok(cliente) : StatusCode(StatusCodes.Status404NotFound, returnMsg.ToString());
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao buscar os clientes com Nome {name}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao buscar clientes por Nome: {ex.Message}").ToString());
+            }
+        }
+
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
         {

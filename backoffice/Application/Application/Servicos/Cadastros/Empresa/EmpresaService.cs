@@ -5,6 +5,7 @@ using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Enums;
 using Domain.Interfaces.Cadastros.Empresa;
+using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -94,5 +95,11 @@ public class EmpresaService : IEmpresaService
     public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
     {
         await _empresaRepository.ChangeStatusAsync(id, status);
+    }
+
+    public async Task<IEnumerable<EmpresaViewModel>> GetByNameAsync(string name)
+    {
+        var list = await _empresaRepository.GetByNameAsync(name);
+        return _mapper.Map<IEnumerable<EmpresaViewModel>>(list);
     }
 }

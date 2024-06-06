@@ -62,4 +62,10 @@ public class AeronaveRepository : IAeronaveRepository
         _contextBase.Aeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name)
+    {
+        var obj = await _contextBase.Aeronave.Where(w => w.Prefixo.Contains(name)).ToListAsync();
+        return obj;
+    }
 }
