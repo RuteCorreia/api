@@ -51,6 +51,13 @@ public class ClienteService : IClienteService
         await _clienteRepository.UpdateAsync(mapCliente);
     }
 
+    public async Task<IEnumerable<ClienteViewModel>> GetByNameAsync(string name, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _clienteRepository.GetByNameAsync(name, idEmpresaInt);
+        return _mapper.Map<IEnumerable<ClienteViewModel>>(list);
+    }
+
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);

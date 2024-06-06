@@ -8,4 +8,5 @@ public interface IClienteRepository
     Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id, int idEmpresa);
     Task<Entidades.Cadastros.Cliente.Cliente> GetByLoginAsync(string email, string password);
+    Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetByNameAsync(string name, int idEmpresa);
 }

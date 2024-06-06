@@ -14,7 +14,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -122,6 +122,26 @@ namespace WebApi.Controllers.APIs
             {
                 _loggerService.LogError(ex, $"Erro ao atualizar cliente com ID {id}: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao atualizar cliente: {ex.Message}").ToString());
+            }
+        }
+
+        [HttpGet("getByName/{name}")]
+        public async Task<ActionResult<IAsyncEnumerable<ClienteViewModel>>> GetByName(string name)
+        {
+            var returnMsg = new StringBuilder().Append("Não encontrados");
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var cliente = await _clienteService.GetByNameAsync(name, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(cliente))
+                    returnMsg.Clear();
+
+                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok(cliente) : StatusCode(StatusCodes.Status404NotFound, returnMsg.ToString());
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao buscar os clientes com Nome {name}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao buscar clientes por Nome: {ex.Message}").ToString());
             }
         }
 
