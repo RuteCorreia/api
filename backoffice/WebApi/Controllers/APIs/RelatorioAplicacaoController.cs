@@ -139,7 +139,7 @@ namespace WebApi.Controllers.APIs
                     _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
 
 
-                    //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                     if (recomendacoesTecnicasDeserializado != null)
                     {
                         recomendacoesTecnicasDeserializado.IdAlturaVoo = null;
@@ -150,12 +150,12 @@ namespace WebApi.Controllers.APIs
                         recomendacoesTecnicasDeserializado.IdVeiculante = null;
                     }
 
-                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoDeserializado, "20");
+                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoDeserializado, loggedUser.Item3);
                     var contratanteService = _contratanteService.AddAsync(contratanteDeserializado);
                     var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(identificacaoAreaTratadaDeserializado);
                     var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(recomendacoesTecnicasDeserializado);
-                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(caracteristicasProdutoAplicadoDeserializado, "20");
-                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(dadosResponsavelDeserializado, "20");
+                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(caracteristicasProdutoAplicadoDeserializado, loggedUser.Item3);
+                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(dadosResponsavelDeserializado, loggedUser.Item3);
 
                     relatorioAplicacaoDeserializado.ContratoPrestacaoServicoId = contratoPrestacaoServico.Result;
                     relatorioAplicacaoDeserializado.ContratanteId = contratanteService.Result;
