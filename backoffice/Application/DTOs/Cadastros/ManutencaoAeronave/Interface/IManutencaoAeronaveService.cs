@@ -7,6 +7,7 @@ public interface IManutencaoAeronaveService
     Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<ManutencaoAeronaveViewModel> GetByIdAsync(int id);
+    Task<IEnumerable<ManutencaoAeronaveViewModel>> GetByIdAeronaveAsync(int id);
 
     Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa);
 

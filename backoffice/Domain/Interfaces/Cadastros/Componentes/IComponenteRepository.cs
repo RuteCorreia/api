@@ -13,5 +13,6 @@ namespace Domain.Interfaces.Cadastros.Componentes
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Componentes.Componentes>> GetAllAsync(int idEmpresa);
         Task<Entidades.Cadastros.Componentes.Componentes> GetByIdAsync(int id);
+        Task<IEnumerable<Entidades.Cadastros.Componentes.Componentes>> GetByIdAeronaveAsync(int id);
     }
 }

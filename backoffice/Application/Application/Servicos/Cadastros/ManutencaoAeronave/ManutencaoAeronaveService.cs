@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
+﻿using Application.DTOs.Cadastros.Componentes.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
 using AutoMapper;
@@ -143,5 +144,37 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
     public async Task DeleteAsync(int id)
     {
         await _manutencaoAeronaveRepository.DeleteAsync(id);
+    }
+
+    public async Task<IEnumerable<ManutencaoAeronaveViewModel>> GetByIdAeronaveAsync(int id)
+    {
+        var list = await _manutencaoAeronaveRepository.GetByIdAeronaveAsync(id);
+        var lista = new List<ManutencaoAeronaveViewModel>();
+        foreach (var item in list)
+        {
+            var mappedObj = _mapper.Map<ManutencaoAeronaveViewModel>(item);
+            var itensRevisao = await _manutencaoItemsRevisaoRepository.GetAllByManutencaoAeronaveIdAsync(mappedObj.Id);
+
+            mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
+            {
+                Id = x.Id,
+                Item = x.Descricao
+            });
+
+            if (mappedObj.Documento is not null)
+                mappedObj.DocumentoBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.Documento);
+
+            if (mappedObj.FichaInspecao is not null)
+                mappedObj.FichaInspecaoBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.FichaInspecao);
+
+            if (mappedObj.ManualAeronave is not null)
+                mappedObj.ManualAeronaveBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.ManualAeronave);
+
+            if (mappedObj.MapaComponentes is not null)
+                mappedObj.MapaComponentesBase64 = ConvertToBase64StringAndReturnImageConcatenaded(mappedObj.MapaComponentes);
+
+            lista.Add(mappedObj);
+        }
+        return lista;
     }
 }

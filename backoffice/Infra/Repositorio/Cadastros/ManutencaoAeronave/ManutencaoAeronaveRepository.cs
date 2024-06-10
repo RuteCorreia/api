@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.ManutencaoAeronave;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.ManutencaoAeronave;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -58,5 +59,14 @@ public class ManutencaoAeronaveRepository : IManutencaoAeronaveRepository
 
         _contextBase.ManutencaoAeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave>> GetByIdAeronaveAsync(int id)
+    {
+        var manutencoes = await _contextBase.ManutencaoAeronave
+        .AsNoTracking()
+        .Where(x => x.IdAeronave == id)
+            .ToListAsync();
+        return manutencoes;
     }
 }

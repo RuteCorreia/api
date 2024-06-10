@@ -13,6 +13,7 @@ namespace Application.DTOs.Cadastros.Componentes.Interface
         Task<IEnumerable<ComponentesViewModel>> GetAllAsync(string? idEmpresa);
 
         Task<ComponentesViewModel> GetByIdAsync(int id);
+        Task<IEnumerable<ComponentesViewModel>> GetByIdAeronaveAsync(int id);
 
         Task AddAsync(ComponentesViewModel obj, string? idEmpresa);
 

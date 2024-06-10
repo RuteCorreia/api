@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Componentes;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Componentes;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -68,6 +69,15 @@ namespace Infra.Repositorio.Cadastros.Componentes
 
             _contextBase.Componente.Update(objeto);
             await _contextBase.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Componentes.Componentes>> GetByIdAeronaveAsync(int id)
+        {
+            var componentesDaAeronave = await _contextBase.Componente
+            .AsNoTracking()
+            .Where(x => x.IdAeronave == id)
+                .ToListAsync();
+            return componentesDaAeronave;
         }
     }
 }
