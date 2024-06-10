@@ -22,7 +22,7 @@ public class PilotoRepository : IPilotoRepository
             .Where(x =>
                 x.Usuario != null
                 && !x.Usuario.Removido
-                && x.Funcao == ERole.Piloto
+                && x.Funcao == ERole.PilotoAeronave
                 && (idEmpresa == 0 ? x.Usuario.IdEmpresa == null : x.Usuario.IdEmpresa == idEmpresa)
             )
             .Include(u => u.Usuario)
@@ -35,7 +35,7 @@ public class PilotoRepository : IPilotoRepository
     {
         var obj = await _contextBase.UsuarioCredencial
            .Where(x =>
-               x.Funcao == ERole.Piloto
+               x.Funcao == ERole.PilotoAeronave
                && x.Usuario != null
                && !x.Usuario.Removido
                && x.IdUsuario == Guid.Parse(id)
