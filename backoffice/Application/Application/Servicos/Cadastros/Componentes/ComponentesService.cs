@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Componentes.Interface;
 using Application.DTOs.Cadastros.Componentes.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Componentes;
 using Helpers;
 
@@ -47,5 +48,11 @@ public class ComponentesService : IComponentesService
     public async Task DeleteAsync(int id)
     {
         await _componenteRepository.DeleteAsync(id);
+    }
+
+    public async Task<IEnumerable<ComponentesViewModel>> GetByIdAeronaveAsync(int id)
+    {
+        var list = await _componenteRepository.GetByIdAeronaveAsync(id);
+        return _mapper.Map<IEnumerable<ComponentesViewModel>>(list);
     }
 }

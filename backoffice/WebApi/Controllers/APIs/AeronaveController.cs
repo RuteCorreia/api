@@ -9,6 +9,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.DTOs.Cadastros.Empresa.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
+using Application.DTOs.Cadastros.Componentes.Interface;
+using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.Interface;
 
 namespace WebApi.Controllers.APIs
 {
@@ -22,14 +25,18 @@ namespace WebApi.Controllers.APIs
     public class AeronaveController : ControllerBase
     {
         private readonly IAeronaveService _aeronaveService;
+        private readonly IManutencaoAeronaveService _manutencaoAeronaveService;
+        private readonly IComponentesService _componentesService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ILogService _logService;
 
-        public AeronaveController(IAeronaveService aeronaveService, LoggedUserInfoService loggedUserInfoService, ILogService logService)
+        public AeronaveController(IAeronaveService aeronaveService, LoggedUserInfoService loggedUserInfoService, ILogService logService, IManutencaoAeronaveService manutencaoAeronaveService, IComponentesService componentesService)
         {
             _aeronaveService = aeronaveService;
             _loggedUserInfoService = loggedUserInfoService;
             _logService = logService;
+            _manutencaoAeronaveService = manutencaoAeronaveService;
+            _componentesService = componentesService;
         }
 
         [HttpGet]
@@ -55,6 +62,12 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var aeronave = await _aeronaveService.GetByIdAsync(id);
+                var manutencao = await _manutencaoAeronaveService.GetByIdAeronaveAsync(id);
+                var componentes = await _componentesService.GetByIdAeronaveAsync(id);
+                aeronave.ManutencaoAeronaveViewModel = manutencao;
+                aeronave.ComponentesViewModel = componentes;
+
+
                 if (!ObjectNullValidation.IsObjectNull(aeronave))
                 {
                     _logService.LogInformation($"Aeronave com ID {id} foi recuperada com sucesso.");

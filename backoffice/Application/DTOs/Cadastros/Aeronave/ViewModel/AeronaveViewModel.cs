@@ -1,4 +1,7 @@
-﻿using Domain.Enums;
+﻿using Application.DTOs.Cadastros.Componentes.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronave.ViewModel;
+using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.ViewModel;
+using Domain.Enums;
 
 namespace Application.DTOs.Cadastros.Aeronave.ViewModel;
 
@@ -9,5 +12,6 @@ public class AeronaveViewModel
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }
-    public ETipoAeronave? Tipo { get; set; }
+    public IEnumerable<ManutencaoAeronaveViewModel>? ManutencaoAeronaveViewModel { get; set; }
+    public IEnumerable<ComponentesViewModel>? ComponentesViewModel { get; set; }
 }
