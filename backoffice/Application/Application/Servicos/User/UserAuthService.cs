@@ -163,7 +163,7 @@ public class UserAuthService : IUserAuthService
 
     private bool VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(IEnumerable<RoleObject> funcoes)
     {
-        return funcoes.Any(x => x.Funcao == ERole.Piloto) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
+        return funcoes.Any(x => x.Funcao == ERole.PilotoAeronave) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
     }
 
     private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
