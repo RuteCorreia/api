@@ -33,6 +33,7 @@ public class Empresa
 
     public bool Manutencao { get; set; }
     public bool FrotaRelatoriosAplicacaoIncendio { get; set; }
+    public bool Removido { get; set; }
     public int QtdAeronaves { get; set; }
     public int QtdDrones { get; set; }
     public int QtdVeiculos { get; set; }
