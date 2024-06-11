@@ -47,14 +47,15 @@ public class EmpresaRepository : IEmpresaRepository
         var entityToRemove = await GetByIdAsync(id);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
-            _contextBase.Remove(entityToRemove);
+            entityToRemove.Removido = true;
+            _contextBase.Empresa.Update(entityToRemove);
             await _contextBase.SaveChangesAsync();
         }
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Empresa>> GetAllAsync()
     {
-        var entities = await _contextBase.Empresa.ToListAsync();
+        var entities = await _contextBase.Empresa.Where(w => !w.Removido).ToListAsync();
         return entities;
     }
 
