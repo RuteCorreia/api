@@ -45,9 +45,10 @@ public class AeronaveService : IAeronaveService
         await _aeronaveRepository.UpdateAsync(mapAeronave);
     }
 
-    public async Task<IEnumerable<AeronaveViewModel>> GetByNameAsync(string name)
+    public async Task<IEnumerable<AeronaveViewModel>> GetByNameAsync(string name, string? idEmpresa)
     {
-        var list = await _aeronaveRepository.GetByNameAsync(name);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _aeronaveRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
 
