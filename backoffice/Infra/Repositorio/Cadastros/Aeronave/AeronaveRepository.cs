@@ -63,9 +63,9 @@ public class AeronaveRepository : IAeronaveRepository
         await _contextBase.SaveChangesAsync();
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name, int idEmpresa)
     {
-        var obj = await _contextBase.Aeronave.Where(w => w.Prefixo.Contains(name)).ToListAsync();
+        var obj = await _contextBase.Aeronave.Where(w => !w.Removido && w.Prefixo.Contains(name) && (idEmpresa == 0 ? w.IdEmpresa == null : w.IdEmpresa == idEmpresa)).ToListAsync();
         return obj;
     }
 }

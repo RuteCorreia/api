@@ -154,7 +154,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var aeronaves = await _aeronaveService.GetByNameAsync(name);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var aeronaves = await _aeronaveService.GetByNameAsync(name, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(aeronaves))
                 {
                     _logService.LogInformation($"Aeronaves com Nome {name} foram recuperadas com sucesso.");
