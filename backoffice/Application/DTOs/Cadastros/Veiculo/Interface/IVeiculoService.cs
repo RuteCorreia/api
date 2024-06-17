@@ -13,4 +13,7 @@ public interface IVeiculoService
     Task UpdateAsync(VeiculoViewModel obj);
 
     Task DeleteAsync(int id, string? idEmpresa);
+
+    Task<int?> GetKmAtualByIdAsync(int id, string? idEmpresa);
+
 }

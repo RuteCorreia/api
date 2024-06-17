@@ -155,5 +155,29 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.ToString());
             }
         }
+
+        [HttpGet("kmAtual/{id:int}")]
+        public async Task<ActionResult<int?>> GetKmAtualById(int id)
+        {
+            var returnMsg = new StringBuilder().Append("Erro ao recuperar o km atual do veículo por ID.");
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var kmAtual = await _veiculoService.GetKmAtualByIdAsync(id, loggedUser.Item3);
+                if (kmAtual.HasValue)
+                {
+                    _logService.LogInformation("Km atual do veículo recuperado com sucesso.");
+                    return Ok(kmAtual);
+                }
+
+                _logService.LogWarning("Veículo não encontrado.");
+                return NotFound();
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, returnMsg.Append($" Detalhes: {ex.Message}").ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.ToString());
+            }
+        }
     }
 }
