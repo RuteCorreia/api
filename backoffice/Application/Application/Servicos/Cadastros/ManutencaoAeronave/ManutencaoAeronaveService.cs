@@ -42,7 +42,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
         mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
         {
             Id = x.Id,
-            Item = x.Descricao
+            Descricao = x.Descricao
         });
 
         if (mappedObj.Documento is not null)
@@ -91,7 +91,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
         {
             var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
             {
-                Descricao = x.Item,
+                Descricao = x.Descricao,
                 IdManutencaoAeronave = objManutencao.Id
             });
 
@@ -133,7 +133,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
         {
             var itens = obj.ItensRevisao.Select(x => new Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao
             {
-                Descricao = x.Item,
+                Descricao = x.Descricao,
                 IdManutencaoAeronave = obj.Id
             });
 
@@ -158,7 +158,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
             mappedObj.ItensRevisao = itensRevisao.Select(x => new ManutencaoAeronaveItemsRevisaoViewModel
             {
                 Id = x.Id,
-                Item = x.Descricao
+                Descricao = x.Descricao
             });
 
             if (mappedObj.Documento is not null)

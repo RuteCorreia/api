@@ -12,6 +12,6 @@ public class AeronaveViewModel
     public string? Prefixo { get; set; }
     public string? Modelo { get; set; }
     public string? SerialNumber { get; set; }
-    public IEnumerable<ManutencaoAeronaveViewModel>? ManutencaoAeronaveViewModel { get; set; }
-    public IEnumerable<ComponentesViewModel>? ComponentesViewModel { get; set; }
+    public IEnumerable<ManutencaoAeronaveItemsRevisaoViewModel>? ItensRevisao { get; set; }
+    public IEnumerable<ComponentesViewModel>? Componentes { get; set; }
 }

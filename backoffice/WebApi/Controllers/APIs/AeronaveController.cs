@@ -17,7 +17,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -46,6 +46,15 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var aeronaves = await _aeronaveService.GetAllAsync(loggedUser.Item3);
+
+                foreach (var aeronave in aeronaves)
+                {
+                    var manutencao = await _manutencaoAeronaveService.GetByIdAeronaveAsync(aeronave.Id);
+                    var componentes = await _componentesService.GetByIdAeronaveAsync(aeronave.Id);
+                    aeronave.ItensRevisao = manutencao.SelectMany(s => s.ItensRevisao);
+                    aeronave.Componentes = componentes;
+                }
+
                 _logService.LogInformation("Todas as aeronaves foram recuperadas com sucesso.");
                 return Ok(aeronaves);
             }
@@ -64,9 +73,8 @@ namespace WebApi.Controllers.APIs
                 var aeronave = await _aeronaveService.GetByIdAsync(id);
                 var manutencao = await _manutencaoAeronaveService.GetByIdAeronaveAsync(id);
                 var componentes = await _componentesService.GetByIdAeronaveAsync(id);
-                aeronave.ManutencaoAeronaveViewModel = manutencao;
-                aeronave.ComponentesViewModel = componentes;
-
+                aeronave.ItensRevisao = manutencao.SelectMany(s => s.ItensRevisao);
+                aeronave.Componentes = componentes;
 
                 if (!ObjectNullValidation.IsObjectNull(aeronave))
                 {
