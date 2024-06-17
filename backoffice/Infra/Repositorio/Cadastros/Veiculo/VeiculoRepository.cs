@@ -10,7 +10,7 @@ public class VeiculoRepository : IVeiculoRepository
 
     public VeiculoRepository(ContextBase contextBase)
     {
-        _contextBase = contextBase;   
+        _contextBase = contextBase;
     }
 
     public async Task AddAsync(Domain.Entidades.Cadastros.Veiculo.Veiculo obj)
@@ -42,7 +42,7 @@ public class VeiculoRepository : IVeiculoRepository
     public async Task<Domain.Entidades.Cadastros.Veiculo.Veiculo> GetByIdAsync(int id, int idEmpresa)
     {
         var obj = await _contextBase.Veiculo
-         .FirstOrDefaultAsync(x => x.Id == id 
+         .FirstOrDefaultAsync(x => x.Id == id
             && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
         return obj;
     }
@@ -56,6 +56,7 @@ public class VeiculoRepository : IVeiculoRepository
         objeto.KM_Inicial = obj.KM_Inicial;
         objeto.KM_Atual = obj.KM_Atual;
         objeto.KM_Inspecao = obj.KM_Inspecao;
+        objeto.KM_EntreRevisoes = obj.KM_EntreRevisoes;
         objeto.CapacidadeLitros = obj.CapacidadeLitros;
         objeto.QtdAtualLitros = obj.QtdAtualLitros;
 

@@ -14,6 +14,7 @@ public class Veiculo
     public int KM_Inicial { get; set; }
     public int KM_Atual { get; set; }
     public int KM_Inspecao { get; set; }
+    public int KM_EntreRevisoes { get; set; }
     public int CapacidadeLitros { get; set; }
     public int QtdAtualLitros { get; set; }
 
