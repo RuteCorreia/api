@@ -55,4 +55,13 @@ public class VeiculoService : IVeiculoService
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.Veiculo.Veiculo>(obj);
         await _veiculoRepository.UpdateAsync(mapObj);
     }
+
+    public async Task<int?> GetKmAtualByIdAsync(int id, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var veiculo = await _veiculoRepository.GetByIdAsync(id, idEmpresaInt);
+        return veiculo?.KM_Atual;
+    }
+
+
 }
