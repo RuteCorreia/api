@@ -45,6 +45,7 @@ public class Usuario
     public bool PrimeiroAcesso { get; set; }
     public byte[]? Assinatura { get; set; }
     public string CPF { get; set; }
+    public bool GerarRelatorioManutencao { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

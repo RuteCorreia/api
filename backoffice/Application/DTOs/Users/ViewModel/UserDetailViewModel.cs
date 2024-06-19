@@ -11,6 +11,7 @@ public class UserDetailViewModel
     public string Email { get; set; }
     public string? Telefone { get; set; }
     public string CPF { get; set; }
+    public bool GerarRelatorioManutencao { get; set; }
 
     //public ERole Funcao { get; set; }
     public IEnumerable<RoleObject> Funcoes { get; set; }
