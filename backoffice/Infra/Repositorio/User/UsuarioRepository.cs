@@ -50,4 +50,5 @@ public class UsuarioRepository : IUsuarioRepository
         _contextBase.Update(obj);
         await _contextBase.SaveChangesAsync();
     }
+
 }

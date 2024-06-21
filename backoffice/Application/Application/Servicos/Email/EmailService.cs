@@ -1,5 +1,7 @@
 ﻿using Application.DTOs.Email.Interface;
 using Application.DTOs.Email.ViewModel;
+using Domain.Entidades.User;
+using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -8,6 +10,24 @@ namespace Application.Application.Servicos.Email;
 
 public class EmailService : IEmailService
 {
+    private readonly UserManager<IdentityUser> _userManager;
+    public EmailService(UserManager<IdentityUser> userManager)
+    {
+        _userManager = userManager;
+    }
+    public async Task<string> GeneratePasswordResetTokenAsync(string email)
+    {
+        var resultMsg = new StringBuilder().Append("Email não Existe");
+        var identityUser = await _userManager.FindByEmailAsync(email);
+        if (identityUser != null)
+        {
+            var token = Guid.NewGuid().ToString();
+            return await Task.FromResult(token);
+        }
+        return (resultMsg.ToString());
+
+    }
+
     public async Task SendMailAsync(EmailViewModel emailContent)
     {
         try
@@ -64,7 +84,7 @@ public class EmailService : IEmailService
             }
 
             var mailSend = new MailMessage();
-            mailSend.From = new MailAddress(""); //colocar email da flytec aqui
+            mailSend.From = new MailAddress("atendimento@keltech"); //colocar email da flytec aqui
             mailSend.To.Add(emailContent.Recipient);
             mailSend.Body = msg.ToString();
             mailSend.Subject = emailContent.Title;
@@ -73,9 +93,9 @@ public class EmailService : IEmailService
             // CONFIGURAÇÃO DO EMAIL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient client = new SmtpClient();
-            client.Credentials = new NetworkCredential("apikey", "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"); //colocar credenciais da flytec (essas são do eag)
-            client.Port = 587; //verificar se essa porta esta correta
-            client.Host = "smtp.sendgrid.net";
+            client.Credentials = new NetworkCredential("atendimento@keltech.app", "mbfepucevpscjijz"); //colocar credenciais da flytec (essas são do eag)
+            client.Port = 25; //verificar se essa porta esta correta
+            client.Host = "smtp.gmail.com";
             client.EnableSsl = true;
             //enviar
             await client.SendMailAsync(mailSend);

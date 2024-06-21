@@ -213,6 +213,8 @@ using Infra.Repositorio.Log;
 using Infra.Repositorio.User;
 using System.Configuration;
 using WebApi.HttpRequestInfo;
+using Application.DTOs.Email.Interface;
+using Application.Application.Servicos.Email;
 
 namespace WebApi.Config;
 
@@ -276,6 +278,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
         services.AddScoped<ILogService, LogService>();
         services.AddScoped<IVeiculoService, VeiculoService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         #endregion
 
