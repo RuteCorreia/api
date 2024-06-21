@@ -1,8 +1,12 @@
-﻿using Application.DTOs.Users.Interface;
+﻿using Application.DTOs.Email.Interface;
+using Application.DTOs.Email.ViewModel;
+using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using System.Text.Encodings.Web;
+using System.Web;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.Auth;
@@ -15,11 +19,13 @@ public class AuthController : ControllerBase
 {
     private readonly IUserAuthService _authService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IEmailService _emailService;
 
-    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService)
+    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService, IEmailService emailService)
     {
         _authService = authService;
         _loggedUserInfoService = loggedUserInfoService;
+        _emailService = emailService;
     }
    
     [HttpPost("registerUser")]
@@ -82,6 +88,38 @@ public class AuthController : ControllerBase
 
         return BadRequest(resultError.ToString());
     }
+
+    [HttpPost("sendEmailPassword")]
+    public async Task<IActionResult> SendEmailChangePassword([FromBody] UserSendEmailResetPasswordViewModel model)
+    {
+        var resultError = new StringBuilder().Append("Não foi possível enviar o Email");
+        if (ModelState.IsValid) 
+        {
+            var token = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
+
+            var emailContent = new EmailViewModel
+            {
+                Recipient = model.Email,
+                Title = "Recuperação de Senha",
+                Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
+                Link = $"https://www.siteTeste.com/recuperar-senha/{HttpUtility.UrlEncode(token)}",
+                LinkText = "Criar Nova Senha"
+            };
+
+            try
+            {
+                await _emailService.SendMailAsync(emailContent);
+                return Ok("E-mail de recuperação de senha enviado com sucesso.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao enviar e-mail de recuperação de senha: {ex.Message}");
+            }
+        }
+        return BadRequest(resultError.ToString());
+
+    }
+
 
     [HttpPatch("saveSignature")]
     [Authorize]
