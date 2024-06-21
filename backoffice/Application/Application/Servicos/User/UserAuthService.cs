@@ -383,7 +383,7 @@ public class UserAuthService : IUserAuthService
     {
         var resultMsg = new StringBuilder().Append("Troca de senha não foi possível");
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
-        if (identityUser is not null)
+        if (identityUser != null)
         {
             var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.OldPassword);
             if (passwordCheck)
