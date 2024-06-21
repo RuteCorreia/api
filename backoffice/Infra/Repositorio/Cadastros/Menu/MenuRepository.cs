@@ -1,6 +1,7 @@
 ﻿using Domain.Interfaces.Cadastros.Menu;
 using Helpers;
 using Infra.Configuracao;
+using Infra.Repositorio.Cadastros.Empresa;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Menu;
@@ -31,10 +32,26 @@ public class MenuRepository : IMenuRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Menu.Menu>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.Menu
-            .AsNoTracking()
-            .Where(x => idEmpresa != 0 ? x.MenuItemId != 1005 : x.MenuItemId > 0)
-            .ToListAsync();
+        IEnumerable<Domain.Entidades.Cadastros.Menu.Menu> entities = null;
+        if (idEmpresa != 0)
+        {
+            var empresa = await new EmpresaRepository(_contextBase).GetByIdAsync(idEmpresa);
+            if (empresa.Manutencao)
+                entities = await _contextBase.Menu
+                    .AsNoTracking()
+                    .Where(x => x.MenuItemId != 1005)
+                    .ToListAsync();
+            else
+                entities = await _contextBase.Menu
+                    .AsNoTracking()
+                    .Where(x => x.MenuItemId != 1005 && x.MenuItemId != 4)
+                    .ToListAsync();   
+        }
+        else
+            entities = await _contextBase.Menu
+                .AsNoTracking()
+                .Where(x => x.MenuItemId != 4)
+                .ToListAsync();
 
         return entities;
     }
