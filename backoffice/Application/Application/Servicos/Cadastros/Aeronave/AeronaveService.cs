@@ -2,19 +2,23 @@
 using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Aeronave;
+using Domain.Interfaces.Cadastros.Empresa;
 using Helpers;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Application.Application.Servicos.Cadastros.Aeronave;
 
 public class AeronaveService : IAeronaveService
 {
     private readonly IAeronaveRepository _aeronaveRepository;
+    private readonly IEmpresaRepository _empresaRepository;
     private readonly IMapper _mapper;
 
-    public AeronaveService(IMapper mapper, IAeronaveRepository aeronaveRepository)
+    public AeronaveService(IMapper mapper, IAeronaveRepository aeronaveRepository, IEmpresaRepository empresaRepository)
     {
         _aeronaveRepository = aeronaveRepository;
+        _empresaRepository = empresaRepository;
         _mapper = mapper;
     }
 
@@ -31,12 +35,22 @@ public class AeronaveService : IAeronaveService
         return _mapper.Map<AeronaveViewModel>(obj);
     }
 
-    public async Task AddAsync(AeronaveViewModel obj, string? idEmpresa)
+    public async Task<(bool, string)> AddAsync(AeronaveViewModel obj, string? idEmpresa)
     {
+        var resultMsg = new StringBuilder();
+
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
         var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+
+        var empresa = await _empresaRepository.GetByIdAsync(idEmpresaAsNumber);
+        var limit = await _aeronaveRepository.GetAllAsync(idEmpresaAsNumber);
+        if (limit.Count() >= empresa.QtdAeronaves)
+            return (false, resultMsg.Append("Você ja cadastrou o limite de aeronaves registrados").ToString());
+
         mapAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         await _aeronaveRepository.AddAsync(mapAeronave);
+
+        return (true, resultMsg.Append("Aeronave Registrada com Sucesso").ToString());
     }
 
     public async Task UpdateAsync(AeronaveViewModel obj)
