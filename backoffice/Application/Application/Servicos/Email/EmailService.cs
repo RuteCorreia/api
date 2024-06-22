@@ -17,14 +17,16 @@ public class EmailService : IEmailService
     }
     public async Task<string> GeneratePasswordResetTokenAsync(string email)
     {
-        var resultMsg = new StringBuilder().Append("Email não Existe");
+
         var identityUser = await _userManager.FindByEmailAsync(email);
-        if (identityUser != null)
+        if (identityUser == null)
         {
-            var token = Guid.NewGuid().ToString();
-            return await Task.FromResult(token);
+            return null;  
         }
-        return null;
+
+        var token = await _userManager.GenerateUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword");
+        return token;
+
 
     }
 

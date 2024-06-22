@@ -121,7 +121,7 @@ public class AuthController : ControllerBase
             try
             {
                 await _emailService.SendMailAsync(emailContent);
-                return Ok("E-mail de recuperação de senha enviado com sucesso.");
+                return Ok(new { message = "E-mail de recuperação de senha enviado com sucesso." });
             }
             catch (Exception ex)
             {
