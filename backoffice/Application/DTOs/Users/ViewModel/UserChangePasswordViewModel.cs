@@ -17,4 +17,7 @@ public class UserChangePasswordViewModel
     [DataType(DataType.Password)]
     [MinLength(6, ErrorMessage = "A senha deve conter pelo menos 6 caracteres")]
     public string NewPassword { get; set; }
+
+    [Required]
+    public string Token { get; set; }
 }

@@ -73,12 +73,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPatch("changePassword")]
-    public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel user)
+    public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel model)
     {
         var resultError = new StringBuilder().Append("Não foi possível alterar a senha");
         if (ModelState.IsValid)
         {
-            var result = await _authService.ChangeUserPasswordAsync(user);
+            var result = await _authService.ChangeUserPasswordAsync(model);
             if (result.Item1)
                 return Ok();
 
@@ -96,15 +96,25 @@ public class AuthController : ControllerBase
         if (ModelState.IsValid) 
         {
             var token = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
-            if(token == null)
-                return BadRequest(resultMsg.Append("Email não encontrado, verifique novamente").ToString());
+            if(token == null) 
+            {
+                var problemDetails = new ProblemDetails
+                {
+                    Status = 400,
+                    Title = "Bad Request",
+                    Detail = "Email não encontrado, verifique novamente."
+                };
+
+                return BadRequest(problemDetails);
+            }
+                
 
             var emailContent = new EmailViewModel
             {
                 Recipient = model.Email,
                 Title = "Recuperação de Senha",
                 Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                Link = $"https://www.siteTeste.com/recuperar-senha/{HttpUtility.UrlEncode(token)}",
+                Link = $"http://localhost:4200/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
                 LinkText = "Criar Nova Senha"
             };
 

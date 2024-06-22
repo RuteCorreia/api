@@ -385,6 +385,13 @@ public class UserAuthService : IUserAuthService
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser != null)
         {
+            var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, "Default", "ResetPassword", user.Token);
+            if (!tokenValid)
+            {
+                resultMsg.Clear().Append("Token inválido ou expirado.");
+                return (false, resultMsg.ToString());
+            }
+
             var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.OldPassword);
             if (passwordCheck)
             {
