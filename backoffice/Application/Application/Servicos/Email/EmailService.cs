@@ -24,7 +24,7 @@ public class EmailService : IEmailService
             var token = Guid.NewGuid().ToString();
             return await Task.FromResult(token);
         }
-        return (resultMsg.ToString());
+        return null;
 
     }
 

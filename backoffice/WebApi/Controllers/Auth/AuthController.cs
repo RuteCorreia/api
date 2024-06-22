@@ -92,10 +92,12 @@ public class AuthController : ControllerBase
     [HttpPost("sendEmailPassword")]
     public async Task<IActionResult> SendEmailChangePassword([FromBody] UserSendEmailResetPasswordViewModel model)
     {
-        var resultError = new StringBuilder().Append("Não foi possível enviar o Email");
+        var resultMsg = new StringBuilder();
         if (ModelState.IsValid) 
         {
             var token = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
+            if(token == null)
+                return BadRequest(resultMsg.Append("Email não encontrado, verifique novamente").ToString());
 
             var emailContent = new EmailViewModel
             {
@@ -116,7 +118,7 @@ public class AuthController : ControllerBase
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao enviar e-mail de recuperação de senha: {ex.Message}");
             }
         }
-        return BadRequest(resultError.ToString());
+        return BadRequest(resultMsg.Append("Erro ao enviar e-mail de recuperação de senha, tente novamente").ToString());
 
     }
 
