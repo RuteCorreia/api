@@ -114,7 +114,7 @@ public class AuthController : ControllerBase
                 Recipient = model.Email,
                 Title = "Recuperação de Senha",
                 Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                Link = $"http://localhost:4200/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
+                Link = $"https://flytec-web.azurewebsites.net/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
                 LinkText = "Criar Nova Senha"
             };
 
