@@ -14,4 +14,5 @@ public class AeronaveViewModel
     public string? SerialNumber { get; set; }
     public IEnumerable<ManutencaoAeronaveItemsRevisaoViewModel>? ItensRevisao { get; set; }
     public IEnumerable<ComponentesViewModel>? Componentes { get; set; }
+    public ETipoAeronave Tipo {  get; set; }
 }
