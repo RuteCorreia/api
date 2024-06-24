@@ -108,11 +108,11 @@ namespace WebApi.Controllers.APIs
                         if (result.Item1 == true)
                             return Ok(result);
                     }
-                    return StatusCode(StatusCodes.Status400BadRequest, "Limite de aeronaves cadastradas atingido");
+                    return StatusCode(StatusCodes.Status400BadRequest, new { detail = "Limite de aeronaves cadastradas atingido" });
                 }
 
                 _logService.LogWarning("Prefixo já existe, não é possível adicionar duplicado.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
+                return StatusCode(StatusCodes.Status400BadRequest, new { detail = "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)" });
             }
             catch (Exception ex)
             {
