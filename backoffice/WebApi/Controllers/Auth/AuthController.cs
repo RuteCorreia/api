@@ -1,8 +1,12 @@
-﻿using Application.DTOs.Users.Interface;
+﻿using Application.DTOs.Email.Interface;
+using Application.DTOs.Email.ViewModel;
+using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
+using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using System.Web;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.Auth;
@@ -14,12 +18,14 @@ namespace WebApi.Controllers.Auth;
 public class AuthController : ControllerBase
 {
     private readonly IUserAuthService _authService;
+    private readonly IEmailService _emailService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
 
-    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService)
+    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService, IEmailService emailService)
     {
         _authService = authService;
         _loggedUserInfoService = loggedUserInfoService;
+        _emailService = emailService;
     }
    
     [HttpPost("registerUser")]
@@ -67,12 +73,12 @@ public class AuthController : ControllerBase
     }
 
     [HttpPatch("changePassword")]
-    public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel user)
+    public async Task<IActionResult> ChangeUserPassword([FromBody] UserChangePasswordViewModel model)
     {
         var resultError = new StringBuilder().Append("Não foi possível alterar a senha");
         if (ModelState.IsValid)
         {
-            var result = await _authService.ChangeUserPasswordAsync(user);
+            var result = await _authService.ChangeUserPasswordAsync(model);
             if (result.Item1)
                 return Ok();
 

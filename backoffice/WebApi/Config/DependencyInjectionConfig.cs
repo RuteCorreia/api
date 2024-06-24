@@ -43,6 +43,7 @@ using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
 using Application.Application.Servicos.Cadastros.SubMenu;
 using Application.Application.Servicos.Cadastros.TipoProduto;
 using Application.Application.Servicos.Cadastros.Veiculante;
+using Application.Application.Servicos.Email;
 using Application.Application.Servicos.Genericos;
 using Application.Application.Servicos.User;
 using Application.DTOs.Cadastros.Adjuvante.Interface;
@@ -90,6 +91,7 @@ using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.SubMenu.Interface;
 using Application.DTOs.Cadastros.Tipo_Produto.Interface;
 using Application.DTOs.Cadastros.Veiculante.Interface;
+using Application.DTOs.Email.Interface;
 using Application.DTOs.Users.Interface;
 using Domain.Entidades.User;
 using Domain.Interfaces.Cadastros.Adjuvante;
@@ -245,6 +247,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IContratanteService, ContratanteService>();
         services.AddScoped<IRelatorioAplicacaoService, RelatorioAplicacaoService>();
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         #endregion
 

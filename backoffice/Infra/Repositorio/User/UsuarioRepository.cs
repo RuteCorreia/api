@@ -20,6 +20,11 @@ public class UsuarioRepository : IUsuarioRepository
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task<Usuario> GetUserByEmailAsync(string email)
+    {
+        return await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Email == email);
+    }
+
     public async Task DeleteAsync(string id)
     {
         var usuario = _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();

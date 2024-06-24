@@ -1,4 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Email.Interface;
+using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
@@ -12,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 
 namespace Application.Application.Servicos.User;
 
@@ -23,13 +26,15 @@ public class UserAuthService : IUserAuthService
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
     public UserAuthService(
         UserManager<IdentityUser> userManager, 
         RoleManager<IdentityRole> roleManager,
         IConfiguration config, 
         IUsuarioRepository usuarioRepository,
         IUsuarioCredencialRepository usuarioCredencialRepository,
-        IMapper mapper
+        IMapper mapper,
+        IEmailService emailService
         )
     {
         _userManager = userManager;
@@ -38,6 +43,7 @@ public class UserAuthService : IUserAuthService
         _usuarioRepository = usuarioRepository;
         _usuarioCredencialRepository = usuarioCredencialRepository;
         _mapper = mapper;
+        _emailService = emailService;
     }
 
     public async Task<(bool, string)> LoginAsync(UserLoginViewModel user)
@@ -52,10 +58,6 @@ public class UserAuthService : IUserAuthService
                 if (passwordCheck)
                 {
                     var token = new StringBuilder();
-                    if (usuario.PrimeiroAcesso && usuario.IdEmpresa != null)
-                    {
-                        //Metodo para enviar email para troca de senha
-                    }
 
                     if (usuario.PrimeiroAcesso)
                     {
@@ -388,25 +390,23 @@ public class UserAuthService : IUserAuthService
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser is not null)
         {
-            var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.OldPassword);
-            if (passwordCheck)
+            var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword", user.Token);
+            if (!tokenValid)
             {
-                resultMsg.Clear();
-                bool allOk = true;
-                var identityResult = await _userManager.ChangePasswordAsync(identityUser, user.OldPassword, user.NewPassword);
-                if (!identityResult.Succeeded)
-                {
-                    resultMsg.Append(GetIdentityResultErrors(identityResult));
-                    allOk = false;
-                }
+                resultMsg.Clear().Append("Token inválido ou expirado.");
+                return (false, resultMsg.ToString());
+            }
 
-                if (allOk)
-                    resultMsg.Append("Sucesso na troca de senha");
-
-                return (allOk, resultMsg.ToString());
+            var identityResult = await _userManager.ResetPasswordAsync(identityUser, user.Token, user.NewPassword);
+            if (identityResult.Succeeded)
+            {
+                return (true, "Sucesso na troca de senha");
+            }
+            else
+            {
+                resultMsg.Clear().Append(GetIdentityResultErrors(identityResult));
             }
         }
-
         return (false, resultMsg.ToString());
     }
 
