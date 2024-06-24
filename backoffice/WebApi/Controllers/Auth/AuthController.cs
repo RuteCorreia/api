@@ -2,6 +2,7 @@
 using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
+using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
@@ -18,8 +19,8 @@ namespace WebApi.Controllers.Auth;
 public class AuthController : ControllerBase
 {
     private readonly IUserAuthService _authService;
-    private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly IEmailService _emailService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
 
     public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService, IEmailService emailService)
     {
