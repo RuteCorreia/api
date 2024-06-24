@@ -52,11 +52,12 @@ public class UserAuthService : IUserAuthService
                 if (passwordCheck)
                 {
                     var token = new StringBuilder();
-                    //implementar isso aqui posteriormente
-                    //if (usuario.PrimeiroAcesso)
-                    //    token.Append("PrimeiroAcesso");
-                    //else
-                        token.Append(await GenerateToken(identityUser, usuario));
+                    if (usuario.PrimeiroAcesso)
+                    {
+                        usuario.PrimeiroAcesso = false;
+                        await _usuarioRepository.UpdateAsync(usuario);
+                    }
+                    token.Append(await GenerateToken(identityUser, usuario));
 
                     return (true, token.ToString());
                 }
