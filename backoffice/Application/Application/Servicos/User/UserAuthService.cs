@@ -1,4 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Email.Interface;
+using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
 using AutoMapper;
@@ -12,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Web;
 
 namespace Application.Application.Servicos.User;
 
@@ -23,13 +26,15 @@ public class UserAuthService : IUserAuthService
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
     private readonly IMapper _mapper;
+    private readonly IEmailService _emailService;
     public UserAuthService(
         UserManager<IdentityUser> userManager, 
         RoleManager<IdentityRole> roleManager,
         IConfiguration config, 
         IUsuarioRepository usuarioRepository,
         IUsuarioCredencialRepository usuarioCredencialRepository,
-        IMapper mapper
+        IMapper mapper,
+        IEmailService emailService
         )
     {
         _userManager = userManager;
@@ -38,6 +43,7 @@ public class UserAuthService : IUserAuthService
         _usuarioRepository = usuarioRepository;
         _usuarioCredencialRepository = usuarioCredencialRepository;
         _mapper = mapper;
+        _emailService = emailService;
     }
 
     public async Task<(bool, string)> LoginAsync(UserLoginViewModel user)
@@ -52,11 +58,13 @@ public class UserAuthService : IUserAuthService
                 if (passwordCheck)
                 {
                     var token = new StringBuilder();
-                    //implementar isso aqui posteriormente
-                    //if (usuario.PrimeiroAcesso)
-                    //    token.Append("PrimeiroAcesso");
-                    //else
-                        token.Append(await GenerateToken(identityUser, usuario));
+
+                    if (usuario.PrimeiroAcesso)
+                    {
+                        usuario.PrimeiroAcesso = false;
+                        await _usuarioRepository.UpdateAsync(usuario);
+                    }
+                    token.Append(await GenerateToken(identityUser, usuario));
 
                     return (true, token.ToString());
                 }
@@ -402,7 +410,6 @@ public class UserAuthService : IUserAuthService
                 resultMsg.Clear().Append(GetIdentityResultErrors(identityResult));
             }
         }
-
         return (false, resultMsg.ToString());
     }
 

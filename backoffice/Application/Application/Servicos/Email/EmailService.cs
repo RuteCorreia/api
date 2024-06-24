@@ -2,6 +2,7 @@
 using Application.DTOs.Email.ViewModel;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -21,7 +22,7 @@ public class EmailService : IEmailService
         var identityUser = await _userManager.FindByEmailAsync(email);
         if (identityUser == null)
         {
-            return null;  
+            return null;
         }
 
         var token = await _userManager.GenerateUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword");
@@ -39,49 +40,49 @@ public class EmailService : IEmailService
             {
                 msg.Append(
                     $@"
-                        <!DOCTYPE html>
-                            <html lang=""en"">
-                                <head>
-                                    <meta charset=""UTF-8"">
-                                    <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
-                                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                                </head>
-                                <body>
-                                    <div style=""font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"">
-                                        <h2 style=""color: #333;"">{emailContent.Title}</h2>
-                                        <p>{emailContent.Body}</p>
-                                        <p>
-                                            <a href=""{emailContent.Link}"" style=""color: #007bff;"">{emailContent.LinkText}</a>
-                                        </p>
-                                        <p>Atenciosamente,</p>
-                                        <i>Flytec</i>
-                                    </div>
-                                </body>
-                        </html>
-                    "
+                    <!DOCTYPE html>
+                        <html lang=""en"">
+                            <head>
+                                <meta charset=""UTF-8"">
+                                <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
+                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                            </head>
+                            <body>
+                                <div style=""font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"">
+                                    <h2 style=""color: #333;"">{emailContent.Title}</h2>
+                                    <p>{emailContent.Body}</p>
+                                    <p>
+                                        <a href=""{emailContent.Link}"" style=""color: #007bff;"">{emailContent.LinkText}</a>
+                                    </p>
+                                    <p>Atenciosamente,</p>
+                                    <i>Flytec</i>
+                                </div>
+                            </body>
+                    </html>
+                "
                 );
             }
             else
             {
                 msg.Append(
                     $@"
-                        <!DOCTYPE html>
-                            <html lang=""en"">
-                                <head>
-                                    <meta charset=""UTF-8"">
-                                    <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
-                                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                                </head>
-                                <body>
-                                    <div style=""font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"">
-                                        <h2 style=""color: #333;"">{emailContent.Title}</h2>
-                                        <p>{emailContent.Body}</p>
-                                        <p>Atenciosamente,</p>
-                                        <i>Flytec</i>
-                                    </div>
-                                </body>
-                        </html>
-                    "
+                    <!DOCTYPE html>
+                        <html lang=""en"">
+                            <head>
+                                <meta charset=""UTF-8"">
+                                <meta http-equiv=""X-UA-Compatible"" content=""IE=edge"">
+                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                            </head>
+                            <body>
+                                <div style=""font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;"">
+                                    <h2 style=""color: #333;"">{emailContent.Title}</h2>
+                                    <p>{emailContent.Body}</p>
+                                    <p>Atenciosamente,</p>
+                                    <i>Flytec</i>
+                                </div>
+                            </body>
+                    </html>
+                "
                 );
             }
 
@@ -103,7 +104,7 @@ public class EmailService : IEmailService
             await client.SendMailAsync(mailSend);
             client.Dispose();
         }
-        catch(SmtpException smtpEx)
+        catch (SmtpException smtpEx)
         {
             throw new SmtpException($"Erro de smtp: {smtpEx.Message}");
         }
