@@ -8,7 +8,7 @@ public interface IAeronaveService
 
     Task<AeronaveViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(AeronaveViewModel obj, string? idEmpresa);
+    Task<(bool,string)> AddAsync(AeronaveViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(AeronaveViewModel obj);
 

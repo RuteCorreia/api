@@ -12,12 +12,13 @@ using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Application.DTOs.Cadastros.ManutencaoAeronave.Interface;
 using Application.DTOs.Cadastros.Componentes.Interface;
 using Application.DTOs.Cadastros.ManutencaoAeronaveItemsRevisao.Interface;
+using System.Text;
 
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,14 +104,15 @@ namespace WebApi.Controllers.APIs
                 {
                     if (ModelState.IsValid)
                     {
-                        await _aeronaveService.AddAsync(obj, loggedUser.Item3);
-                        _logService.LogInformation("Nova aeronave adicionada com sucesso.");
-                        return Ok();
+                        var result = await _aeronaveService.AddAsync(obj, loggedUser.Item3);
+                        if (result.Item1 == true)
+                            return Ok(result);
                     }
+                    return StatusCode(StatusCodes.Status400BadRequest, new { detail = "Limite de aeronaves cadastradas atingido" });
                 }
 
                 _logService.LogWarning("Prefixo já existe, não é possível adicionar duplicado.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)");
+                return StatusCode(StatusCodes.Status400BadRequest, new { detail = "Prefixo não pode ser duplicado (já existe outra aeronave com esse prefixo)" });
             }
             catch (Exception ex)
             {
