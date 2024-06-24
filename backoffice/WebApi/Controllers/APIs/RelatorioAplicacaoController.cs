@@ -1,5 +1,4 @@
-﻿using Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada;
-using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
@@ -11,15 +10,10 @@ using Application.DTOs.Cadastros.DadosResponsavel.Interface;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
-using Domain.Entidades.Cadastros.Aplicacao;
-using Domain.Entidades.Cadastros.ContratoPrestacaoServico;
-using Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Text.RegularExpressions;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
@@ -43,15 +37,16 @@ namespace WebApi.Controllers.APIs
         private readonly ILogService _logService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
 
-
-        public RelatorioAplicacaoController(IRelatorioAplicacaoService relatorioAplicacaoService, ILogService logService,
-                                            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
-                                            IContratanteService contratanteService,
-                                            IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
-                                            ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
-                                            IContratoPrestacaoServicoService contratoPrestacaoServicoService,
-                                            IDadosResponsavelService dadosResponsavelService,
-                                            LoggedUserInfoService loggedUserInfoService)
+        public RelatorioAplicacaoController(
+            IRelatorioAplicacaoService relatorioAplicacaoService,
+            ILogService logService,
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
+            IContratanteService contratanteService,
+            IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
+            ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+            IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+            IDadosResponsavelService dadosResponsavelService,
+            LoggedUserInfoService loggedUserInfoService)
         {
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _logService = logService;
@@ -65,13 +60,13 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<RelatorioAplicacaoViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAll()
         {
             try
             {
-                var relatorio = await _relatorioAplicacaoService.GetAllAsync();
+                var relatorios = await _relatorioAplicacaoService.GetAllAsync();
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
-                return Ok(relatorio);
+                return Ok(relatorios);
             }
             catch (Exception ex)
             {
@@ -86,14 +81,14 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var relatorio = await _relatorioAplicacaoService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(relatorio))
+                if (relatorio == null)
                 {
-                    _logService.LogInformation("Relatório de aplicação recuperado com sucesso.");
-                    return Ok(relatorio);
+                    _logService.LogWarning("Relatório de aplicação não encontrado.");
+                    return NotFound("Relatório de aplicação não encontrado");
                 }
 
-                _logService.LogWarning("Relatório de aplicação não encontrado.");
-                return StatusCode(StatusCodes.Status404NotFound, "Relatório de aplicação não encontrado");
+                _logService.LogInformation("Relatório de aplicação recuperado com sucesso.");
+                return Ok(relatorio);
             }
             catch (Exception ex)
             {
@@ -103,6 +98,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
+        [HttpPost]
         public async Task<ActionResult> Add([FromBody] dynamic obj)
         {
             try
@@ -111,75 +107,81 @@ namespace WebApi.Controllers.APIs
                 {
                     _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
 
-                    var id = obj.GetProperty("id").GetInt32();
-                    var contratanteJson = obj.GetProperty("contratante").ToString();
-                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
-                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
-                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
-                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
-                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
-                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
-                    var piloto = obj.GetProperty("piloto").GetString();
-                    var executor = obj.GetProperty("executor").GetString();
-                    var refDocument = obj.GetProperty("refDocument").GetString();
-                    var data = obj.GetProperty("data").GetString();
-                    var refUsuario = obj.GetProperty("refUsuario").GetString();
+                    var id = (int)obj.id;
+                    var contratanteJson = (string)obj.contratante;
+                    var identificacaoAreaTratadaJson = (string)obj.identificacaoAreaTratada;
+                    var caracteristicasProdutoAplicadoJson = (string)obj.caracteristicasProdutoAplicado;
+                    var recomendacoesTecnicasJson = (string)obj.recomendacoesTecnicas;
+                    var relatorioAplicacaoJson = (string)obj.relatorioAplicacao;
+                    var contratoPrestacaoServicoJson = (string)obj.contratoPrestacaoServico;
+                    var dadosResponsavelJson = (string)obj.dadosResponsavel;
+                    var piloto = (string)obj.piloto;
+                    var executor = (string)obj.executor;
+                    var refDocument = (string)obj.refDocument;
+                    var data = (string)obj.data;
+                    var refUsuario = (string)obj.refUsuario;
 
+                    var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
+                    var identificacaoAreaTratada = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
+                    var identificacaoAreaTratadaViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
+                    var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
+                    var relatorioAplicacaoViewModel = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
+                    var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
+                    var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
 
-                    // Accessing properties dynamically
-                    var contratanteDeserializado = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
-                    var identificacaoAreaTratadaDeserializado = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
-                    var caracteristicasProdutoAplicadoDeserializado = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
-                    var recomendacoesTecnicasDeserializado = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
-                    var relatorioAplicacaoDeserializado = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
-                    var contratoPrestacaoServicoDeserializado = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
-                    var dadosResponsavelDeserializado = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
-
-                    // Log some properties
                     _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
 
-
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    if (recomendacoesTecnicasDeserializado != null)
+                    if (aplicacaoRecomendacoesTecnicasViewModel != null)
                     {
-                        recomendacoesTecnicasDeserializado.IdAlturaVoo = null;
-                        recomendacoesTecnicasDeserializado.IdAeronave = null;
-                        recomendacoesTecnicasDeserializado.IdTipoDeProduto = null;
-                        recomendacoesTecnicasDeserializado.IdAplicacao = null;
-                        recomendacoesTecnicasDeserializado.IdEquipamento = null;
-                        recomendacoesTecnicasDeserializado.IdVeiculante = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdAlturaVoo = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdAeronave = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdTipoDeProduto = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdAplicacao = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdEquipamento = null;
+                        aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
                     }
 
-                    var contratoPrestacaoServico = _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoDeserializado, loggedUser.Item3);
-                    var contratanteService = _contratanteService.AddAsync(contratanteDeserializado);
-                    var identificacaoAreaTratadaServiceService = _identificacaoAreaTratadaServiceService.AddAsync(identificacaoAreaTratadaDeserializado);
-                    var aplicacaoRecomendacoesTecnicasService = _aplicacaoRecomendacoesTecnicasService.AddAsync(recomendacoesTecnicasDeserializado);
-                    var caracteristicasProdutoAplicadoService = _caracteristicasProdutoAplicadoService.AddAsync(caracteristicasProdutoAplicadoDeserializado, loggedUser.Item3);
-                    var dadosResponsavelService = _dadosResponsavelService.AddAsync(dadosResponsavelDeserializado, loggedUser.Item3);
+                    var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
+                    var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(identificacaoAreaTratada);
+                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
+                    var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(identificacaoAreaTratadaViewModel, loggedUser.Item3);
+                    var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
 
-                    relatorioAplicacaoDeserializado.ContratoPrestacaoServicoId = contratoPrestacaoServico.Result;
-                    relatorioAplicacaoDeserializado.ContratanteId = contratanteService.Result;
-                    relatorioAplicacaoDeserializado.IdentificacaoAreaTratadaId = identificacaoAreaTratadaServiceService.Result;
-                    if (recomendacoesTecnicasDeserializado != null)
-                    {
-                        relatorioAplicacaoDeserializado.RecomendacoesTecnicasId = aplicacaoRecomendacoesTecnicasService.Result;
-                    }
-                    relatorioAplicacaoDeserializado.CaracteristicasProdutoAplicadoId = caracteristicasProdutoAplicadoService.Result;
-                    relatorioAplicacaoDeserializado.DadosResponsavelId = dadosResponsavelService.Result;
-                    relatorioAplicacaoDeserializado.Id = 0;
-                    relatorioAplicacaoDeserializado.Piloto = piloto;
-                    relatorioAplicacaoDeserializado.Executor = executor;
-                    relatorioAplicacaoDeserializado.RefDocument = refDocument;
-                    relatorioAplicacaoDeserializado.Data = data;
-                    relatorioAplicacaoDeserializado.RefUsuario = refUsuario;
+                    relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
+                    relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
+                    relatorioAplicacaoViewModel.IdentificacaoAreaTratadaId = IdIdentificacaoAreaTratada;
+                    relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
+                    relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
+                    relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
+                    relatorioAplicacaoViewModel.Id = 0;
+                    relatorioAplicacaoViewModel.Piloto = piloto;
+                    relatorioAplicacaoViewModel.Executor = executor;
+                    relatorioAplicacaoViewModel.RefDocument = refDocument;
+                    relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.RefUsuario = refUsuario;
 
-                    _relatorioAplicacaoService.AddAsync(relatorioAplicacaoDeserializado);
+                    var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
+
                     _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
-                    return Ok();
+
+                    var result = new
+                    {
+                        id = relatorioAplicacaoId,
+                        contratanteId = Idcontratante,
+                        identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
+                        caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
+                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                        contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
+                        dadosResponsavelId= IdDadosResponsavel
+                    };
+
+                    return Ok(result);
                 }
 
                 _logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+                return BadRequest("Modelo inválido");
             }
             catch (Exception ex)
             {
@@ -188,6 +190,7 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Update(int id, [FromBody] RelatorioAplicacaoViewModel obj)
         {
@@ -195,24 +198,21 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _relatorioAplicacaoService.GetByIdAsync(id);
-                    if (!ObjectNullValidation.IsObjectNull(objeto))
-                    {
-                        obj.Id = objeto.Id;
-
-                        await _relatorioAplicacaoService.UpdateAsync(obj);
-                        _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
-                        return Ok();
-                    }
-                    else
+                    var relatorioExistente = await _relatorioAplicacaoService.GetByIdAsync(id);
+                    if (relatorioExistente == null)
                     {
                         _logService.LogWarning("Relatório de aplicação não encontrado para atualização.");
-                        return StatusCode(StatusCodes.Status404NotFound, "Relatório de aplicação não encontrado");
+                        return NotFound("Relatório de aplicação não encontrado");
                     }
+
+                    obj.Id = relatorioExistente.Id;
+                    await _relatorioAplicacaoService.UpdateAsync(obj);
+                    _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
+                    return Ok();
                 }
 
                 _logService.LogWarning("Modelo inválido ao atualizar relatório de aplicação.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+                return BadRequest("Modelo inválido");
             }
             catch (Exception ex)
             {
@@ -226,15 +226,15 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                if (id == 0)
                 {
-                    await _relatorioAplicacaoService.DeleteAsync(id);
-                    _logService.LogInformation("Relatório de aplicação deletado com sucesso.");
-                    return Ok();
+                    _logService.LogWarning("Solicitação inválida para deletar relatório de aplicação.");
+                    return BadRequest("Solicitação não foi possível de ser executada");
                 }
 
-                _logService.LogWarning("Solicitação inválida para deletar relatório de aplicação.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Solicitação não foi possível de ser executada");
+                await _relatorioAplicacaoService.DeleteAsync(id);
+                _logService.LogInformation("Relatório de aplicação deletado com sucesso.");
+                return Ok();
             }
             catch (Exception ex)
             {

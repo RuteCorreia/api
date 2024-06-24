@@ -1,14 +1,6 @@
-﻿using Application.DTOs.Cadastros.Produto.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+﻿using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
-using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -50,6 +42,11 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         {
             var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
+        }
+
+        Task<int> IRelatorioAplicacaoService.AddAsync(RelatorioAplicacaoViewModel obj)
+        {
+            throw new NotImplementedException();
         }
     }
 }
