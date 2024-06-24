@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using AutoMapper;
+using Domain.Enums;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.Empresa;
 using Helpers;
@@ -44,8 +45,13 @@ public class AeronaveService : IAeronaveService
 
         var empresa = await _empresaRepository.GetByIdAsync(idEmpresaAsNumber);
         var limit = await _aeronaveRepository.GetAllAsync(idEmpresaAsNumber);
-        if (limit.Count() >= empresa.QtdAeronaves)
+        var limitAeronave = limit.Count(a => a.Tipo == ETipoAeronave.Aeronave);
+        if (mapAeronave.Tipo == ETipoAeronave.Aeronave && limitAeronave >= empresa.QtdAeronaves)
             return (false, resultMsg.Append("Você ja cadastrou o limite de aeronaves registrados").ToString());
+
+        var limitDrone = limit.Count(a => a.Tipo == ETipoAeronave.Drone);
+        if (mapAeronave.Tipo == ETipoAeronave.Drone && limitDrone >= empresa.QtdDrones)
+            return (false, resultMsg.Append("Você ja cadastrou o limite de drones registrados").ToString());
 
         mapAeronave.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         await _aeronaveRepository.AddAsync(mapAeronave);
