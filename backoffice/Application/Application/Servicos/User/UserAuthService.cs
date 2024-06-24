@@ -52,6 +52,11 @@ public class UserAuthService : IUserAuthService
                 if (passwordCheck)
                 {
                     var token = new StringBuilder();
+                    if (usuario.PrimeiroAcesso && usuario.IdEmpresa != null)
+                    {
+                        //Metodo para enviar email para troca de senha
+                    }
+
                     if (usuario.PrimeiroAcesso)
                     {
                         usuario.PrimeiroAcesso = false;
