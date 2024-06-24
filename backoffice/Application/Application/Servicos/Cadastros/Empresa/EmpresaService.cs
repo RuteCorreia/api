@@ -56,16 +56,12 @@ public class EmpresaService : IEmpresaService
         var usuario = await _usuarioRepository.GetUserByEmailAsync(empresaUserObj.Email);
         if (createEmpresaUserOperationOk.Item1)
         {
-            // Verifica se é o primeiro acesso
             if (usuario.PrimeiroAcesso)
             {
-                // Gera o token para troca de senha
                 var resetToken = await _emailService.GeneratePasswordResetTokenAsync(empresaViewModel.Email);
 
-                // Verifica se o token foi gerado com sucesso
                 if (resetToken != null)
                 {
-                    // Monta o conteúdo do e-mail
                     var emailContent = new EmailViewModel
                     {
                         Recipient = empresaViewModel.Email,
@@ -75,29 +71,24 @@ public class EmpresaService : IEmpresaService
                         LinkText = "Criar Nova Senha"
                     };
 
-                    // Envia o e-mail
                     try
                     {
                         await _emailService.SendMailAsync(emailContent);
-                        // Registro de sucesso do envio de e-mail
                         Console.WriteLine("E-mail de criação de senha de primeiro acesso enviado com sucesso.");
                     }
                     catch (Exception ex)
                     {
-                        // Se houver erro no envio, pode ser registrado ou tratado conforme necessário
                         Console.WriteLine($"Erro ao enviar e-mail de de criação de senha: {ex.Message}");
                     }
                 }
                 else
                 {
-                    // Caso não seja possível gerar o token de recuperação de senha
                     Console.WriteLine("Erro ao gerar token de criação de senha.");
                 }
             }
         }
         else
         {
-            // Se falhar ao criar o usuário da empresa, você pode realizar uma ação de rollback, se necessário
             await _empresaRepository.DeleteAsync(mapEmpresa.IdEmpresa);
             throw new Exception("Erro na criação do usuário da empresa. O cadastro não pôde ser realizado.");
         }
