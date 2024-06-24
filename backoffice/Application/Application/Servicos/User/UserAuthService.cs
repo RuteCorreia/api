@@ -385,22 +385,21 @@ public class UserAuthService : IUserAuthService
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser != null)
         {
-            var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.OldPassword);
-            if (passwordCheck)
+            var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword", user.Token);
+            if (!tokenValid)
             {
-                resultMsg.Clear();
-                bool allOk = true;
-                var identityResult = await _userManager.ChangePasswordAsync(identityUser, user.OldPassword, user.NewPassword);
-                if (!identityResult.Succeeded)
-                {
-                    resultMsg.Append(GetIdentityResultErrors(identityResult));
-                    allOk = false;
-                }
+                resultMsg.Clear().Append("Token inválido ou expirado.");
+                return (false, resultMsg.ToString());
+            }
 
-                if (allOk)
-                    resultMsg.Append("Sucesso na troca de senha");
-
-                return (allOk, resultMsg.ToString());
+            var identityResult = await _userManager.ResetPasswordAsync(identityUser, user.Token, user.NewPassword);
+            if (identityResult.Succeeded)
+            {
+                return (true, "Sucesso na troca de senha");
+            }
+            else
+            {
+                resultMsg.Clear().Append(GetIdentityResultErrors(identityResult));
             }
         }
 
