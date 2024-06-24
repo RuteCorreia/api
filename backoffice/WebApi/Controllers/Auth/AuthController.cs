@@ -21,7 +21,6 @@ public class AuthController : ControllerBase
     private readonly IUserAuthService _authService;
     private readonly IEmailService _emailService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
-    private readonly IEmailService _emailService;
 
     public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService, IEmailService emailService)
     {
