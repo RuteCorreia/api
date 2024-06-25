@@ -78,12 +78,12 @@ public class AuthController : ControllerBase
         var resultError = new StringBuilder().Append("Não foi possível alterar a senha");
         if (ModelState.IsValid)
         {
-            var result = await _authService.ChangeUserPasswordAsync(model);
-            if (result.Item1)
+            var (success, message) = await _authService.ChangeUserPasswordAsync(model);
+            if (success)
                 return Ok();
 
             resultError.Clear();
-            resultError.Append(result.Item2);
+            resultError.Append(message);
         }
 
         return BadRequest(resultError.ToString());
@@ -114,7 +114,7 @@ public class AuthController : ControllerBase
                 Recipient = model.Email,
                 Title = "Recuperação de Senha",
                 Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                Link = $"https://flytec-web.azurewebsites.net/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
+                Link = $"http://localhost:4200/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
                 LinkText = "Criar Nova Senha"
             };
 

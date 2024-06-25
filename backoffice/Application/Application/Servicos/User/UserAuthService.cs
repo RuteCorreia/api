@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Application.Application.Servicos.User;
 
@@ -385,6 +386,14 @@ public class UserAuthService : IUserAuthService
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser != null)
         {
+            if (user.NewPassword.Length < 6 ||
+            !user.NewPassword.Any(char.IsUpper) ||
+            !Regex.IsMatch(user.NewPassword, @"[^a-zA-Z0-9]"))
+            {
+                resultMsg.Clear().Append("A senha deve conter pelo menos 6 digitos, sendo pelo menos um Maiusculo e um Especial");
+                return (false, resultMsg.ToString());
+            }
+
             var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword", user.Token);
             if (!tokenValid)
             {
