@@ -225,3 +225,5 @@ backoffice/Helpers/obj
 /.vs/dev-flytec/v17/.wsuo
 /.vs/slnx.sqlite
 /.vs/VSWorkspaceState.json
+/backoffice/WebApi/Properties/PublishProfiles
+/.gitignore
