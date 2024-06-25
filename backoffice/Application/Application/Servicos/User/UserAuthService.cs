@@ -397,7 +397,7 @@ public class UserAuthService : IUserAuthService
             var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword", user.Token);
             if (!tokenValid)
             {
-                resultMsg.Clear().Append("Token inválido ou expirado.");
+                resultMsg.Clear().Append("Recuperação de senha inválida ou expirada. Solicite um novo email de recuperação");
                 return (false, resultMsg.ToString());
             }
 
