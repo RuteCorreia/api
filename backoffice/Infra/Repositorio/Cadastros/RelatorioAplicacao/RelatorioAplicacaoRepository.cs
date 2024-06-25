@@ -21,8 +21,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
-            _contextBase.Add(obj);
-            _contextBase.SaveChanges();
+            await _contextBase.AddAsync(obj);
+            await _contextBase.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
