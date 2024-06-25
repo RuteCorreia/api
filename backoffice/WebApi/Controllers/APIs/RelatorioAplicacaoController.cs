@@ -173,6 +173,11 @@ namespace WebApi.Controllers.APIs
                         identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
                         caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
                         recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                        relatorioAplicacao = new
+                        {
+                            id = relatorioAplicacaoId,
+                            aplicacoes = new int[] { 1, 2 }
+                        },
                         contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
                         dadosResponsavelId= IdDadosResponsavel
                     };
