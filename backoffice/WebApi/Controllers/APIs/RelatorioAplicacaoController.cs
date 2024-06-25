@@ -98,7 +98,6 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<ActionResult> Add([FromBody] dynamic obj)
         {
             try
