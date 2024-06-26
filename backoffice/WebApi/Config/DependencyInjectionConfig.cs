@@ -207,6 +207,8 @@ using Infra.Repositorio.Cadastros.Veiculo;
 using Infra.Repositorio.Importação_Planilha;
 using Infra.Repositorio.Log;
 using Infra.Repositorio.User;
+using Microsoft.Data.SqlClient;
+using System.Data;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Config;
@@ -338,6 +340,11 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<ContextBase>();
         services.AddScoped<LoggedUserInfoService>();
+        services.AddScoped<IDbConnection>(sp =>
+        {
+            var context = sp.GetRequiredService<ContextBase>();
+            return new SqlConnection(context.ObterStringConexao());
+        });
 
         return services;
     }

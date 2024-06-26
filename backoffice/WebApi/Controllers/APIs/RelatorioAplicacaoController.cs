@@ -75,7 +75,7 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<RelatorioAplicacaoViewModel>> GetById(int id)
         {
             try
