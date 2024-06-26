@@ -215,6 +215,14 @@ using System.Configuration;
 using WebApi.HttpRequestInfo;
 using Application.DTOs.Email.Interface;
 using Application.Application.Servicos.Email;
+using Application.DTOs.Cadastros.RelatorioIncendio.Interface;
+using Application.Application.Servicos.Cadastros.RelatorioIncendio;
+using Domain.Interfaces.Cadastros.RelatorioIncendio;
+using Infra.Repositorio.Cadastros.RelatorioIncendio;
+using Application.DTOs.Cadastros.LocalIncendio.Interface;
+using Application.Application.Servicos.Cadastros.LocalIncendio;
+using Domain.Interfaces.Cadastros.LocalIncendio;
+using Infra.Repositorio.Cadastros.LocalIncendio;
 
 namespace WebApi.Config;
 
@@ -272,6 +280,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<IManutencaoAeronaveItemsRevisaoService, ManutencaoAeronaveItemsRevisaoService>();
         services.AddScoped<IContratanteService, ContratanteService>();
         services.AddScoped<IRelatorioAplicacaoService, RelatorioAplicacaoService>();
+        services.AddScoped<IRelatorioIncendioService, RelatorioIncendioService>();
+        services.AddScoped<ILocalIncendioService, LocalIncendioService>();
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
@@ -330,6 +340,8 @@ public static class DependencyInjectionConfig
         services.AddScoped<IManutencaoAeronaveItemsRevisaoRepository, ManutencaoAeronaveItemsRevisaoRepository>();
         services.AddScoped<IContratanteRepository, ContratanteRepository>();
         services.AddScoped<IRelatorioAplicacaoRepository, RelatorioAplicacaoRepository>();
+        services.AddScoped<IRelatorioIncendioRepository, RelatorioIncendioRepository>();
+        services.AddScoped<ILocalIncendioRepository, LocalIncendioRepository>();
         services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();

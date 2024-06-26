@@ -14,10 +14,11 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj)
+    public async Task<int> AddAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj)
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        return obj.Id;
     }
 
     public async Task DeleteAsync(int id)

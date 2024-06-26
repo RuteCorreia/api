@@ -28,10 +28,10 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
         return _mapper.Map<CombateIncendioDecolagemPousoViewModel>(obj);
     }
 
-    public async Task AddAsync(CombateIncendioDecolagemPousoViewModel obj)
+    public async Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj)
     {
         var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
-        await _combateIncendioDecolagemPousoRepository.AddAsync(mapCombateIncendioDecolagemPouso);
+        return await _combateIncendioDecolagemPousoRepository.AddAsync(mapCombateIncendioDecolagemPouso);
     }
 
     public async Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj)

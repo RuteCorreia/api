@@ -28,10 +28,10 @@ public class PistaService : IPistaService
         return _mapper.Map<PistaViewModel>(obj);
     }
 
-    public async Task AddAsync(PistaViewModel obj)
+    public async Task<int> AddAsync(PistaViewModel obj)
     {
         var mapPista = _mapper.Map<Domain.Entidades.Cadastros.Pistas.Pista>(obj);
-        await _pistaRepository.AddAsync(mapPista);
+        return await _pistaRepository.AddAsync(mapPista);
     }
 
     public async Task UpdateAsync(PistaViewModel obj)

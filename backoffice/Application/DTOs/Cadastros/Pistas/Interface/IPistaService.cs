@@ -8,7 +8,7 @@ public interface IPistaService
 
     Task<PistaViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(PistaViewModel obj);
+    Task<int> AddAsync(PistaViewModel obj);
 
     Task UpdateAsync(PistaViewModel obj);
 
