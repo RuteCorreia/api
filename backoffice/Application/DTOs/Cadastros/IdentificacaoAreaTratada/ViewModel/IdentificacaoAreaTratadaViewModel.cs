@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,6 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel
         public string Localizacao { get; set; }
         public string Cultura { get; set; }
         public string Extensao { get; set; }
-        public string CroquiArea { get; set; }
+        public DataFormatViewModel CroquiArea { get; set; }
     }
 }

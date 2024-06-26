@@ -107,8 +107,17 @@ namespace WebApi.Controllers.APIs
                         var result = await _aeronaveService.AddAsync(obj, loggedUser.Item3);
                         if (result.Item1 == true)
                             return Ok(result);
-                    }
-                    return StatusCode(StatusCodes.Status400BadRequest, new { detail = "Limite de aeronaves cadastradas atingido" });
+
+                        if (result.Item2.Contains("limite de aeronaves"))
+                        {
+                            return StatusCode(StatusCodes.Status400BadRequest, new { detail = result.Item2 });
+                        }
+
+                        if (result.Item2.Contains("limite de drones"))
+                        {
+                            return StatusCode(StatusCodes.Status400BadRequest, new { detail = result.Item2 });
+                        }
+                    }   
                 }
 
                 _logService.LogWarning("Prefixo já existe, não é possível adicionar duplicado.");

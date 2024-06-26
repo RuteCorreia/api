@@ -1,10 +1,14 @@
-﻿namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+﻿using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using System.Text.Json.Serialization;
+
+namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 
 public class CaracteristicasProdutoAplicadoViewModel
 {
+    [JsonPropertyName("culturaId")]
     public int Id { get; set; }
     public string Cultura { get; set; }
-    public string ReceiturarioAgronomico { get; set; }
+    public DataFormatViewModel ReceiturarioAgronomico { get; set; }
     public string NomeProduto { get; set; }
     public int? ClassificacaoToxicologica { get; set; }
     public string Classe { get; set; }

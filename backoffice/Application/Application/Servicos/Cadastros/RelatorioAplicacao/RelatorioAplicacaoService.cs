@@ -1,14 +1,7 @@
-﻿using Application.DTOs.Cadastros.Produto.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.Interface;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+﻿using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
-using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -21,12 +14,6 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         {
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _mapper = mapper;
-        }
-
-        public async Task AddAsync(RelatorioAplicacaoViewModel obj)
-        {
-            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
-            await _relatorioAplicacaoRepository.AddAsync(mapProduto);
         }
 
         public async Task DeleteAsync(int id)
@@ -48,8 +35,15 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
         public async Task UpdateAsync(RelatorioAplicacaoViewModel obj)
         {
-            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
+            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> (obj);
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
+        }
+
+        public async Task<int> AddAsync(RelatorioAplicacaoViewModel obj)
+        {
+            var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
+            await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
+            return mapRelatorio.Id;
         }
     }
 }
