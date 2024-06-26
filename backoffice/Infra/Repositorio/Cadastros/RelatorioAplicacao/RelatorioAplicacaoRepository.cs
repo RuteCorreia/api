@@ -32,11 +32,11 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             INSERT INTO RelatorioAplicacao 
             (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
              RecomendacoesTecnicasId, RelatorioAplicacaoId, ContratoPrestacaoServicoId, 
-             DadosResponsavelId, Piloto, Executor, RefDocument, Data, RefUsuario)
+             DadosResponsavelId, Piloto, Executor, RefDocument, Data, DataCriacao, RefUsuario)
             VALUES 
             (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
              @RecomendacoesTecnicasId, @RelatorioAplicacaoId, @ContratoPrestacaoServicoId, 
-             @DadosResponsavelId, @Piloto, @Executor, @RefDocument, @Data, @RefUsuario);
+             @DadosResponsavelId, @Piloto, @Executor, @RefDocument, @Data, @DataCriacao, @RefUsuario);
             SELECT CAST(SCOPE_IDENTITY() as int);
 ";
                 using (var connection = _dbConnection)
@@ -56,6 +56,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                             obj.Executor,
                             obj.RefDocument,
                             obj.Data,
+                            obj.DataCriacao,
                             obj.RefUsuario
                         });
                         obj.Id = id;
@@ -91,7 +92,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDateAsync(DateTime date)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE CAST(Data AS DATE) = @Date";
+            string query = "SELECT * FROM RelatorioAplicacao WHERE DateCriacao = @Date";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Date = date.Date });
         }
 
