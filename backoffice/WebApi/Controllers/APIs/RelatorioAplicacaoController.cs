@@ -75,7 +75,7 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<RelatorioAplicacaoViewModel>> GetById(int id)
         {
             try
@@ -98,7 +98,6 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        [HttpPost]
         public async Task<ActionResult> Add([FromBody] dynamic obj)
         {
             try
@@ -107,19 +106,19 @@ namespace WebApi.Controllers.APIs
                 {
                     _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
 
-                    var id = (int)obj.id;
-                    var contratanteJson = (string)obj.contratante;
-                    var identificacaoAreaTratadaJson = (string)obj.identificacaoAreaTratada;
-                    var caracteristicasProdutoAplicadoJson = (string)obj.caracteristicasProdutoAplicado;
-                    var recomendacoesTecnicasJson = (string)obj.recomendacoesTecnicas;
-                    var relatorioAplicacaoJson = (string)obj.relatorioAplicacao;
-                    var contratoPrestacaoServicoJson = (string)obj.contratoPrestacaoServico;
-                    var dadosResponsavelJson = (string)obj.dadosResponsavel;
-                    var piloto = (string)obj.piloto;
-                    var executor = (string)obj.executor;
-                    var refDocument = (string)obj.refDocument;
-                    var data = (string)obj.data;
-                    var refUsuario = (string)obj.refUsuario;
+                    var id = obj.GetProperty("id").GetInt32();
+                    var contratanteJson = obj.GetProperty("contratante").ToString();
+                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
+                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
+                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
+                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
+                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
+                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
+                    var piloto = obj.GetProperty("piloto").ToString();
+                    var executor = obj.GetProperty("executor").ToString();
+                    var refDocument = obj.GetProperty("refDocument").ToString();
+                    var data = obj.GetProperty("data").ToString();
+                    var refUsuario = obj.GetProperty("refUsuario").ToString();
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
                     var identificacaoAreaTratada = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
