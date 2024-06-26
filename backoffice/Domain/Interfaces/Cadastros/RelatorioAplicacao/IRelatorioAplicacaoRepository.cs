@@ -8,7 +8,7 @@ namespace Domain.Interfaces.Cadastros.RelatorioAplicacao
 {
     public interface IRelatorioAplicacaoRepository
     {
-        Task AddAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
+        Task<int> AddAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
         Task UpdateAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllAsync();

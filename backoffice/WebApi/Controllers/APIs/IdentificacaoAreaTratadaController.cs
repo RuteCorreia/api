@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.DTOs.Log.Interface;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 
 namespace WebApi.Controllers.APIs
 {
@@ -66,7 +67,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] IdentificacaoAreaTratadaViewModel obj)
+        public async Task<ActionResult> Add([FromBody] AreaTratadaViewModel obj)
         {
             try
             {

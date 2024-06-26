@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,7 +72,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] CaracteristicasProdutoAplicadoViewModel obj)
+        public async Task<ActionResult> Add([FromBody] ProdutoAplicadoViewModel obj)
         {
             var returnMsg = new StringBuilder().Append("Modelo inválido");
             try

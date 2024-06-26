@@ -8,10 +8,14 @@ using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.Interface;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.Importação_Planilha.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.Cidades;
+using Domain.Entidades.Cadastros.Cultura;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebApi.HttpRequestInfo;
@@ -121,8 +125,41 @@ namespace WebApi.Controllers.APIs
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
-                    var identificacaoAreaTratada = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
-                    var identificacaoAreaTratadaViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
+
+                    var identificacaoAreaTratadaViewModel = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
+                    string croquiAreaString = JsonConvert.SerializeObject(identificacaoAreaTratadaViewModel.CroquiArea);
+                    var areaTratadaViewModel = new AreaTratadaViewModel()
+                    {
+                        Id = identificacaoAreaTratadaViewModel.Id,
+                        UF = identificacaoAreaTratadaViewModel.UF,
+                        Cidade = identificacaoAreaTratadaViewModel.Cidade,
+                        Localizacao = identificacaoAreaTratadaViewModel.Localizacao,
+                        Cultura = identificacaoAreaTratadaViewModel.Cultura,
+                        Extensao = identificacaoAreaTratadaViewModel.Extensao,
+                        CroquiArea = croquiAreaString
+                    };
+
+                    var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
+                    string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
+                    var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
+                    {
+                        Id = caracteristicasProdutoAplicadoViewModel.Id,
+                        Cultura = caracteristicasProdutoAplicadoViewModel.Cultura,
+                        ReceiturarioAgronomico = receituarioAgronomicoString,
+                        NomeProduto = caracteristicasProdutoAplicadoViewModel.NomeProduto,
+                        ClassificacaoToxicologica = caracteristicasProdutoAplicadoViewModel.ClassificacaoToxicologica,
+                        Classe = caracteristicasProdutoAplicadoViewModel.Classe,
+                        TipoFormulacao = caracteristicasProdutoAplicadoViewModel.TipoFormulacao,
+                        AlvoBiologico = caracteristicasProdutoAplicadoViewModel.AlvoBiologico,
+                        DoseProdutoHectare = caracteristicasProdutoAplicadoViewModel.DoseProdutoHectare,
+                        UnidadeDoseProdutoHectare = caracteristicasProdutoAplicadoViewModel.UnidadeDoseProdutoHectare,
+                        Adjuvante = caracteristicasProdutoAplicadoViewModel.Adjuvante,
+                        TipoServico = caracteristicasProdutoAplicadoViewModel.TipoServico,
+                        NumeroReceituarioAgronomico = caracteristicasProdutoAplicadoViewModel.NumeroReceituarioAgronomico,
+                        DataEmissao = caracteristicasProdutoAplicadoViewModel.DataEmissao,
+                        IsReceituarioImage = caracteristicasProdutoAplicadoViewModel.IsReceituarioImage
+                    };
+
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
                     var relatorioAplicacaoViewModel = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
@@ -143,9 +180,9 @@ namespace WebApi.Controllers.APIs
 
                     var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
                     var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
-                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(identificacaoAreaTratada);
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel);
                     var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
-                    var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(identificacaoAreaTratadaViewModel, loggedUser.Item3);
+                    var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
 
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
