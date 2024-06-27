@@ -19,7 +19,15 @@ public class AplicacaoRelatorio
     public string KG_LT { get; set; }
     public int? VolumeAplicacao { get; set; }
     public decimal? TotalAreaAplicada { get; set; }
-    public string Alteracoes_Observacoes { get; set; }
+    public string? Alteracoes_Observacoes { get; set; }
+    public string? Cultura { get; set; }
+    public string? ProdutoAplicado { get; set; }
+    public string? LocalizacaoPistaCodigoICAO { get; set; }
+    public string? Latitude { get; set; }
+    public string? Longitude { get; set; }
+    public string? Densidade { get; set; }
+    public string? RelatorioDGPS { get; set; }
+    public string? UnidadeVolumeAplicacao { get; set; }
 
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }

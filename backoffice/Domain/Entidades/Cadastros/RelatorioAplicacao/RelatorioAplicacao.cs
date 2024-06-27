@@ -5,6 +5,7 @@ using Domain.Entidades.Cadastros.DadosResponsavel;
 using Domain.Entidades.Cadastros.IdentificacaoAreaTratada;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
 {
     public class RelatorioAplicacao
     {
+        [Key]
         public int Id { get; set; }
 
         [ForeignKey("Contratante")]
@@ -28,14 +30,15 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
 
         [ForeignKey("AplicacaoRecomendacoesTecnicas")]
         public int? RecomendacoesTecnicasId { get; set; }
-        public int? RelatorioAplicacaoId { get; set; }
+
+        [ForeignKey("AplicacaoRelatorio")]
+        public int? AplicacaoRelatorioId { get; set; }
 
         [ForeignKey("ContratoPrestacaoServico")]
         public int? ContratoPrestacaoServicoId { get; set; }
 
         [ForeignKey("DadosResponsavel")]
         public int? DadosResponsavelId { get; set; }
-        public int? ClienteId { get; set; }
         public int? CulturaId { get; set; }
         public int? PilotoId { get; set; }
         public string? Piloto { get; set; }
@@ -50,6 +53,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
+        //public int StatusEnvio { get; set; }
 
         [JsonIgnore]
         public virtual AplicacaoRecomendacoesTecnicas? AplicacaoRecomendacoesTecnicas { get; set; }
@@ -70,5 +74,9 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public virtual DadosResponsavel.DadosResponsavel? DadosResponsavel { get; set; }
         [JsonIgnore]
         public virtual AuxiliarPista.AuxiliarPista? AuxiliarPista { get; set; }
+
+        [JsonIgnore]
+        public virtual Aplicacao.AplicacaoRelatorio? AplicacaoRelatorio { get; set; }
+
     }
 }

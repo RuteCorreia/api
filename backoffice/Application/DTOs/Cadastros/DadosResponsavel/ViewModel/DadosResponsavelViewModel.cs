@@ -2,7 +2,6 @@
 
 public class DadosResponsavelViewModel
 {
-    public int Id { get; set; }
     public string Data { get; set; }
     public string UF { get; set; }
     public string Cidade { get; set; }

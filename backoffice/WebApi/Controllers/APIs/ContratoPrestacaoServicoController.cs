@@ -95,36 +95,36 @@ public class ContratoPrestacaoServicoController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] ContratoPrestacaoServicoViewModel obj)
-    {
-        var returnMsg = new StringBuilder().Append("Modelo inválido");
-        try
-        {
-            if (ModelState.IsValid)
-            {
-                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var objeto = await _contratoPrestacaoServicoService.GetByIdAsync(id, loggedUser.Item3);
-                if (objeto is not null)
-                {
-                    obj.Id = objeto.Id;
-                    await _contratoPrestacaoServicoService.UpdateAsync(obj);
-                    returnMsg.Clear();
-                }
-                else
-                {
-                    returnMsg.Clear().Append("Não encontrado");
-                }
-            }
+    //[HttpPut("{id:int}")]
+    //public async Task<ActionResult> Update(int id, [FromBody] ContratoPrestacaoServicoViewModel obj)
+    //{
+    //    var returnMsg = new StringBuilder().Append("Modelo inválido");
+    //    try
+    //    {
+    //        if (ModelState.IsValid)
+    //        {
+    //            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+    //            var objeto = await _contratoPrestacaoServicoService.GetByIdAsync(id, loggedUser.Item3);
+    //            if (objeto is not null)
+    //            {
+    //                obj.Id = objeto.Id;
+    //                await _contratoPrestacaoServicoService.UpdateAsync(obj);
+    //                returnMsg.Clear();
+    //            }
+    //            else
+    //            {
+    //                returnMsg.Clear().Append("Não encontrado");
+    //            }
+    //        }
 
-            return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
-        }
-        catch (Exception ex)
-        {
-            _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
-            return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
-        }
-    }
+    //        return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logService.LogError(ex, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
+    //        return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"ContratoPrestacaoServico update - {ex.Message}").ToString());
+    //    }
+    //}
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)

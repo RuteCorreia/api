@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
@@ -116,27 +117,28 @@ namespace WebApi.Controllers.APIs
                 {
                     _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
 
-                    var id = obj.GetProperty("id").GetInt32();
-                    var contratanteJson = obj.GetProperty("contratante").ToString();
-                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
-                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
-                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
-                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
-                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
-                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
-                    var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId
                     var piloto = obj.GetProperty("piloto").ToString();
-                    var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
+                    /*var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); */// Novo campo auxiliarPistaId **
                     var data = obj.GetProperty("data").ToString();
-                    var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao
-                    var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao
+                    // var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
+
+                    var isDrone = obj.GetProperty("sDrone").GetInt32(); // Novo campo isDrone 
+                    var contratanteJson = obj.GetProperty("contratante").ToString();
+                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
+
+                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
+                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
+                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
+                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
+                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
-                    var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId
-                    var clienteId = obj.GetProperty("clienteId").GetInt32(); // Novo campo clienteId
-                    var auxiliarPistaJson = obj.GetProperty("auxiliarPista").GetInt32(); // Novo campo auxiliarPistaId
-                    var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone
+                    //var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
+                    //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
+                    //var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
+                    //var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
+                    //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
@@ -144,7 +146,7 @@ namespace WebApi.Controllers.APIs
                     string croquiAreaString = JsonConvert.SerializeObject(identificacaoAreaTratadaViewModel.CroquiArea);
                     var areaTratadaViewModel = new AreaTratadaViewModel()
                     {
-                        Id = identificacaoAreaTratadaViewModel.Id,
+                        //Id = identificacaoAreaTratadaViewModel.Id,
                         UF = identificacaoAreaTratadaViewModel.UF,
                         Cidade = identificacaoAreaTratadaViewModel.Cidade,
                         Localizacao = identificacaoAreaTratadaViewModel.Localizacao,
@@ -157,7 +159,6 @@ namespace WebApi.Controllers.APIs
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
                     var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
                     {
-                        Id = caracteristicasProdutoAplicadoViewModel.Id,
                         Cultura = caracteristicasProdutoAplicadoViewModel.Cultura,
                         ReceiturarioAgronomico = receituarioAgronomicoString,
                         NomeProduto = caracteristicasProdutoAplicadoViewModel.NomeProduto,
@@ -175,51 +176,56 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
-                    var relatorioAplicacaoViewModel = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
+                    var aplicacaoRelatorioViewModel = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
-                    var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
+                    //var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
+                    
 
-                    _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
+                    _logService.LogInformation($"Piloto: {piloto}, Executor: {executor}");
 
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    if (aplicacaoRecomendacoesTecnicasViewModel != null)
-                    {
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAlturaVoo = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAeronave = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdTipoDeProduto = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAplicacao = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdEquipamento = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
-                    }
+                    //if (aplicacaoRecomendacoesTecnicasViewModel != null)
+                    //{
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAlturaVoo = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAeronave = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdTipoDeProduto = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAplicacao = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdEquipamento = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
+                    //}
 
                     var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
                     var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
-                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel);
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel); /***Alterar*/
                     var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
-                    var IdAuxiliarPista = await _auxiliarPistaService.AddAuxiliarPistaAsync(auxiliarPistaViewModel);
+                    //var IdAuxiliarPista = await _auxiliarPistaService.AddAuxiliarPistaAsync(auxiliarPistaViewModel);
 
-                    relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
+                    var relatorioAplicacaoViewModel = new RelatorioAplicacaoViewModel();
+                    relatorioAplicacaoViewModel.Piloto = piloto;
+                    relatorioAplicacaoViewModel.Executor = executor;
+                    relatorioAplicacaoViewModel.Id = 0;
+                    relatorioAplicacaoViewModel.RefDocument = refDocument;
+                    //relatorioAplicacaoViewModel.AuxiliarPista = auxiliarPista
+                    relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.IsDrone = isDrone;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
                     relatorioAplicacaoViewModel.IdentificacaoAreaTratadaId = IdIdentificacaoAreaTratada;
-                    relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
                     relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
+                    relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
-                    relatorioAplicacaoViewModel.Id = 0;
-                    relatorioAplicacaoViewModel.CulturaId = culturaId;
-                    relatorioAplicacaoViewModel.ClienteId = clienteId;
-                    relatorioAplicacaoViewModel.PilotoId = pilotoId;
-                    relatorioAplicacaoViewModel.Piloto = piloto;
-                    relatorioAplicacaoViewModel.ExecutorId = executorId;
-                    relatorioAplicacaoViewModel.Executor = executor;
-                    relatorioAplicacaoViewModel.RefDocument = refDocument;
-                    relatorioAplicacaoViewModel.Data = data;
-                    relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
-                    relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+                    relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
-                    relatorioAplicacaoViewModel.IdDrone = isDrone;
+                    //relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    //relatorioAplicacaoViewModel.ClienteId = clienteId;
+                    //relatorioAplicacaoViewModel.PilotoId = pilotoId; 
+                    //relatorioAplicacaoViewModel.ExecutorId = executorId;
+                    //relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
+                    //relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+
+
 
                     var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
 

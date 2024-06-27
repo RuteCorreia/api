@@ -94,36 +94,36 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] DadosResponsavelViewModel obj)
-        {
-            var returnMsg = new StringBuilder().Append("Modelo inválido");
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var objeto = await _dadosResponsavelService.GetByIdAsync(id, loggedUser.Item3);
-                    if (objeto is not null)
-                    {
-                        obj.Id = objeto.Id;
-                        await _dadosResponsavelService.UpdateAsync(obj);
-                        returnMsg.Clear();
-                    }
-                    else
-                    {
-                        returnMsg.Clear().Append("Não encontrado");
-                    }
-                }
+        //[HttpPut("{id:int}")]
+        //public async Task<ActionResult> Update(int id, [FromBody] DadosResponsavelViewModel obj)
+        //{
+        //    var returnMsg = new StringBuilder().Append("Modelo inválido");
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+        //            var objeto = await _dadosResponsavelService.GetByIdAsync(id, loggedUser.Item3);
+        //            if (objeto is not null)
+        //            {
+        //                obj.Id = objeto.Id;
+        //                await _dadosResponsavelService.UpdateAsync(obj);
+        //                returnMsg.Clear();
+        //            }
+        //            else
+        //            {
+        //                returnMsg.Clear().Append("Não encontrado");
+        //            }
+        //        }
 
-                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
-            }
-            catch (Exception ex)
-            {
-                _logService.LogError(ex, returnMsg.Clear().Append($"DadosResponsavel update - {ex.Message}").ToString()); // Registre um erro de log
-                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"DadosResponsavel update - {ex.Message}").ToString());
-            }
-        }
+        //        return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logService.LogError(ex, returnMsg.Clear().Append($"DadosResponsavel update - {ex.Message}").ToString()); // Registre um erro de log
+        //        return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"DadosResponsavel update - {ex.Message}").ToString());
+        //    }
+        //}
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)

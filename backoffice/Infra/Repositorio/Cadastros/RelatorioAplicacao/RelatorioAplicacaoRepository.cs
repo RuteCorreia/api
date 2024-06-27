@@ -32,14 +32,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 string query = @"
                     INSERT INTO RelatorioAplicacao 
                     (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
-                     RecomendacoesTecnicasId, RelatorioAplicacaoId, ContratoPrestacaoServicoId, 
-                     DadosResponsavelId, ClienteId, CulturaId, PilotoId, Piloto, 
+                     RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
+                     DadosResponsavelId, CulturaId, PilotoId, Piloto, 
                      ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
                      Data, DataCriacao, DataAlteracao, RefUsuario)
                     VALUES 
                     (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
-                     @RecomendacoesTecnicasId, @RelatorioAplicacaoId, @ContratoPrestacaoServicoId, 
-                     @DadosResponsavelId, @ClienteId, @CulturaId, @PilotoId, @Piloto, 
+                     @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
+                     @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto, 
                      @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
                      @Data, @DataCriacao, @DataAlteracao, @RefUsuario);
                     SELECT CAST(SCOPE_IDENTITY() as int);
@@ -53,10 +53,9 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.IdentificacaoAreaTratadaId,
                         obj.CaracteristicasProdutoAplicadoId,
                         obj.RecomendacoesTecnicasId,
-                        obj.RelatorioAplicacaoId,
+                        obj.AplicacaoRelatorioId,
                         obj.ContratoPrestacaoServicoId,
                         obj.DadosResponsavelId,
-                        obj.ClienteId,
                         obj.CulturaId,
                         obj.PilotoId,
                         obj.Piloto,

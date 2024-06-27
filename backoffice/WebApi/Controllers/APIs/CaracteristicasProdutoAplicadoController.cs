@@ -93,36 +93,36 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] CaracteristicasProdutoAplicadoViewModel obj)
-        {
-            var returnMsg = new StringBuilder().Append("Modelo inválido");
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var objeto = await _caracteristicasProdutoAplicadoService.GetByIdAsync(id, loggedUser.Item3);
-                    if (objeto is not null)
-                    {
-                        obj.Id = objeto.Id;
-                        await _caracteristicasProdutoAplicadoService.UpdateAsync(obj);
-                        returnMsg.Clear();
-                    }
-                    else
-                    {
-                        returnMsg.Clear().Append("Não encontrado");
-                    }
-                }
+        //[HttpPut("{id:int}")]
+        //public async Task<ActionResult> Update(int id, [FromBody] CaracteristicasProdutoAplicadoViewModel obj)
+        //{
+        //    var returnMsg = new StringBuilder().Append("Modelo inválido");
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+        //            var objeto = await _caracteristicasProdutoAplicadoService.GetByIdAsync(id, loggedUser.Item3);
+        //            if (objeto is not null)
+        //            {
+        //                //obj.Id = objeto.Id;
+        //                await _caracteristicasProdutoAplicadoService.UpdateAsync(obj);
+        //                returnMsg.Clear();
+        //            }
+        //            else
+        //            {
+        //                returnMsg.Clear().Append("Não encontrado");
+        //            }
+        //        }
 
-                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
-            }
-            catch (Exception ex)
-            {
-                _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao atualizar CaracteristicasProdutoAplicado: {ex.Message}").ToString());
-                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao atualizar CaracteristicasProdutoAplicado: {ex.Message}").ToString());
-            }
-        }
+        //        return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao atualizar CaracteristicasProdutoAplicado: {ex.Message}").ToString());
+        //        return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao atualizar CaracteristicasProdutoAplicado: {ex.Message}").ToString());
+        //    }
+        //}
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)

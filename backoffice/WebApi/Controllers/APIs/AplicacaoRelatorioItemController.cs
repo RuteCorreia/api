@@ -89,37 +89,37 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] AplicacaoRelatorioItemViewModel obj)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    var existingObj = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
-                    if (!ObjectNullValidation.IsObjectNull(existingObj))
-                    {
-                        obj.Id = existingObj.Id;
-                        await _aplicacaoRelatorioItemService.UpdateAsync(obj);
-                        _loggerService.LogInformation($"Item do relatório de aplicação com ID {id} atualizado com sucesso.");
-                        return Ok("Sucesso");
-                    }
-                    else
-                    {
-                        _loggerService.LogWarning($"O item do relatório de aplicação com ID {id} não foi encontrado.");
-                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                    }
-                }
+        //[HttpPut("{id:int}")]
+        //public async Task<ActionResult> Update(int id, [FromBody] AplicacaoRelatorioItemViewModel obj)
+        //{
+        //    try
+        //    {
+        //        if (ModelState.IsValid)
+        //        {
+        //            var existingObj = await _aplicacaoRelatorioItemService.GetByIdAsync(id);
+        //            if (!ObjectNullValidation.IsObjectNull(existingObj))
+        //            {
+        //                obj.Id = existingObj.Id;
+        //                await _aplicacaoRelatorioItemService.UpdateAsync(obj);
+        //                _loggerService.LogInformation($"Item do relatório de aplicação com ID {id} atualizado com sucesso.");
+        //                return Ok("Sucesso");
+        //            }
+        //            else
+        //            {
+        //                _loggerService.LogWarning($"O item do relatório de aplicação com ID {id} não foi encontrado.");
+        //                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+        //            }
+        //        }
 
-                _loggerService.LogWarning("Tentativa de atualizar um item do relatório de aplicação com um modelo inválido.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-            }
-            catch (Exception ex)
-            {
-                _loggerService.LogError(ex, $"Erro ao atualizar item do relatório de aplicação com ID {id}: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar item do relatório de aplicação: {ex.Message}");
-            }
-        }
+        //        _loggerService.LogWarning("Tentativa de atualizar um item do relatório de aplicação com um modelo inválido.");
+        //        return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loggerService.LogError(ex, $"Erro ao atualizar item do relatório de aplicação com ID {id}: {ex.Message}");
+        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar item do relatório de aplicação: {ex.Message}");
+        //    }
+        //}
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)

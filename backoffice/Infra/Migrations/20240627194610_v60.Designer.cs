@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240627194610_v60")]
+    partial class v60
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1725,8 +1728,6 @@ namespace Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AplicacaoRelatorioId");
-
                     b.HasIndex("AuxiliarPistaId");
 
                     b.HasIndex("CaracteristicasProdutoAplicadoId");
@@ -2633,10 +2634,6 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao", b =>
                 {
-                    b.HasOne("Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio", "AplicacaoRelatorio")
-                        .WithMany()
-                        .HasForeignKey("AplicacaoRelatorioId");
-
                     b.HasOne("Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista", "AuxiliarPista")
                         .WithMany()
                         .HasForeignKey("AuxiliarPistaId");
@@ -2666,8 +2663,6 @@ namespace Infra.Migrations
                         .HasForeignKey("RecomendacoesTecnicasId");
 
                     b.Navigation("AplicacaoRecomendacoesTecnicas");
-
-                    b.Navigation("AplicacaoRelatorio");
 
                     b.Navigation("AuxiliarPista");
 
