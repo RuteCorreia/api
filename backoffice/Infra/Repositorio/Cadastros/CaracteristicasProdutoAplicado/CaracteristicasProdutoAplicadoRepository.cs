@@ -27,7 +27,7 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
     public async Task DeleteAsync(int id, int idEmpresa)
     {
         var entityToRemove = await GetByIdAsync(id, idEmpresa);
-        if(entityToRemove is not null)
+        if (entityToRemove is not null)
         {
             _contextBase.CaracteristicasProdutoAplicado.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -54,8 +54,14 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         {
             try
             {
-                string query = $"SELECT * FROM CaracteristicasProdutoAplicado WHERE Id = {id}";
-                var produtoAplicado = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(query);
+                string query = @"
+                    SELECT * 
+                    FROM CaracteristicasProdutoAplicado 
+                    WHERE Id = @Id 
+                    AND (@IdEmpresa = 0 AND IdEmpresa IS NULL OR IdEmpresa = @IdEmpresa)";
+
+                var parameters = new { Id = id, IdEmpresa = idEmpresa };
+                var produtoAplicado = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(query,parameters);
                 return produtoAplicado;
 
             }

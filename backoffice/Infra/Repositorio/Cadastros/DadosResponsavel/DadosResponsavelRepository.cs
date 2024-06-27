@@ -50,8 +50,14 @@ public class DadosResponsavelRepository : IDadosResponsavelRepository
         {
             try
             {
-                string query = $"SELECT * FROM DadosResponsavel WHERE Id = {id}";
-                var dadosResponsavel = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel>(query);
+                string query = @"
+                    SELECT * 
+                    FROM DadosResponsavel 
+                    WHERE Id = @Id 
+                    AND (@IdEmpresa = 0 AND IdEmpresa IS NULL OR IdEmpresa = @IdEmpresa)";
+
+                var parameters = new { Id = id, IdEmpresa = idEmpresa };
+                var dadosResponsavel = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel>(query, parameters);
                 return dadosResponsavel;
 
             }

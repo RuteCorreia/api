@@ -36,6 +36,7 @@ using Domain.Entidades.Cadastros.Veiculo;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entidades.Cadastros.AuxiliarPista;
 
 namespace Infra.Configuracao;
 
@@ -53,6 +54,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<AlturaVoo> AlturaVoo { get; set; }
     public DbSet<AlvoBiologico> AlvoBiologico { get; set; }
     public DbSet<Aplicacao> Aplicacao { get; set; }
+    public DbSet<AuxiliarPista> AuxiliarPista { get; set; }
     public DbSet<AplicacaoAreaTratada> AplicacaoAreaTratada { get; set; }
     public DbSet<AplicacaoCaracteristicas> AplicacaoCaracteristicas { get; set; }
     public DbSet<AplicacaoContrato> AplicacaoContrato { get; set; }

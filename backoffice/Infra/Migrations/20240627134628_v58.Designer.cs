@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240627134628_v58")]
+    partial class v58
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -502,27 +505,6 @@ namespace Infra.Migrations
                     b.HasIndex("IdAplicacaoRelatorio");
 
                     b.ToTable("AplicacaoRelatorioItem");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Documento")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AuxiliarPista");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado", b =>
@@ -1616,22 +1598,13 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("AuxiliarPistaId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("CaracteristicasProdutoAplicadoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ClienteId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ContratanteId")
                         .HasColumnType("int");
 
                     b.Property<int?>("ContratoPrestacaoServicoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CulturaId")
                         .HasColumnType("int");
 
                     b.Property<int?>("DadosResponsavelId")
@@ -1641,29 +1614,19 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("DataAlteracao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataCriacao")
+                    b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Executor")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ExecutorId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("IdentificacaoAreaTratadaId")
                         .HasColumnType("int");
 
-                    b.Property<bool?>("IsDrone")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Piloto")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("PilotoId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("RecomendacoesTecnicasId")
                         .HasColumnType("int");
@@ -1680,8 +1643,6 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AuxiliarPistaId");
 
                     b.HasIndex("CaracteristicasProdutoAplicadoId");
 
@@ -2587,10 +2548,6 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao", b =>
                 {
-                    b.HasOne("Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista", "AuxiliarPista")
-                        .WithMany()
-                        .HasForeignKey("AuxiliarPistaId");
-
                     b.HasOne("Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado", "CaracteristicasProdutoAplicado")
                         .WithMany()
                         .HasForeignKey("CaracteristicasProdutoAplicadoId");
@@ -2616,8 +2573,6 @@ namespace Infra.Migrations
                         .HasForeignKey("RecomendacoesTecnicasId");
 
                     b.Navigation("AplicacaoRecomendacoesTecnicas");
-
-                    b.Navigation("AuxiliarPista");
 
                     b.Navigation("CaracteristicasProdutoAplicado");
 

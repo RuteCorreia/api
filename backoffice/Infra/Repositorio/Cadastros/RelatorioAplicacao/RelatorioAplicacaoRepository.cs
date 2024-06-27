@@ -56,7 +56,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                             obj.Executor,
                             obj.RefDocument,
                             obj.Data,
-                            //obj.DataCriacao,
+                            obj.DataCriacao,
                             obj.RefUsuario
                         });
                         obj.Id = id;

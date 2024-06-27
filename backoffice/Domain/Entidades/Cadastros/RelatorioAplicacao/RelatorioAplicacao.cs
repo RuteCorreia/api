@@ -35,11 +35,20 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
 
         [ForeignKey("DadosResponsavel")]
         public int? DadosResponsavelId { get; set; }
-        public string Piloto { get; set; }
-        public string Executor { get; set; }
+        public int? ClienteId { get; set; }
+        public int? CulturaId { get; set; }
+        public int? PilotoId { get; set; }
+        public string? Piloto { get; set; }
+        public int? ExecutorId { get; set; }
+        public string? Executor { get; set; }
+
+        [ForeignKey("AuxiliarPista")]
+        public int? AuxiliarPistaId { get; set; }
+        public bool? IsDrone { get; set; }
         public string RefDocument { get; set; }
         public string Data { get; set; }
-        //public DateTime DataCriacao {  get; set; }
+        public DateTime? DataCriacao { get; set; }
+        public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
 
         [JsonIgnore]
@@ -59,5 +68,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
 
         [JsonIgnore]
         public virtual DadosResponsavel.DadosResponsavel? DadosResponsavel { get; set; }
+        [JsonIgnore]
+        public virtual AuxiliarPista.AuxiliarPista? AuxiliarPista { get; set; }
     }
 }
