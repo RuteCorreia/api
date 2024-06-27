@@ -20,6 +20,7 @@ public class UserUpdateViewModel
     [MinLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
     [MaxLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
     public string CPF { get; set; }
+    public bool GerarRelatorioManutencao { get; set; }
 
     //[JsonConverter(typeof(JsonStringEnumConverter))]
     public IEnumerable<RoleObject> Funcoes { get; set; }

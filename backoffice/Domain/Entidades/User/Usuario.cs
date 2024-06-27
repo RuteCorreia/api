@@ -7,7 +7,7 @@ namespace Domain.Entidades.User;
 
 public class Usuario
 {
-    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf)
+    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf, bool gerarRelatorioManutencao)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -20,6 +20,7 @@ public class Usuario
         Telefone = telefone;
         IdEmpresa = idEmpresa;
         CPF = cpf;
+        GerarRelatorioManutencao = gerarRelatorioManutencao;
     }
 
     public Usuario(Guid id, string email, string nome, string userId, int nrUsuario)
