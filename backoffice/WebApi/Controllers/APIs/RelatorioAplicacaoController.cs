@@ -1,5 +1,7 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.AuxiliarPista.Interface;
+using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.Contratante.Interface;
@@ -31,36 +33,40 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class RelatorioAplicacaoController : ControllerBase
     {
-        private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
-        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
-        private readonly IContratanteService _contratanteService;
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
         private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
+        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+        private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
-        private readonly ILogService _logService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
-
+        private readonly IAuxiliarPistaService _auxiliarPistaService;
+        private readonly IContratanteService _contratanteService;
+        private readonly ILogService _logService;
+        
         public RelatorioAplicacaoController(
-            IRelatorioAplicacaoService relatorioAplicacaoService,
-            ILogService logService,
-            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
-            IContratanteService contratanteService,
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+            IRelatorioAplicacaoService relatorioAplicacaoService,
             IDadosResponsavelService dadosResponsavelService,
-            LoggedUserInfoService loggedUserInfoService)
+            LoggedUserInfoService loggedUserInfoService,
+            IAuxiliarPistaService auxiliarPistaService,
+            IContratanteService contratanteService,
+            ILogService logService            
+            )
         {
-            _relatorioAplicacaoService = relatorioAplicacaoService;
-            _logService = logService;
             _identificacaoAreaTratadaServiceService = identificacaoAreaTratadaServiceService;
-            _contratanteService = contratanteService;
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
+            _relatorioAplicacaoService = relatorioAplicacaoService;
             _dadosResponsavelService = dadosResponsavelService;
             _loggedUserInfoService = loggedUserInfoService;
+            _auxiliarPistaService = auxiliarPistaService;
+            _contratanteService = contratanteService;
+            _logService = logService;  
         }
 
         [HttpGet]
@@ -118,11 +124,19 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
                     var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
                     var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
+                    var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId
                     var piloto = obj.GetProperty("piloto").ToString();
+                    var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
                     var data = obj.GetProperty("data").ToString();
+                    var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao
+                    var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
+                    var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId
+                    var clienteId = obj.GetProperty("clienteId").GetInt32(); // Novo campo clienteId
+                    var auxiliarPistaJson = obj.GetProperty("auxiliarPista").GetInt32(); // Novo campo auxiliarPistaId
+                    var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
@@ -164,6 +178,7 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacaoViewModel = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
+                    var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
 
                     _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
 
@@ -184,6 +199,7 @@ namespace WebApi.Controllers.APIs
                     var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
+                    var IdAuxiliarPista = await _auxiliarPistaService.AddAuxiliarPistaAsync(auxiliarPistaViewModel);
 
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
@@ -192,11 +208,18 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
                     relatorioAplicacaoViewModel.Id = 0;
+                    relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    relatorioAplicacaoViewModel.ClienteId = clienteId;
+                    relatorioAplicacaoViewModel.PilotoId = pilotoId;
                     relatorioAplicacaoViewModel.Piloto = piloto;
+                    relatorioAplicacaoViewModel.ExecutorId = executorId;
                     relatorioAplicacaoViewModel.Executor = executor;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
+                    relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
+                    relatorioAplicacaoViewModel.IdDrone = isDrone;
 
                     var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
 

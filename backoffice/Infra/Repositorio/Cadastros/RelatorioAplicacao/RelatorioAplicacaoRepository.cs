@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Helpers;
 using Infra.Configuracao;
@@ -29,49 +30,55 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             try
             {
                 string query = @"
-            INSERT INTO RelatorioAplicacao 
-            (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
-             RecomendacoesTecnicasId, RelatorioAplicacaoId, ContratoPrestacaoServicoId, 
-             DadosResponsavelId, Piloto, Executor, RefDocument, Data, DataCriacao, RefUsuario)
-            VALUES 
-            (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
-             @RecomendacoesTecnicasId, @RelatorioAplicacaoId, @ContratoPrestacaoServicoId, 
-             @DadosResponsavelId, @Piloto, @Executor, @RefDocument, @Data, @DataCriacao, @RefUsuario);
-            SELECT CAST(SCOPE_IDENTITY() as int);
-";
+                    INSERT INTO RelatorioAplicacao 
+                    (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
+                     RecomendacoesTecnicasId, RelatorioAplicacaoId, ContratoPrestacaoServicoId, 
+                     DadosResponsavelId, ClienteId, CulturaId, PilotoId, Piloto, 
+                     ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
+                     Data, DataCriacao, DataAlteracao, RefUsuario)
+                    VALUES 
+                    (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
+                     @RecomendacoesTecnicasId, @RelatorioAplicacaoId, @ContratoPrestacaoServicoId, 
+                     @DadosResponsavelId, @ClienteId, @CulturaId, @PilotoId, @Piloto, 
+                     @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
+                     @Data, @DataCriacao, @DataAlteracao, @RefUsuario);
+                    SELECT CAST(SCOPE_IDENTITY() as int);
+                ";
+
                 using (var connection = _dbConnection)
                 {
-                    try
+                    var id = await connection.QueryFirstOrDefaultAsync<int>(query, new
                     {
-                        var id = await connection.QueryFirstOrDefaultAsync<int>(query, new
-                        {
-                            obj.ContratanteId,
-                            obj.IdentificacaoAreaTratadaId,
-                            obj.CaracteristicasProdutoAplicadoId,
-                            obj.RecomendacoesTecnicasId,
-                            obj.RelatorioAplicacaoId,
-                            obj.ContratoPrestacaoServicoId,
-                            obj.DadosResponsavelId,
-                            obj.Piloto,
-                            obj.Executor,
-                            obj.RefDocument,
-                            obj.Data,
-                            obj.DataCriacao,
-                            obj.RefUsuario
-                        });
-                        obj.Id = id;
-                        return id;
-                    }catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message);
-                    }
+                        obj.ContratanteId,
+                        obj.IdentificacaoAreaTratadaId,
+                        obj.CaracteristicasProdutoAplicadoId,
+                        obj.RecomendacoesTecnicasId,
+                        obj.RelatorioAplicacaoId,
+                        obj.ContratoPrestacaoServicoId,
+                        obj.DadosResponsavelId,
+                        obj.ClienteId,
+                        obj.CulturaId,
+                        obj.PilotoId,
+                        obj.Piloto,
+                        obj.ExecutorId,
+                        obj.Executor,
+                        obj.AuxiliarPistaId,
+                        obj.IsDrone,
+                        obj.RefDocument,
+                        obj.Data,
+                        obj.DataCriacao,
+                        obj.DataAlteracao,
+                        obj.RefUsuario
+                    });
 
+                    obj.Id = id;
+                    return id;
                 }
-            }catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
             }
-            
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao adicionar relatório de aplicação: " + ex.Message);
+            }
         }
 
         public async Task DeleteAsync(int id)
@@ -112,6 +119,29 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                     throw new Exception(ex.Message);
                 }
             }   
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId)
+        {
+            string query = @"
+                SELECT *
+                FROM DadosResponsavel
+                WHERE (@PilotoId = 0 AND PilotoId IS NULL OR PilotoId = @PilotoId)
+                ";
+
+            var parameters = new { PilotoId = pilotoId };
+
+            try
+            {
+                var entities = await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, parameters);
+                return entities;
+            }
+            catch (Exception ex)
+            {
+                // Trate a exceção conforme necessário
+                Console.WriteLine($"Ocorreu um erro ao buscar os dados responsáveis: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
