@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Frota;
 using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
@@ -29,13 +30,13 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             return _mapper.Map<IEnumerable<IdentificacaoAreaTratadaViewModel>>(list);
         }
 
-        public async Task<IdentificacaoAreaTratadaViewModel> GetByIdAsync(int id)
+        public async Task<AreaTratadaViewModel> GetByIdAsync(int id)
         {
             var obj = await _identificacaoAreaTratadaRepository.GetByIdAsync(id);
-            return _mapper.Map<IdentificacaoAreaTratadaViewModel>(obj);
+            return _mapper.Map<AreaTratadaViewModel>(obj);
         }
 
-        public async Task<int> AddAsync(IdentificacaoAreaTratadaViewModel obj)
+        public async Task<int> AddAsync(AreaTratadaViewModel obj)
         {
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             var identificacaoAreaTratada = _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);

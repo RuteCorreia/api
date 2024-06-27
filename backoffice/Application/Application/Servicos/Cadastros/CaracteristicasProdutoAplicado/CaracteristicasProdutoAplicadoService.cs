@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Helpers;
@@ -20,7 +21,7 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
     }
 
-    public async Task<int> AddAsync(CaracteristicasProdutoAplicadoViewModel obj, string? idEmpresa)
+    public async Task<int> AddAsync(ProdutoAplicadoViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
@@ -42,11 +43,11 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         return _mapper.Map<IEnumerable<CaracteristicasProdutoAplicadoViewModel>>(list);
     }
 
-    public async Task<CaracteristicasProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa)
+    public async Task<ProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var obj = await _caracteristicasProdutoAplicadoRepository.GetByIdAsync(id, idEmpresaInt);
-        return _mapper.Map<CaracteristicasProdutoAplicadoViewModel>(obj);
+        return _mapper.Map<ProdutoAplicadoViewModel>(obj);
     }
 
     public async Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj)

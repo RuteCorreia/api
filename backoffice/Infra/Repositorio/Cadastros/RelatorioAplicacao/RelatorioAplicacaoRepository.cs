@@ -24,10 +24,54 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             _dbConnection = dbConnection;
         }
 
-        public async Task AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        public async Task<int> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
-            await _contextBase.AddAsync(obj);
-            await _contextBase.SaveChangesAsync();
+            try
+            {
+                string query = @"
+            INSERT INTO RelatorioAplicacao 
+            (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
+             RecomendacoesTecnicasId, RelatorioAplicacaoId, ContratoPrestacaoServicoId, 
+             DadosResponsavelId, Piloto, Executor, RefDocument, Data, DataCriacao, RefUsuario)
+            VALUES 
+            (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
+             @RecomendacoesTecnicasId, @RelatorioAplicacaoId, @ContratoPrestacaoServicoId, 
+             @DadosResponsavelId, @Piloto, @Executor, @RefDocument, @Data, @DataCriacao, @RefUsuario);
+            SELECT CAST(SCOPE_IDENTITY() as int);
+";
+                using (var connection = _dbConnection)
+                {
+                    try
+                    {
+                        var id = await connection.QueryFirstOrDefaultAsync<int>(query, new
+                        {
+                            obj.ContratanteId,
+                            obj.IdentificacaoAreaTratadaId,
+                            obj.CaracteristicasProdutoAplicadoId,
+                            obj.RecomendacoesTecnicasId,
+                            obj.RelatorioAplicacaoId,
+                            obj.ContratoPrestacaoServicoId,
+                            obj.DadosResponsavelId,
+                            obj.Piloto,
+                            obj.Executor,
+                            obj.RefDocument,
+                            obj.Data,
+                            //obj.DataCriacao,
+                            obj.RefUsuario
+                        });
+                        obj.Id = id;
+                        return id;
+                    }catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+
+                }
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+            
         }
 
         public async Task DeleteAsync(int id)
@@ -48,14 +92,26 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDateAsync(DateTime date)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE CAST(Data AS DATE) = @Date";
+            string query = "SELECT * FROM RelatorioAplicacao WHERE DateCriacao = @Date";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Date = date.Date });
         }
 
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id)
         {
-            var obj = await _contextBase.RelatorioAplicacao.FindAsync(id);
-            return obj;
+            using (var connection = _dbConnection)
+            {
+                try
+                {
+                    string query = $"SELECT * FROM RelatorioAplicacao WHERE Id = {id}";
+                    var relatorio = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
+                    return relatorio;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }   
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)

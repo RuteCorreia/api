@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,9 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface
     {
         Task<IEnumerable<IdentificacaoAreaTratadaViewModel>> GetAllAsync();
 
-        Task<IdentificacaoAreaTratadaViewModel> GetByIdAsync(int id);
+        Task<AreaTratadaViewModel> GetByIdAsync(int id);
 
-        Task<int> AddAsync(IdentificacaoAreaTratadaViewModel obj);
+        Task<int> AddAsync(AreaTratadaViewModel obj);
 
         Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj);
 

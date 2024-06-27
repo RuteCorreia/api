@@ -39,6 +39,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public string Executor { get; set; }
         public string RefDocument { get; set; }
         public string Data { get; set; }
+        //public DateTime DataCriacao {  get; set; }
         public string RefUsuario { get; set; }
 
         [JsonIgnore]

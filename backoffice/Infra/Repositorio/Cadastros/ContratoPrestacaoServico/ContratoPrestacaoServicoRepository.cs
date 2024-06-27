@@ -1,16 +1,20 @@
-﻿using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Infra.Repositorio.Cadastros.ContratoPrestacaoServico;
 
 public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepository
 {
     private readonly ContextBase _contextBase;
+    private readonly IDbConnection _dbConnection;
 
-    public ContratoPrestacaoServicoRepository(ContextBase contextBase)
+    public ContratoPrestacaoServicoRepository(ContextBase contextBase, IDbConnection dbConnection)
     {
         _contextBase = contextBase;
+        _dbConnection = dbConnection;
     }
 
     public async Task<int> AddAsync(Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico obj)
@@ -42,9 +46,20 @@ public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepos
 
     public async Task<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico> GetByIdAsync(int id, int idEmpresa)
     {
-        var obj = await _contextBase.ContratoPrestacaoServico
-           .FirstOrDefaultAsync(x => x.Id == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
-        return obj;
+        using (var connection = _dbConnection)
+        {
+            try
+            {
+                string query = $"SELECT * FROM ContratoPrestacaoServico WHERE Id = {id}";
+                var produtoAplicado = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(query);
+                return produtoAplicado;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico obj)

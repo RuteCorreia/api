@@ -1,9 +1,11 @@
-﻿using Domain.Interfaces.Cadastros.Contratante;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.Contratante;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ namespace Infra.Repositorio.Cadastros.Contratante
     public class ContratanteRepository : IContratanteRepository
     {
         private readonly ContextBase _contextBase;
+        private readonly IDbConnection _dbConnection;
 
-        public ContratanteRepository(ContextBase contextBase)
+        public ContratanteRepository(ContextBase contextBase, IDbConnection dbConnection)
         {
             _contextBase = contextBase;
+            _dbConnection = dbConnection;
         }
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.Contratante.Contratante obj)
@@ -46,8 +50,20 @@ namespace Infra.Repositorio.Cadastros.Contratante
 
         public async Task<Domain.Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int id)
         {
-            var obj = await _contextBase.Contratante.FindAsync(id);
-            return obj;
+            using (var connection = _dbConnection)
+            {
+                try
+                {
+                    string query = $"SELECT * FROM Contratante WHERE Id = {id}";
+                    var contratante = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Contratante.Contratante>(query);
+                    return contratante;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Contratante.Contratante obj)
