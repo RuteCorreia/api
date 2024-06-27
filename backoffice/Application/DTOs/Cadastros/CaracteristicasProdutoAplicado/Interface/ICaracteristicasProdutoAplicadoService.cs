@@ -7,7 +7,7 @@ public interface ICaracteristicasProdutoAplicadoService
 {
     Task<IEnumerable<CaracteristicasProdutoAplicadoViewModel>> GetAllAsync(string? idEmpresa);
 
-    Task<CaracteristicasProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa);
+    Task<ProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa);
 
     Task<int> AddAsync(ProdutoAplicadoViewModel obj, string? idEmpresa);
 

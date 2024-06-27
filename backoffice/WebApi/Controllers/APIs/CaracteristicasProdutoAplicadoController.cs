@@ -51,8 +51,8 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<CaracteristicasProdutoAplicadoViewModel>> GetById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ProdutoAplicadoViewModel>> GetById(int id)
         {
             var returnMsg = new StringBuilder().Append("Não encontrado");
             try

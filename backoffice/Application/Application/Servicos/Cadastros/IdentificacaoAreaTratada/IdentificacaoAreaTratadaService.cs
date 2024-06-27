@@ -30,10 +30,10 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             return _mapper.Map<IEnumerable<IdentificacaoAreaTratadaViewModel>>(list);
         }
 
-        public async Task<IdentificacaoAreaTratadaViewModel> GetByIdAsync(int id)
+        public async Task<AreaTratadaViewModel> GetByIdAsync(int id)
         {
             var obj = await _identificacaoAreaTratadaRepository.GetByIdAsync(id);
-            return _mapper.Map<IdentificacaoAreaTratadaViewModel>(obj);
+            return _mapper.Map<AreaTratadaViewModel>(obj);
         }
 
         public async Task<int> AddAsync(AreaTratadaViewModel obj)

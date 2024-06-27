@@ -45,8 +45,8 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<IdentificacaoAreaTratadaViewModel>> GetById(int id)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<AreaTratadaViewModel>> GetById(int id)
         {
             try
             {

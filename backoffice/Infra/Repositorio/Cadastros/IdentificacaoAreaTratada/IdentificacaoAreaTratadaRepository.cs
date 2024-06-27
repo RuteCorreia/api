@@ -1,9 +1,11 @@
-﻿using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,10 +15,12 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
     public class IdentificacaoAreaTratadaRepository : IIdentificacaoAreaTratadaRepository
     {
         private readonly ContextBase _contextBase;
+        private readonly IDbConnection _dbConnection;
 
-        public IdentificacaoAreaTratadaRepository(ContextBase contextBase)
+        public IdentificacaoAreaTratadaRepository(ContextBase contextBase, IDbConnection dbConnection)
         {
             _contextBase = contextBase;
+            _dbConnection = dbConnection;
         }
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj)
@@ -44,8 +48,20 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
 
         public async Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int id)
         {
-            var obj = await _contextBase.IdentificacaoAreaTratada.FindAsync(id);
-            return obj;
+            using (var connection = _dbConnection)
+            {
+                try
+                {
+                    string query = $"SELECT * FROM IdentificacaoAreaTratada WHERE Id = {id}";
+                    var areaTratada = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(query);
+                    return areaTratada;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada obj)

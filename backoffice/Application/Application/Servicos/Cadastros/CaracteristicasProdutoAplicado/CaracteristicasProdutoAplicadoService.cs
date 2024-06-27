@@ -43,11 +43,11 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         return _mapper.Map<IEnumerable<CaracteristicasProdutoAplicadoViewModel>>(list);
     }
 
-    public async Task<CaracteristicasProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa)
+    public async Task<ProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var obj = await _caracteristicasProdutoAplicadoRepository.GetByIdAsync(id, idEmpresaInt);
-        return _mapper.Map<CaracteristicasProdutoAplicadoViewModel>(obj);
+        return _mapper.Map<ProdutoAplicadoViewModel>(obj);
     }
 
     public async Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj)

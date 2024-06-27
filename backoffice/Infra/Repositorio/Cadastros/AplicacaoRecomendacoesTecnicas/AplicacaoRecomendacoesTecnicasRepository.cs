@@ -1,17 +1,21 @@
-﻿using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Infra.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas;
 
 public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesTecnicasRepository
 {
     private readonly ContextBase _contextBase;
+    private readonly IDbConnection _dbConnection;
 
-    public AplicacaoRecomendacoesTecnicasRepository(ContextBase contextBase)
+    public AplicacaoRecomendacoesTecnicasRepository(ContextBase contextBase, IDbConnection dbConnection)
     {
         _contextBase = contextBase;
+        _dbConnection = dbConnection;
     }
 
     public async Task<int> AddAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)
@@ -39,8 +43,20 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
 
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetByIdAsync(int id)
     {
-        var obj = await _contextBase.AplicacaoRecomendacoesTecnicas.FindAsync(id);
-        return obj;
+        using (var connection = _dbConnection)
+        {
+            try
+            {
+                string query = $"SELECT * FROM AplicacaoRecomendacoesTecnicas WHERE Id = {id}";
+                var recomendacoesTecnicas = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(query);
+                return recomendacoesTecnicas;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj)

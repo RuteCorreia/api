@@ -56,7 +56,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                             obj.Executor,
                             obj.RefDocument,
                             obj.Data,
-                            obj.DataCriacao,
+                            //obj.DataCriacao,
                             obj.RefUsuario
                         });
                         obj.Id = id;
@@ -98,9 +98,20 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE Id = @Id";
-            var parameters = new { Id = id };
-            return await _dbConnection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, parameters);
+            using (var connection = _dbConnection)
+            {
+                try
+                {
+                    string query = $"SELECT * FROM RelatorioAplicacao WHERE Id = {id}";
+                    var relatorio = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
+                    return relatorio;
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }   
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)

@@ -13,7 +13,7 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface
     {
         Task<IEnumerable<IdentificacaoAreaTratadaViewModel>> GetAllAsync();
 
-        Task<IdentificacaoAreaTratadaViewModel> GetByIdAsync(int id);
+        Task<AreaTratadaViewModel> GetByIdAsync(int id);
 
         Task<int> AddAsync(AreaTratadaViewModel obj);
 
