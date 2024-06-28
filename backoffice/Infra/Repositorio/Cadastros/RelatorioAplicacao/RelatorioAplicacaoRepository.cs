@@ -18,7 +18,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
     {
         private readonly ContextBase _contextBase;
         private readonly IDbConnection _dbConnection;
-
         public RelatorioAplicacaoRepository(ContextBase contextBase, IDbConnection dbConnection)
         {
             _contextBase = contextBase;
@@ -27,26 +26,32 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
-            try
+            using (var connection = _dbConnection)
             {
-                string query = @"
-                    INSERT INTO RelatorioAplicacao 
-                    (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
-                     RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
-                     DadosResponsavelId, CulturaId, PilotoId, Piloto, 
-                     ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
-                     Data, DataCriacao, DataAlteracao, RefUsuario)
-                    VALUES 
-                    (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
-                     @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
-                     @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto, 
-                     @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
-                     @Data, @DataCriacao, @DataAlteracao, @RefUsuario);
-                    SELECT CAST(SCOPE_IDENTITY() as int);
-                ";
-
-                using (var connection = _dbConnection)
+                try
                 {
+                    string query = @"
+                        INSERT INTO RelatorioAplicacao 
+                        (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
+                         RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
+                         DadosResponsavelId, Piloto, 
+                         Executor, AuxiliarPistaId, IsDrone, RefDocument, 
+                         Data, RefUsuario)
+                        VALUES 
+                        (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
+                         @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
+                         @DadosResponsavelId, @Piloto, 
+                         @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
+                         @Data, @RefUsuario);
+                        SELECT CAST(SCOPE_IDENTITY() as int)";
+
+                    //relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    //relatorioAplicacaoViewModel.ClienteId = clienteId;
+                    //relatorioAplicacaoViewModel.PilotoId = pilotoId; 
+                    //relatorioAplicacaoViewModel.ExecutorId = executorId;
+                    //relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
+                    //relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+
                     var id = await connection.QueryFirstOrDefaultAsync<int>(query, new
                     {
                         obj.ContratanteId,
@@ -56,27 +61,27 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.AplicacaoRelatorioId,
                         obj.ContratoPrestacaoServicoId,
                         obj.DadosResponsavelId,
-                        obj.CulturaId,
-                        obj.PilotoId,
+                        //obj.CulturaId,
+                        //obj.PilotoId,
                         obj.Piloto,
-                        obj.ExecutorId,
+                        //obj.ExecutorId,
                         obj.Executor,
                         obj.AuxiliarPistaId,
                         obj.IsDrone,
                         obj.RefDocument,
                         obj.Data,
-                        obj.DataCriacao,
-                        obj.DataAlteracao,
+                        //obj.DataCriacao,
+                        //obj.DataAlteracao,
                         obj.RefUsuario
                     });
 
                     obj.Id = id;
                     return id;
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Erro ao adicionar relatório de aplicação: " + ex.Message);
+                catch (Exception ex)
+                {
+                    throw new Exception("Erro ao adicionar relatório de aplicação: " + ex.Message);
+                }
             }
         }
 
@@ -117,7 +122,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 {
                     throw new Exception(ex.Message);
                 }
-            }   
+            }
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId)

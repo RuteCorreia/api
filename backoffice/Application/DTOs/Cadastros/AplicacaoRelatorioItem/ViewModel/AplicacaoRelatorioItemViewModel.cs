@@ -5,6 +5,7 @@ namespace Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 
 public class AplicacaoRelatorioItemViewModel
 {
+    public int? IdAplicacaoRelatorio { get; set; }
     public string? HoraInicio { get; set; }
     public string? HorimetroInicial { get; set; }
     public string? HoraFinal { get; set; }

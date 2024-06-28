@@ -14,7 +14,7 @@ namespace Application.Application.Servicos.Cadastros.AuxiliarPista
             _auxiliarPistaRepository = auxiliarPistaRepository;
             _mapper = mapper;
         }
-        public async Task<int> AddAuxiliarPistaAsync(AuxiliarPistaViewModel obj)
+        public async Task<int> AddAsync(AuxiliarPistaViewModel obj)
         {
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(obj);
             var identificacaoAreaTratada = await _auxiliarPistaRepository.AddAsync(mapIdentificacaoAreaTratada);

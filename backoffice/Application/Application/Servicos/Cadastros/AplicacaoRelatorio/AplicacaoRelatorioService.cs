@@ -2,16 +2,23 @@
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 
 public class AplicacaoRelatorioService : IAplicacaoRelatorioService
 {
+    private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
     private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
     private readonly IMapper _mapper;
 
-    public AplicacaoRelatorioService(IMapper mapper, IAplicacaoRelatorioRepository aplicacaoRelatorioRepository)
+    public AplicacaoRelatorioService(
+        IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
+        IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository,
+        IMapper mapper 
+        )
     {
+        _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
         _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
         _mapper = mapper;
     }
@@ -28,10 +35,24 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         return _mapper.Map<AplicacaoRelatorioViewModel>(obj);
     }
 
-    public async Task AddAsync(AplicacaoRelatorioViewModel obj)
+    public async Task<int> AddAsync(AplicacaoRelatorioViewModel obj)
     {
         var mapAplicacaoRelatorio = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(obj);
         await _aplicacaoRelatorioRepository.AddAsync(mapAplicacaoRelatorio);
+
+        if (obj.Aplicacoes != null && obj.Aplicacoes.Any())
+        {
+            foreach (var aplicacaoItem in obj.Aplicacoes)
+            {
+                var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(aplicacaoItem);
+                mapAplicacaoRelatorioItem.IdAplicacaoRelatorio = mapAplicacaoRelatorio.Id; // Atribua o Id da entidade principal
+
+                await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
+            }
+        }
+        
+        return mapAplicacaoRelatorio.Id;
+        
     }
 
     public async Task UpdateAsync(AplicacaoRelatorioViewModel obj)

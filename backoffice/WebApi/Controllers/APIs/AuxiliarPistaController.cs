@@ -26,7 +26,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var auxiliarPista = await _auxiliarPistaService.AddAuxiliarPistaAsync(obj);
+                    var auxiliarPista = await _auxiliarPistaService.AddAsync(obj);
                     return Ok(auxiliarPista);
                 }
 

@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
@@ -17,9 +18,11 @@ using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Importação_Planilha.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cultura;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApi.HttpRequestInfo;
 
@@ -39,11 +42,13 @@ namespace WebApi.Controllers.APIs
         private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
+        private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IAuxiliarPistaService _auxiliarPistaService;
         private readonly IContratanteService _contratanteService;
         private readonly ILogService _logService;
+        
         
         public RelatorioAplicacaoController(
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
@@ -51,6 +56,7 @@ namespace WebApi.Controllers.APIs
             IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
+            IAplicacaoRelatorioService aplicacaoRelatorioService,
             IDadosResponsavelService dadosResponsavelService,
             LoggedUserInfoService loggedUserInfoService,
             IAuxiliarPistaService auxiliarPistaService,
@@ -63,6 +69,7 @@ namespace WebApi.Controllers.APIs
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
+            _aplicacaoRelatorioService = aplicacaoRelatorioService;
             _dadosResponsavelService = dadosResponsavelService;
             _loggedUserInfoService = loggedUserInfoService;
             _auxiliarPistaService = auxiliarPistaService;
@@ -120,11 +127,11 @@ namespace WebApi.Controllers.APIs
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
-                    /*var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); */// Novo campo auxiliarPistaId **
+                    var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                     var data = obj.GetProperty("data").ToString();
                     // var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
-                    var isDrone = obj.GetProperty("sDrone").GetInt32(); // Novo campo isDrone 
+                    var isDrone = obj.GetProperty("sDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
 
@@ -159,6 +166,7 @@ namespace WebApi.Controllers.APIs
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
                     var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
                     {
+                        //Id = caracteristicasProdutoAplicadoViewModel.Id,
                         Cultura = caracteristicasProdutoAplicadoViewModel.Cultura,
                         ReceiturarioAgronomico = receituarioAgronomicoString,
                         NomeProduto = caracteristicasProdutoAplicadoViewModel.NomeProduto,
@@ -179,8 +187,8 @@ namespace WebApi.Controllers.APIs
                     var aplicacaoRelatorioViewModel = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
-                    //var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
-                    
+                    var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
+
 
                     _logService.LogInformation($"Piloto: {piloto}, Executor: {executor}");
 
@@ -195,28 +203,31 @@ namespace WebApi.Controllers.APIs
                     //    aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
                     //}
 
-                    var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
+                    var IdAuxiliarPista = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel);
                     var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
                     var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel); /***Alterar*/
-                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
+                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
+                    var IdAplicacaoRelatorio = await _aplicacaoRelatorioService.AddAsync(aplicacaoRelatorioViewModel);
+                    var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
-                    //var IdAuxiliarPista = await _auxiliarPistaService.AddAuxiliarPistaAsync(auxiliarPistaViewModel);
 
                     var relatorioAplicacaoViewModel = new RelatorioAplicacaoViewModel();
                     relatorioAplicacaoViewModel.Piloto = piloto;
                     relatorioAplicacaoViewModel.Executor = executor;
                     relatorioAplicacaoViewModel.Id = 0;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
-                    //relatorioAplicacaoViewModel.AuxiliarPista = auxiliarPista
+                    relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.Data = data;
                     relatorioAplicacaoViewModel.IsDrone = isDrone;
+                    relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
                     relatorioAplicacaoViewModel.IdentificacaoAreaTratadaId = IdIdentificacaoAreaTratada;
                     relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
                     relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
-                    relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
+                    relatorioAplicacaoViewModel.AplicacaoRelatorioId = IdAplicacaoRelatorio;
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
+                    relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
                     //relatorioAplicacaoViewModel.ClienteId = clienteId;

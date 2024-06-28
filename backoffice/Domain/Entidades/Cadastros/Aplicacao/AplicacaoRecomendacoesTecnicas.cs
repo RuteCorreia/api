@@ -16,7 +16,7 @@ public class AplicacaoRecomendacoesTecnicas
 
     [ForeignKey("Veiculante")]
     public int? IdVeiculante { get; set; }
-    public string? Veinculante { get; set; }
+    public string? Veinculante { get; set; } // Vai virar NomeVeiculante
     public int? QtdeVeiculante { get; set; }
     public int? LarguraFaixa { get; set; }
     public int? VolumeAplicacao { get; set; }

@@ -42,9 +42,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         public async Task<int> AddAsync(RelatorioAplicacaoViewModel obj)
         {
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
-            mapRelatorio.DataCriacao = DateTime.Now;
-            await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
-            return mapRelatorio.Id;
+            var idRelatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
+            return idRelatorio;
         }
     }
 }
