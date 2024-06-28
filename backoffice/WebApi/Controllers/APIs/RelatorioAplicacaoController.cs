@@ -21,6 +21,7 @@ using Application.DTOs.Log.Interface;
 using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cultura;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
@@ -30,7 +31,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
