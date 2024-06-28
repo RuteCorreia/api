@@ -122,14 +122,14 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
+                    //_logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
 
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                     var data = obj.GetProperty("data").ToString();
-                    // var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
+                    var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
                     var isDrone = obj.GetProperty("sDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
@@ -141,11 +141,11 @@ namespace WebApi.Controllers.APIs
                     var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
                     var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
-                    //var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
-                    //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
-                    //var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
-                    //var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
-                    //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
+                    var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
+                    var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
+                    var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
+                    var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
+                    var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
@@ -153,7 +153,7 @@ namespace WebApi.Controllers.APIs
                     string croquiAreaString = JsonConvert.SerializeObject(identificacaoAreaTratadaViewModel.CroquiArea);
                     var areaTratadaViewModel = new AreaTratadaViewModel()
                     {
-                        //Id = identificacaoAreaTratadaViewModel.Id,
+                        Id = identificacaoAreaTratadaViewModel.Id,
                         UF = identificacaoAreaTratadaViewModel.UF,
                         Cidade = identificacaoAreaTratadaViewModel.Cidade,
                         Localizacao = identificacaoAreaTratadaViewModel.Localizacao,
@@ -166,7 +166,7 @@ namespace WebApi.Controllers.APIs
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
                     var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
                     {
-                        //Id = caracteristicasProdutoAplicadoViewModel.Id,
+                        Id = caracteristicasProdutoAplicadoViewModel.Id,
                         Cultura = caracteristicasProdutoAplicadoViewModel.Cultura,
                         ReceiturarioAgronomico = receituarioAgronomicoString,
                         NomeProduto = caracteristicasProdutoAplicadoViewModel.NomeProduto,
@@ -229,39 +229,39 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
-                    //relatorioAplicacaoViewModel.CulturaId = culturaId;
-                    //relatorioAplicacaoViewModel.ClienteId = clienteId;
-                    //relatorioAplicacaoViewModel.PilotoId = pilotoId; 
-                    //relatorioAplicacaoViewModel.ExecutorId = executorId;
-                    //relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
-                    //relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+                    relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    relatorioAplicacaoViewModel.PilotoId = pilotoId;
+                    relatorioAplicacaoViewModel.ExecutorId = executorId;
+                    relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
+                    relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+                    relatorioAplicacaoViewModel.State = statusEnvio;
 
 
 
                     var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
 
-                    _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
+                    //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
-                    var result = new
-                    {
-                        id = relatorioAplicacaoId,
-                        contratanteId = Idcontratante,
-                        identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
-                        caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
-                        relatorioAplicacao = new
-                        {
-                            id = relatorioAplicacaoId,
-                            aplicacoes = new int[] { 1, 2 }
-                        },
-                        contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
-                        dadosResponsavelId= IdDadosResponsavel
-                    };
+                    //var result = new
+                    //{
+                    //    id = relatorioAplicacaoId,
+                    //    contratanteId = Idcontratante,
+                    //    identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
+                    //    caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
+                    //    recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                    //    relatorioAplicacao = new
+                    //    {
+                    //        id = relatorioAplicacaoId,
+                    //        aplicacoes = new int[] { 1, 2 }
+                    //    },
+                    //    contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
+                    //    dadosResponsavelId= IdDadosResponsavel
+                    //};
 
-                    return Ok(result);
+                    return Ok(relatorioAplicacaoId);
                 }
 
-                _logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
+                //_logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
                 return BadRequest("Modelo inválido");
             }
             catch (Exception ex)

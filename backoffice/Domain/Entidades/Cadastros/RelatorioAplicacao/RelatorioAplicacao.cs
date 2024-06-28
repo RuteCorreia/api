@@ -53,7 +53,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
-        //public int StatusEnvio { get; set; }
+        public int? StatusEnvio { get; set; }
 
         [JsonIgnore]
         public virtual AplicacaoRecomendacoesTecnicas? AplicacaoRecomendacoesTecnicas { get; set; }

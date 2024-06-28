@@ -5,7 +5,7 @@ namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 
 public class CaracteristicasProdutoAplicadoViewModel
 {
-    //public int? Id { get; set; }
+    public int? Id { get; set; }
 
     [JsonPropertyName("cultura")]
     public string Cultura { get; set; }

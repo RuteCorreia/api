@@ -4,7 +4,7 @@ public interface IRelatorioAplicacaoService
 {
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllAsync();
     Task<RelatorioAplicacaoViewModel> GetByIdAsync(int id);
-    Task<int> AddAsync(RelatorioAplicacaoViewModel obj);
+    Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
     Task DeleteAsync(int id);
 }

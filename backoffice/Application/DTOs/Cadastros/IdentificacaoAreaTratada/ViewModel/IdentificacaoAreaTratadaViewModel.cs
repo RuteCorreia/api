@@ -10,7 +10,7 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel
 {
     public class IdentificacaoAreaTratadaViewModel
     {
-        //public int? Id { get; set; }
+        public int? Id { get; set; }
 
         [JsonPropertyName("uf")]
         public string UF { get; set; }

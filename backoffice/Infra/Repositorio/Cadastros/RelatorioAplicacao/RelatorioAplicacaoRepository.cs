@@ -26,7 +26,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             _sqlConnection = new SqlConnection(contextBase.ObterStringConexao());
         }
 
-        public async Task<int> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
             using (var connection = _sqlConnection)
             {
@@ -36,25 +36,24 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         INSERT INTO RelatorioAplicacao 
                         (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
                          RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
-                         DadosResponsavelId, Piloto, 
-                         Executor, AuxiliarPistaId, IsDrone, RefDocument, 
-                         Data, RefUsuario)
+                         DadosResponsavelId, CulturaId, PilotoId, Piloto, 
+                         ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
+                         DataCriacao, DataAlteracao, Data, RefUsuario, StatusEnvio)
                         VALUES 
                         (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
-                         @DadosResponsavelId, @Piloto, 
-                         @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
-                         @Data, @RefUsuario);
+                         @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
+                         @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
+                         @DataCriacao, @DataAlteracao, @Data, @RefUsuario, @StatusEnvio);
                         SELECT CAST(SCOPE_IDENTITY() as int)";
 
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
-                    //relatorioAplicacaoViewModel.ClienteId = clienteId;
                     //relatorioAplicacaoViewModel.PilotoId = pilotoId; 
                     //relatorioAplicacaoViewModel.ExecutorId = executorId;
                     //relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
                     //relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
 
-                    var id = await connection.QueryFirstOrDefaultAsync<int>(query, new
+                    var relatorioAplicacao = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new
                     {
                         obj.ContratanteId,
                         obj.IdentificacaoAreaTratadaId,
@@ -63,22 +62,22 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.AplicacaoRelatorioId,
                         obj.ContratoPrestacaoServicoId,
                         obj.DadosResponsavelId,
-                        //obj.CulturaId,
-                        //obj.PilotoId,
+                        obj.CulturaId,
+                        obj.PilotoId,
                         obj.Piloto,
-                        //obj.ExecutorId,
+                        obj.ExecutorId,
                         obj.Executor,
                         obj.AuxiliarPistaId,
                         obj.IsDrone,
                         obj.RefDocument,
                         obj.Data,
-                        //obj.DataCriacao,
-                        //obj.DataAlteracao,
-                        obj.RefUsuario
+                        obj.DataCriacao,
+                        obj.DataAlteracao,
+                        obj.RefUsuario,
+                        obj.StatusEnvio
                     });
 
-                    obj.Id = id;
-                    return id;
+                    return obj;
                 }
                 catch (Exception ex)
                 {

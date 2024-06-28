@@ -9,7 +9,7 @@ public class AplicacaoRecomendacoesTecnicasViewModel
     public int Id { get; set; }
 
     [JsonPropertyName("veiculante")]
-    public string? Veinculante { get; set; }
+    public string? Veiculante { get; set; }
 
     [JsonPropertyName("qtdVeiculante")]
     public int? QtdVeiculante { get; set; }

@@ -16,7 +16,7 @@ public class AplicacaoRecomendacoesTecnicas
 
     [ForeignKey("Veiculante")]
     public int? IdVeiculante { get; set; }
-    public string? Veinculante { get; set; } // Vai virar NomeVeiculante
+    public string? Veinculante { get; set; }
     public int? QtdeVeiculante { get; set; }
     public int? LarguraFaixa { get; set; }
     public int? VolumeAplicacao { get; set; }
@@ -30,7 +30,7 @@ public class AplicacaoRecomendacoesTecnicas
     public int? IdAlturaVoo { get; set; }
     public string? AlturaVooCustom { get; set; }
     public string? Temperatura { get; set; }
-    public int? UrDoAR { get; set; }
+    public string? UrDoAR { get; set; }
     public string? VelocidadeVento { get; set; }
 
     [ForeignKey("TipoProduto")]

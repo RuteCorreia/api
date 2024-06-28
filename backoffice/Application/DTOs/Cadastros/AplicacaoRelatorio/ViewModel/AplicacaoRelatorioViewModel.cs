@@ -8,7 +8,7 @@ namespace Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 
 public class AplicacaoRelatorioViewModel
 {
-    //public int Id { get; set; }
+    public int Id { get; set; }
     public int? IdAplicacao { get; set; }
 
     public int? IdPista { get; set; }
