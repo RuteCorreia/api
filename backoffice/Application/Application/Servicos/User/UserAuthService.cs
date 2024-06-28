@@ -161,7 +161,8 @@ public class UserAuthService : IUserAuthService
             {
                 IdUsuario = usuario.Id,
                 Credencial = role.Credencial,
-                Funcao = role.Funcao
+                Funcao = role.Funcao,
+                NomeCompleto = role.NomeCompleto
             };
 
             list = list.Concat(new[] { obj });

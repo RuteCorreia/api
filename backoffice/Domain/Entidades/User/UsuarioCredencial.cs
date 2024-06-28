@@ -18,5 +18,7 @@ public class UsuarioCredencial
 
     public string? Credencial { get; set; }
 
+    public string? NomeCompleto { get; set; }
+
     public ERole Funcao { get; set; }
 }
