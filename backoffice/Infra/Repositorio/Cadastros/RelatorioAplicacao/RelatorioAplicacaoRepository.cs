@@ -16,17 +16,19 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 {
     public class RelatorioAplicacaoRepository : IRelatorioAplicacaoRepository
     {
-        private readonly ContextBase _contextBase;
         private readonly IDbConnection _dbConnection;
-        public RelatorioAplicacaoRepository(ContextBase contextBase, IDbConnection dbConnection)
+        private readonly ContextBase _contextBase;
+        private readonly SqlConnection _sqlConnection;
+        public RelatorioAplicacaoRepository(IDbConnection dbConnection, ContextBase contextBase)
         {
-            _contextBase = contextBase;
             _dbConnection = dbConnection;
+            _contextBase = contextBase;
+            _sqlConnection = new SqlConnection(contextBase.ObterStringConexao());
         }
 
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
-            using (var connection = _dbConnection)
+            using (var connection = _sqlConnection)
             {
                 try
                 {
