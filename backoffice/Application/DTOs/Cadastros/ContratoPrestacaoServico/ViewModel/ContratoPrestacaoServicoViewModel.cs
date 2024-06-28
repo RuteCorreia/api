@@ -2,6 +2,7 @@
 
 public class ContratoPrestacaoServicoViewModel
 {
+    public string Id { get; set; }
     public string DistanciaPista { get; set; }
     public string Preco { get; set; }
     public string UnidadePreco { get; set; }

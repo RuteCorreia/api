@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
 using Application.DTOs.Log.Interface;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers.APIs
 {
