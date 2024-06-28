@@ -1,5 +1,9 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
+using Application.DTOs.Cadastros.AuxiliarPista.Interface;
+using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.Contratante.Interface;
@@ -14,9 +18,12 @@ using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Importação_Planilha.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Entidades.Cadastros.Cidades;
 using Domain.Entidades.Cadastros.Cultura;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApi.HttpRequestInfo;
 
@@ -24,43 +31,51 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class RelatorioAplicacaoController : ControllerBase
     {
-        private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
-        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
-        private readonly IContratanteService _contratanteService;
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
         private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
+        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+        private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
+        private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
-        private readonly ILogService _logService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
-
+        private readonly IAuxiliarPistaService _auxiliarPistaService;
+        private readonly IContratanteService _contratanteService;
+        private readonly ILogService _logService;
+        
+        
         public RelatorioAplicacaoController(
-            IRelatorioAplicacaoService relatorioAplicacaoService,
-            ILogService logService,
-            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
-            IContratanteService contratanteService,
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+            IRelatorioAplicacaoService relatorioAplicacaoService,
+            IAplicacaoRelatorioService aplicacaoRelatorioService,
             IDadosResponsavelService dadosResponsavelService,
-            LoggedUserInfoService loggedUserInfoService)
+            LoggedUserInfoService loggedUserInfoService,
+            IAuxiliarPistaService auxiliarPistaService,
+            IContratanteService contratanteService,
+            ILogService logService            
+            )
         {
-            _relatorioAplicacaoService = relatorioAplicacaoService;
-            _logService = logService;
             _identificacaoAreaTratadaServiceService = identificacaoAreaTratadaServiceService;
-            _contratanteService = contratanteService;
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
+            _relatorioAplicacaoService = relatorioAplicacaoService;
+            _aplicacaoRelatorioService = aplicacaoRelatorioService;
             _dadosResponsavelService = dadosResponsavelService;
             _loggedUserInfoService = loggedUserInfoService;
+            _auxiliarPistaService = auxiliarPistaService;
+            _contratanteService = contratanteService;
+            _logService = logService;  
         }
 
         [HttpGet]
@@ -108,21 +123,30 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    _logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
+                    //_logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
 
-                    var id = obj.GetProperty("id").GetInt32();
-                    var contratanteJson = obj.GetProperty("contratante").ToString();
-                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
-                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
-                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
-                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString();
-                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
-                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
+                    var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                     var data = obj.GetProperty("data").ToString();
+                    var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
+
+                    var isDrone = obj.GetProperty("sDrone").GetBoolean(); // Novo campo isDrone 
+                    var contratanteJson = obj.GetProperty("contratante").ToString();
+                    var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
+
+                    var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
+                    var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
+                    var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
+                    var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
+                    var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
+                    var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
+                    var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
+                    var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
+                    var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
+                    var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
@@ -161,67 +185,84 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
-                    var relatorioAplicacaoViewModel = JsonConvert.DeserializeObject<RelatorioAplicacaoViewModel>(relatorioAplicacaoJson);
+                    var aplicacaoRelatorioViewModel = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
+                    var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
 
-                    _logService.LogInformation($"Id: {id}, Piloto: {piloto}, Executor: {executor}");
+
+                    _logService.LogInformation($"Piloto: {piloto}, Executor: {executor}");
 
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    if (aplicacaoRecomendacoesTecnicasViewModel != null)
-                    {
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAlturaVoo = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAeronave = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdTipoDeProduto = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdAplicacao = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdEquipamento = null;
-                        aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
-                    }
+                    //if (aplicacaoRecomendacoesTecnicasViewModel != null)
+                    //{
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAlturaVoo = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAeronave = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdTipoDeProduto = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdAplicacao = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdEquipamento = null;
+                    //    aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
+                    //}
 
-                    var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
+                    var IdAuxiliarPista = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel);
                     var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
-                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel);
-                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel); /***Alterar*/
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
+                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
+                    var IdAplicacaoRelatorio = await _aplicacaoRelatorioService.AddAsync(aplicacaoRelatorioViewModel);
+                    var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
 
-                    relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
-                    relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
-                    relatorioAplicacaoViewModel.IdentificacaoAreaTratadaId = IdIdentificacaoAreaTratada;
-                    relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
-                    relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
-                    relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
-                    relatorioAplicacaoViewModel.Id = 0;
+                    var relatorioAplicacaoViewModel = new RelatorioAplicacaoViewModel();
                     relatorioAplicacaoViewModel.Piloto = piloto;
                     relatorioAplicacaoViewModel.Executor = executor;
+                    relatorioAplicacaoViewModel.Id = 0;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
+                    relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.IsDrone = isDrone;
+                    relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
+                    relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
+                    relatorioAplicacaoViewModel.IdentificacaoAreaTratadaId = IdIdentificacaoAreaTratada;
+                    relatorioAplicacaoViewModel.CaracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado;
+                    relatorioAplicacaoViewModel.RecomendacoesTecnicasId = IdrecomendacoesTecnicas;
+                    relatorioAplicacaoViewModel.AplicacaoRelatorioId = IdAplicacaoRelatorio;
+                    relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
+                    relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
+                    relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    relatorioAplicacaoViewModel.PilotoId = pilotoId;
+                    relatorioAplicacaoViewModel.ExecutorId = executorId;
+                    relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
+                    relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+                    relatorioAplicacaoViewModel.State = statusEnvio;
+
+
 
                     var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
 
-                    _logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
+                    //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
-                    var result = new
-                    {
-                        id = relatorioAplicacaoId,
-                        contratanteId = Idcontratante,
-                        identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
-                        caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
-                        relatorioAplicacao = new
-                        {
-                            id = relatorioAplicacaoId,
-                            aplicacoes = new int[] { 1, 2 }
-                        },
-                        contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
-                        dadosResponsavelId= IdDadosResponsavel
-                    };
+                    //var result = new
+                    //{
+                    //    id = relatorioAplicacaoId,
+                    //    contratanteId = Idcontratante,
+                    //    identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
+                    //    caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
+                    //    recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                    //    relatorioAplicacao = new
+                    //    {
+                    //        id = relatorioAplicacaoId,
+                    //        aplicacoes = new int[] { 1, 2 }
+                    //    },
+                    //    contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
+                    //    dadosResponsavelId= IdDadosResponsavel
+                    //};
 
-                    return Ok(result);
+                    return Ok(relatorioAplicacaoId);
                 }
 
-                _logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
+                //_logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
                 return BadRequest("Modelo inválido");
             }
             catch (Exception ex)

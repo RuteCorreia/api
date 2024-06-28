@@ -16,5 +16,6 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public string Cultura { get; set; }
         public string Extensao { get; set; }
         public string CroquiArea { get; set; }
+        public string Gravacao { get; set; }
     }
 }

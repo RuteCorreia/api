@@ -16,37 +16,43 @@ public class AplicacaoRecomendacoesTecnicas
 
     [ForeignKey("Veiculante")]
     public int? IdVeiculante { get; set; }
+    public string? Veinculante { get; set; }
     public int? QtdeVeiculante { get; set; }
     public int? LarguraFaixa { get; set; }
     public int? VolumeAplicacao { get; set; }
+    public string? UnidadeVolumeAplicacao { get; set; }
 
     [ForeignKey("Aeronave")]
     public int? IdAeronave { get; set; }
+    public string? NomeAeronave { get; set; }
 
     [ForeignKey("AlturaVoo")]
     public int? IdAlturaVoo { get; set; }
     public string? AlturaVooCustom { get; set; }
     public string? Temperatura { get; set; }
-    public int? UrDoAR { get; set; }
+    public string? UrDoAR { get; set; }
     public string? VelocidadeVento { get; set; }
 
     [ForeignKey("TipoProduto")]
     public int? IdTipoDeProduto { get; set; }
+    public string? TipoDeProduto { get; set; }
 
     [ForeignKey("Equipamento")]
     public int? IdEquipamento { get; set; }
+    public string? NomeEquipamento { get; set; }
     public string? Angulo { get; set; }
+    public string? ArquivoDrone { get; set; }
 
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
-    [JsonIgnore]
-    public virtual Veiculante.Veiculante? Veiculante { get; set; }
-    [JsonIgnore]
-    public virtual Aeronave.Aeronave? Aeronave { get; set; }
-    [JsonIgnore]
-    public virtual AlturaVoo? AlturaVoo { get; set; }
-    [JsonIgnore]
-    public virtual TipoProduto? TipoProduto { get; set; }
-    [JsonIgnore]
-    public virtual Equipamento.Equipamento? Equipamento { get; set; }
+    //[JsonIgnore]
+    //public virtual Veiculante.Veiculante? Veiculante { get; set; }
+    //[JsonIgnore]
+    //public virtual Aeronave.Aeronave? Aeronave { get; set; }
+    //[JsonIgnore]
+    //public virtual AlturaVoo? AlturaVoo { get; set; }
+    //[JsonIgnore]
+    //public virtual TipoProduto? TipoProduto { get; set; }
+    //[JsonIgnore]
+    //public virtual Equipamento.Equipamento? Equipamento { get; set; }
 }

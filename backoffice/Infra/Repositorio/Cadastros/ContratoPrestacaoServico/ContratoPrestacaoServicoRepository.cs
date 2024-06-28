@@ -50,8 +50,14 @@ public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepos
         {
             try
             {
-                string query = $"SELECT * FROM ContratoPrestacaoServico WHERE Id = {id}";
-                var produtoAplicado = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(query);
+                string query = @"
+                    SELECT * 
+                    FROM ContratoPrestacaoServico 
+                    WHERE Id = @Id 
+                    AND (@IdEmpresa = 0 AND IdEmpresa IS NULL OR IdEmpresa = @IdEmpresa)";
+
+                var parameters = new { Id = id, IdEmpresa = idEmpresa };
+                var produtoAplicado = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(query,parameters);
                 return produtoAplicado;
 
             }

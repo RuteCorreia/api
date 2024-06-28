@@ -25,7 +25,6 @@ public class DadosResponsavelService : IDadosResponsavelService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var entityToCreate = new Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel
         {
-            Id = obj.Id,
             Data = obj.Data,
             UF = obj.UF,
             Cidade = obj.Cidade,
@@ -51,7 +50,6 @@ public class DadosResponsavelService : IDadosResponsavelService
         var list = await _dadosResponsavelRepository.GetAllAsync(idEmpresaInt);
         var returnList = list.Select(x => new DadosResponsavelViewModel
         {
-            Id = x.Id,
             Data = x.Data,
             UF = x.UF,
             Cidade = x.Cidade,
@@ -78,7 +76,6 @@ public class DadosResponsavelService : IDadosResponsavelService
     {
         var entityToUpdate = new Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel
         {
-            Id = obj.Id,
             Data = obj.Data,
             UF = obj.UF,
             Cidade = obj.Cidade,

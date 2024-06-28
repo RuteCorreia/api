@@ -21,7 +21,8 @@ public class CaracteristicasProdutoAplicado
     public string TipoServico { get; set; }
     public string NumeroReceituarioAgronomico { get; set; }
     public string DataEmissao { get; set; }
-    
+    public bool? IsReceituarioImage { get; set; }
+
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
 

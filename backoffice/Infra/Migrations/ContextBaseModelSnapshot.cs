@@ -360,6 +360,9 @@ namespace Infra.Migrations
                     b.Property<string>("Angulo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ArquivoDrone")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("IdAeronave")
                         .HasColumnType("int");
 
@@ -381,14 +384,29 @@ namespace Infra.Migrations
                     b.Property<int?>("LarguraFaixa")
                         .HasColumnType("int");
 
+                    b.Property<string>("NomeAeronave")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomeEquipamento")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("QtdeVeiculante")
                         .HasColumnType("int");
 
                     b.Property<string>("Temperatura")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UrDoAR")
-                        .HasColumnType("int");
+                    b.Property<string>("TipoDeProduto")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UnidadeVolumeAplicacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UrDoAR")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Veinculante")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("VelocidadeVento")
                         .HasColumnType("nvarchar(max)");
@@ -422,7 +440,12 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Alteracoes_Observacoes")
-                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cultura")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Densidade")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Dosagem")
@@ -438,8 +461,26 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Latitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LocalizacaoPistaCodigoICAO")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProdutoAplicado")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RelatorioDGPS")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal?>("TotalAreaAplicada")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UnidadeVolumeAplicacao")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("VolumeAplicacao")
                         .HasColumnType("int");
@@ -460,6 +501,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DataAplicacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("HoraInicio")
                         .HasColumnType("nvarchar(max)");
@@ -504,6 +548,27 @@ namespace Infra.Migrations
                     b.ToTable("AplicacaoRelatorioItem");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Documento")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AuxiliarPista");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado", b =>
                 {
                     b.Property<int>("Id")
@@ -541,6 +606,9 @@ namespace Infra.Migrations
 
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
+
+                    b.Property<bool?>("IsReceituarioImage")
+                        .HasColumnType("bit");
 
                     b.Property<string>("NomeProduto")
                         .IsRequired()
@@ -889,6 +957,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("Cidade")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ContratanteRef")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Endereco")
@@ -1374,6 +1445,9 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("GravacaoArea")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Localizacao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1620,6 +1694,12 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AplicacaoRelatorioId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AuxiliarPistaId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("CaracteristicasProdutoAplicadoId")
                         .HasColumnType("int");
 
@@ -1629,6 +1709,9 @@ namespace Infra.Migrations
                     b.Property<int?>("ContratoPrestacaoServicoId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CulturaId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("DadosResponsavelId")
                         .HasColumnType("int");
 
@@ -1636,16 +1719,29 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Executor")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ExecutorId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdentificacaoAreaTratadaId")
                         .HasColumnType("int");
 
+                    b.Property<bool?>("IsDrone")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Piloto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PilotoId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("RecomendacoesTecnicasId")
                         .HasColumnType("int");
@@ -1658,10 +1754,14 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("RelatorioAplicacaoId")
+                    b.Property<int?>("StatusEnvio")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AplicacaoRelatorioId");
+
+                    b.HasIndex("AuxiliarPistaId");
 
                     b.HasIndex("CaracteristicasProdutoAplicadoId");
 
@@ -2614,6 +2714,14 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao", b =>
                 {
+                    b.HasOne("Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio", "AplicacaoRelatorio")
+                        .WithMany()
+                        .HasForeignKey("AplicacaoRelatorioId");
+
+                    b.HasOne("Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista", "AuxiliarPista")
+                        .WithMany()
+                        .HasForeignKey("AuxiliarPistaId");
+
                     b.HasOne("Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado", "CaracteristicasProdutoAplicado")
                         .WithMany()
                         .HasForeignKey("CaracteristicasProdutoAplicadoId");
@@ -2639,6 +2747,10 @@ namespace Infra.Migrations
                         .HasForeignKey("RecomendacoesTecnicasId");
 
                     b.Navigation("AplicacaoRecomendacoesTecnicas");
+
+                    b.Navigation("AplicacaoRelatorio");
+
+                    b.Navigation("AuxiliarPista");
 
                     b.Navigation("CaracteristicasProdutoAplicado");
 

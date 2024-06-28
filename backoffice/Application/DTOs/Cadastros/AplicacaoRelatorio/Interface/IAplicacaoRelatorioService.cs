@@ -8,7 +8,7 @@ public interface IAplicacaoRelatorioService
 
     Task<AplicacaoRelatorioViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(AplicacaoRelatorioViewModel obj);
+    Task<int> AddAsync(AplicacaoRelatorioViewModel obj);
 
     Task UpdateAsync(AplicacaoRelatorioViewModel obj);
 

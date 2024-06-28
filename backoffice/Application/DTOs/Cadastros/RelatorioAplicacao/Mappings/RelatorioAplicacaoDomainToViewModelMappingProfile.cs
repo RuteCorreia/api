@@ -13,7 +13,8 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.Mappings
     {
         public RelatorioAplicacaoDomainToViewModelMappingProfile()
         {
-            CreateMap<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao, RelatorioAplicacaoViewModel>();
+            CreateMap<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao, RelatorioAplicacaoViewModel>()
+                .ForMember(dest => dest.State, opt => opt.MapFrom(src => src.StatusEnvio));
         }
     }
 }

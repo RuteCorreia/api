@@ -22,6 +22,7 @@ public class AplicacaoRelatorioItem
     public string? VentoInicial { get; set; }
     public string? VentoFinal { get; set; }
     public string? ImagemDadosClimaticos { get; set; }
+    public DateTime? DataAplicacao { get; set; }
 
     [JsonIgnore]
     public virtual AplicacaoRelatorio? AplicacaoRelatorio { get; set; }
