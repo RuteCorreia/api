@@ -87,35 +87,35 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        //[HttpPut("{id:int}")]
-        //public async Task<ActionResult> Update(int id, [FromBody] IdentificacaoAreaTratadaViewModel obj)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            var existingObj = await _identificacaoAreaTratadaService.GetByIdAsync(id);
-        //            if (!ObjectNullValidation.IsObjectNull(existingObj))
-        //            {
-        //                obj.Id = existingObj.Id;
-        //                await _identificacaoAreaTratadaService.UpdateAsync(obj);
-        //                _logService.LogInformation($"Identificação de área tratada com ID {id} atualizada com sucesso.");
-        //                return Ok();
-        //            }
-        //            else
-        //            {
-        //                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-        //            }
-        //        }
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Update(int id, [FromBody] IdentificacaoAreaTratadaViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var existingObj = await _identificacaoAreaTratadaService.GetByIdAsync(id);
+                    if (!ObjectNullValidation.IsObjectNull(existingObj))
+                    {
+                        obj.Id = existingObj.Id;
+                        await _identificacaoAreaTratadaService.UpdateAsync(obj);
+                        _logService.LogInformation($"Identificação de área tratada com ID {id} atualizada com sucesso.");
+                        return Ok();
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+                    }
+                }
 
-        //        return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logService.LogError(ex, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
-        //        return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
-        //    }
-        //}
+                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
+            }
+        }
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> Delete(int id)
