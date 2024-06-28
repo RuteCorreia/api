@@ -39,8 +39,8 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
         public async Task<int> AddAsync(AreaTratadaViewModel obj)
         {
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
-            var identificacaoAreaTratada = _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
-            return identificacaoAreaTratada.Result;
+            var identificacaoAreaTratada = await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+            return identificacaoAreaTratada;
         }
 
         public async Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj)

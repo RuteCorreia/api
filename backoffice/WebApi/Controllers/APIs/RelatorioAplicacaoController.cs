@@ -40,7 +40,7 @@ namespace WebApi.Controllers.APIs
     {
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
         private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
-        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaServiceService;
+        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
@@ -54,7 +54,7 @@ namespace WebApi.Controllers.APIs
         public RelatorioAplicacaoController(
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
-            IIdentificacaoAreaTratadaService identificacaoAreaTratadaServiceService,
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
             IAplicacaoRelatorioService aplicacaoRelatorioService,
@@ -65,7 +65,7 @@ namespace WebApi.Controllers.APIs
             ILogService logService            
             )
         {
-            _identificacaoAreaTratadaServiceService = identificacaoAreaTratadaServiceService;
+            _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
@@ -206,7 +206,7 @@ namespace WebApi.Controllers.APIs
 
                     var IdAuxiliarPista = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel);
                     var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
-                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaServiceService.AddAsync(areaTratadaViewModel); /***Alterar*/
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaService.AddAsync(areaTratadaViewModel); /***Alterar*/
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
                     var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
                     var IdAplicacaoRelatorio = await _aplicacaoRelatorioService.AddAsync(aplicacaoRelatorioViewModel);

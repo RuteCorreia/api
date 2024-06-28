@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.DTOs.Log.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace WebApi.Controllers.APIs
 {
