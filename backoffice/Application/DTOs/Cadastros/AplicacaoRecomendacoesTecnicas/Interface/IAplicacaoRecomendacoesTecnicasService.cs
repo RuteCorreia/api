@@ -8,7 +8,7 @@ public interface IAplicacaoRecomendacoesTecnicasService
 
     Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id);
 
-    Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj);
+    Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(AplicacaoRecomendacoesTecnicasViewModel obj);
 

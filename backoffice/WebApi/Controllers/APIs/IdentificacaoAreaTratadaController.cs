@@ -7,8 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Application.DTOs.Log.Interface;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Microsoft.AspNetCore.Authorization;
+using WebApi.HttpRequestInfo;
+using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 
 namespace WebApi.Controllers.APIs
 {
@@ -22,11 +23,16 @@ namespace WebApi.Controllers.APIs
     public class IdentificacaoAreaTratadaController : ControllerBase
     {
         private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ILogService _logService;
 
-        public IdentificacaoAreaTratadaController(IIdentificacaoAreaTratadaService identificacaoAreaTratadaService, ILogService logService)
+        public IdentificacaoAreaTratadaController(
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaService,
+            LoggedUserInfoService loggedUserInfoService,
+            ILogService logService)
         {
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
+            _loggedUserInfoService = loggedUserInfoService;
             _logService = logService;
         }
 
@@ -74,7 +80,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    await _identificacaoAreaTratadaService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _identificacaoAreaTratadaService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Identificação de área tratada adicionada com sucesso.");
                     return Ok();
                 }

@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.Contratante.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Componentes;
 using Domain.Interfaces.Cadastros.Contratante;
+using Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,9 +36,11 @@ namespace Application.Application.Servicos.Cadastros.Contratante
             return _mapper.Map<ContratanteViewModel>(obj);
         }
 
-        public async Task<int> AddAsync(ContratanteViewModel obj)
+        public async Task<int> AddAsync(ContratanteViewModel obj, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapContratante = _mapper.Map<Domain.Entidades.Cadastros.Contratante.Contratante>(obj);
+            mapContratante.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var contratante = _contratanteRepository.AddAsync(mapContratante);
             return contratante.Result;
         }

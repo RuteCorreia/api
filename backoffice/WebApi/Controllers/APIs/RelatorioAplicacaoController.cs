@@ -1,7 +1,9 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
@@ -25,6 +27,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
@@ -132,7 +135,7 @@ namespace WebApi.Controllers.APIs
                     var data = obj.GetProperty("data").ToString();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
-                    var isDrone = obj.GetProperty("sDrone").GetBoolean(); // Novo campo isDrone 
+                    var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
 
@@ -142,11 +145,11 @@ namespace WebApi.Controllers.APIs
                     var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
                     var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
                     var refUsuario = obj.GetProperty("refUsuario").ToString();
-                    var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
-                    var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
+                    //var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
+                    //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
                     var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
                     var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
-                    var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
+                    //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
@@ -185,7 +188,54 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
-                    var aplicacaoRelatorioViewModel = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
+                    var aplicacaoRelatorio = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
+                    var aplicacoesViewModel = aplicacaoRelatorio.Aplicacoes;
+                    var listaAplicacaoRelatorioItem = new List<RelatorioItemViewModel>();
+                    for (int i = 0; i < aplicacoesViewModel.Count; i++)
+                    {
+                        var item = aplicacoesViewModel[i];
+                        string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
+
+                        var relatorioItemViewModel = new RelatorioItemViewModel()
+                        {
+                            IdAplicacaoRelatorio = item.IdAplicacaoRelatorio,
+                            HoraInicio = item.HoraInicio,
+                            HorimetroInicial = item.HorimetroInicial,
+                            HoraFinal = item.HoraFinal,
+                            HorimetroFinal = item.HorimetroFinal,
+                            TemperaturaInicial = item.TemperaturaInicial,
+                            TemperaturaFinal = item.TemperaturaFinal,
+                            UmidadeRelativaArInicial = item.UmidadeRelativaArInicial,
+                            UmidadeRelativaArFinal = item.UmidadeRelativaArFinal,
+                            VentoInicial = item.VentoInicial,
+                            VentoFinal = item.VentoFinal,
+                            ImagemCondicaoClimatica = imagemCondicaoClimatica,
+                            DataAplicacao = item.DataAplicacao
+                        };
+
+                        // Adicione o relatorioItemViewModel a uma coleção ou processe conforme necessário
+                        listaAplicacaoRelatorioItem.Add(relatorioItemViewModel);
+                    }
+
+                    var aplicacaoRelatorioViewModel = new StringAplicacaoRelatorioViewModel()
+                    {
+                        Id = aplicacaoRelatorio.Id,
+                        Dosagem = aplicacaoRelatorio.Dosagem,
+                        UnidadeDosagem = aplicacaoRelatorio.UnidadeDosagem,
+                        VolumeAplicacao = aplicacaoRelatorio.VolumeAplicacao,
+                        TotalAreaAplicada = aplicacaoRelatorio.TotalAreaAplicada,
+                        Observacoes = aplicacaoRelatorio.Observacoes,
+                        Cultura = aplicacaoRelatorio.Cultura,
+                        ProdutoAplicado = aplicacaoRelatorio.ProdutoAplicado,
+                        LocalizacaoPistaCodigoICAO = aplicacaoRelatorio.LocalizacaoPistaCodigoICAO,
+                        Lat = aplicacaoRelatorio.Lat,
+                        Long = aplicacaoRelatorio.Long,
+                        Densidade = aplicacaoRelatorio.Densidade,
+                        RelatorioDGPS = aplicacaoRelatorio.RelatorioDGPS,
+                        UnidadeVolumeAplicacao = aplicacaoRelatorio.UnidadeVolumeAplicacao,
+                        Aplicacoes = listaAplicacaoRelatorioItem
+                    };
+
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
                     var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
@@ -204,12 +254,16 @@ namespace WebApi.Controllers.APIs
                     //    aplicacaoRecomendacoesTecnicasViewModel.IdVeiculante = null;
                     //}
 
-                    var IdAuxiliarPista = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel);
-                    var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel);
-                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaService.AddAsync(areaTratadaViewModel); /***Alterar*/
                     var IdcaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.AddAsync(receituarioAgronomicoViewModel, loggedUser.Item3);
-                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel) : (int?)null;
-                    var IdAplicacaoRelatorio = await _aplicacaoRelatorioService.AddAsync(aplicacaoRelatorioViewModel);
+                    var IdAuxiliarPista = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel, loggedUser.Item3); // OK
+                    if (IdAuxiliarPista == 0)
+                    {
+                        IdAuxiliarPista = null;
+                    }
+                    var Idcontratante = await _contratanteService.AddAsync(contratanteViewModel, loggedUser.Item3); // OK
+                    var IdIdentificacaoAreaTratada = await _identificacaoAreaTratadaService.AddAsync(areaTratadaViewModel, loggedUser.Item3); // OK
+                    var IdrecomendacoesTecnicas = aplicacaoRecomendacoesTecnicasViewModel != null ? await _aplicacaoRecomendacoesTecnicasService.AddAsync(aplicacaoRecomendacoesTecnicasViewModel, loggedUser.Item3) : (int?)null; // OK
+                    var IdAplicacaoRelatorio = await _aplicacaoRelatorioService.AddAsync(aplicacaoRelatorioViewModel, loggedUser.Item3); // OK
                     var IdcontratoPrestacaoServico = await _contratoPrestacaoServicoService.AddAsync(contratoPrestacaoServicoViewModel, loggedUser.Item3);
                     var IdDadosResponsavel = await _dadosResponsavelService.AddAsync(dadosResponsavelViewModel, loggedUser.Item3);
 
@@ -230,16 +284,16 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
                     relatorioAplicacaoViewModel.RefUsuario = refUsuario;
-                    relatorioAplicacaoViewModel.CulturaId = culturaId;
-                    relatorioAplicacaoViewModel.PilotoId = pilotoId;
-                    relatorioAplicacaoViewModel.ExecutorId = executorId;
+                    //relatorioAplicacaoViewModel.CulturaId = culturaId;
+                    //relatorioAplicacaoViewModel.PilotoId = pilotoId;
+                    //relatorioAplicacaoViewModel.ExecutorId = executorId;
                     relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
                     relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
                     relatorioAplicacaoViewModel.State = statusEnvio;
 
 
 
-                    var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel);
+                    var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
 
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 

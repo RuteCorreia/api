@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
+namespace Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel
 {
     public class AreaTratadaViewModel
     {

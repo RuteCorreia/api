@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 
@@ -35,9 +36,11 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         return _mapper.Map<AplicacaoRelatorioViewModel>(obj);
     }
 
-    public async Task<int> AddAsync(AplicacaoRelatorioViewModel obj)
+    public async Task<int> AddAsync(StringAplicacaoRelatorioViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAplicacaoRelatorio = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(obj);
+        mapAplicacaoRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         await _aplicacaoRelatorioRepository.AddAsync(mapAplicacaoRelatorio);
 
         if (obj.Aplicacoes != null && obj.Aplicacoes.Any())
@@ -46,7 +49,7 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
             {
                 var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(aplicacaoItem);
                 mapAplicacaoRelatorioItem.IdAplicacaoRelatorio = mapAplicacaoRelatorio.Id; // Atribua o Id da entidade principal
-
+                mapAplicacaoRelatorioItem.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
                 await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
             }
         }

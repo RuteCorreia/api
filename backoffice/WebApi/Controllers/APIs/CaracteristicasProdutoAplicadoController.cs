@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

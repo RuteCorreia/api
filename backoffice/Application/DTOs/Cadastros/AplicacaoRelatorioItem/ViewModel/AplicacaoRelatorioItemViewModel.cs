@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
@@ -16,6 +17,6 @@ public class AplicacaoRelatorioItemViewModel
     public string? UmidadeRelativaArFinal { get; set; }
     public string? VentoInicial { get; set; }
     public string? VentoFinal { get; set; }
-    public string? ImagemCondicaoClimatica { get; set; }
+    public DataFormatViewModel? ImagemCondicaoClimatica { get; set; }
     public DateTime? DataAplicacao { get; set; }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Threading.Tasks;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -19,11 +20,16 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ContratanteController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IContratanteService _contratanteService;
         private readonly ILogService _loggerService;
 
-        public ContratanteController(IContratanteService contratanteService, ILogService loggerService)
+        public ContratanteController(
+            LoggedUserInfoService loggedUserInfoService,
+            IContratanteService contratanteService, 
+            ILogService loggerService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _contratanteService = contratanteService;
             _loggerService = loggerService;
         }
@@ -73,7 +79,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    await _contratanteService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _contratanteService.AddAsync(obj, loggedUser.Item3);
                     _loggerService.LogInformation("Novo contratante adicionado com sucesso.");
                     return Ok();
                 }

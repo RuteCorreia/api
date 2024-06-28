@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
+namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel
 {
     public class ProdutoAplicadoViewModel
     {

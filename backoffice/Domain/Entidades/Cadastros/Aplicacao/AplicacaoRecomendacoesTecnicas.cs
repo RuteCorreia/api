@@ -43,6 +43,12 @@ public class AplicacaoRecomendacoesTecnicas
     public string? Angulo { get; set; }
     public string? ArquivoDrone { get; set; }
 
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
+
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
+
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
     //[JsonIgnore]
