@@ -97,6 +97,23 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("/getAllByEmpresa")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAllByIdEmpresa()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetAllByIdEmpresaAsync(loggedUser.Item3);
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<RelatorioAplicacaoViewModel>> GetById(int id)
         {
@@ -240,9 +257,6 @@ namespace WebApi.Controllers.APIs
                     var contratoPrestacaoServicoViewModel = JsonConvert.DeserializeObject<ContratoPrestacaoServicoViewModel>(contratoPrestacaoServicoJson);
                     var dadosResponsavelViewModel = JsonConvert.DeserializeObject<DadosResponsavelViewModel>(dadosResponsavelJson);
                     var auxiliarPistaViewModel = JsonConvert.DeserializeObject<AuxiliarPistaViewModel>(auxiliarPistaJson);
-
-
-                    _logService.LogInformation($"Piloto: {piloto}, Executor: {executor}");
 
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                     //if (aplicacaoRecomendacoesTecnicasViewModel != null)

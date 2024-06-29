@@ -3,6 +3,7 @@ using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Helpers;
+using Domain.Entidades.Cadastros.Empresa;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -48,6 +49,13 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var Relatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
             var mapRelatorioReturn = _mapper.Map< RelatorioAplicacaoViewModel>(Relatorio);
             return mapRelatorioReturn;
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllByIdEmpresaAsync(string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _relatorioAplicacaoRepository.GetAllByIdEmpresaAsync(idEmpresaInt);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
     }
 }

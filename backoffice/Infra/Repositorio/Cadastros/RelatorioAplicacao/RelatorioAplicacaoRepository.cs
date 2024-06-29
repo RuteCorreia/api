@@ -104,6 +104,12 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllByIdEmpresaAsync(int idEmpresa)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
+        }
+
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDateAsync(DateTime date)
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE DateCriacao = @Date";
