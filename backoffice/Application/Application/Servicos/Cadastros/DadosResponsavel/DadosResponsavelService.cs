@@ -36,10 +36,15 @@ public class DadosResponsavelService : IDadosResponsavelService
         };
 
         if (obj.Id > 0)
+        {
             await _dadosResponsavelRepository.UpdateAsync(entityToCreate);
-
-        var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
-        return dadosResponsavel.Result;
+            return entityToCreate.Id;
+        }
+        else
+        {
+            var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
+            return dadosResponsavel.Result;
+        }   
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)

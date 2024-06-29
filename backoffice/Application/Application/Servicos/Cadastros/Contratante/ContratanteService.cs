@@ -44,10 +44,16 @@ namespace Application.Application.Servicos.Cadastros.Contratante
             mapContratante.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
             if (obj.Id > 0)
+            {
                 await _contratanteRepository.UpdateAsync(mapContratante);
-
-            var contratante = _contratanteRepository.AddAsync(mapContratante);
-            return contratante.Result;
+                return mapContratante.Id;
+            }
+            else
+            {
+                var contratante = _contratanteRepository.AddAsync(mapContratante);
+                return contratante.Result;
+            }
+            
         }
 
         public async Task UpdateAsync(ContratanteViewModel obj)

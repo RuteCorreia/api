@@ -48,11 +48,17 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
             if (obj.Id > 0)
+            {
                 await _relatorioAplicacaoRepository.UpdateAsync(mapRelatorio);
-
-            var Relatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
-            var mapRelatorioReturn = _mapper.Map< RelatorioAplicacaoViewModel>(Relatorio);
-            return mapRelatorioReturn;
+                var mapRelatorioUpdateReturn = _mapper.Map<RelatorioAplicacaoViewModel>(mapRelatorio);
+                return mapRelatorioUpdateReturn;
+            }
+            else
+            {
+                var Relatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio);
+                var mapRelatorioReturn = _mapper.Map<RelatorioAplicacaoViewModel>(Relatorio);
+                return mapRelatorioReturn;
+            }   
         }
 
         public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllByIdEmpresaAsync(string? idEmpresa)

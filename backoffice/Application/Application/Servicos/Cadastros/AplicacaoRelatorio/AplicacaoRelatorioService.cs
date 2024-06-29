@@ -43,10 +43,13 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         mapAplicacaoRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
         if (obj.Id > 0)
+        {
             await _aplicacaoRelatorioRepository.UpdateAsync(mapAplicacaoRelatorio);
-
-        await _aplicacaoRelatorioRepository.AddAsync(mapAplicacaoRelatorio);
-
+        }
+        else
+        {
+            await _aplicacaoRelatorioRepository.AddAsync(mapAplicacaoRelatorio);
+        }
         if (obj.Aplicacoes != null && obj.Aplicacoes.Any())
         {
             foreach (var aplicacaoItem in obj.Aplicacoes)
@@ -56,9 +59,13 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                 mapAplicacaoRelatorioItem.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
                 if (obj.Id > 0)
+                {
                     await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
-
-                await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
+                }
+                else
+                {
+                    await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
+                }
             }
         }
         

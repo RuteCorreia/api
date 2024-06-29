@@ -27,10 +27,15 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
         if (obj.Id > 0)
+        {
             await _contratoPrestacaoServicoRepository.UpdateAsync(mapObj);
-
-        var contratoPrestacaoServico = _contratoPrestacaoServicoRepository.AddAsync(mapObj);
-        return contratoPrestacaoServico.Result;
+            return mapObj.Id;
+        }
+        else
+        {
+            var contratoPrestacaoServico = _contratoPrestacaoServicoRepository.AddAsync(mapObj);
+            return contratoPrestacaoServico.Result;
+        }   
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
