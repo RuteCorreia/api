@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -21,11 +22,16 @@ namespace WebApi.Controllers.APIs
     public class AplicacaoRelatorioController : ControllerBase
     {
         private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ILogService _loggerService;
 
-        public AplicacaoRelatorioController(IAplicacaoRelatorioService aplicacaoRelatorioService, ILogService loggerService)
+        public AplicacaoRelatorioController(
+            IAplicacaoRelatorioService aplicacaoRelatorioService,
+            LoggedUserInfoService loggedUserInfoService,
+            ILogService loggerService)
         {
             _aplicacaoRelatorioService = aplicacaoRelatorioService;
+            _loggedUserInfoService = loggedUserInfoService;
             _loggerService = loggerService;
         }
 
@@ -68,13 +74,14 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] AplicacaoRelatorioViewModel obj)
+        public async Task<ActionResult> Add([FromBody] StringAplicacaoRelatorioViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    await _aplicacaoRelatorioService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _aplicacaoRelatorioService.AddAsync(obj, loggedUser.Item3);
                     _loggerService.LogInformation("Relatório de aplicação adicionado com sucesso.");
                     return Ok("Sucesso");
                 }

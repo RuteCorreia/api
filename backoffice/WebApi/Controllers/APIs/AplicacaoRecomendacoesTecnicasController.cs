@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -21,11 +22,16 @@ namespace WebApi.Controllers.APIs
     public class AplicacaoRecomendacoesTecnicasController : ControllerBase
     {
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ILogService _loggerService;
 
-        public AplicacaoRecomendacoesTecnicasController(IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService, ILogService loggerService)
+        public AplicacaoRecomendacoesTecnicasController(
+            IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
+            LoggedUserInfoService loggedUserInfoService,
+            ILogService loggerService)
         {
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
+            _loggedUserInfoService = loggedUserInfoService;
             _loggerService = loggerService;
         }
 
@@ -74,7 +80,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    await _aplicacaoRecomendacoesTecnicasService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _aplicacaoRecomendacoesTecnicasService.AddAsync(obj, loggedUser.Item3);
                     _loggerService.LogInformation("Recomendação técnica de aplicação adicionada com sucesso.");
                     return Ok("Sucesso");
                 }

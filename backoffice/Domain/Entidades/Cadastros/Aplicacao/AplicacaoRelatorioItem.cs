@@ -24,6 +24,12 @@ public class AplicacaoRelatorioItem
     public string? ImagemDadosClimaticos { get; set; }
     public DateTime? DataAplicacao { get; set; }
 
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
+
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
+
     [JsonIgnore]
     public virtual AplicacaoRelatorio? AplicacaoRelatorio { get; set; }
 }

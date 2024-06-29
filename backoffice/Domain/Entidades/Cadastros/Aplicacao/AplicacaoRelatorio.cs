@@ -29,6 +29,12 @@ public class AplicacaoRelatorio
     public string? RelatorioDGPS { get; set; }
     public string? UnidadeVolumeAplicacao { get; set; }
 
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
+
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
+
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
     [JsonIgnore]

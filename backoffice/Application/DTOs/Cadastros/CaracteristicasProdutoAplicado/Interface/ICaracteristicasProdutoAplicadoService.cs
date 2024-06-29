@@ -1,5 +1,4 @@
 ﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 
 namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 

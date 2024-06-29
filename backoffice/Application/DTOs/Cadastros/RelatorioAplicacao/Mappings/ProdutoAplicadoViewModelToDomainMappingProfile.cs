@@ -1,4 +1,4 @@
-﻿using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using AutoMapper;
 
 namespace Application.DTOs.Cadastros.RelatorioAplicacao.Mappings

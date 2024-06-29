@@ -38,13 +38,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                          RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
                          DadosResponsavelId, CulturaId, PilotoId, Piloto, 
                          ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
-                         DataCriacao, DataAlteracao, Data, RefUsuario, StatusEnvio)
+                         DataCriacao, DataAlteracao, Data, RefUsuario, StatusEnvio, IdEmpresa)
+                        OUTPUT INSERTED.*
                         VALUES 
                         (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
                          @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
                          @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
-                         @DataCriacao, @DataAlteracao, @Data, @RefUsuario, @StatusEnvio);
+                         @DataCriacao, @DataAlteracao, @Data, @RefUsuario, @StatusEnvio, @IdEmpresa);
                         SELECT CAST(SCOPE_IDENTITY() as int)";
 
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
@@ -74,10 +75,11 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.DataCriacao,
                         obj.DataAlteracao,
                         obj.RefUsuario,
-                        obj.StatusEnvio
+                        obj.StatusEnvio,
+                        obj.IdEmpresa
                     });
 
-                    return obj;
+                    return relatorioAplicacao;
                 }
                 catch (Exception ex)
                 {
@@ -100,6 +102,12 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         {
             string query = "SELECT * FROM RelatorioAplicacao";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllByIdEmpresaAsync(int idEmpresa)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDateAsync(DateTime date)

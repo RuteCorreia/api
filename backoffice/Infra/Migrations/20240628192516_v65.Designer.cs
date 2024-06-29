@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240628192516_v65")]
+    partial class v65
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1158,12 +1161,15 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Cidade")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Data")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Documento")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("IdEmpresa")
@@ -1173,19 +1179,16 @@ namespace Infra.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PostoGraduacao")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Re")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Telefone")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UF")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("assinaturaResponsavel")
+                        .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.HasKey("Id");
@@ -1491,31 +1494,6 @@ namespace Infra.Migrations
                     b.ToTable("IdentificacaoAreaTratada");
                 });
 
-            modelBuilder.Entity("Domain.Entidades.Cadastros.LocalIncendio.LocalIncendio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Lat")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Long")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Referencia")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LocalIncendio");
-                });
-
             modelBuilder.Entity("Domain.Entidades.Cadastros.ManutencaoAeronave.ManutencaoAeronave", b =>
                 {
                     b.Property<int>("Id")
@@ -1811,53 +1789,6 @@ namespace Infra.Migrations
                     b.HasIndex("RecomendacoesTecnicasId");
 
                     b.ToTable("RelatorioAplicacao");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioIncendio.RelatorioIncendio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("ComandanteOcorrenciaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ContratoPrestacaoServicoId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CoordenadorBaseOperacionalId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("DadosResponsavelId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("DecolagemPousoFirefighting")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("LocalIncendioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PistaId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComandanteOcorrenciaId");
-
-                    b.HasIndex("ContratoPrestacaoServicoId");
-
-                    b.HasIndex("CoordenadorBaseOperacionalId");
-
-                    b.HasIndex("DadosResponsavelId");
-
-                    b.HasIndex("LocalIncendioId");
-
-                    b.HasIndex("PistaId");
-
-                    b.ToTable("RelatorioIncendio");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.SubMenu.SubMenu", b =>
@@ -2847,53 +2778,6 @@ namespace Infra.Migrations
                     b.Navigation("Empresa");
 
                     b.Navigation("IdentificacaoAreaTratada");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioIncendio.RelatorioIncendio", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel", "ComandanteOcorrencia")
-                        .WithMany()
-                        .HasForeignKey("ComandanteOcorrenciaId");
-
-                    b.HasOne("Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico", "ContratoPrestacaoServico")
-                        .WithMany()
-                        .HasForeignKey("ContratoPrestacaoServicoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel", "CoordenadorBaseOperacional")
-                        .WithMany()
-                        .HasForeignKey("CoordenadorBaseOperacionalId");
-
-                    b.HasOne("Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel", "DadosResponsavel")
-                        .WithMany()
-                        .HasForeignKey("DadosResponsavelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entidades.Cadastros.LocalIncendio.LocalIncendio", "LocalIncendio")
-                        .WithMany()
-                        .HasForeignKey("LocalIncendioId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entidades.Cadastros.Pistas.Pista", "Pista")
-                        .WithMany()
-                        .HasForeignKey("PistaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ComandanteOcorrencia");
-
-                    b.Navigation("ContratoPrestacaoServico");
-
-                    b.Navigation("CoordenadorBaseOperacional");
-
-                    b.Navigation("DadosResponsavel");
-
-                    b.Navigation("LocalIncendio");
-
-                    b.Navigation("Pista");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.SubMenu.SubMenu", b =>

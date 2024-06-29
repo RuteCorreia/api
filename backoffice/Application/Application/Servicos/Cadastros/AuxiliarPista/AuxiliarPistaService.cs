@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AuxiliarPista;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.AuxiliarPista
 {
@@ -14,11 +15,16 @@ namespace Application.Application.Servicos.Cadastros.AuxiliarPista
             _auxiliarPistaRepository = auxiliarPistaRepository;
             _mapper = mapper;
         }
-        public async Task<int> AddAsync(AuxiliarPistaViewModel obj)
+        public async Task<int> AddAsync(AuxiliarPistaViewModel obj, string? idEmpresa)
         {
-            var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(obj);
-            var identificacaoAreaTratada = await _auxiliarPistaRepository.AddAsync(mapIdentificacaoAreaTratada);
-            return identificacaoAreaTratada;
+            if (obj == null)
+                return 0;
+
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var mapAuxiliarPista = _mapper.Map<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(obj);
+            mapAuxiliarPista.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+            var auxiliarPista = await _auxiliarPistaRepository.AddAsync(mapAuxiliarPista);
+            return auxiliarPista;
         }
     }
 }

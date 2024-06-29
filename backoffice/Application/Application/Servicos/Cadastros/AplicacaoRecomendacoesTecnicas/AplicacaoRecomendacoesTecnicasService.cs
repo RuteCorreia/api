@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 
@@ -28,9 +29,11 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         return _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
     }
 
-    public async Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj)
+    public async Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
+        mapAplicacaoRecomendacoesTecnicas.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var aplicacaoRecomendacoesTecnicas = _aplicacaoRecomendacoesTecnicasRepository.AddAsync(mapAplicacaoRecomendacoesTecnicas);
         return aplicacaoRecomendacoesTecnicas.Result;
     }

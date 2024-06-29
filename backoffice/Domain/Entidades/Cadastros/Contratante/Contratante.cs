@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Domain.Entidades.Cadastros.Contratante
@@ -19,5 +21,11 @@ namespace Domain.Entidades.Cadastros.Contratante
         public string CNPJ { get; set; }
         public string InscricaoEstadual { get; set; }
         public string? ContratanteRef { get; set; }
+
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
     }
 }

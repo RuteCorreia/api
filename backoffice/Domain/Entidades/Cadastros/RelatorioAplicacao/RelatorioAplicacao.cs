@@ -55,6 +55,12 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public string RefUsuario { get; set; }
         public int? StatusEnvio { get; set; }
 
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+
         [JsonIgnore]
         public virtual AplicacaoRecomendacoesTecnicas? AplicacaoRecomendacoesTecnicas { get; set; }
 

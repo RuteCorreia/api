@@ -1,10 +1,11 @@
-﻿using Application.DTOs.Cadastros.Frota.ViewModel;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Frota;
 using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
+using Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,9 +37,11 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             return _mapper.Map<AreaTratadaViewModel>(obj);
         }
 
-        public async Task<int> AddAsync(AreaTratadaViewModel obj)
+        public async Task<int> AddAsync(AreaTratadaViewModel obj, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
+            mapIdentificacaoAreaTratada.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var identificacaoAreaTratada = await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
             return identificacaoAreaTratada;
         }

@@ -1,6 +1,6 @@
-﻿using Application.DTOs.Cadastros.Frota.ViewModel;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface
 
         Task<AreaTratadaViewModel> GetByIdAsync(int id);
 
-        Task<int> AddAsync(AreaTratadaViewModel obj);
+        Task<int> AddAsync(AreaTratadaViewModel obj, string? idEmpresa);
 
         Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj);
 
