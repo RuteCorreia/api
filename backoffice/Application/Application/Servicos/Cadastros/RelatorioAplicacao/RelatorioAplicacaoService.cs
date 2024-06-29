@@ -67,5 +67,26 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var list = await _relatorioAplicacaoRepository.GetAllByIdEmpresaAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDateAndIdEmpresaAsync(DateTime Date,string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _relatorioAplicacaoRepository.GetAllByIdEmpresaAsync(idEmpresaInt);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataCriacaoAsync(DateTime date, string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _relatorioAplicacaoRepository.GetByDataCriacaoAsync(date, idEmpresaInt);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataAlteracaoAsync(DateTime date, string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _relatorioAplicacaoRepository.GetByDataAlteracaoAsync(date, idEmpresaInt);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
     }
 }
