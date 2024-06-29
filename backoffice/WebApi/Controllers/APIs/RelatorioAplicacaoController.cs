@@ -163,7 +163,8 @@ namespace WebApi.Controllers.APIs
                         Localizacao = identificacaoAreaTratadaViewModel.Localizacao,
                         Cultura = identificacaoAreaTratadaViewModel.Cultura,
                         Extensao = identificacaoAreaTratadaViewModel.Extensao,
-                        CroquiArea = croquiAreaString
+                        CroquiArea = croquiAreaString,
+                        Gravacao = identificacaoAreaTratadaViewModel.Gravacao
                     };
 
                     var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);

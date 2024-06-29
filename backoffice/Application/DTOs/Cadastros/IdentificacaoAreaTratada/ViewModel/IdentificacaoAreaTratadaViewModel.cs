@@ -29,5 +29,7 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel
 
         [JsonPropertyName("croquiArea")]
         public DataFormatViewModel CroquiArea { get; set; }
+        [JsonPropertyName("gravacao")]
+        public string Gravacao { get; set; }
     }
 }

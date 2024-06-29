@@ -19,10 +19,10 @@ namespace Infra.Repositorio.Cadastros.AuxiliarPista
             {
                 using (var connection = _dbConnection)
                 {
-                    string sqlQuery = @"INSERT INTO AuxiliarPista (Nome, Documento) VALUES (@Nome, @Documento);
+                    string sqlQuery = @"INSERT INTO AuxiliarPista (Nome, Documento, IdEmpresa) VALUES (@Nome, @Documento, @IdEmpresa);
                                 SELECT CAST(SCOPE_IDENTITY() as int)"
                     ;
-                    int id = await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { obj.Nome, obj.Documento });
+                    int id = await connection.QueryFirstOrDefaultAsync<int>(sqlQuery, new { obj.Nome, obj.Documento, obj.IdEmpresa });
 
                     obj.Id = id;
 
