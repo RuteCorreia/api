@@ -97,7 +97,7 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("/getAllByEmpresa")]
+        [HttpGet("getAllByEmpresa")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAllByIdEmpresa()
         {
             try
