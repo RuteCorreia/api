@@ -42,6 +42,10 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             mapIdentificacaoAreaTratada.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+            if (obj.Id > 0)
+                await _identificacaoAreaTratadaRepository.UpdateAsync(mapIdentificacaoAreaTratada);
+
             var identificacaoAreaTratada = await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
             return identificacaoAreaTratada;
         }

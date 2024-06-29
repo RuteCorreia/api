@@ -22,9 +22,14 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
     public async Task<int> AddAsync(ProdutoAplicadoViewModel obj, string? idEmpresa)
     {
+        
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
+
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        if (obj.Id > 0)
+            await _caracteristicasProdutoAplicadoRepository.UpdateAsync(mapObj);
+
         var caracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoRepository.AddAsync(mapObj);
         return caracteristicasProdutoAplicado;
     }

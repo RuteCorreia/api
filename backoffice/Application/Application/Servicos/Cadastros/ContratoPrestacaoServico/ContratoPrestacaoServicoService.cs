@@ -25,6 +25,10 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+        if (obj.Id > 0)
+            await _contratoPrestacaoServicoRepository.UpdateAsync(mapObj);
+
         var contratoPrestacaoServico = _contratoPrestacaoServicoRepository.AddAsync(mapObj);
         return contratoPrestacaoServico.Result;
     }

@@ -46,6 +46,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+            if (obj.Id > 0)
+                await _relatorioAplicacaoRepository.UpdateAsync(mapRelatorio);
+
             var Relatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio); 
             var mapRelatorioReturn = _mapper.Map< RelatorioAplicacaoViewModel>(Relatorio);
             return mapRelatorioReturn;

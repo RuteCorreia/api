@@ -41,6 +41,10 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAplicacaoRelatorio = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(obj);
         mapAplicacaoRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+        if (obj.Id > 0)
+            await _aplicacaoRelatorioRepository.UpdateAsync(mapAplicacaoRelatorio);
+
         await _aplicacaoRelatorioRepository.AddAsync(mapAplicacaoRelatorio);
 
         if (obj.Aplicacoes != null && obj.Aplicacoes.Any())
@@ -50,6 +54,10 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                 var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(aplicacaoItem);
                 mapAplicacaoRelatorioItem.IdAplicacaoRelatorio = mapAplicacaoRelatorio.Id; // Atribua o Id da entidade principal
                 mapAplicacaoRelatorioItem.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+                if (obj.Id > 0)
+                    await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
+
                 await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
             }
         }
