@@ -43,11 +43,13 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             mapIdentificacaoAreaTratada.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
-            
+            if (obj.Id > 0) 
             {
-                var identificacaoAreaTratada = await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
-                return identificacaoAreaTratada;
-            }  
+                await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+                return mapIdentificacaoAreaTratada.Id;
+            }  else {
+                return await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+            }
         }
 
         public async Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj)

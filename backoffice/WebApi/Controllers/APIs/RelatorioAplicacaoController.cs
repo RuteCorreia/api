@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
@@ -51,6 +52,7 @@ namespace WebApi.Controllers.APIs
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IAuxiliarPistaService _auxiliarPistaService;
         private readonly IContratanteService _contratanteService;
+        private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
         private readonly ILogService _logService;
         
         
@@ -65,6 +67,7 @@ namespace WebApi.Controllers.APIs
             LoggedUserInfoService loggedUserInfoService,
             IAuxiliarPistaService auxiliarPistaService,
             IContratanteService contratanteService,
+            IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
             ILogService logService            
             )
         {
@@ -78,6 +81,7 @@ namespace WebApi.Controllers.APIs
             _loggedUserInfoService = loggedUserInfoService;
             _auxiliarPistaService = auxiliarPistaService;
             _contratanteService = contratanteService;
+            _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
             _logService = logService;  
         }
 
@@ -246,7 +250,7 @@ namespace WebApi.Controllers.APIs
                     for (int i = 0; i < aplicacoesViewModel.Count; i++)
                     {
                         var item = aplicacoesViewModel[i];
-                        string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
+                        //string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
@@ -261,7 +265,7 @@ namespace WebApi.Controllers.APIs
                             UmidadeRelativaArFinal = item.UmidadeRelativaArFinal,
                             VentoInicial = item.VentoInicial,
                             VentoFinal = item.VentoFinal,
-                            ImagemCondicaoClimatica = imagemCondicaoClimatica,
+                            ImagemCondicaoClimatica = item.ImagemCondicaoClimatica,
                             DataAplicacao = item.DataAplicacao
                         };
 
@@ -343,26 +347,30 @@ namespace WebApi.Controllers.APIs
 
 
                     var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
-
+                    
+                    var aplicacoes =  await _aplicacaoRelatorioItemService. GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
+                    
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
-                    //var result = new
-                    //{
-                    //    id = relatorioAplicacaoId,
-                    //    contratanteId = Idcontratante,
-                    //    identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
-                    //    caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                    //    recomendacoesTecnicasId=IdrecomendacoesTecnicas,
-                    //    relatorioAplicacao = new
-                    //    {
-                    //        id = relatorioAplicacaoId,
-                    //        aplicacoes = new int[] { 1, 2 }
-                    //    },
-                    //    contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
-                    //    dadosResponsavelId= IdDadosResponsavel
-                    //};
-
-                    return Ok(relatorioAplicacaoId);
+                    var result = new
+                    {
+                        id = relatorioAplicacaoId,
+                        contratanteId = Idcontratante,
+                        identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
+                        caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
+                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                        contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
+                        dadosResponsavelId = IdDadosResponsavel,
+                        auxiliarPistaId = IdAuxiliarPista,
+                        relatorioAplicacao = new
+                        {
+                            id = IdAplicacaoRelatorio,
+                            aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
+                        },
+                    };
+                    
+                    //return Ok(relatorioAplicacaoId);
+                    return Ok(result);
                 }
 
                 //_logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");

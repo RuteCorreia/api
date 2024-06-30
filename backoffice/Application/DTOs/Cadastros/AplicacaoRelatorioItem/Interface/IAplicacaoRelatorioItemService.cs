@@ -8,6 +8,8 @@ public interface IAplicacaoRelatorioItemService
 
     Task<AplicacaoRelatorioItemViewModel> GetByIdAsync(int id);
 
+    Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId);
+
     Task AddAsync(AplicacaoRelatorioItemViewModel obj);
 
     Task UpdateAsync(AplicacaoRelatorioItemViewModel obj);

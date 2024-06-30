@@ -27,6 +27,14 @@ namespace Data.Repositorio.Cadastros.AplicacaoRelatorioItem
             return obj;
         }
 
+
+        public public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> BuscarPorAplicacaoRelatorio(int? aplicacaoRelatorioId)
+        {
+            var list = _context.AplicacaoRelatorioItem.Where(x => x.aplicacaoRelatorioId == aplicacaoRelatorioId).Include("AplicacaoRelatorio").ToList();
+            return list;
+        }
+
+
         public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> ListarTodasAplicacoesRelatorioItem()
         {
             var obj = _context.AplicacaoRelatorioItem.Include("AplicacaoRelatorio").ToList();

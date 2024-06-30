@@ -37,6 +37,7 @@ public class DadosResponsavelService : IDadosResponsavelService
 
         if (obj.Id > 0)
         {
+            entityToCreate.Id = obj.Id;
             await _dadosResponsavelRepository.UpdateAsync(entityToCreate);
             return entityToCreate.Id;
         }
