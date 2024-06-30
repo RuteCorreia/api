@@ -244,13 +244,15 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
+                    
                     var aplicacaoRelatorio = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var aplicacoesViewModel = aplicacaoRelatorio.Aplicacoes;
                     var listaAplicacaoRelatorioItem = new List<RelatorioItemViewModel>();
                     for (int i = 0; i < aplicacoesViewModel.Count; i++)
                     {
                         var item = aplicacoesViewModel[i];
-                        //string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
+                        string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
+                        
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
@@ -265,7 +267,7 @@ namespace WebApi.Controllers.APIs
                             UmidadeRelativaArFinal = item.UmidadeRelativaArFinal,
                             VentoInicial = item.VentoInicial,
                             VentoFinal = item.VentoFinal,
-                            ImagemCondicaoClimatica = item.ImagemCondicaoClimatica,
+                           // ImagemCondicaoClimatica = imagemCondicaoClimatica,
                             DataAplicacao = item.DataAplicacao
                         };
 
@@ -346,7 +348,7 @@ namespace WebApi.Controllers.APIs
 
 
 
-                    var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
+                    var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
                     
                     var aplicacoes =  await _aplicacaoRelatorioItemService. GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
                     
@@ -354,7 +356,7 @@ namespace WebApi.Controllers.APIs
 
                     var result = new
                     {
-                        id = relatorioAplicacaoId,
+                        id = relatorioAplicacao.Id,
                         contratanteId = Idcontratante,
                         identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
                         caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
@@ -370,6 +372,9 @@ namespace WebApi.Controllers.APIs
                     };
                     
                     //return Ok(relatorioAplicacaoId);
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    Console.Write(">>>>>>>>>");
+                    Console.WriteLine(result);
                     return Ok(result);
                 }
 
