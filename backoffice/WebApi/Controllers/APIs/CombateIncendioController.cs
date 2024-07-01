@@ -78,9 +78,9 @@ public class CombateIncendioController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _combateIncendioService.AddAsync(obj, loggedUser.Item3);
+                var id = await _combateIncendioService.AddAsync(obj, loggedUser.Item3);
                 _loggerService.LogInformation("Novo registro de Combate a Incêndio adicionado com sucesso.");
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio.");

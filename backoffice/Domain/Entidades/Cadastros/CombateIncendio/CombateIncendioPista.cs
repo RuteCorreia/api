@@ -15,8 +15,14 @@ namespace Domain.Entidades.Cadastros.CombateIncendio
         public string? LatPista { get; set; }
         public string? LongPista { get; set; }
 
+        [ForeignKey("Empresa")]
+        public int? IdEmpresa { get; set; }
+
         [ForeignKey("CombateIncendio")]
         public int CombateIncendioId { get; set; }
+
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
 
         [JsonIgnore]
         public virtual CombateIncendio? CombateIncendio { get; set; }
