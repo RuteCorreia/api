@@ -354,7 +354,7 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
                     
                     var aplicacoes =  await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
-                    
+
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
                     var result = new
@@ -363,14 +363,14 @@ namespace WebApi.Controllers.APIs
                         contratanteId = Idcontratante,
                         identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
                         caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                        recomendacoesTecnicasId = IdrecomendacoesTecnicas,
                         contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
                         dadosResponsavelId = IdDadosResponsavel,
                         auxiliarPistaId = IdAuxiliarPista,
                         relatorioAplicacao = new
                         {
                             id = IdAplicacaoRelatorio,
-                            aplicacoes = aplicacoes.Select(item => item.Id).ToList()
+                            aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
                         },
                     };
                     
