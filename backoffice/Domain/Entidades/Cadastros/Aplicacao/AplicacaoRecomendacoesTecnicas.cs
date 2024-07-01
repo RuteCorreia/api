@@ -51,14 +51,14 @@ public class AplicacaoRecomendacoesTecnicas
 
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
-    //[JsonIgnore]
-    //public virtual Veiculante.Veiculante? Veiculante { get; set; }
-    //[JsonIgnore]
-    //public virtual Aeronave.Aeronave? Aeronave { get; set; }
-    //[JsonIgnore]
-    //public virtual AlturaVoo? AlturaVoo { get; set; }
-    //[JsonIgnore]
-    //public virtual TipoProduto? TipoProduto { get; set; }
-    //[JsonIgnore]
-    //public virtual Equipamento.Equipamento? Equipamento { get; set; }
+    [JsonIgnore]
+    public virtual Veiculante.Veiculante? Veiculante { get; set; }
+    [JsonIgnore]
+    public virtual Aeronave.Aeronave? Aeronave { get; set; }
+    [JsonIgnore]
+    public virtual AlturaVoo? AlturaVoo { get; set; }
+    [JsonIgnore]
+    public virtual TipoProduto? TipoProduto { get; set; }
+    [JsonIgnore]
+    public virtual Equipamento.Equipamento? Equipamento { get; set; }
 }

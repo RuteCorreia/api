@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 
@@ -11,7 +12,7 @@ public class CombateIncendioViewModel
     public string? Aviso { get; set; }
     public int? IdAeronave { get; set; }
     public int? IdPista { get; set; }
-    public DateTime? Data { get; set; }
+    public string? Data { get; set; }
     public DateTime? HoraInicial { get; set; }
     public string? HorimetroAviao { get; set; }
     public string? LocalIncendioLat { get; set; }
@@ -32,4 +33,11 @@ public class CombateIncendioViewModel
     public string? ResponsavelOcorrenciaPosto { get; set; }
     public string? ResponsavelOcorrenciaRE { get; set; }
     public string? ResponsavelOcorrenciaAssinatura { get; set; }
+    public string? Cliente { get; set; }
+    public string? Cidade { get; set; }
+    public string? Uf { get; set; }
+    public string? Observacao { get; set; }
+    public string? CapacidadeCargaAeronave { get; set; }
+    public string? Piloto { get; set; }
+    public int? ContratoPrestacaoServicoId { get; set; }
 }

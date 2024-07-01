@@ -9,12 +9,12 @@ public class AplicacaoRecomendacoesTecnicasDomainToViewModelMappingProfile : Pro
     {
         CreateMap<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas, AplicacaoRecomendacoesTecnicasViewModel>()
             .ForMember(dest => dest.QtdVeiculante, opt => opt.MapFrom(src => src.QtdeVeiculante))
-            .ForMember(dest => dest.Aeronave, opt => opt.MapFrom(src => src.NomeAeronave))
-            .ForMember(dest => dest.AlturaVoo, opt => opt.MapFrom(src => src.AlturaVooCustom))
+            .ForMember(dest => dest.NomeAeronave, opt => opt.MapFrom(src => src.NomeAeronave))
+            .ForMember(dest => dest.QtdAlturaVoo, opt => opt.MapFrom(src => src.AlturaVooCustom))
             .ForMember(dest => dest.UmidadeRelativaAr, opt => opt.MapFrom(src => src.UrDoAR))
-            .ForMember(dest => dest.Veiculante, opt => opt.MapFrom(src => src.Veinculante))
-            .ForMember(dest => dest.TipoProduto, opt => opt.MapFrom(src => src.TipoDeProduto))
-            .ForMember(dest => dest.Equipamento, opt => opt.MapFrom(src => src.NomeEquipamento));
+            .ForMember(dest => dest.NomeVeiculante, opt => opt.MapFrom(src => src.Veinculante))
+            .ForMember(dest => dest.TipoDeProduto, opt => opt.MapFrom(src => src.TipoDeProduto))
+            .ForMember(dest => dest.NomeEquipamento, opt => opt.MapFrom(src => src.NomeEquipamento));
 
     }
 }

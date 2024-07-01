@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -8,45 +9,55 @@ public class AplicacaoRecomendacoesTecnicasViewModel
 {
     public int Id { get; set; }
 
-    [JsonPropertyName("veiculante")]
-    public string? Veiculante { get; set; }
+    [JsonProperty("veiculante")]
+    public string? NomeVeiculante { get; set; }
 
-    [JsonPropertyName("qtdVeiculante")]
+    [JsonProperty("qtdVeiculante")]
     public int? QtdVeiculante { get; set; }
 
-    [JsonPropertyName("larguraFaixa")]
+    [JsonProperty("larguraFaixa")]
     public int? LarguraFaixa { get; set; }
 
-    [JsonPropertyName("volumeAplicacao")]
+    [JsonProperty("volumeAplicacao")]
     public int? VolumeAplicacao { get; set; }
 
-    [JsonPropertyName("unidadevolumeAplicacao")]
+    [JsonProperty("unidadevolumeAplicacao")]
     public string? UnidadeVolumeAplicacao { get; set; }
 
-    [JsonPropertyName("aeronave")]
-    public string? Aeronave { get; set; }
+    [JsonProperty("aeronave")]
+    public string? NomeAeronave { get; set; }
 
-    [JsonPropertyName("alturaVoo")]
-    public string? AlturaVoo { get; set; }
+    [JsonProperty("alturaVoo")]
+    public string? QtdAlturaVoo { get; set; }
 
-    [JsonPropertyName("temperatura")]
+    [JsonProperty("temperatura")]
     public string? Temperatura { get; set; }
 
-    [JsonPropertyName("umidadeRelativaAr")]
+    [JsonProperty("umidadeRelativaAr")]
     public string? UmidadeRelativaAr { get; set; }
 
-    [JsonPropertyName("velocidadeVento")]
+    [JsonProperty("velocidadeVento")]
     public string? VelocidadeVento { get; set; }
 
-    [JsonPropertyName("tipoProduto")]
-    public string? TipoProduto { get; set; }
+    [JsonProperty("tipoProduto")]
+    public string? TipoDeProduto { get; set; }
 
-    [JsonPropertyName("equipamento")]
-    public string? Equipamento { get; set; }
+    [JsonProperty("equipamento")]
+    public string? NomeEquipamento { get; set; }
 
-    [JsonPropertyName("angulo")]
+    [JsonProperty("angulo")]
     public string? Angulo { get; set; }
 
-    [JsonPropertyName("arquivoDrone")]
+    [JsonProperty("arquivoDrone")]
     public string? ArquivoDrone { get; set; }
+    //[JsonIgnore]
+    //public virtual Veiculante.Veiculante? Veiculante { get; set; }
+    //[JsonIgnore]
+    //public virtual Aeronave.Aeronave? Aeronave { get; set; }
+    //[JsonIgnore]
+    //public virtual AlturaVoo? AlturaVoo { get; set; }
+    //[JsonIgnore]
+    //public virtual TipoProduto? TipoProduto { get; set; }
+    //[JsonIgnore]
+    //public virtual Equipamento.Equipamento? Equipamento { get; set; }
 }
