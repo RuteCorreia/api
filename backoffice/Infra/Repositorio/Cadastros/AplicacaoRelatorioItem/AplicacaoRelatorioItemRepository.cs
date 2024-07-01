@@ -49,7 +49,7 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         //return entities;
 
         string query = "SELECT * FROM RelatorioAplicacao WHERE IdAplicacaoRelatorio = @IdAplicacaoRelatorio";
-        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(query, new { DataCriacao = idAplicacaoRelatorio });
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(query, new { IdAplicacaoRelatorio = idAplicacaoRelatorio });
     }
 
 
