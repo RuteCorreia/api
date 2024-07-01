@@ -88,5 +88,13 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var list = await _relatorioAplicacaoRepository.GetByDataAlteracaoAsync(date, idEmpresaInt);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, idEmpresaInt);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
     }
 }

@@ -86,12 +86,14 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAll(DateTime? date)
         {
             try
             {
-                var relatorios = await _relatorioAplicacaoService.GetAllAsync();
-                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date,loggedUser.Item3);
+                _logService.LogInformation("Obter todos os relatórios novos.");
                 return Ok(relatorios);
             }
             catch (Exception ex)
@@ -373,8 +375,6 @@ namespace WebApi.Controllers.APIs
                     
                     //return Ok(relatorioAplicacaoId);
                     var jsonResult = JsonConvert.SerializeObject(result);
-                    Console.Write(">>>>>>>>>");
-                    Console.WriteLine(result);
                     return Ok(result);
                 }
 

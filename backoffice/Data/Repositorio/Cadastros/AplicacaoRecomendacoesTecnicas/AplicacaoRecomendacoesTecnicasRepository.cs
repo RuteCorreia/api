@@ -30,7 +30,9 @@ namespace Data.Repositorio.Cadastros.AplicacaoRecomendacoesTecnicas
                                                                                     .Include("TipoProduto")
                                                                                     .Include("Equipamento")
                                                                                     .FirstOrDefault();
-            return obj;
+            
+            return obj;            
+            
         }
 
         public List<Entities.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> ListarTodasAplicacoesRecomendacoesTecnicas()

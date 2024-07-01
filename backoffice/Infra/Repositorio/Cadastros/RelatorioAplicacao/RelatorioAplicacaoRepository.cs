@@ -122,6 +122,23 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataAlteracao = dataAlteracao , IdEmpresa = idEmpresa });
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, int idEmpresa)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao"+
+                           " WHERE "+
+                           (offsetDate!=null?" ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND ":" ")+
+                           " IdEmpresa = @IdEmpresa";
+            Console.WriteLine(query)                ;
+            if (offsetDate!=null) {
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate , IdEmpresa = idEmpresa });
+            } else {
+                
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
+            }
+            
+        }
+
+
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id)
         {
             using (var connection = _dbConnection)
