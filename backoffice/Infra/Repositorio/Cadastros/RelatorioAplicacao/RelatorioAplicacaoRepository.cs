@@ -132,7 +132,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             if (offsetDate!=null) {
                 return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate , IdEmpresa = idEmpresa });
             } else {
-                
                 return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
             }
             
