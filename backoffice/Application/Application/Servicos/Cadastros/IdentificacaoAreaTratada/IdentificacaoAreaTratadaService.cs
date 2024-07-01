@@ -42,8 +42,14 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             mapIdentificacaoAreaTratada.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-            var identificacaoAreaTratada = await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
-            return identificacaoAreaTratada;
+
+            if (obj.Id > 0) 
+            {
+                await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+                return mapIdentificacaoAreaTratada.Id;
+            }  else {
+                return await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+            }
         }
 
         public async Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj)

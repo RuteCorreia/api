@@ -34,8 +34,16 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
         mapAplicacaoRecomendacoesTecnicas.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        var aplicacaoRecomendacoesTecnicas = _aplicacaoRecomendacoesTecnicasRepository.AddAsync(mapAplicacaoRecomendacoesTecnicas);
-        return aplicacaoRecomendacoesTecnicas.Result;
+        if (obj.Id > 0)
+        {
+            await _aplicacaoRecomendacoesTecnicasRepository.UpdateAsync(mapAplicacaoRecomendacoesTecnicas);
+            return mapAplicacaoRecomendacoesTecnicas.Id;
+        }
+        else
+        {
+            var aplicacaoRecomendacoesTecnicas = _aplicacaoRecomendacoesTecnicasRepository.AddAsync(mapAplicacaoRecomendacoesTecnicas);
+            return aplicacaoRecomendacoesTecnicas.Result;
+        }   
     }
 
     public async Task UpdateAsync(AplicacaoRecomendacoesTecnicasViewModel obj)

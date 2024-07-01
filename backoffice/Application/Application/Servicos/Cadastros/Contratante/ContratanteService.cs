@@ -38,11 +38,22 @@ namespace Application.Application.Servicos.Cadastros.Contratante
 
         public async Task<int> AddAsync(ContratanteViewModel obj, string? idEmpresa)
         {
+            
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapContratante = _mapper.Map<Domain.Entidades.Cadastros.Contratante.Contratante>(obj);
             mapContratante.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-            var contratante = _contratanteRepository.AddAsync(mapContratante);
-            return contratante.Result;
+
+            if (obj.Id > 0)
+            {
+                await _contratanteRepository.UpdateAsync(mapContratante);
+                return mapContratante.Id;
+            }
+            else
+            {
+                var contratante = _contratanteRepository.AddAsync(mapContratante);
+                return contratante.Result;
+            }
+            
         }
 
         public async Task UpdateAsync(ContratanteViewModel obj)

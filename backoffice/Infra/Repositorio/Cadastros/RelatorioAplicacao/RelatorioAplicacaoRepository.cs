@@ -110,11 +110,33 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDateAsync(DateTime date)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataCriacaoAsync(DateTime dataCriacao,int idEmpresa)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE DateCriacao = @Date";
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Date = date.Date });
+            string query = "SELECT * FROM RelatorioAplicacao WHERE CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @DataCriacao, 120) AND IdEmpresa = @IdEmpresa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataCriacao = dataCriacao ,IdEmpresa = idEmpresa });
         }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataAlteracaoAsync(DateTime dataAlteracao, int idEmpresa)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao WHERE CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @DataAlteracao, 120) AND @IdEmpresa = @IdEmpresa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataAlteracao = dataAlteracao , IdEmpresa = idEmpresa });
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, int idEmpresa)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao"+
+                           " WHERE "+
+                           (offsetDate!=null?" ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND ":" ")+
+                           " IdEmpresa = @IdEmpresa";
+            Console.WriteLine(query)                ;
+            if (offsetDate!=null) {
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate , IdEmpresa = idEmpresa });
+            } else {
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
+            }
+            
+        }
+
 
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id)
         {

@@ -49,7 +49,7 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         //var obj = await _contextBase.CaracteristicasProdutoAplicado
         //    .FirstOrDefaultAsync(x => x.Id == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
         //return obj;
-
+        
         using (var connection = _dbConnection)
         {
             try
