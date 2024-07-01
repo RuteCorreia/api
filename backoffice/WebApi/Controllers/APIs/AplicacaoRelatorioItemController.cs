@@ -13,7 +13,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +29,7 @@ namespace WebApi.Controllers.APIs
             _loggerService = loggerService;
         }
 
-        [HttpGet]
+        [HttpGet("{idAplicacaoRelatorio}")]
         public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll(int idAplicacaoRelatorio)
         {
             try
