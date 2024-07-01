@@ -58,7 +58,7 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                 mapAplicacaoRelatorioItem.IdAplicacaoRelatorio = mapAplicacaoRelatorio.Id; // Atribua o Id da entidade principal
                 mapAplicacaoRelatorioItem.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
-                if (obj.Id > 0)
+                if (aplicacaoItem.Id > 0)
                 {
                     await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
                 }

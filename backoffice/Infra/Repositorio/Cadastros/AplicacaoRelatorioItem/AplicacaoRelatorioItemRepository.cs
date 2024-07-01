@@ -59,23 +59,31 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         return obj;
     }
 
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem obj)
+    public async Task UpdateAsync(List<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> obj)
     {
-        var objeto = await _contextBase.AplicacaoRelatorioItem.FindAsync(obj.Id);
-        objeto.IdAplicacaoRelatorio = obj.IdAplicacaoRelatorio;
-        objeto.HoraInicio = obj.HoraInicio;
-        objeto.HorimetroInicial = obj.HorimetroInicial;
-        objeto.HoraTermino = obj.HoraTermino;
-        objeto.HorimetroTermino = obj.HorimetroTermino;
-        objeto.TemperaturaInicial = obj.TemperaturaInicial;
-        objeto.TemperaturaFinal = obj.TemperaturaFinal;
-        objeto.UrInicial = obj.UrInicial;
-        objeto.UrFinal = obj.UrFinal;
-        objeto.VentoInicial = obj.VentoInicial;
-        objeto.VentoFinal = obj.VentoFinal;
-        objeto.ImagemDadosClimaticos = obj.ImagemDadosClimaticos;
+        foreach (var item in obj)
+        {
 
-        _contextBase.AplicacaoRelatorioItem.Update(objeto);
+            var objeto = await _contextBase.AplicacaoRelatorioItem.FindAsync(item.Id);
+            if(objeto != null)
+            {
+                objeto.IdAplicacaoRelatorio = item.IdAplicacaoRelatorio;
+                objeto.HoraInicio = item.HoraInicio;
+                objeto.HorimetroInicial = item.HorimetroInicial;
+                objeto.HoraTermino = item.HoraTermino;
+                objeto.HorimetroTermino = item.HorimetroTermino;
+                objeto.TemperaturaInicial = item.TemperaturaInicial;
+                objeto.TemperaturaFinal = item.TemperaturaFinal;
+                objeto.UrInicial = item.UrInicial;
+                objeto.UrFinal = item.UrFinal;
+                objeto.VentoInicial = item.VentoInicial;
+                objeto.VentoFinal = item.VentoFinal;
+                objeto.ImagemDadosClimaticos = item.ImagemDadosClimaticos;
+
+                _contextBase.AplicacaoRelatorioItem.Update(objeto);
+            } 
+        }
+        
         await _contextBase.SaveChangesAsync();
     }
 }
