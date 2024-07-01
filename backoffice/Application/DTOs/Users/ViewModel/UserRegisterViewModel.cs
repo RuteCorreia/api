@@ -33,4 +33,5 @@ public class RoleObject
     //[JsonConverter(typeof(JsonStringEnumConverter))]
     public ERole Funcao { get; set; }
     public string? Credencial { get; set; }
+    public string? NomeCompleto { get; set; }
 }
