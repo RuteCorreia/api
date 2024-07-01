@@ -9,4 +9,5 @@ public interface IAplicacaoRelatorioItemRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllAsync();
     Task<Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> GetByIdAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId);
 }

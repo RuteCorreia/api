@@ -6,6 +6,7 @@ namespace Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 
 public class AplicacaoRelatorioItemViewModel
 {
+    public int Id { get; set; }
     public int? IdAplicacaoRelatorio { get; set; }
     public string? HoraInicio { get; set; }
     public string? HorimetroInicial { get; set; }
@@ -17,6 +18,7 @@ public class AplicacaoRelatorioItemViewModel
     public string? UmidadeRelativaArFinal { get; set; }
     public string? VentoInicial { get; set; }
     public string? VentoFinal { get; set; }
-    public DataFormatViewModel? ImagemCondicaoClimatica { get; set; }
+    public string? ImagemCondicaoClimatica { get; set; }
     public DateTime? DataAplicacao { get; set; }
+    public int? IdEmpresa { get; set; }
 }

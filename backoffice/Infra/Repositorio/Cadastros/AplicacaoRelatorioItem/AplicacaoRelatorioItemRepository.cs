@@ -36,6 +36,14 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         return entities;
     }
 
+
+     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
+    {
+        var entities = await _contextBase.AplicacaoRelatorioItem.Where(aplicacaoRelatorioItem=> aplicacaoRelatorioItem.IdAplicacaoRelatorio == aplicacaoRelatorioId).ToListAsync();
+        return entities;
+    }
+
+
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem> GetByIdAsync(int id)
     {
         var obj = await _contextBase.AplicacaoRelatorioItem.FindAsync(id);

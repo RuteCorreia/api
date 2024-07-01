@@ -34,8 +34,18 @@ public class DadosResponsavelService : IDadosResponsavelService
             assinaturaResponsavel = Convert.FromBase64String(obj.assinaturaResponsavel),
             IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt
         };
-        var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
-        return dadosResponsavel.Result;
+
+        if (obj.Id > 0)
+        {
+            entityToCreate.Id = obj.Id;
+            await _dadosResponsavelRepository.UpdateAsync(entityToCreate);
+            return entityToCreate.Id;
+        }
+        else
+        {
+            var dadosResponsavel = _dadosResponsavelRepository.AddAsync(entityToCreate);
+            return dadosResponsavel.Result;
+        }   
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
