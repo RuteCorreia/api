@@ -12,7 +12,7 @@ public interface IAplicacaoRelatorioItemService
 
     Task AddAsync(AplicacaoRelatorioItemViewModel obj);
 
-    Task UpdateAsync(AplicacaoRelatorioItemViewModel obj);
+    //Task UpdateAsync(List<AplicacaoRelatorioItemViewModel> obj);
 
     Task DeleteAsync(int id);
 }

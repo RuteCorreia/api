@@ -41,11 +41,14 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
     }
 
-    public async Task UpdateAsync(AplicacaoRelatorioItemViewModel obj)
-    {
-        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
-        await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
-    }
+    //public async Task UpdateAsync(List<AplicacaoRelatorioItemViewModel> objs)
+    //{
+    //    foreach (var obj in objs)
+    //    {
+    //        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
+    //        await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
+    //    }
+    //}
 
     public async Task DeleteAsync(int id)
     {

@@ -258,6 +258,7 @@ namespace WebApi.Controllers.APIs
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
+                            Id = item.Id,
                             IdAplicacaoRelatorio = item.IdAplicacaoRelatorio,
                             HoraInicio = item.HoraInicio,
                             HorimetroInicial = item.HorimetroInicial,
