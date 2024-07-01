@@ -352,7 +352,7 @@ namespace WebApi.Controllers.APIs
 
                     var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
                     
-                    var aplicacoes =  await _aplicacaoRelatorioItemService. GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
+                    var aplicacoes =  await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
                     
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 

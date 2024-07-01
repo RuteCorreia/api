@@ -18,7 +18,7 @@ public class AplicacaoRelatorioItemViewModel
     public string? UmidadeRelativaArFinal { get; set; }
     public string? VentoInicial { get; set; }
     public string? VentoFinal { get; set; }
-    public string? ImagemCondicaoClimatica { get; set; }
+    public DataFormatViewModel? ImagemCondicaoClimatica { get; set; }
     public DateTime? DataAplicacao { get; set; }
     public int? IdEmpresa { get; set; }
 }

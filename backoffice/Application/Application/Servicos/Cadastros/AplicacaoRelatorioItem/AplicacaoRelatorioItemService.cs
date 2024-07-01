@@ -22,10 +22,10 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
     }
 
-    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
+    public async Task<IEnumerable<RelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
     {
         var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(aplicacaoRelatorioId);
-        return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
+        return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
     }
 
 
