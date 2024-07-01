@@ -30,11 +30,11 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll(int idAplicacaoRelatorio)
         {
             try
             {
-                var itens = await _aplicacaoRelatorioItemService.GetAllAsync();
+                var itens = await _aplicacaoRelatorioItemService.GetAllAsync(idAplicacaoRelatorio);
                 _loggerService.LogInformation("Todos os itens do relatório de aplicação foram recuperados com sucesso.");
                 return Ok(itens);
             }

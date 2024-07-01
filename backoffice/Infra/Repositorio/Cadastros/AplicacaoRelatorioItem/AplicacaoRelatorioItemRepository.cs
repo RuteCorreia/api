@@ -30,7 +30,7 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllAsync(int idAplicacaoRelatorio)
     {
         var entities = await _contextBase.AplicacaoRelatorioItem.ToListAsync();
         return entities;

@@ -4,7 +4,7 @@ namespace Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 
 public interface IAplicacaoRelatorioItemService 
 {
-    Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync();
+    Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync(int aplicacaoRelatorioId);
 
     Task<AplicacaoRelatorioItemViewModel> GetByIdAsync(int id);
 

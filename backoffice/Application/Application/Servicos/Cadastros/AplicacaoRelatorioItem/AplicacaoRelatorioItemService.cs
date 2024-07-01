@@ -16,9 +16,9 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync()
+    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync(int idRelatorioAplicacao)
     {
-        var list = await _aplicacaoRelatorioItemRepository.GetAllAsync();
+        var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(idRelatorioAplicacao);
         return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
     }
 
