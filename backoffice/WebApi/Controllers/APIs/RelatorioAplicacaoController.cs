@@ -269,7 +269,7 @@ namespace WebApi.Controllers.APIs
                             UmidadeRelativaArFinal = item.UmidadeRelativaArFinal,
                             VentoInicial = item.VentoInicial,
                             VentoFinal = item.VentoFinal,
-                           // ImagemCondicaoClimatica = imagemCondicaoClimatica,
+                            ImagemCondicaoClimatica = imagemCondicaoClimatica,
                             DataAplicacao = item.DataAplicacao
                         };
 
