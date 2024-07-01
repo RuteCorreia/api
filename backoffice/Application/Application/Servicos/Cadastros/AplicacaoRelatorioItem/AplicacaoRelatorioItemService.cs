@@ -16,10 +16,10 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync(int idRelatorioAplicacao)
+    public async Task<IEnumerable<RelatorioItemViewModel>> GetAllAsync(int idRelatorioAplicacao)
     {
         var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(idRelatorioAplicacao);
-        return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
+        return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
     }
 
     public async Task<IEnumerable<RelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
