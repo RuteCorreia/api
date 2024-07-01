@@ -48,7 +48,7 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         //var entities = await _contextBase.AplicacaoRelatorioItem.Where(aplicacaoRelatorioItem=> aplicacaoRelatorioItem.IdAplicacaoRelatorio == aplicacaoRelatorioId).ToListAsync();
         //return entities;
 
-        string query = "SELECT * FROM RelatorioAplicacaoItem WHERE IdAplicacaoRelatorio = @IdAplicacaoRelatorio";
+        string query = "SELECT * FROM AplicacaoRelatorioItem WHERE IdAplicacaoRelatorio = @IdAplicacaoRelatorio";
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(query, new { IdAplicacaoRelatorio = idAplicacaoRelatorio });
     }
 

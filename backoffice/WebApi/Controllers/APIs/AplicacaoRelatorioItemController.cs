@@ -29,7 +29,7 @@ namespace WebApi.Controllers.APIs
             _loggerService = loggerService;
         }
 
-        [HttpGet("{idAplicacaoRelatorio}")]
+        [HttpGet("getByIdAplicacaoRelatorio/{idAplicacaoRelatorio}")]
         public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll(int idAplicacaoRelatorio)
         {
             try
