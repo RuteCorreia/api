@@ -55,6 +55,10 @@ public class CombateIncendio
     [ForeignKey("ContratoPrestacaoServico")]
     public int? ContratoPrestacaoServicoId { get; set; }
 
+    public DateTime? DataCriacao { get; set; }
+
+    public DateTime? DataAlteracao { get; set; }
+
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
     [JsonIgnore]

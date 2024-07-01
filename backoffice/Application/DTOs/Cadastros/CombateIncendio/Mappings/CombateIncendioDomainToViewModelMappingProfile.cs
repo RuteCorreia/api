@@ -7,6 +7,7 @@ public class CombateIncendioDomainToViewModelMappingProfile : Profile
 {
     public CombateIncendioDomainToViewModelMappingProfile()
     {
-        CreateMap<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio, CombateIncendioViewModel>();
+        CreateMap<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio, CombateIncendioViewModel>()
+            .ForMember(dest => dest.IdExecutor, opt => opt.MapFrom(src => src.IdExecutor.ToString()));
     }
 }

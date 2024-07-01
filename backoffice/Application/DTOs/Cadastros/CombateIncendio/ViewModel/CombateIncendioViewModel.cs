@@ -40,4 +40,6 @@ public class CombateIncendioViewModel
     public string? CapacidadeCargaAeronave { get; set; }
     public string? Piloto { get; set; }
     public int? ContratoPrestacaoServicoId { get; set; }
+    public DateTime? DataCriacao { get; set; }
+    public DateTime? DataAlteracao { get; set; }
 }
