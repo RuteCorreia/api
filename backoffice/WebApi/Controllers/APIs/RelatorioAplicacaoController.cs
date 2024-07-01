@@ -370,7 +370,7 @@ namespace WebApi.Controllers.APIs
                         relatorioAplicacao = new
                         {
                             id = IdAplicacaoRelatorio,
-                            aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
+                            aplicacoes = aplicacoes.Select(item => item.Id).ToList()
                         },
                     };
                     
