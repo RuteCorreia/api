@@ -45,7 +45,7 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
 
             if (obj.Id > 0) 
             {
-                await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
+                await _identificacaoAreaTratadaRepository.UpdateAsync(mapIdentificacaoAreaTratada);
                 return mapIdentificacaoAreaTratada.Id;
             }  else {
                 return await _identificacaoAreaTratadaRepository.AddAsync(mapIdentificacaoAreaTratada);
