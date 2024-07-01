@@ -16,16 +16,16 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync()
+    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllAsync(int idRelatorioAplicacao)
     {
-        var list = await _aplicacaoRelatorioItemRepository.GetAllAsync();
+        var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(idRelatorioAplicacao);
         return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
     }
 
-    public async Task<IEnumerable<AplicacaoRelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
+    public async Task<IEnumerable<RelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
     {
         var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(aplicacaoRelatorioId);
-        return _mapper.Map<IEnumerable<AplicacaoRelatorioItemViewModel>>(list);
+        return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
     }
 
 
@@ -41,11 +41,14 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         await _aplicacaoRelatorioItemRepository.AddAsync(mapAplicacaoRelatorioItem);
     }
 
-    public async Task UpdateAsync(AplicacaoRelatorioItemViewModel obj)
-    {
-        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
-        await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
-    }
+    //public async Task UpdateAsync(List<AplicacaoRelatorioItemViewModel> objs)
+    //{
+    //    foreach (var obj in objs)
+    //    {
+    //        var mapAplicacaoRelatorioItem = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(obj);
+    //        await _aplicacaoRelatorioItemRepository.UpdateAsync(mapAplicacaoRelatorioItem);
+    //    }
+    //}
 
     public async Task DeleteAsync(int id)
     {

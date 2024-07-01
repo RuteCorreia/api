@@ -258,6 +258,7 @@ namespace WebApi.Controllers.APIs
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
+                            Id = item.Id,
                             IdAplicacaoRelatorio = item.IdAplicacaoRelatorio,
                             HoraInicio = item.HoraInicio,
                             HorimetroInicial = item.HorimetroInicial,
@@ -269,7 +270,7 @@ namespace WebApi.Controllers.APIs
                             UmidadeRelativaArFinal = item.UmidadeRelativaArFinal,
                             VentoInicial = item.VentoInicial,
                             VentoFinal = item.VentoFinal,
-                           // ImagemCondicaoClimatica = imagemCondicaoClimatica,
+                            ImagemCondicaoClimatica = imagemCondicaoClimatica,
                             DataAplicacao = item.DataAplicacao
                         };
 
@@ -352,8 +353,8 @@ namespace WebApi.Controllers.APIs
 
                     var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
                     
-                    var aplicacoes =  await _aplicacaoRelatorioItemService. GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
-                    
+                    var aplicacoes =  await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
+
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
                     var result = new
@@ -362,7 +363,7 @@ namespace WebApi.Controllers.APIs
                         contratanteId = Idcontratante,
                         identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
                         caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                        recomendacoesTecnicasId=IdrecomendacoesTecnicas,
+                        recomendacoesTecnicasId = IdrecomendacoesTecnicas,
                         contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
                         dadosResponsavelId = IdDadosResponsavel,
                         auxiliarPistaId = IdAuxiliarPista,
