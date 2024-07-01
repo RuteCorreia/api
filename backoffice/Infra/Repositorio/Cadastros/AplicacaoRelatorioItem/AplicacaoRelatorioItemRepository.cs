@@ -1,17 +1,23 @@
-﻿using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
+using System.Data.Common;
 
 namespace Infra.Repositorio.Cadastros.AplicacaoRelatorioItem;
 
 public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepository
 {
     private readonly ContextBase _contextBase;
+    private readonly IDbConnection _dbConnection;
 
-    public AplicacaoRelatorioItemRepository(ContextBase contextBase)
+    public AplicacaoRelatorioItemRepository(ContextBase contextBase, IDbConnection dbConnection)
     {
         _contextBase = contextBase;
+        _dbConnection = dbConnection;   
     }
 
     public async Task AddAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem obj)
@@ -37,10 +43,13 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
     }
 
 
-     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)
+     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllByAplicacaoRelatorioIdAsync(int idAplicacaoRelatorio)
     {
-        var entities = await _contextBase.AplicacaoRelatorioItem.Where(aplicacaoRelatorioItem=> aplicacaoRelatorioItem.IdAplicacaoRelatorio == aplicacaoRelatorioId).ToListAsync();
-        return entities;
+        //var entities = await _contextBase.AplicacaoRelatorioItem.Where(aplicacaoRelatorioItem=> aplicacaoRelatorioItem.IdAplicacaoRelatorio == aplicacaoRelatorioId).ToListAsync();
+        //return entities;
+
+        string query = "SELECT * FROM RelatorioAplicacao WHERE IdAplicacaoRelatorio = @IdAplicacaoRelatorio";
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(query, new { DataCriacao = idAplicacaoRelatorio });
     }
 
 
