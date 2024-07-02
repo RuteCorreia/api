@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
 
@@ -16,9 +17,10 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync()
+    public async Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var list = await _combateIncendioDecolagemPousoRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _combateIncendioDecolagemPousoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<CombateIncendioDecolagemPousoViewModel>>(list);
     }
 
@@ -28,9 +30,11 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
         return _mapper.Map<CombateIncendioDecolagemPousoViewModel>(obj);
     }
 
-    public async Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj)
+    public async Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
+        mapCombateIncendioDecolagemPouso.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var id = await _combateIncendioDecolagemPousoRepository.AddAsync(mapCombateIncendioDecolagemPouso);
         return id;
     }

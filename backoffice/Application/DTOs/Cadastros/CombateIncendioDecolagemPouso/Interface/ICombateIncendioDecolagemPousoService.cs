@@ -4,11 +4,11 @@ namespace Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
 
 public interface ICombateIncendioDecolagemPousoService 
 {
-    Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync();
+    Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<CombateIncendioDecolagemPousoViewModel> GetByIdAsync(int id);
 
-    Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj);
+    Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj);
 

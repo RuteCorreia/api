@@ -10,4 +10,5 @@ public class CombateIncendioDecolagemPousoViewModel
     public string? DecolagemHorimetro { get; set; }
     public DateTime? PousoHorario { get; set; }
     public string? PousoHorimetro { get; set; }
+    public string? IdEmpresa { get; set; }
 }
