@@ -70,9 +70,9 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                await _combateIncendioDecolagemPousoService.AddAsync(obj);
+                var id = await _combateIncendioDecolagemPousoService.AddAsync(obj);
                 _loggerService.LogInformation("Novo registro de Combate a Incêndio em Decolagem e Pouso adicionado com sucesso.");
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio em Decolagem e Pouso.");

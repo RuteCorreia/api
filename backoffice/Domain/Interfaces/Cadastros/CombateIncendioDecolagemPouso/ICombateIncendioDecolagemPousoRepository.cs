@@ -4,7 +4,7 @@ namespace Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 
 public interface ICombateIncendioDecolagemPousoRepository
 {
-    Task AddAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
+    Task<int> AddAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
     Task UpdateAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetAllAsync();

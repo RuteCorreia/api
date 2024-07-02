@@ -8,7 +8,7 @@ public interface ICombateIncendioDecolagemPousoService
 
     Task<CombateIncendioDecolagemPousoViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(CombateIncendioDecolagemPousoViewModel obj);
+    Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj);
 
     Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj);
 
