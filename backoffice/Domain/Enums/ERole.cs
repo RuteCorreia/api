@@ -11,5 +11,6 @@ public enum ERole
     Mecanico = 7,
     AuxiliarMecanico = 8,
     Administrador = 9,
-    PilotoRemoto = 10
+    PilotoRemoto = 10,
+    AuxiliarPista = 11
 }
