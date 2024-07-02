@@ -24,6 +24,12 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
         return _mapper.Map<IEnumerable<CombateIncendioDecolagemPousoViewModel>>(list);
     }
 
+    public async Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetByCombateIncendioIdAsync(int? combateIncendioId)
+    {
+        var list = await _combateIncendioDecolagemPousoRepository.GetByCombateIncendioIdAsync(combateIncendioId);
+        return _mapper.Map<IEnumerable<CombateIncendioDecolagemPousoViewModel>>(list);
+    }
+
     public async Task<CombateIncendioDecolagemPousoViewModel> GetByIdAsync(int id)
     {
         var obj = await _combateIncendioDecolagemPousoRepository.GetByIdAsync(id);
