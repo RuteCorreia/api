@@ -20,6 +20,7 @@ using Application.Application.Servicos.Cadastros.Cidades;
 using Application.Application.Servicos.Cadastros.Cliente;
 using Application.Application.Servicos.Cadastros.CombateIncendio;
 using Application.Application.Servicos.Cadastros.CombateIncendioDecolagemPouso;
+using Application.Application.Servicos.Cadastros.CombateIncendioPista;
 using Application.Application.Servicos.Cadastros.Combustivel;
 using Application.Application.Servicos.Cadastros.Componentes;
 using Application.Application.Servicos.Cadastros.Contratante;
@@ -73,6 +74,7 @@ using Application.DTOs.Cadastros.Cidades.Interface;
 using Application.DTOs.Cadastros.Cliente.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendioDecolagemPouso.Interface;
+using Application.DTOs.Cadastros.CombateIncendioPista.Interface;
 using Application.DTOs.Cadastros.Combustivel.Interface;
 using Application.DTOs.Cadastros.Componentes.Interface;
 using Application.DTOs.Cadastros.Contratante.Interface;
@@ -126,6 +128,7 @@ using Domain.Interfaces.Cadastros.Cidades;
 using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+using Domain.Interfaces.Cadastros.CombateIncendioPista;
 using Domain.Interfaces.Cadastros.Combustivel;
 using Domain.Interfaces.Cadastros.Componentes;
 using Domain.Interfaces.Cadastros.Contratante;
@@ -180,6 +183,7 @@ using Infra.Repositorio.Cadastros.Cidades;
 using Infra.Repositorio.Cadastros.Cliente;
 using Infra.Repositorio.Cadastros.CombateIncendio;
 using Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
+using Infra.Repositorio.Cadastros.CombateIncendioPista;
 using Infra.Repositorio.Cadastros.Combustivel;
 using Infra.Repositorio.Cadastros.Componentes;
 using Infra.Repositorio.Cadastros.Contratante;
@@ -254,6 +258,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICidadeService, CidadesService>();
         services.AddScoped<IClienteService, ClienteService>();
         services.AddScoped<ICombateIncendioService, CombateIncendioService>();
+        services.AddScoped<ICombateIncendioPistaService, CombateIncendioPistaService>();
         services.AddScoped<ICombateIncendioDecolagemPousoService, CombateIncendioDecolagemPousoService>();
         services.AddScoped<ICombustivelService, CombustivelService>();
         services.AddScoped<IControleDeFrotaService, ControleDeFrotaService>();
@@ -291,6 +296,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IVeiculoService, VeiculoService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IAuxiliarPistaService, AuxiliarPistaService>();
+        
 
         #endregion
 
@@ -314,6 +320,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ICidadeRepository, CidadesRepository>();
         services.AddScoped<IClienteRepository, ClienteRepository>();
         services.AddScoped<ICombateIncendioRepository, CombateIncendioRepository>();
+        services.AddScoped<ICombateIncendioPistaRepository, CombateIncendioPistaRepository>();
         services.AddScoped<ICombateIncendioDecolagemPousoRepository, CombateIncendioDecolagemPousoRepository>();
         services.AddScoped<ICombustivelRepository, CombustivelRepository>();
         services.AddScoped<IControleDeFrotaRepository, ControleDeFrotaRepository>();

@@ -24,7 +24,7 @@ public class CombateIncendio
 
     [ForeignKey("Pista")]
     public int? IdPista { get; set; }
-    public DateTime? Data { get; set; }
+    public string? Data { get; set; }
     public DateTime? HoraInicial { get; set; }
     public string? HorimetroAviao { get; set; }
     public string? LocalIncendioLat { get; set; }
@@ -45,6 +45,19 @@ public class CombateIncendio
     public string? ResponsavelOcorrenciaPosto { get; set; }
     public string? ResponsavelOcorrenciaRE { get; set; }
     public string? ResponsavelOcorrenciaAssinatura { get; set; }
+    public string? Cliente { get; set; }
+    public string? Cidade { get; set; }
+    public string? Uf { get; set; }
+    public string? Observacao { get; set; }
+    public string? CapacidadeCargaAeronave { get; set; }
+    public string? Piloto { get; set; }
+
+    [ForeignKey("ContratoPrestacaoServico")]
+    public int? ContratoPrestacaoServicoId { get; set; }
+
+    public DateTime? DataCriacao { get; set; }
+
+    public DateTime? DataAlteracao { get; set; }
 
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
@@ -54,4 +67,6 @@ public class CombateIncendio
     public virtual Aeronave.Aeronave? Aeronave { get; set; }
     [JsonIgnore]
     public virtual Pista? Pista { get; set; }
+    [JsonIgnore]
+    public virtual ContratoPrestacaoServico.ContratoPrestacaoServico? ContratoPrestacaoServico { get; set; }
 }

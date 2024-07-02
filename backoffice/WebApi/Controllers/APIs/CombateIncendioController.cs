@@ -4,6 +4,7 @@ using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -17,22 +18,28 @@ namespace WebApi.Controllers.APIs;
 public class CombateIncendioController : ControllerBase
 {
     private readonly ICombateIncendioService _combateIncendioService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly ILogService _loggerService;
 
-    public CombateIncendioController(ICombateIncendioService combateIncendioService, ILogService loggerService)
+    public CombateIncendioController(
+        ICombateIncendioService combateIncendioService,
+        LoggedUserInfoService loggedUserInfoService,
+        ILogService loggerService)
     {
         _combateIncendioService = combateIncendioService;
+        _loggedUserInfoService = loggedUserInfoService;
         _loggerService = loggerService;
     }
 
     [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<CombateIncendioViewModel>>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<CombateIncendioViewModel>>> GetAll(DateTime? date)
     {
         try
         {
-            var combustiveis = await _combateIncendioService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var combateIncendio = await _combateIncendioService.GetAllAsync(date, loggedUser.Item3);
             _loggerService.LogInformation("Todos os registros de Combate a Incêndio foram recuperados com sucesso.");
-            return Ok(combustiveis);
+            return Ok(combateIncendio);
         }
         catch (Exception ex)
         {
@@ -70,9 +77,10 @@ public class CombateIncendioController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                await _combateIncendioService.AddAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var id = await _combateIncendioService.AddAsync(obj, loggedUser.Item3);
                 _loggerService.LogInformation("Novo registro de Combate a Incêndio adicionado com sucesso.");
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio.");
@@ -85,24 +93,21 @@ public class CombateIncendioController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] CombateIncendioViewModel obj)
+    [HttpPut]
+    public async Task<ActionResult> Update([FromBody] CombateIncendioViewModel obj)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _combateIncendioService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                if (!ObjectNullValidation.IsObjectNull(obj))
                 {
-                    obj.Id = objeto.Id;
-                    await _combateIncendioService.UpdateAsync(obj);
-                    _loggerService.LogInformation($"Registro de Combate a Incêndio com ID {id} atualizado com sucesso.");
-                    return Ok("Sucesso");
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var id = await _combateIncendioService.UpdateAsync(obj, loggedUser.Item3);
+                    return Ok(id);
                 }
                 else
                 {
-                    _loggerService.LogWarning($"Registro de Combate a Incêndio com ID {id} não encontrado.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
@@ -112,7 +117,6 @@ public class CombateIncendioController : ControllerBase
         }
         catch (Exception ex)
         {
-            _loggerService.LogError(ex, $"Erro ao atualizar registro de Combate a Incêndio com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio update - {ex.Message}");
         }
     }

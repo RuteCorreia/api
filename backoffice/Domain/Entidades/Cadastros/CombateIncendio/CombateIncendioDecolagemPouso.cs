@@ -16,6 +16,12 @@ public class CombateIncendioDecolagemPouso
     public DateTime? PousoHorario { get; set; }
     public string? PousoHorimetro { get; set; }
 
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
+
     [JsonIgnore]
     public virtual CombateIncendio? CombateIncendio { get; set; }
+
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
 }

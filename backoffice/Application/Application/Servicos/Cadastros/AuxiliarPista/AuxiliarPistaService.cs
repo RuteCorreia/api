@@ -23,6 +23,10 @@ namespace Application.Application.Servicos.Cadastros.AuxiliarPista
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapAuxiliarPista = _mapper.Map<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(obj);
             mapAuxiliarPista.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+
+            //if (obj.Id > 0)
+            //    await _auxiliarPistaRepository.UpdateAsync(mapAuxiliarPista);
+
             var auxiliarPista = await _auxiliarPistaRepository.AddAsync(mapAuxiliarPista);
             return auxiliarPista;
         }

@@ -4,6 +4,7 @@ using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -17,11 +18,16 @@ namespace WebApi.Controllers.APIs;
 public class CombateIncendioDecolagemPousoController : ControllerBase
 {
     private readonly ICombateIncendioDecolagemPousoService _combateIncendioDecolagemPousoService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly ILogService _loggerService;
 
-    public CombateIncendioDecolagemPousoController(ICombateIncendioDecolagemPousoService combateIncendioDecolagemPousoService, ILogService loggerService)
+    public CombateIncendioDecolagemPousoController(
+        ICombateIncendioDecolagemPousoService combateIncendioDecolagemPousoService,
+        LoggedUserInfoService loggedUserInfoService,
+        ILogService loggerService)
     {
         _combateIncendioDecolagemPousoService = combateIncendioDecolagemPousoService;
+        _loggedUserInfoService = loggedUserInfoService;
         _loggerService = loggerService;
     }
 
@@ -30,7 +36,8 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
     {
         try
         {
-            var combustiveis = await _combateIncendioDecolagemPousoService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var combustiveis = await _combateIncendioDecolagemPousoService.GetAllAsync(loggedUser.Item3);
             _loggerService.LogInformation("Todos os registros de Combate a Incêndio em Decolagem e Pouso foram recuperados com sucesso.");
             return Ok(combustiveis);
         }
@@ -70,9 +77,10 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                await _combateIncendioDecolagemPousoService.AddAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var id = await _combateIncendioDecolagemPousoService.AddAsync(obj, loggedUser.Item3);
                 _loggerService.LogInformation("Novo registro de Combate a Incêndio em Decolagem e Pouso adicionado com sucesso.");
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _loggerService.LogWarning("Modelo inválido ao adicionar novo registro de Combate a Incêndio em Decolagem e Pouso.");

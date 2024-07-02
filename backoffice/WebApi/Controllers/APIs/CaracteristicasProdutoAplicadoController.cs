@@ -57,6 +57,8 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                
+
                 var obj = await _caracteristicasProdutoAplicadoService.GetByIdAsync(id, loggedUser.Item3);
                 if (obj is not null)
                     returnMsg.Clear();

@@ -762,6 +762,15 @@ namespace Infra.Migrations
                     b.Property<string>("Aviso")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("CapacidadeCargaAeronave")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cliente")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ComandanteOcorrenciaAssinatura")
                         .HasColumnType("nvarchar(max)");
 
@@ -773,6 +782,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("ComandanteOcorrenciaRE")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ContratoPrestacaoServicoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("CoordenadorBaseOperacionalAssinatura")
                         .HasColumnType("nvarchar(max)");
@@ -786,7 +798,13 @@ namespace Infra.Migrations
                     b.Property<string>("CoordenadorBaseOperacionalRE")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Data")
+                    b.Property<string>("Data")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCriacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("HoraInicial")
@@ -819,8 +837,14 @@ namespace Infra.Migrations
                     b.Property<string>("LocalIncendioLon")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Observacao")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("OrgaoPublico_Privado")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Piloto")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Referencia")
                         .HasColumnType("nvarchar(max)");
@@ -840,7 +864,12 @@ namespace Infra.Migrations
                     b.Property<int?>("TotalAguaUtilizadaOperacao")
                         .HasColumnType("int");
 
+                    b.Property<string>("Uf")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ContratoPrestacaoServicoId");
 
                     b.HasIndex("IdAeronave");
 
@@ -870,6 +899,9 @@ namespace Infra.Migrations
                     b.Property<int?>("IdCombateIncendio")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("PousoHorario")
                         .HasColumnType("datetime2");
 
@@ -880,7 +912,50 @@ namespace Infra.Migrations
 
                     b.HasIndex("IdCombateIncendio");
 
+                    b.HasIndex("IdEmpresa");
+
                     b.ToTable("CombateIncendioDecolagemPouso");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CodigoICAOPista")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CombateIncendioId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("HorarioChegadaPista")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HorimetroChegadaPista")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LatPista")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LongPista")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NomePista")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CombateIncendioId");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.ToTable("CombateIncendioPista");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Combustivel.Combustivel", b =>
@@ -2582,6 +2657,10 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio", b =>
                 {
+                    b.HasOne("Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico", "ContratoPrestacaoServico")
+                        .WithMany()
+                        .HasForeignKey("ContratoPrestacaoServicoId");
+
                     b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
                         .WithMany()
                         .HasForeignKey("IdAeronave");
@@ -2600,6 +2679,8 @@ namespace Infra.Migrations
 
                     b.Navigation("Aeronave");
 
+                    b.Navigation("ContratoPrestacaoServico");
+
                     b.Navigation("Empresa");
 
                     b.Navigation("Executor");
@@ -2613,7 +2694,30 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdCombateIncendio");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
                     b.Navigation("CombateIncendio");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio", "CombateIncendio")
+                        .WithMany()
+                        .HasForeignKey("CombateIncendioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.Navigation("CombateIncendio");
+
+                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Componentes.Componentes", b =>

@@ -1,16 +1,20 @@
-﻿using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
 
 public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagemPousoRepository
 {
+    private readonly IDbConnection _dbConnection;
     private readonly ContextBase _contextBase;
 
-    public CombateIncendioDecolagemPousoRepository(ContextBase contextBase)
+    public CombateIncendioDecolagemPousoRepository(IDbConnection dbConnection, ContextBase contextBase)
     {
+        _dbConnection = dbConnection;
         _contextBase = contextBase;
     }
 
@@ -31,10 +35,10 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetAllAsync(int? idEmpresa)
     {
-        var entities = await _contextBase.CombateIncendioDecolagemPouso.ToListAsync();
-        return entities;
+        string query = "SELECT * FROM CombateIncendioDecolagemPouso WHERE IdEmpresa = @IdEmpresa";
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(query, new { IdEmpresa = idEmpresa });
     }
 
     public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> GetByIdAsync(int id)

@@ -13,7 +13,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,12 +29,12 @@ namespace WebApi.Controllers.APIs
             _loggerService = loggerService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll()
+        [HttpGet("getByIdAplicacaoRelatorio/{idAplicacaoRelatorio}")]
+        public async Task<ActionResult<IEnumerable<AplicacaoRelatorioItemViewModel>>> GetAll(int idAplicacaoRelatorio)
         {
             try
             {
-                var itens = await _aplicacaoRelatorioItemService.GetAllAsync();
+                var itens = await _aplicacaoRelatorioItemService.GetAllAsync(idAplicacaoRelatorio);
                 _loggerService.LogInformation("Todos os itens do relatório de aplicação foram recuperados com sucesso.");
                 return Ok(itens);
             }

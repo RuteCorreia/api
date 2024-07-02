@@ -33,6 +33,7 @@ public class AplicacaoAreaTratadaRepository : IAplicacaoAreaTratadaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoAreaTratada>> GetAllAsync()
     {
         var entities = await _contextBase.AplicacaoAreaTratada.ToListAsync();
+
         return entities;
     }
 

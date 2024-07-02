@@ -104,6 +104,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<ImportacaoPlanilhas> ImportacaoPlanilha { get; set; }
     public DbSet<LogEntry> Logs { get; set; }
     public DbSet<Veiculo> Veiculo { get; set; }
+    public DbSet<CombateIncendioPista> CombateIncendioPista { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

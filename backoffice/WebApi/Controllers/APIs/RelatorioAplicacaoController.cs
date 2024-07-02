@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
@@ -51,6 +52,7 @@ namespace WebApi.Controllers.APIs
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IAuxiliarPistaService _auxiliarPistaService;
         private readonly IContratanteService _contratanteService;
+        private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
         private readonly ILogService _logService;
         
         
@@ -65,6 +67,7 @@ namespace WebApi.Controllers.APIs
             LoggedUserInfoService loggedUserInfoService,
             IAuxiliarPistaService auxiliarPistaService,
             IContratanteService contratanteService,
+            IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
             ILogService logService            
             )
         {
@@ -78,16 +81,19 @@ namespace WebApi.Controllers.APIs
             _loggedUserInfoService = loggedUserInfoService;
             _auxiliarPistaService = auxiliarPistaService;
             _contratanteService = contratanteService;
+            _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
             _logService = logService;  
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetAll(DateTime? date)
         {
             try
             {
-                var relatorios = await _relatorioAplicacaoService.GetAllAsync();
-                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date,loggedUser.Item3);
+                _logService.LogInformation("Obter todos os relatórios novos.");
                 return Ok(relatorios);
             }
             catch (Exception ex)
@@ -104,6 +110,40 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var relatorios = await _relatorioAplicacaoService.GetAllByIdEmpresaAsync(loggedUser.Item3);
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getByDataCriacao")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataCriacao(DateTime date)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetByDataCriacaoAsync(date,loggedUser.Item3);
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getByDataAlteracao")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataAlteracao(DateTime date)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetByDataAlteracaoAsync(date, loggedUser.Item3);
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
                 return Ok(relatorios);
             }
@@ -206,6 +246,7 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
+                    
                     var aplicacaoRelatorio = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var aplicacoesViewModel = aplicacaoRelatorio.Aplicacoes;
                     var listaAplicacaoRelatorioItem = new List<RelatorioItemViewModel>();
@@ -213,9 +254,11 @@ namespace WebApi.Controllers.APIs
                     {
                         var item = aplicacoesViewModel[i];
                         string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
+                        
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
+                            Id = item.Id,
                             IdAplicacaoRelatorio = item.IdAplicacaoRelatorio,
                             HoraInicio = item.HoraInicio,
                             HorimetroInicial = item.HorimetroInicial,
@@ -308,27 +351,32 @@ namespace WebApi.Controllers.APIs
 
 
 
-                    var relatorioAplicacaoId = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
+                    var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
+                    
+                    var aplicacoes =  await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
 
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
-                    //var result = new
-                    //{
-                    //    id = relatorioAplicacaoId,
-                    //    contratanteId = Idcontratante,
-                    //    identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
-                    //    caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
-                    //    recomendacoesTecnicasId=IdrecomendacoesTecnicas,
-                    //    relatorioAplicacao = new
-                    //    {
-                    //        id = relatorioAplicacaoId,
-                    //        aplicacoes = new int[] { 1, 2 }
-                    //    },
-                    //    contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
-                    //    dadosResponsavelId= IdDadosResponsavel
-                    //};
-
-                    return Ok(relatorioAplicacaoId);
+                    var result = new
+                    {
+                        id = relatorioAplicacao.Id,
+                        contratanteId = Idcontratante,
+                        identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
+                        caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
+                        recomendacoesTecnicasId = IdrecomendacoesTecnicas,
+                        contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
+                        dadosResponsavelId = IdDadosResponsavel,
+                        auxiliarPistaId = IdAuxiliarPista,
+                        relatorioAplicacao = new
+                        {
+                            id = IdAplicacaoRelatorio,
+                            aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
+                        },
+                    };
+                    
+                    //return Ok(relatorioAplicacaoId);
+                    var jsonResult = JsonConvert.SerializeObject(result);
+                    return Ok(result);
                 }
 
                 //_logService.LogWarning("Modelo inválido ao adicionar novo relatório de aplicação.");
