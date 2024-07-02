@@ -12,7 +12,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -63,6 +63,28 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao recuperar o alvo biológico com ID {id}.");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getById - {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetByIdCultura/{id:int}")]
+        public async Task<ActionResult<IAsyncEnumerable<AlvoBiologicoViewModel>>> GetByIdCultura(int id)
+        {
+            try
+            {
+                var alvosBiologicos = await _alvoBiologicoService.GetByIdCulturaAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(alvosBiologicos))
+                {
+                    _logService.LogInformation($"Alvos biológicos com ID Cultura {id} foram recuperados com sucesso.");
+                    return Ok(alvosBiologicos);
+                }
+
+                _logService.LogWarning($"Alvos biológicos com ID Cultura {id} não encontrados.");
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar os alvos biológicos com ID Cultura {id}.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getByIdCultura - {ex.Message}");
             }
         }
 

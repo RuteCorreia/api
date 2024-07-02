@@ -8,6 +8,8 @@ public interface IAlvoBiologicoService
 
     Task<AlvoBiologicoViewModel> GetByIdAsync(int id);
 
+    Task<IEnumerable<AlvoBiologicoViewModel>> GetByIdCulturaAsync(int id);
+
     Task<AlvoBiologicoViewModel> GetByName(string name);
 
     Task AddAsync(AlvoBiologicoViewModel obj);

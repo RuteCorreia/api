@@ -42,6 +42,12 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         return obj;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByIdCulturaAsync(int id)
+    {
+        var entities = await _contextBase.BulaAplicacao.Where(w => w.IdCultura == id).GroupBy(g => g.IdAlvoBiologico).Select(g => g.FirstOrDefault().AlvoBiologico).ToListAsync();
+        return entities;
+    }
+
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name)
     {
         var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name).FirstOrDefault();
