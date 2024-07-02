@@ -148,7 +148,7 @@ namespace WebApi.Controllers.APIs
                         decolagemPousoFirefighting.DecolagemHorimetro = dpff.HorimetroDecolagem;
                         decolagemPousoFirefighting.PousoHorario = dpff.HorarioPouso;
                         decolagemPousoFirefighting.PousoHorimetro = dpff.HorimetroPouso;
-                        var decolagemPousoFirefightingService = _decolagemPousoFirefightingService.AddAsync(decolagemPousoFirefighting);
+                        var decolagemPousoFirefightingService = _decolagemPousoFirefightingService.AddAsync(decolagemPousoFirefighting, loggedUser.Item3);
                         decolagemPousoFirefightingIdLista.Add(decolagemPousoFirefightingService.Result);
                     }
                     #endregion
