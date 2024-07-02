@@ -82,8 +82,8 @@ public class ContratoPrestacaoServicoController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _contratoPrestacaoServicoService.AddAsync(obj, loggedUser.Item3);
-                returnMsg.Clear();
+                var id = await _contratoPrestacaoServicoService.AddAsync(obj, loggedUser.Item3);
+                return Ok(id);
             }
 
             return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
