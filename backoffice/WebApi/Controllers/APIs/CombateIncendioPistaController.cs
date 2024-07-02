@@ -9,7 +9,7 @@ using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
     [ApiController]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
