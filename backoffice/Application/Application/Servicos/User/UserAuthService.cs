@@ -15,6 +15,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Web;
+using System.Text.RegularExpressions;
 
 namespace Application.Application.Servicos.User;
 
@@ -398,10 +399,18 @@ public class UserAuthService : IUserAuthService
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser != null)
         {
+            if (user.NewPassword.Length < 6 ||
+            !user.NewPassword.Any(char.IsUpper) ||
+            !Regex.IsMatch(user.NewPassword, @"[^a-zA-Z0-9]"))
+            {
+                resultMsg.Clear().Append("A senha deve conter pelo menos 6 digitos, sendo pelo menos um Maiusculo e um Especial");
+                return (false, resultMsg.ToString());
+            }
+
             var tokenValid = await _userManager.VerifyUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword", user.Token);
             if (!tokenValid)
             {
-                resultMsg.Clear().Append("Token inválido ou expirado.");
+                resultMsg.Clear().Append("Recuperação de senha inválida ou expirada. Solicite um novo email de recuperação");
                 return (false, resultMsg.ToString());
             }
 

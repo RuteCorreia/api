@@ -16,17 +16,18 @@ public class EmailService : IEmailService
     {
         _userManager = userManager;
     }
-    public async Task<string> GeneratePasswordResetTokenAsync(string email)
+    public async Task<(bool, string)> GeneratePasswordResetTokenAsync(string email)
     {
-
+        var resultMsg = new StringBuilder().Append("Envio de e-mail nao foi possivel, tente novamente");
         var identityUser = await _userManager.FindByEmailAsync(email);
         if (identityUser == null)
         {
-            return null;
+            resultMsg.Clear().Append("E-mail não cadastrado em nosso sistema!");
+            return (false,resultMsg.ToString());
         }
 
         var token = await _userManager.GenerateUserTokenAsync(identityUser, TokenOptions.DefaultProvider, "ResetPassword");
-        return token;
+        return (true,token);
 
 
     }
