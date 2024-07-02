@@ -63,6 +63,20 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("GetByCombateIncendioId/{combateIncendioId}")]
+        public async Task<ActionResult<IAsyncEnumerable<CombateIncendioPistaViewModel>>> GetByCombateIncendioId(int combateIncendioId)
+        {
+            try
+            {
+                var combateIncendio = await _combateIncendioPistaService.GetByCombateIncendioIdAsync(combateIncendioId);
+                return Ok(combateIncendio);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Combate a Incêndio: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] CombateIncendioPistaViewModel obj)
         {

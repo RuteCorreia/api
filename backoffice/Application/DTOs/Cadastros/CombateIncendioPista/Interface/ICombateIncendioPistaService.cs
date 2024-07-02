@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.CombateIncendioPista.ViewModel;
+using Domain.Entidades.Cadastros.CombateIncendio;
 
 namespace Application.DTOs.Cadastros.CombateIncendioPista.Interface
 {
@@ -12,6 +13,7 @@ namespace Application.DTOs.Cadastros.CombateIncendioPista.Interface
         Task<int> AddAsync(CombateIncendioPistaViewModel obj, string? idEmpresa);
 
         Task<int> UpdateAsync(CombateIncendioPistaViewModel obj, string? idEmpresa);
+        Task<IEnumerable<CombateIncendioPistaViewModel>> GetByCombateIncendioIdAsync(int combateIncendioId);
 
         Task DeleteAsync(int id);
     }
