@@ -92,44 +92,38 @@ public class AuthController : ControllerBase
     [HttpPost("sendEmailPassword")]
     public async Task<IActionResult> SendEmailChangePassword([FromBody] UserSendEmailResetPasswordViewModel model)
     {
-        var resultMsg = new StringBuilder();
+        var resultError = new StringBuilder().Append("Não foi possível enviar o e-mail, tente novamente");
         if (ModelState.IsValid) 
         {
-            var token = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
-            if(token == null) 
+            var (sucess, message) = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
+            if(sucess) 
             {
-                var problemDetails = new ProblemDetails
+                var emailContent = new EmailViewModel
                 {
-                    Status = 400,
-                    Title = "Bad Request",
-                    Detail = "Email não encontrado, verifique novamente."
+                    Recipient = model.Email,
+                    Title = "Recuperação de Senha",
+                    Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
+                    Link = $"http://localhost:4200/trocarSenha?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(model.Email)}",
+                    LinkText = "Criar Nova Senha"
                 };
 
-                return BadRequest(problemDetails);
+                try
+                {
+                    await _emailService.SendMailAsync(emailContent);
+                    return Ok(new { message = "E-mail de recuperação de senha enviado com sucesso." });
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao enviar e-mail de recuperação de senha: {ex.Message}");
+                }
             }
-                
-
-            var emailContent = new EmailViewModel
+            else
             {
-                Recipient = model.Email,
-                Title = "Recuperação de Senha",
-                Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                Link = $"http://localhost:4200/trocarSenha?token={HttpUtility.UrlEncode(token)}&email={HttpUtility.UrlEncode(model.Email)}",
-                LinkText = "Criar Nova Senha"
-            };
-
-            try
-            {
-                await _emailService.SendMailAsync(emailContent);
-                return Ok(new { message = "E-mail de recuperação de senha enviado com sucesso." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao enviar e-mail de recuperação de senha: {ex.Message}");
+                resultError.Clear();
+                resultError.Append(message);
             }
         }
-        return BadRequest(resultMsg.Append("Erro ao enviar e-mail de recuperação de senha, tente novamente").ToString());
-
+        return BadRequest(resultError.ToString());
     }
 
 
