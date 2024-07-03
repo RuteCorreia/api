@@ -11,7 +11,7 @@ public interface IEmpresaService
 
     Task<string> GetLogoByIdAsync(int id);
 
-    Task AddAsync(EmpresaViewModel obj);
+    Task<(bool, string)> AddAsync(EmpresaViewModel obj);
 
     Task UpdateAsync(EmpresaViewModel obj);
 

@@ -10,6 +10,7 @@ using Domain.Interfaces.Cadastros.Empresa;
 using System.Collections.Generic;
 using Domain.Interfaces.User;
 using System.Web;
+using System.Text;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -48,8 +49,9 @@ public class EmpresaService : IEmpresaService
         return _mapper.Map<EmpresaViewModel>(obj);
     }
 
-    public async Task AddAsync(EmpresaViewModel empresaViewModel)
+    public async Task<(bool, string)> AddAsync(EmpresaViewModel empresaViewModel)
     {
+        var resultMsg = new StringBuilder().Append("Envio de e-mail nao foi possivel, tente novamente");
         var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(empresaViewModel);
         await _empresaRepository.AddAsync(mapEmpresa);
         var empresaUserObj = GenerateEmpresaUserObj(mapEmpresa);
@@ -59,40 +61,51 @@ public class EmpresaService : IEmpresaService
         {
             if (usuario.PrimeiroAcesso)
             {
-                var resetToken = await _emailService.GeneratePasswordResetTokenAsync(empresaViewModel.Email);
+                var (sucess, message) = await _emailService.GeneratePasswordResetTokenAsync(empresaViewModel.Email);
 
-                if (resetToken != null)
+                if (sucess)
                 {
                     var emailContent = new EmailViewModel
                     {
                         Recipient = empresaViewModel.Email,
                         Title = "Cadastre sua Senha",
                         Body = $"Você está acessando pela primeira vez como uma empresa cadastrada. Por favor clique no link abaixo para criar uma nova senha.",
-                        Link = $"https://flytec-web.azurewebsites.net/primeiroAcessoEmpresa?token={HttpUtility.UrlEncode(resetToken)}&email={HttpUtility.UrlEncode(empresaViewModel.Email)}",
+                        Link = $"https://flytec-web.azurewebsites.net/primeiroAcessoEmpresa?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(empresaViewModel.Email)}",
                         LinkText = "Criar Nova Senha"
                     };
 
                     try
                     {
                         await _emailService.SendMailAsync(emailContent);
-                        Console.WriteLine("E-mail de criação de senha de primeiro acesso enviado com sucesso.");
+                        resultMsg.Clear().Append("E-mail de criação de senha de primeiro acesso enviado com sucesso.");
+                        return (true, resultMsg.ToString());
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"Erro ao enviar e-mail de de criação de senha: {ex.Message}");
+                        resultMsg.Clear().Append("Erro ao enviar e-mail de de criação de senha, tente novamente");
+                        return (false, resultMsg.ToString());
                     }
                 }
                 else
                 {
-                    Console.WriteLine("Erro ao gerar token de criação de senha.");
+                    resultMsg.Clear().Append("Usuario foi criado, mas tivemos um erro ao enviar o e-mail para criação de senha, por favor fale com o suporte");
+                    return (false, resultMsg.ToString());
                 }
+            }
+            else
+            {
+                resultMsg.Clear().Append("Empresa ja registrou primeiro acesso");
+                return (false, resultMsg.ToString());
             }
         }
         else
         {
             await _empresaRepository.DeleteAsync(mapEmpresa.IdEmpresa);
-            throw new Exception("Erro na criação do usuário da empresa. O cadastro não pôde ser realizado.");
+            resultMsg.Clear().Append("Erro na criação do usuário da empresa. O cadastro não pôde ser realizado.");
+            return (false, resultMsg.ToString());
         }
+
+
 
     }
 

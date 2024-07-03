@@ -11,7 +11,7 @@ public class EmpresaViewModel
     [MinLength(3)]
     [MaxLength(120)]
     public string Nome { get; set; }
-    public byte[] Imagem { get; set; }
+    public byte[]? Imagem { get; set; }
     public string? ImagemBase64 { get; set; }
 
     [Required]
