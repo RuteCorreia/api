@@ -58,6 +58,7 @@ public class CombateIncendio
     public DateTime? DataCriacao { get; set; }
 
     public DateTime? DataAlteracao { get; set; }
+    public int? StatusEnvio { get; set; }
 
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }

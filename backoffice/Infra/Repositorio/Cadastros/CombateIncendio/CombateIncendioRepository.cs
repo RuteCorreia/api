@@ -98,6 +98,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         objeto.ContratoPrestacaoServicoId = obj.ContratoPrestacaoServicoId;
         objeto.DataCriacao = obj.DataCriacao;
         objeto.DataAlteracao = obj.DataAlteracao;
+        objeto.StatusEnvio = obj.StatusEnvio;
 
         _contextBase.CombateIncendio.Update(objeto);
         await _contextBase.SaveChangesAsync();
