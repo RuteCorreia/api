@@ -41,6 +41,12 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(query, new { IdEmpresa = idEmpresa });
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetByCombateIncendioIdAsync(int? combateIncendioId)
+    {
+        string query = "SELECT * FROM CombateIncendioDecolagemPouso WHERE IdCombateIncendio = @IdCombateIncendio";
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(query, new { IdCombateIncendio = combateIncendioId });
+    }
+
     public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> GetByIdAsync(int id)
     {
         var obj = await _contextBase.CombateIncendioDecolagemPouso.FindAsync(id);

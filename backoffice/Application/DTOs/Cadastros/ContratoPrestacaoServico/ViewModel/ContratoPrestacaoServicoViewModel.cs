@@ -3,12 +3,12 @@
 public class ContratoPrestacaoServicoViewModel
 {
     public int Id { get; set; }
-    public string DistanciaPista { get; set; }
-    public string Preco { get; set; }
-    public string UnidadePreco { get; set; }
-    public string Extensao { get; set; }
-    public string ValorTotal { get; set; }
-    public string Vencimento { get; set; }
-    public string NomePiloto { get; set; }
-    public string Executor { get; set; }
+    public string? DistanciaPista { get; set; }
+    public string? Preco { get; set; }
+    public string? UnidadePreco { get; set; }
+    public string? Extensao { get; set; }
+    public string? ValorTotal { get; set; }
+    public string? Vencimento { get; set; }
+    public string? NomePiloto { get; set; }
+    public string? Executor { get; set; }
 }

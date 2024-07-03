@@ -40,6 +40,12 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendioPista
             return _mapper.Map<IEnumerable<CombateIncendioPistaViewModel>>(list);
         }
 
+        public async Task<IEnumerable<CombateIncendioPistaViewModel>> GetByCombateIncendioIdAsync(int combateIncendioId)
+        {
+            var list = await _combateIncendioPistaRepository.GetByCombateIncendioIdAsync(combateIncendioId);
+            return _mapper.Map<IEnumerable<CombateIncendioPistaViewModel>>(list);
+        }
+
         public async Task<CombateIncendioPistaViewModel> GetByIdAsync(int id)
         {
             var obj = await _combateIncendioPistaRepository.GetByIdAsync(id);

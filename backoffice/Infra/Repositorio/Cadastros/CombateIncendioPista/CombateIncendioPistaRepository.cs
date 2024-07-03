@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendioPista;
 using Helpers;
 using Infra.Configuracao;
@@ -31,6 +32,12 @@ namespace Infra.Repositorio.Cadastros.CombateIncendioPista
                 _contextBase.Remove(entityToRemove);
                 await _contextBase.SaveChangesAsync();
             }
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista>> GetByCombateIncendioIdAsync(int combateIncendioId)
+        {
+            string query = "SELECT * FROM CombateIncendioPista WHERE CombateIncendioId = @CombateIncendioId";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista>(query, new { CombateIncendioId = combateIncendioId });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista>> GetAllAsync(int? idEmpresa)

@@ -42,4 +42,5 @@ public class CombateIncendioViewModel
     public int? ContratoPrestacaoServicoId { get; set; }
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataAlteracao { get; set; }
+    public int? State { get; set; }
 }

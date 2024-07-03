@@ -48,6 +48,22 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         }
     }
 
+    [HttpGet("GetByCombateIncendioId/{combateIncendioId}")]
+    public async Task<ActionResult<IAsyncEnumerable<CombateIncendioDecolagemPousoViewModel>>> GetByCombateIncendioId(int combateIncendioId)
+    {
+        try
+        {
+            var result = await _combateIncendioDecolagemPousoService.GetByCombateIncendioIdAsync(combateIncendioId);
+            _loggerService.LogInformation("Todos os registros de Combate a Incêndio em Decolagem e Pouso foram recuperados com sucesso.");
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Combate a Incêndio em Decolagem e Pouso: {ex.Message}");
+        }
+    }
+
     [HttpGet("{id:int}")]
     public async Task<ActionResult<CombateIncendioDecolagemPousoViewModel>> GetById(int id)
     {

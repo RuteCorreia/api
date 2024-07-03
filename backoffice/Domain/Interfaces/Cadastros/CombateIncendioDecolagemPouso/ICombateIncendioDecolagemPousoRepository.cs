@@ -8,5 +8,6 @@ public interface ICombateIncendioDecolagemPousoRepository
     Task UpdateAsync(Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetAllAsync(int? idEmpresa);
+    Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>> GetByCombateIncendioIdAsync(int? combateIncendioId);
     Task<Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso> GetByIdAsync(int id);
 }

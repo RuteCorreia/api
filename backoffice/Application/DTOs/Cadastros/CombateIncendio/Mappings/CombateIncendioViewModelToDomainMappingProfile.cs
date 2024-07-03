@@ -8,7 +8,8 @@ namespace Application.DTOs.Cadastros.CombateIncendio.Mappings
         public CombateIncendioViewModelToDomainMappingProfile()
         {
             CreateMap<CombateIncendioViewModel, Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>()
-                .ForMember(dest => dest.IdExecutor, opt => opt.MapFrom(src => Guid.Parse(src.IdExecutor)));
+                .ForMember(dest => dest.IdExecutor, opt => opt.MapFrom(src => Guid.Parse(src.IdExecutor)))
+                .ForMember(dest => dest.StatusEnvio, opt => opt.MapFrom(src => src.State));
         }
     }
 }
