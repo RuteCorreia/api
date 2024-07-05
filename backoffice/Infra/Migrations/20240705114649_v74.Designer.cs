@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240705114649_v74")]
+    partial class v74
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1281,12 +1284,7 @@ namespace Infra.Migrations
                     b.Property<string>("Data")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("IdEmpresa")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("DataRelatorio");
                 });
@@ -2738,15 +2736,6 @@ namespace Infra.Migrations
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa");
-
-                    b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio", b =>
                 {
                     b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
                         .WithMany()

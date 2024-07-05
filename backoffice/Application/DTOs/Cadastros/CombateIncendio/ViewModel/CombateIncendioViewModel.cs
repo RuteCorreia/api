@@ -13,6 +13,7 @@ public class CombateIncendioViewModel
     public int? IdAeronave { get; set; }
     public int? IdPista { get; set; }
     public string? Data { get; set; }
+    public int? IdData { get; set; }
     public DateTime? HoraInicial { get; set; }
     public string? HorimetroAviao { get; set; }
     public string? LocalIncendioLat { get; set; }

@@ -38,14 +38,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                          RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
                          DadosResponsavelId, CulturaId, PilotoId, Piloto, 
                          ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
-                         DataCriacao, DataAlteracao, Data, RefUsuario, StatusEnvio, IdEmpresa)
+                         DataCriacao, DataAlteracao, Data, IdData, RefUsuario, StatusEnvio, IdEmpresa)
                         OUTPUT INSERTED.*
                         VALUES 
                         (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
                          @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
                          @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
-                         @DataCriacao, @DataAlteracao, @Data, @RefUsuario, @StatusEnvio, @IdEmpresa);
+                         @DataCriacao, @DataAlteracao, @Data, @IdData, @RefUsuario, @StatusEnvio, @IdEmpresa);
                         SELECT CAST(SCOPE_IDENTITY() as int)";
 
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
@@ -72,6 +72,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.IsDrone,
                         obj.RefDocument,
                         obj.Data,
+                        obj.IdData,
                         obj.DataCriacao,
                         obj.DataAlteracao,
                         obj.RefUsuario,

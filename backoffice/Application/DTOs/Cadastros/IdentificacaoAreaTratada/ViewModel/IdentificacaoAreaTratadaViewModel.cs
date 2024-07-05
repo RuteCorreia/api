@@ -13,23 +13,25 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel
         public int? Id { get; set; }
 
         [JsonPropertyName("uf")]
-        public string UF { get; set; }
+        public string? UF { get; set; }
 
         [JsonPropertyName("cidade")]
-        public string Cidade { get; set; }
+        public string? Cidade { get; set; }
 
         [JsonPropertyName("localizacao")]
-        public string Localizacao { get; set; }
-
+        public string? Localizacao { get; set; }
+        
         [JsonPropertyName("cultura")]
-        public string Cultura { get; set; }
+        public string? Cultura { get; set; }
 
         [JsonPropertyName("extensao")]
-        public string Extensao { get; set; }
+        public string? Extensao { get; set; }
 
         [JsonPropertyName("croquiArea")]
-        public DataFormatViewModel CroquiArea { get; set; }
+        public DataFormatViewModel? CroquiArea { get; set; }
         [JsonPropertyName("gravacao")]
-        public string Gravacao { get; set; }
+        public string? Gravacao { get; set; }
+
+        public string? Marcadores { get; set; }
     }
 }

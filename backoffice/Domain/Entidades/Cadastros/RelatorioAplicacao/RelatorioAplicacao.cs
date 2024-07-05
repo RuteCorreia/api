@@ -50,6 +50,9 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public bool? IsDrone { get; set; }
         public string RefDocument { get; set; }
         public string Data { get; set; }
+
+        [ForeignKey("DataRelatorio")]
+        public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
@@ -83,6 +86,9 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
 
         [JsonIgnore]
         public virtual Aplicacao.AplicacaoRelatorio? AplicacaoRelatorio { get; set; }
+
+        [JsonIgnore]
+        public virtual DataRelatorio.DataRelatorio? DataRelatorio { get; set; }
 
     }
 }
