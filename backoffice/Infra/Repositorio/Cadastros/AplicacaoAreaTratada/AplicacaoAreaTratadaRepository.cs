@@ -51,6 +51,7 @@ public class AplicacaoAreaTratadaRepository : IAplicacaoAreaTratadaRepository
         objeto.IdCidade = obj.IdCidade;
         objeto.Localizacao = obj.Localizacao;
         objeto.Extensao = obj.Extensao;
+        objeto.Marcadores = obj.Marcadores;
 
         _contextBase.AplicacaoAreaTratada.Update(objeto);
         await _contextBase.SaveChangesAsync();

@@ -18,6 +18,7 @@ namespace Domain.Entidades.Cadastros.IdentificacaoAreaTratada
         public string Extensao { get; set; }
         public string CroquiArea { get; set; }
         public string? GravacaoArea { get; set; }
+        public string? Marcadores { get; set; }
 
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }

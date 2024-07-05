@@ -19,8 +19,8 @@ public class DadosResponsavelRepository : IDadosResponsavelRepository
 
     public async Task<int> AddAsync(Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel obj)
     {
-        _contextBase.Add(obj);
-        _contextBase.SaveChanges();
+        await _contextBase.AddAsync(obj);
+        await _contextBase.SaveChangesAsync();
         return obj.Id;
     }
 

@@ -73,6 +73,7 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
             objeto.Extensao = obj.Extensao;
             objeto.Cidade = obj.Cidade;
             objeto.CroquiArea = obj.CroquiArea;
+            objeto.Marcadores = obj.Marcadores;
 
             _contextBase.IdentificacaoAreaTratada.Update(objeto);
             await _contextBase.SaveChangesAsync();

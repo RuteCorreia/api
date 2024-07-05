@@ -25,6 +25,9 @@ public class CombateIncendio
     [ForeignKey("Pista")]
     public int? IdPista { get; set; }
     public string? Data { get; set; }
+
+    [ForeignKey("DataRelatorio")]
+    public int? IdData { get; set; }
     public DateTime? HoraInicial { get; set; }
     public string? HorimetroAviao { get; set; }
     public string? LocalIncendioLat { get; set; }
@@ -70,4 +73,7 @@ public class CombateIncendio
     public virtual Pista? Pista { get; set; }
     [JsonIgnore]
     public virtual ContratoPrestacaoServico.ContratoPrestacaoServico? ContratoPrestacaoServico { get; set; }
+
+    [JsonIgnore]
+    public virtual DataRelatorio.DataRelatorio? DataRelatorio { get; set; }
 }

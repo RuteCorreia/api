@@ -64,7 +64,10 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     {
         var objeto = await _contextBase.CombateIncendio.FindAsync(obj.Id);
         objeto.IdEmpresa = obj.IdEmpresa;
-        objeto.IdExecutor = obj.IdExecutor;
+        if (obj.IdExecutor != null)
+        {
+            objeto.IdExecutor = obj.IdExecutor;
+        }
         objeto.OrgaoPublico_Privado = obj.OrgaoPublico_Privado;
         objeto.Aviso = obj.Aviso;
         objeto.IdAeronave = obj.IdAeronave;

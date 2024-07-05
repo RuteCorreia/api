@@ -32,7 +32,8 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int? AuxiliarPistaId { get; set; }
         public bool? IsDrone { get; set; }
         public string RefDocument { get; set; }
-        public string Data { get; set; }
+        public string? Data { get; set; }
+        public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }

@@ -39,6 +39,7 @@ using Microsoft.EntityFrameworkCore;
 using Domain.Entidades.Cadastros.RelatorioIncendio;
 using Domain.Entidades.Cadastros.LocalIncendio;
 using Domain.Entidades.Cadastros.AuxiliarPista;
+using Domain.Entidades.Cadastros.DataRelatorio;
 
 namespace Infra.Configuracao;
 
@@ -105,6 +106,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<LogEntry> Logs { get; set; }
     public DbSet<Veiculo> Veiculo { get; set; }
     public DbSet<CombateIncendioPista> CombateIncendioPista { get; set; }
+    public DbSet<DataRelatorio> DataRelatorio { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
