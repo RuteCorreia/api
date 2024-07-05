@@ -78,14 +78,15 @@ namespace WebApi.Controllers.APIs
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] DataRelatorioViewModel obj)
         {
+            
             try
             {
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    await _dataRelatorioService.AddAsync(obj, loggedUser.Item3);
+                    var Id = await _dataRelatorioService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Identificação de área tratada adicionada com sucesso.");
-                    return Ok();
+                    return Ok(Id);
                 }
 
                 return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");

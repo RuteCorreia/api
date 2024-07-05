@@ -189,7 +189,7 @@ namespace WebApi.Controllers.APIs
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
-                    var data = obj.GetProperty("data").ToString();
+                 //   var data = obj.GetProperty("data").ToString();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
                     var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone 
