@@ -28,6 +28,12 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         return _mapper.Map<AlvoBiologicoViewModel>(obj);
     }
 
+    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetByIdCulturaAsync(int id)
+    {
+        var list = await _alvoBiologicoRepository.GetByIdCulturaAsync(id);
+        return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
+    }
+
     public async Task AddAsync(AlvoBiologicoViewModel obj)
     {
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
