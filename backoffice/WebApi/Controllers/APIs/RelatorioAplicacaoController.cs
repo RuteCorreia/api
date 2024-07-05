@@ -224,6 +224,8 @@ namespace WebApi.Controllers.APIs
                         Gravacao = identificacaoAreaTratadaViewModel.Gravacao,
                         Marcadores = identificacaoAreaTratadaViewModel.Marcadores
                     };
+                    Console.WriteLine(">>>>>>>>>>>>>>");
+                    Console.WriteLine(identificacaoAreaTratadaViewModel.Marcadores);
 
                     var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
@@ -243,7 +245,7 @@ namespace WebApi.Controllers.APIs
                         TipoServico = caracteristicasProdutoAplicadoViewModel.TipoServico,
                         NumeroReceituarioAgronomico = caracteristicasProdutoAplicadoViewModel.NumeroReceituarioAgronomico,
                         DataEmissao = caracteristicasProdutoAplicadoViewModel.DataEmissao,
-                        IsReceituarioImage = caracteristicasProdutoAplicadoViewModel.IsReceituarioImage
+                        IsReceituarioImage = caracteristicasProdutoAplicadoViewModel.IsReceituarioImage,
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
@@ -332,7 +334,7 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.Id = 0;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
-                    //relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.Data = data;
                     relatorioAplicacaoViewModel.IsDrone = isDrone;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
@@ -349,7 +351,7 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
                     relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
                     relatorioAplicacaoViewModel.State = statusEnvio;
-
+                    relatorioAplicacaoViewModel.IdData = IdData;
 
 
                     var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
@@ -368,6 +370,7 @@ namespace WebApi.Controllers.APIs
                         contratoPrestacaoServicoId = IdcontratoPrestacaoServico,
                         dadosResponsavelId = IdDadosResponsavel,
                         auxiliarPistaId = IdAuxiliarPista,
+                        idData = IdData,
                         relatorioAplicacao = new
                         {
                             id = IdAplicacaoRelatorio,

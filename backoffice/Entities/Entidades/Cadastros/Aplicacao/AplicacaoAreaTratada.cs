@@ -32,5 +32,7 @@ namespace Entities.Entidades.Cadastros.Aplicacao
         public virtual Estados.Estados? Estado { get; set; }
         [JsonIgnore]
         public virtual Cidades.Cidades? Cidade { get; set; }
+
+        public string? Marcadores { get; set; }
     }
 }

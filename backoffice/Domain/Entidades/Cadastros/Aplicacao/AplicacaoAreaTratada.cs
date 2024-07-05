@@ -20,6 +20,8 @@ public class AplicacaoAreaTratada
     public string Localizacao { get; set; }
     public decimal? Extensao { get; set; }
 
+    public string? Marcadores { get; set; }
+
     [JsonIgnore]
     public virtual Aplicacao? Aplicacao { get; set; }
     [JsonIgnore]
