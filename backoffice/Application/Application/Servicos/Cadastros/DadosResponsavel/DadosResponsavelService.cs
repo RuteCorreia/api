@@ -31,7 +31,7 @@ public class DadosResponsavelService : IDadosResponsavelService
             NomeCompleto = obj.NomeCompleto,
             Documento = obj.Documento,
             Telefone = obj.Telefone,
-            assinaturaResponsavel = Convert.FromBase64String(obj.assinaturaResponsavel),
+            assinaturaResponsavel = obj.assinaturaResponsavel==null?null:Convert.FromBase64String(obj.assinaturaResponsavel),
             IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt
         };
 
