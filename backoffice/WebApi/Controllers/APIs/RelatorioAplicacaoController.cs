@@ -331,7 +331,7 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.Id = 0;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
-                    relatorioAplicacaoViewModel.Data = data;
+                    //relatorioAplicacaoViewModel.Data = data;
                     relatorioAplicacaoViewModel.IsDrone = isDrone;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
