@@ -28,6 +28,7 @@ using Application.Application.Servicos.Cadastros.ContratoPrestacaoServico;
 using Application.Application.Servicos.Cadastros.ControleDeFrota;
 using Application.Application.Servicos.Cadastros.Cultura;
 using Application.Application.Servicos.Cadastros.DadosResponsavel;
+using Application.Application.Servicos.Cadastros.DataRelatorio;
 using Application.Application.Servicos.Cadastros.Empresa;
 using Application.Application.Servicos.Cadastros.Engenheiro;
 using Application.Application.Servicos.Cadastros.Equipamento;
@@ -82,6 +83,7 @@ using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Cultura.Interface;
 using Application.DTOs.Cadastros.DadosResponsavel.Interface;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Engenheiro.Interface;
 using Application.DTOs.Cadastros.Equipamento.Interface;
@@ -136,6 +138,7 @@ using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.DadosResponsavel;
+using Domain.Interfaces.Cadastros.DataRelatorio;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Equipamento;
@@ -191,6 +194,7 @@ using Infra.Repositorio.Cadastros.ContratoPrestacaoServico;
 using Infra.Repositorio.Cadastros.Controle_De_Frota;
 using Infra.Repositorio.Cadastros.Cultura;
 using Infra.Repositorio.Cadastros.DadosResponsavel;
+using Infra.Repositorio.Cadastros.DataRelatorio;
 using Infra.Repositorio.Cadastros.Empresa;
 using Infra.Repositorio.Cadastros.Engenheiro;
 using Infra.Repositorio.Cadastros.Equipamento;
@@ -284,6 +288,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IVeiculoService, VeiculoService>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IAuxiliarPistaService, AuxiliarPistaService>();
+        services.AddScoped<IDataRelatorioService, DataRelatorioService>();
         
 
         #endregion
@@ -344,6 +349,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ILogRepository, LogRepository>();
         services.AddScoped<IVeiculoRepository, VeiculoRepository>();
         services.AddScoped<IAuxiliarPistaRepository, AuxiliarPistaRepository>();
+        services.AddScoped<IDataRelatorioRepository, DataRelatorioRepository>();
 
         #endregion
 
