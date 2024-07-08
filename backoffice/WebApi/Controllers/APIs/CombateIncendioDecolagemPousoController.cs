@@ -122,12 +122,10 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
                     obj.Id = objeto.Id;
 
                     await _combateIncendioDecolagemPousoService.UpdateAsync(obj);
-                    _loggerService.LogInformation($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} atualizado com sucesso.");
                     return Ok("Sucesso");
                 }
                 else
                 {
-                    _loggerService.LogWarning($"Registro de Combate a Incêndio em Decolagem e Pouso com ID {id} não encontrado.");
                     return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
                 }
             }
