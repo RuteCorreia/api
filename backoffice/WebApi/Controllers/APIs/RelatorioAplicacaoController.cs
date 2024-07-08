@@ -184,7 +184,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     //_logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
-
+                    
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
@@ -193,6 +193,8 @@ namespace WebApi.Controllers.APIs
                     var IdData = obj.GetProperty("idData").GetInt32();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
+                    var Id = obj.GetProperty("id").GetInt32();
+                    
                     var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
@@ -209,6 +211,7 @@ namespace WebApi.Controllers.APIs
                     var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
                     //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
+               
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
                     var identificacaoAreaTratadaViewModel = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
@@ -331,7 +334,7 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacaoViewModel = new RelatorioAplicacaoViewModel();
                     relatorioAplicacaoViewModel.Piloto = piloto;
                     relatorioAplicacaoViewModel.Executor = executor;
-                    relatorioAplicacaoViewModel.Id = 0;
+                    relatorioAplicacaoViewModel.Id = Id;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                    // relatorioAplicacaoViewModel.Data = data;
