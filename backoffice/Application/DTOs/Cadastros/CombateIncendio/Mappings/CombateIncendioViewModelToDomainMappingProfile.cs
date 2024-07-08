@@ -9,6 +9,7 @@ namespace Application.DTOs.Cadastros.CombateIncendio.Mappings
         {
             CreateMap<CombateIncendioViewModel, Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>()
                 .ForMember(dest => dest.IdExecutor, opt => opt.MapFrom(src => Guid.Parse(src.IdExecutor)))
+                .ForMember(dest => dest.HorimetroAviao, opt => opt.MapFrom(src => src.HorimetroAviao))
                 .ForMember(dest => dest.StatusEnvio, opt => opt.MapFrom(src => src.State));
         }
     }

@@ -94,6 +94,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         objeto.ResponsavelOcorrenciaRE = obj.ResponsavelOcorrenciaRE;
         objeto.ResponsavelOcorrenciaAssinatura = obj.ResponsavelOcorrenciaAssinatura;
         objeto.Cidade = obj.Cidade;
+        objeto.Cliente = obj.Cliente;
         objeto.Uf = obj.Uf;
         objeto.Observacao = obj.Observacao;
         objeto.CapacidadeCargaAeronave = obj.CapacidadeCargaAeronave;
