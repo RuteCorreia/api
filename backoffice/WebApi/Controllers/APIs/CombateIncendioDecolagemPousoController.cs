@@ -121,8 +121,8 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
                 {
                     obj.Id = objeto.Id;
 
-                    await _combateIncendioDecolagemPousoService.UpdateAsync(obj);
-                    return Ok("Sucesso");
+                    var result = await _combateIncendioDecolagemPousoService.UpdateAsync(obj);
+                    return Ok(result);
                 }
                 else
                 {

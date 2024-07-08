@@ -3,6 +3,7 @@ using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace Infra.Repositorio.Cadastros.CombateIncendioDecolagemPouso;
@@ -53,7 +54,7 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
         return obj;
     }
 
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj)
+    public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso obj)
     {
         var objeto = await _contextBase.CombateIncendioDecolagemPouso.FindAsync(obj.Id);
         objeto.IdCombateIncendio = obj.IdCombateIncendio;
@@ -64,5 +65,6 @@ public class CombateIncendioDecolagemPousoRepository : ICombateIncendioDecolagem
 
         _contextBase.CombateIncendioDecolagemPouso.Update(objeto);
         await _contextBase.SaveChangesAsync();
+        return objeto.Id;
     }
 }
