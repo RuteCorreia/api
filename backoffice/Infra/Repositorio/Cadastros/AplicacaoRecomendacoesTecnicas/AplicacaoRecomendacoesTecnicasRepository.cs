@@ -79,6 +79,7 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
         objeto.NomeEquipamento = obj.NomeEquipamento;
         objeto.TipoDeProduto = obj.TipoDeProduto;
         objeto.UnidadeVolumeAplicacao = obj.UnidadeVolumeAplicacao;
+        objeto.Veinculante = obj.Veinculante;
         objeto.Angulo = obj.Angulo;
 
         _contextBase.AplicacaoRecomendacoesTecnicas.Update(objeto);
