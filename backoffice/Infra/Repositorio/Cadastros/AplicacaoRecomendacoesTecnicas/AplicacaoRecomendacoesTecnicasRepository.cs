@@ -75,6 +75,11 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
         objeto.VelocidadeVento = obj.VelocidadeVento;
         objeto.IdTipoDeProduto = obj.IdTipoDeProduto;
         objeto.IdEquipamento = obj.IdEquipamento;
+        objeto.NomeAeronave = obj.NomeAeronave;
+        objeto.NomeEquipamento = obj.NomeEquipamento;
+        objeto.TipoDeProduto = obj.TipoDeProduto;
+        objeto.UnidadeVolumeAplicacao = obj.UnidadeVolumeAplicacao;
+        objeto.Veinculante = obj.Veinculante;
         objeto.Angulo = obj.Angulo;
 
         _contextBase.AplicacaoRecomendacoesTecnicas.Update(objeto);

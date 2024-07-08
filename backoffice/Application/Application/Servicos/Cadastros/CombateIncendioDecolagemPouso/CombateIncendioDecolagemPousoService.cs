@@ -45,10 +45,11 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
         return id;
     }
 
-    public async Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj)
+    public async Task<int> UpdateAsync(CombateIncendioDecolagemPousoViewModel obj)
     {
         var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
-        await _combateIncendioDecolagemPousoRepository.UpdateAsync(mapCombateIncendioDecolagemPouso);
+        var result = await _combateIncendioDecolagemPousoRepository.UpdateAsync(mapCombateIncendioDecolagemPouso);
+        return result;
     }
 
     public async Task DeleteAsync(int id)

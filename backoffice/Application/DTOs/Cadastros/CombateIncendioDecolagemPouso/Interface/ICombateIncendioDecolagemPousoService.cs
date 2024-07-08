@@ -12,7 +12,7 @@ public interface ICombateIncendioDecolagemPousoService
 
     Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj, string? idEmpresa);
 
-    Task UpdateAsync(CombateIncendioDecolagemPousoViewModel obj);
+    Task<int> UpdateAsync(CombateIncendioDecolagemPousoViewModel obj);
 
     Task DeleteAsync(int id);
 }

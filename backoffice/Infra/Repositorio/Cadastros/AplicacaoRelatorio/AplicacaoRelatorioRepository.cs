@@ -52,6 +52,14 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
         objeto.VolumeAplicacao = obj.VolumeAplicacao;
         objeto.TotalAreaAplicada = obj.TotalAreaAplicada;
         objeto.Alteracoes_Observacoes = obj.Alteracoes_Observacoes;
+        objeto.Cultura = obj.Cultura;
+        objeto.Densidade = obj.Densidade;
+        objeto.Latitude = obj.Latitude;
+        objeto.Longitude = obj.Longitude;
+        objeto.LocalizacaoPistaCodigoICAO = obj.LocalizacaoPistaCodigoICAO;
+        objeto.ProdutoAplicado = obj.ProdutoAplicado;
+        objeto.RelatorioDGPS = obj.RelatorioDGPS;
+        objeto.UnidadeVolumeAplicacao = obj.UnidadeVolumeAplicacao;
 
         _contextBase.AplicacaoRelatorio.Update(objeto);
         await _contextBase.SaveChangesAsync();

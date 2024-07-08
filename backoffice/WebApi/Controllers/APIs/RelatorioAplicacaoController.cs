@@ -211,7 +211,7 @@ namespace WebApi.Controllers.APIs
                     var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
                     //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
-               
+
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);
 
                     var identificacaoAreaTratadaViewModel = JsonConvert.DeserializeObject<IdentificacaoAreaTratadaViewModel>(identificacaoAreaTratadaJson);
