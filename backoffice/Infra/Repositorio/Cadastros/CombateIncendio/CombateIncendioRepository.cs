@@ -64,7 +64,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     {
         var objeto = await _contextBase.CombateIncendio.FindAsync(obj.Id);
         objeto.IdEmpresa = obj.IdEmpresa;
-        if (obj.IdExecutor != null)
+        if (obj.IdExecutor != Guid.Empty)
         {
             objeto.IdExecutor = obj.IdExecutor;
         }
@@ -98,13 +98,25 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         objeto.Observacao = obj.Observacao;
         objeto.CapacidadeCargaAeronave = obj.CapacidadeCargaAeronave;
         objeto.Piloto = obj.Piloto;
-        objeto.ContratoPrestacaoServicoId = obj.ContratoPrestacaoServicoId;
+        if (obj.ContratoPrestacaoServicoId != null)
+        {
+            objeto.ContratoPrestacaoServicoId = obj.ContratoPrestacaoServicoId;
+        }
         objeto.DataCriacao = obj.DataCriacao;
         objeto.DataAlteracao = obj.DataAlteracao;
         objeto.StatusEnvio = obj.StatusEnvio;
 
         _contextBase.CombateIncendio.Update(objeto);
-        await _contextBase.SaveChangesAsync();
+        try
+        {
+            await _contextBase.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        
         return objeto.Id;
     }
 }

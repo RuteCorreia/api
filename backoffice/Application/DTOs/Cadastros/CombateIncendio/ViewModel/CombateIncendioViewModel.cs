@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 
@@ -15,6 +17,7 @@ public class CombateIncendioViewModel
     public string? Data { get; set; }
     public int? IdData { get; set; }
     public DateTime? HoraInicial { get; set; }
+    [JsonProperty("horimetroAviao")]
     public string? HorimetroAviao { get; set; }
     public string? LocalIncendioLat { get; set; }
     public string? LocalIncendioLon { get; set; }
@@ -22,9 +25,13 @@ public class CombateIncendioViewModel
     public DateTime? HorarioFinalOperacao { get; set; }
     public string? HorimetroFinalOperacao { get; set; }
     public int? TotalAguaUtilizadaOperacao { get; set; }
+    [JsonProperty("coordenadorBaseOperacionalNome")]
     public string? CoordenadorBaseOperacionalNome { get; set; }
+    [JsonProperty("coordenadorBaseOperacionalPosto")]
     public string? CoordenadorBaseOperacionalPosto { get; set; }
+    [JsonProperty("coordenadorBaseOperacionalRE")]
     public string? CoordenadorBaseOperacionalRE { get; set; }
+    [JsonProperty("coordenadorBaseOperacionalAssinatura")]
     public string? CoordenadorBaseOperacionalAssinatura { get; set; }
     public string? ComandanteOcorrenciaNome { get; set; }
     public string? ComandanteOcorrenciaPosto { get; set; }
