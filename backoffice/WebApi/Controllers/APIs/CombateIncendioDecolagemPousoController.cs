@@ -109,14 +109,14 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] CombateIncendioDecolagemPousoViewModel obj)
+    [HttpPut]
+    public async Task<ActionResult> Update([FromBody] CombateIncendioDecolagemPousoViewModel obj)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _combateIncendioDecolagemPousoService.GetByIdAsync(id);
+                var objeto = await _combateIncendioDecolagemPousoService.GetByIdAsync(obj.Id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
                     obj.Id = objeto.Id;
