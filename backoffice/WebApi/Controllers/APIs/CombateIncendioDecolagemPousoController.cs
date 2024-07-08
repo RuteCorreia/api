@@ -135,7 +135,6 @@ public class CombateIncendioDecolagemPousoController : ControllerBase
         }
         catch (Exception ex)
         {
-            _loggerService.LogError(ex, $"Erro ao atualizar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar registro de Combate a Incêndio em Decolagem e Pouso com ID {id}: {ex.Message}");
         }
     }
