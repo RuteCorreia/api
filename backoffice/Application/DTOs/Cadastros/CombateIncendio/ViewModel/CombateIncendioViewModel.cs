@@ -15,7 +15,7 @@ public class CombateIncendioViewModel
     public string? Data { get; set; }
     public int? IdData { get; set; }
     public DateTime? HoraInicial { get; set; }
-    public string? HorimetroAviao { get; set; }
+    public string? HorimetroAcionamento { get; set; }
     public string? LocalIncendioLat { get; set; }
     public string? LocalIncendioLon { get; set; }
     public string? Referencia { get; set; }

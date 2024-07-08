@@ -36,6 +36,7 @@ namespace Entities.Entidades.Cadastros.CombateIncendio
         public string? HorimetroAviao { get; set; }
         public string? LocalIncendioLat { get; set; }
         public string? LocalIncendioLon { get; set; }
+        public string? Cliente { get; set; }
         public string? Referencia { get; set; }
         public DateTime? HorarioFinalOperacao { get; set; }
         public string? HorimetroFinalOperacao { get; set; }
