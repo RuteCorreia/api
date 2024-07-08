@@ -21,7 +21,7 @@ public class AplicacaoRecomendacoesTecnicasViewModel
     [JsonProperty("volumeAplicacao")]
     public int? VolumeAplicacao { get; set; }
 
-    [JsonProperty("unidadevolumeAplicacao")]
+    [JsonProperty("unidadeVolumeAplicacao")]
     public string? UnidadeVolumeAplicacao { get; set; }
 
     [JsonProperty("aeronave")]
@@ -48,7 +48,7 @@ public class AplicacaoRecomendacoesTecnicasViewModel
     [JsonProperty("angulo")]
     public string? Angulo { get; set; }
 
-    [JsonProperty("arquivoDrone")]
+    [JsonProperty("arquiv")]
     public string? ArquivoDrone { get; set; }
     //[JsonIgnore]
     //public virtual Veiculante.Veiculante? Veiculante { get; set; }
