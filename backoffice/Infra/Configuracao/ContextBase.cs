@@ -36,6 +36,8 @@ using Domain.Entidades.Cadastros.Veiculo;
 using Domain.Entidades.User;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entidades.Cadastros.RelatorioIncendio;
+using Domain.Entidades.Cadastros.LocalIncendio;
 using Domain.Entidades.Cadastros.AuxiliarPista;
 using Domain.Entidades.Cadastros.DataRelatorio;
 
@@ -93,6 +95,8 @@ public class ContextBase : IdentityDbContext
     public DbSet<ManutencaoAeronave> ManutencaoAeronave { get; set; }
     public DbSet<ManutencaoAeronaveItemsRevisao> ManutencaoAeronaveItemsRevisao { get; set; }
     public DbSet<RelatorioAplicacao> RelatorioAplicacao { get; set; }
+    public DbSet<RelatorioIncendio> RelatorioIncendio { get; set; }
+    public DbSet<LocalIncendio> LocalIncendio { get; set; }
     public DbSet<Contratante> Contratante { get; set; }
     public DbSet<IdentificacaoAreaTratada> IdentificacaoAreaTratada { get; set; }
     public DbSet<CaracteristicasProdutoAplicado> CaracteristicasProdutoAplicado { get; set; }

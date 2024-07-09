@@ -28,7 +28,7 @@ public class PilotoRepository : IPilotoRepository
             .Include(u => u.Usuario)
             .ToListAsync();
 
-        return entities;
+        return entities.DistinctBy(d => d.IdUsuario).ToList();
     }
 
     public async Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa)

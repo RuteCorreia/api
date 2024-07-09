@@ -12,7 +12,7 @@ namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
 [ApiController]
-//[Authorize(Roles = "Administrador")]
+[Authorize(Roles = "Administrador")]
 [ProducesResponseType(StatusCodes.Status200OK)]
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,6 +88,7 @@ public class EmpresaController : ControllerBase
     {
         try
         {
+            var resultError = new StringBuilder().Append("Não foi possível adicionar a empresa, tente novamente");
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             if (string.IsNullOrEmpty(loggedUser.Item3))
             {
@@ -102,12 +103,15 @@ public class EmpresaController : ControllerBase
 
                 if (ModelState.IsValid)
                 {
-                    await _empresaService.AddAsync(empresaViewModel);
-                    _logService.LogInformation($"Empresa adicionada por {loggedUser.Item1}.");
-                    return Ok();
+                    var (success, message) = await _empresaService.AddAsync(empresaViewModel);
+                    if (success)
+                        return Ok();
+
+                    resultError.Clear();
+                    resultError.Append(message);
                 }
 
-                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+                return BadRequest(resultError.ToString());
             }
             return Unauthorized();
         }
