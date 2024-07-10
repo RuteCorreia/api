@@ -124,8 +124,8 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("getFromApp")]
-        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetFromApp()
+        [HttpGet("getDataFromApp")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetDataFromApp()
         {
             try
             {
@@ -135,8 +135,16 @@ namespace WebApi.Controllers.APIs
                 foreach (var relatorio in relatorios)
                 {
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-                    var link = await _dataRelatorioService.GerarLinksPdf(data.Data);
-                    dataRelatorios.Add(link);
+
+                    if (!string.IsNullOrEmpty(data.Data))
+                    {
+                        dataRelatorios.Add(data.Data); // Adiciona o Base64 do PDF à lista de relatórios
+                    }
+                    else
+                    {
+                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                    }
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
