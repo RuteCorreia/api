@@ -43,7 +43,7 @@ namespace Infra.Repositorio.Cadastros.DataRelatorio
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio> GetByIdAsync(int id, int idEmpresa)
+        public async Task<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio> GetByIdAsync(int? id, int idEmpresa)
         {
             using (var connection = _dbConnection)
             {

@@ -5,8 +5,8 @@ using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
-using Newtonsoft.Json;
 using Application.DTOs.Cadastros.RelatorioBase;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
@@ -20,15 +20,18 @@ public class CombateIncendioController : ControllerBase
 {
     private readonly ICombateIncendioService _combateIncendioService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IDataRelatorioService _dataRelatorioService;
     private readonly ILogService _loggerService;
 
     public CombateIncendioController(
         ICombateIncendioService combateIncendioService,
         LoggedUserInfoService loggedUserInfoService,
+        IDataRelatorioService dataRelatorioService,
         ILogService loggerService)
     {
         _combateIncendioService = combateIncendioService;
         _loggedUserInfoService = loggedUserInfoService;
+        _dataRelatorioService = dataRelatorioService;
         _loggerService = loggerService;
     }
 

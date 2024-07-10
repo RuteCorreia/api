@@ -7,7 +7,7 @@ namespace Application.DTOs.Cadastros.DataRelatorio.Interface
     {
         Task<IEnumerable<DataRelatorioViewModel>> GetAllAsync(string? idEmpresa);
 
-        Task<DataRelatorioViewModel?> GetByIdAsync(int id, string? idEmpresa);
+        Task<DataRelatorioViewModel?> GetByIdAsync(int? id, string? idEmpresa);
 
         Task<int> AddAsync(DataRelatorioViewModel obj, string? idEmpresa);
 
