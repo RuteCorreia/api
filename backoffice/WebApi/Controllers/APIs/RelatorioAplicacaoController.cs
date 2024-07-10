@@ -135,7 +135,8 @@ namespace WebApi.Controllers.APIs
                 foreach (var relatorio in relatorios)
                 {
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-                    dataRelatorios.Add(data.Data);
+                    var link = await _dataRelatorioService.GerarLinksPdf(data.Data);
+                    dataRelatorios.Add(link);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -237,7 +238,7 @@ namespace WebApi.Controllers.APIs
                     //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
                     var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
                     var dataAlteracao = obj.GetProperty("dataAlteracao").GetDateTime(); // Novo campo dataAlteracao **
-                                                                                        //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
+                    //var culturaId = obj.GetProperty("culturaId").GetInt32(); // Novo campo culturaId **
 
 
                     var contratanteViewModel = JsonConvert.DeserializeObject<ContratanteViewModel>(contratanteJson);

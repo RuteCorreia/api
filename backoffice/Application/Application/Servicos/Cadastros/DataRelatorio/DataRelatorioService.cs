@@ -52,6 +52,16 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
             return _mapper.Map<DataRelatorioViewModel>(obj);
         }
 
+        public async Task<string> GerarLinksPdf(string base64Pdf)
+        {
+            byte[] pdfBytes = Convert.FromBase64String(base64Pdf);
+
+            // Converte os bytes do PDF para uma string data URI
+            string dataUri = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
+
+            return dataUri;
+        }
+
         public async Task<int> UpdateAsync(DataRelatorioViewModel obj)
         {
             var mapDataRelatorio = _mapper.Map<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(obj);
