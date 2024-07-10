@@ -13,6 +13,7 @@ public class CombateIncendio
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
+    public string? NomeRelatorio { get; set; }
 
     [ForeignKey("Executor")]
     public Guid? IdExecutor { get; set; }

@@ -18,6 +18,7 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
     {
         public int Id { get; set; }
         public int? ContratanteId { get; set; }
+        public string? NomeRelatorio { get; set; }
         public int? IdentificacaoAreaTratadaId { get; set; }
         public int? CaracteristicasProdutoAplicadoId { get; set; }
         public int? RecomendacoesTecnicasId { get; set; }
@@ -38,7 +39,7 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
         public int? State { get; set; }
-        public int? IdEmpresa { get; set; } 
+        public int? IdEmpresa { get; set; }
         public virtual AplicacaoRecomendacoesTecnicasViewModel? AplicacaoRecomendacoesTecnicas { get; set; }
         public virtual ContratanteViewModel? Contratante { get; set; }
         public virtual IdentificacaoAreaTratadaViewModel? IdentificacaoAreaTratada { get; set; }

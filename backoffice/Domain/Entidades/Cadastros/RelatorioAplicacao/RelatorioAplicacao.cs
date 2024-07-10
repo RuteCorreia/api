@@ -19,8 +19,11 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         [Key]
         public int Id { get; set; }
 
+        public bool IsMapa { get; set; }
+
         [ForeignKey("Contratante")]
         public int? ContratanteId { get; set; }
+        public string? NomeRelatorio { get; set; }
 
         [ForeignKey("IdentificacaoAreaTratada")]
         public int? IdentificacaoAreaTratadaId { get; set; }

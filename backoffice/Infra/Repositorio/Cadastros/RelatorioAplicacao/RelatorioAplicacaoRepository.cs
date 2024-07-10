@@ -35,14 +35,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 {
                     string query = @"
                         INSERT INTO RelatorioAplicacao 
-                        (ContratanteId, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
+                        (ContratanteId, NomeRelatorio, IdentificacaoAreaTratadaId, CaracteristicasProdutoAplicadoId, 
                          RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
                          DadosResponsavelId, CulturaId, PilotoId, Piloto, 
                          ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
                          DataCriacao, DataAlteracao, Data, IdData, RefUsuario, StatusEnvio, IdEmpresa)
                         OUTPUT INSERTED.*
                         VALUES 
-                        (@ContratanteId, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
+                        (@ContratanteId, @NomeRelatorio @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
                          @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
                          @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
@@ -58,6 +58,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                     var relatorioAplicacao = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new
                     {
                         obj.ContratanteId,
+                        obj.NomeRelatorio,
                         obj.IdentificacaoAreaTratadaId,
                         obj.CaracteristicasProdutoAplicadoId,
                         obj.RecomendacoesTecnicasId,

@@ -46,6 +46,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.Executor} - {mapRelatorio.DataAlteracao}";
 
             if (obj.Id > 0)
             {
