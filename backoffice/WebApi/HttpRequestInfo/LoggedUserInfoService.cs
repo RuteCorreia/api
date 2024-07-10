@@ -10,11 +10,12 @@ public class LoggedUserInfoService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public (string?, IEnumerable<Claim>?, string?) GetLoggedUserIdentityIdAndRole(bool getRole = false)
+    public (string?, IEnumerable<string>?, string?) GetLoggedUserIdentityIdAndRole()
     {
         var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         var idEmpresa = _httpContextAccessor.HttpContext?.User.FindFirst("IdEmpresa")?.Value;
-        var userRoles = getRole ? _httpContextAccessor.HttpContext?.User.FindAll(ClaimTypes.Role) : null;
-        return (userId, userRoles, idEmpresa);
+        var userRoles = _httpContextAccessor.HttpContext?.User.FindAll(ClaimTypes.Role);
+        var roleNames = userRoles?.Select(r => r.Value).ToList();
+        return (userId, roleNames, idEmpresa);
     }
 }
