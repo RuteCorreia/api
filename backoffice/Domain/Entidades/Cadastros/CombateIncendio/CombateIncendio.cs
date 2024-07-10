@@ -15,6 +15,8 @@ public class CombateIncendio
     public int? IdEmpresa { get; set; }
     public string? NomeRelatorio { get; set; }
 
+    public string? NomeRelatorio { get; set; }
+
     [ForeignKey("Executor")]
     public Guid? IdExecutor { get; set; }
     public bool OrgaoPublico_Privado { get; set; }
