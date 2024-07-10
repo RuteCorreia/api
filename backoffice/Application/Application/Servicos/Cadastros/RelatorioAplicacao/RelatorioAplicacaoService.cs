@@ -37,7 +37,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
         public async Task UpdateAsync(RelatorioAplicacaoViewModel obj)
         {
-            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> (obj);
+            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
@@ -58,7 +58,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 var Relatorio = await _relatorioAplicacaoRepository.AddAsync(mapRelatorio);
                 var mapRelatorioReturn = _mapper.Map<RelatorioAplicacaoViewModel>(Relatorio);
                 return mapRelatorioReturn;
-            }   
+            }
         }
 
         public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllByIdEmpresaAsync(string? idEmpresa)
@@ -68,7 +68,15 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
-        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDateAndIdEmpresaAsync(DateTime Date,string? idEmpresa)
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusAsync(string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var statusEnvio = 0;
+            var list = await _relatorioAplicacaoRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDateAndIdEmpresaAsync(DateTime Date, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var list = await _relatorioAplicacaoRepository.GetAllByIdEmpresaAsync(idEmpresaInt);

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Helpers;
@@ -105,37 +106,45 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByStatusAsync(int idEmpresa, int statusEnvio)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio =  @statusEnvio";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
+        }
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllByIdEmpresaAsync(int idEmpresa)
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataCriacaoAsync(DateTime dataCriacao,int idEmpresa)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataCriacaoAsync(DateTime dataCriacao, int idEmpresa)
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @DataCriacao, 120) AND IdEmpresa = @IdEmpresa";
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataCriacao = dataCriacao ,IdEmpresa = idEmpresa });
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataCriacao = dataCriacao, IdEmpresa = idEmpresa });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataAlteracaoAsync(DateTime dataAlteracao, int idEmpresa)
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @DataAlteracao, 120) AND @IdEmpresa = @IdEmpresa";
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataAlteracao = dataAlteracao , IdEmpresa = idEmpresa });
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataAlteracao = dataAlteracao, IdEmpresa = idEmpresa });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, int idEmpresa)
         {
-            string query = "SELECT * FROM RelatorioAplicacao"+
-                           " WHERE "+
-                           (offsetDate!=null?" ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND ":" ")+
+            string query = "SELECT * FROM RelatorioAplicacao" +
+                           " WHERE " +
+                           (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
                            " IdEmpresa = @IdEmpresa";
-            Console.WriteLine(query)                ;
-            if (offsetDate!=null) {
-                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate , IdEmpresa = idEmpresa });
-            } else {
+            Console.WriteLine(query);
+            if (offsetDate != null)
+            {
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, IdEmpresa = idEmpresa });
+            }
+            else
+            {
                 return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa });
             }
-            
+
         }
 
 
@@ -183,25 +192,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         public async Task UpdateAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
             var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
-            objeto.ContratanteId = obj.ContratanteId;
-            objeto.IdentificacaoAreaTratadaId = obj.IdentificacaoAreaTratadaId;
-            objeto.CaracteristicasProdutoAplicadoId = obj.CaracteristicasProdutoAplicadoId;
-            objeto.RecomendacoesTecnicasId = obj.RecomendacoesTecnicasId;
-            objeto.AplicacaoRelatorioId = obj.AplicacaoRelatorioId;
-            objeto.ContratoPrestacaoServicoId = obj.ContratoPrestacaoServicoId;
-            objeto.DadosResponsavelId = obj.DadosResponsavelId;
-            objeto.CulturaId = obj.CulturaId;
-            objeto.PilotoId = obj.PilotoId;
-            objeto.Piloto = obj.Piloto;
-            objeto.ExecutorId = obj.ExecutorId;
-            objeto.Executor = obj.Executor;
-            objeto.AuxiliarPistaId = obj.AuxiliarPistaId;
-            objeto.IsDrone = obj.IsDrone;
-            objeto.RefDocument = obj.RefDocument;
-            objeto.IdData = obj.IdData;
-            objeto.DataAlteracao = obj.DataAlteracao;
-            objeto.RefUsuario = obj.RefUsuario;
-            objeto.StatusEnvio = obj.StatusEnvio;
+
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
