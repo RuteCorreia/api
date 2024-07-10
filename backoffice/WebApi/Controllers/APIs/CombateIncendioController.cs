@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 using Newtonsoft.Json;
+using Application.DTOs.Cadastros.RelatorioBase;
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
