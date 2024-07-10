@@ -57,3 +57,4 @@ app.MapControllers();
 /// Inicia a aplicação.
 /// </summary>
 app.Run();
+
