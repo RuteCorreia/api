@@ -42,7 +42,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                          DataCriacao, DataAlteracao, Data, IdData, RefUsuario, StatusEnvio, IdEmpresa)
                         OUTPUT INSERTED.*
                         VALUES 
-                        (@ContratanteId, @NomeRelatorio @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
+                        (@ContratanteId, @NomeRelatorio, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
                          @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
                          @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
