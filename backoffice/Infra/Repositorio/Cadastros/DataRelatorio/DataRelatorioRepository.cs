@@ -42,36 +42,37 @@ namespace Infra.Repositorio.Cadastros.DataRelatorio
 
             return entities;
         }
-
-        public async Task<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio> GetByIdAsync(int id, int idEmpresa)
+        public async Task<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio> GetByIdAsync(int? id, int idEmpresa)
         {
-            using (var connection = _dbConnection)
-            {
-                try
-                {
-                    string query = @"
-                    SELECT * 
-                    FROM DataRelatorio 
-                    WHERE Id = @Id 
-                    AND (@IdEmpresa = 0 AND IdEmpresa IS NULL OR IdEmpresa = @IdEmpresa)";
+            var obj = await _contextBase.DataRelatorio.FirstOrDefaultAsync(x => x.Id == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
+            return obj;
+            //using ( var connection = _dbConnection)
+            //{
+            //    try
+            //    {
+            //        string query = @"
+            //        SELECT * 
+            //        FROM DataRelatorio 
+            //        WHERE Id = @Id 
+            //        AND (@IdEmpresa = 0 AND IdEmpresa IS NULL OR IdEmpresa = @IdEmpresa)";
 
-                    var parameters = new { Id = id, IdEmpresa = idEmpresa };
-                    var dadosResponsavel = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(query, parameters);
-                    return dadosResponsavel;
+            //        var parameters = new { Id = id, IdEmpresa = idEmpresa };
+            //        var data = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(query, parameters);
+            //        return data;
 
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        throw new Exception(ex.Message);
+            //    }
+            //}
         }
 
         public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio obj)
         {
             var objeto = await _contextBase.DataRelatorio.FindAsync(obj.Id);
             objeto.Data = obj.Data;
-            
+
 
             _contextBase.DataRelatorio.Update(objeto);
             await _contextBase.SaveChangesAsync();

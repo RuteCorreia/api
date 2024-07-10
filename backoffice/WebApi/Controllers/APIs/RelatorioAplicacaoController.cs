@@ -30,6 +30,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using WebApi.HttpRequestInfo;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
 
 namespace WebApi.Controllers.APIs
 {
@@ -50,6 +51,7 @@ namespace WebApi.Controllers.APIs
         private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
+        private readonly IDataRelatorioService _dataRelatorioService;
         private readonly IAuxiliarPistaService _auxiliarPistaService;
         private readonly IContratanteService _contratanteService;
         private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
@@ -65,6 +67,7 @@ namespace WebApi.Controllers.APIs
             IAplicacaoRelatorioService aplicacaoRelatorioService,
             IDadosResponsavelService dadosResponsavelService,
             LoggedUserInfoService loggedUserInfoService,
+            IDataRelatorioService dataRelatorioService,
             IAuxiliarPistaService auxiliarPistaService,
             IContratanteService contratanteService,
             IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
@@ -79,6 +82,7 @@ namespace WebApi.Controllers.APIs
             _aplicacaoRelatorioService = aplicacaoRelatorioService;
             _dadosResponsavelService = dadosResponsavelService;
             _loggedUserInfoService = loggedUserInfoService;
+            _dataRelatorioService = dataRelatorioService;
             _auxiliarPistaService = auxiliarPistaService;
             _contratanteService = contratanteService;
             _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
@@ -127,8 +131,15 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var relatorios = await _relatorioAplicacaoService.GetListByStatusAsync(loggedUser.Item3);
+                List<string> dataRelatorios = new List<string>();
+                foreach (var relatorio in relatorios)
+                {
+                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+                    dataRelatorios.Add(data.Data);
+                }
+
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
-                return Ok(relatorios);
+                return Ok(dataRelatorios);
             }
             catch (Exception ex)
             {

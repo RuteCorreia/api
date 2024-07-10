@@ -45,7 +45,7 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
             return _mapper.Map<IEnumerable<DataRelatorioViewModel>>(list);
         }
 
-        public async Task<DataRelatorioViewModel?> GetByIdAsync(int id, string? idEmpresa)
+        public async Task<DataRelatorioViewModel?> GetByIdAsync(int? id, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var obj = await _dataRelatorioRepository.GetByIdAsync(id, idEmpresaInt);
