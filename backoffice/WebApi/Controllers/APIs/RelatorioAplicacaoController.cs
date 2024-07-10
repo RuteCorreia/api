@@ -30,6 +30,9 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using WebApi.HttpRequestInfo;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
+using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Cadastros.RelatorioBase;
 
 namespace WebApi.Controllers.APIs
 {
@@ -50,12 +53,13 @@ namespace WebApi.Controllers.APIs
         private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
+        private readonly IDataRelatorioService _dataRelatorioService;
         private readonly IAuxiliarPistaService _auxiliarPistaService;
         private readonly IContratanteService _contratanteService;
         private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
         private readonly ILogService _logService;
-        
-        
+
+
         public RelatorioAplicacaoController(
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
@@ -65,10 +69,11 @@ namespace WebApi.Controllers.APIs
             IAplicacaoRelatorioService aplicacaoRelatorioService,
             IDadosResponsavelService dadosResponsavelService,
             LoggedUserInfoService loggedUserInfoService,
+            IDataRelatorioService dataRelatorioService,
             IAuxiliarPistaService auxiliarPistaService,
             IContratanteService contratanteService,
             IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
-            ILogService logService            
+            ILogService logService
             )
         {
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
@@ -79,10 +84,11 @@ namespace WebApi.Controllers.APIs
             _aplicacaoRelatorioService = aplicacaoRelatorioService;
             _dadosResponsavelService = dadosResponsavelService;
             _loggedUserInfoService = loggedUserInfoService;
+            _dataRelatorioService = dataRelatorioService;
             _auxiliarPistaService = auxiliarPistaService;
             _contratanteService = contratanteService;
             _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
-            _logService = logService;  
+            _logService = logService;
         }
 
         [HttpGet]
@@ -90,9 +96,9 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                
+
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date,loggedUser.Item3);
+                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date, loggedUser.Item3);
                 _logService.LogInformation("Obter todos os relatórios novos.");
                 return Ok(relatorios);
             }
@@ -120,13 +126,53 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getDataFromApp")]
+        public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetListByStatusAsync(loggedUser.Item3);
+                List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+                foreach (var relatorio in relatorios)
+                {
+                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                    if (!string.IsNullOrEmpty(data.Data))
+                    {
+                        var relatorioBaseViewModel = new RelatorioBaseViewModel
+                        {
+                            NomeRelatorio = relatorio.NomeRelatorio,
+                            Base64Data = data.Data
+                        };
+
+                        dataRelatorios.Add(relatorioBaseViewModel);
+                    }
+                    else
+                    {
+                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                    }
+                }
+
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(dataRelatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
+
+
         [HttpGet("getByDataCriacao")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataCriacao(DateTime date)
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var relatorios = await _relatorioAplicacaoService.GetByDataCriacaoAsync(date,loggedUser.Item3);
+                var relatorios = await _relatorioAplicacaoService.GetByDataCriacaoAsync(date, loggedUser.Item3);
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
                 return Ok(relatorios);
             }
@@ -184,17 +230,17 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     //_logService.LogInformation("Received object: " + JsonConvert.SerializeObject(obj));
-                    
+
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
-                 //   var data = obj.GetProperty("data").ToString();
+                                                                                         //   var data = obj.GetProperty("data").ToString();
                     var IdData = obj.GetProperty("idData").GetInt32();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
                     var Id = obj.GetProperty("id").GetInt32();
-                    
+
                     var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
@@ -228,7 +274,7 @@ namespace WebApi.Controllers.APIs
                         Gravacao = identificacaoAreaTratadaViewModel.Gravacao,
                         Marcadores = identificacaoAreaTratadaViewModel.Marcadores
                     };
-                    
+
 
                     var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
@@ -252,7 +298,7 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
-                    
+
                     var aplicacaoRelatorio = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var aplicacoesViewModel = aplicacaoRelatorio.Aplicacoes;
                     var listaAplicacaoRelatorioItem = new List<RelatorioItemViewModel>();
@@ -260,7 +306,7 @@ namespace WebApi.Controllers.APIs
                     {
                         var item = aplicacoesViewModel[i];
                         string imagemCondicaoClimatica = JsonConvert.SerializeObject(aplicacaoRelatorio.Aplicacoes[i].ImagemCondicaoClimatica);
-                        
+
 
                         var relatorioItemViewModel = new RelatorioItemViewModel()
                         {
@@ -337,8 +383,8 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.Id = Id;
                     relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
-                   // relatorioAplicacaoViewModel.Data = data;
-                   relatorioAplicacaoViewModel.Data = "";
+                    // relatorioAplicacaoViewModel.Data = data;
+                    relatorioAplicacaoViewModel.Data = "";
                     relatorioAplicacaoViewModel.IsDrone = isDrone;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     relatorioAplicacaoViewModel.ContratanteId = Idcontratante;
@@ -359,8 +405,8 @@ namespace WebApi.Controllers.APIs
 
 
                     var relatorioAplicacao = await _relatorioAplicacaoService.AddAsync(relatorioAplicacaoViewModel, loggedUser.Item3); // OK
-                    
-                    var aplicacoes =  await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
+
+                    var aplicacoes = await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
 
                     //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
 
@@ -381,7 +427,7 @@ namespace WebApi.Controllers.APIs
                             aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
                         },
                     };
-                    
+
                     //return Ok(relatorioAplicacaoId);
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(result);

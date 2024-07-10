@@ -45,11 +45,21 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
             return _mapper.Map<IEnumerable<DataRelatorioViewModel>>(list);
         }
 
-        public async Task<DataRelatorioViewModel?> GetByIdAsync(int id, string? idEmpresa)
+        public async Task<DataRelatorioViewModel?> GetByIdAsync(int? id, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var obj = await _dataRelatorioRepository.GetByIdAsync(id, idEmpresaInt);
             return _mapper.Map<DataRelatorioViewModel>(obj);
+        }
+
+        public async Task<string> GerarLinksPdf(string base64Pdf)
+        {
+            byte[] pdfBytes = Convert.FromBase64String(base64Pdf);
+
+            // Converte os bytes do PDF para uma string data URI
+            string dataUri = $"data:application/pdf;base64,{Convert.ToBase64String(pdfBytes)}";
+
+            return dataUri;
         }
 
         public async Task<int> UpdateAsync(DataRelatorioViewModel obj)

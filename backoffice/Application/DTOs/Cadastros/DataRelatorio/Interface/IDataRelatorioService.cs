@@ -7,10 +7,10 @@ namespace Application.DTOs.Cadastros.DataRelatorio.Interface
     {
         Task<IEnumerable<DataRelatorioViewModel>> GetAllAsync(string? idEmpresa);
 
-        Task<DataRelatorioViewModel?> GetByIdAsync(int id, string? idEmpresa);
+        Task<DataRelatorioViewModel?> GetByIdAsync(int? id, string? idEmpresa);
+        Task<string> GerarLinksPdf(string base64Pdf);
 
         Task<int> AddAsync(DataRelatorioViewModel obj, string? idEmpresa);
-
         Task<int> UpdateAsync(DataRelatorioViewModel obj);
 
         Task DeleteAsync(int id, string? idEmpresa);

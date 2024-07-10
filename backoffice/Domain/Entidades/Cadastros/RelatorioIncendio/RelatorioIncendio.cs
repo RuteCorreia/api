@@ -8,6 +8,8 @@ namespace Domain.Entidades.Cadastros.RelatorioIncendio
     {
         public int Id { get; set; }
 
+        public bool IsMapa { get; set; }
+
         [ForeignKey("Pista")]
         public int PistaId { get; set; }
 

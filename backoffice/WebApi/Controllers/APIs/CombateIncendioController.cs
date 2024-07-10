@@ -5,7 +5,8 @@ using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
-using Newtonsoft.Json;
+using Application.DTOs.Cadastros.RelatorioBase;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
@@ -19,15 +20,18 @@ public class CombateIncendioController : ControllerBase
 {
     private readonly ICombateIncendioService _combateIncendioService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IDataRelatorioService _dataRelatorioService;
     private readonly ILogService _loggerService;
 
     public CombateIncendioController(
         ICombateIncendioService combateIncendioService,
         LoggedUserInfoService loggedUserInfoService,
+        IDataRelatorioService dataRelatorioService,
         ILogService loggerService)
     {
         _combateIncendioService = combateIncendioService;
         _loggedUserInfoService = loggedUserInfoService;
+        _dataRelatorioService = dataRelatorioService;
         _loggerService = loggerService;
     }
 
@@ -67,6 +71,45 @@ public class CombateIncendioController : ControllerBase
         {
             _loggerService.LogError(ex, $"Erro ao buscar registro de Combate a Incêndio com ID {id}: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar registro de Combate a Incêndio com ID {id}: {ex.Message}");
+        }
+    }
+
+    [HttpGet("getDataFromApp")]
+    public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorios = await _combateIncendioService.GetListByStatusAsync(loggedUser.Item3);
+            List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+            foreach (var relatorio in relatorios)
+            {
+                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                if (!string.IsNullOrEmpty(data.Data))
+                {
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
+                    {
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data
+                    };
+
+                    dataRelatorios.Add(relatorioBaseViewModel);
+                }
+                else
+                {
+                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                }
+            }
+
+            _loggerService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+            return Ok(dataRelatorios);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
         }
     }
 

@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendio;
+using Domain.Interfaces.User;
 using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.CombateIncendio;
@@ -11,11 +12,13 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendio;
 public class CombateIncendioService : ICombateIncendioService
 {
     private readonly ICombateIncendioRepository _combateIncendioRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
-    public CombateIncendioService(IMapper mapper, ICombateIncendioRepository combateIncendioRepository)
+    public CombateIncendioService(IMapper mapper,IUsuarioRepository usuarioRepository ,ICombateIncendioRepository combateIncendioRepository)
     {
         _combateIncendioRepository = combateIncendioRepository;
+        _usuarioRepository = usuarioRepository;
         _mapper = mapper;
     }
 
@@ -32,11 +35,24 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<CombateIncendioViewModel>(obj);
     }
 
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusAsync(string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _combateIncendioRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
+        return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
+    }
+
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        if (executor != null)
+        {
+            mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {executor} - {mapCombateIncendio.DataAlteracao}";
+        }
         var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
         return combateIncendio;
     }
@@ -44,6 +60,7 @@ public class CombateIncendioService : ICombateIncendioService
     public async Task<int> UpdateAsync(CombateIncendioViewModel obj,string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
