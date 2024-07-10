@@ -120,8 +120,8 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("getByStatus")]
-        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetListaByStatus()
+        [HttpGet("getFromApp")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetFromApp()
         {
             try
             {
