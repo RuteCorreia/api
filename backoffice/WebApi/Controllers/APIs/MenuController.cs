@@ -43,7 +43,7 @@ public class MenuController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var menu = await _menuService.GetAllAsync(loggedUser.Item3);
+            var menu = await _menuService.GetAllAsync(loggedUser.Item3, loggedUser.Item2);
             var subMenu = await _subMenuService.GetAllAsync();
 
             foreach (var m in menu)
@@ -76,7 +76,7 @@ public class MenuController : ControllerBase
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             if(string.IsNullOrEmpty(loggedUser.Item3))
             {
-                var menu = await _menuService.GetAllAsync(loggedUser.Item3);
+                var menu = await _menuService.GetAllAsync(loggedUser.Item3, loggedUser.Item2);
                 var subMenu = await _subMenuService.GetAllAsync();
 
                 foreach (var m in menu)
@@ -139,7 +139,7 @@ public class MenuController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var menu = await _menuService.GetAllAsync(loggedUser.Item3);
+            var menu = await _menuService.GetAllAsync(loggedUser.Item3, loggedUser.Item2);
             var subMenu = await _subMenuService.GetAllAsync();
 
             foreach (var submenu in subMenu)

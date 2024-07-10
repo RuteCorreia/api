@@ -30,29 +30,39 @@ public class MenuRepository : IMenuRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Menu.Menu>> GetAllAsync(int idEmpresa)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Menu.Menu>> GetAllAsync(int idEmpresa, IEnumerable<string>? roleNames)
     {
         IEnumerable<Domain.Entidades.Cadastros.Menu.Menu> entities = null;
-        if (idEmpresa != 0)
+        if (roleNames != null && roleNames.Contains("Administrador"))
         {
-            var empresa = await new EmpresaRepository(_contextBase).GetByIdAsync(idEmpresa);
-            if (empresa.Manutencao)
-                entities = await _contextBase.Menu
-                    .AsNoTracking()
-                    .Where(x => x.MenuItemId != 1005)
-                    .ToListAsync();
-            else
-                entities = await _contextBase.Menu
-                    .AsNoTracking()
-                    .Where(x => x.MenuItemId != 1005 && x.MenuItemId != 4)
-                    .ToListAsync();   
+            // Se o usuário tem a role de Administrador, retornar todos os menus sem filtragem
+            entities = await _contextBase.Menu
+                .AsNoTracking()
+                .ToListAsync();
+
         }
+        //else if(idEmpresa != 0)
+        //{
+        //    var empresa = await new EmpresaRepository(_contextBase).GetByIdAsync(idEmpresa);
+        //    if (empresa.Manutencao)
+        //        entities = await _contextBase.Menu
+        //            .AsNoTracking()
+        //            .Where(x => x.MenuItemId != 1005)
+        //            .ToListAsync();
+        //    else
+        //        entities = await _contextBase.Menu
+        //            .AsNoTracking()
+        //            .Where(x => x.MenuItemId != 1005 && x.MenuItemId != 4)
+        //            .ToListAsync();   
+        //}
         else
+        {
             entities = await _contextBase.Menu
                 .AsNoTracking()
                 .Where(x => x.MenuItemId != 4)
+                .Where(x => x.MenuItemId != 4 && x.MenuItemId != 1005)
                 .ToListAsync();
-
+        }
         return entities;
     }
 

@@ -28,10 +28,10 @@ public class MenuService : IMenuService
         await _menuRepository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<MenuViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<IEnumerable<MenuViewModel>> GetAllAsync(string? idEmpresa, IEnumerable<string>? roleNames)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _menuRepository.GetAllAsync(idEmpresaInt);
+        var list = await _menuRepository.GetAllAsync(idEmpresaInt, roleNames);
         return _mapper.Map<IEnumerable<MenuViewModel>>(list);
     }
 
