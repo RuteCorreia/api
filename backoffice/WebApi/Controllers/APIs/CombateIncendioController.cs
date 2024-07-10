@@ -70,6 +70,45 @@ public class CombateIncendioController : ControllerBase
         }
     }
 
+    [HttpGet("getDataFromApp")]
+    public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorios = await _combateIncendioService.GetListByStatusAsync(loggedUser.Item3);
+            List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+            foreach (var relatorio in relatorios)
+            {
+                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                if (!string.IsNullOrEmpty(data.Data))
+                {
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
+                    {
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data
+                    };
+
+                    dataRelatorios.Add(relatorioBaseViewModel);
+                }
+                else
+                {
+                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                }
+            }
+
+            _loggerService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+            return Ok(dataRelatorios);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+        }
+    }
+
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] CombateIncendioViewModel obj)
     {
