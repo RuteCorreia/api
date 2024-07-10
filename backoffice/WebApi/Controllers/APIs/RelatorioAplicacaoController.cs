@@ -31,6 +31,8 @@ using Newtonsoft.Json;
 using System.Text.Json.Serialization;
 using WebApi.HttpRequestInfo;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
+using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Cadastros.RelatorioBase;
 
 namespace WebApi.Controllers.APIs
 {
@@ -125,20 +127,26 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("getDataFromApp")]
-        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetDataFromApp()
+        public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var relatorios = await _relatorioAplicacaoService.GetListByStatusAsync(loggedUser.Item3);
-                List<string> dataRelatorios = new List<string>();
+                List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
                     {
-                        dataRelatorios.Add(data.Data); // Adiciona o Base64 do PDF à lista de relatórios
+                        var relatorioBaseViewModel = new RelatorioBaseViewModel
+                        {
+                            NomeRelatorio = relatorio.NomeRelatorio,
+                            Base64Data = data.Data
+                        };
+
+                        dataRelatorios.Add(relatorioBaseViewModel);
                     }
                     else
                     {
@@ -156,6 +164,7 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
             }
         }
+
 
         [HttpGet("getByDataCriacao")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataCriacao(DateTime date)
