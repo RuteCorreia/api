@@ -4,17 +4,20 @@ using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Helpers;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Contratante;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
     public class RelatorioAplicacaoService : IRelatorioAplicacaoService
     {
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
+        private readonly IContratanteRepository _contratanteRepository;
         private readonly IMapper _mapper;
 
-        public RelatorioAplicacaoService(IMapper mapper, IRelatorioAplicacaoRepository relatorioAplicacaoRepository)
+        public RelatorioAplicacaoService(IMapper mapper, IContratanteRepository contratanteRepository, IRelatorioAplicacaoRepository relatorioAplicacaoRepository)
         {
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
+            _contratanteRepository = contratanteRepository;
             _mapper = mapper;
         }
 
@@ -44,9 +47,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.Executor} - {mapRelatorio.DataAlteracao}";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {contratante.Nome.ToString()} - {mapRelatorio.DataAlteracao}";
 
             if (obj.Id > 0)
             {

@@ -48,7 +48,7 @@ namespace Infra.Repositorio.Cadastros.Contratante
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int id)
+        public async Task<Domain.Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int? id)
         {
             using (var connection = _dbConnection)
             {

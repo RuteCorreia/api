@@ -46,13 +46,9 @@ public class CombateIncendioService : ICombateIncendioService
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        if (executor != null)
-        {
-            mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {executor} - {mapCombateIncendio.DataAlteracao}";
-        }
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataAlteracao}";
         var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
         return combateIncendio;
     }
