@@ -12,6 +12,6 @@ namespace Domain.Interfaces.Cadastros.Contratante
         Task UpdateAsync(Entidades.Cadastros.Contratante.Contratante obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Contratante.Contratante>> GetAllAsync();
-        Task<Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int id);
+        Task<Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int? id);
     }
 }
