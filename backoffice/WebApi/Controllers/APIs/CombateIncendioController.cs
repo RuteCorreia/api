@@ -91,7 +91,9 @@ public class CombateIncendioController : ControllerBase
                     var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
                         NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);

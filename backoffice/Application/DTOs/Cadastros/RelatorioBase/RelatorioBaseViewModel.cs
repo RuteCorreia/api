@@ -8,7 +8,9 @@ namespace Application.DTOs.Cadastros.RelatorioBase
 {
     public class RelatorioBaseViewModel
     {
+        public int Id { get; set; }
         public string? NomeRelatorio { get; set; }
         public string? Base64Data { get; set; }
+        public bool IsMapa { get; set; }
     }
 }

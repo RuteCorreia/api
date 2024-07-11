@@ -197,5 +197,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
+
+        public async Task UpdateIsMapaAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        {
+            var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
+            objeto.IsMapa = obj.IsMapa;
+            _contextBase.RelatorioAplicacao.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
     }
 }
