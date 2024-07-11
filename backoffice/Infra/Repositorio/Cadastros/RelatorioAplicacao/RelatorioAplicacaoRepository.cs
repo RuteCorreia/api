@@ -193,7 +193,25 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         public async Task UpdateAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
             var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
-
+            objeto.ContratanteId = obj.ContratanteId;
+            objeto.IdentificacaoAreaTratadaId = obj.IdentificacaoAreaTratadaId;
+            objeto.CaracteristicasProdutoAplicadoId = obj.CaracteristicasProdutoAplicadoId;
+            objeto.RecomendacoesTecnicasId = obj.RecomendacoesTecnicasId;
+            objeto.AplicacaoRelatorioId = obj.AplicacaoRelatorioId;
+            objeto.ContratoPrestacaoServicoId = obj.ContratoPrestacaoServicoId;
+            objeto.DadosResponsavelId = obj.DadosResponsavelId;
+            objeto.CulturaId = obj.CulturaId;
+            objeto.PilotoId = obj.PilotoId;
+            objeto.Piloto = obj.Piloto;
+            objeto.ExecutorId = obj.ExecutorId;
+            objeto.Executor = obj.Executor;
+            objeto.AuxiliarPistaId = obj.AuxiliarPistaId;
+            objeto.IsDrone = obj.IsDrone;
+            objeto.RefDocument = obj.RefDocument;
+            objeto.IdData = obj.IdData;
+            objeto.DataAlteracao = obj.DataAlteracao;
+            objeto.RefUsuario = obj.RefUsuario;
+            objeto.StatusEnvio = obj.StatusEnvio;
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
