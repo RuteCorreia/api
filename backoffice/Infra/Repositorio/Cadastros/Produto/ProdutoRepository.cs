@@ -38,11 +38,10 @@ public class ProdutoRepository : IProdutoRepository
         return classes;
     }
 
-    public async Task<IEnumerable<string>> GetNomes(string classe)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe)
     {
         var nomes = await _contextBase.Produto
             .Where(p => p.Classe == classe)
-            .Select(p => p.Nome)
             .ToListAsync();
         return nomes;
     }

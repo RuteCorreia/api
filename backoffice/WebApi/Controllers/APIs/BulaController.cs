@@ -75,11 +75,11 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
-            if (verificaSeBulaExistePeloNome != null)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
-            }
+            //var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
+            //if (verificaSeBulaExistePeloNome != null)
+            //{
+            //    return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
+            //}
             if (ModelState.IsValid)
             {
                 await _bulaService.AddAsync(obj);
@@ -188,7 +188,7 @@ public class BulaController : ControllerBase
                 IdCliente = 0,
                 IndexLinhaUltimaCarga = 0,
                 DataPlanilha = DateTime.Now.ToString(),
-                
+
             };
             new ServicosPlanilha<Bula>(configuracao, "Bula").SalvarPlanilha(base64);
 
