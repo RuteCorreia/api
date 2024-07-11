@@ -1,7 +1,9 @@
 ﻿using Application.DTOs.Cadastros.Produto.Interface;
 using Application.DTOs.Cadastros.Produto.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
+using System.Collections.Immutable;
 
 namespace Application.Application.Servicos.Cadastros.Produto;
 
@@ -50,8 +52,15 @@ public class ProdutoService : IProdutoService
         return await _produtoRepository.GetClasses();
     }
 
-    public async Task<IEnumerable<string>> GetNomes(string classe)
+    public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe)
     {
-        return await _produtoRepository.GetNomes(classe);
+        var produto = await _produtoRepository.GetNomes(classe);
+        var viewModelList = produto.Select(p => new ProdutoNomeViewModel
+        {
+            Id = p.Id,
+            Nome = p.Nome
+        }).ToList();
+
+        return viewModelList;
     }
 }

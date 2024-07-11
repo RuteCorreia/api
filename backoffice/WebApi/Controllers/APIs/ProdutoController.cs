@@ -148,7 +148,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("nomes/{*classe}")]
-        public async Task<ActionResult<IEnumerable<string>>> GetNomes(string classe)
+        public async Task<ActionResult<IEnumerable<ProdutoNomeViewModel>>> GetNomes(string classe)
         {
             var decodedClasse = Uri.UnescapeDataString(classe);
             var nomes = await _produtoService.GetNomes(decodedClasse);
