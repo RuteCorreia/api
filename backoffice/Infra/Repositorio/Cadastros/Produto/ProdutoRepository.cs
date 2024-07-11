@@ -29,7 +29,23 @@ public class ProdutoRepository : IProdutoRepository
             await _contextBase.SaveChangesAsync();
         }
     }
+    public async Task<IEnumerable<string>> GetClasses()
+    {
+        var classes = await _contextBase.Produto
+            .Select(p => p.Classe)
+            .Distinct()
+            .ToListAsync();
+        return classes;
+    }
 
+    public async Task<IEnumerable<string>> GetNomes(string classe)
+    {
+        var nomes = await _contextBase.Produto
+            .Where(p => p.Classe == classe)
+            .Select(p => p.Nome)
+            .ToListAsync();
+        return nomes;
+    }
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync()
     {
         var entities = await _contextBase.Produto.ToListAsync();

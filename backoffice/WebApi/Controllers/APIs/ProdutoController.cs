@@ -139,5 +139,20 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar produto: {ex.Message}");
             }
         }
+
+        [HttpGet("classes")]
+        public async Task<ActionResult<IEnumerable<string>>> GetClasses()
+        {
+            var classes = await _produtoService.GetClasses();
+            return Ok(classes);
+        }
+
+        [HttpGet("nomes/{*classe}")]
+        public async Task<ActionResult<IEnumerable<string>>> GetNomes(string classe)
+        {
+            var decodedClasse = Uri.UnescapeDataString(classe);
+            var nomes = await _produtoService.GetNomes(decodedClasse);
+            return Ok(nomes);
+        }
     }
 }

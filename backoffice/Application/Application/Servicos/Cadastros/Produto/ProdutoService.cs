@@ -44,4 +44,14 @@ public class ProdutoService : IProdutoService
     {
         await _produtoRepository.DeleteAsync(id);
     }
+
+    public async Task<IEnumerable<string>> GetClasses()
+    {
+        return await _produtoRepository.GetClasses();
+    }
+
+    public async Task<IEnumerable<string>> GetNomes(string classe)
+    {
+        return await _produtoRepository.GetNomes(classe);
+    }
 }

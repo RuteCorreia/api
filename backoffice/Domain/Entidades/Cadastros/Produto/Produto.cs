@@ -11,11 +11,11 @@ public class Produto
 
     [ForeignKey("Cultura")]
     public int? IdCultura { get; set; }
-    public string Nome { get; set; }
-    public string ClassificacaoToxicologica { get; set; }
-    public string Classe { get; set; }
-    public string TipoDeFormulacao { get; set; }
-    public string TipoServico { get; set; }
+    public string? Nome { get; set; }
+    public string? ClassificacaoToxicologica { get; set; }
+    public string? Classe { get; set; }
+    public string? TipoDeFormulacao { get; set; }
+    public string? TipoServico { get; set; }
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }
 }
