@@ -78,14 +78,15 @@ namespace WebApi.Controllers.APIs
             var returnMsg = new StringBuilder().Append("Modelo inválido");
             try
             {
+                var resId = 0;
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    await _dadosResponsavelService.AddAsync(obj, loggedUser.Item3);
+                    resId =  await _dadosResponsavelService.AddAsync(obj, loggedUser.Item3);
                     returnMsg.Clear();
                 }
 
-                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok() : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
+                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok(resId) : StatusCode(StatusCodes.Status400BadRequest, returnMsg.ToString());
             }
             catch (Exception ex)
             {
