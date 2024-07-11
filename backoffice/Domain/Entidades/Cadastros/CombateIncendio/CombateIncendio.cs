@@ -11,6 +11,8 @@ public class CombateIncendio
     [Key]
     public int Id { get; set; }
 
+    public bool IsMapa { get; set; }
+
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
     public string? NomeRelatorio { get; set; }
