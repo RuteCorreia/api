@@ -110,9 +110,9 @@ namespace WebApi.Controllers.APIs
                     if (!ObjectNullValidation.IsObjectNull(existingObj))
                     {
                         obj.Id = existingObj.Id;
-                        await _dataRelatorioService.UpdateAsync(obj);
+                        var retId = await _dataRelatorioService.UpdateAsync(obj);
                         _logService.LogInformation($"Identificação de área tratada com ID {id} atualizada com sucesso.");
-                        return Ok();
+                        return Ok(retId);
                     }
                     else
                     {
