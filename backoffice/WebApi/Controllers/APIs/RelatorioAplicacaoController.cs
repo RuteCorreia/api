@@ -38,7 +38,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -143,7 +143,9 @@ namespace WebApi.Controllers.APIs
                         var relatorioBaseViewModel = new RelatorioBaseViewModel
                         {
                             NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data
+                            Base64Data = data.Data,
+                            IsMapa = relatorio.IsMapa,
+                            Id = relatorio.Id
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -458,7 +460,7 @@ namespace WebApi.Controllers.APIs
                         return NotFound("Relatório de aplicação não encontrado");
                     }
 
-                    obj.Id = relatorioExistente.Id;
+                    obj.Id = id;
                     await _relatorioAplicacaoService.UpdateAsync(obj);
                     _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
                     return Ok();
@@ -471,6 +473,41 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpPut("updateIsmapa/{id}")]
+        public async Task<ActionResult> UpdateIsMapa(int id, [FromBody] RelatorioAplicacaoViewModel obj)
+        {
+            try
+            {
+                //if (id != obj.Id)
+                //{
+                //    return BadRequest("ID do relatório no corpo da requisição não corresponde ao ID da rota.");
+                //}
+
+                if (ModelState.IsValid)
+                {
+                    //var relatorioExistente = await _relatorioAplicacaoService.GetByIdAsync(obj.Id);
+                    //if (relatorioExistente == null)
+                    //{
+                    //    _logService.LogWarning("Relatório de aplicação não encontrado para atualização.");
+                    //    return NotFound("Relatório de aplicação não encontrado");
+                    //}
+
+                    obj.Id = id;
+                    await _relatorioAplicacaoService.UpdateIsMapaAsync(obj);
+                    _logService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar campo IsMapa do relatório de aplicação.");
+                return BadRequest("Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
             }
         }
 

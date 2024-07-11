@@ -44,6 +44,21 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
+        public async Task UpdateIsMapaAsync(RelatorioAplicacaoViewModel obj)
+        {
+            var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
+            if (relatorioExistente != null)
+            {
+                relatorioExistente.IsMapa = obj.IsMapa;
+                
+                // Mapeia o ViewModel para a entidade (se necessário)
+                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
+
+                // Executa a atualização completa do objeto no repositório
+                await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
+            }
+        }
+
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
