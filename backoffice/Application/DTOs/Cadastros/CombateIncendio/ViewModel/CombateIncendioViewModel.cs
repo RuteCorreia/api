@@ -9,6 +9,7 @@ public class CombateIncendioViewModel
 {
     public int Id { get; set; }
     public int? IdEmpresa { get; set; }
+    public bool IsMapa { get; set; }
     public string? NomeRelatorio { get; set; }
     public string? IdExecutor { get; set; }
     public bool OrgaoPublico_Privado { get; set; }

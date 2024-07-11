@@ -460,7 +460,7 @@ namespace WebApi.Controllers.APIs
                         return NotFound("Relatório de aplicação não encontrado");
                     }
 
-                    obj.Id = id;
+                    obj.Id = relatorioExistente.Id;
                     await _relatorioAplicacaoService.UpdateAsync(obj);
                     _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
                     return Ok();
