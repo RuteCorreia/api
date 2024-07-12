@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 using Application.DTOs.Cadastros.RelatorioBase;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
+using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
+using Application.Application.Servicos.Log;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 namespace WebApi.Controllers.APIs;
 
 [Route("api/v1/[controller]")]
@@ -91,7 +94,9 @@ public class CombateIncendioController : ControllerBase
                     var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
                         NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
@@ -103,13 +108,54 @@ public class CombateIncendioController : ControllerBase
                 }
             }
 
-            _loggerService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+            _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
             return Ok(dataRelatorios);
         }
         catch (Exception ex)
         {
-            _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
+        }
+    }
+
+    [HttpGet("getRelatorioMapa")]
+    public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetRelatorioMapa()
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorios = await _combateIncendioService.GetListByStatusMapaAsync(loggedUser.Item3);
+            List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+            foreach (var relatorio in relatorios)
+            {
+                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                if (!string.IsNullOrEmpty(data.Data))
+                {
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
+                    {
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id
+                    };
+
+                    dataRelatorios.Add(relatorioBaseViewModel);
+                }
+                else
+                {
+                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                }
+            }
+
+            _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
+            return Ok(dataRelatorios);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
         }
     }
 
@@ -161,6 +207,28 @@ public class CombateIncendioController : ControllerBase
         catch (Exception ex)
         {
             return StatusCode(StatusCodes.Status500InternalServerError, $"CombateIncendio update - {ex.Message}");
+        }
+    }
+
+    [HttpPut("updateIsmapa")]
+    public async Task<ActionResult> UpdateIsMapa([FromBody] List<CombateIncendioViewModel> obj)
+    {
+        try
+        {
+            if (ModelState.IsValid)
+            {
+                await _combateIncendioService.UpdateIsMapaAsync(obj);
+                _loggerService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
+                return Ok();
+            }
+
+            _loggerService.LogWarning("Modelo inválido ao atualizar campo IsMapa do relatório de aplicação.");
+            return BadRequest("Modelo inválido");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
         }
     }
 

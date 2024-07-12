@@ -43,6 +43,14 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaAsync(string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _combateIncendioRepository.GetListByStatusMapaAsync(idEmpresaInt, statusEnvio);
+        return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
+    }
+
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -60,6 +68,22 @@ public class CombateIncendioService : ICombateIncendioService
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
+    }
+
+    public async Task UpdateIsMapaAsync(List<CombateIncendioViewModel> relatorios)
+    {
+        foreach (var relatorio in relatorios)
+        {
+            var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(relatorio.Id);
+            if (relatorioExistente != null)
+            {
+                relatorioExistente.IsMapa = relatorio.IsMapa;
+
+                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
+
+                await _combateIncendioRepository.UpdateIsMapaAsync(mapProduto);
+            }
+        }
     }
 
     public async Task DeleteAsync(int id)

@@ -127,7 +127,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("getDataFromApp")]
-        public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetDataFromApp()
         {
             try
             {
@@ -143,7 +143,9 @@ namespace WebApi.Controllers.APIs
                         var relatorioBaseViewModel = new RelatorioBaseViewModel
                         {
                             NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data
+                            Base64Data = data.Data,
+                            IsMapa = relatorio.IsMapa,
+                            Id = relatorio.Id
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -471,6 +473,29 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpPut("updateIsmapa")]
+        public async Task<ActionResult> UpdateIsMapa([FromBody] RelatorioAplicacaoViewModel obj)
+        {
+            try
+            {
+                
+                if (ModelState.IsValid)
+                {
+                    await _relatorioAplicacaoService.UpdateIsMapaAsync(obj);
+                    _logService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar campo IsMapa do relatório de aplicação.");
+                return BadRequest("Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
             }
         }
 

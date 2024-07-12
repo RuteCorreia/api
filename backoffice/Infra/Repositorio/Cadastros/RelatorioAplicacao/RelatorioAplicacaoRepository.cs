@@ -109,7 +109,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByStatusAsync(int idEmpresa, int statusEnvio)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio =  @statusEnvio";
+            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio =  @statusEnvio  AND IsMapa = 0";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
         }
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllByIdEmpresaAsync(int idEmpresa)
@@ -215,5 +215,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
+
+        public async Task UpdateIsMapaAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        {
+            var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
+            objeto.IsMapa = obj.IsMapa;
+            _contextBase.RelatorioAplicacao.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
     }
 }
