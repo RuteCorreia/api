@@ -40,6 +40,7 @@ using Domain.Entidades.Cadastros.RelatorioIncendio;
 using Domain.Entidades.Cadastros.LocalIncendio;
 using Domain.Entidades.Cadastros.AuxiliarPista;
 using Domain.Entidades.Cadastros.DataRelatorio;
+using Domain.Entidades.Cadastros.TipoDeServico;
 
 namespace Infra.Configuracao;
 
@@ -107,6 +108,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<Veiculo> Veiculo { get; set; }
     public DbSet<CombateIncendioPista> CombateIncendioPista { get; set; }
     public DbSet<DataRelatorio> DataRelatorio { get; set; }
+    public DbSet<TipoDeServico> TipoDeServico { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
