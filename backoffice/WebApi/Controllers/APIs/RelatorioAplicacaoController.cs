@@ -38,7 +38,7 @@ namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -127,7 +127,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("getDataFromApp")]
-        public async Task<ActionResult<IEnumerable<CombateIncendioViewModel>>> GetDataFromApp()
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetDataFromApp()
         {
             try
             {
@@ -476,26 +476,14 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpPut("updateIsmapa/{id}")]
-        public async Task<ActionResult> UpdateIsMapa(int id, [FromBody] RelatorioAplicacaoViewModel obj)
+        [HttpPut("updateIsmapa")]
+        public async Task<ActionResult> UpdateIsMapa([FromBody] RelatorioAplicacaoViewModel obj)
         {
             try
             {
-                //if (id != obj.Id)
-                //{
-                //    return BadRequest("ID do relatório no corpo da requisição não corresponde ao ID da rota.");
-                //}
-
+                
                 if (ModelState.IsValid)
                 {
-                    //var relatorioExistente = await _relatorioAplicacaoService.GetByIdAsync(obj.Id);
-                    //if (relatorioExistente == null)
-                    //{
-                    //    _logService.LogWarning("Relatório de aplicação não encontrado para atualização.");
-                    //    return NotFound("Relatório de aplicação não encontrado");
-                    //}
-
-                    obj.Id = id;
                     await _relatorioAplicacaoService.UpdateIsMapaAsync(obj);
                     _logService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
                     return Ok();
