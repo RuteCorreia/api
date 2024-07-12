@@ -50,20 +50,8 @@ namespace Infra.Repositorio.Cadastros.Contratante
 
         public async Task<Domain.Entidades.Cadastros.Contratante.Contratante> GetByIdAsync(int? id)
         {
-            using (var connection = _dbConnection)
-            {
-                try
-                {
-                    string query = $"SELECT * FROM Contratante WHERE Id = {id}";
-                    var contratante = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Contratante.Contratante>(query);
-                    return contratante;
-
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
+            var obj = await _contextBase.Contratante.FindAsync(id);
+            return obj;
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Contratante.Contratante obj)
