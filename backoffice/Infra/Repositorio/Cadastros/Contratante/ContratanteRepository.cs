@@ -52,20 +52,6 @@ namespace Infra.Repositorio.Cadastros.Contratante
         {
             var obj = await _contextBase.Contratante.FindAsync(id);
             return obj;
-            //using (var connection = _dbConnection)
-            //{
-            //    try
-            //    {
-            //        string query = $"SELECT * FROM Contratante WHERE Id = {id}";
-            //        var contratante = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Contratante.Contratante>(query);
-            //        return contratante;
-
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        throw new Exception(ex.Message);
-            //    }
-            //}
         }
 
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Contratante.Contratante obj)
