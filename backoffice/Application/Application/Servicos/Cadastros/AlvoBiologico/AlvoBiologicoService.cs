@@ -34,6 +34,19 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
     }
 
+    public async Task<List<string>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
+    {
+        try
+        {
+            return await _alvoBiologicoRepository.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
+        }
+        catch (Exception ex)
+        {
+            // Aqui você pode adicionar tratamento de exceção, logging, etc.
+            throw new Exception("Erro ao obter Alvos Biológicos.", ex);
+        }
+    }
+
     public async Task AddAsync(AlvoBiologicoViewModel obj)
     {
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
