@@ -517,7 +517,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPut("updateIsmapa")]
-        public async Task<ActionResult> UpdateIsMapa([FromBody] List<RelatorioAplicacaoViewModel> obj)
+        public async Task<ActionResult> UpdateIsMapa([FromBody] List<int> obj)
         {
             try
             {

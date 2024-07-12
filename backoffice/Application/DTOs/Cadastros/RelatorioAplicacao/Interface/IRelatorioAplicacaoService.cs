@@ -12,6 +12,6 @@ public interface IRelatorioAplicacaoService
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataAlteracaoAsync(DateTime Date, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? idEmpresa);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
-    Task UpdateIsMapaAsync(List<RelatorioAplicacaoViewModel> obj);
+    Task UpdateIsMapaAsync(List<int> obj);
     Task DeleteAsync(int id);
 }

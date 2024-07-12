@@ -44,14 +44,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
-        public async Task UpdateIsMapaAsync(List<RelatorioAplicacaoViewModel> relatorios)
+        public async Task UpdateIsMapaAsync(List<int> relatorios)
         {
             foreach (var relatorio in relatorios)
             {
-                var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(relatorio.Id);
+                var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(relatorio);
                 if (relatorioExistente != null)
                 {
-                    relatorioExistente.IsMapa = relatorio.IsMapa;
+                     relatorioExistente.IsMapa = true;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
