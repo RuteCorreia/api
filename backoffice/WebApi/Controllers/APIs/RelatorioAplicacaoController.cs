@@ -167,6 +167,46 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getRelatorioMapa")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetRelatorioMapa()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorios = await _relatorioAplicacaoService.GetListByStatusMapaAsync(loggedUser.Item3);
+                List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+                foreach (var relatorio in relatorios)
+                {
+                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                    if (!string.IsNullOrEmpty(data.Data))
+                    {
+                        var relatorioBaseViewModel = new RelatorioBaseViewModel
+                        {
+                            NomeRelatorio = relatorio.NomeRelatorio,
+                            Base64Data = data.Data,
+                            IsMapa = relatorio.IsMapa,
+                            Id = relatorio.Id
+                        };
+
+                        dataRelatorios.Add(relatorioBaseViewModel);
+                    }
+                    else
+                    {
+                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                    }
+                }
+
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(dataRelatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
 
         [HttpGet("getByDataCriacao")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataCriacao(DateTime date)
@@ -477,7 +517,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPut("updateIsmapa")]
-        public async Task<ActionResult> UpdateIsMapa([FromBody] RelatorioAplicacaoViewModel obj)
+        public async Task<ActionResult> UpdateIsMapa([FromBody] List<int> obj)
         {
             try
             {

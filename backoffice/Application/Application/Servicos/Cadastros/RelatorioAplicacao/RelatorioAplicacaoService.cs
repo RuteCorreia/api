@@ -44,19 +44,21 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
-        public async Task UpdateIsMapaAsync(RelatorioAplicacaoViewModel obj)
+        public async Task UpdateIsMapaAsync(List<int> relatorios)
         {
-            var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
-            if (relatorioExistente != null)
+            foreach (var relatorio in relatorios)
             {
-                relatorioExistente.IsMapa = obj.IsMapa;
-                
-                // Mapeia o ViewModel para a entidade (se necessário)
-                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
+                var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(relatorio);
+                if (relatorioExistente != null)
+                {
+                     relatorioExistente.IsMapa = true;
 
-                // Executa a atualização completa do objeto no repositório
-                await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
+                    var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
+
+                    await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
+                }
             }
+           
         }
 
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
@@ -93,6 +95,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var statusEnvio = 0;
             var list = await _relatorioAplicacaoRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaAsync(string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var statusEnvio = 0;
+            var list = await _relatorioAplicacaoRepository.GetListByStatusMapaAsync(idEmpresaInt, statusEnvio);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
