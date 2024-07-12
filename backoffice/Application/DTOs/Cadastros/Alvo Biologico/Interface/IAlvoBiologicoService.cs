@@ -11,7 +11,7 @@ public interface IAlvoBiologicoService
     Task<IEnumerable<AlvoBiologicoViewModel>> GetByIdCulturaAsync(int id);
 
     Task<AlvoBiologicoViewModel> GetByName(string name);
-    Task<List<string>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto);
+    Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto);
 
     Task AddAsync(AlvoBiologicoViewModel obj);
 

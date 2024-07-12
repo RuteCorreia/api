@@ -45,7 +45,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("DropDownListAlvosBiologicos")]
-        public async Task<IActionResult> GetAlvosBiologicos([FromQuery] string nomeCultura, [FromQuery] string nomeProduto)
+        public async Task<ActionResult<IAsyncEnumerable<AlvoBiologicoViewModel>>> GetAlvosBiologicos([FromQuery] string nomeCultura, [FromQuery] string nomeProduto)
         {
             var alvosBiologicos = await _alvoBiologicoService.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
             return Ok(alvosBiologicos);

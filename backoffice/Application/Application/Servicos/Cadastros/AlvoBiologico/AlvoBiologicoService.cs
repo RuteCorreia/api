@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
+using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
 
@@ -34,11 +35,12 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
     }
 
-    public async Task<List<string>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
+    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
     {
         try
         {
-            return await _alvoBiologicoRepository.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
+            var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
+            return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(result);
         }
         catch (Exception ex)
         {

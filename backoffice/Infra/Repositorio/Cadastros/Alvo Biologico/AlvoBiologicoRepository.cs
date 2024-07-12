@@ -44,10 +44,10 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         return obj;
     }
 
-    public async Task<List<string>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
     {
         var query = @"
-            SELECT ab.Nome
+            SELECT ab.*
             FROM BulaAplicacao ba
             JOIN Cultura c ON ba.idCultura = c.idCultura
             JOIN AlvoBiologico ab ON ba.idAlvoBiologico = ab.Id
@@ -58,7 +58,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             var parameters = new { NomeCultura = nomeCultura, NomeProduto = nomeProduto };
-            var result = await connection.QueryAsync<string>(query, parameters);
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(query, parameters);
             return result.ToList();
         }
     }
