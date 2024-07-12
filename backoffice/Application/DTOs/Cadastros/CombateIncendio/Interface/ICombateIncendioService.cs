@@ -16,5 +16,5 @@ public interface ICombateIncendioService
     Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa);
 
     Task DeleteAsync(int id);
-    Task UpdateIsMapaAsync(CombateIncendioViewModel obj);
+    Task UpdateIsMapaAsync(List<CombateIncendioViewModel> obj);
 }

@@ -169,26 +169,13 @@ public class CombateIncendioController : ControllerBase
         }
     }
 
-    [HttpPut("updateIsmapa/{id}")]
-    public async Task<ActionResult> UpdateIsMapa(int id, [FromBody] CombateIncendioViewModel obj)
+    [HttpPut("updateIsmapa")]
+    public async Task<ActionResult> UpdateIsMapa(int id, [FromBody] List<CombateIncendioViewModel> obj)
     {
         try
         {
-            //if (id != obj.Id)
-            //{
-            //    return BadRequest("ID do relatório no corpo da requisição não corresponde ao ID da rota.");
-            //}
-
             if (ModelState.IsValid)
             {
-                //var relatorioExistente = await _relatorioAplicacaoService.GetByIdAsync(obj.Id);
-                //if (relatorioExistente == null)
-                //{
-                //    _logService.LogWarning("Relatório de aplicação não encontrado para atualização.");
-                //    return NotFound("Relatório de aplicação não encontrado");
-                //}
-
-                obj.Id = id;
                 await _combateIncendioService.UpdateIsMapaAsync(obj);
                 _loggerService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
                 return Ok();

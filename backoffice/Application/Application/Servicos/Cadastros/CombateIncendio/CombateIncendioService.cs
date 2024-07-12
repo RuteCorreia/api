@@ -62,18 +62,19 @@ public class CombateIncendioService : ICombateIncendioService
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 
-    public async Task UpdateIsMapaAsync(CombateIncendioViewModel obj)
+    public async Task UpdateIsMapaAsync(List<CombateIncendioViewModel> relatorios)
     {
-        var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(obj.Id);
-        if (relatorioExistente != null)
+        foreach (var relatorio in relatorios)
         {
-            relatorioExistente.IsMapa = obj.IsMapa;
+            var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(relatorio.Id);
+            if (relatorioExistente != null)
+            {
+                relatorioExistente.IsMapa = relatorio.IsMapa;
 
-            // Mapeia o ViewModel para a entidade (se necessário)
-            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
+                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 
-            // Executa a atualização completa do objeto no repositório
-            await _combateIncendioRepository.UpdateIsMapaAsync(mapProduto);
+                await _combateIncendioRepository.UpdateIsMapaAsync(mapProduto);
+            }
         }
     }
 
