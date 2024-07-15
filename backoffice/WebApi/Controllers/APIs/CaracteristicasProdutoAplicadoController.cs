@@ -1,6 +1,8 @@
-﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Log.Interface;
+using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,6 +71,27 @@ namespace WebApi.Controllers.APIs
             {
                 _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao buscar a CaracteristicasProdutoAplicado com ID {id}: {ex.Message}").ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao buscar a CaracteristicasProdutoAplicado: {ex.Message}").ToString());
+            }
+        }
+
+        [HttpGet("getForExportExcel/{id}")]
+        public async Task<ActionResult<CaracteristicasProdutoAplicadoViewModel>> GetForExportExcel(int id)
+        {
+            try
+            {
+                var result = await _caracteristicasProdutoAplicadoService.GetForExportExcelAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(result))
+                {
+                    _loggerService.LogInformation($"Detalhes da identificação de área tratada com ID {id} obtidos com sucesso.");
+                    return Ok(result);
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
             }
         }
 

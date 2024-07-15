@@ -3,6 +3,7 @@ using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Data.Common;
@@ -42,6 +43,19 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
         return entities;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetForExportExcelAsync(int id)
+    {
+        var query = @"
+            SELECT HoraTermino, HoraInicio
+            FROM AplicacaoRelatorioItem WHERE IdAplicacaoRelatorio = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>(query, parameters);
+            return result.ToList();
+        }
+    }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetAllByAplicacaoRelatorioIdAsync(int idAplicacaoRelatorio)
     {

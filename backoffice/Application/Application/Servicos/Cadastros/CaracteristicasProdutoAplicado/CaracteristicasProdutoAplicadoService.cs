@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
@@ -64,5 +65,11 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
     {
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
         await _caracteristicasProdutoAplicadoRepository.UpdateAsync(mapObj);
+    }
+
+    public async Task<CaracteristicasProdutoAplicadoViewModel> GetForExportExcelAsync(int id)
+    {
+        var obj = await _caracteristicasProdutoAplicadoRepository.GetForExportExcelAsync(id);
+        return _mapper.Map<CaracteristicasProdutoAplicadoViewModel>(obj);
     }
 }

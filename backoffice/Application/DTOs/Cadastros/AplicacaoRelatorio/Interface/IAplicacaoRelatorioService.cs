@@ -11,6 +11,6 @@ public interface IAplicacaoRelatorioService
     Task<int> AddAsync(StringAplicacaoRelatorioViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(AplicacaoRelatorioViewModel obj);
-
+    Task<AplicacaoRelatorioViewModel> GetForExportExcelAsync(int id);
     Task DeleteAsync(int id);
 }

@@ -5,17 +5,41 @@ using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Helpers;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Contratante;
+using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
+using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
+using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
     public class RelatorioAplicacaoService : IRelatorioAplicacaoService
     {
+        private readonly IAplicacaoRecomendacoesTecnicasRepository _aplicacaoRecomendacoesTecnicasRepository;
+        private readonly ICaracteristicasProdutoAplicadoRepository _caracteristicasProdutoAplicadoRepository;
+        private readonly IIdentificacaoAreaTratadaRepository _identificacaoAreaTratadaRepository;
+        private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
+        private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly IContratanteRepository _contratanteRepository;
         private readonly IMapper _mapper;
 
-        public RelatorioAplicacaoService(IMapper mapper, IContratanteRepository contratanteRepository, IRelatorioAplicacaoRepository relatorioAplicacaoRepository)
+        public RelatorioAplicacaoService(
+            IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository,
+            ICaracteristicasProdutoAplicadoRepository caracteristicasProdutoAplicadoRepository,
+            IIdentificacaoAreaTratadaRepository identificacaoAreaTratadaRepository,
+            IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository,
+            IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
+            IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
+            IContratanteRepository contratanteRepository,
+            IMapper mapper)
         {
+            _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
+            _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
+            _identificacaoAreaTratadaRepository = identificacaoAreaTratadaRepository;
+            _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
+            _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _contratanteRepository = contratanteRepository;
             _mapper = mapper;
@@ -32,6 +56,43 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
+        public async Task<RAExportExcelViewModel> ExportExcelAsync(int id)
+        {
+            var ra = await _relatorioAplicacaoRepository.ExportExcelAsync(id);
+            var iat = await _identificacaoAreaTratadaRepository.GetForExportExcelAsync(ra.IdentificacaoAreaTratadaId);
+            var art = await _aplicacaoRecomendacoesTecnicasRepository.GetForExportExcelAsync(ra.RecomendacoesTecnicasId);
+            var cpa = await _caracteristicasProdutoAplicadoRepository.GetForExportExcelAsync(ra.CaracteristicasProdutoAplicadoId);
+            var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(ra.AplicacaoRelatorioId);
+            var ari = await _aplicacaoRelatorioItemRepository.GetForExportExcelAsync(ar.Id);
+            TimeSpan totalDuration = TimeSpan.Zero;
+
+            foreach (var item in ari)
+            {
+                // Convertendo as strings de hora para TimeSpan
+                if (TimeSpan.TryParse(item.HoraInicio, out TimeSpan horaInicio) &&
+                    TimeSpan.TryParse(item.HoraTermino, out TimeSpan horaTermino))
+                {
+                    // Calculando a diferença de tempo
+                    TimeSpan duration = horaTermino - horaInicio;
+
+                    // Somando a diferença ao total
+                    totalDuration += duration;
+                }
+            }
+            var viewModel = new RAExportExcelViewModel
+            {
+                UF = iat.UF,
+                Cidade = iat.Cidade,
+                NomeAeronave = art.NomeAeronave,
+                Cultura = cpa.Cultura,
+                NomeProduto = cpa.NomeProduto,
+                Classe = cpa.Classe,
+                TipoServico = cpa.TipoServico,
+                TotalAreaAplicada = ar.TotalAreaAplicada,
+                HorasAplicacao = totalDuration.ToString(@"hh\:mm")
+            };
+            return viewModel;
+        }
         public async Task<RelatorioAplicacaoViewModel> GetByIdAsync(int id)
         {
             var obj = await _relatorioAplicacaoRepository.GetByIdAsync(id);
@@ -51,14 +112,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(relatorio);
                 if (relatorioExistente != null)
                 {
-                     relatorioExistente.IsMapa = true;
+                    relatorioExistente.IsMapa = true;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                     await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
                 }
             }
-           
+
         }
 
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)

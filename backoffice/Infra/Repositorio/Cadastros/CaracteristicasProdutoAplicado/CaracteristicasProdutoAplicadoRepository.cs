@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -42,6 +43,20 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
             .ToListAsync();
 
         return entities;
+    }
+
+    public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetForExportExcelAsync(int? id)
+    {
+        var query = @"
+            SELECT Cultura, NomeProduto, Classe, TipoServico
+            FROM CaracteristicasProdutoAplicado WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(query, parameters);
+            return result;
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetByIdAsync(int id, int idEmpresa)

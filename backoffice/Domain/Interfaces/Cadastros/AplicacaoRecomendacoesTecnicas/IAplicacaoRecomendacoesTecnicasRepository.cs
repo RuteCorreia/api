@@ -8,5 +8,6 @@ public interface IAplicacaoRecomendacoesTecnicasRepository
     Task UpdateAsync(Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>> GetAllAsync();
+    Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetForExportExcelAsync(int? id);
     Task<Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetByIdAsync(int id);
 }

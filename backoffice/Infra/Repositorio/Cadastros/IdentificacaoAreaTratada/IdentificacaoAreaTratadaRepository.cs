@@ -2,6 +2,7 @@
 using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -61,6 +62,20 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
                 {
                     throw new Exception(ex.Message);
                 }
+            }
+        }
+
+        public async Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetForExportExcelAsync(int? id)
+        {
+            var query = @"
+            SELECT UF,Cidade,Cultura
+            FROM IdentificacaoAreaTratada WHERE Id = @Id";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { Id = id };
+                var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(query, parameters);
+                return result;
             }
         }
 

@@ -126,6 +126,22 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("exportExcel/{id}")]
+        public async Task<ActionResult<RAExportExcelViewModel>> ExportExcel(int id)
+        {
+            try
+            {
+                var relatorios = await _relatorioAplicacaoService.ExportExcelAsync(id);
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(relatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
+
         [HttpGet("getDataFromApp")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetDataFromApp()
         {

@@ -2,6 +2,7 @@
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -39,6 +40,20 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
     {
         var entities = await _contextBase.AplicacaoRecomendacoesTecnicas.ToListAsync();
         return entities;
+    }
+
+    public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetForExportExcelAsync(int? id)
+    {
+        var query = @"
+            SELECT NomeAeronave
+            FROM AplicacaoRecomendacoesTecnicas WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(query, parameters);
+            return result;
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetByIdAsync(int id)
