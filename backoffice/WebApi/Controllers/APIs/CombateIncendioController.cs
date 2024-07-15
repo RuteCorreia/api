@@ -211,7 +211,7 @@ public class CombateIncendioController : ControllerBase
     }
 
     [HttpPut("updateIsmapa")]
-    public async Task<ActionResult> UpdateIsMapa([FromBody] List<CombateIncendioViewModel> obj)
+    public async Task<ActionResult> UpdateIsMapa([FromBody] List<int> obj)
     {
         try
         {
