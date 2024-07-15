@@ -1,6 +1,7 @@
 ﻿using Infra.Configuracao;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OfficeOpenXml;
 using System.Text;
 using System.Text.Json;
 
@@ -10,6 +11,7 @@ public static class ServicesConfig
 {
     public static void AddServicesConfiguration(this IServiceCollection services)
     {
+        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();

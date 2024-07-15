@@ -11,5 +11,6 @@
         public string? TipoServico { get; set; }
         public decimal? TotalAreaAplicada { get; set; }
         public string? HorasAplicacao { get; set; }
+        public string? Adjuvante { get; set; }
     }
 }

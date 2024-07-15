@@ -48,7 +48,7 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
     public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetForExportExcelAsync(int? id)
     {
         var query = @"
-            SELECT Cultura, NomeProduto, Classe, TipoServico
+            SELECT Cultura, NomeProduto, Classe, TipoServico, Adjuvante
             FROM CaracteristicasProdutoAplicado WHERE Id = @Id";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))

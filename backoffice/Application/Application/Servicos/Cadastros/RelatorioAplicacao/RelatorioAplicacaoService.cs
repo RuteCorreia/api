@@ -89,6 +89,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Classe = cpa.Classe,
                 TipoServico = cpa.TipoServico,
                 TotalAreaAplicada = ar.TotalAreaAplicada,
+                Adjuvante = cpa.Adjuvante,
                 HorasAplicacao = totalDuration.ToString(@"hh\:mm")
             };
             return viewModel;
