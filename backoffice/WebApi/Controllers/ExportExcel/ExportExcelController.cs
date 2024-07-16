@@ -156,11 +156,11 @@ namespace WebApi.Controllers.ExportExcel
                     return NotFound("Nenhum arquivo encontrado.");
                 }
 
-                var arquivosZipViewModel = arquivosZip.Select(arquivo => new PlanilhaExcelExportada
+                var arquivosZipViewModel = arquivosZip.Select(arquivo => new ArquivoZipViewModel
                 {
                     Id = arquivo.Id,
                     Nome = arquivo.Nome,
-                    Dados = arquivo.Dados
+                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null
                 }).ToList();
 
                 return Ok(arquivosZipViewModel);
