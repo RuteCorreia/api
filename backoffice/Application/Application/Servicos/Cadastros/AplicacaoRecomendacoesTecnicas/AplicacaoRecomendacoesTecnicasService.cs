@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
@@ -23,6 +24,11 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         return _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
     }
 
+    public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetForExportExcelAsync(int id)
+    {
+        var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetForExportExcelAsync(id);
+        return _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+    }
     public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id)
     {
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);

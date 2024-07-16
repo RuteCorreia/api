@@ -9,4 +9,5 @@ public interface IAplicacaoRelatorioRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>> GetAllAsync();
     Task<Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> GetByIdAsync(int id);
+    Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> GetForExportExcelAsync(int? id);
 }

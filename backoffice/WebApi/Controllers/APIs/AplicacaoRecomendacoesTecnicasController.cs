@@ -1,4 +1,6 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+﻿using Application.Application.Servicos.Log;
+using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Log.Interface;
 using Helpers;
@@ -70,6 +72,27 @@ namespace WebApi.Controllers.APIs
             {
                 _loggerService.LogError(ex, $"Erro ao buscar a recomendação técnica de aplicação com ID {id}: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar a recomendação técnica de aplicação: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getForExportExcel/{id}")]
+        public async Task<ActionResult<AplicacaoRecomendacoesTecnicasViewModel>> GetForExportExcel(int id)
+        {
+            try
+            {
+                var result = await _aplicacaoRecomendacoesTecnicasService.GetForExportExcelAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(result))
+                {
+                    _loggerService.LogInformation($"Detalhes da identificação de área tratada com ID {id} obtidos com sucesso.");
+                    return Ok(result);
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
             }
         }
 

@@ -33,6 +33,10 @@ using WebApi.HttpRequestInfo;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioBase;
+using ExcelDataReader;
+using System.Data;
+using OfficeOpenXml;
+using System.IO.Compression;
 
 namespace WebApi.Controllers.APIs
 {

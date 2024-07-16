@@ -101,6 +101,21 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             }
         }
 
+        public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> ExportExcelAsync(int? id)
+        {
+            var query = @"
+            SELECT IdentificacaoAreaTratadaId, RecomendacoesTecnicasId, CaracteristicasProdutoAplicadoId, AplicacaoRelatorioId
+            FROM RelatorioAplicacao WHERE Id = @Id";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { Id = id };
+                var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, parameters);
+                return result;
+            }
+        }
+
+
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllAsync()
         {
             string query = "SELECT * FROM RelatorioAplicacao";

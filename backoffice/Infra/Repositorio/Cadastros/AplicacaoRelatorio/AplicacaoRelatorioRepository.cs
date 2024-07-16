@@ -1,6 +1,8 @@
-﻿using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.AplicacaoRelatorio;
@@ -42,6 +44,19 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
         return obj;
     }
 
+    public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> GetForExportExcelAsync(int? id)
+    {
+        var query = @"
+            SELECT Id, TotalAreaAplicada
+            FROM AplicacaoRelatorio WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(query, parameters);
+            return result;
+        }
+    }
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio obj)
     {
         var objeto = await _contextBase.AplicacaoRelatorio.FindAsync(obj.Id);

@@ -8,6 +8,6 @@ public interface IAeronaveRepository
     Task UpdateAsync(Entidades.Cadastros.Aeronave.Aeronave obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync(int idEmpresa);
-    Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name, int idEmpresa);
 }

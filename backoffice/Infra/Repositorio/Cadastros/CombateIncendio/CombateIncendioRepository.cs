@@ -3,6 +3,7 @@ using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -51,6 +52,20 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         else
         {
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa });
+        }
+    }
+
+    public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id)
+    {
+        var query = @"
+            SELECT IdAeronave, HoraInicial, HorarioFinalOperacao, Uf, Cidade, TotalAguaUtilizadaOperacao
+            FROM CombateIncendio WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, parameters);
+            return result;
         }
     }
 

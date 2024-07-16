@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
@@ -20,6 +21,12 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
     {
         var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(idRelatorioAplicacao);
         return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
+    }
+
+    public async Task<IEnumerable<RelatorioItemViewModel>> GetForExportExcelAsync(int id)
+    {
+        var obj = await _aplicacaoRelatorioItemRepository.GetForExportExcelAsync(id);
+        return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(obj);
     }
 
     public async Task<IEnumerable<RelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId)

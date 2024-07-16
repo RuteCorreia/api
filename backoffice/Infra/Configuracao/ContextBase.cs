@@ -41,6 +41,7 @@ using Domain.Entidades.Cadastros.LocalIncendio;
 using Domain.Entidades.Cadastros.AuxiliarPista;
 using Domain.Entidades.Cadastros.DataRelatorio;
 using Domain.Entidades.Cadastros.TipoDeServico;
+using Domain.Entidades.Export_Excel;
 
 namespace Infra.Configuracao;
 
@@ -109,6 +110,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<CombateIncendioPista> CombateIncendioPista { get; set; }
     public DbSet<DataRelatorio> DataRelatorio { get; set; }
     public DbSet<TipoDeServico> TipoDeServico { get; set; }
+    public DbSet<PlanilhaExcelExportada> PlanilhaExcelExportadas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

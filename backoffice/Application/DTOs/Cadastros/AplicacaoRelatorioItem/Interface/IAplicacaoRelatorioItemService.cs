@@ -13,6 +13,7 @@ public interface IAplicacaoRelatorioItemService
     Task AddAsync(AplicacaoRelatorioItemViewModel obj);
 
     //Task UpdateAsync(List<AplicacaoRelatorioItemViewModel> obj);
+    Task<IEnumerable<RelatorioItemViewModel>> GetForExportExcelAsync(int id);
 
     Task DeleteAsync(int id);
 }
