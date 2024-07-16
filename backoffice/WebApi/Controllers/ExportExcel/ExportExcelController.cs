@@ -1,9 +1,11 @@
-﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
+﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.ExportExcel.Interfaces;
 using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
+using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -142,5 +144,32 @@ namespace WebApi.Controllers.ExportExcel
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var arquivosZip = await _exportacaoPlanilhaService.GetAllAsync();
+                if (arquivosZip == null || !arquivosZip.Any())
+                {
+                    return NotFound("Nenhum arquivo encontrado.");
+                }
+
+                var arquivosZipViewModel = arquivosZip.Select(arquivo => new ArquivoZipViewModel
+                {
+                    Id = arquivo.Id,
+                    Nome = arquivo.Nome,
+                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null
+                }).ToList();
+
+                return Ok(arquivosZipViewModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar arquivos zip: {ex.Message}");
+            }
+        }
+
     }
 }
