@@ -79,6 +79,12 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                     totalDuration += duration;
                 }
             }
+
+            int hours = Math.Abs(totalDuration.Hours);
+            int minutes = Math.Abs(totalDuration.Minutes);
+
+            string horasAplicacao = $"{hours}{minutes:D2}";
+
             var viewModel = new RAExportExcelViewModel
             {
                 UF = iat.UF,
@@ -90,7 +96,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 TipoServico = cpa.TipoServico,
                 TotalAreaAplicada = ar.TotalAreaAplicada,
                 Adjuvante = cpa.Adjuvante,
-                HorasAplicacao = totalDuration.ToString(@"hh\:mm")
+                HorasAplicacao = horasAplicacao
             };
             return viewModel;
         }
