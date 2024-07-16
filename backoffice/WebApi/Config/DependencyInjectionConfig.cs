@@ -236,6 +236,10 @@ using Application.DTOs.Cadastros.TipoDeServico.Interface;
 using Application.Application.Servicos.Cadastros.TipoDeServico;
 using Domain.Interfaces.Cadastros.TipoDeServico;
 using Infra.Repositorio.Cadastros.TipoDeServico;
+using Application.DTOs.ExportExcel.Interfaces;
+using Application.Application.Servicos.Export_Excel;
+using Domain.Interfaces.Export_Excel;
+using Infra.Repositorio.Export_Excel;
 
 namespace WebApi.Config;
 
@@ -306,6 +310,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAuxiliarPistaService, AuxiliarPistaService>();
         services.AddScoped<IDataRelatorioService, DataRelatorioService>();
         services.AddScoped<ITipoDeServicoService, TipoDeServicoService>();
+        services.AddScoped<IExportacaoPlanilhaService, ExportacaoPlanilhaService>();
         
 
         #endregion
@@ -370,6 +375,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAuxiliarPistaRepository, AuxiliarPistaRepository>();
         services.AddScoped<IDataRelatorioRepository, DataRelatorioRepository>();
         services.AddScoped<ITipoDeServicoRepository, TipoDeServicoRepository>();
+        services.AddScoped<IExportacaoPlanilhaRepository, ExportacaoPlanilhaRepository>();
 
         #endregion
 

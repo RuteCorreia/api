@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.ExportExcel.Interfaces;
 using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.CombateIncendio;
@@ -21,12 +22,15 @@ namespace WebApi.Controllers.ExportExcel
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ExportExcelController : ControllerBase
     {
+        private readonly IExportacaoPlanilhaService _exportacaoPlanilhaService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly ICombateIncendioService _combateIncendioService;
         public ExportExcelController(
+            IExportacaoPlanilhaService exportacaoPlanilhaService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
             ICombateIncendioService combateIncendioService)
         {
+            _exportacaoPlanilhaService = exportacaoPlanilhaService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _combateIncendioService = combateIncendioService;
         }
@@ -130,6 +134,7 @@ namespace WebApi.Controllers.ExportExcel
                 // Preparar o stream para download
                 zipStream.Position = 0;
                 string zipName = $"relatorios_{DateTime.Now:yyyyMMddHHmmss}.zip";
+                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, zipName);
                 return File(zipStream, "application/zip", zipName);
             }
             catch (Exception ex)
