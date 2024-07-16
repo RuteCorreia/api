@@ -1,4 +1,5 @@
-﻿using Application.DTOs.ExportExcel.Interfaces;
+﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using Application.DTOs.ExportExcel.Interfaces;
 using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Export_Excel;
 using System;
@@ -25,6 +26,19 @@ namespace Application.Application.Servicos.Export_Excel
             };
 
             return await _exportacaoPlanilhaRepository.AddAsync(arquivoZip);
+        }
+
+        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync()
+        {
+            try
+            {
+                return await _exportacaoPlanilhaRepository.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                // Aqui você pode adicionar tratamento de exceção, logging, etc.
+                throw new Exception("Erro ao obter Alvos Biológicos.", ex);
+            }
         }
 
         public async Task<MemoryStream> GetByIdAsync(int id)

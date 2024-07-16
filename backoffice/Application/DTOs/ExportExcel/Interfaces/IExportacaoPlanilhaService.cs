@@ -6,5 +6,6 @@ namespace Application.DTOs.ExportExcel.Interfaces
     {
         Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo);
         Task<MemoryStream> GetByIdAsync(int id);
+        Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync();
     }
 }
