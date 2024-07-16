@@ -1,4 +1,9 @@
-﻿using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
+using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.ExportExcel.ViewModel;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
+using Domain.Interfaces.Cadastros.CombateIncendio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,28 +22,41 @@ namespace WebApi.Controllers.ExportExcel
     public class ExportExcelController : ControllerBase
     {
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
-        public ExportExcelController(IRelatorioAplicacaoService relatorioAplicacaoService)
+        private readonly ICombateIncendioService _combateIncendioService;
+        public ExportExcelController(
+            IRelatorioAplicacaoService relatorioAplicacaoService,
+            ICombateIncendioService combateIncendioService)
         {
             _relatorioAplicacaoService = relatorioAplicacaoService;
+            _combateIncendioService = combateIncendioService;
         }
 
-        [HttpGet("exportRelatorioApliacaoEIncendio")]
-        public async Task<IActionResult> ExportExcel([FromQuery] List<int> ids)
+        [HttpPost("exportRelatorioApliacaoEIncendio")]
+        public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo)
         {
             try
             {
-                if (ids == null || ids.Count == 0)
+                if (relatorioInfo == null || relatorioInfo.Count == 0)
                 {
                     return BadRequest("Nenhum ID fornecido para exportação.");
                 }
 
-                var relatorios = new List<RAExportExcelViewModel>();
+                var relatorios = new List<ExportRelatorioViewModel>();
 
                 // Iterar sobre cada ID fornecido
-                foreach (var id in ids)
+                foreach (var relatorio in relatorioInfo)
                 {
-                    var relatorio = await _relatorioAplicacaoService.ExportExcelAsync(id);
-                    relatorios.Add(relatorio);
+                    if (relatorio.NomeRelatorio.StartsWith("Aplicação"))
+                    {
+                        var relatorioAplicacao = await _relatorioAplicacaoService.ExportExcelAsync(relatorio.Id);
+                        relatorios.Add(relatorioAplicacao);
+                    }
+                    else if(relatorio.NomeRelatorio.StartsWith("Combate Incendio"))
+                    {
+                        var relatorioIncendio = await _combateIncendioService.ExportExcelAsync(relatorio.Id);
+                        relatorios.Add(relatorioIncendio);
+                    }
+                    
                 }
 
                 // Criar um novo arquivo Excel
@@ -60,44 +78,40 @@ namespace WebApi.Controllers.ExportExcel
                     worksheet.Cells[1, 9].Value = "ÁREA (ha)";
                     worksheet.Cells[1, 10].Value = "AGROTÓXICO";
                     worksheet.Cells[1, 11].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
+                    worksheet.Cells[1, 12].Value = "SEMEADURA";
+                    worksheet.Cells[1, 13].Value = "COMBATE A INCÊNDIO (HORAS)";
+                    worksheet.Cells[1, 14].Value = "VOLUME (l/ha)";
+                    worksheet.Cells[1, 15].Value = "DOSAGEM";
+                    worksheet.Cells[1, 16].Value = "Unidade";
 
                     // Preencher dados
                     int row = 2;
                     foreach (var relatorio in relatorios)
                     {
-                        // Dividir o nome da aeronave em prefixo e tipo de aeronave
-                        string[] partesNomeAeronave = relatorio.NomeAeronave.Split('-', StringSplitOptions.TrimEntries);
-                        string prefixo = partesNomeAeronave[0].Trim();
-                        string tipoAeronave = partesNomeAeronave.Length > 1 ? partesNomeAeronave[1].Trim() : "";
-
-                        if (tipoAeronave == "AVIAO")
-                        {
-                            tipoAeronave = "Convencional";
-                        }
-                        else if (tipoAeronave == "DRONE")
-                        {
-                            tipoAeronave = "Drone";
-                        }
-
-
+                        
                         // Preencher células
                         worksheet.Cells[row, 1].Value = relatorio.UF;
-                        worksheet.Cells[row, 2].Value = relatorio.Cidade;
-                        worksheet.Cells[row, 3].Value = tipoAeronave;
-                        worksheet.Cells[row, 4].Value = prefixo;
+                        worksheet.Cells[row, 2].Value = relatorio.Municipio;
+                        worksheet.Cells[row, 3].Value = relatorio.TipoAeronave;
+                        worksheet.Cells[row, 4].Value = relatorio.PrefixoAeronave;
                         worksheet.Cells[row, 5].Value = relatorio.HorasAplicacao;
                         worksheet.Cells[row, 6].Value = relatorio.Cultura;
-                        worksheet.Cells[row, 7].Value = relatorio.TipoServico;
-                        worksheet.Cells[row, 8].Value = relatorio.Classe;
-                        worksheet.Cells[row, 9].Value = relatorio.TotalAreaAplicada;
-                        worksheet.Cells[row, 10].Value = relatorio.NomeProduto;
+                        worksheet.Cells[row, 7].Value = relatorio.TipoDeServico;
+                        worksheet.Cells[row, 8].Value = relatorio.ClasseAgrotoxico;
+                        worksheet.Cells[row, 9].Value = relatorio.Area;
+                        worksheet.Cells[row, 10].Value = relatorio.Agrotoxico;
                         worksheet.Cells[row, 11].Value = relatorio.Adjuvante;
+                        worksheet.Cells[row, 12].Value = relatorio.Semeadura;
+                        worksheet.Cells[row, 13].Value = relatorio.HorasCombateIncendio;
+                        worksheet.Cells[row, 14].Value = relatorio.Volume;
+                        worksheet.Cells[row, 15].Value = relatorio.Dosagem;
+                        worksheet.Cells[row, 16].Value = relatorio.Unidade;
                         row++;
                     }
 
                     // Ajustar o estilo das células, se necessário
-                    worksheet.Cells[1, 1, row - 1, 11].Style.Font.Bold = true;
-                    worksheet.Cells[1, 1, row - 1, 11].AutoFitColumns();
+                    worksheet.Cells[1, 1, row - 1, 16].Style.Font.Bold = true;
+                    worksheet.Cells[1, 1, row - 1, 16].AutoFitColumns();
 
                     package.Save();
                 }

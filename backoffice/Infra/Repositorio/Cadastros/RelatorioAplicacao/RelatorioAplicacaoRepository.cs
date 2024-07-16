@@ -101,7 +101,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             }
         }
 
-        public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> ExportExcelAsync(int id)
+        public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> ExportExcelAsync(int? id)
         {
             var query = @"
             SELECT IdentificacaoAreaTratadaId, RecomendacoesTecnicasId, CaracteristicasProdutoAplicadoId, AplicacaoRelatorioId

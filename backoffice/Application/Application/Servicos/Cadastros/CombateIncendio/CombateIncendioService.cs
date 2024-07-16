@@ -1,8 +1,10 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.ExportExcel.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.User;
 using Helpers;
@@ -12,12 +14,19 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendio;
 public class CombateIncendioService : ICombateIncendioService
 {
     private readonly ICombateIncendioRepository _combateIncendioRepository;
+    private readonly IAeronaveRepository _aeronaveRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
-    public CombateIncendioService(IMapper mapper,IUsuarioRepository usuarioRepository ,ICombateIncendioRepository combateIncendioRepository)
+    public CombateIncendioService(
+        ICombateIncendioRepository combateIncendioRepository,
+        IAeronaveRepository aeronaveRepository,
+        IUsuarioRepository usuarioRepository,
+        IMapper mapper
+        )
     {
         _combateIncendioRepository = combateIncendioRepository;
+        _aeronaveRepository = aeronaveRepository;
         _usuarioRepository = usuarioRepository;
         _mapper = mapper;
     }
@@ -43,6 +52,46 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
+    public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id)
+    {
+        var ci = await _combateIncendioRepository.ExportExcelAsync(id);
+        var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave);
+        var tipoAeronave = "";
+
+        TimeSpan totalDuration = TimeSpan.Zero;
+
+        // Convertendo as strings de hora para TimeSpan
+        var horaInicio = ci.HoraInicial;
+        var HoraTermino = ci.HorarioFinalOperacao;
+            // Calculando a diferença de tempo
+        TimeSpan? duration = HoraTermino - horaInicio;
+
+
+        int hours = Math.Abs(totalDuration.Hours);
+        int minutes = Math.Abs(totalDuration.Minutes);
+
+        string horasCombate = $"{hours}{minutes:D2}";
+
+        if (aeronave.Tipo == Domain.Enums.ETipoAeronave.Drone)
+        {
+            tipoAeronave = "Drone";
+        } else if(aeronave.Tipo == Domain.Enums.ETipoAeronave.Aeronave)
+        {
+            tipoAeronave = "Convencional";
+        }
+
+        var viewModel = new ExportRelatorioViewModel
+        {
+            UF = ci.Uf,
+            Municipio = ci.Cidade,
+            TipoAeronave = tipoAeronave,
+            PrefixoAeronave = aeronave.Prefixo,
+            Volume = ci.TotalAguaUtilizadaOperacao,
+            HorasCombateIncendio = horasCombate
+        };
+        return viewModel;
+    }
+
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaAsync(string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -61,7 +110,7 @@ public class CombateIncendioService : ICombateIncendioService
         return combateIncendio;
     }
 
-    public async Task<int> UpdateAsync(CombateIncendioViewModel obj,string? idEmpresa)
+    public async Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);

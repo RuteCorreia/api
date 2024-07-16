@@ -11,6 +11,7 @@ using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
+using Application.DTOs.ExportExcel.ViewModel;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -56,7 +57,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
-        public async Task<RAExportExcelViewModel> ExportExcelAsync(int id)
+        public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id)
         {
             var ra = await _relatorioAplicacaoRepository.ExportExcelAsync(id);
             var iat = await _identificacaoAreaTratadaRepository.GetForExportExcelAsync(ra.IdentificacaoAreaTratadaId);
@@ -85,18 +86,32 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
             string horasAplicacao = $"{hours}{minutes:D2}";
 
-            var viewModel = new RAExportExcelViewModel
+            string[] partesNomeAeronave = art.NomeAeronave.Split('-', StringSplitOptions.TrimEntries);
+            string prefixo = partesNomeAeronave[0].Trim();
+            string tipoAeronave = partesNomeAeronave.Length > 1 ? partesNomeAeronave[1].Trim() : "";
+
+            if (tipoAeronave == "AVIAO")
+            {
+                tipoAeronave = "Convencional";
+            }
+            else if (tipoAeronave == "DRONE")
+            {
+                tipoAeronave = "Drone";
+            }
+
+            var viewModel = new ExportRelatorioViewModel
             {
                 UF = iat.UF,
-                Cidade = iat.Cidade,
-                NomeAeronave = art.NomeAeronave,
+                Municipio = iat.Cidade,
+                TipoAeronave = tipoAeronave,
+                PrefixoAeronave = prefixo,
+                HorasAplicacao = horasAplicacao,
                 Cultura = cpa.Cultura,
-                NomeProduto = cpa.NomeProduto,
-                Classe = cpa.Classe,
-                TipoServico = cpa.TipoServico,
-                TotalAreaAplicada = ar.TotalAreaAplicada,
-                Adjuvante = cpa.Adjuvante,
-                HorasAplicacao = horasAplicacao
+                TipoDeServico = cpa.TipoServico,
+                ClasseAgrotoxico = cpa.Classe,
+                Area = ar.TotalAreaAplicada,
+                Agrotoxico = cpa.NomeProduto,
+                Adjuvante = cpa.Adjuvante
             };
             return viewModel;
         }
