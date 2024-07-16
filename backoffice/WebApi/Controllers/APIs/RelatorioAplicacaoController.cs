@@ -211,6 +211,51 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
             }
         }
+        [HttpGet("getRelatoriosMapaMes/{mes}/{ano}")]
+        public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetRelatoriosMapaMes(int mes, int ano)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                // Primeiro dia do mês e último dia do mês
+                var primeiroDiaMes = new DateTime(ano, mes, 1);
+                var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+
+                var relatorios = await _relatorioAplicacaoService.GetListByStatusMapaMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
+                List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+                foreach (var relatorio in relatorios)
+                {
+                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                    if (!string.IsNullOrEmpty(data.Data))
+                    {
+                        var relatorioBaseViewModel = new RelatorioBaseViewModel
+                        {
+                            NomeRelatorio = relatorio.NomeRelatorio,
+                            Base64Data = data.Data,
+                            IsMapa = relatorio.IsMapa,
+                            Id = relatorio.Id
+                        };
+
+                        dataRelatorios.Add(relatorioBaseViewModel);
+                    }
+                    else
+                    {
+                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                    }
+                }
+
+                _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+                return Ok(dataRelatorios);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            }
+        }
 
         [HttpGet("getByDataCriacao")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetByDataCriacao(DateTime date)
