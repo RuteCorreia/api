@@ -55,7 +55,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         }
     }
 
-    public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id)
     {
         var query = @"
             SELECT IdAeronave, HoraInicial, HorarioFinalOperacao, Uf, Cidade, TotalAguaUtilizadaOperacao

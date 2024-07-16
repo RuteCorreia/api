@@ -58,19 +58,23 @@ public class CombateIncendioService : ICombateIncendioService
         var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave);
         var tipoAeronave = "";
 
-        TimeSpan totalDuration = TimeSpan.Zero;
-
+        TimeSpan duration = TimeSpan.Zero;
         // Convertendo as strings de hora para TimeSpan
         var horaInicio = ci.HoraInicial;
         var HoraTermino = ci.HorarioFinalOperacao;
-            // Calculando a diferença de tempo
-        TimeSpan? duration = HoraTermino - horaInicio;
+        // Calculando a diferença de tempo
+
+        if (HoraTermino.HasValue && horaInicio.HasValue)
+        {
+            duration = HoraTermino.Value - horaInicio.Value;
+            // Faça algo com 'duration'
+        }
 
 
-        int hours = Math.Abs(totalDuration.Hours);
-        int minutes = Math.Abs(totalDuration.Minutes);
+        int hours = Math.Abs(duration.Hours);
+        int minutes = Math.Abs(duration.Minutes);
 
-        string horasCombate = $"{hours}{minutes:D2}";
+        string horasIncendio = $"{hours}{minutes:D2}";
 
         if (aeronave.Tipo == Domain.Enums.ETipoAeronave.Drone)
         {
@@ -87,7 +91,7 @@ public class CombateIncendioService : ICombateIncendioService
             TipoAeronave = tipoAeronave,
             PrefixoAeronave = aeronave.Prefixo,
             Volume = ci.TotalAguaUtilizadaOperacao,
-            HorasCombateIncendio = horasCombate
+            HorasCombateIncendio = horasIncendio
         };
         return viewModel;
     }
