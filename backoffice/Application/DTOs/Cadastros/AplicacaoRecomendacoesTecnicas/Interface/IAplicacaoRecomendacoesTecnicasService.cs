@@ -7,6 +7,7 @@ public interface IAplicacaoRecomendacoesTecnicasService
     Task<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>> GetAllAsync();
 
     Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id);
+    Task<AplicacaoRecomendacoesTecnicasViewModel> GetForExportExcelAsync(int id);
 
     Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj, string? idEmpresa);
 

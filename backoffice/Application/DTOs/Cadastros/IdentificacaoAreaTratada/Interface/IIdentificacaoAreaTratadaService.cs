@@ -16,6 +16,7 @@ namespace Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface
         Task<AreaTratadaViewModel> GetByIdAsync(int id);
 
         Task<int> AddAsync(AreaTratadaViewModel obj, string? idEmpresa);
+        Task<AreaTratadaViewModel> GetForExportExcelAsync(int id);
 
         Task UpdateAsync(IdentificacaoAreaTratadaViewModel obj);
 

@@ -3,6 +3,7 @@ using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
@@ -54,6 +55,20 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         }
     }
 
+    public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id)
+    {
+        var query = @"
+            SELECT IdAeronave, HoraInicial, HorarioFinalOperacao, Uf, Cidade, TotalAguaUtilizadaOperacao
+            FROM CombateIncendio WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, parameters);
+            return result;
+        }
+    }
+
     public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> GetByIdAsync(int id)
     {
         var obj = await _contextBase.CombateIncendio.FindAsync(id);
@@ -70,6 +85,14 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     {
         string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 1";
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByStatusMapaMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+    {
+        string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 1" +
+            "           AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
+
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
     }
 
     public async Task UpdateIsMapaAsync(Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio obj)

@@ -62,5 +62,11 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
         {
             await _identificacaoAreaTratadaRepository.DeleteAsync(id);
         }
+
+        public async Task<AreaTratadaViewModel> GetForExportExcelAsync(int id)
+        {
+            var obj = await _identificacaoAreaTratadaRepository.GetForExportExcelAsync(id);
+            return _mapper.Map<AreaTratadaViewModel>(obj);
+        }
     }
 }

@@ -73,6 +73,27 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getForExportExcel/{id}")]
+        public async Task<ActionResult<AreaTratadaViewModel>> GetForExportExcel(int id)
+        {
+            try
+            {
+                var result = await _identificacaoAreaTratadaService.GetForExportExcelAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(result))
+                {
+                    _logService.LogInformation($"Detalhes da identificação de área tratada com ID {id} obtidos com sucesso.");
+                    return Ok(result);
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] AreaTratadaViewModel obj)
         {

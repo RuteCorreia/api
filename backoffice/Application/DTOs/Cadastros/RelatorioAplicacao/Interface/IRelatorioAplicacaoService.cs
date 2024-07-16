@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.ExportExcel.ViewModel;
 
 public interface IRelatorioAplicacaoService
 {
@@ -8,9 +9,12 @@ public interface IRelatorioAplicacaoService
     Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataCriacaoAsync(DateTime Date, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusAsync(string? idEmpresa);
+    Task<ExportRelatorioViewModel> ExportExcelAsync(int? id);
+    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaAsync(string? idEmpresa);
+    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataAlteracaoAsync(DateTime Date, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? idEmpresa);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
-    Task UpdateIsMapaAsync(RelatorioAplicacaoViewModel obj);
+    Task UpdateIsMapaAsync(List<int> obj);
     Task DeleteAsync(int id);
 }

@@ -13,4 +13,6 @@ public interface ICaracteristicasProdutoAplicadoService
     Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj);
 
     Task DeleteAsync(int id, string? idEmpresa);
+
+    Task<CaracteristicasProdutoAplicadoViewModel> GetForExportExcelAsync(int id);
 }

@@ -1,6 +1,8 @@
-﻿using Domain.Interfaces.Cadastros.AlvoBiologico;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.AlvoBiologico;
@@ -40,6 +42,25 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     {
         var obj = await _contextBase.AlvoBiologico.FindAsync(id);
         return obj;
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
+    {
+        var query = @"
+            SELECT ab.*
+            FROM BulaAplicacao ba
+            JOIN Cultura c ON ba.idCultura = c.idCultura
+            JOIN AlvoBiologico ab ON ba.idAlvoBiologico = ab.Id
+            JOIN Produto p ON ab.IdProduto = p.Id
+            WHERE c.Nome = @NomeCultura
+            AND p.Nome = @NomeProduto";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { NomeCultura = nomeCultura, NomeProduto = nomeProduto };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByIdCulturaAsync(int id)

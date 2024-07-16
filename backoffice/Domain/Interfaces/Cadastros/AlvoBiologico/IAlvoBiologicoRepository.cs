@@ -11,4 +11,5 @@ public interface IAlvoBiologicoRepository
     Task<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByIdCulturaAsync(int id);
     Task<Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name);
+    Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto);
 }

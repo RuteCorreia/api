@@ -44,7 +44,7 @@ public class AeronaveRepository : IAeronaveRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.Aeronave.FindAsync(id);
         return obj;
