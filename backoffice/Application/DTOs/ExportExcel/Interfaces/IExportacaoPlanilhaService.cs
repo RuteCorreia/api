@@ -1,11 +1,12 @@
-﻿using Domain.Entidades.Export_Excel;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Export_Excel;
 
 namespace Application.DTOs.ExportExcel.Interfaces
 {
     public interface IExportacaoPlanilhaService
     {
-        Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo);
+        Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo,string? idEmpresa);
         Task<MemoryStream> GetByIdAsync(int id);
-        Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync();
+        Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(string? idEmpresa);
     }
 }

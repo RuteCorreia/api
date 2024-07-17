@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System.IO.Compression;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.ExportExcel
 {
@@ -27,18 +28,21 @@ namespace WebApi.Controllers.ExportExcel
         private readonly IExportacaoPlanilhaService _exportacaoPlanilhaService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly ICombateIncendioService _combateIncendioService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         public ExportExcelController(
             IExportacaoPlanilhaService exportacaoPlanilhaService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
-            ICombateIncendioService combateIncendioService)
+            ICombateIncendioService combateIncendioService,
+            LoggedUserInfoService loggedUserInfoService)
         {
             _exportacaoPlanilhaService = exportacaoPlanilhaService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _combateIncendioService = combateIncendioService;
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
         [HttpPost("exportRelatorioApliacaoEIncendio")]
-        public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo)
+        public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo, string nomeZip)
         {
             try
             {
@@ -132,12 +136,11 @@ namespace WebApi.Controllers.ExportExcel
                         await stream.CopyToAsync(entryStream);
                     }
                 }
-
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 // Preparar o stream para download
                 zipStream.Position = 0;
-                string zipName = $"relatorios_{DateTime.Now:yyyyMMddHHmmss}.zip";
-                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, zipName);
-                return File(zipStream, "application/zip", zipName);
+                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, nomeZip, loggedUser.Item3);
+                return File(zipStream, "application/zip", nomeZip);
             }
             catch (Exception ex)
             {
@@ -150,7 +153,8 @@ namespace WebApi.Controllers.ExportExcel
         {
             try
             {
-                var arquivosZip = await _exportacaoPlanilhaService.GetAllAsync();
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var arquivosZip = await _exportacaoPlanilhaService.GetAllAsync(loggedUser.Item3);
                 if (arquivosZip == null || !arquivosZip.Any())
                 {
                     return NotFound("Nenhum arquivo encontrado.");
