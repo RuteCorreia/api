@@ -111,6 +111,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<DataRelatorio> DataRelatorio { get; set; }
     public DbSet<TipoDeServico> TipoDeServico { get; set; }
     public DbSet<PlanilhaExcelExportada> PlanilhaExcelExportadas { get; set; }
+    public DbSet<TipoDeUnidade> TipoDeUnidade { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
