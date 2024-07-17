@@ -1,7 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Domain.Entidades.Cadastros.RelatorioManutencaoComponente
+namespace Domain.Entidades.Cadastros.RelatorioManutencao
 {
     public class RelatorioManutencaoComponente
     {
@@ -11,20 +12,26 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencaoComponente
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
 
-        [ForeignKey("IdRelatorioManutencao")]
+        [ForeignKey("RelatorioManutencao")]
         public int? IdRelatorioManutencao { get; set; }
 
+        [ForeignKey("Componentes")]
+        public int? IdComponente { get; set; }
 
-        [ForeignKey("IdComponente")]
-        public int? IdComponente
+        public string? observacao { get; set; }
 
-        public string? observacao;    
+        [ForeignKey("ManutencaoAeronaveItemsRevisao")]
+        public int? IdManutencaoAeronaveItemsRevisao { get; set; }
 
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
 
-        [ForeignKey("IdManutencaoAeronaveItemsRevisao")]
-        public int? IdManutencaoAeronaveItemsRevisao
-
-
+        [JsonIgnore]
+        public virtual RelatorioManutencao? RelatorioManutencao { get; set; }
+        [JsonIgnore]
+        public virtual Componentes.Componentes? Componentes { get; set; }
+        [JsonIgnore]
+        public virtual ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao? ManutencaoAeronaveItemsRevisao { get; set; }
 
     }
 }

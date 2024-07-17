@@ -1,7 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
-namespace Domain.Entidades.Cadastros.RelatorioManutencaoComponenteImagem
+namespace Domain.Entidades.Cadastros.RelatorioManutencao
 {
     public class RelatorioManutencaoComponenteImagem
     {
@@ -12,13 +13,18 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencaoComponenteImagem
         public int? IdEmpresa { get; set; }
 
 
-        [ForeignKey("IdRelatorioManutencaoComponente")]
-        public int? IdRelatorioManutencaoComponente
+        [ForeignKey("RelatorioManutencaoComponente")]
+        public int? IdRelatorioManutencaoComponente { get; set; } 
 
-        public string? legenda;    
+        public string? legenda { get; set; }
 
-        public string? imagem;
+        public string? imagem { get; set; }
 
+        [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+
+        [JsonIgnore]
+        public virtual RelatorioManutencaoComponente? RelatorioManutencaoComponente { get; set; }
 
     }
 }
