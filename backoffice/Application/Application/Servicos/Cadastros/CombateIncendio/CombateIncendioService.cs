@@ -223,14 +223,14 @@ public class CombateIncendioService : ICombateIncendioService
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 
-    public async Task UpdateIsMapaAsync(List<int> relatorios)
+    public async Task UpdateIsMapaAsync(List<int> relatorios, bool condicao)
     {
         foreach (var relatorio in relatorios)
         {
             var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(relatorio);
             if (relatorioExistente != null)
             {
-                relatorioExistente.IsMapa = true;
+                relatorioExistente.IsMapa = condicao;
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 
