@@ -43,6 +43,7 @@ using Domain.Entidades.Cadastros.DataRelatorio;
 using Domain.Entidades.Cadastros.TipoDeServico;
 using Domain.Entidades.Export_Excel;
 using Domain.Entidades.Cadastros.RelatorioManutencao;
+using Domain.Entidades.Cadastros.Municipio;
 
 namespace Infra.Configuracao;
 
@@ -117,6 +118,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<RelatorioManutencaoComponente> RelatorioManutencaoComponente { get; set; }
     public DbSet<RelatorioManutencaoComponenteImagem> RelatorioManutencaoComponenteImagem { get; set; }
     public DbSet<RelatorioManutencaoRevisao> RelatorioManutencaoRevisao { get; set; }
+    public DbSet<Municipio> Municipios { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

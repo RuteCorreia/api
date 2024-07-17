@@ -14,7 +14,7 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencao
 
         [ForeignKey("RelatorioManutencao")]
         public int? IdRelatorioManutencao { get; set; }
-        public bool isSelected { get; set; }
+        public bool IsSelected { get; set; }
 
         [ForeignKey("ManutencaoAeronaveItemsRevisao")]
         public int? IdManutencaoAeronaveItemsRevisao { get; set; }

@@ -16,9 +16,9 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencao
         [ForeignKey("RelatorioManutencaoComponente")]
         public int? IdRelatorioManutencaoComponente { get; set; } 
 
-        public string? legenda { get; set; }
+        public string? Legenda { get; set; }
 
-        public string? imagem { get; set; }
+        public string? Imagem { get; set; }
 
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }

@@ -18,7 +18,7 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencao
         [ForeignKey("Componentes")]
         public int? IdComponente { get; set; }
 
-        public string? observacao { get; set; }
+        public string? Observacao { get; set; }
 
         [ForeignKey("ManutencaoAeronaveItemsRevisao")]
         public int? IdManutencaoAeronaveItemsRevisao { get; set; }

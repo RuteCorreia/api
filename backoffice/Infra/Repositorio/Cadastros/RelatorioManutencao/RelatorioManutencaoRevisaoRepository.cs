@@ -1,28 +1,61 @@
 ﻿using Domain.Entidades.Cadastros.RelatorioManutencao;
 using Domain.Interfaces.Cadastros.RelatorioManutencao;
+using Helpers;
+using Infra.Configuracao;
 
 namespace Infra.Repositorio.Cadastros.RelatorioManutencao
 {
     public class RelatorioManutencaoRevisaoRepository : IRelatorioManutencaoRevisaoRepository
     {
-        public Task AddAsync(RelatorioManutencaoRevisao obj)
+        private readonly ContextBase _contextBase;
+
+        public RelatorioManutencaoRevisaoRepository(ContextBase contextBase)
         {
-            throw new NotImplementedException();
+            _contextBase = contextBase;
+        }
+        public async Task AddAsync(RelatorioManutencaoRevisao obj)
+        {
+            await _contextBase.AddAsync(obj);
+            await _contextBase.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var entityToRemove = await GetByIdAsync(id);
+            if (!ObjectNullValidation.IsObjectNull(entityToRemove))
+            {
+                _contextBase.Remove(entityToRemove);
+                await _contextBase.SaveChangesAsync();
+            }
         }
 
-        public Task<RelatorioManutencaoRevisao> GetByIdAsync(int id)
+        public async Task<RelatorioManutencaoRevisao> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var obj = await _contextBase.RelatorioManutencaoRevisao.FindAsync(id);
+            return obj;
         }
 
-        public Task UpdateAsync(RelatorioManutencaoRevisao obj)
+        public async Task UpdateAsync(RelatorioManutencaoRevisao obj)
         {
-            throw new NotImplementedException();
+            var objeto = await _contextBase.RelatorioManutencaoRevisao.FindAsync(obj.Id);
+
+            if (objeto != null)
+            {
+                // Atualiza as propriedades do objeto encontrado
+                objeto.IdEmpresa = obj.IdEmpresa;
+                objeto.IdRelatorioManutencao = obj.IdRelatorioManutencao;
+                objeto.IsSelected = obj.IsSelected;
+                objeto.IdManutencaoAeronaveItemsRevisao = obj.IdManutencaoAeronaveItemsRevisao;
+
+                // Atualiza o objeto no contexto
+                _contextBase.RelatorioManutencaoRevisao.Update(objeto);
+                await _contextBase.SaveChangesAsync();
+            }
+            else
+            {
+                // Lidar com o caso em que o objeto não foi encontrado
+                throw new KeyNotFoundException("Objeto não encontrado.");
+            }
         }
     }
 }
