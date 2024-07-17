@@ -41,7 +41,7 @@ namespace WebApi.Controllers.ExportExcel
             _loggedUserInfoService = loggedUserInfoService;
         }
 
-        [HttpPost("exportRelatorioApliacaoEIncendio")]
+        [HttpPost("exportRelatorioApliacaoEIncendio/{nomeZip}")]
         public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo, string nomeZip)
         {
             try
