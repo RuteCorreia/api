@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240717185300_v85")]
+    partial class v85
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1752,25 +1755,6 @@ namespace Infra.Migrations
                     b.ToTable("MenuUsuario");
                 });
 
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Municipio.Municipio", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Cidade")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UF")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Municipios");
-                });
-
             modelBuilder.Entity("Domain.Entidades.Cadastros.Pistas.Pista", b =>
                 {
                     b.Property<int>("Id")
@@ -2073,7 +2057,7 @@ namespace Infra.Migrations
                     b.Property<int?>("IdRelatorioManutencao")
                         .HasColumnType("int");
 
-                    b.Property<string>("Observacao")
+                    b.Property<string>("observacao")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -2103,10 +2087,10 @@ namespace Infra.Migrations
                     b.Property<int?>("IdRelatorioManutencaoComponente")
                         .HasColumnType("int");
 
-                    b.Property<string>("Imagem")
+                    b.Property<string>("imagem")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Legenda")
+                    b.Property<string>("legenda")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -2135,7 +2119,7 @@ namespace Infra.Migrations
                     b.Property<int?>("IdRelatorioManutencao")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsSelected")
+                    b.Property<bool>("isSelected")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
