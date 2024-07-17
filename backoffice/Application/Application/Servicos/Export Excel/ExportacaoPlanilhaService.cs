@@ -2,6 +2,7 @@
 using Application.DTOs.ExportExcel.Interfaces;
 using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Export_Excel;
+using Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,22 +18,25 @@ namespace Application.Application.Servicos.Export_Excel
         {
             _exportacaoPlanilhaRepository = exportacaoPlanilhaRepository;
         }
-        public async Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo)
+        public async Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var arquivoZip = new PlanilhaExcelExportada
             {
                 Nome = nomeArquivo,
-                Dados = zipStream.ToArray()
+                Dados = zipStream.ToArray(),
+                IdEmpresa = idEmpresaInt
             };
 
             return await _exportacaoPlanilhaRepository.AddAsync(arquivoZip);
         }
 
-        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync()
+        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(string? idEmpresa)
         {
             try
             {
-                return await _exportacaoPlanilhaRepository.GetAllAsync();
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                return await _exportacaoPlanilhaRepository.GetAllAsync(idEmpresaInt);
             }
             catch (Exception ex)
             {

@@ -11,6 +11,6 @@ namespace Domain.Interfaces.Export_Excel
     {
         Task<int> AddAsync(PlanilhaExcelExportada planilhaExcel);
         Task<PlanilhaExcelExportada> GetByIdAsync(int id);
-        Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync();
+        Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(int IdEmpresa);
     }
 }

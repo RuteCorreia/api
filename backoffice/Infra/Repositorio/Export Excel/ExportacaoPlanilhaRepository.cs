@@ -27,7 +27,7 @@ namespace Infra.Repositorio.Export_Excel
             return await _contextBase.PlanilhaExcelExportadas.FindAsync(id);
         }
 
-        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync()
+        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(int IdEmpresa)
         {
             var query = "SELECT * FROM PlanilhaExcelExportadas";
 

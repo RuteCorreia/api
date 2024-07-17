@@ -169,10 +169,57 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
+
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        TimeSpan duration = TimeSpan.Zero;
+        // Convertendo as strings de hora para TimeSpan
+        var horaInicio = mapCombateIncendio.HoraInicial;
+        var HoraTermino = mapCombateIncendio.HorarioFinalOperacao;
+        // Calculando a diferença de tempo
+
+        if (HoraTermino.HasValue && horaInicio.HasValue)
+        {
+            duration = HoraTermino.Value - horaInicio.Value;
+        }
+
+
+        int hours = Math.Abs(duration.Hours);
+        int minutes = Math.Abs(duration.Minutes);
+        int seconds = Math.Abs(duration.Seconds);
+
+        string horasIncendio;
+        if (hours > 0 || minutes > 0 || seconds > 0)
+        {
+            horasIncendio = "";
+
+            if (hours > 0)
+            {
+                horasIncendio += $"{hours} hora{(hours > 1 ? "s" : "")}";
+                if (minutes > 0 || seconds > 0)
+                    horasIncendio += " ";
+            }
+
+            if (minutes > 0)
+            {
+                horasIncendio += $"{minutes} minuto{(minutes > 1 ? "s" : "")}";
+                if (seconds > 0)
+                    horasIncendio += " e ";
+            }
+
+            if (seconds > 0)
+            {
+                horasIncendio += $"{seconds} segundo{(seconds > 1 ? "s" : "")}";
+            }
+        }
+        else
+        {
+            horasIncendio = "Menos de um minuto";
+        }
+
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataAlteracao} - {horasIncendio}";
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 

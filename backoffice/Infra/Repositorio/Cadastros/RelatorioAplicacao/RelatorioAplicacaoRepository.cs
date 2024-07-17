@@ -243,6 +243,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             objeto.DataAlteracao = obj.DataAlteracao;
             objeto.RefUsuario = obj.RefUsuario;
             objeto.StatusEnvio = obj.StatusEnvio;
+            objeto.NomeRelatorio = obj.NomeRelatorio;
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
