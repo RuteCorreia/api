@@ -149,6 +149,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         objeto.DataCriacao = obj.DataCriacao;
         objeto.DataAlteracao = obj.DataAlteracao;
         objeto.StatusEnvio = obj.StatusEnvio;
+        objeto.NomeRelatorio = obj.NomeRelatorio;
 
         _contextBase.CombateIncendio.Update(objeto);
         try
