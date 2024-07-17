@@ -20,6 +20,12 @@ namespace Domain.Entidades.Cadastros.RelatorioManutencao
         public int? IdManutencaoAeronaveItemsRevisao { get; set; }
 
         [JsonIgnore]
+        public virtual Empresa.Empresa? Empresa { get; set; }
+
+        [JsonIgnore]
+        public virtual RelatorioManutencao? RelatorioManutencao { get; set; }
+
+        [JsonIgnore]
         public virtual ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao? ManutencaoAeronaveItemsRevisao { get; set; }
 
     }
