@@ -35,15 +35,21 @@ public class MenuRepository : IMenuRepository
         var empresa = await _contextBase.Empresa.FindAsync(idEmpresa);
         IEnumerable<Domain.Entidades.Cadastros.Menu.Menu> entities = null;
 
-        if (roleNames != null && roleNames.Contains("Administrador"))
+        if (roleNames != null && roleNames.Contains("Administrador") && empresa != null && empresa.Manutencao == true)
         {
-            // Se o usuário tem a role de Administrador, retornar todos os menus sem filtragem
             entities = await _contextBase.Menu
                 .AsNoTracking()
                 .ToListAsync();
 
         }
-        else if(empresa != null && empresa.Manutencao == true)
+        else if (roleNames != null && roleNames.Contains("Administrador") && empresa != null && empresa.Manutencao == false)
+        {
+            entities = await _contextBase.Menu
+                .AsNoTracking()
+                .Where(x => x.MenuItemId != 4)
+                .ToListAsync();
+        }
+        else if (empresa != null && empresa.Manutencao == true)
         {
             entities = await _contextBase.Menu
                 .AsNoTracking()

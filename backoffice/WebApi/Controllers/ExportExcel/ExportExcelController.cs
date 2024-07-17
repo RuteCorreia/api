@@ -1,15 +1,18 @@
-﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
+﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.ExportExcel.Interfaces;
 using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
+using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System.IO.Compression;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.ExportExcel
 {
@@ -25,18 +28,21 @@ namespace WebApi.Controllers.ExportExcel
         private readonly IExportacaoPlanilhaService _exportacaoPlanilhaService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly ICombateIncendioService _combateIncendioService;
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         public ExportExcelController(
             IExportacaoPlanilhaService exportacaoPlanilhaService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
-            ICombateIncendioService combateIncendioService)
+            ICombateIncendioService combateIncendioService,
+            LoggedUserInfoService loggedUserInfoService)
         {
             _exportacaoPlanilhaService = exportacaoPlanilhaService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _combateIncendioService = combateIncendioService;
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
-        [HttpPost("exportRelatorioApliacaoEIncendio")]
-        public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo)
+        [HttpPost("exportRelatorioApliacaoEIncendio/{nomeZip}")]
+        public async Task<IActionResult> ExportExcel([FromBody] List<RelatorioInfoViewModel> relatorioInfo, string nomeZip)
         {
             try
             {
@@ -130,17 +136,44 @@ namespace WebApi.Controllers.ExportExcel
                         await stream.CopyToAsync(entryStream);
                     }
                 }
-
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 // Preparar o stream para download
                 zipStream.Position = 0;
-                string zipName = $"relatorios_{DateTime.Now:yyyyMMddHHmmss}.zip";
-                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, zipName);
-                return File(zipStream, "application/zip", zipName);
+                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, nomeZip, loggedUser.Item3);
+                return File(zipStream, "application/zip", nomeZip);
             }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var arquivosZip = await _exportacaoPlanilhaService.GetAllAsync(loggedUser.Item3);
+                if (arquivosZip == null || !arquivosZip.Any())
+                {
+                    return NotFound("Nenhum arquivo encontrado.");
+                }
+
+                var arquivosZipViewModel = arquivosZip.Select(arquivo => new ArquivoZipViewModel
+                {
+                    Id = arquivo.Id,
+                    Nome = arquivo.Nome,
+                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null
+                }).ToList();
+
+                return Ok(arquivosZipViewModel);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar arquivos zip: {ex.Message}");
+            }
+        }
+
     }
 }
