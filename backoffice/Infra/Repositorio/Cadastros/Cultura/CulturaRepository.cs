@@ -44,7 +44,7 @@ public class CulturaRepository : ICulturaRepository
 
     public async Task<Domain.Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name)
     {
-        var obj = _contextBase.Cultura.Where(x => x.Nome == name).FirstOrDefault();
+        var obj = await _contextBase.Cultura.Where(x => x.Nome == name).FirstOrDefaultAsync();
         return obj;
     }
 

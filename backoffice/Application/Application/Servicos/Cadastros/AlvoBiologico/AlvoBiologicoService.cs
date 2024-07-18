@@ -2,6 +2,8 @@
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
+using Domain.Interfaces.Cadastros.Cultura;
+using Domain.Interfaces.Cadastros.Produto;
 using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
@@ -9,11 +11,20 @@ namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
 public class AlvoBiologicoService : IAlvoBiologicoService
 {
     private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
+    private readonly ICulturaRepository _culturaRepository;
+    private readonly IProdutoRepository _produtoRepository;
     private readonly IMapper _mapper;
 
-    public AlvoBiologicoService(IMapper mapper, IAlvoBiologicoRepository alvoBiologicoRepository)
+    public AlvoBiologicoService(
+        IAlvoBiologicoRepository alvoBiologicoRepository,
+        ICulturaRepository culturaRepository,
+        IProdutoRepository produtoRepository,
+        IMapper mapper 
+        )
     {
         _alvoBiologicoRepository = alvoBiologicoRepository;
+        _culturaRepository = culturaRepository;
+        _produtoRepository = produtoRepository;
         _mapper = mapper;
     }
 
@@ -39,7 +50,9 @@ public class AlvoBiologicoService : IAlvoBiologicoService
     {
         try
         {
-            var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
+            var cultura = await _culturaRepository.GetByNameAsync(nomeCultura);
+            var produto = await _produtoRepository.GetByNameAsync(nomeProduto);
+            var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(cultura.IdCultura, produto.Id);
             return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(result);
         }
         catch (Exception ex)
