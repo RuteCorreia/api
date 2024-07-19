@@ -244,6 +244,10 @@ using Application.DTOs.Cadastros.TipoDeUnidade.Interface;
 using Application.Application.Servicos.Cadastros.TipoDeUnidade;
 using Domain.Interfaces.Cadastros.TipoDeUnidade;
 using Infra.Repositorio.Cadastros.TipoDeUnidade;
+using Application.DTOs.Cadastros.TipoDeFormulacao.Interfaces;
+using Application.Application.Servicos.Cadastros.TipoDeFormulacao;
+using Domain.Interfaces.Cadastros.TipoDeFormulacao;
+using Infra.Repositorio.Cadastros.TipoDeFormulacao;
 
 namespace WebApi.Config;
 
@@ -316,6 +320,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeServicoService, TipoDeServicoService>();
         services.AddScoped<IExportacaoPlanilhaService, ExportacaoPlanilhaService>();
         services.AddScoped<ITipoDeUnidadeService, TipoDeUnidadeService>();
+        services.AddScoped<ITipoDeFormulacaoService, TipoDeFormulacaoService>();
         
 
         #endregion
@@ -382,6 +387,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeServicoRepository, TipoDeServicoRepository>();
         services.AddScoped<IExportacaoPlanilhaRepository, ExportacaoPlanilhaRepository>();
         services.AddScoped<ITipoDeUnidadeRepository, TipoDeUnidadeRepository>();
+        services.AddScoped<ITipoDeFormulacaoRepository, TipoDeFormulacaoRepository>();
 
         #endregion
 
