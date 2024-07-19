@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240719111620_v88")]
+    partial class v88
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,27 +104,19 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DoseProdutoPorHectare")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("IdCultura")
-                        .HasColumnType("int");
 
                     b.Property<int?>("IdProduto")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdTipoDeUnidade")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCultura");
-
                     b.HasIndex("IdProduto");
-
-                    b.HasIndex("IdTipoDeUnidade");
 
                     b.ToTable("AlvoBiologico");
                 });
@@ -2687,27 +2682,11 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico", b =>
                 {
-                    b.HasOne("Domain.Entidades.Cadastros.Cultura.Cultura", "Cultura")
-                        .WithMany()
-                        .HasForeignKey("IdCultura")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entidades.Cadastros.Produto.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("IdProduto");
 
-                    b.HasOne("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", "TipoDeUnidade")
-                        .WithMany()
-                        .HasForeignKey("IdTipoDeUnidade")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cultura");
-
                     b.Navigation("Produto");
-
-                    b.Navigation("TipoDeUnidade");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Aplicacao.Aplicacao", b =>
