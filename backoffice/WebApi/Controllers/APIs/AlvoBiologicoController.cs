@@ -68,6 +68,23 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpPut("updateRecomendacao")]
+        public async Task<ActionResult> UpdateRecomendacao([FromBody] FormulacaoViewModel obj)
+        {
+            try
+            {
+                await _alvoBiologicoService.UpdateFormulacaoAsync(obj);
+                _logService.LogInformation("Todas os alvos biológicos foram atualizados com sucesso.");
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, "Erro ao recuperar todos os alvos biológicos.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico updateRecomendacao - {ex.Message}");
+            }
+
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<AlvoBiologicoViewModel>> GetById(int id)
         {

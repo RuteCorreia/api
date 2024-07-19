@@ -2,6 +2,8 @@
 using Application.DTOs.Cadastros.AlvoBiologico.Interface;
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Alvo_Biologico;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Domain.Interfaces.Cadastros.BulaAplicacao;
 using Domain.Interfaces.Cadastros.Cultura;
@@ -116,5 +118,30 @@ public class AlvoBiologicoService : IAlvoBiologicoService
             result.Add(formulacao);
         }
         return result;
+    }
+
+    public async Task UpdateFormulacaoAsync(FormulacaoViewModel objeto)
+    {
+        var alvoBiologico = await _alvoBiologicoRepository.GetByIdAsync(objeto.Id);
+
+        if (alvoBiologico == null)
+        {
+            throw new Exception("Alvo Biológico não encontrado.");
+        }
+
+        var unidadesDeMedida = await _tipoDeUnidadeRepository.GetAllAsync();
+        var unidadeDeMedida = unidadesDeMedida.FirstOrDefault(u => u.NomeUnidade == objeto.UnidadeDeMedida);
+
+        if (unidadeDeMedida == null)
+        {
+            throw new Exception("Unidade de medida não encontrada.");
+        }
+
+        alvoBiologico.DoseProdutoPorHectare = objeto.DoseProduto;
+        alvoBiologico.IdTipoDeUnidade = unidadeDeMedida.Id;
+
+        var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(alvoBiologico);
+        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico);
+        
     }
 }
