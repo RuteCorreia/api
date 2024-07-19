@@ -6,6 +6,7 @@ using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.CombateIncendio;
+using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.User;
 using Helpers;
 
@@ -13,18 +14,21 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendio;
 
 public class CombateIncendioService : ICombateIncendioService
 {
+    private readonly ICombateIncendioDecolagemPousoRepository _combateIncendioDecolagemPousoRepository;
     private readonly ICombateIncendioRepository _combateIncendioRepository;
     private readonly IAeronaveRepository _aeronaveRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
     public CombateIncendioService(
+        ICombateIncendioDecolagemPousoRepository combateIncendioDecolagemPousoRepository,
         ICombateIncendioRepository combateIncendioRepository,
         IAeronaveRepository aeronaveRepository,
         IUsuarioRepository usuarioRepository,
         IMapper mapper
         )
     {
+        _combateIncendioDecolagemPousoRepository = combateIncendioDecolagemPousoRepository;
         _combateIncendioRepository = combateIncendioRepository;
         _aeronaveRepository = aeronaveRepository;
         _usuarioRepository = usuarioRepository;
@@ -55,8 +59,12 @@ public class CombateIncendioService : ICombateIncendioService
     public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id)
     {
         var ci = await _combateIncendioRepository.ExportExcelAsync(id);
+        var cidp = await _combateIncendioDecolagemPousoRepository.GetByCombateIncendioIdAsync(id);
+        var qtdExecucao = cidp?.Count() ?? 0;
         var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave);
         var tipoAeronave = "";
+        int capacidadeCargaAeronave = Convert.ToInt32(ci.CapacidadeCargaAeronave);
+        var volume = qtdExecucao * capacidadeCargaAeronave;
 
         TimeSpan duration = TimeSpan.Zero;
         // Convertendo as strings de hora para TimeSpan
@@ -90,8 +98,9 @@ public class CombateIncendioService : ICombateIncendioService
             Municipio = ci.Cidade,
             TipoAeronave = tipoAeronave,
             PrefixoAeronave = aeronave.Prefixo,
-            Volume = ci.TotalAguaUtilizadaOperacao,
-            HorasCombateIncendio = horasIncendio
+            Volume = volume,
+            HorasCombateIncendio = horasIncendio,
+            TipoDeServico = "COMBATE A INCÊNDIO"
         };
         return viewModel;
     }
