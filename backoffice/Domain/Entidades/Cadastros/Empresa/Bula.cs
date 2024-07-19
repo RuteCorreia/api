@@ -24,9 +24,13 @@ public class Bula
     public string? Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public bool Removido { get; set; }
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
 
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }
     [JsonIgnore]
     public virtual AlvoBiologico? AlvoBiologico { get; set; }
+    [JsonIgnore]
+    public virtual Empresa? Empresa { get; set; }
 }
