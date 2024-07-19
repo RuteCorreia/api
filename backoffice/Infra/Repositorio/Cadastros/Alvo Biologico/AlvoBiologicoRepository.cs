@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
 using Helpers;
 using Infra.Configuracao;
@@ -25,7 +27,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task DeleteAsync(int id)
     {
         var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
+        if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
@@ -38,11 +40,12 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.AlvoBiologico.FindAsync(id);
         return obj;
     }
+
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(int idCultura, int idProduto)
     {

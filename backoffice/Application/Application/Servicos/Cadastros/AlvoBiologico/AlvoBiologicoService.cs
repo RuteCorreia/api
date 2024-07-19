@@ -1,9 +1,12 @@
-﻿using Application.DTOs.Cadastros.AlvoBiologico.Interface;
+﻿using Application.DTOs.Cadastros.Alvo_Biologico.ViewModel;
+using Application.DTOs.Cadastros.AlvoBiologico.Interface;
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AlvoBiologico;
+using Domain.Interfaces.Cadastros.BulaAplicacao;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.TipoDeUnidade;
 using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
@@ -11,18 +14,24 @@ namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
 public class AlvoBiologicoService : IAlvoBiologicoService
 {
     private readonly IAlvoBiologicoRepository _alvoBiologicoRepository;
+    private readonly IBulaAplicacaoRepository _bulaAplicacaoRepository;
+    private readonly ITipoDeUnidadeRepository _tipoDeUnidadeRepository;
     private readonly ICulturaRepository _culturaRepository;
     private readonly IProdutoRepository _produtoRepository;
     private readonly IMapper _mapper;
 
     public AlvoBiologicoService(
         IAlvoBiologicoRepository alvoBiologicoRepository,
+        IBulaAplicacaoRepository bulaAplicacaoRepository,
+        ITipoDeUnidadeRepository tipoDeUnidadeRepository,
         ICulturaRepository culturaRepository,
         IProdutoRepository produtoRepository,
         IMapper mapper 
         )
     {
         _alvoBiologicoRepository = alvoBiologicoRepository;
+        _tipoDeUnidadeRepository = tipoDeUnidadeRepository;
+        _bulaAplicacaoRepository = bulaAplicacaoRepository;
         _culturaRepository = culturaRepository;
         _produtoRepository = produtoRepository;
         _mapper = mapper;
@@ -83,5 +92,29 @@ public class AlvoBiologicoService : IAlvoBiologicoService
     {
         var obj = await _alvoBiologicoRepository.GetByNameAsync(name);
         return _mapper.Map<AlvoBiologicoViewModel>(obj);
+    }
+
+    public async Task<IEnumerable<FormulacaoViewModel>> GetFormulacaoAsync(int idBula)
+    {
+        var listBulaAplicacao = await _bulaAplicacaoRepository.GetByIdBulaAsync(idBula);
+        var result = new List<FormulacaoViewModel>();
+        foreach (var bulaAplicacao in listBulaAplicacao)
+        {
+            var alvoBiologico = await _alvoBiologicoRepository.GetByIdAsync(bulaAplicacao.IdAlvoBiologico);
+            var cultura = await _culturaRepository.GetByIdAsync(alvoBiologico.IdCultura);
+            var tipoDeUnidade = await _tipoDeUnidadeRepository.GetByIdAsync(alvoBiologico.IdTipoDeUnidade);
+
+            var formulacao = new FormulacaoViewModel
+            {
+                Id = alvoBiologico.Id,
+                Cultura = cultura.Nome,
+                AlvoBiologico = alvoBiologico.Nome,
+                DoseProduto = alvoBiologico.DoseProdutoPorHectare,
+                UnidadeDeMedida = tipoDeUnidade.NomeUnidade
+            };
+
+            result.Add(formulacao);
+        }
+        return result;
     }
 }

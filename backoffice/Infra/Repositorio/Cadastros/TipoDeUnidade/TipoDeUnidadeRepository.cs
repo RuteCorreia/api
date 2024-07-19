@@ -17,5 +17,11 @@ namespace Infra.Repositorio.Cadastros.TipoDeUnidade
             var entities = await _contextBase.TipoDeUnidade.ToListAsync();
             return entities;
         }
+
+        public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade> GetByIdAsync(int? id)
+        {
+            var obj = await _contextBase.TipoDeUnidade.FindAsync(id);
+            return obj;
+        }
     }
 }

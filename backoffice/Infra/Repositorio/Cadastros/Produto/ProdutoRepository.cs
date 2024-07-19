@@ -58,7 +58,7 @@ public class ProdutoRepository : IProdutoRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.Produto.FindAsync(id);
         return obj;

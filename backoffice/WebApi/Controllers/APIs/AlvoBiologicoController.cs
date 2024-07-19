@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.AlvoBiologico.Interface;
+﻿using Application.DTOs.Cadastros.Alvo_Biologico.ViewModel;
+using Application.DTOs.Cadastros.AlvoBiologico.Interface;
 using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using Application.DTOs.Log.Interface;
 using Helpers;
@@ -49,6 +50,22 @@ namespace WebApi.Controllers.APIs
         {
             var alvosBiologicos = await _alvoBiologicoService.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
             return Ok(alvosBiologicos);
+        }
+
+        [HttpGet("getByIdBula")]
+        public async Task<ActionResult<IAsyncEnumerable<FormulacaoViewModel>>> GetByIdBula(int id)
+        {
+            try
+            {
+                var result = await _alvoBiologicoService.GetFormulacaoAsync(id);
+                _logService.LogInformation("Todas os alvos biológicos foram recuperados com sucesso.");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, "Erro ao recuperar todos os alvos biológicos.");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
+            }
         }
 
         [HttpGet("{id:int}")]

@@ -11,5 +11,5 @@ public interface IProdutoRepository
     Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe);
     Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome);
     Task<IEnumerable<Entidades.Cadastros.Produto.Produto>> GetAllAsync();
-    Task<Entidades.Cadastros.Produto.Produto> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id);
 }
