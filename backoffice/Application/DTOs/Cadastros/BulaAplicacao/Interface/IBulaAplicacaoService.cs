@@ -18,6 +18,6 @@ namespace Application.DTOs.Cadastros.BulaAplicacao.Interface
 
         Task UpdateAsync(BulaAplicacaoViewModel obj);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int idRecomendacao, int idBula);
     }
 }

@@ -120,15 +120,15 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        [HttpDelete("delete/{idRecomendacao:int}/{idBula:int}")]
+        public async Task<ActionResult> Delete(int idRecomendacao, int idBula)
         {
             try
             {
-                if (id != 0)
+                if (idRecomendacao != 0 && idBula != 0)
                 {
-                    await _bulaAplicacaoService.DeleteAsync(id);
-                    _loggerService.LogInformation($"Bula de Aplicação com ID {id} deletada com sucesso.");
+                    await _bulaAplicacaoService.DeleteAsync(idRecomendacao, idBula);
+                    _loggerService.LogInformation($"Bula de Aplicação com ID {idRecomendacao} deletada com sucesso.");
                     return Ok();
                 }
 
@@ -136,7 +136,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _loggerService.LogError(ex, $"Erro ao deletar Bula de Aplicação com ID {id}: {ex.Message}");
+                _loggerService.LogError(ex, $"Erro ao deletar Bula de Aplicação com ID {idRecomendacao}: {ex.Message}");
 
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Adjuvante delete - {ex.Message}");
             }

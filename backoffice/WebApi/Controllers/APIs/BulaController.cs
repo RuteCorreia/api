@@ -83,11 +83,11 @@ public class BulaController : ControllerBase
     {
         try
         {
-            //var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
-            //if (verificaSeBulaExistePeloNome != null)
-            //{
-            //    return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
-            //}
+            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
+            if (verificaSeBulaExistePeloNome != null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
+            }
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
