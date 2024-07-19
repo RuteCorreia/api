@@ -52,7 +52,7 @@ namespace WebApi.Controllers.APIs
             return Ok(alvosBiologicos);
         }
 
-        [HttpGet("getByIdBula")]
+        [HttpGet("getByIdBula/{id:int}")]
         public async Task<ActionResult<IAsyncEnumerable<FormulacaoViewModel>>> GetByIdBula(int id)
         {
             try
