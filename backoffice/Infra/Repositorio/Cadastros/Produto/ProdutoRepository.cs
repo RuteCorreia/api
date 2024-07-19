@@ -52,6 +52,7 @@ public class ProdutoRepository : IProdutoRepository
             .FirstOrDefaultAsync(p => p.Nome == nome);
         return produto;
     }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync()
     {
         var entities = await _contextBase.Produto.ToListAsync();

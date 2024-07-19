@@ -43,5 +43,7 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os tipos de produto: {ex.Message}");
             }
         }
+
+
     }
 }
