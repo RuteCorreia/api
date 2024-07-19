@@ -8,6 +8,8 @@ public interface IProdutoService
 
     Task<ProdutoViewModel> GetByIdAsync(int id);
 
+    Task<ProdutoViewModel> GetByNameAsync(string name);
+
     Task AddAsync(ProdutoViewModel obj);
 
     Task UpdateAsync(ProdutoViewModel obj);
