@@ -67,8 +67,9 @@ public class BulaRepository : IBulaRepository
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa)
     {
+        var idEmpresaAdministracao = 21;
         var obj = await _contextBase.Bula
-        .FirstOrDefaultAsync(x => x.NomeProduto == name && x.IdEmpresa == idEmpresa && !x.Removido);
+            .FirstOrDefaultAsync(x => x.NomeProduto == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == idEmpresaAdministracao) && !x.Removido);
         return obj;
     }
 
