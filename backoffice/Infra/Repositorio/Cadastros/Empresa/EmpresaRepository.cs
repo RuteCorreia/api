@@ -21,6 +21,11 @@ public class EmpresaRepository : IEmpresaRepository
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task<Domain.Entidades.Cadastros.Empresa.Empresa> GetByEmailAsync(string email)
+    {
+        var obj = await _contextBase.Empresa.FirstOrDefaultAsync(e => e.Email == email);
+        return obj;
+    }
     public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
     {
         var entityToBeChanged = await GetByIdAsync(id);

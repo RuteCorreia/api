@@ -53,6 +53,12 @@ public class EmpresaService : IEmpresaService
     {
         var resultMsg = new StringBuilder().Append("Envio de e-mail nao foi possivel, tente novamente");
         var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(empresaViewModel);
+        var empresaExist = await _empresaRepository.GetByEmailAsync(mapEmpresa.Email);
+        if (empresaExist != null) 
+        {
+            resultMsg.Clear().Append("Empresa ja existe com este e-mail!");
+            return (false, resultMsg.ToString());
+        }
         await _empresaRepository.AddAsync(mapEmpresa);
         var empresaUserObj = GenerateEmpresaUserObj(mapEmpresa);
         var createEmpresaUserOperationOk = await _userAuthService.RegisterUserFromEmpresaAsync(empresaUserObj, mapEmpresa.IdEmpresa);
@@ -118,7 +124,6 @@ public class EmpresaService : IEmpresaService
             Password = $"Flytec_{DateTime.Now.Year}_!",
             Telefone = empresa.Telefone,
             CPF = "",
-            Funcoes = GenerateEmpresaUserRolesForViewModel()
         };
 
         return obj;

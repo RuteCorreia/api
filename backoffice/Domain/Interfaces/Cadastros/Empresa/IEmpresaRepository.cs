@@ -9,6 +9,7 @@ public interface IEmpresaRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Empresa.Empresa>> GetAllAsync();
     Task<Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int id);
+    Task<Domain.Entidades.Cadastros.Empresa.Empresa> GetByEmailAsync(string email);
     Task<string> GetLogoByIdAsync(int id);
     Task ChangeStatusAsync(int id, EStatusEmpresa status);
     Task<IEnumerable<Entidades.Cadastros.Empresa.Empresa>> GetByNameAsync(string name);
