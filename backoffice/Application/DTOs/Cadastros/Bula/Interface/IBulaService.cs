@@ -7,7 +7,7 @@ public interface IBulaService
     Task<IEnumerable<BulaViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<BulaViewModel> GetByIdAsync(int id);
-    Task<BulaViewModel> GetByName(string name);
+    Task<BulaViewModel> GetByName(string name, string? idEmpresa);
 
     Task AddAsync(BulaViewModel obj);
 

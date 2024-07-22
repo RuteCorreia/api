@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Bula.ViewModel;
 using Application.DTOs.Cadastros.Cultura.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 
@@ -53,9 +54,10 @@ public class BulaService : IBulaService
         await _bulaRepository.DeleteAsync(id);
     }
 
-    public async Task<BulaViewModel> GetByName(string name)
+    public async Task<BulaViewModel> GetByName(string name, string? idEmpresa)
     {
-        var obj = await _bulaRepository.GetByNameAsync(name);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _bulaRepository.GetByNameAsync(name, idEmpresaInt);
 
         return _mapper.Map<BulaViewModel>(obj);
     }

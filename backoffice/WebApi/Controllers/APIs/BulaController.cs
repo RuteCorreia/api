@@ -83,14 +83,14 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
             if (verificaSeBulaExistePeloNome != null)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
             }
             if (ModelState.IsValid)
             {
-                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(loggedUser.Item3);
                 obj.IdEmpresa = idEmpresaInt;
                 await _bulaService.AddAsync(obj);
@@ -121,7 +121,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
             if (verificaSeBulaExistePeloNome != null && verificaSeBulaExistePeloNome.IdBula != obj.IdBula)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
