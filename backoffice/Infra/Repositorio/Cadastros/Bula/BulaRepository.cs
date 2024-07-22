@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 using Infra.Configuracao;
@@ -64,9 +65,11 @@ public class BulaRepository : IBulaRepository
         return obj;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name)
+    public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa)
     {
-        var obj =  await _contextBase.Bula.FirstOrDefaultAsync(x => x.NomeProduto == name && !x.Removido);
+        var idEmpresaAdministracao = 21;
+        var obj = await _contextBase.Bula
+            .FirstOrDefaultAsync(x => x.NomeProduto == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == idEmpresaAdministracao) && !x.Removido);
         return obj;
     }
 
