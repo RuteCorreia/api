@@ -1,6 +1,8 @@
-﻿using Domain.Interfaces.Cadastros.Bula;
+﻿using Dapper;
+using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Bula;
@@ -46,12 +48,14 @@ public class BulaRepository : IBulaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
         var idEmpresaRodrigo = 21;
-        var entities = await _contextBase.Bula
-            .AsNoTracking()
-            .Where(x => !x.Removido && x.IdEmpresa == idEmpresa && x.IdEmpresa == idEmpresaRodrigo) 
-            .ToListAsync();
+        var query = @"SELECT * FROM Bula WHERE (IdEmpresa = @IdEmpresa AND Removido = 0) OR (IdEmpresa = @IdEmpresaRodrigo AND Removido = 0)";
 
-        return entities;
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa, IdEmpresaRodrigo = idEmpresaRodrigo };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
