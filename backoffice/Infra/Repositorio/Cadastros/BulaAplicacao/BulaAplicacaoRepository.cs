@@ -35,6 +35,12 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
             }
         }
 
+        public async Task<Domain.Entidades.Cadastros.Empresa.BulaAplicacao> getByIdBulaAndIdAlvoAsync(int idRecomendacao, int idBula)
+        {
+            var obj = await _contextBase.BulaAplicacao.FirstOrDefaultAsync(x => x.IdAlvoBiologico == idRecomendacao && x.IdBula == idBula);
+            return obj;
+        }
+
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetAllAsync()
         {
             var entities = await _contextBase.BulaAplicacao.ToListAsync();
@@ -49,7 +55,7 @@ namespace Infra.Repositorio.Cadastros.BulaAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id)
         {
-            var obj = _contextBase.BulaAplicacao.Where(x => x.IdBula == id).ToList();
+            var obj = await _contextBase.BulaAplicacao.Where(x => x.IdBula == id).ToListAsync();
             return obj;
         }
 

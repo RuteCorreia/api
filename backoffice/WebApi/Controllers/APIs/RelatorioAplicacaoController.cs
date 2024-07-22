@@ -565,15 +565,15 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpPut("updateIsmapa")]
-        public async Task<ActionResult> UpdateIsMapa([FromBody] List<int> obj)
+        [HttpPut("updateIsmapa/{condicao}")]
+        public async Task<ActionResult> UpdateIsMapa([FromBody] List<int> obj, bool condicao)
         {
             try
             {
                 
                 if (ModelState.IsValid)
                 {
-                    await _relatorioAplicacaoService.UpdateIsMapaAsync(obj);
+                    await _relatorioAplicacaoService.UpdateIsMapaAsync(obj, condicao);
                     _logService.LogInformation("Campo IsMapa do relatório de aplicação atualizado com sucesso.");
                     return Ok();
                 }

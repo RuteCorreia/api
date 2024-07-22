@@ -9,6 +9,7 @@ using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Buffers.Text;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -21,15 +22,21 @@ namespace WebApi.Controllers.APIs;
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class BulaController : ControllerBase
 {
-    private readonly IBulaService _bulaService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly IBulaAplicacaoService _bulaAplicacaoService;
     private readonly ILogService _loggerService;
-
-    public BulaController(IBulaService bulaService, IBulaAplicacaoService bulaAplicacaoService, ILogService loggerService)
+    private readonly IBulaService _bulaService;
+    public BulaController(
+        IBulaAplicacaoService bulaAplicacaoService,
+        LoggedUserInfoService loggedUserInfoService,
+        ILogService loggerService,
+        IBulaService bulaService
+        )
     {
-        _bulaService = bulaService;
+        _loggedUserInfoService = loggedUserInfoService;
         _bulaAplicacaoService = bulaAplicacaoService;
         _loggerService = loggerService;
+        _bulaService = bulaService;      
     }
 
     [HttpGet]
@@ -37,7 +44,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var bulas = await _bulaService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var bulas = await _bulaService.GetAllAsync(loggedUser.Item3);
             _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
             return Ok(bulas);
         }
@@ -75,15 +83,18 @@ public class BulaController : ControllerBase
     {
         try
         {
-            //var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
-            //if (verificaSeBulaExistePeloNome != null)
-            //{
-            //    return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
-            //}
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
+            if (verificaSeBulaExistePeloNome != null)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
+            }
             if (ModelState.IsValid)
             {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(loggedUser.Item3);
+                obj.IdEmpresa = idEmpresaInt;
                 await _bulaService.AddAsync(obj);
-                var lista = await _bulaService.GetAllAsync();
+                var lista = await _bulaService.GetAllAsync(loggedUser.Item3);
                 var ultimoCriado = lista.LastOrDefault();
                 foreach (var item in obj.BulaAplicacoes)
                 {
@@ -110,7 +121,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto).Result;
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
             if (verificaSeBulaExistePeloNome != null && verificaSeBulaExistePeloNome.IdBula != obj.IdBula)
             {
                 return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");

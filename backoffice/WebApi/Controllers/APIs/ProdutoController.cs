@@ -63,6 +63,28 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getByName/{*name}")]
+        public async Task<ActionResult<ProdutoViewModel>> GetByName(string name)
+        {
+            try
+            {
+                var produto = await _produtoService.GetByNameAsync(name);
+                if (!ObjectNullValidation.IsObjectNull(produto))
+                {
+                    _logService.LogInformation("Produto recuperado com sucesso.");
+                    return Ok(produto);
+                }
+
+                _logService.LogWarning("Produto não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Produto não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar produto pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar produto pelo ID: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] ProdutoViewModel obj)
         {

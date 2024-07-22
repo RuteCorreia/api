@@ -42,6 +42,9 @@ using Domain.Entidades.Cadastros.AuxiliarPista;
 using Domain.Entidades.Cadastros.DataRelatorio;
 using Domain.Entidades.Cadastros.TipoDeServico;
 using Domain.Entidades.Export_Excel;
+using Domain.Entidades.Cadastros.RelatorioManutencao;
+using Domain.Entidades.Cadastros.Municipio;
+using Domain.Entidades.Cadastros.TipoDeFormulacao;
 
 namespace Infra.Configuracao;
 
@@ -111,6 +114,13 @@ public class ContextBase : IdentityDbContext
     public DbSet<DataRelatorio> DataRelatorio { get; set; }
     public DbSet<TipoDeServico> TipoDeServico { get; set; }
     public DbSet<PlanilhaExcelExportada> PlanilhaExcelExportadas { get; set; }
+    public DbSet<TipoDeUnidade> TipoDeUnidade { get; set; }
+    public DbSet<RelatorioManutencao> RelatorioManutencao { get; set; }
+    public DbSet<RelatorioManutencaoComponente> RelatorioManutencaoComponente { get; set; }
+    public DbSet<RelatorioManutencaoComponenteImagem> RelatorioManutencaoComponenteImagem { get; set; }
+    public DbSet<RelatorioManutencaoRevisao> RelatorioManutencaoRevisao { get; set; }
+    public DbSet<Municipio> Municipios { get; set; }
+    public DbSet<TipoDeFormulacao> TipoDeFormulacao { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

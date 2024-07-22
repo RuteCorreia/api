@@ -63,4 +63,10 @@ public class ProdutoService : IProdutoService
 
         return viewModelList;
     }
+
+    public async Task<ProdutoViewModel> GetByNameAsync(string name)
+    {
+        var obj = await _produtoRepository.GetByNameAsync(name);
+        return _mapper.Map<ProdutoViewModel>(obj);
+    }
 }

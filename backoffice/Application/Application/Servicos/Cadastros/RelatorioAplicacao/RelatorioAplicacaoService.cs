@@ -111,7 +111,9 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 ClasseAgrotoxico = cpa.Classe,
                 Area = ar.TotalAreaAplicada,
                 Agrotoxico = cpa.NomeProduto,
-                Adjuvante = cpa.Adjuvante
+                Adjuvante = cpa.Adjuvante,
+                Dosagem = cpa.DoseProdutoHectare,
+                Unidade = cpa.UnidadeDoseProdutoHectare
             };
             return viewModel;
         }
@@ -127,14 +129,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
-        public async Task UpdateIsMapaAsync(List<int> relatorios)
+        public async Task UpdateIsMapaAsync(List<int> relatorios, bool condicao)
         {
             foreach (var relatorio in relatorios)
             {
                 var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(relatorio);
                 if (relatorioExistente != null)
                 {
-                    relatorioExistente.IsMapa = true;
+                    relatorioExistente.IsMapa = condicao;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 

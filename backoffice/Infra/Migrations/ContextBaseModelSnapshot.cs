@@ -101,21 +101,45 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DoseProdutoPorHectare")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdCultura")
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdProduto")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoDeUnidade")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdCultura");
+
                     b.HasIndex("IdProduto");
 
+                    b.HasIndex("IdTipoDeUnidade");
+
                     b.ToTable("AlvoBiologico");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NomeUnidade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoDeUnidade");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Aplicacao.Aplicacao", b =>
@@ -1327,6 +1351,9 @@ namespace Infra.Migrations
                     b.Property<int?>("IdCultura")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
                     b.Property<int?>("IdTipoDeServico")
                         .HasColumnType("int");
 
@@ -1345,6 +1372,8 @@ namespace Infra.Migrations
                     b.HasIndex("IdAlvoBiologico");
 
                     b.HasIndex("IdCultura");
+
+                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Bula");
                 });
@@ -1736,6 +1765,25 @@ namespace Infra.Migrations
                     b.ToTable("MenuUsuario");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.Municipio.Municipio", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Cidade")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UF")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Municipios");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Pistas.Pista", b =>
                 {
                     b.Property<int>("Id")
@@ -1977,6 +2025,143 @@ namespace Infra.Migrations
                     b.ToTable("RelatorioIncendio");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Horimetro")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("IdAeronave")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsMapa")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("NomeRelatorio")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StatusEnvio")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdAeronave");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.ToTable("RelatorioManutencao");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoComponente", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("IdComponente")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdManutencaoAeronaveItemsRevisao")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdRelatorioManutencao")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdComponente");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdManutencaoAeronaveItemsRevisao");
+
+                    b.HasIndex("IdRelatorioManutencao");
+
+                    b.ToTable("RelatorioManutencaoComponente");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoComponenteImagem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdRelatorioManutencaoComponente")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Imagem")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Legenda")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdRelatorioManutencaoComponente");
+
+                    b.ToTable("RelatorioManutencaoComponenteImagem");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoRevisao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdManutencaoAeronaveItemsRevisao")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdRelatorioManutencao")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsSelected")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdManutencaoAeronaveItemsRevisao");
+
+                    b.HasIndex("IdRelatorioManutencao");
+
+                    b.ToTable("RelatorioManutencaoRevisao");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.SubMenu.SubMenu", b =>
                 {
                     b.Property<int>("SubMenuId")
@@ -2010,6 +2195,22 @@ namespace Infra.Migrations
                     b.HasIndex("SubMenuItemId");
 
                     b.ToTable("SubMenu");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NomeFormulacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoDeFormulacao");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico", b =>
@@ -2502,11 +2703,27 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico", b =>
                 {
+                    b.HasOne("Domain.Entidades.Cadastros.Cultura.Cultura", "Cultura")
+                        .WithMany()
+                        .HasForeignKey("IdCultura")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entidades.Cadastros.Produto.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("IdProduto");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", "TipoDeUnidade")
+                        .WithMany()
+                        .HasForeignKey("IdTipoDeUnidade")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cultura");
+
                     b.Navigation("Produto");
+
+                    b.Navigation("TipoDeUnidade");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Aplicacao.Aplicacao", b =>
@@ -2893,9 +3110,15 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdCultura");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
                     b.Navigation("AlvoBiologico");
 
                     b.Navigation("Cultura");
+
+                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Empresa.BulaAplicacao", b =>
@@ -3104,6 +3327,84 @@ namespace Infra.Migrations
                     b.Navigation("LocalIncendio");
 
                     b.Navigation("Pista");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencao", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Aeronave.Aeronave", "Aeronave")
+                        .WithMany()
+                        .HasForeignKey("IdAeronave");
+
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.Navigation("Aeronave");
+
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoComponente", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Componentes.Componentes", "Componentes")
+                        .WithMany()
+                        .HasForeignKey("IdComponente");
+
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.HasOne("Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao", "ManutencaoAeronaveItemsRevisao")
+                        .WithMany()
+                        .HasForeignKey("IdManutencaoAeronaveItemsRevisao");
+
+                    b.HasOne("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencao", "RelatorioManutencao")
+                        .WithMany()
+                        .HasForeignKey("IdRelatorioManutencao");
+
+                    b.Navigation("Componentes");
+
+                    b.Navigation("Empresa");
+
+                    b.Navigation("ManutencaoAeronaveItemsRevisao");
+
+                    b.Navigation("RelatorioManutencao");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoComponenteImagem", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.HasOne("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoComponente", "RelatorioManutencaoComponente")
+                        .WithMany()
+                        .HasForeignKey("IdRelatorioManutencaoComponente");
+
+                    b.Navigation("Empresa");
+
+                    b.Navigation("RelatorioManutencaoComponente");
+                });
+
+            modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencaoRevisao", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.HasOne("Domain.Entidades.Cadastros.ManutencaoAeronaveItemsRevisao.ManutencaoAeronaveItemsRevisao", "ManutencaoAeronaveItemsRevisao")
+                        .WithMany()
+                        .HasForeignKey("IdManutencaoAeronaveItemsRevisao");
+
+                    b.HasOne("Domain.Entidades.Cadastros.RelatorioManutencao.RelatorioManutencao", "RelatorioManutencao")
+                        .WithMany()
+                        .HasForeignKey("IdRelatorioManutencao");
+
+                    b.Navigation("Empresa");
+
+                    b.Navigation("ManutencaoAeronaveItemsRevisao");
+
+                    b.Navigation("RelatorioManutencao");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.SubMenu.SubMenu", b =>

@@ -17,6 +17,7 @@ public class BulaViewModel
     public string Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public int? TipoDeUnidade { get; set; }
+    public int? IdEmpresa { get; set; }
     public List<BulaAplicacaoViewModel> BulaAplicacoes { get; set; }
 
 }

@@ -182,20 +182,17 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id)
         {
-            using (var connection = _dbConnection)
+            try
             {
-                try
-                {
-                    string query = $"SELECT * FROM RelatorioAplicacao WHERE Id = {id}";
-                    var relatorio = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
-                    return relatorio;
+                var obj = await _contextBase.RelatorioAplicacao.FindAsync(id);
+                return obj;
 
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
             }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId)

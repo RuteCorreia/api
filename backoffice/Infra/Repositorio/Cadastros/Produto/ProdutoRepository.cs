@@ -45,13 +45,21 @@ public class ProdutoRepository : IProdutoRepository
             .ToListAsync();
         return nomes;
     }
+
+    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome)
+    {
+        var produto = await _contextBase.Produto
+            .FirstOrDefaultAsync(p => p.Nome == nome);
+        return produto;
+    }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync()
     {
         var entities = await _contextBase.Produto.ToListAsync();
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.Produto.FindAsync(id);
         return obj;
