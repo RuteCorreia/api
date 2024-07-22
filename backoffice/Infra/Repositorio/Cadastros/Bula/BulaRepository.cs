@@ -43,11 +43,12 @@ public class BulaRepository : IBulaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
+        var idEmpresaRodrigo = 21;
         var entities = await _contextBase.Bula
             .AsNoTracking()
-            .Where(x => !x.Removido)
+            .Where(x => !x.Removido && x.IdEmpresa == idEmpresa && x.IdEmpresa == idEmpresaRodrigo) 
             .ToListAsync();
 
         return entities;

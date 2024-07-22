@@ -111,7 +111,9 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 ClasseAgrotoxico = cpa.Classe,
                 Area = ar.TotalAreaAplicada,
                 Agrotoxico = cpa.NomeProduto,
-                Adjuvante = cpa.Adjuvante
+                Adjuvante = cpa.Adjuvante,
+                Dosagem = cpa.DoseProdutoHectare,
+                Unidade = cpa.UnidadeDoseProdutoHectare
             };
             return viewModel;
         }

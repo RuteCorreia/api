@@ -58,7 +58,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id)
     {
         var query = @"
-            SELECT IdAeronave, HoraInicial, HorarioFinalOperacao, Uf, Cidade, TotalAguaUtilizadaOperacao
+            SELECT IdAeronave, HoraInicial, HorarioFinalOperacao, Uf, Cidade, CapacidadeCargaAeronave
             FROM CombateIncendio WHERE Id = @Id";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))

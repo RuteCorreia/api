@@ -12,6 +12,7 @@ namespace Domain.Interfaces.Cadastros.BulaAplicacao
         Task UpdateAsync(Entidades.Cadastros.Empresa.BulaAplicacao obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Empresa.BulaAplicacao>> GetAllAsync();
+        Task<Domain.Entidades.Cadastros.Empresa.BulaAplicacao> getByIdBulaAndIdAlvoAsync(int idRecomendacao, int idBula);
         Task<Entidades.Cadastros.Empresa.BulaAplicacao> GetByIdAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.Empresa.BulaAplicacao>> GetByIdBulaAsync(int id);
     }

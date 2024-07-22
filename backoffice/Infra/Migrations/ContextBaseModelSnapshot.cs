@@ -101,19 +101,27 @@ namespace Infra.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("DoseProdutoPorHectare")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("IdCultura")
+                        .HasColumnType("int");
 
                     b.Property<int?>("IdProduto")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoDeUnidade")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("IdCultura");
+
                     b.HasIndex("IdProduto");
+
+                    b.HasIndex("IdTipoDeUnidade");
 
                     b.ToTable("AlvoBiologico");
                 });
@@ -1343,6 +1351,9 @@ namespace Infra.Migrations
                     b.Property<int?>("IdCultura")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
                     b.Property<int?>("IdTipoDeServico")
                         .HasColumnType("int");
 
@@ -1361,6 +1372,8 @@ namespace Infra.Migrations
                     b.HasIndex("IdAlvoBiologico");
 
                     b.HasIndex("IdCultura");
+
+                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Bula");
                 });
@@ -2184,6 +2197,22 @@ namespace Infra.Migrations
                     b.ToTable("SubMenu");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("NomeFormulacao")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoDeFormulacao");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico", b =>
                 {
                     b.Property<int>("Id")
@@ -2674,11 +2703,27 @@ namespace Infra.Migrations
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico", b =>
                 {
+                    b.HasOne("Domain.Entidades.Cadastros.Cultura.Cultura", "Cultura")
+                        .WithMany()
+                        .HasForeignKey("IdCultura")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Domain.Entidades.Cadastros.Produto.Produto", "Produto")
                         .WithMany()
                         .HasForeignKey("IdProduto");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", "TipoDeUnidade")
+                        .WithMany()
+                        .HasForeignKey("IdTipoDeUnidade")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cultura");
+
                     b.Navigation("Produto");
+
+                    b.Navigation("TipoDeUnidade");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Aplicacao.Aplicacao", b =>
@@ -3065,9 +3110,15 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdCultura");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
                     b.Navigation("AlvoBiologico");
 
                     b.Navigation("Cultura");
+
+                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Empresa.BulaAplicacao", b =>
