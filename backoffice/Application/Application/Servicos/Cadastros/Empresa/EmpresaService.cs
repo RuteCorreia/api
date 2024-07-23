@@ -124,6 +124,7 @@ public class EmpresaService : IEmpresaService
             Password = $"Flytec_{DateTime.Now.Year}_!",
             Telefone = empresa.Telefone,
             CPF = "",
+            Funcoes = GenerateEmpresaUserRolesForViewModel()
         };
 
         return obj;
@@ -134,7 +135,7 @@ public class EmpresaService : IEmpresaService
         var roles = Enumerable.Empty<RoleObject>();
         var roleObj = new RoleObject
         {
-            Funcao = Domain.Enums.ERole.Administrador,
+            Funcao = Domain.Enums.ERole.Administrativo,
         };
 
         roles = roles.Append(roleObj);
