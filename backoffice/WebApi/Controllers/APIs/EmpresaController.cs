@@ -111,6 +111,36 @@ public class EmpresaController : ControllerBase
         }
     }
 
+    [HttpPost("recuperarEmpresa")]
+    public async Task<ActionResult> RecuperarEmpresa([FromBody] int empresaId)
+    {
+        var resultError = new StringBuilder().Append("Empresa recuperada com sucesso, aconselhamos fazer a recuperação da senha!");
+        var empresaExist = await _empresaService.GetByIdAsync(empresaId);
+
+        if (empresaExist != null && empresaExist.Removido == true)
+        {
+            empresaExist.Removido = false;
+            await _empresaService.UpdateAsync(empresaExist);
+            return Ok(resultError);
+        }
+
+        return BadRequest("Empresa não encontrada ou já está ativa.");
+    }
+
+    [HttpGet("getByEmail")]
+    public async Task<IActionResult> GetByEmailAsync([FromQuery] string email)
+    {
+        try 
+        {
+            var empresas = await _empresaService.GetByEmailAsync(email);
+            return Ok(empresas);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todas as empresas: {ex.Message}");
+        }
+    }
+
     [HttpPut("{id:int}")]
     public async Task<ActionResult> Update(int id, [FromBody] EmpresaViewModel empresaViewModel)
     {

@@ -62,9 +62,14 @@ public class EmpresaService : IEmpresaService
         var resultMsg = new StringBuilder().Append("Envio de e-mail nao foi possivel, tente novamente");
         var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(empresaViewModel);
         var empresaExist = await _empresaRepository.GetByEmailAsync(mapEmpresa.Email);
-        if (empresaExist != null) 
+        if (empresaExist != null && empresaExist.Removido)
         {
-            resultMsg.Clear().Append("Empresa ja existe com este e-mail!");
+            resultMsg.Clear().Append("Encontramos uma empresa com esse email em nosso sistema! Deseja recuperala-lá?");
+            return (false, resultMsg.ToString());
+        }
+        if (empresaExist != null && empresaExist.Removido == false) 
+        {
+            resultMsg.Clear().Append("Empresa ja existe com este e-mail e está ativa!");
             return (false, resultMsg.ToString());
         }
         await _empresaRepository.AddAsync(mapEmpresa);
@@ -158,20 +163,8 @@ public class EmpresaService : IEmpresaService
 
     public async Task DeleteAsync(int id)
     {
-        var empresa = await _empresaRepository.GetByIdAsync(id);
-        var usuario = await _usuarioRepository.GetUserByEmailAsync(empresa.Email);
-        if (usuario != null)
-        {
-            var userAspNet = await _userManager.FindByIdAsync(usuario.UserId);
-            if (userAspNet != null)
-            {
-                await _usuarioCredencialRepository.RemoveAllByUserIdAsync(usuario.Id);
-                await _userManager.DeleteAsync(userAspNet);
-                await _usuarioRepository.DeleteAsync(usuario.Id);
-                await _empresaRepository.DeleteAsync(empresa.IdEmpresa);
-            }
-        }
-        
+        await _empresaRepository.DeleteAsync(id);
+
     }
 
     public async Task<string> GetLogoByIdAsync(int id)
@@ -180,6 +173,11 @@ public class EmpresaService : IEmpresaService
         return obj;
     }
 
+    public async Task<EmpresaViewModel> GetByEmailAsync(string email)
+    {
+        var obj = await _empresaRepository.GetByEmailAsync(email);
+        return _mapper.Map<EmpresaViewModel>(obj);
+    }
     public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
     {
         await _empresaRepository.ChangeStatusAsync(id, status);
