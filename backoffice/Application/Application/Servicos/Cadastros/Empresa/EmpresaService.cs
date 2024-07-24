@@ -11,11 +11,15 @@ using System.Collections.Generic;
 using Domain.Interfaces.User;
 using System.Web;
 using System.Text;
+using Infra.Repositorio.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
 public class EmpresaService : IEmpresaService
 {
+    private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmpresaRepository _empresaRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUserAuthService _userAuthService;
@@ -23,18 +27,22 @@ public class EmpresaService : IEmpresaService
     private readonly IEmailService _emailService;
 
     public EmpresaService(
-        IMapper mapper, 
+        IUsuarioCredencialRepository usuarioCredencialRepository,
+        UserManager<IdentityUser> userManager, 
         IEmpresaRepository empresaRepository, 
         IUsuarioRepository usuarioRepository,
         IUserAuthService userAuthService, 
-        IEmailService emailService
+        IEmailService emailService,
+        IMapper mapper
         )
     {
+        _usuarioCredencialRepository = usuarioCredencialRepository;
         _empresaRepository = empresaRepository;
         _usuarioRepository = usuarioRepository;
         _userAuthService = userAuthService;
+        _emailService = emailService;
+        _userManager = userManager;
         _mapper = mapper;
-        _emailService = emailService;   
     }
 
     public async Task<IEnumerable<EmpresaViewModel>> GetAllAsync()
@@ -54,9 +62,14 @@ public class EmpresaService : IEmpresaService
         var resultMsg = new StringBuilder().Append("Envio de e-mail nao foi possivel, tente novamente");
         var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(empresaViewModel);
         var empresaExist = await _empresaRepository.GetByEmailAsync(mapEmpresa.Email);
-        if (empresaExist != null) 
+        if (empresaExist != null && empresaExist.Removido)
         {
-            resultMsg.Clear().Append("Empresa ja existe com este e-mail!");
+            resultMsg.Clear().Append("Encontramos uma empresa com esse email em nosso sistema! Deseja recuperala-lá?");
+            return (false, resultMsg.ToString());
+        }
+        if (empresaExist != null && empresaExist.Removido == false) 
+        {
+            resultMsg.Clear().Append("Empresa ja existe com este e-mail e está ativa!");
             return (false, resultMsg.ToString());
         }
         await _empresaRepository.AddAsync(mapEmpresa);
@@ -151,6 +164,7 @@ public class EmpresaService : IEmpresaService
     public async Task DeleteAsync(int id)
     {
         await _empresaRepository.DeleteAsync(id);
+
     }
 
     public async Task<string> GetLogoByIdAsync(int id)
@@ -159,6 +173,11 @@ public class EmpresaService : IEmpresaService
         return obj;
     }
 
+    public async Task<EmpresaViewModel> GetByEmailAsync(string email)
+    {
+        var obj = await _empresaRepository.GetByEmailAsync(email);
+        return _mapper.Map<EmpresaViewModel>(obj);
+    }
     public async Task ChangeStatusAsync(int id, EStatusEmpresa status)
     {
         await _empresaRepository.ChangeStatusAsync(id, status);

@@ -6,7 +6,7 @@ public interface IUsuarioRepository
 {
     Task AddAsync(Usuario obj);
     Task UpdateAsync(Usuario obj);
-    Task DeleteAsync(string id);
+    Task DeleteAsync(Guid id);
     Task<IEnumerable<Usuario>> GetAllAsync(int? idEmpresa);
     Task<Usuario> GetUserByEmailAsync(string email);
     Task<Usuario> GetByUserIdAsync(string id);

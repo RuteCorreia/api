@@ -25,10 +25,14 @@ public class UsuarioRepository : IUsuarioRepository
         return await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Email == email);
     }
 
-    public async Task DeleteAsync(string id)
+    public async Task DeleteAsync(Guid id)
     {
-        var usuario = _contextBase.Usuario.Where(x => x.Id == Guid.Parse(id)).FirstOrDefault();
-        _contextBase.Usuario.Remove(usuario);
+        var usuario = _contextBase.Usuario.Where(x => x.Id == id).FirstOrDefault();
+        if (usuario != null) 
+        {
+            _contextBase.Remove(usuario);
+            await _contextBase.SaveChangesAsync();
+        } 
     }
 
     public async Task<IEnumerable<Usuario>> GetAllAsync(int? idEmpresa)

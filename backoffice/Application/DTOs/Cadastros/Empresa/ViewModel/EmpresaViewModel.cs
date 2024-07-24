@@ -35,6 +35,7 @@ public class EmpresaViewModel
 
     public bool? Manutencao { get; set; }
     public bool? FrotaRelatoriosAplicacaoIncendio { get; set; }
+    public bool? Removido { get; set; }
 
     [Required]
     public int QtdAeronaves { get; set; }

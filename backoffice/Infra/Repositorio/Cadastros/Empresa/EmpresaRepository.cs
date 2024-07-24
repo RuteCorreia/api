@@ -50,7 +50,7 @@ public class EmpresaRepository : IEmpresaRepository
     public async Task DeleteAsync(int id)
     {
         var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
+        if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             entityToRemove.Removido = true;
             _contextBase.Empresa.Update(entityToRemove);
@@ -95,6 +95,7 @@ public class EmpresaRepository : IEmpresaRepository
         obj.Numero = obj.Numero;
         objeto.Estado = obj.Estado;
         objeto.Cidade = obj.Cidade;
+        objeto.Removido = obj.Removido;
         objeto.FrotaRelatoriosAplicacaoIncendio = obj.FrotaRelatoriosAplicacaoIncendio;
         objeto.Manutencao = obj.Manutencao;
         objeto.QtdAeronaves = obj.QtdAeronaves;
