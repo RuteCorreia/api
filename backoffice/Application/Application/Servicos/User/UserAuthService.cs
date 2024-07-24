@@ -253,10 +253,17 @@ public class UserAuthService : IUserAuthService
     public async Task RemoveUserAsync(string id)
     {
         var userToRemove = await GetUserEntityByIdAsync(id);
+
         if(userToRemove is not null)
         {
-            userToRemove.Removido = true;
-            await _usuarioRepository.UpdateAsync(userToRemove);
+            var userAspNet = await _userManager.FindByIdAsync(userToRemove.UserId);
+            if(userAspNet != null)
+            {
+                await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToRemove.Id);
+                await _userManager.DeleteAsync(userAspNet);
+                await _usuarioRepository.DeleteAsync(userToRemove.Id);
+            }
+            
         }
     }
 

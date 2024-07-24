@@ -11,11 +11,15 @@ using System.Collections.Generic;
 using Domain.Interfaces.User;
 using System.Web;
 using System.Text;
+using Infra.Repositorio.User;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
 public class EmpresaService : IEmpresaService
 {
+    private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
+    private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmpresaRepository _empresaRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUserAuthService _userAuthService;
@@ -23,18 +27,22 @@ public class EmpresaService : IEmpresaService
     private readonly IEmailService _emailService;
 
     public EmpresaService(
-        IMapper mapper, 
+        IUsuarioCredencialRepository usuarioCredencialRepository,
+        UserManager<IdentityUser> userManager, 
         IEmpresaRepository empresaRepository, 
         IUsuarioRepository usuarioRepository,
         IUserAuthService userAuthService, 
-        IEmailService emailService
+        IEmailService emailService,
+        IMapper mapper
         )
     {
+        _usuarioCredencialRepository = usuarioCredencialRepository;
         _empresaRepository = empresaRepository;
         _usuarioRepository = usuarioRepository;
         _userAuthService = userAuthService;
+        _emailService = emailService;
+        _userManager = userManager;
         _mapper = mapper;
-        _emailService = emailService;   
     }
 
     public async Task<IEnumerable<EmpresaViewModel>> GetAllAsync()
@@ -150,7 +158,20 @@ public class EmpresaService : IEmpresaService
 
     public async Task DeleteAsync(int id)
     {
-        await _empresaRepository.DeleteAsync(id);
+        var empresa = await _empresaRepository.GetByIdAsync(id);
+        var usuario = await _usuarioRepository.GetUserByEmailAsync(empresa.Email);
+        if (usuario != null)
+        {
+            var userAspNet = await _userManager.FindByIdAsync(usuario.UserId);
+            if (userAspNet != null)
+            {
+                await _usuarioCredencialRepository.RemoveAllByUserIdAsync(usuario.Id);
+                await _userManager.DeleteAsync(userAspNet);
+                await _usuarioRepository.DeleteAsync(usuario.Id);
+                await _empresaRepository.DeleteAsync(empresa.IdEmpresa);
+            }
+        }
+        
     }
 
     public async Task<string> GetLogoByIdAsync(int id)

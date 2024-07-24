@@ -52,8 +52,7 @@ public class EmpresaRepository : IEmpresaRepository
         var entityToRemove = await GetByIdAsync(id);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
-            entityToRemove.Removido = true;
-            _contextBase.Empresa.Update(entityToRemove);
+            _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
         }
     }
