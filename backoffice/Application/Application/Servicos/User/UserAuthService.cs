@@ -17,6 +17,7 @@ using System.Text;
 using System.Web;
 using System.Text.RegularExpressions;
 using Domain.Interfaces.Cadastros.Empresa;
+using Infra.Repositorio.User;
 
 namespace Application.Application.Servicos.User;
 
@@ -284,6 +285,16 @@ public class UserAuthService : IUserAuthService
         return mapObjUsuario;
     } 
    
+
+    public async Task RecoveryUserAsync(int id)
+    {
+        var usuarios = await _usuarioRepository.GetAllRemovidoAsync(id);
+        foreach (var usuario in usuarios)
+        {
+            usuario.Removido = false;
+            await _usuarioRepository.UpdateAsync(usuario);
+        }
+    }
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");

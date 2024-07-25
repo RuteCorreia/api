@@ -1,7 +1,9 @@
 ﻿using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Application.DTOs.Log.Interface;
+using Application.DTOs.Users.Interface;
 using Domain.Enums;
+using Domain.Interfaces.User;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,14 +21,21 @@ namespace WebApi.Controllers.APIs;
 [ProducesResponseType(StatusCodes.Status500InternalServerError)]
 public class EmpresaController : ControllerBase
 {
-    private readonly IEmpresaService _empresaService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IUserAuthService _userAuthService;
+    private readonly IEmpresaService _empresaService;
     private readonly ILogService _logService;
 
-    public EmpresaController(IEmpresaService empresaService, LoggedUserInfoService loggedUserInfoService, ILogService logService)
+    public EmpresaController(
+        LoggedUserInfoService loggedUserInfoService,
+        IUserAuthService userAuthService,
+        IEmpresaService empresaService,  
+        ILogService logService
+        )
     {
-        _empresaService = empresaService;
         _loggedUserInfoService = loggedUserInfoService;
+        _userAuthService = userAuthService;
+        _empresaService = empresaService;
         _logService = logService;
     }
 
@@ -119,6 +128,7 @@ public class EmpresaController : ControllerBase
 
         if (empresaExist != null && empresaExist.Removido == true)
         {
+            await _userAuthService.RecoveryUserAsync(empresaExist.IdEmpresa);
             empresaExist.Removido = false;
             await _empresaService.UpdateAsync(empresaExist);
             return Ok(resultError);

@@ -9,7 +9,8 @@ public interface IUsuarioRepository
     Task DeleteAsync(Guid id);
     Task<IEnumerable<Usuario>> GetAllAsync(int? idEmpresa);
     Task<Usuario> GetUserByEmailAsync(string email);
-    Task<Usuario> GetUserByEmpresaAndName(int idEmpresa);
+    Task<Usuario> GetUserByEmpresaAndNameAsync(int idEmpresa);
+    Task<IEnumerable<Usuario>> GetAllRemovidoAsync(int? idEmpresa);
     Task<Usuario> GetByUserIdAsync(string id);
     Task<Usuario> GetLastAsync();
     Task<Usuario> GetUserByIdAsync(string id);

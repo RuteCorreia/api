@@ -47,7 +47,15 @@ public class UsuarioRepository : IUsuarioRepository
             .ToListAsync();
     }
 
-    public async Task<Usuario> GetUserByEmpresaAndName(int idEmpresa)
+    public async Task<IEnumerable<Usuario>> GetAllRemovidoAsync(int? idEmpresa)
+    {
+        return await _contextBase.Usuario
+             .AsNoTracking()
+             .Where(x => x.IdEmpresa == idEmpresa)
+             .ToListAsync();
+    }
+
+    public async Task<Usuario> GetUserByEmpresaAndNameAsync(int idEmpresa)
     {
         return await _contextBase.Usuario
             .Where(u => u.IdEmpresa == idEmpresa && u.Nome.StartsWith("Adm"))

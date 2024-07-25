@@ -182,7 +182,7 @@ public class EmpresaService : IEmpresaService
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
 
-        var userToUpdate = await _usuarioRepository.GetUserByEmpresaAndName(obj.IdEmpresa);
+        var userToUpdate = await _usuarioRepository.GetUserByEmpresaAndNameAsync(obj.IdEmpresa);
         if (userToUpdate != null)
         {
             var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
@@ -246,8 +246,13 @@ public class EmpresaService : IEmpresaService
 
     public async Task DeleteAsync(int id)
     {
+        var usuarios = await _usuarioRepository.GetAllAsync(id);
+        foreach (var usuario in usuarios) 
+        {
+            usuario.Removido = true;
+            await _usuarioRepository.UpdateAsync(usuario);
+        }
         await _empresaRepository.DeleteAsync(id);
-
     }
 
     public async Task<string> GetLogoByIdAsync(int id)
