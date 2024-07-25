@@ -13,7 +13,7 @@ public interface IEmpresaService
 
     Task<(bool, string)> AddAsync(EmpresaViewModel obj);
 
-    Task UpdateAsync(EmpresaViewModel obj);
+    Task<(bool, string)> UpdateAsync(EmpresaViewModel obj);
     Task<EmpresaViewModel> GetByEmailAsync(string email);
 
     Task ChangeStatusAsync(int id, EStatusEmpresa status);

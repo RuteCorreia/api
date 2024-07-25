@@ -13,6 +13,10 @@ using System.Web;
 using System.Text;
 using Infra.Repositorio.User;
 using Microsoft.AspNetCore.Identity;
+using Azure.Core;
+using Domain.Entidades.User;
+using Application.DTOs.Cadastros.MenuUsuario.Interface;
+using Domain.Entidades.Cadastros.Empresa;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -155,16 +159,100 @@ public class EmpresaService : IEmpresaService
         return roles;
     }
 
-    public async Task UpdateAsync(EmpresaViewModel obj)
+    private async Task CreateUserCredencial(IdentityUser user, IEnumerable<RoleObject> roles)
     {
-        var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(obj);
-        await _empresaRepository.UpdateAsync(mapEmpresa);
+        var usuario = await _usuarioRepository.GetByUserIdAsync(user.Id);
+        var list = Enumerable.Empty<UsuarioCredencial>();
+        foreach (var role in roles)
+        {
+            var obj = new UsuarioCredencial
+            {
+                IdUsuario = usuario.Id,
+                Credencial = role.Credencial,
+                Funcao = role.Funcao,
+                NomeCompleto = role.NomeCompleto
+            };
+
+            list = list.Concat(new[] { obj });
+        }
+
+        await _usuarioCredencialRepository.AddListAsync(list);
+    }
+    public async Task<(bool, string)> UpdateAsync(EmpresaViewModel obj)
+    {
+        var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
+
+        var userToUpdate = await _usuarioRepository.GetUserByEmpresaAndNameAsync(obj.IdEmpresa);
+        if (userToUpdate != null)
+        {
+            var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
+            if (identityUser != null)
+            {
+                bool allOk = true;
+
+                var identityUserRoles = await _userManager.GetRolesAsync(identityUser);
+                if (identityUser.Email != obj.Email)
+                {
+                    identityUser.Email = obj.Email;
+                    var updateIdentityUserResult = await _userManager.UpdateAsync(identityUser);
+                    if (!updateIdentityUserResult.Succeeded)
+                    {
+                        resultMsg.Append("Erro ao alterar nome de usuario");
+                        allOk = false;
+                    }
+                }
+
+                if (identityUser.PhoneNumber != obj.Telefone)
+                {
+                    identityUser.PhoneNumber = obj.Telefone;
+                    var updateIdentityUserResult = await _userManager.UpdateAsync(identityUser);
+                    if (!updateIdentityUserResult.Succeeded)
+                    {
+                        resultMsg.Append("Erro ao alterar nome de usuario");
+                        allOk = false;
+                    }
+                }
+
+                if (identityUser.UserName != obj.Email)
+                {
+                    identityUser.UserName = obj.Email;
+                    var updateIdentityUserResult = await _userManager.UpdateAsync(identityUser);
+                    if (!updateIdentityUserResult.Succeeded)
+                    {
+                        resultMsg.Append("Erro ao alterar nome de usuario");
+                        allOk = false;
+                    }
+                }
+
+                if (allOk)
+                {
+                    userToUpdate.Nome = $"Adm {obj.Nome}";
+                    userToUpdate.Email = obj.Email;
+                    userToUpdate.Telefone = obj.Telefone;
+                    await _usuarioRepository.UpdateAsync(userToUpdate);
+                    var mapEmpresa = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Empresa>(obj);
+                    await _empresaRepository.UpdateAsync(mapEmpresa);
+                    resultMsg.Append("Sucesso na atualização do usuário");
+                    return (true, resultMsg.ToString());
+                }
+            }
+            else 
+            {
+                return (false, resultMsg.Clear().Append("O Email ja existe").ToString());
+            }
+        }
+        return (false, resultMsg.ToString());
     }
 
     public async Task DeleteAsync(int id)
     {
+        var usuarios = await _usuarioRepository.GetAllAsync(id);
+        foreach (var usuario in usuarios) 
+        {
+            usuario.Removido = true;
+            await _usuarioRepository.UpdateAsync(usuario);
+        }
         await _empresaRepository.DeleteAsync(id);
-
     }
 
     public async Task<string> GetLogoByIdAsync(int id)

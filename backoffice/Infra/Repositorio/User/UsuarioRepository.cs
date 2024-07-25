@@ -1,6 +1,10 @@
-﻿using Domain.Entidades.User;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
+using Domain.Entidades.User;
 using Domain.Interfaces.User;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.User;
@@ -43,6 +47,20 @@ public class UsuarioRepository : IUsuarioRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Usuario>> GetAllRemovidoAsync(int? idEmpresa)
+    {
+        return await _contextBase.Usuario
+             .AsNoTracking()
+             .Where(x => x.IdEmpresa == idEmpresa)
+             .ToListAsync();
+    }
+
+    public async Task<Usuario> GetUserByEmpresaAndNameAsync(int idEmpresa)
+    {
+        return await _contextBase.Usuario
+            .Where(u => u.IdEmpresa == idEmpresa && u.Nome.StartsWith("Adm"))
+            .FirstOrDefaultAsync();
+    }
     public async Task<Usuario> GetUserByIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.Include("Empresa").FirstOrDefaultAsync(x => string.Equals(x.UserId, id) && !x.Removido);

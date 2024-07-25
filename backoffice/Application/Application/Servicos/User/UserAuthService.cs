@@ -16,35 +16,42 @@ using System.Security.Claims;
 using System.Text;
 using System.Web;
 using System.Text.RegularExpressions;
+using Domain.Interfaces.Cadastros.Empresa;
+using Infra.Repositorio.User;
 
 namespace Application.Application.Servicos.User;
 
 public class UserAuthService : IUserAuthService
 {
+    private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    private readonly IConfiguration _config;
     private readonly IUsuarioRepository _usuarioRepository;
-    private readonly IUsuarioCredencialRepository _usuarioCredencialRepository;
-    private readonly IMapper _mapper;
+    private readonly IEmpresaRepository _empresaRepository;
     private readonly IEmailService _emailService;
+    private readonly IConfiguration _config;
+    private readonly IMapper _mapper;
+    
     public UserAuthService(
+        IUsuarioCredencialRepository usuarioCredencialRepository,
         UserManager<IdentityUser> userManager, 
         RoleManager<IdentityRole> roleManager,
-        IConfiguration config, 
         IUsuarioRepository usuarioRepository,
-        IUsuarioCredencialRepository usuarioCredencialRepository,
-        IMapper mapper,
-        IEmailService emailService
+        IEmpresaRepository empresaRepository,
+        IEmailService emailService,
+        IConfiguration config,   
+        IMapper mapper
+        
         )
     {
+        _usuarioCredencialRepository = usuarioCredencialRepository;
+        _usuarioRepository = usuarioRepository;
+        _empresaRepository = empresaRepository;
+        _emailService = emailService;
         _userManager = userManager;
         _roleManager = roleManager;
-        _config = config;
-        _usuarioRepository = usuarioRepository;
-        _usuarioCredencialRepository = usuarioCredencialRepository;
         _mapper = mapper;
-        _emailService = emailService;
+        _config = config;     
     }
 
     public async Task<(bool, string)> LoginAsync(UserLoginViewModel user)
@@ -278,6 +285,16 @@ public class UserAuthService : IUserAuthService
         return mapObjUsuario;
     } 
    
+
+    public async Task RecoveryUserAsync(int id)
+    {
+        var usuarios = await _usuarioRepository.GetAllRemovidoAsync(id);
+        foreach (var usuario in usuarios)
+        {
+            usuario.Removido = false;
+            await _usuarioRepository.UpdateAsync(usuario);
+        }
+    }
     public async Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel request)
     {
         var resultMsg = new StringBuilder().Append("Atualização de usuário não foi possível");
@@ -288,6 +305,10 @@ public class UserAuthService : IUserAuthService
         var userToUpdate = await GetUserEntityByIdAsync(id);
         if (userToUpdate is not null)
         {
+            var isEmpresa = await _empresaRepository.GetByEmailAsync(userToUpdate.Email);
+            if (isEmpresa != null)
+                return (false, resultMsg.Clear().Append("O Email é uma empresa, você não pode editar nessa área").ToString());
+
             var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
             if(identityUser is not null)
             {

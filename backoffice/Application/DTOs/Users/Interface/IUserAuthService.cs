@@ -11,6 +11,7 @@ public interface IUserAuthService
     Task<(bool, string)> UpdateUserAsync(string id, UserUpdateViewModel user);
     Task<IEnumerable<RoleObject>> GetUserRolesAsync(string id);
     Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId);
+    Task RecoveryUserAsync(int id);
     Task<UserDetailViewModel> GetUserByIdAsync(string id);
     Task RemoveUserAsync(string id);
     Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);
