@@ -63,7 +63,9 @@ public class CombateIncendioService : ICombateIncendioService
         var qtdExecucao = cidp?.Count() ?? 0;
         var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave);
         var tipoAeronave = "";
-        int capacidadeCargaAeronave = Convert.ToInt32(ci.CapacidadeCargaAeronave);
+        string capacidadeString = ci.CapacidadeCargaAeronave;
+        string capacidadeSemPonto = capacidadeString.Replace(".", "");
+        int capacidadeCargaAeronave = Convert.ToInt32(capacidadeSemPonto);
         var volume = qtdExecucao * capacidadeCargaAeronave;
 
         TimeSpan duration = TimeSpan.Zero;
