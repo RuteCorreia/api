@@ -312,9 +312,12 @@ public class UserAuthService : IUserAuthService
             var identityUser = await _userManager.FindByEmailAsync(userToUpdate.Email);
             if(identityUser is not null)
             {
-                var emailExist = await _userManager.FindByEmailAsync(request.Email);
-                if (emailExist != null)
-                    return (false, resultMsg.Clear().Append("O Email ja existe").ToString());
+                if (userToUpdate.Email != request.Email) 
+                {
+                    var emailExist = await _userManager.FindByEmailAsync(request.Email);
+                    if (emailExist != null)
+                        return (false, resultMsg.Clear().Append("O Email ja existe").ToString());
+                } 
 
                 resultMsg.Clear();
                 bool allOk = true;
