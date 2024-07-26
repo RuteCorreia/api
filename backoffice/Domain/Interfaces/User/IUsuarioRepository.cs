@@ -11,6 +11,7 @@ public interface IUsuarioRepository
     Task<Usuario> GetUserByEmailAsync(string email);
     Task<Usuario> GetUserByEmpresaAndNameAsync(int idEmpresa);
     Task<IEnumerable<Usuario>> GetAllRemovidoAsync(int? idEmpresa);
+    Task<Usuario> GetUserProfileAsync(string userId);
     Task<Usuario> GetByUserIdAsync(string id);
     Task<Usuario> GetLastAsync();
     Task<Usuario> GetUserByIdAsync(string id);

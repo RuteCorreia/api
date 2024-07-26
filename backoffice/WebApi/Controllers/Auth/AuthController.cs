@@ -5,6 +5,8 @@ using Application.DTOs.Users.ViewModel;
 using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Web;
@@ -18,15 +20,20 @@ namespace WebApi.Controllers.Auth;
 [ProducesResponseType(StatusCodes.Status400BadRequest)]
 public class AuthController : ControllerBase
 {
+    private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IUserAuthService _userAuthService;
     private readonly IUserAuthService _authService;
     private readonly IEmailService _emailService;
-    private readonly LoggedUserInfoService _loggedUserInfoService;
-
-    public AuthController(IUserAuthService authService, LoggedUserInfoService loggedUserInfoService, IEmailService emailService)
+    public AuthController(
+        LoggedUserInfoService loggedUserInfoService,
+        IUserAuthService userAuthService,
+        IUserAuthService authService,  
+        IEmailService emailService )
     {
-        _authService = authService;
         _loggedUserInfoService = loggedUserInfoService;
+        _userAuthService = userAuthService;
         _emailService = emailService;
+        _authService = authService;
     }
    
     [HttpPost("registerUser")]
@@ -219,5 +226,27 @@ public class AuthController : ControllerBase
         }
 
         return BadRequest();
-    }    
+    }
+
+    [HttpGet("getProfile")]
+    public async Task<IActionResult> GetProfile()
+    {
+        var identity = HttpContext.User.Identity as System.Security.Claims.ClaimsIdentity;
+
+        if (identity != null)
+        {
+            var userId = identity.Claims.FirstOrDefault(c => c.Type == "IdUsuario")?.Value;
+
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var userProfileViewModel = await _userAuthService.GetUserProfileAsync(userId);
+                if (userProfileViewModel != null)
+                {
+                    return Ok(userProfileViewModel);
+                }
+            }
+        }
+
+        return Unauthorized();
+    }
 }

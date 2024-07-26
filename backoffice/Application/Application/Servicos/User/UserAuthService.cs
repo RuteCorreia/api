@@ -554,4 +554,19 @@ public class UserAuthService : IUserAuthService
 
         return (true, resultMsg.Append("Usuário criado com sucesso").ToString());      
     }
+
+    public async Task<UserProfileViewModel> GetUserProfileAsync(string userId)
+    {
+        var usuario = await _usuarioRepository.GetUserProfileAsync(userId);
+
+        var viewModel = new UserProfileViewModel
+        {
+            Id = usuario.Id,
+            Nome = usuario.Nome,
+            Email = usuario.Email,
+            IdEmpresa = usuario.IdEmpresa,
+        };
+
+        return viewModel;
+    }
 }

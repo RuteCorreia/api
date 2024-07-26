@@ -12,6 +12,7 @@ public interface IUserAuthService
     Task<IEnumerable<RoleObject>> GetUserRolesAsync(string id);
     Task<IEnumerable<UserListViewModel>> GetAllUsersAsync(string loggedUserId);
     Task RecoveryUserAsync(int id);
+    Task<UserProfileViewModel> GetUserProfileAsync(string userId);
     Task<UserDetailViewModel> GetUserByIdAsync(string id);
     Task RemoveUserAsync(string id);
     Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);

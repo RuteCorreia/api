@@ -78,4 +78,11 @@ public class UsuarioRepository : IUsuarioRepository
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task<Usuario> GetUserProfileAsync(string userId)
+    {
+        Guid id = Guid.Parse(userId);
+        return await _contextBase.Usuario
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync();
+    }
 }
