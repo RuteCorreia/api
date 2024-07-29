@@ -44,7 +44,7 @@ public class CombateIncendioController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var combateIncendio = await _combateIncendioService.GetAllAsync(date, loggedUser.Item3);
+            var combateIncendio = await _combateIncendioService.GetAllAsync(date, loggedUser.Item1);
             _loggerService.LogInformation("Todos os registros de Combate a Incêndio foram recuperados com sucesso.");
             return Ok(combateIncendio);
         }
