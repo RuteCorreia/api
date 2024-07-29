@@ -35,10 +35,10 @@ public class CombateIncendioService : ICombateIncendioService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync(DateTime? offsetDate, string? idEmpresa)
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync(DateTime? offsetDate, string? userId)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _combateIncendioRepository.GetAllAsync(offsetDate, idEmpresaInt);
+        var user = await _usuarioRepository.GetUserByIdAsync(userId);
+        var list = await _combateIncendioRepository.GetAllAsync(offsetDate, user.Id);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 

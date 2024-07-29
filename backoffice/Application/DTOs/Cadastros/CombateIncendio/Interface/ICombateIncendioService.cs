@@ -5,7 +5,7 @@ namespace Application.DTOs.Cadastros.CombateIncendio.Interface;
 
 public interface ICombateIncendioService 
 {
-    Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync(DateTime? offsetDate, string? idEmpresa);
+    Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync(DateTime? offsetDate, string? userId);
 
     Task<CombateIncendioViewModel> GetByIdAsync(int id);
 
