@@ -37,7 +37,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetAllAsync(DateTime? offsetDate, string? userId)
     {
-        var user = await _usuarioRepository.GetUserByIdAsync(userId);
+        var user = await _usuarioRepository.GetByUserIdAsync(userId);
         var list = await _combateIncendioRepository.GetAllAsync(offsetDate, user.Id, user.Nome);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
