@@ -38,20 +38,20 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetAllAsync(DateTime? offsetDate, Guid idUser)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetAllAsync(DateTime? offsetDate, Guid idUser, string userName)
     {
         string query = "SELECT * FROM CombateIncendio" +
                            " WHERE " +
                            (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
-                           " IdExecutor = @IdExecutor";
+                           " IdExecutor = @IdExecutor OR Piloto = @Piloto";
         Console.WriteLine(query);
         if (offsetDate != null)
         {
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { offsetDate = offsetDate, IdExecutor = idUser });
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { offsetDate = offsetDate, IdExecutor = idUser, Piloto = userName });
         }
         else
         {
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdExecutor = idUser });
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdExecutor = idUser, Piloto = userName });
         }
     }
 

@@ -166,15 +166,15 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             string query = "SELECT * FROM RelatorioAplicacao" +
                            " WHERE " +
                            (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
-                           " Executor = @Executor";
+                           " Executor = @Executor OR Piloto = @Piloto";
             Console.WriteLine(query);
             if (offsetDate != null)
             {
-                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, Executor = userName });
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, Executor = userName, Piloto = userName });
             }
             else
             {
-                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Executor = userName });
+                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Executor = userName, Piloto = userName });
             }
 
         }
