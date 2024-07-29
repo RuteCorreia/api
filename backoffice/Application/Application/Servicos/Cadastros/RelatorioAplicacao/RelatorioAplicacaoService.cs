@@ -12,6 +12,7 @@ using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Application.DTOs.ExportExcel.ViewModel;
+using Domain.Interfaces.User;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -24,6 +25,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly IContratanteRepository _contratanteRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
 
         public RelatorioAplicacaoService(
@@ -34,6 +36,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
             IContratanteRepository contratanteRepository,
+            IUsuarioRepository usuarioRepository,
             IMapper mapper)
         {
             _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
@@ -43,6 +46,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _contratanteRepository = contratanteRepository;
+            _usuarioRepository = usuarioRepository;
             _mapper = mapper;
         }
 
@@ -221,10 +225,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
-        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? idEmpresa)
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? userId)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, idEmpresaInt);
+            var user = await _usuarioRepository.GetByUserIdAsync(userId);
+            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
