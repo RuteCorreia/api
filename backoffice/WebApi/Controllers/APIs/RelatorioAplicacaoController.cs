@@ -102,7 +102,7 @@ namespace WebApi.Controllers.APIs
             {
 
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date, loggedUser.Item3);
+                var relatorios = await _relatorioAplicacaoService.GetNovosAsync(date, loggedUser.Item1);
                 _logService.LogInformation("Obter todos os relatórios novos.");
                 return Ok(relatorios);
             }
