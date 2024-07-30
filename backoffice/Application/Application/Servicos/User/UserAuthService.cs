@@ -58,25 +58,29 @@ public class UserAuthService : IUserAuthService
     {
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if(identityUser is not null)
-        {            
-            var usuario = await _usuarioRepository.GetByUserIdAsync(identityUser.Id);
-            if(usuario is not null)
+        {
+            var roles = await _userManager.GetRolesAsync(identityUser);
+            if (roles.Contains("Administrativo") || roles.Contains("Administrador"))
             {
-                var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
-                if (passwordCheck)
+                var usuario = await _usuarioRepository.GetByUserIdAsync(identityUser.Id);
+                if (usuario is not null)
                 {
-                    var token = new StringBuilder();
-
-                    if (usuario.PrimeiroAcesso)
+                    var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
+                    if (passwordCheck)
                     {
-                        usuario.PrimeiroAcesso = false;
-                        await _usuarioRepository.UpdateAsync(usuario);
-                    }
-                    token.Append(await GenerateToken(identityUser, usuario));
+                        var token = new StringBuilder();
 
-                    return (true, token.ToString());
+                        if (usuario.PrimeiroAcesso)
+                        {
+                            usuario.PrimeiroAcesso = false;
+                            await _usuarioRepository.UpdateAsync(usuario);
+                        }
+                        token.Append(await GenerateToken(identityUser, usuario));
+
+                        return (true, token.ToString());
+                    }
                 }
-            }
+            }     
         }
         return (false, "login inválido");
     }
