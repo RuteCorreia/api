@@ -72,6 +72,23 @@ public class AuthController : ControllerBase
         return BadRequest(resultError.ToString());
     }
 
+    [HttpPost("loginBackoffice")]
+    public async Task<IActionResult> LoginBackoffice([FromBody] UserLoginViewModel user)
+    {
+        var resultError = new StringBuilder().Append("Campos de login inválidos");
+        if (ModelState.IsValid)
+        {
+            var result = await _authService.LoginBackofficeAsync(user);
+            if (result.Item1)
+                return Ok(new { success = true, token = result.Item2 });
+
+            resultError.Clear();
+            resultError.Append(result.Item2);
+        }
+
+        return BadRequest(resultError.ToString());
+    }
+
     [HttpGet("users")]
     [Authorize]
     public async Task<IActionResult> GetUsers()
