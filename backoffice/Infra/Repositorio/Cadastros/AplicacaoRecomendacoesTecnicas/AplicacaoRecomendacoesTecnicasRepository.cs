@@ -45,7 +45,7 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetForExportExcelAsync(int? id)
     {
         var query = @"
-            SELECT NomeAeronave
+            SELECT NomeAeronave, VolumeAplicacao
             FROM AplicacaoRecomendacoesTecnicas WHERE Id = @Id";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
