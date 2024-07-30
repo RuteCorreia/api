@@ -48,7 +48,7 @@ public class BulaRepository : IBulaRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
-        var idEmpresaRodrigo = 21;
+        var idEmpresaRodrigo = 196;
         var query = @"SELECT * FROM Bula WHERE (IdEmpresa = @IdEmpresa AND Removido = 0) OR (IdEmpresa = @IdEmpresaRodrigo AND Removido = 0)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))

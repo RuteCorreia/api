@@ -90,9 +90,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
             string horasAplicacao = $"{hours}{minutes:D2}";
 
+            string prefixo = "";
+            string tipoAeronave = "";
             string[] partesNomeAeronave = art.NomeAeronave.Split('-', StringSplitOptions.TrimEntries);
-            string prefixo = partesNomeAeronave[0].Trim();
-            string tipoAeronave = partesNomeAeronave.Length > 1 ? partesNomeAeronave[1].Trim() : "";
+            if (partesNomeAeronave.Length == 2) 
+            {
+                prefixo = partesNomeAeronave[0].Trim();
+                tipoAeronave = partesNomeAeronave[1].Trim();
+            }else if (partesNomeAeronave.Length == 3)
+            {
+                prefixo = $"{partesNomeAeronave[0].Trim()} - {partesNomeAeronave[1].Trim()}";
+                tipoAeronave = partesNomeAeronave[2].Trim();
+            }
 
             if (tipoAeronave == "AVIAO")
             {
@@ -116,6 +125,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Area = ar.TotalAreaAplicada,
                 Agrotoxico = cpa.NomeProduto,
                 Adjuvante = cpa.Adjuvante,
+                Volume = art.VolumeAplicacao,
                 Dosagem = cpa.DoseProdutoHectare,
                 Unidade = cpa.UnidadeDoseProdutoHectare
             };
