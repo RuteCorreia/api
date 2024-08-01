@@ -64,7 +64,7 @@ public class EmpresaRepository : IEmpresaRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Empresa.Empresa> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.Empresa.FindAsync(id);
         return obj;
