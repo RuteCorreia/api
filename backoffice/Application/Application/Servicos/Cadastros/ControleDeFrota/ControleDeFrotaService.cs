@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 
@@ -16,9 +17,10 @@ public class ControleDeFrotaService : IControleDeFrotaService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync()
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var list = await _controleDeFrotaRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _controleDeFrotaRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
@@ -28,9 +30,11 @@ public class ControleDeFrotaService : IControleDeFrotaService
         return _mapper.Map<ControleDeFrotaViewModel>(obj);
     }
 
-    public async Task AddAsync(ControleDeFrotaViewModel obj)
+    public async Task AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
+        mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
     }
 

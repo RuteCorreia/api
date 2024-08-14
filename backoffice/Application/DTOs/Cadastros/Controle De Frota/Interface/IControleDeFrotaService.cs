@@ -4,11 +4,11 @@ namespace Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 
 public interface IControleDeFrotaService 
 {
-    Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync();
+    Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<ControleDeFrotaViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(ControleDeFrotaViewModel obj);
+    Task AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(ControleDeFrotaViewModel obj);
 
