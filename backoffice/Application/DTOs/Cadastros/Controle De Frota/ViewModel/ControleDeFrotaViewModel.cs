@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 
@@ -66,5 +67,8 @@ public class ControleDeFrotaViewModel
 
     [JsonProperty("combustivel")]
     public string? Combustivel { get; set; }
+
+    [JsonProperty("data_id")]
+    public int? IdData { get; set; }
 
 }

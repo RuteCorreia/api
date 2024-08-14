@@ -1,6 +1,10 @@
-﻿using Domain.Interfaces.Cadastros.ControleDeFrota;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Controle_De_Frota;
@@ -30,10 +34,16 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(int? idEmpresa)
     {
-        //var entities = await _contextBase.ControleDeFrota.ToListAsync();
-        return null;
+        var query = @"SELECT * FROM ControleDeFrota WHERE IdEmpresa = @IdEmpresa";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa};
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota> GetByIdAsync(int id)

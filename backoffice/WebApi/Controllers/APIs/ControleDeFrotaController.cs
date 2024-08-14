@@ -4,6 +4,7 @@ using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs;
 
@@ -17,11 +18,16 @@ namespace WebApi.Controllers.APIs;
 public class ControleDeFrotaController : ControllerBase
 {
     private readonly IControleDeFrotaService _controleDeFrotaService;
+    private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly ILogService _logService; // Injete o serviço de log
 
-    public ControleDeFrotaController(IControleDeFrotaService controleDeFrotaService, ILogService logService) // Adicione o serviço de log como parâmetro do construtor
+    public ControleDeFrotaController(
+        IControleDeFrotaService controleDeFrotaService,
+        LoggedUserInfoService loggedUserInfoService,
+        ILogService logService) // Adicione o serviço de log como parâmetro do construtor
     {
         _controleDeFrotaService = controleDeFrotaService;
+        _loggedUserInfoService = loggedUserInfoService;
         _logService = logService; // Atribua o serviço de log
     }
 
@@ -30,7 +36,8 @@ public class ControleDeFrotaController : ControllerBase
     {
         try
         {
-            var combustiveis = await _controleDeFrotaService.GetAllAsync();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var combustiveis = await _controleDeFrotaService.GetAllAsync(loggedUser.Item3);
             return Ok(combustiveis);
         }
         catch (Exception ex)
@@ -67,7 +74,8 @@ public class ControleDeFrotaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                await _controleDeFrotaService.AddAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("ControleDeFrota adicionado com sucesso"); // Registre uma informação de log
                 return Ok("Sucesso");
             }
