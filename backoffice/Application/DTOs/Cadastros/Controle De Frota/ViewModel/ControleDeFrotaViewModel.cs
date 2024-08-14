@@ -1,23 +1,70 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Newtonsoft.Json;
 
 namespace Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 
 public class ControleDeFrotaViewModel
 {
-    public int Id { get; set; }
-    public string? Observacao { get; set; }
-    public DateTime? Data { get; set; }
-    public int? IdFrota { get; set; }
-    public int? IdAeronave { get; set; }
+    [JsonProperty("id")]
+    public int? Id { get; set; }
+
+    [JsonProperty("idVeiculo")]
+    public int? IdVeiculo { get; set; }
+
+    [JsonProperty("placaVeiculo")]
+    public string? NomeVeiculo { get; set; }
+
+    [JsonProperty("createdAt")]
+    public DateTime? DataCriacao { get; set; }
+
+    [JsonProperty("updateDate")]
+    public DateTime? DataAtualizacao { get; set; }
+
+    [JsonProperty("kminicial")]
     public int? KmInicial { get; set; }
-    public int? LocalInicial { get; set; }
-    public string? LocalizacaoPistaLat { get; set; }
-    public string? LocalizacaoPistaLon { get; set; }
+
+    [JsonProperty("kmfinal")]
     public int? KmFinal { get; set; }
-    public int? HorimetroInicial { get; set; }
-    public int? HorimetroFinal { get; set; }
+
+    [JsonProperty("idAeronave")]
+    public int? IdAeronave { get; set; }
+
+    [JsonProperty("aeronave")]
+    public string? NomeAeronave { get; set; }
+
+    [JsonProperty("horimetroInicial")]
+    public string? HorimetroInicial { get; set; }
+
+    [JsonProperty("horimetroFinal")]
+    public string? HorimetroFinal { get; set; }
+
+    [JsonProperty("combustivelInicial")]
+    public decimal? CombustivelInicial { get; set; }
+
+    [JsonProperty("combustivelFinal")]
+    public decimal? CombustivelFinal { get; set; }
+
+    [JsonProperty("totalLitros")]
+    public decimal? QtdeCombustivel { get; set; }
+
+    [JsonProperty("idPiloto")]
+    public Guid? IdPiloto { get; set; }
+
+    [JsonProperty("piloto")]
+    public string? NomePiloto { get; set; }
+
+    [JsonProperty("idExecutor")]
+    public Guid? IdExecutor { get; set; }
+
+    [JsonProperty("executor")]
+    public string? NomeExecutor { get; set; }
+
+    [JsonProperty("date")]
+    public DateTime? Data { get; set; }
+
+    [JsonProperty("extensao")]
+    public decimal? Extensao { get; set; }
+
+    [JsonProperty("combustivel")]
     public string? Combustivel { get; set; }
-    public int? QtdeCombustivel { get; set; }
-    public int? QtdeHectare { get; set; }
-    public string? IdPiloto { get; set; }
+
 }
