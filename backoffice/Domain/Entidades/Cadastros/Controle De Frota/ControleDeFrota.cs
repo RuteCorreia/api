@@ -40,6 +40,10 @@ public class ControleDeFrota
     public string? LocalizacaoPistaLat { get; set; }
     public string? LocalizacaoPistaLon { get; set; }
     public int? QtdeHectare { get; set; }
+    [ForeignKey("DataRelatorio")]
+    public int? IdData { get; set; }
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }
@@ -52,4 +56,8 @@ public class ControleDeFrota
 
     [JsonIgnore]
     public virtual Usuario? Executor { get; set; }
+    [JsonIgnore]
+    public virtual DataRelatorio.DataRelatorio? DataRelatorio { get; set; }
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
 }
