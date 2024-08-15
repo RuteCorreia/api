@@ -14,9 +14,6 @@ public interface ICombateIncendioRepository
     Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetAllAsync(DateTime? offsetDate, Guid idUser, string userName);
     Task<Entidades.Cadastros.CombateIncendio.CombateIncendio> GetByIdAsync(int id);
     Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id);
-    Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave);
-    Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto);
-    Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor);
-    Task<List<Atividade>> GetAtividadeByContratanteAsync(string cliente);
+    Task<List<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro);
     Task UpdateIsMapaAsync(Entidades.Cadastros.CombateIncendio.CombateIncendio relatorioExistente);
 }

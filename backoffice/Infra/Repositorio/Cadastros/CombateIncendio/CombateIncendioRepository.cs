@@ -8,6 +8,8 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Linq;
+using System.Text;
 
 namespace Infra.Repositorio.Cadastros.CombateIncendio;
 
@@ -167,18 +169,37 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         return objeto.Id;
     }
 
-    public async Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave)
+    public async Task<List<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
     {
-        string query = @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+        var query = new StringBuilder(
+            @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
             FROM CombateIncendio c
             JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
             JOIN Aeronave a ON c.IdAeronave = a.Id
-            WHERE a.Prefixo = @PrefixoAeronave";
+            JOIN Usuario u ON c.IdExecutor = u.Id
+            WHERE a.Prefixo LIKE '%' + @PrefixoAeronave + '%'
+            AND c.Piloto LIKE '%' + @Piloto + '%'
+            AND u.Nome LIKE '%' + @Executor + '%'
+            AND c.Cliente LIKE '%' + @Cliente + '%'
+            AND c.IdEmpresa = @IdEmpresa");
+
+        var parameters = new DynamicParameters();
+        parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
+        parameters.Add("Piloto", atividadeFiltro.Piloto);
+        parameters.Add("Executor", atividadeFiltro.Executor);
+        parameters.Add("Cliente", atividadeFiltro.Contratante);
+        parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
+
+        if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
+        {
+            query.Append(" AND c.DataCriacao BETWEEN @DataInicial AND @DataFinal");
+            parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
+            parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
+        }
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { PrefixoAeronave = prefixoAeronave };
-            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            var result = await connection.QueryAsync<Atividade>(query.ToString(), parameters);
             return result.ToList();
         }
     }

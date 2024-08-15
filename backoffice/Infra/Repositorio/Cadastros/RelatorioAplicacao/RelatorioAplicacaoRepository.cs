@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Atividade;
+using Domain.Entidades.Cadastros.Contratante;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
@@ -103,72 +104,38 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         }
 
 
-        public async Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave)
+        public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
         {
-            string query = @"
-            SELECT i.Extensao, c.ValorTotal
-            FROM RelatorioAplicacao r
-            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
-            JOIN AplicacaoRecomendacoesTecnicas a ON r.IdAplicacaoRecomendacoesTecnicas = a.Id
-            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
-            WHERE a.NomeAeronave LIKE @PrefixoAeronave + '%'";
-
-            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
-            {
-                var parameters = new { PrefixoAeronave = prefixoAeronave };
-                var result = await connection.QueryAsync<Atividade>(query, parameters);
-                return result.ToList();
-            }
-        }
-
-        public async Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto)
-        {
-            string query = @"
-            SELECT i.Extensao, c.ValorTotal
-            FROM RelatorioAplicacao r
-            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
-            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
-            WHERE r.Piloto = @Piloto";
-
-            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
-            {
-                var parameters = new { Piloto = piloto };
-                var result = await connection.QueryAsync<Atividade>(query, parameters);
-                return result.ToList();
-            }
-        }
-
-        public async Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor)
-        {
-            string query = @"
-            SELECT i.Extensao, c.ValorTotal
-            FROM RelatorioAplicacao r
-            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
-            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
-            WHERE r.Executor = @Executor";
-
-            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
-            {
-                var parameters = new { Executor = executor };
-                var result = await connection.QueryAsync<Atividade>(query, parameters);
-                return result.ToList();
-            }
-        }
-
-        public async Task<List<Atividade>> GetAtividadeByContratanteAsync(string contratante)
-        {
-            string query = @"
-            SELECT i.Extensao, cp.ValorTotal
+            var query = new StringBuilder(@"
+            SELECT i.Extensao, cps.ValorTotal
             FROM RelatorioAplicacao r
             JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
             JOIN Contratante c ON r.ContratanteId = c.Id
-            JOIN ContratoPrestacaoServico cp ON r.ContratoPrestacaoServicoId = cp.Id
-            WHERE c.Nome = @Contrante";
+            JOIN AplicacaoRecomendacoesTecnicas a ON r.RecomendacoesTecnicasId = a.Id
+            JOIN ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
+            WHERE a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%' 
+            AND r.Piloto LIKE '%' + @Piloto + '%' 
+            AND r.Executor LIKE '%' + @Executor + '%'
+            AND c.Nome LIKE '%' + @Contratante + '%'
+            AND r.IdEmpresa = @IdEmpresa");
+
+            var parameters = new DynamicParameters();
+            parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
+            parameters.Add("Piloto", atividadeFiltro.Piloto);
+            parameters.Add("Executor", atividadeFiltro.Executor);
+            parameters.Add("Contratante", atividadeFiltro.Contratante);
+            parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
+
+            if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
+            {
+                query.Append(" AND r.DataCriacao BETWEEN @DataInicial AND @DataFinal");
+                parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
+                parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
+            }
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
-                var parameters = new { Contrante = contratante };
-                var result = await connection.QueryAsync<Atividade>(query, parameters);
+                var result = await connection.QueryAsync<Atividade>(query.ToString(), parameters);
                 return result.ToList();
             }
         }

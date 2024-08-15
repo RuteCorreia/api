@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.Atividade.Interface;
 using Application.DTOs.Cadastros.Atividade.ViewModel;
+using AutoMapper;
 using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.User;
+using Helpers;
 using System.Globalization;
 
 namespace Application.Application.Servicos.Cadastros.Atividade
@@ -13,19 +15,27 @@ namespace Application.Application.Servicos.Cadastros.Atividade
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly ICombateIncendioRepository _combateIncendioRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IMapper _mapper;
         public AtividadeService(
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
             ICombateIncendioRepository combateIncendioRepository,
-            IUsuarioRepository usuarioRepository)
+            IUsuarioRepository usuarioRepository,
+            IMapper mapper)
         {
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _combateIncendioRepository = combateIncendioRepository;
             _usuarioRepository = usuarioRepository;
+            _mapper = mapper;
         }
-        public async Task<AtividadeViewModel> GetAtividadeByContratanteAsync(string contratante)
+        public async Task<AtividadeViewModel> GetAtividadeByFiltrosAsync(AtividadeFiltroViewModel atividadeFiltroViewModel, string idEmpresa)
         {
-            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByContratanteAsync(contratante);
-            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByContratanteAsync(contratante);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var mapAtividades = _mapper.Map<Domain.Entidades.Cadastros.Atividade.AtividadeFiltro>(atividadeFiltroViewModel);
+            mapAtividades.IdEmpresa = idEmpresaInt;
+            
+            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadesByFiltrosAsync(mapAtividades);
+
+            var atividadesIncendio = await _combateIncendioRepository.GetAtividadesByFiltrosAsync(mapAtividades);
             var viewModel = new AtividadeViewModel();
 
             decimal somaValorTotal = 0m;
@@ -33,138 +43,6 @@ namespace Application.Application.Servicos.Cadastros.Atividade
             double somaHorasApliacadas = 0;
 
             foreach (var atividade in atividadesAplicacao)
-            {
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-
-                if (TryParseExtensao(atividade.Extensao, out decimal extensao))
-                {
-                    somaExtensoes += extensao;
-                }
-            }
-
-            foreach (var atividade in atividadesIncendio)
-            {
-                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
-                {
-                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
-                    somaHorasApliacadas += duration.TotalHours;
-                }
-
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-            }
-
-            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
-            viewModel.ValorTotal = somaValorTotal;
-            viewModel.Extensao = somaExtensoes.ToString();
-
-            return viewModel;
-        }
-
-        public async Task<AtividadeViewModel> GetAtividadeByExecutorAsync(string executor)
-        {
-            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByExecutorAsync(executor);
-            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByExecutorAsync(executor);
-            var viewModel = new AtividadeViewModel();
-
-            decimal somaValorTotal = 0m;
-            decimal somaExtensoes = 0;
-            double somaHorasApliacadas = 0;
-
-            foreach (var atividade in atividadesAplicacao)
-            {
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-
-                if (TryParseExtensao(atividade.Extensao, out decimal extensao))
-                {
-                    somaExtensoes += extensao;
-                }
-            }
-
-            foreach (var atividade in atividadesIncendio)
-            {
-                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
-                {
-                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
-                    somaHorasApliacadas += duration.TotalHours;
-                }
-
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-            }
-
-            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
-            viewModel.ValorTotal = somaValorTotal;
-            viewModel.Extensao = somaExtensoes.ToString();
-
-            return viewModel;
-        }
-
-        public async Task<AtividadeViewModel> GetAtividadeByPilotoAsync(string piloto)
-        {
-            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByPilotoAsync(piloto);
-            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByPilotoAsync(piloto);
-            var viewModel = new AtividadeViewModel();
-
-            decimal somaValorTotal = 0m;
-            decimal somaExtensoes = 0;
-            double somaHorasApliacadas = 0;
-
-            foreach (var atividade in atividadesAplicacao)
-            {
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-
-                if (TryParseExtensao(atividade.Extensao, out decimal extensao))
-                {
-                    somaExtensoes += extensao;
-                }
-            }
-
-            foreach (var atividade in atividadesIncendio)
-            {
-                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
-                {
-                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
-                    somaHorasApliacadas += duration.TotalHours;
-                }
-
-                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
-                {
-                    somaValorTotal += valorTotal;
-                }
-            }
-
-            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
-            viewModel.ValorTotal = somaValorTotal;
-            viewModel.Extensao = somaExtensoes.ToString();
-
-            return viewModel;
-        }
-
-        public async Task<AtividadeViewModel> GetAtividadeByPrefixoAsync(string prefixoAeronave)
-        {
-            var atividades = await _relatorioAplicacaoRepository.GetAtividadeByPrefixoAsync(prefixoAeronave);
-            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByPrefixoAsync(prefixoAeronave);
-            var viewModel = new AtividadeViewModel();
-
-            decimal somaValorTotal = 0m;
-            decimal somaExtensoes = 0;
-            double somaHorasApliacadas = 0;
-
-            foreach (var atividade in atividades)
             {
                 if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
                 {
