@@ -14,6 +14,9 @@ public class ControleDeFrotaViewModel
     [JsonProperty("placaVeiculo")]
     public string? NomeVeiculo { get; set; }
 
+    [JsonProperty("observacao")]
+    public string? Observacao { get; set; }
+
     [JsonProperty("createdAt")]
     public DateTime? DataCriacao { get; set; }
 
