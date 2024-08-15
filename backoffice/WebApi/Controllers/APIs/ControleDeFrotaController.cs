@@ -75,9 +75,9 @@ public class ControleDeFrotaController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
+                var id = await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("ControleDeFrota adicionado com sucesso"); // Registre uma informação de log
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _logService.LogWarning("Tentativa de adição de ControleDeFrota com modelo inválido"); // Registre um aviso de log

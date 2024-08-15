@@ -8,7 +8,7 @@ public interface IControleDeFrotaService
 
     Task<ControleDeFrotaViewModel> GetByIdAsync(int id);
 
-    Task AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
+    Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(ControleDeFrotaViewModel obj);
 

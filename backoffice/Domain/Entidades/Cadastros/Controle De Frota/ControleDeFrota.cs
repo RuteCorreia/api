@@ -44,6 +44,7 @@ public class ControleDeFrota
     public int? IdData { get; set; }
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
+    public string? Imagem { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }

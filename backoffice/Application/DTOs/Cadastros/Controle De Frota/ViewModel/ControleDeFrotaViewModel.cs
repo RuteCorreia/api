@@ -74,4 +74,7 @@ public class ControleDeFrotaViewModel
     [JsonProperty("data_id")]
     public int? IdData { get; set; }
 
+    [JsonProperty("imageData")]
+    public string? Imagem { get; set; }
+
 }
