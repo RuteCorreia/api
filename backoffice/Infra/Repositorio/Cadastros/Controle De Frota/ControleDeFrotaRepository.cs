@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
@@ -18,10 +19,11 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         _contextBase = contextBase;
     }
 
-    public async Task AddAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
+    public async Task<int> AddAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
     {
         await _contextBase.AddAsync(obj);
         await _contextBase.SaveChangesAsync();
+        return obj.Id;
     }
 
     public async Task DeleteAsync(int id)
@@ -46,32 +48,51 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
-    public async Task<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota> GetByIdAsync(int? id)
     {
-        //var obj = await _contextBase.ControleDeFrota.FindAsync(id);
-        return null;
+        var query = @"SELECT * FROM ControleDeFrota WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result;
+        }
     }
 
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
+    public async Task<int?> UpdateAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
     {
-        //var objeto = await _contextBase.ControleDeFrota.FindAsync(obj.Id);
-        //objeto.Observacao = obj.Observacao;
-        //objeto.Data = obj.Data;
-        //objeto.IdFrota = obj.IdFrota;
-        //objeto.IdAeronave = obj.IdAeronave;
-        //objeto.KmInicial = obj.KmInicial;
-        //objeto.LocalInicial = obj.LocalInicial;
-        //objeto.LocalizacaoPistaLat = obj.LocalizacaoPistaLat;
-        //objeto.LocalizacaoPistaLon = obj.LocalizacaoPistaLon;
-        //objeto.KmFinal = obj.KmFinal;
-        //objeto.HorimetroInicial = obj.HorimetroInicial;
-        //objeto.HorimetroFinal = obj.HorimetroFinal;
-        //objeto.Combustivel = obj.Combustivel;
-        //objeto.QtdeCombustivel = obj.QtdeCombustivel;
-        //objeto.QtdeHectare = obj.QtdeHectare;
-        //objeto.IdPiloto = obj.IdPiloto;
+        var objeto = await _contextBase.ControleDeFrota.FindAsync(obj.Id);
+        if (objeto != null)
+        {
+            objeto.Observacao = obj.Observacao;
+            objeto.Data = obj.Data;
+            objeto.IdVeiculo = obj.IdVeiculo;
+            objeto.NomeVeiculo = obj.NomeVeiculo;
+            objeto.DataCriacao = obj.DataCriacao;
+            objeto.DataAtualizacao = obj.DataAtualizacao;
+            objeto.KmInicial = obj.KmInicial;
+            objeto.KmFinal = obj.KmFinal;
+            objeto.IdAeronave = obj.IdAeronave;
+            objeto.NomeAeronave = obj.NomeAeronave;
+            objeto.HorimetroInicial = obj.HorimetroInicial;
+            objeto.HorimetroFinal = obj.HorimetroFinal;
+            objeto.CombustivelInicial = obj.CombustivelInicial;
+            objeto.CombustivelFinal = obj.CombustivelFinal;
+            objeto.QtdeCombustivel = obj.QtdeCombustivel;
+            objeto.IdPiloto = obj.IdPiloto;
+            objeto.NomePiloto = obj.NomePiloto;
+            objeto.IdExecutor = obj.IdExecutor;
+            objeto.NomeExecutor = obj.NomeExecutor;
+            objeto.Extensao = obj.Extensao;
+            objeto.Combustivel = obj.Combustivel;
+            objeto.IdData = obj.IdData;
+            objeto.Imagem = obj.Imagem;
 
-        //_contextBase.ControleDeFrota.Update(objeto);
-        //await _contextBase.SaveChangesAsync();
+            _contextBase.ControleDeFrota.Update(objeto);
+            await _contextBase.SaveChangesAsync(); 
+            return objeto.Id;
+        }
+        return null;
     }
 }

@@ -12,7 +12,11 @@ public static class ServicesConfig
     public static void AddServicesConfiguration(this IServiceCollection services)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-        services.AddControllers();
+        services.AddControllers()
+        .AddJsonOptions(opts =>
+        {
+            opts.JsonSerializerOptions.IgnoreNullValues = true; // ou `DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull` para .NET 6+
+        });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
         services.AddDbContext<ContextBase>();

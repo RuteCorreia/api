@@ -6,11 +6,11 @@ public interface IControleDeFrotaService
 {
     Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa);
 
-    Task<ControleDeFrotaViewModel> GetByIdAsync(int id);
+    Task<ControleDeFrotaViewModel> GetByIdAsync(int? id);
 
-    Task AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
+    Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
 
-    Task UpdateAsync(ControleDeFrotaViewModel obj);
+    Task<int?> UpdateAsync(ControleDeFrotaViewModel obj);
 
     Task DeleteAsync(int id);
 }

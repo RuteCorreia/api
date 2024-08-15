@@ -85,4 +85,14 @@ public class UsuarioRepository : IUsuarioRepository
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync();
     }
+
+    public async Task<Usuario> GetUserByNameAsync(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
+        }
+
+        return await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Nome == name);
+    }
 }

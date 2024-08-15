@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
+using Domain.Entidades.Cadastros.Contratante;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
@@ -98,6 +100,43 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             {
                 _contextBase.Remove(entityToRemove);
                 await _contextBase.SaveChangesAsync();
+            }
+        }
+
+
+        public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
+        {
+            var query = new StringBuilder(@"
+            SELECT i.Extensao, cps.ValorTotal
+            FROM RelatorioAplicacao r
+            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN Contratante c ON r.ContratanteId = c.Id
+            JOIN AplicacaoRecomendacoesTecnicas a ON r.RecomendacoesTecnicasId = a.Id
+            JOIN ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
+            WHERE a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%' 
+            AND r.Piloto LIKE '%' + @Piloto + '%' 
+            AND r.Executor LIKE '%' + @Executor + '%'
+            AND c.Nome LIKE '%' + @Contratante + '%'
+            AND r.IdEmpresa = @IdEmpresa");
+
+            var parameters = new DynamicParameters();
+            parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
+            parameters.Add("Piloto", atividadeFiltro.Piloto);
+            parameters.Add("Executor", atividadeFiltro.Executor);
+            parameters.Add("Contratante", atividadeFiltro.Contratante);
+            parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
+
+            if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
+            {
+                query.Append(" AND r.DataCriacao BETWEEN @DataInicial AND @DataFinal");
+                parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
+                parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
+            }
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var result = await connection.QueryAsync<Atividade>(query.ToString(), parameters);
+                return result.ToList();
             }
         }
 

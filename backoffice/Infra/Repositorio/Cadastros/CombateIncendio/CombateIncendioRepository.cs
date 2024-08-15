@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Helpers;
@@ -7,11 +8,14 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using System.Linq;
+using System.Text;
 
 namespace Infra.Repositorio.Cadastros.CombateIncendio;
 
 public class CombateIncendioRepository : ICombateIncendioRepository
 {
+   
     private readonly IDbConnection _dbConnection;
     private readonly ContextBase _contextBase;
 
@@ -163,5 +167,89 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 
         
         return objeto.Id;
+    }
+
+    public async Task<List<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
+    {
+        var query = new StringBuilder(
+            @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            JOIN Aeronave a ON c.IdAeronave = a.Id
+            JOIN Usuario u ON c.IdExecutor = u.Id
+            WHERE a.Prefixo LIKE '%' + @PrefixoAeronave + '%'
+            AND c.Piloto LIKE '%' + @Piloto + '%'
+            AND u.Nome LIKE '%' + @Executor + '%'
+            AND c.Cliente LIKE '%' + @Cliente + '%'
+            AND c.IdEmpresa = @IdEmpresa");
+
+        var parameters = new DynamicParameters();
+        parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
+        parameters.Add("Piloto", atividadeFiltro.Piloto);
+        parameters.Add("Executor", atividadeFiltro.Executor);
+        parameters.Add("Cliente", atividadeFiltro.Contratante);
+        parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
+
+        if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
+        {
+            query.Append(" AND c.DataCriacao BETWEEN @DataInicial AND @DataFinal");
+            parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
+            parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
+        }
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var result = await connection.QueryAsync<Atividade>(query.ToString(), parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            WHERE c.Piloto = @Piloto";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Piloto = piloto };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            JOIN Usuario u ON c.IdExecutor = u.Id
+            WHERE u.Nome = @Executor";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Executor = executor };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByContratanteAsync(string cliente)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            WHERE c.Cliente = @Cliente";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Cliente = cliente };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
     }
 }

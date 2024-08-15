@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Genericos;
+﻿using Domain.Entidades.Cadastros.Atividade;
+using Domain.Interfaces.Genericos;
 
 namespace Domain.Interfaces.Cadastros.CombateIncendio;
 
@@ -13,5 +14,6 @@ public interface ICombateIncendioRepository
     Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetAllAsync(DateTime? offsetDate, Guid idUser, string userName);
     Task<Entidades.Cadastros.CombateIncendio.CombateIncendio> GetByIdAsync(int id);
     Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id);
+    Task<List<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro);
     Task UpdateIsMapaAsync(Entidades.Cadastros.CombateIncendio.CombateIncendio relatorioExistente);
 }

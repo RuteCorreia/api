@@ -75,9 +75,9 @@ public class ControleDeFrotaController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
+                var id = await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("ControleDeFrota adicionado com sucesso"); // Registre uma informação de log
-                return Ok("Sucesso");
+                return Ok(id);
             }
 
             _logService.LogWarning("Tentativa de adição de ControleDeFrota com modelo inválido"); // Registre um aviso de log
@@ -90,30 +90,20 @@ public class ControleDeFrotaController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] ControleDeFrotaViewModel obj)
+    [HttpPut]
+    public async Task<ActionResult> Update([FromBody] ControleDeFrotaViewModel obj)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _controleDeFrotaService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var id = await _controleDeFrotaService.UpdateAsync(obj);
+                if (id.HasValue)
                 {
-                    obj.Id = objeto.Id;
-
-                    await _controleDeFrotaService.UpdateAsync(obj);
-                    _logService.LogInformation("ControleDeFrota atualizado com sucesso"); // Registre uma informação de log
-                    return Ok("Sucesso");
+                    return Ok(id); // Retorna o ID do objeto atualizado
                 }
-                else
-                {
-                    _logService.LogWarning("Tentativa de atualização de ControleDeFrota não encontrada"); // Registre um aviso de log
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+                return NotFound("Objeto não encontrado"); // Caso o objeto não seja encontrado
             }
-
-            _logService.LogWarning("Tentativa de atualização de ControleDeFrota com modelo inválido"); // Registre um aviso de log
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
