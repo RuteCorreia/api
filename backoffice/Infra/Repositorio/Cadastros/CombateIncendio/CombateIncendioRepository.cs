@@ -13,6 +13,7 @@ namespace Infra.Repositorio.Cadastros.CombateIncendio;
 
 public class CombateIncendioRepository : ICombateIncendioRepository
 {
+   
     private readonly IDbConnection _dbConnection;
     private readonly ContextBase _contextBase;
 

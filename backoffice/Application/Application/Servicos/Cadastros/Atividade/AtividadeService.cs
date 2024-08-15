@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Atividade.ViewModel;
 using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
+using Domain.Interfaces.User;
 using System.Globalization;
 
 namespace Application.Application.Servicos.Cadastros.Atividade
@@ -11,12 +12,15 @@ namespace Application.Application.Servicos.Cadastros.Atividade
     {
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly ICombateIncendioRepository _combateIncendioRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
         public AtividadeService(
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
-            ICombateIncendioRepository combateIncendioRepository)
+            ICombateIncendioRepository combateIncendioRepository,
+            IUsuarioRepository usuarioRepository)
         {
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _combateIncendioRepository = combateIncendioRepository;
+            _usuarioRepository = usuarioRepository;
         }
         public async Task<AtividadeViewModel> GetAtividadeByContratanteAsync(string contratante)
         {
@@ -64,13 +68,15 @@ namespace Application.Application.Servicos.Cadastros.Atividade
 
         public async Task<AtividadeViewModel> GetAtividadeByExecutorAsync(string executor)
         {
-            var atividades = await _relatorioAplicacaoRepository.GetAtividadeByExecutorAsync(executor);
+            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByExecutorAsync(executor);
+            var executorEntity  = await 
+            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByExecutorAsync(executor);
             var viewModel = new AtividadeViewModel();
 
             decimal somaValorTotal = 0m;
             decimal somaExtensoes = 0;
 
-            foreach (var atividade in atividades)
+            foreach (var atividade in atividadesAplicacao)
             {
                 if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
                 {

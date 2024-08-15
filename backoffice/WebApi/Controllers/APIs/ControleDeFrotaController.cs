@@ -90,7 +90,7 @@ public class ControleDeFrotaController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut]
     public async Task<ActionResult> Update([FromBody] ControleDeFrotaViewModel obj)
     {
         try
