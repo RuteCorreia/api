@@ -1,4 +1,5 @@
-﻿using Domain.Entidades.Cadastros.Empresa;
+﻿using Domain.Entidades.Cadastros.Atividade;
+using Domain.Entidades.Cadastros.Empresa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,10 @@ namespace Domain.Interfaces.Cadastros.RelatorioAplicacao
         Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByDataCriacaoAsync(DateTime dataCriacao, int idEmpresa);
         Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? dataCriacao, string userName);
         Task<Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id);
+        Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave);
+        Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto);
+        Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor);
+        Task<List<Atividade>> GetAtividadeByContratanteAsync(string contratante);
         Task UpdateIsMapaAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao relatorioExistente);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
@@ -98,6 +99,77 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             {
                 _contextBase.Remove(entityToRemove);
                 await _contextBase.SaveChangesAsync();
+            }
+        }
+
+
+        public async Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave)
+        {
+            string query = @"
+            SELECT i.Extensao, c.ValorTotal
+            FROM RelatorioAplicacao r
+            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN AplicacaoRecomendacoesTecnicas a ON r.IdAplicacaoRecomendacoesTecnicas = a.Id
+            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
+            WHERE a.NomeAeronave LIKE @PrefixoAeronave + '%'";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { PrefixoAeronave = prefixoAeronave };
+                var result = await connection.QueryAsync<Atividade>(query, parameters);
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto)
+        {
+            string query = @"
+            SELECT i.Extensao, c.ValorTotal
+            FROM RelatorioAplicacao r
+            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
+            WHERE r.Piloto = @Piloto";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { Piloto = piloto };
+                var result = await connection.QueryAsync<Atividade>(query, parameters);
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor)
+        {
+            string query = @"
+            SELECT i.Extensao, c.ValorTotal
+            FROM RelatorioAplicacao r
+            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN ContratoPrestacaoServico c ON r.ContratoPrestacaoServicoId = c.Id
+            WHERE r.Executor = @Executor";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { Executor = executor };
+                var result = await connection.QueryAsync<Atividade>(query, parameters);
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Atividade>> GetAtividadeByContratanteAsync(string contratante)
+        {
+            string query = @"
+            SELECT i.Extensao, cp.ValorTotal
+            FROM RelatorioAplicacao r
+            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN Contratante c ON r.ContratanteId = c.Id
+            JOIN ContratoPrestacaoServico cp ON r.ContratoPrestacaoServicoId = cp.Id
+            WHERE c.Nome = @Contrante";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { Contrante = contratante };
+                var result = await connection.QueryAsync<Atividade>(query, parameters);
+                return result.ToList();
             }
         }
 

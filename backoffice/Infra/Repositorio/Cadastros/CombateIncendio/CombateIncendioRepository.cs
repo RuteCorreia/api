@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Helpers;
@@ -163,5 +164,70 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 
         
         return objeto.Id;
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave)
+    {
+        string query = @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            JOIN Aeronave a ON c.IdAeronave = a.Id
+            WHERE a.Prefixo = @PrefixoAeronave";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { PrefixoAeronave = prefixoAeronave };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            WHERE c.Piloto = @Piloto";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Piloto = piloto };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByExecutorAsync(Guid idExecutor)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            JOIN Usuario u ON c.IdExecutor = u.Id
+            WHERE u.Id = @IdExecutor";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdExecutor = idExecutor };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
+    }
+
+    public async Task<List<Atividade>> GetAtividadeByContratanteAsync(string cliente)
+    {
+        string query = @"
+            SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            FROM CombateIncendio c
+            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+            WHERE c.Cliente = @Cliente";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Cliente = cliente };
+            var result = await connection.QueryAsync<Atividade>(query, parameters);
+            return result.ToList();
+        }
     }
 }
