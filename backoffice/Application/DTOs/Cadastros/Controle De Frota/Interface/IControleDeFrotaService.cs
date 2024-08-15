@@ -6,7 +6,7 @@ public interface IControleDeFrotaService
 {
     Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa);
 
-    Task<ControleDeFrotaViewModel> GetByIdAsync(int id);
+    Task<ControleDeFrotaViewModel> GetByIdAsync(int? id);
 
     Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
 

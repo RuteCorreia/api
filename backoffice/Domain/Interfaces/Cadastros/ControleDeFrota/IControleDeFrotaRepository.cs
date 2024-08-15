@@ -8,5 +8,5 @@ public interface IControleDeFrotaRepository
     Task UpdateAsync(Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(int? idEmpresa);
-    Task<Entidades.Cadastros.Controle_De_Frota.ControleDeFrota> GetByIdAsync(int id);
+    Task<Entidades.Cadastros.Controle_De_Frota.ControleDeFrota> GetByIdAsync(int? id);
 }

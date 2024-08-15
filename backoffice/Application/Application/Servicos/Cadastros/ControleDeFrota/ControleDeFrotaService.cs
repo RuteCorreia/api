@@ -24,7 +24,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
-    public async Task<ControleDeFrotaViewModel> GetByIdAsync(int id)
+    public async Task<ControleDeFrotaViewModel> GetByIdAsync(int? id)
     {
         var obj = await _controleDeFrotaRepository.GetByIdAsync(id);
         return _mapper.Map<ControleDeFrotaViewModel>(obj);

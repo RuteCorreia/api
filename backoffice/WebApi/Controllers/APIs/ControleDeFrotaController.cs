@@ -91,13 +91,13 @@ public class ControleDeFrotaController : ControllerBase
     }
 
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] ControleDeFrotaViewModel obj)
+    public async Task<ActionResult> Update([FromBody] ControleDeFrotaViewModel obj)
     {
         try
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _controleDeFrotaService.GetByIdAsync(id);
+                var objeto = await _controleDeFrotaService.GetByIdAsync(obj.Id);
                 if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
                     obj.Id = objeto.Id;
