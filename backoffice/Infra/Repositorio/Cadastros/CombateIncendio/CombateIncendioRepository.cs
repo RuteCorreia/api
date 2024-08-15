@@ -199,18 +199,18 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         }
     }
 
-    public async Task<List<Atividade>> GetAtividadeByExecutorAsync(Guid idExecutor)
+    public async Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor)
     {
         string query = @"
             SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
             FROM CombateIncendio c
             JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
             JOIN Usuario u ON c.IdExecutor = u.Id
-            WHERE u.Id = @IdExecutor";
+            WHERE u.Nome = @Executor";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdExecutor = idExecutor };
+            var parameters = new { Executor = executor };
             var result = await connection.QueryAsync<Atividade>(query, parameters);
             return result.ToList();
         }

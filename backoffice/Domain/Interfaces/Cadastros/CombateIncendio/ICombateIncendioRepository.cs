@@ -16,7 +16,7 @@ public interface ICombateIncendioRepository
     Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id);
     Task<List<Atividade>> GetAtividadeByPrefixoAsync(string prefixoAeronave);
     Task<List<Atividade>> GetAtividadeByPilotoAsync(string piloto);
-    Task<List<Atividade>> GetAtividadeByExecutorAsync(Guid idExecutor);
+    Task<List<Atividade>> GetAtividadeByExecutorAsync(string executor);
     Task<List<Atividade>> GetAtividadeByContratanteAsync(string cliente);
     Task UpdateIsMapaAsync(Entidades.Cadastros.CombateIncendio.CombateIncendio relatorioExistente);
 }

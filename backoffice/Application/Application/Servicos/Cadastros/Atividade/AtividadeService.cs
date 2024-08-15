@@ -60,7 +60,7 @@ namespace Application.Application.Servicos.Cadastros.Atividade
             }
 
             viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
-            viewModel.ValorTotal = FormatToReal(somaValorTotal);
+            viewModel.ValorTotal = somaValorTotal;
             viewModel.Extensao = somaExtensoes.ToString();
 
             return viewModel;
@@ -69,12 +69,12 @@ namespace Application.Application.Servicos.Cadastros.Atividade
         public async Task<AtividadeViewModel> GetAtividadeByExecutorAsync(string executor)
         {
             var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByExecutorAsync(executor);
-            var executorEntity  = await 
             var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByExecutorAsync(executor);
             var viewModel = new AtividadeViewModel();
 
             decimal somaValorTotal = 0m;
             decimal somaExtensoes = 0;
+            double somaHorasApliacadas = 0;
 
             foreach (var atividade in atividadesAplicacao)
             {
@@ -89,7 +89,22 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                 }
             }
 
-            viewModel.ValorTotal = FormatToReal(somaValorTotal);
+            foreach (var atividade in atividadesIncendio)
+            {
+                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
+                {
+                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
+                    somaHorasApliacadas += duration.TotalHours;
+                }
+
+                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
+                {
+                    somaValorTotal += valorTotal;
+                }
+            }
+
+            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
+            viewModel.ValorTotal = somaValorTotal;
             viewModel.Extensao = somaExtensoes.ToString();
 
             return viewModel;
@@ -97,13 +112,15 @@ namespace Application.Application.Servicos.Cadastros.Atividade
 
         public async Task<AtividadeViewModel> GetAtividadeByPilotoAsync(string piloto)
         {
-            var atividades = await _relatorioAplicacaoRepository.GetAtividadeByPilotoAsync(piloto);
+            var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadeByPilotoAsync(piloto);
+            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByPilotoAsync(piloto);
             var viewModel = new AtividadeViewModel();
 
             decimal somaValorTotal = 0m;
             decimal somaExtensoes = 0;
+            double somaHorasApliacadas = 0;
 
-            foreach (var atividade in atividades)
+            foreach (var atividade in atividadesAplicacao)
             {
                 if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
                 {
@@ -116,7 +133,22 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                 }
             }
 
-            viewModel.ValorTotal = FormatToReal(somaValorTotal);
+            foreach (var atividade in atividadesIncendio)
+            {
+                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
+                {
+                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
+                    somaHorasApliacadas += duration.TotalHours;
+                }
+
+                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
+                {
+                    somaValorTotal += valorTotal;
+                }
+            }
+
+            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
+            viewModel.ValorTotal = somaValorTotal;
             viewModel.Extensao = somaExtensoes.ToString();
 
             return viewModel;
@@ -125,10 +157,12 @@ namespace Application.Application.Servicos.Cadastros.Atividade
         public async Task<AtividadeViewModel> GetAtividadeByPrefixoAsync(string prefixoAeronave)
         {
             var atividades = await _relatorioAplicacaoRepository.GetAtividadeByPrefixoAsync(prefixoAeronave);
+            var atividadesIncendio = await _combateIncendioRepository.GetAtividadeByPrefixoAsync(prefixoAeronave);
             var viewModel = new AtividadeViewModel();
 
             decimal somaValorTotal = 0m;
             decimal somaExtensoes = 0;
+            double somaHorasApliacadas = 0;
 
             foreach (var atividade in atividades)
             {
@@ -143,7 +177,22 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                 }
             }
 
-            viewModel.ValorTotal = FormatToReal(somaValorTotal);
+            foreach (var atividade in atividadesIncendio)
+            {
+                if (atividade.HoraInicial.HasValue && atividade.HorarioFinalOperacao.HasValue)
+                {
+                    TimeSpan duration = atividade.HorarioFinalOperacao.Value - atividade.HoraInicial.Value;
+                    somaHorasApliacadas += duration.TotalHours;
+                }
+
+                if (TryParseValorTotal(atividade.ValorTotal, out decimal valorTotal))
+                {
+                    somaValorTotal += valorTotal;
+                }
+            }
+
+            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasApliacadas);
+            viewModel.ValorTotal = somaValorTotal;
             viewModel.Extensao = somaExtensoes.ToString();
 
             return viewModel;
