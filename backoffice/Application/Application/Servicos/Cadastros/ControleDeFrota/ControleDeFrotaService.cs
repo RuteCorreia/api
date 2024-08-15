@@ -39,10 +39,10 @@ public class ControleDeFrotaService : IControleDeFrotaService
         return id;
     }
 
-    public async Task UpdateAsync(ControleDeFrotaViewModel obj)
+    public async Task<int?> UpdateAsync(ControleDeFrotaViewModel obj)
     {
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
-        await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
+        return await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
     }
 
     public async Task DeleteAsync(int id)

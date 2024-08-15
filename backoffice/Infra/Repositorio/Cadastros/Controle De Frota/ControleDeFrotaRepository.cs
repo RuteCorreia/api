@@ -60,7 +60,7 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
+    public async Task<int?> UpdateAsync(Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota obj)
     {
         var objeto = await _contextBase.ControleDeFrota.FindAsync(obj.Id);
         if (objeto != null)
@@ -90,7 +90,9 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.Imagem = obj.Imagem;
 
             _contextBase.ControleDeFrota.Update(objeto);
-            await _contextBase.SaveChangesAsync();
+            await _contextBase.SaveChangesAsync(); 
+            return objeto.Id;
         }
+        return null;
     }
 }

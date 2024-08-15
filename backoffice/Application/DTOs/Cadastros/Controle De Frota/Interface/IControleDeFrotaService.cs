@@ -10,7 +10,7 @@ public interface IControleDeFrotaService
 
     Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
 
-    Task UpdateAsync(ControleDeFrotaViewModel obj);
+    Task<int?> UpdateAsync(ControleDeFrotaViewModel obj);
 
     Task DeleteAsync(int id);
 }

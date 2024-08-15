@@ -97,23 +97,13 @@ public class ControleDeFrotaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var objeto = await _controleDeFrotaService.GetByIdAsync(obj.Id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
+                var id = await _controleDeFrotaService.UpdateAsync(obj);
+                if (id.HasValue)
                 {
-                    obj.Id = objeto.Id;
-
-                    await _controleDeFrotaService.UpdateAsync(obj);
-                    _logService.LogInformation("ControleDeFrota atualizado com sucesso"); // Registre uma informação de log
-                    return Ok("Sucesso");
+                    return Ok(id); // Retorna o ID do objeto atualizado
                 }
-                else
-                {
-                    _logService.LogWarning("Tentativa de atualização de ControleDeFrota não encontrada"); // Registre um aviso de log
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
+                return NotFound("Objeto não encontrado"); // Caso o objeto não seja encontrado
             }
-
-            _logService.LogWarning("Tentativa de atualização de ControleDeFrota com modelo inválido"); // Registre um aviso de log
             return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
         }
         catch (Exception ex)
