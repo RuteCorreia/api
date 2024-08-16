@@ -181,7 +181,8 @@ public class CombateIncendioRepository : ICombateIncendioRepository
             AND c.Piloto LIKE '%' + @Piloto + '%'
             AND u.Nome LIKE '%' + @Executor + '%'
             AND c.Cliente LIKE '%' + @Cliente + '%'
-            AND c.IdEmpresa = @IdEmpresa");
+            AND c.IdEmpresa = @IdEmpresa
+            AND c.StatusEnvio IN (0, 1)");
 
         var parameters = new DynamicParameters();
         parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
