@@ -175,13 +175,14 @@ public class CombateIncendioRepository : ICombateIncendioRepository
             @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
             FROM CombateIncendio c
             JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
-            JOIN Aeronave a ON c.IdAeronave = a.Id
+            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id
             JOIN Usuario u ON c.IdExecutor = u.Id
-            WHERE a.Prefixo LIKE '%' + @PrefixoAeronave + '%'
+            WHERE (a.Prefixo LIKE '%' + @PrefixoAeronave + '%' OR c.IdAeronave IS NULL)
             AND c.Piloto LIKE '%' + @Piloto + '%'
             AND u.Nome LIKE '%' + @Executor + '%'
             AND c.Cliente LIKE '%' + @Cliente + '%'
-            AND c.IdEmpresa = @IdEmpresa");
+            AND c.IdEmpresa = @IdEmpresa
+            AND c.StatusEnvio IN (0, 1)");
 
         var parameters = new DynamicParameters();
         parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);

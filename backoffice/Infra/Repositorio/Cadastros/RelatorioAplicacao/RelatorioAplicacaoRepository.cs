@@ -117,7 +117,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             AND r.Piloto LIKE '%' + @Piloto + '%' 
             AND r.Executor LIKE '%' + @Executor + '%'
             AND c.Nome LIKE '%' + @Contratante + '%'
-            AND r.IdEmpresa = @IdEmpresa");
+            AND r.IdEmpresa = @IdEmpresa
+            AND r.StatusEnvio IN (0, 1)");
 
             var parameters = new DynamicParameters();
             parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);

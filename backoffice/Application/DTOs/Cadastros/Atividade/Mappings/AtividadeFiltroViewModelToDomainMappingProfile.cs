@@ -12,7 +12,11 @@ namespace Application.DTOs.Cadastros.Atividade.Mappings
     {
         public AtividadeFiltroViewModelToDomainMappingProfile()
         {
-            CreateMap<AtividadeFiltroViewModel, Domain.Entidades.Cadastros.Atividade.AtividadeFiltro>();
+            CreateMap<AtividadeFiltroViewModel, Domain.Entidades.Cadastros.Atividade.AtividadeFiltro>()
+                .ForMember(dest => dest.PrefixoAeronave, opt => opt.MapFrom(src => src.Aeronave))
+                .ForMember(dest => dest.Contratante, opt => opt.MapFrom(src => src.Cliente))
+                .ForMember(dest => dest.DataInicial, opt => opt.MapFrom(src => src.DataInicio))
+                .ForMember(dest => dest.DataFinal, opt => opt.MapFrom(src => src.DataFim));
         }
     }
 }
