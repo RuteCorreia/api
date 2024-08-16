@@ -4,22 +4,11 @@ namespace Application.DTOs.Cadastros.Atividade.ViewModel
 {
     public class AtividadeFiltroViewModel
     {
-        [JsonProperty("aeronave")]
-        public string? PrefixoAeronave { get; set; }
-
-        [JsonProperty("piloto")]
+        public string? Aeronave { get; set; }
         public string? Piloto { get; set; }
-
-        [JsonProperty("executor")]
         public string? Executor { get; set; }
-
-        [JsonProperty("cliente")]
-        public string? Contratante { get; set; }
-
-        [JsonProperty("dataInicio")]
-        public DateTime? DataInicial { get; set; }
-
-        [JsonProperty("dataFim")]
-        public DateTime? DataFinal { get; set; }
+        public string? Cliente { get; set; }
+        public DateTime? DataInicio { get; set; }
+        public DateTime? DataFim { get; set; }
     }
 }
