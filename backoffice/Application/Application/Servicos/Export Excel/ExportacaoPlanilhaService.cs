@@ -41,7 +41,7 @@ namespace Application.Application.Servicos.Export_Excel
             catch (Exception ex)
             {
                 // Aqui você pode adicionar tratamento de exceção, logging, etc.
-                throw new Exception("Erro ao obter Alvos Biológicos.", ex);
+                throw new Exception("Erro ao obter Planilhas Exportadas.", ex);
             }
         }
 

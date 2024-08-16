@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Export_Excel;
 using Infra.Configuracao;
@@ -27,13 +29,14 @@ namespace Infra.Repositorio.Export_Excel
             return await _contextBase.PlanilhaExcelExportadas.FindAsync(id);
         }
 
-        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(int IdEmpresa)
+        public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(int idEmpresa)
         {
-            var query = "SELECT * FROM PlanilhaExcelExportadas";
+            var query = "SELECT * FROM PlanilhaExcelExportadas WHERE IdEmpresa = @IdEmpresa";
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
-                var result = await connection.QueryAsync<PlanilhaExcelExportada>(query);
+                var parameters = new { IdEmpresa = idEmpresa };
+                var result = await connection.QueryAsync<PlanilhaExcelExportada>(query, parameters);
                 return result.ToList();
             }
         }
