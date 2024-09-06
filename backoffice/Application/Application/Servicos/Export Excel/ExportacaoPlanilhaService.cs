@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using Application.DTOs.ExportExcel.Interfaces;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Export_Excel;
 using Helpers;
@@ -43,6 +44,33 @@ namespace Application.Application.Servicos.Export_Excel
                 // Aqui você pode adicionar tratamento de exceção, logging, etc.
                 throw new Exception("Erro ao obter Planilhas Exportadas.", ex);
             }
+        }
+
+        public async Task<PlanilhaExcelExportada> GetFileByNameAsync(string? idEmpresa,string name)
+        {
+            try
+            {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var planilhas = await _exportacaoPlanilhaRepository.GetFileByNameAsync(idEmpresaInt, name);
+                if (planilhas != null) 
+                {
+                    return planilhas;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Aqui você pode adicionar tratamento de exceção, logging, etc.
+                throw new Exception("Erro ao obter Planilhas Exportadas.", ex);
+            }
+        }
+
+        public async Task UpdateAsync(PlanilhaExcelExportada obj)
+        {
+            await _exportacaoPlanilhaRepository.UpdateAsync(obj);
         }
 
         public async Task<MemoryStream> GetByIdAsync(int id)

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Entidades.Export_Excel;
 using Domain.Interfaces.Export_Excel;
@@ -29,6 +30,15 @@ namespace Infra.Repositorio.Export_Excel
             return await _contextBase.PlanilhaExcelExportadas.FindAsync(id);
         }
 
+        public async Task UpdateAsync(PlanilhaExcelExportada obj)
+        {
+            var objeto = await _contextBase.PlanilhaExcelExportadas.FindAsync(obj.Id);
+            objeto.Dados = obj.Dados;
+
+            _contextBase.PlanilhaExcelExportadas.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
         public async Task<IEnumerable<PlanilhaExcelExportada>> GetAllAsync(int idEmpresa)
         {
             var query = "SELECT * FROM PlanilhaExcelExportadas WHERE IdEmpresa = @IdEmpresa";
@@ -38,6 +48,17 @@ namespace Infra.Repositorio.Export_Excel
                 var parameters = new { IdEmpresa = idEmpresa };
                 var result = await connection.QueryAsync<PlanilhaExcelExportada>(query, parameters);
                 return result.ToList();
+            }
+        }
+
+        public async Task<PlanilhaExcelExportada> GetFileByNameAsync(int idEmpresa, string name)
+        {
+            var query = "SELECT * FROM PlanilhaExcelExportadas WHERE IdEmpresa = @IdEmpresa AND Nome = @Nome";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var parameters = new { IdEmpresa = idEmpresa, Nome = name };
+                return await connection.QueryFirstOrDefaultAsync<PlanilhaExcelExportada>(query, parameters);
             }
         }
     }
