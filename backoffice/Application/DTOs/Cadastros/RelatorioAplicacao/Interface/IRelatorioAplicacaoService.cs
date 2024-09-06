@@ -10,6 +10,7 @@ public interface IRelatorioAplicacaoService
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataCriacaoAsync(DateTime Date, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusAsync(string? idEmpresa);
     Task<ExportRelatorioViewModel> ExportExcelAsync(int? id);
+    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaAsync(string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);

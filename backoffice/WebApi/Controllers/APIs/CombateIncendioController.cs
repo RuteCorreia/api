@@ -384,7 +384,7 @@ public class CombateIncendioController : ControllerBase
                 // Ajuste o ponteiro do stream para o início
                 memoryStream.Seek(0, SeekOrigin.Begin);
 
-                return File(memoryStream.ToArray(), "application/zip", $"relatorios-{mes}-{ano}.zip");
+                return File(memoryStream.ToArray(), "application/zip", $"relatorios-incêndio-{mes}-{ano}.zip");
             }
         }
         catch (Exception ex)
