@@ -79,6 +79,17 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         return obj;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByIdsAsync(List<int> ids,int idEmpresa, int statusEnvio)
+    {
+
+        string query = @"SELECT * FROM CombateIncendio 
+                     WHERE Id IN @Ids 
+                     AND IdEmpresa = @IdEmpresa 
+                     AND StatusEnvio = @StatusEnvio 
+                     AND IsMapa = 0";
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
+    }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByStatusAsync(int idEmpresa, int statusEnvio)
     {
         string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 0";
@@ -94,6 +105,14 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByStatusMapaMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
     {
         string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 1" +
+            "           AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
+
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+    {
+        string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 0" +
             "           AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
 
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });

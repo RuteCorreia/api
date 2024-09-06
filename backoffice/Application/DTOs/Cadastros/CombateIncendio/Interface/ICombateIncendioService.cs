@@ -14,6 +14,8 @@ public interface ICombateIncendioService
     Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaAsync(string? idEmpresa);
 
     Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
+    Task<IEnumerable<CombateIncendioViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
+    Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids);
 
     Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa);
 
