@@ -131,13 +131,14 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
-    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids)
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var statusEnvio = 0;
-        var list = await _combateIncendioRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio);
+        var list = await _combateIncendioRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
+
 
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {

@@ -641,8 +641,8 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-
-                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, ids);
+                var isMapa = 0;
+                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, ids, isMapa);
 
                 using (var memoryStream = new MemoryStream())
                 {

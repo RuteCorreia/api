@@ -352,8 +352,8 @@ public class CombateIncendioController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-
-            var relatorios = await _combateIncendioService.GetListByIdsAsync(loggedUser.Item3, ids);
+            var isMapa = 0;
+            var relatorios = await _combateIncendioService.GetListByIdsAsync(loggedUser.Item3, ids, isMapa);
 
             using (var memoryStream = new MemoryStream())
             {

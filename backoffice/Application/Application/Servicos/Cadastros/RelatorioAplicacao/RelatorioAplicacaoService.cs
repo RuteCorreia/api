@@ -143,11 +143,11 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
-        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids)
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var statusEnvio = 0;
-            var list = await _relatorioAplicacaoRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio);
+            var list = await _relatorioAplicacaoRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 

@@ -79,15 +79,15 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         return obj;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByIdsAsync(List<int> ids,int idEmpresa, int statusEnvio)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByIdsAsync(List<int> ids,int idEmpresa, int statusEnvio, int isMapa)
     {
 
         string query = @"SELECT * FROM CombateIncendio 
                      WHERE Id IN @Ids 
                      AND IdEmpresa = @IdEmpresa 
                      AND StatusEnvio = @StatusEnvio 
-                     AND IsMapa = 0";
-        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
+                     AND IsMapa = @IsMapa";
+        return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, IsMapa = isMapa });
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByStatusAsync(int idEmpresa, int statusEnvio)

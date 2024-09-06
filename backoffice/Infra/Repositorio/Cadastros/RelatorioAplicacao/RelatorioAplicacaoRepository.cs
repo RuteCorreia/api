@@ -244,15 +244,15 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByIdsAsync(List<int> ids, int idEmpresa, int statusEnvio)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByIdsAsync(List<int> ids, int idEmpresa, int statusEnvio, int isMapa)
         {
 
             string query = @"SELECT * FROM RelatorioAplicacao 
                      WHERE Id IN @Ids 
                      AND IdEmpresa = @IdEmpresa 
                      AND StatusEnvio = @StatusEnvio 
-                     AND IsMapa = 0";
-            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
+                     AND IsMapa = @IsMapa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, IsMapa = isMapa });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId)
