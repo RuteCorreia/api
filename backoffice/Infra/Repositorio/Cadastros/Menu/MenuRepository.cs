@@ -39,6 +39,7 @@ public class MenuRepository : IMenuRepository
         {
             entities = await _contextBase.Menu
                 .AsNoTracking()
+                .Where(x => x.MenuItemId != 4)
                 .ToListAsync();
 
         }
@@ -53,7 +54,7 @@ public class MenuRepository : IMenuRepository
         {
             entities = await _contextBase.Menu
                 .AsNoTracking()
-                .Where(x => x.MenuItemId != 1005)
+                .Where(x => x.MenuItemId != 1005 && x.MenuItemId != 4)
                 .ToListAsync();
         }
         else
