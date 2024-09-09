@@ -94,7 +94,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         string query = @"SELECT * FROM CombateIncendio 
                      WHERE Id IN @Ids 
                      AND IdEmpresa = @IdEmpresa 
-                     AND StatusEnvio = @StatusEnvio 
+                     AND (StatusEnvio = @StatusEnvio OR StatusEnvio = 4) 
                      AND IsMapa = @IsMapa";
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, IsMapa = isMapa });
     }
