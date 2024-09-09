@@ -139,7 +139,10 @@ public class CombateIncendioController : ControllerBase
                         NomeRelatorio = relatorio.NomeRelatorio,
                         Base64Data = data.Data,
                         IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id
+                        Id = relatorio.Id,
+                        DataAlteracao = relatorio.DataAlteracao.HasValue
+                                        ? relatorio.DataAlteracao.Value.ToString("dd-MM-yyyy HH:mm:ss")
+                                        : null
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
