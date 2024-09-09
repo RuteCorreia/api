@@ -112,8 +112,8 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetListByMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
     {
-        string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 0" +
-            "           AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
+        string query = "SELECT * FROM CombateIncendio WHERE IdEmpresa = @IdEmpresa AND (StatusEnvio = @statusEnvio OR StatusEnvio = 4) AND IsMapa = 0" +
+            "           AND DataCriacao >= @primeiroDiaMes AND DataCriacao <= @ultimoDiaMes";
 
         return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
     }
@@ -122,6 +122,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     {
         var objeto = await _contextBase.CombateIncendio.FindAsync(obj.Id);
         objeto.IsMapa = obj.IsMapa;
+        objeto.DataAlteracao = obj.DataAlteracao;
         _contextBase.CombateIncendio.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }

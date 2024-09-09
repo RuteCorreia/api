@@ -236,7 +236,8 @@ namespace WebApi.Controllers.APIs
                             NomeRelatorio = relatorio.NomeRelatorio,
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id
+                            Id = relatorio.Id,
+                            StatusEnvio = relatorio.State
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -634,6 +635,30 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar campo IsMapa do relatório de aplicação: {ex.Message}");
             }
         }
+
+        [HttpPut("Cancelar/{id}")]
+        public async Task<ActionResult> Cancelar(int id)
+        {
+            try
+            {
+
+                if (ModelState.IsValid)
+                {
+                    await _relatorioAplicacaoService.CancelarAsync(id);
+                    _logService.LogInformation("relatório de aplicação cancelado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo inválido ao cancelar relatório de aplicação.");
+                return BadRequest("Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao cancelar relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao cancelar relatório de aplicação: {ex.Message}");
+            }
+        }
+
 
         [HttpGet("DownloadRelatoriosMes")]
         public async Task<IActionResult> DownloadRelatoriosMes([FromQuery] List<int> ids, [FromQuery] int mes, [FromQuery] int ano)

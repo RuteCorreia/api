@@ -18,5 +18,6 @@ public interface IRelatorioAplicacaoService
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? userId);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
     Task UpdateIsMapaAsync(List<int> obj, bool condicao);
+    Task CancelarAsync(int id);
     Task DeleteAsync(int id);
 }

@@ -259,6 +259,7 @@ public class CombateIncendioService : ICombateIncendioService
             if (relatorioExistente != null)
             {
                 relatorioExistente.IsMapa = condicao;
+                relatorioExistente.DataAlteracao = DateTime.Now;
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 

@@ -185,8 +185,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
         {
-            string query = @"SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 0 
-                            AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
+            string query = @"SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND (StatusEnvio = @statusEnvio OR StatusEnvio = 4) AND IsMapa = 0 
+                            AND DataCriacao >= @primeiroDiaMes AND DataCriacao <= @ultimoDiaMes";
 
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(
                 query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
@@ -309,6 +309,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         {
             var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
             objeto.IsMapa = obj.IsMapa;
+            objeto.DataAlteracao = obj.DataAlteracao;
+            _contextBase.RelatorioAplicacao.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
+        public async Task CancelarAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        {
+            var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
+            objeto.StatusEnvio = obj.StatusEnvio;
+            objeto.DataAlteracao = obj.DataAlteracao;
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }

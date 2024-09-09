@@ -93,11 +93,12 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             string prefixo = "";
             string tipoAeronave = "";
             string[] partesNomeAeronave = art.NomeAeronave.Split('-', StringSplitOptions.TrimEntries);
-            if (partesNomeAeronave.Length == 2) 
+            if (partesNomeAeronave.Length == 2)
             {
                 prefixo = partesNomeAeronave[0].Trim();
                 tipoAeronave = partesNomeAeronave[1].Trim();
-            }else if (partesNomeAeronave.Length == 3)
+            }
+            else if (partesNomeAeronave.Length == 3)
             {
                 prefixo = $"{partesNomeAeronave[0].Trim()} - {partesNomeAeronave[1].Trim()}";
                 tipoAeronave = partesNomeAeronave[2].Trim();
@@ -159,11 +160,27 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 if (relatorioExistente != null)
                 {
                     relatorioExistente.IsMapa = condicao;
+                    relatorioExistente.DataAlteracao = DateTime.Now;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                     await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
                 }
+            }
+
+        }
+
+        public async Task CancelarAsync(int id)
+        {
+            var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(id);
+            if (relatorioExistente != null)
+            {
+                relatorioExistente.StatusEnvio = 4;
+                relatorioExistente.DataAlteracao = DateTime.Now;
+
+                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
+
+                await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
             }
 
         }

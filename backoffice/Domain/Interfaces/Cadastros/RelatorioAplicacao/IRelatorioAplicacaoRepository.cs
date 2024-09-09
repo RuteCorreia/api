@@ -27,6 +27,7 @@ namespace Domain.Interfaces.Cadastros.RelatorioAplicacao
         Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? dataCriacao, string userName);
         Task<Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> GetByIdAsync(int id);
         Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro);
+        Task CancelarAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
         Task UpdateIsMapaAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao relatorioExistente);
     }
 }
