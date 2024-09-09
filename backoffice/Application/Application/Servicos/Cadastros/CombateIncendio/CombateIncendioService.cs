@@ -139,6 +139,21 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
+    public async Task CancelarAsync(int id)
+    {
+        var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(id);
+        if (relatorioExistente != null)
+        {
+            relatorioExistente.StatusEnvio = 4;
+            relatorioExistente.DataAlteracao = DateTime.Now;
+
+            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
+
+            await _combateIncendioRepository.CancelarAsync(mapProduto);
+        }
+
+    }
+
 
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {

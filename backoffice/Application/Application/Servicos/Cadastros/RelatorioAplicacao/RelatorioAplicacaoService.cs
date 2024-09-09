@@ -180,7 +180,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
-                await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
+                await _relatorioAplicacaoRepository.CancelarAsync(mapProduto);
             }
 
         }

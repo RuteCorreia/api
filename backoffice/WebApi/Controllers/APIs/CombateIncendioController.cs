@@ -97,7 +97,8 @@ public class CombateIncendioController : ControllerBase
                         NomeRelatorio = relatorio.NomeRelatorio,
                         Base64Data = data.Data,
                         IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
@@ -230,7 +231,8 @@ public class CombateIncendioController : ControllerBase
                         NomeRelatorio = relatorio.NomeRelatorio,
                         Base64Data = data.Data,
                         IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
@@ -249,6 +251,29 @@ public class CombateIncendioController : ControllerBase
         {
             _loggerService.LogError(ex, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de combate a incêndio: {ex.Message}");
+        }
+    }
+
+    [HttpPut("Cancelar/{id}")]
+    public async Task<ActionResult> Cancelar(int id)
+    {
+        try
+        {
+
+            if (ModelState.IsValid)
+            {
+                await _combateIncendioService.CancelarAsync(id);
+                _loggerService.LogInformation("relatório de incedio cancelado com sucesso.");
+                return Ok();
+            }
+
+            _loggerService.LogWarning("Modelo inválido ao cancelar relatório de incedio.");
+            return BadRequest("Modelo inválido");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao cancelar relatório de incedio: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao cancelar relatório de incedio: {ex.Message}");
         }
     }
 

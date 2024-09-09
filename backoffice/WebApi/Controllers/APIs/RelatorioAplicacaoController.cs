@@ -149,7 +149,8 @@ namespace WebApi.Controllers.APIs
                             NomeRelatorio = relatorio.NomeRelatorio,
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id
+                            Id = relatorio.Id,
+                            StatusEnvio = relatorio.State
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
