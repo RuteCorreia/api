@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.TelaPrincipal.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers.APIs
 {
-    [Route("api/[controller]")]
+    [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
     public class TelaPrincipalController : ControllerBase
     {
