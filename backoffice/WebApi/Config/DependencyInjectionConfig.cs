@@ -250,6 +250,10 @@ using Domain.Interfaces.Cadastros.TipoDeFormulacao;
 using Infra.Repositorio.Cadastros.TipoDeFormulacao;
 using Application.DTOs.Cadastros.Atividade.Interface;
 using Application.Application.Servicos.Cadastros.Atividade;
+using Application.DTOs.Cadastros.TelaPrincipal.Interface;
+using Application.Application.Servicos.Cadastros.TelaPrincipal;
+using Domain.Interfaces.Cadastros.TelaPrincipal;
+using Infra.Repositorio.Cadastros.TelaPrincipal;
 
 namespace WebApi.Config;
 
@@ -324,6 +328,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeUnidadeService, TipoDeUnidadeService>();
         services.AddScoped<ITipoDeFormulacaoService, TipoDeFormulacaoService>();
         services.AddScoped<IAtividadeService, AtividadeService>();
+        services.AddScoped<IRelatorioAeronaveService, RelatorioAeronaveService>();
         
 
         #endregion
@@ -391,6 +396,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IExportacaoPlanilhaRepository, ExportacaoPlanilhaRepository>();
         services.AddScoped<ITipoDeUnidadeRepository, TipoDeUnidadeRepository>();
         services.AddScoped<ITipoDeFormulacaoRepository, TipoDeFormulacaoRepository>();
+        services.AddScoped<IRelatorioAeronaveRepository, RelatorioAeronaveRepository>();
 
         #endregion
 

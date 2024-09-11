@@ -103,7 +103,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             }
         }
 
-
         public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
         {
             var query = new StringBuilder(@"
