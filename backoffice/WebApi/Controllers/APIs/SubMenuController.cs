@@ -23,7 +23,7 @@ public class SubMenuController : ControllerBase
     private readonly LoggedUserInfoService _loggedUserInfoService;
 
     public SubMenuController(
-        ISubMenuService subMenuService, 
+        ISubMenuService subMenuService,
         ILogService logService,
         LoggedUserInfoService loggedUserInfoService
     )
@@ -91,18 +91,15 @@ public class SubMenuController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            if (string.IsNullOrEmpty(loggedUser.Item3))
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    await _subMenuService.AddAsync(obj);
-                    _logService.LogInformation("Novo SubMenu adicionado com sucesso.");
-                    return Ok();
-                }
-
-                _logService.LogWarning("Modelo inválido ao adicionar novo SubMenu.");
-                return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+                await _subMenuService.AddAsync(obj);
+                _logService.LogInformation("Novo SubMenu adicionado com sucesso.");
+                return Ok();
             }
+
+            _logService.LogWarning("Modelo inválido ao adicionar novo SubMenu.");
+            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
 
             _logService.LogWarning($"Acesso não autorizado à criação de submenus pelo usuário {loggedUser.Item1}");
             return Unauthorized("Não permitido");
