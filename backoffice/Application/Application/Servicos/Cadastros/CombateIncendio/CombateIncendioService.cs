@@ -123,6 +123,38 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _combateIncendioRepository.GetListByMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
+        return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
+    }
+
+    public async Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _combateIncendioRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
+        return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
+    }
+
+    public async Task CancelarAsync(int id)
+    {
+        var relatorioExistente = await _combateIncendioRepository.GetByIdAsync(id);
+        if (relatorioExistente != null)
+        {
+            relatorioExistente.StatusEnvio = 4;
+            relatorioExistente.DataAlteracao = DateTime.Now;
+
+            var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
+
+            await _combateIncendioRepository.CancelarAsync(mapProduto);
+        }
+
+    }
+
+
     public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -242,6 +274,7 @@ public class CombateIncendioService : ICombateIncendioService
             if (relatorioExistente != null)
             {
                 relatorioExistente.IsMapa = condicao;
+                relatorioExistente.DataAlteracao = DateTime.Now;
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 

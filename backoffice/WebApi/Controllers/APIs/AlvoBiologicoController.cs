@@ -134,12 +134,6 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var verificaSeAlvoBiologicoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome);
-                if (verificaSeAlvoBiologicoExistePeloNome != null)
-                {
-                    _logService.LogWarning("Tentativa de adição de alvo biológico com nome já existente.");
-                    return StatusCode(StatusCodes.Status400BadRequest, "Já existe um alvo biológico com esse nome!");
-                }
 
                 if (ModelState.IsValid)
                 {

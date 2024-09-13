@@ -43,6 +43,19 @@ public class PistaRepository : IPistaRepository
         return obj;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome)
+    {
+        if (string.IsNullOrEmpty(nome))
+        {
+            throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
+        }
+        var pistas = await _contextBase.Pista
+            .Where(p => p.Nome.Contains(nome))
+            .ToListAsync();
+
+        return pistas;
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Pistas.Pista obj)
     {
         var objeto = await _contextBase.Pista.FindAsync(obj.Id);

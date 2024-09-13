@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Pistas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Pista;
+using System.Text.RegularExpressions;
 
 namespace Application.Application.Servicos.Cadastros.Pista;
 
@@ -26,6 +27,17 @@ public class PistaService : IPistaService
     {
         var obj = await _pistaRepository.GetByIdAsync(id);
         return _mapper.Map<PistaViewModel>(obj);
+    }
+
+    public async Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
+        }
+        var pistas = await _pistaRepository.GetByNameAsync(name);
+
+        return pistas.Select(p => _mapper.Map<PistaViewModel>(p));
     }
 
     public async Task<int> AddAsync(PistaViewModel obj)

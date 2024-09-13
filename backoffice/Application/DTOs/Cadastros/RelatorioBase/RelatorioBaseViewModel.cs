@@ -12,5 +12,7 @@ namespace Application.DTOs.Cadastros.RelatorioBase
         public string? NomeRelatorio { get; set; }
         public string? Base64Data { get; set; }
         public bool IsMapa { get; set; }
+        public int? StatusEnvio { get; set; }
+        public string? DataAlteracao { get; set; }
     }
 }

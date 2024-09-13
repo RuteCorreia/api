@@ -103,7 +103,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             }
         }
 
-
         public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
         {
             var query = new StringBuilder(@"
@@ -164,7 +163,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByStatusAsync(int idEmpresa, int statusEnvio)
         {
-            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio =  @statusEnvio  AND IsMapa = 0";
+            string query = "SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND (StatusEnvio =  @statusEnvio OR StatusEnvio = 4)  AND IsMapa = 0";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio });
         }
 
@@ -177,7 +176,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByStatusMapaMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
         {
             string query = @"SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND StatusEnvio = @statusEnvio AND IsMapa = 1 
-                            AND DataAlteracao >= @primeiroDiaMes AND DataAlteracao <= @ultimoDiaMes";
+                            AND DataCriacao >= @primeiroDiaMes AND DataCriacao <= @ultimoDiaMes";
+
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(
+                query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+        {
+            string query = @"SELECT * FROM RelatorioAplicacao WHERE IdEmpresa = @IdEmpresa AND (StatusEnvio = @statusEnvio OR StatusEnvio = 4) AND IsMapa = 0 
+                            AND DataCriacao >= @primeiroDiaMes AND DataCriacao <= @ultimoDiaMes";
 
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(
                 query, new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes });
@@ -235,6 +243,17 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByIdsAsync(List<int> ids, int idEmpresa, int statusEnvio, int isMapa)
+        {
+
+            string query = @"SELECT * FROM RelatorioAplicacao 
+                     WHERE Id IN @Ids 
+                     AND IdEmpresa = @IdEmpresa 
+                     AND (StatusEnvio = @StatusEnvio OR StatusEnvio = 4)
+                     AND IsMapa = @IsMapa";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, IsMapa = isMapa });
+        }
+
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId)
         {
             string query = @"
@@ -289,6 +308,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         {
             var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
             objeto.IsMapa = obj.IsMapa;
+            objeto.DataAlteracao = obj.DataAlteracao;
+            _contextBase.RelatorioAplicacao.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
+        public async Task CancelarAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
+        {
+            var objeto = await _contextBase.RelatorioAplicacao.FindAsync(obj.Id);
+            objeto.StatusEnvio = obj.StatusEnvio;
+            objeto.DataAlteracao = obj.DataAlteracao;
             _contextBase.RelatorioAplicacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }

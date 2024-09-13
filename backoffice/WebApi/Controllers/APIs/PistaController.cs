@@ -63,6 +63,35 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("GetByName/{name}")]
+        public async Task<ActionResult<IEnumerable<PistaViewModel>>> GetByName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    _logService.LogWarning("O nome fornecido é nulo ou vazio.");
+                    return BadRequest("O nome não pode ser nulo ou vazio.");
+                }
+
+                var pistas = await _pistaService.GetByNameAsync(name);
+
+                if (pistas.Any())
+                {
+                    _logService.LogInformation("Pistas recuperadas com sucesso.");
+                    return Ok(pistas);
+                }
+
+                _logService.LogWarning("Nenhuma pista encontrada.");
+                return StatusCode(StatusCodes.Status404NotFound, "Nenhuma pista encontrada.");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar pistas pelo nome: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar pistas pelo nome: {ex.Message}");
+            }
+        }
+
         [HttpPost]
         public async Task<ActionResult> Add([FromBody] PistaViewModel obj)
         {

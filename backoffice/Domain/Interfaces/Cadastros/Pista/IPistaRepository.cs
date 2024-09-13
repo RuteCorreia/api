@@ -9,4 +9,5 @@ public interface IPistaRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetAllAsync();
     Task<Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id);
+    Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome);
 }

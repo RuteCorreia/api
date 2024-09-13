@@ -93,11 +93,12 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             string prefixo = "";
             string tipoAeronave = "";
             string[] partesNomeAeronave = art.NomeAeronave.Split('-', StringSplitOptions.TrimEntries);
-            if (partesNomeAeronave.Length == 2) 
+            if (partesNomeAeronave.Length == 2)
             {
                 prefixo = partesNomeAeronave[0].Trim();
                 tipoAeronave = partesNomeAeronave[1].Trim();
-            }else if (partesNomeAeronave.Length == 3)
+            }
+            else if (partesNomeAeronave.Length == 3)
             {
                 prefixo = $"{partesNomeAeronave[0].Trim()} - {partesNomeAeronave[1].Trim()}";
                 tipoAeronave = partesNomeAeronave[2].Trim();
@@ -143,6 +144,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var statusEnvio = 0;
+            var list = await _relatorioAplicacaoRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
         public async Task UpdateIsMapaAsync(List<int> relatorios, bool condicao)
         {
             foreach (var relatorio in relatorios)
@@ -151,11 +160,27 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 if (relatorioExistente != null)
                 {
                     relatorioExistente.IsMapa = condicao;
+                    relatorioExistente.DataAlteracao = DateTime.Now;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                     await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
                 }
+            }
+
+        }
+
+        public async Task CancelarAsync(int id)
+        {
+            var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(id);
+            if (relatorioExistente != null)
+            {
+                relatorioExistente.StatusEnvio = 4;
+                relatorioExistente.DataAlteracao = DateTime.Now;
+
+                var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
+
+                await _relatorioAplicacaoRepository.CancelarAsync(mapProduto);
             }
 
         }
@@ -211,6 +236,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var statusEnvio = 0;
             var list = await _relatorioAplicacaoRepository.GetListByStatusMapaMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
+            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var statusEnvio = 0;
+            var list = await _relatorioAplicacaoRepository.GetListByMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 

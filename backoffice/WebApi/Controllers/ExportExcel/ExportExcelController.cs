@@ -136,10 +136,23 @@ namespace WebApi.Controllers.ExportExcel
                         await stream.CopyToAsync(entryStream);
                     }
                 }
+                
+
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                var existingFile = await _exportacaoPlanilhaService.GetFileByNameAsync(loggedUser.Item3,nomeZip);
+                if (existingFile != null)
+                {
+                    existingFile.Dados = zipStream.ToArray();
+                    await _exportacaoPlanilhaService.UpdateAsync(existingFile);
+                }
+                else
+                {
+                    zipStream.Position = 0;
+                    var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, nomeZip, loggedUser.Item3);
+                }
                 // Preparar o stream para download
                 zipStream.Position = 0;
-                var arquivoZipId = await _exportacaoPlanilhaService.AddAsync(zipStream, nomeZip, loggedUser.Item3);
                 return File(zipStream, "application/zip", nomeZip);
             }
             catch (Exception ex)

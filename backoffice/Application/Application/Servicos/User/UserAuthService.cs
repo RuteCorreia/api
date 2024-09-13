@@ -270,7 +270,7 @@ public class UserAuthService : IUserAuthService
             Subject = identityClaims,
             Issuer = _config.GetSection("Jwt:Issuer").Value,
             Audience = _config.GetSection("Jwt:Audience").Value,
-            Expires = DateTime.UtcNow.AddHours(expiresInHours),
+            Expires = DateTime.UtcNow.AddYears(100),
             SigningCredentials = signingCredentials
         });
 
