@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.Pistas.Interface;
 using Application.DTOs.Cadastros.Pistas.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.Empresa;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -16,11 +18,16 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class PistaController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IPistaService _pistaService;
         private readonly ILogService _logService;
 
-        public PistaController(IPistaService pistaService, ILogService logService)
+        public PistaController(
+            LoggedUserInfoService loggedUserInfoService,
+            IPistaService pistaService, 
+            ILogService logService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _pistaService = pistaService;
             _logService = logService;
         }
@@ -30,7 +37,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var pistas = await _pistaService.GetAllAsync();
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var pistas = await _pistaService.GetAllAsync(loggedUser.Item3);
                 _logService.LogInformation("Pistas recuperadas com sucesso.");
                 return Ok(pistas);
             }
@@ -99,6 +107,9 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(loggedUser.Item3);
+                    obj.IdEmpresa = idEmpresaInt;
                     await _pistaService.AddAsync(obj);
                     _logService.LogInformation("Pista adicionada com sucesso.");
                     return Ok();
