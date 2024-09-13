@@ -36,6 +36,20 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetListByStatusAsync(int idEmpresa, int statusEnvio)
+    {
+        var query = @"
+            SELECT *
+            FROM ControleDeFrota WHERE IdEmpresa = @IdEmpresa AND (StatusEnvio =  @statusEnvio OR StatusEnvio = 4)";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result;
+        }
+    }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(int? idEmpresa)
     {
         var query = @"SELECT * FROM ControleDeFrota WHERE IdEmpresa = @IdEmpresa";

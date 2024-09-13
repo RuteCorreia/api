@@ -1,6 +1,10 @@
-﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+﻿using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
+using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.Cadastros.RelatorioBase;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 
@@ -24,6 +28,14 @@ public class ControleDeFrotaService : IControleDeFrotaService
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByStatusAsync(string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _controleDeFrotaRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
+        return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
+    }
+
     public async Task<ControleDeFrotaViewModel> GetByIdAsync(int? id)
     {
         var obj = await _controleDeFrotaRepository.GetByIdAsync(id);
@@ -35,6 +47,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao}";
         var id = await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
         return id;
     }
@@ -42,6 +55,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
     public async Task<int?> UpdateAsync(ControleDeFrotaViewModel obj)
     {
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
+        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao}";
         return await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
     }
 

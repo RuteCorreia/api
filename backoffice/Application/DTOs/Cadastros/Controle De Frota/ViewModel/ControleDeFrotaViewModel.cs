@@ -6,7 +6,7 @@ namespace Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 public class ControleDeFrotaViewModel
 {
     [JsonProperty("id")]
-    public int? Id { get; set; }
+    public int Id { get; set; }
 
     [JsonProperty("idVeiculo")]
     public int? IdVeiculo { get; set; }
@@ -76,5 +76,7 @@ public class ControleDeFrotaViewModel
 
     [JsonProperty("imageData")]
     public string? Imagem { get; set; }
+    public string? NomeRelatorio { get; set; }
+    public int? State { get; set; }
 
 }
