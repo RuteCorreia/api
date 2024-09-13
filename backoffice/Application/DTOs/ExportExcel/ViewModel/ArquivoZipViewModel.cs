@@ -5,5 +5,6 @@
         public int? Id { get; set; }
         public string? Nome { get; set; }
         public string? DadosBase64 { get; set; }
+        public string? DataAlteracao { get; set; }
     }
 }
