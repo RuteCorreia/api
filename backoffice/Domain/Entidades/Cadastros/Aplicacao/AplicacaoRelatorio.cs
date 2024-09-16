@@ -28,6 +28,7 @@ public class AplicacaoRelatorio
     public string? Densidade { get; set; }
     public string? RelatorioDGPS { get; set; }
     public string? UnidadeVolumeAplicacao { get; set; }
+    public string? MapaAplicacao { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

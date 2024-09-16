@@ -45,7 +45,12 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
     public async Task<int> AddAsync(StringAplicacaoRelatorioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var concatenatedMapaAplicacao = obj.MapaAplicacao != null
+        ? string.Join("|", obj.MapaAplicacao)
+        : string.Empty;
+
         var mapAplicacaoRelatorio = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(obj);
+        mapAplicacaoRelatorio.MapaAplicacao = concatenatedMapaAplicacao;
         mapAplicacaoRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
         if (obj.Id > 0)
