@@ -60,6 +60,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public DateTime? DataAlteracao { get; set; }
         public string RefUsuario { get; set; }
         public int? StatusEnvio { get; set; }
+        public string? MapaAplicacao { get; set; }
 
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }

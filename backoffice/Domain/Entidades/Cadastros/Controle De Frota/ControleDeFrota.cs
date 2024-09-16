@@ -47,6 +47,7 @@ public class ControleDeFrota
     public string? Imagem { get; set; }
     public string? NomeRelatorio { get; set; }
     public int? StatusEnvio { get; set; }
+    public bool? IsDrone { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }
