@@ -73,7 +73,7 @@ public class ProdutoRepository : IProdutoRepository
         objeto.ClassificacaoToxicologica = obj.ClassificacaoToxicologica;
         objeto.Classe = obj.Classe;
         objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
-        objeto.TipoServico = obj.TipoServico;
+        objeto.TipoFormulacao = obj.TipoFormulacao;
 
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();

@@ -10,7 +10,7 @@ public interface IProdutoService
 
     Task<ProdutoViewModel> GetByNameAsync(string name);
 
-    Task AddAsync(ProdutoViewModel obj);
+    Task AddAsync(ProdutoViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(ProdutoViewModel obj);
     Task DeleteAsync(int id);

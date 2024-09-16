@@ -4,6 +4,7 @@ using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -16,11 +17,16 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ProdutoController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IProdutoService _produtoService;
         private readonly ILogService _logService;
 
-        public ProdutoController(IProdutoService produtoService, ILogService logService)
+        public ProdutoController(
+            LoggedUserInfoService loggedUserInfoService,
+            IProdutoService produtoService, 
+            ILogService logService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _produtoService = produtoService;
             _logService = logService;
         }
@@ -92,7 +98,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    await _produtoService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _produtoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo produto adicionado com sucesso.");
                     return Ok();
                 }

@@ -9,6 +9,7 @@ using Domain.Interfaces.Cadastros.BulaAplicacao;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoDeUnidade;
+using Helpers;
 using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
@@ -73,9 +74,11 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         }
     }
 
-    public async Task AddAsync(AlvoBiologicoViewModel obj)
+    public async Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
+        mapAlvoBiologico.IdEmpresa = idEmpresaInt;
         await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
     }
 

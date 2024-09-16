@@ -18,6 +18,12 @@ public class AlvoBiologico
     public int IdCultura { get; set; }
     [ForeignKey("TipoDeUnidade")]
     public int IdTipoDeUnidade { get; set; }
+    [ForeignKey("Empresa")]
+    public int? IdEmpresa { get; set; }
+
+    [JsonIgnore]
+    public virtual Empresa.Empresa? Empresa { get; set; }
+
     [JsonIgnore]
     public virtual Produto.Produto? Produto { get; set; }
     [JsonIgnore]

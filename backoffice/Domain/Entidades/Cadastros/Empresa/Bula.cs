@@ -9,23 +9,26 @@ public class Bula
 {
     [Key]
     public int IdBula { get; set; }
-    public string NomeProduto { get; set; }
+    public string? NomeProduto { get; set; }
 
     [ForeignKey("Cultura")]
     public int? IdCultura { get; set; }
 
     public int? IdClassificacaoToxicologica { get; set; }
-    public string Classe { get; set; }
+    public string? Classe { get; set; }
     public string? TipoDeFormulacao { get; set; }
 
     [ForeignKey("AlvoBiologico")]
     public int? IdAlvoBiologico { get; set; }
     public string? DoseProdutoComercial { get; set; }
+    public string? UnidadeProduto { get; set; }
     public string? Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public bool Removido { get; set; }
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
+    [ForeignKey("Produto")]
+    public int? IdProduto { get; set; }
 
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }
@@ -33,4 +36,6 @@ public class Bula
     public virtual AlvoBiologico? AlvoBiologico { get; set; }
     [JsonIgnore]
     public virtual Empresa? Empresa { get; set; }
+    [JsonIgnore]
+    public virtual Produto.Produto? Produto { get; set; }
 }

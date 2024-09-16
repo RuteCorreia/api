@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Produto.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
+using Helpers;
 using System.Collections.Immutable;
 
 namespace Application.Application.Servicos.Cadastros.Produto;
@@ -30,9 +31,11 @@ public class ProdutoService : IProdutoService
         return _mapper.Map<ProdutoViewModel>(obj);
     }
 
-    public async Task AddAsync(ProdutoViewModel obj)
+    public async Task AddAsync(ProdutoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
+        mapProduto.IdEmpresa = idEmpresaInt;
         await _produtoRepository.AddAsync(mapProduto);
     }
 

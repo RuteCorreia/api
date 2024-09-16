@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240916193524_v99")]
+    partial class v99
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1935,16 +1938,10 @@ namespace Infra.Migrations
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdTipoDeFormulacao")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("IdTipoDeServico")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TipoFormulacao")
+                    b.Property<string>("TipoDeFormulacao")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoServico")
@@ -1955,10 +1952,6 @@ namespace Infra.Migrations
                     b.HasIndex("IdCultura");
 
                     b.HasIndex("IdEmpresa");
-
-                    b.HasIndex("IdTipoDeFormulacao");
-
-                    b.HasIndex("IdTipoDeServico");
 
                     b.ToTable("Produto");
                 });
@@ -3370,21 +3363,9 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdEmpresa");
 
-                    b.HasOne("Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao", "TipoDeFormulacao")
-                        .WithMany()
-                        .HasForeignKey("IdTipoDeFormulacao");
-
-                    b.HasOne("Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico", "TipoDeServico")
-                        .WithMany()
-                        .HasForeignKey("IdTipoDeServico");
-
                     b.Navigation("Cultura");
 
                     b.Navigation("Empresa");
-
-                    b.Navigation("TipoDeFormulacao");
-
-                    b.Navigation("TipoDeServico");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao", b =>
