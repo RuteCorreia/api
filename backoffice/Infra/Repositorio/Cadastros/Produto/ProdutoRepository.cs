@@ -1,6 +1,10 @@
-﻿using Domain.Interfaces.Cadastros.Produto;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Produto;
@@ -36,6 +40,18 @@ public class ProdutoRepository : IProdutoRepository
             .Distinct()
             .ToListAsync();
         return classes;
+    }
+
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    {
+        var query = @"SELECT Nome FROM Produto WHERE Id IN @Ids";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Ids = ids };
+            var result = await connection.QueryAsync<string>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe)

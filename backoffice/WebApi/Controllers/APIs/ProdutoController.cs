@@ -169,6 +169,22 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("getNomesByIds")]
+        public async Task<ActionResult<IEnumerable<string>>> GetNomesByIds([FromQuery] List<int> ids)
+        {
+            try
+            {
+                var produtos = await _produtoService.GetNomesByIdsAsync(ids);
+                _logService.LogInformation("Lista de produtos recuperada com sucesso.");
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os produtos: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os produtos: {ex.Message}");
+            }
+        }
+
         [HttpGet("classes")]
         public async Task<ActionResult<IEnumerable<string>>> GetClasses()
         {

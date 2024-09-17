@@ -26,17 +26,25 @@ public class BulaService : IBulaService
         return _mapper.Map<IEnumerable<BulaViewModel>>(list);
     }
 
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt);
+    }
+
     public async Task<BulaViewModel> GetByIdAsync(int id)
     {
         var obj = await _bulaRepository.GetByIdAsync(id);
         return _mapper.Map<BulaViewModel>(obj);
     }
 
-    public async Task AddAsync(BulaViewModel obj)
+    public async Task AddAsync(BulaViewModel obj, string? idEmpresa)
     {
         foreach (var item in obj.Recomendacoes) 
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
+            mapBula.IdEmpresa = idEmpresaInt;
             mapBula.IdCultura = item.IdCultura;
             mapBula.IdAlvoBiologico = item.IdAlvoBiologico;
             mapBula.DoseProdutoComercial = item.DoseProdutoComercial;

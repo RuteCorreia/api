@@ -78,6 +78,24 @@ public class BulaController : ControllerBase
         }
     }
 
+    [HttpGet("GetBulas")]
+    public async Task<ActionResult<List<int>>> GetBulas()
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var bulas = await _bulaService.GetDistinctBulaAsync(loggedUser.Item3);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok(bulas);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de Bulas: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Bulas: {ex.Message}");
+        }
+    }
+
+
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] BulaViewModel obj)
     {
@@ -91,7 +109,7 @@ public class BulaController : ControllerBase
             //}
             if (ModelState.IsValid)
             {
-                await _bulaService.AddAsync(obj);
+                await _bulaService.AddAsync(obj, loggedUser.Item3);
                 _loggerService.LogInformation("Bula adicionada com sucesso.");
                 return Ok();
             }

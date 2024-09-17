@@ -55,6 +55,11 @@ public class ProdutoService : IProdutoService
         return await _produtoRepository.GetClasses();
     }
 
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    {
+        return await _produtoRepository.GetNomesByIdsAsync(ids);
+    }
+
     public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe)
     {
         var produto = await _produtoRepository.GetNomes(classe);

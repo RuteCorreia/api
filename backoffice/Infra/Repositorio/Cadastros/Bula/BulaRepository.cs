@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 using Infra.Configuracao;
@@ -89,5 +91,17 @@ public class BulaRepository : IBulaRepository
         _contextBase.BulaAplicacao.RemoveRange(listaParaRemover);
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
+    }
+
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa)
+    {
+        var query = @"SELECT DISTINCT IdProduto FROM Bula WHERE IdEmpresa = @IdEmpresa";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa };
+            var result = await connection.QueryAsync<int>(query, parameters);
+            return result.ToList();
+        }
     }
 }

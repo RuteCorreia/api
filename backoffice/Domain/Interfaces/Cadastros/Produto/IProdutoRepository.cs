@@ -8,6 +8,7 @@ public interface IProdutoRepository
     Task UpdateAsync(Entidades.Cadastros.Produto.Produto obj);
     Task DeleteAsync(int id);
     Task<IEnumerable<string>> GetClasses();
+    Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids);
     Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe);
     Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome);
     Task<IEnumerable<Entidades.Cadastros.Produto.Produto>> GetAllAsync();
