@@ -21,7 +21,6 @@ public class Bula
     [ForeignKey("AlvoBiologico")]
     public int? IdAlvoBiologico { get; set; }
     public string? DoseProdutoComercial { get; set; }
-    public string? UnidadeProduto { get; set; }
     public string? Adjuvante { get; set; }
     public int? IdTipoDeServico { get; set; }
     public bool Removido { get; set; }
@@ -29,9 +28,13 @@ public class Bula
     public int? IdEmpresa { get; set; }
     [ForeignKey("Produto")]
     public int? IdProduto { get; set; }
+    [ForeignKey("TipoDeUnidade")]
+    public int IdTipoDeUnidade { get; set; }
 
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }
+    [JsonIgnore]
+    public virtual TipoDeUnidade? TipoDeUnidade { get; set; }
     [JsonIgnore]
     public virtual AlvoBiologico? AlvoBiologico { get; set; }
     [JsonIgnore]

@@ -37,11 +37,10 @@ public class BulaService : IBulaService
         foreach (var item in obj.Recomendacoes) 
         {
             var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
-            mapBula.IdProduto = obj.IdProduto;
             mapBula.IdCultura = item.IdCultura;
             mapBula.IdAlvoBiologico = item.IdAlvoBiologico;
             mapBula.DoseProdutoComercial = item.DoseProdutoComercial;
-            mapBula.UnidadeProduto = item.UnidadeProduto;
+            mapBula.IdTipoDeUnidade = item.IdTipoDeUnidade;
             await _bulaRepository.AddAsync(mapBula);
         }
     }
