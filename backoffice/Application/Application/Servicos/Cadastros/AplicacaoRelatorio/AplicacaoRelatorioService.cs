@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
@@ -35,7 +36,22 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
     public async Task<AplicacaoRelatorioViewModel> GetByIdAsync(int id)
     {
         var obj = await _aplicacaoRelatorioRepository.GetByIdAsync(id);
-        return _mapper.Map<AplicacaoRelatorioViewModel>(obj);
+        if (obj == null)
+        {
+            return null;
+        }
+
+        List<DataFormatViewModel> mapaAplicado = null;
+
+        if (!string.IsNullOrEmpty(obj.MapaAplicacao))
+        {
+            mapaAplicado = JsonSerializer.Deserialize<List<DataFormatViewModel>>(obj.MapaAplicacao);
+        }
+        
+        var aplicacaoRelatorio = _mapper.Map<AplicacaoRelatorioViewModel>(obj);
+        aplicacaoRelatorio.MapaAplicado = mapaAplicado;
+
+        return aplicacaoRelatorio;
     }
 
     public async Task<AplicacaoRelatorioViewModel> GetForExportExcelAsync(int id)
