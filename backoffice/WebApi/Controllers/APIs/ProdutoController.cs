@@ -170,7 +170,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("getNomesByIds")]
-        public async Task<ActionResult<IEnumerable<string>>> GetNomesByIds([FromQuery] List<int> ids)
+        public async Task<ActionResult<IEnumerable<string>>> GetNomesByIds([FromQuery(Name = "ids")] List<int> ids)
         {
             try
             {

@@ -9,6 +9,8 @@ public interface IBulaService
     Task<BulaViewModel> GetByIdAsync(int id);
     Task<BulaViewModel> GetByName(string name, string? idEmpresa);
     Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa);
+    Task<BulaViewModel> GetByIdProdutoAsync(int idProduto);
+    Task RemoveRecomendacaoAsync(int idBula);
 
     Task AddAsync(BulaViewModel obj, string? idEmpresa);
 

@@ -78,6 +78,44 @@ public class BulaController : ControllerBase
         }
     }
 
+    [HttpGet("GetByIdProduto/{idProduto:int}")]
+    public async Task<ActionResult<BulaViewModel>> GetByIdProduto(int idProduto)
+    {
+        try
+        {
+            var bula = await _bulaService.GetByIdProdutoAsync(idProduto);
+            if (!ObjectNullValidation.IsObjectNull(bula))
+            {
+                _loggerService.LogInformation($"A Bula com ID {idProduto} foi recuperada com sucesso.");
+                return Ok(bula);
+            }
+
+            _loggerService.LogWarning($"A Bula com ID {idProduto} não foi encontrada.");
+            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao buscar a Bula com ID {idProduto}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar a Bula: {ex.Message}");
+        }
+    }
+
+    [HttpGet("RemoveRecomendacao/{idBula}")]
+    public async Task<IActionResult> RemoveRecomendacao(int idBula)
+    {
+        try
+        {
+            await _bulaService.RemoveRecomendacaoAsync(idBula);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao remover registro da Bula: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao remover registro da Bula: {ex.Message}");
+        }
+    }
+
     [HttpGet("GetBulas")]
     public async Task<ActionResult<List<int>>> GetBulas()
     {

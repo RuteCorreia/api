@@ -63,8 +63,21 @@ public class BulaRepository : IBulaRepository
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
     {
-        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdBula == id);
+        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdProduto == id);
         return obj;
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto)
+    {
+
+        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdProduto = idProduto };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa)
@@ -93,9 +106,17 @@ public class BulaRepository : IBulaRepository
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task RemoveRecomendacaoAsync(int idBula)
+    {
+        var objeto = await _contextBase.Bula.FindAsync(idBula);
+        objeto.Removido = true;
+        _contextBase.Bula.Update(objeto);
+        await _contextBase.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa)
     {
-        var query = @"SELECT DISTINCT IdProduto FROM Bula WHERE IdEmpresa = @IdEmpresa";
+        var query = @"SELECT DISTINCT IdProduto FROM Bula WHERE IdEmpresa = @IdEmpresa AND Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {

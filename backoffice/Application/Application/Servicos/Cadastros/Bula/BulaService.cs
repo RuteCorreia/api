@@ -32,10 +32,50 @@ public class BulaService : IBulaService
         return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt);
     }
 
+    public async Task RemoveRecomendacaoAsync(int idBula)
+    {
+        await _bulaRepository.RemoveRecomendacaoAsync(idBula);
+    }
+
     public async Task<BulaViewModel> GetByIdAsync(int id)
     {
         var obj = await _bulaRepository.GetByIdAsync(id);
         return _mapper.Map<BulaViewModel>(obj);
+    }
+
+    public async Task<BulaViewModel> GetByIdProdutoAsync(int idProduto)
+    {
+        var recomendacoesList = new List<RecomendacaoViewModel>();
+
+        var bulas = await _bulaRepository.GetByIdProdutoAsync(idProduto);
+
+        if (bulas == null || !bulas.Any())
+        {
+            return new BulaViewModel();
+        }
+
+        var bulaViewModel = new BulaViewModel
+        {
+            IdProduto = idProduto,
+            Recomendacoes = recomendacoesList
+        };
+
+        foreach (var item in bulas)
+        {
+            var recomendacao = new RecomendacaoViewModel
+            {
+                IdBula = item.IdBula,
+                IdCultura = item.IdCultura ?? 0, 
+                IdAlvoBiologico = item.IdAlvoBiologico ?? 0, 
+                DoseProdutoComercial = item.DoseProdutoComercial ?? string.Empty,
+                IdTipoDeUnidade = item.IdTipoDeUnidade
+            };
+
+            recomendacoesList.Add(recomendacao);
+        }
+        bulaViewModel.Recomendacoes = recomendacoesList;
+
+        return bulaViewModel;
     }
 
     public async Task AddAsync(BulaViewModel obj, string? idEmpresa)
