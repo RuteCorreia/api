@@ -106,13 +106,13 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         foreach (var bulaAplicacao in listBulaAplicacao)
         {
             var alvoBiologico = await _alvoBiologicoRepository.GetByIdAsync(bulaAplicacao.IdAlvoBiologico);
-            var cultura = await _culturaRepository.GetByIdAsync(alvoBiologico.IdCultura);
+            //var cultura = await _culturaRepository.GetByIdAsync(alvoBiologico.IdCultura);
             var tipoDeUnidade = await _tipoDeUnidadeRepository.GetByIdAsync(alvoBiologico.IdTipoDeUnidade);
 
             var formulacao = new FormulacaoViewModel
             {
                 Id = alvoBiologico.Id,
-                Cultura = cultura.Nome,
+                //Cultura = cultura.Nome,
                 AlvoBiologico = alvoBiologico.Nome,
                 DoseProduto = alvoBiologico.DoseProdutoPorHectare,
                 UnidadeDeMedida = tipoDeUnidade.NomeUnidade

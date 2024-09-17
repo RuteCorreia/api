@@ -50,7 +50,7 @@ namespace Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel
         [JsonPropertyName("unidadeVolumeAplicacao")]
         public string? UnidadeVolumeAplicacao { get; set; }
 
-        [JsonPropertyName("mapaAplicacao")]
+        [JsonPropertyName("mapaAplicado")]
         public List<DataFormatViewModel>? MapaAplicado { get; set; }
 
         [JsonPropertyName("aplicacoes")]

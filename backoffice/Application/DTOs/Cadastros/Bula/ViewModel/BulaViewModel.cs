@@ -7,17 +7,7 @@ namespace Application.DTOs.Cadastros.Bula.ViewModel;
 public class BulaViewModel
 {
     public int IdBula { get; set; }
-    public string NomeProduto { get; set; }
-    public int? IdCultura { get; set; }
-    public int? IdClassificacaoToxicologica { get; set; }
-    public string Classe { get; set; }
-    public string TipoDeFormulacao { get; set; }
-    public int? IdAlvoBiologico { get; set; }
-    public string? DoseProdutoComercial { get; set; }
-    public string Adjuvante { get; set; }
-    public int? IdTipoDeServico { get; set; }
-    public int? TipoDeUnidade { get; set; }
-    public int? IdEmpresa { get; set; }
-    public List<BulaAplicacaoViewModel> BulaAplicacoes { get; set; }
+    public int IdProduto { get; set; }
+    public List<RecomendacaoViewModel> Recomendacoes { get; set; }
 
 }

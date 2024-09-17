@@ -15,9 +15,9 @@ public class AlvoBiologico
     public string? DoseProdutoPorHectare { get; set; }
 
     [ForeignKey("Cultura")]
-    public int IdCultura { get; set; }
+    public int? IdCultura { get; set; }
     [ForeignKey("TipoDeUnidade")]
-    public int IdTipoDeUnidade { get; set; }
+    public int? IdTipoDeUnidade { get; set; }
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
 
