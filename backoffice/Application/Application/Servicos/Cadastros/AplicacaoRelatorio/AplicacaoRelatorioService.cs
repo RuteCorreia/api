@@ -5,6 +5,7 @@ using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Helpers;
+using System.Text.Json;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 
@@ -45,12 +46,10 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
     public async Task<int> AddAsync(StringAplicacaoRelatorioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var concatenatedMapaAplicacao = obj.MapaAplicado != null
-        ? string.Join("|", obj.MapaAplicado)
-        : string.Empty;
+        var mapaAplicado = JsonSerializer.Serialize(obj.MapaAplicado);
 
         var mapAplicacaoRelatorio = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio>(obj);
-        mapAplicacaoRelatorio.MapaAplicacao = concatenatedMapaAplicacao;
+        mapAplicacaoRelatorio.MapaAplicacao = mapaAplicado;
         mapAplicacaoRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
         if (obj.Id > 0)
