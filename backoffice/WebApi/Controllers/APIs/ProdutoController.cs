@@ -31,12 +31,12 @@ namespace WebApi.Controllers.APIs
             _logService = logService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll()
+        [HttpGet("{*nomeProduto}")]
+        public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll(string? nomeProduto)
         {
             try
             {
-                var produtos = await _produtoService.GetAllAsync();
+                var produtos = await _produtoService.GetAllAsync(nomeProduto);
                 _logService.LogInformation("Lista de produtos recuperada com sucesso.");
                 return Ok(produtos);
             }
@@ -128,7 +128,7 @@ namespace WebApi.Controllers.APIs
 
                         await _produtoService.UpdateAsync(obj);
                         _logService.LogInformation("Produto atualizado com sucesso.");
-                        return Ok("Sucesso");
+                        return Ok();
                     }
                     else
                     {
@@ -156,7 +156,7 @@ namespace WebApi.Controllers.APIs
                 {
                     await _produtoService.DeleteAsync(id);
                     _logService.LogInformation("Produto deletado com sucesso.");
-                    return Ok("Deletado com sucesso");
+                    return Ok();
                 }
 
                 _logService.LogWarning("Solicitação inválida para deletar produto.");

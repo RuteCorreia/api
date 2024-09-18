@@ -19,9 +19,9 @@ public class ProdutoService : IProdutoService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync()
+    public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync(string? nomeProduto)
     {
-        var list = await _produtoRepository.GetAllAsync();
+        var list = await _produtoRepository.GetAllAsync(nomeProduto);
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
     }
 

@@ -69,9 +69,17 @@ public class ProdutoRepository : IProdutoRepository
         return produto;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync(string? nomeProduto)
     {
-        var entities = await _contextBase.Produto.ToListAsync();
+        var query = _contextBase.Produto.AsQueryable();
+
+        // Aplica o filtro no nome apenas se o parâmetro nomeProduto não for vazio
+        if (!string.IsNullOrEmpty(nomeProduto))
+        {
+            query = query.Where(p => p.Nome.Contains(nomeProduto));
+        }
+
+        var entities = await query.ToListAsync();
         return entities;
     }
 
@@ -84,12 +92,9 @@ public class ProdutoRepository : IProdutoRepository
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Produto.Produto obj)
     {
         var objeto = await _contextBase.Produto.FindAsync(obj.Id);
-        objeto.IdCultura = obj.IdCultura;
-        objeto.Nome = obj.Nome;
         objeto.ClassificacaoToxicologica = obj.ClassificacaoToxicologica;
-        objeto.Classe = obj.Classe;
-        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
-        objeto.TipoFormulacao = obj.TipoFormulacao;
+        objeto.IdTipoDeFormulacao = obj.IdTipoDeFormulacao;
+        objeto.IdTipoDeServico = obj.IdTipoDeServico;
 
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();
