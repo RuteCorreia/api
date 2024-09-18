@@ -103,13 +103,16 @@ namespace Infra.Migrations
                     b.Property<string>("DoseProdutoPorHectare")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("IdCultura")
+                    b.Property<int?>("IdCultura")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
                     b.Property<int?>("IdProduto")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdTipoDeUnidade")
+                    b.Property<int?>("IdTipoDeUnidade")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
@@ -118,6 +121,8 @@ namespace Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdCultura");
+
+                    b.HasIndex("IdEmpresa");
 
                     b.HasIndex("IdProduto");
 
@@ -505,6 +510,9 @@ namespace Infra.Migrations
                     b.Property<string>("Longitude")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("MapaAplicacao")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ProdutoAplicado")
                         .HasColumnType("nvarchar(max)");
 
@@ -724,6 +732,9 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CPF")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Cep")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Cidade")
@@ -1233,6 +1244,9 @@ namespace Infra.Migrations
                     b.Property<string>("Imagem")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsDrone")
+                        .HasColumnType("bit");
+
                     b.Property<int?>("KmFinal")
                         .HasColumnType("int");
 
@@ -1257,6 +1271,9 @@ namespace Infra.Migrations
                     b.Property<string>("NomePiloto")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NomeRelatorio")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("NomeVeiculo")
                         .HasColumnType("nvarchar(max)");
 
@@ -1267,6 +1284,9 @@ namespace Infra.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("QtdeHectare")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StatusEnvio")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -1386,7 +1406,6 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Classe")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DoseProdutoComercial")
@@ -1404,11 +1423,16 @@ namespace Infra.Migrations
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdProduto")
+                        .HasColumnType("int");
+
                     b.Property<int?>("IdTipoDeServico")
                         .HasColumnType("int");
 
+                    b.Property<int>("IdTipoDeUnidade")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomeProduto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Removido")
@@ -1424,6 +1448,10 @@ namespace Infra.Migrations
                     b.HasIndex("IdCultura");
 
                     b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdProduto");
+
+                    b.HasIndex("IdTipoDeUnidade");
 
                     b.ToTable("Bula");
                 });
@@ -1842,6 +1870,9 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
                     b.Property<string>("LAT")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1855,6 +1886,8 @@ namespace Infra.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("IdEmpresa");
 
                     b.ToTable("Pista");
                 });
@@ -1901,10 +1934,19 @@ namespace Infra.Migrations
                     b.Property<int?>("IdCultura")
                         .HasColumnType("int");
 
+                    b.Property<int?>("IdEmpresa")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdTipoDeFormulacao")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("IdTipoDeServico")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("TipoDeFormulacao")
+                    b.Property<string>("TipoFormulacao")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("TipoServico")
@@ -1913,6 +1955,12 @@ namespace Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdCultura");
+
+                    b.HasIndex("IdEmpresa");
+
+                    b.HasIndex("IdTipoDeFormulacao");
+
+                    b.HasIndex("IdTipoDeServico");
 
                     b.ToTable("Produto");
                 });
@@ -1976,6 +2024,9 @@ namespace Infra.Migrations
 
                     b.Property<bool>("IsMapa")
                         .HasColumnType("bit");
+
+                    b.Property<string>("MapaAplicacao")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NomeRelatorio")
                         .HasColumnType("nvarchar(max)");
@@ -2375,6 +2426,12 @@ namespace Infra.Migrations
                     b.Property<byte[]>("Dados")
                         .HasColumnType("varbinary(max)");
 
+                    b.Property<DateTime?>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DataCriacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
@@ -2755,9 +2812,11 @@ namespace Infra.Migrations
                 {
                     b.HasOne("Domain.Entidades.Cadastros.Cultura.Cultura", "Cultura")
                         .WithMany()
-                        .HasForeignKey("IdCultura")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCultura");
+
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
 
                     b.HasOne("Domain.Entidades.Cadastros.Produto.Produto", "Produto")
                         .WithMany()
@@ -2765,11 +2824,11 @@ namespace Infra.Migrations
 
                     b.HasOne("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", "TipoDeUnidade")
                         .WithMany()
-                        .HasForeignKey("IdTipoDeUnidade")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdTipoDeUnidade");
 
                     b.Navigation("Cultura");
+
+                    b.Navigation("Empresa");
 
                     b.Navigation("Produto");
 
@@ -3188,11 +3247,25 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdEmpresa");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Produto.Produto", "Produto")
+                        .WithMany()
+                        .HasForeignKey("IdProduto");
+
+                    b.HasOne("Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade", "TipoDeUnidade")
+                        .WithMany()
+                        .HasForeignKey("IdTipoDeUnidade")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("AlvoBiologico");
 
                     b.Navigation("Cultura");
 
                     b.Navigation("Empresa");
+
+                    b.Navigation("Produto");
+
+                    b.Navigation("TipoDeUnidade");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.Empresa.BulaAplicacao", b =>
@@ -3275,6 +3348,15 @@ namespace Infra.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("Domain.Entidades.Cadastros.Pistas.Pista", b =>
+                {
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.Navigation("Empresa");
+                });
+
             modelBuilder.Entity("Domain.Entidades.Cadastros.Precificacao.Precificacao", b =>
                 {
                     b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
@@ -3290,7 +3372,25 @@ namespace Infra.Migrations
                         .WithMany()
                         .HasForeignKey("IdCultura");
 
+                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("IdEmpresa");
+
+                    b.HasOne("Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao", "TipoDeFormulacao")
+                        .WithMany()
+                        .HasForeignKey("IdTipoDeFormulacao");
+
+                    b.HasOne("Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico", "TipoDeServico")
+                        .WithMany()
+                        .HasForeignKey("IdTipoDeServico");
+
                     b.Navigation("Cultura");
+
+                    b.Navigation("Empresa");
+
+                    b.Navigation("TipoDeFormulacao");
+
+                    b.Navigation("TipoDeServico");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao", b =>

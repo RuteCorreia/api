@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Aplicacao.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -51,6 +52,9 @@ public class AplicacaoRelatorioViewModel
 
     [JsonPropertyName("unidadeVolumeAplicacao")]
     public string? UnidadeVolumeAplicacao { get; set; }
+
+    [JsonPropertyName("mapaAplicado")]
+    public List<DataFormatViewModel>? MapaAplicado { get; set; }
 
     [JsonPropertyName("aplicacoes")]
     public List<AplicacaoRelatorioItemViewModel>? Aplicacoes { get; set; }

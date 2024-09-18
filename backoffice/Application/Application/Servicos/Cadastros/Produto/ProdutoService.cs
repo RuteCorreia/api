@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Produto.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
+using Helpers;
 using System.Collections.Immutable;
 
 namespace Application.Application.Servicos.Cadastros.Produto;
@@ -18,9 +19,9 @@ public class ProdutoService : IProdutoService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync()
+    public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync(string? nomeProduto)
     {
-        var list = await _produtoRepository.GetAllAsync();
+        var list = await _produtoRepository.GetAllAsync(nomeProduto);
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
     }
 
@@ -30,9 +31,11 @@ public class ProdutoService : IProdutoService
         return _mapper.Map<ProdutoViewModel>(obj);
     }
 
-    public async Task AddAsync(ProdutoViewModel obj)
+    public async Task AddAsync(ProdutoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
+        mapProduto.IdEmpresa = idEmpresaInt;
         await _produtoRepository.AddAsync(mapProduto);
     }
 
@@ -50,6 +53,11 @@ public class ProdutoService : IProdutoService
     public async Task<IEnumerable<string>> GetClasses()
     {
         return await _produtoRepository.GetClasses();
+    }
+
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    {
+        return await _produtoRepository.GetNomesByIdsAsync(ids);
     }
 
     public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe)

@@ -4,7 +4,7 @@ namespace Application.DTOs.Cadastros.Pistas.Interface;
 
 public interface IPistaService 
 {
-    Task<IEnumerable<PistaViewModel>> GetAllAsync();
+    Task<IEnumerable<PistaViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<PistaViewModel> GetByIdAsync(int id);
     Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name);

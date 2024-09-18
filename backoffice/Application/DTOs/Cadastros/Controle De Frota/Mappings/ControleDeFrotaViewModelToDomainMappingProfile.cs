@@ -7,7 +7,8 @@ namespace Application.DTOs.Cadastros.Controle_De_Frota.Mappings
     {
         public ControleDeFrotaViewModelToDomainMappingProfile()
         {
-            CreateMap<ControleDeFrotaViewModel, Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>();
+            CreateMap<ControleDeFrotaViewModel, Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>()
+                .ForMember(dest => dest.StatusEnvio, opt => opt.MapFrom(src => src.State));
         }
     }
 }

@@ -31,9 +31,11 @@ public class PistaRepository : IPistaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.Pista.ToListAsync();
+        var entities = await _contextBase.Pista
+        .Where(p => p.IdEmpresa == idEmpresa)
+        .ToListAsync();
         return entities;
     }
 

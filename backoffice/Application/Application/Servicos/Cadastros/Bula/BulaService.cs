@@ -26,21 +26,89 @@ public class BulaService : IBulaService
         return _mapper.Map<IEnumerable<BulaViewModel>>(list);
     }
 
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt, nomeProduto);
+    }
+
+    public async Task RemoveRecomendacaoAsync(int idBula)
+    {
+        await _bulaRepository.RemoveRecomendacaoAsync(idBula);
+    }
+
+    public async Task RemoveBulaAsync(int idProduto, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _bulaRepository.RemoveBulaAsync(idProduto, idEmpresaInt);
+    }
+
     public async Task<BulaViewModel> GetByIdAsync(int id)
     {
         var obj = await _bulaRepository.GetByIdAsync(id);
         return _mapper.Map<BulaViewModel>(obj);
     }
 
-    public async Task AddAsync(BulaViewModel obj)
+    public async Task<BulaViewModel> GetByIdProdutoAsync(int idProduto)
     {
-        if (obj.IdAlvoBiologico == 0)
-            obj.IdAlvoBiologico = null;
-        if(obj.IdCultura == 0)
-            obj.IdCultura = null;
+        var recomendacoesList = new List<RecomendacaoViewModel>();
 
-        var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
-        await _bulaRepository.AddAsync(mapBula);
+        var bulas = await _bulaRepository.GetByIdProdutoAsync(idProduto);
+
+        if (bulas == null || !bulas.Any())
+        {
+            return new BulaViewModel();
+        }
+
+        var bulaViewModel = new BulaViewModel
+        {
+            IdProduto = idProduto,
+            Recomendacoes = recomendacoesList
+        };
+
+        foreach (var item in bulas)
+        {
+            var recomendacao = new RecomendacaoViewModel
+            {
+                IdBula = item.IdBula,
+                IdCultura = item.IdCultura ?? 0, 
+                IdAlvoBiologico = item.IdAlvoBiologico ?? 0, 
+                DoseProdutoComercial = item.DoseProdutoComercial ?? string.Empty,
+                IdTipoDeUnidade = item.IdTipoDeUnidade
+            };
+
+            recomendacoesList.Add(recomendacao);
+        }
+        bulaViewModel.Recomendacoes = recomendacoesList;
+
+        return bulaViewModel;
+    }
+
+    public async Task AddAsync(BulaViewModel obj, string? idEmpresa)
+    {
+        foreach (var item in obj.Recomendacoes) 
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
+            mapBula.IdEmpresa = idEmpresaInt;
+            mapBula.IdCultura = item.IdCultura;
+            mapBula.IdAlvoBiologico = item.IdAlvoBiologico;
+            mapBula.DoseProdutoComercial = item.DoseProdutoComercial;
+            mapBula.IdTipoDeUnidade = item.IdTipoDeUnidade;
+            if (item.IdBula == null || item.IdBula == 0)
+            {
+                await _bulaRepository.AddAsync(mapBula);
+            }
+            else if (item.IdBula > 0) 
+            {
+                mapBula.IdBula = item.IdBula ?? 0;
+                await _bulaRepository.UpdateAsync(mapBula);
+            }
+            else
+            {
+                throw new Exception("nao foi possivel adicionar a bula");
+            }     
+        }
     }
 
     public async Task UpdateAsync(BulaViewModel obj)

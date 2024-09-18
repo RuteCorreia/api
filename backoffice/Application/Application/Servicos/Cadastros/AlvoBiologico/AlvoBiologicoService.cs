@@ -9,6 +9,7 @@ using Domain.Interfaces.Cadastros.BulaAplicacao;
 using Domain.Interfaces.Cadastros.Cultura;
 using Domain.Interfaces.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.TipoDeUnidade;
+using Helpers;
 using System.Collections.Generic;
 
 namespace Application.Application.Servicos.Cadastros.AlvoBiologico;
@@ -73,9 +74,11 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         }
     }
 
-    public async Task AddAsync(AlvoBiologicoViewModel obj)
+    public async Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
+        mapAlvoBiologico.IdEmpresa = idEmpresaInt;
         await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
     }
 
@@ -103,13 +106,13 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         foreach (var bulaAplicacao in listBulaAplicacao)
         {
             var alvoBiologico = await _alvoBiologicoRepository.GetByIdAsync(bulaAplicacao.IdAlvoBiologico);
-            var cultura = await _culturaRepository.GetByIdAsync(alvoBiologico.IdCultura);
+            //var cultura = await _culturaRepository.GetByIdAsync(alvoBiologico.IdCultura);
             var tipoDeUnidade = await _tipoDeUnidadeRepository.GetByIdAsync(alvoBiologico.IdTipoDeUnidade);
 
             var formulacao = new FormulacaoViewModel
             {
                 Id = alvoBiologico.Id,
-                Cultura = cultura.Nome,
+                //Cultura = cultura.Nome,
                 AlvoBiologico = alvoBiologico.Nome,
                 DoseProduto = alvoBiologico.DoseProdutoPorHectare,
                 UnidadeDeMedida = tipoDeUnidade.NomeUnidade

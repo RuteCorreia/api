@@ -1,6 +1,10 @@
-﻿using Domain.Interfaces.Cadastros.Produto;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Produto;
+using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Produto;
@@ -38,6 +42,18 @@ public class ProdutoRepository : IProdutoRepository
         return classes;
     }
 
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    {
+        var query = @"SELECT Nome FROM Produto WHERE Id IN @Ids";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Ids = ids };
+            var result = await connection.QueryAsync<string>(query, parameters);
+            return result.ToList();
+        }
+    }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe)
     {
         var nomes = await _contextBase.Produto
@@ -53,9 +69,17 @@ public class ProdutoRepository : IProdutoRepository
         return produto;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync(string? nomeProduto)
     {
-        var entities = await _contextBase.Produto.ToListAsync();
+        var query = _contextBase.Produto.AsQueryable();
+
+        // Aplica o filtro no nome apenas se o parâmetro nomeProduto não for vazio
+        if (!string.IsNullOrEmpty(nomeProduto))
+        {
+            query = query.Where(p => p.Nome.Contains(nomeProduto));
+        }
+
+        var entities = await query.ToListAsync();
         return entities;
     }
 
@@ -68,12 +92,9 @@ public class ProdutoRepository : IProdutoRepository
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Produto.Produto obj)
     {
         var objeto = await _contextBase.Produto.FindAsync(obj.Id);
-        objeto.IdCultura = obj.IdCultura;
-        objeto.Nome = obj.Nome;
         objeto.ClassificacaoToxicologica = obj.ClassificacaoToxicologica;
-        objeto.Classe = obj.Classe;
-        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
-        objeto.TipoServico = obj.TipoServico;
+        objeto.IdTipoDeFormulacao = obj.IdTipoDeFormulacao;
+        objeto.IdTipoDeServico = obj.IdTipoDeServico;
 
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();

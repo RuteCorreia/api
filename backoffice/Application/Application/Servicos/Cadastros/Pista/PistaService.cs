@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Pistas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Pista;
+using Helpers;
 using System.Text.RegularExpressions;
 
 namespace Application.Application.Servicos.Cadastros.Pista;
@@ -17,9 +18,10 @@ public class PistaService : IPistaService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<PistaViewModel>> GetAllAsync()
+    public async Task<IEnumerable<PistaViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var list = await _pistaRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _pistaRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<PistaViewModel>>(list);
     }
 

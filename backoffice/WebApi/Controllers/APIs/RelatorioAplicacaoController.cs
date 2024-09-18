@@ -489,6 +489,7 @@ namespace WebApi.Controllers.APIs
                         Densidade = aplicacaoRelatorio.Densidade,
                         RelatorioDGPS = aplicacaoRelatorio.RelatorioDGPS,
                         UnidadeVolumeAplicacao = aplicacaoRelatorio.UnidadeVolumeAplicacao,
+                        MapaAplicado = aplicacaoRelatorio.MapaAplicado,
                         Aplicacoes = listaAplicacaoRelatorioItem
                     };
 

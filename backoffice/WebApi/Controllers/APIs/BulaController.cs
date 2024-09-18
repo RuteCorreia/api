@@ -78,30 +78,93 @@ public class BulaController : ControllerBase
         }
     }
 
+    [HttpGet("GetByIdProduto/{idProduto:int}")]
+    public async Task<ActionResult<BulaViewModel>> GetByIdProduto(int idProduto)
+    {
+        try
+        {
+            var bula = await _bulaService.GetByIdProdutoAsync(idProduto);
+            if (!ObjectNullValidation.IsObjectNull(bula))
+            {
+                _loggerService.LogInformation($"A Bula com ID {idProduto} foi recuperada com sucesso.");
+                return Ok(bula);
+            }
+
+            _loggerService.LogWarning($"A Bula com ID {idProduto} não foi encontrada.");
+            return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao buscar a Bula com ID {idProduto}: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar a Bula: {ex.Message}");
+        }
+    }
+
+    [HttpGet("RemoveRecomendacao/{idBula}")]
+    public async Task<IActionResult> RemoveRecomendacao(int idBula)
+    {
+        try
+        {
+            await _bulaService.RemoveRecomendacaoAsync(idBula);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao remover registro da Bula: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao remover registro da Bula: {ex.Message}");
+        }
+    }
+
+    [HttpGet("RemoveBula/{idProduto}")]
+    public async Task<IActionResult> RemoveBula(int idProduto)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            await _bulaService.RemoveBulaAsync(idProduto, loggedUser.Item3);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao remover registro da Bula: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao remover registro da Bula: {ex.Message}");
+        }
+    }
+
+    [HttpGet("GetBulas/{*nomeProduto}")]
+    public async Task<ActionResult<List<int>>> GetBulas(string? nomeProduto)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var bulas = await _bulaService.GetDistinctBulaAsync(loggedUser.Item3, nomeProduto);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok(bulas);
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao buscar todos os registros de Bulas: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao buscar todos os registros de Bulas: {ex.Message}");
+        }
+    }
+
+
     [HttpPost]
     public async Task<ActionResult> Add([FromBody] BulaViewModel obj)
     {
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
-            if (verificaSeBulaExistePeloNome != null)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
-            }
+            //var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
+            //if (verificaSeBulaExistePeloNome != null)
+            //{
+            //    return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
+            //}
             if (ModelState.IsValid)
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(loggedUser.Item3);
-                obj.IdEmpresa = idEmpresaInt;
-                await _bulaService.AddAsync(obj);
-                var lista = await _bulaService.GetAllAsync(loggedUser.Item3);
-                var ultimoCriado = lista.LastOrDefault();
-                foreach (var item in obj.BulaAplicacoes)
-                {
-                    item.IdBula = ultimoCriado.IdBula;
-                    await _bulaAplicacaoService.AddAsync(item);
-
-                }
+                await _bulaService.AddAsync(obj, loggedUser.Item3);
                 _loggerService.LogInformation("Bula adicionada com sucesso.");
                 return Ok();
             }
@@ -116,52 +179,52 @@ public class BulaController : ControllerBase
         }
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult> Update(int id, [FromBody] BulaViewModel obj)
-    {
-        try
-        {
-            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
-            if (verificaSeBulaExistePeloNome != null && verificaSeBulaExistePeloNome.IdBula != obj.IdBula)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
-            }
-            if (ModelState.IsValid)
-            {
-                var objeto = await _bulaService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(objeto))
-                {
-                    obj.IdBula = objeto.IdBula;
+    //[HttpPut("{id:int}")]
+    //public async Task<ActionResult> Update(int id, [FromBody] BulaViewModel obj)
+    //{
+    //    try
+    //    {
+    //        var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+    //        var verificaSeBulaExistePeloNome = _bulaService.GetByName(obj.NomeProduto, loggedUser.Item3).Result;
+    //        if (verificaSeBulaExistePeloNome != null && verificaSeBulaExistePeloNome.IdBula != obj.IdBula)
+    //        {
+    //            return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma bula com esse nome!");
+    //        }
+    //        if (ModelState.IsValid)
+    //        {
+    //            var objeto = await _bulaService.GetByIdAsync(id);
+    //            if (!ObjectNullValidation.IsObjectNull(objeto))
+    //            {
+    //                obj.IdBula = objeto.IdBula;
 
-                    await _bulaService.UpdateAsync(obj);
+    //                await _bulaService.UpdateAsync(obj);
 
-                    foreach (var item in obj.BulaAplicacoes)
-                    {
-                        item.IdBula = id;
-                        item.IdBulaAplicacao = 0;
-                        await _bulaAplicacaoService.AddAsync(item);
+    //                foreach (var item in obj.BulaAplicacoes)
+    //                {
+    //                    item.IdBula = id;
+    //                    item.IdBulaAplicacao = 0;
+    //                    await _bulaAplicacaoService.AddAsync(item);
 
-                    }
-                    _loggerService.LogInformation($"Bula com ID {id} atualizada com sucesso.");
-                    return Ok();
-                }
-                else
-                {
-                    _loggerService.LogWarning($"A Bula com ID {id} não foi encontrada.");
-                    return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
-                }
-            }
+    //                }
+    //                _loggerService.LogInformation($"Bula com ID {id} atualizada com sucesso.");
+    //                return Ok();
+    //            }
+    //            else
+    //            {
+    //                _loggerService.LogWarning($"A Bula com ID {id} não foi encontrada.");
+    //                return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
+    //            }
+    //        }
 
-            _loggerService.LogWarning("Tentativa de atualizar uma Bula com um modelo inválido.");
-            return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
-        }
-        catch (Exception ex)
-        {
-            _loggerService.LogError(ex, $"Erro ao atualizar Bula com ID {id}: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar Bula: {ex.Message}");
-        }
-    }
+    //        _loggerService.LogWarning("Tentativa de atualizar uma Bula com um modelo inválido.");
+    //        return StatusCode(StatusCodes.Status400BadRequest, "Modelo inválido");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _loggerService.LogError(ex, $"Erro ao atualizar Bula com ID {id}: {ex.Message}");
+    //        return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar Bula: {ex.Message}");
+    //    }
+    //}
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)

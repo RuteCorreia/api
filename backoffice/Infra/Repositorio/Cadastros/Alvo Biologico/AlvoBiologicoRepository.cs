@@ -21,7 +21,23 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task AddAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
     {
         await _contextBase.AddAsync(obj);
-        await _contextBase.SaveChangesAsync();
+        try
+        {
+            await _contextBase.SaveChangesAsync();
+        }
+        catch (DbUpdateException dbEx)
+        {
+            // Captura exceções específicas do Entity Framework
+            Console.WriteLine($"Erro ao atualizar o banco de dados: {dbEx.Message}");
+            // Opcional: Registrar mais detalhes, como dbEx.InnerException
+        }
+        catch (Exception ex)
+        {
+            // Captura todas as outras exceções
+            Console.WriteLine($"Erro inesperado: {ex.Message}");
+            // Opcional: Registrar mais detalhes, como ex.StackTrace
+        }
+
     }
 
     public async Task DeleteAsync(int id)

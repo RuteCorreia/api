@@ -1,5 +1,9 @@
-﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+﻿using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
+using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
+using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
+using Application.DTOs.Cadastros.RelatorioBase;
 using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
@@ -19,15 +23,18 @@ public class ControleDeFrotaController : ControllerBase
 {
     private readonly IControleDeFrotaService _controleDeFrotaService;
     private readonly LoggedUserInfoService _loggedUserInfoService;
+    private readonly IDataRelatorioService _dataRelatorioService;
     private readonly ILogService _logService; // Injete o serviço de log
 
     public ControleDeFrotaController(
         IControleDeFrotaService controleDeFrotaService,
         LoggedUserInfoService loggedUserInfoService,
+        IDataRelatorioService dataRelatorioService,
         ILogService logService) // Adicione o serviço de log como parâmetro do construtor
     {
         _controleDeFrotaService = controleDeFrotaService;
         _loggedUserInfoService = loggedUserInfoService;
+        _dataRelatorioService = dataRelatorioService;
         _logService = logService; // Atribua o serviço de log
     }
 
@@ -44,6 +51,47 @@ public class ControleDeFrotaController : ControllerBase
         {
             _logService.LogError(ex, $"ControleDeFrota getAll - {ex.Message}"); // Registre um erro de log
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota getAll - {ex.Message}");
+        }
+    }
+
+    [HttpGet("getDataFromApp")]
+    public async Task<ActionResult<IEnumerable<ControleDeFrotaViewModel>>> GetDataFromApp()
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorios = await _controleDeFrotaService.GetListByStatusAsync(loggedUser.Item3);
+            List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
+            foreach (var relatorio in relatorios)
+            {
+                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+
+                if (!string.IsNullOrEmpty(data.Data))
+                {
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
+                    {
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State
+                    };
+
+                    dataRelatorios.Add(relatorioBaseViewModel);
+                }
+                else
+                {
+                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
+                    _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                }
+            }
+
+            _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
+            return Ok(dataRelatorios);
+        }
+        catch (Exception ex)
+        {
+            _logService.LogError(ex, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
         }
     }
 

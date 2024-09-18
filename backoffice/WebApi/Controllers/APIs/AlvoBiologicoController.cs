@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -20,11 +21,16 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class AlvoBiologicoController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IAlvoBiologicoService _alvoBiologicoService;
         private readonly ILogService _logService;
 
-        public AlvoBiologicoController(IAlvoBiologicoService alvoBiologicoService, ILogService logService)
+        public AlvoBiologicoController(
+            LoggedUserInfoService loggedUserInfoService,
+            IAlvoBiologicoService alvoBiologicoService, 
+            ILogService logService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _alvoBiologicoService = alvoBiologicoService;
             _logService = logService;
         }
@@ -137,7 +143,8 @@ namespace WebApi.Controllers.APIs
 
                 if (ModelState.IsValid)
                 {
-                    await _alvoBiologicoService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _alvoBiologicoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo alvo biológico adicionado com sucesso.");
                     return Ok();
                 }

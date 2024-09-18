@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Cultura;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 using Infra.Configuracao;
@@ -61,8 +63,21 @@ public class BulaRepository : IBulaRepository
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
     {
-        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdBula == id);
+        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdProduto == id);
         return obj;
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto)
+    {
+
+        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdProduto = idProduto };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa)
@@ -76,18 +91,62 @@ public class BulaRepository : IBulaRepository
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
         var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
-        objeto.NomeProduto = obj.NomeProduto;
         objeto.IdCultura = obj.IdCultura;
-        objeto.IdClassificacaoToxicologica = obj.IdClassificacaoToxicologica;
-        objeto.Classe = obj.Classe;
-        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
         objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
         objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
-        objeto.Adjuvante = obj.Adjuvante;
-        objeto.IdTipoDeServico = obj.IdTipoDeServico;
-        var listaParaRemover = _contextBase.BulaAplicacao.Where(x => x.IdBula == obj.IdBula).ToList();
-        _contextBase.BulaAplicacao.RemoveRange(listaParaRemover);
+        objeto.IdTipoDeUnidade = obj.IdTipoDeUnidade;
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
+    }
+
+    public async Task RemoveRecomendacaoAsync(int idBula)
+    {
+        var objeto = await _contextBase.Bula.FindAsync(idBula);
+        objeto.Removido = true;
+        _contextBase.Bula.Update(objeto);
+        await _contextBase.SaveChangesAsync();
+    }
+
+    public async Task RemoveBulaAsync(int idProduto, int idEmpresa)
+    {
+        var bulas = await _contextBase.Bula
+            .Where(b => b.IdProduto == idProduto && b.IdEmpresa == idEmpresa)
+            .ToListAsync();
+
+        if (bulas.Any())
+        {
+            foreach (var bula in bulas)
+            {
+                bula.Removido = true;
+            }
+
+            _contextBase.Bula.UpdateRange(bulas);
+            await _contextBase.SaveChangesAsync();
+        }
+    }
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto)
+    {
+        if (nomeProduto == null)
+            nomeProduto = "";
+
+        var query = @"SELECT DISTINCT(b.IdProduto) 
+                  FROM Bula b 
+                  INNER JOIN Produto p ON p.Id = b.IdProduto 
+                  WHERE p.Nome LIKE @NomeProduto 
+                  AND b.IdEmpresa = @IdEmpresa 
+                  AND b.Removido = 0";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            // Define os parâmetros, incluindo o nome do produto com os curingas para o LIKE
+            var parameters = new
+            {
+                IdEmpresa = idEmpresa,
+                NomeProduto = $"%{nomeProduto}%" // Adiciona os curingas para o LIKE
+            };
+
+            var result = await connection.QueryAsync<int>(query, parameters);
+            return result.ToList();
+        }
     }
 }

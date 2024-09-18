@@ -12,4 +12,5 @@ public class PistaViewModel
     public string Nome { get; set; }
     public string LAT { get; set; }
     public string LONG { get; set; }
+    public int? IdEmpresa { get; set; }
 }

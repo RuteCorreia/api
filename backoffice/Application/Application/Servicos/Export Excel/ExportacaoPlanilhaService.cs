@@ -26,6 +26,8 @@ namespace Application.Application.Servicos.Export_Excel
             {
                 Nome = nomeArquivo,
                 Dados = zipStream.ToArray(),
+                DataCriacao = DateTime.Now,
+                DataAlteracao = DateTime.Now,
                 IdEmpresa = idEmpresaInt
             };
 
@@ -70,6 +72,7 @@ namespace Application.Application.Servicos.Export_Excel
 
         public async Task UpdateAsync(PlanilhaExcelExportada obj)
         {
+            obj.DataAlteracao = DateTime.Now;
             await _exportacaoPlanilhaRepository.UpdateAsync(obj);
         }
 

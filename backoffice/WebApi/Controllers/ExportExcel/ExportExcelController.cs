@@ -177,7 +177,10 @@ namespace WebApi.Controllers.ExportExcel
                 {
                     Id = arquivo.Id,
                     Nome = arquivo.Nome,
-                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null
+                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null,
+                    DataAlteracao = arquivo.DataAlteracao.HasValue
+                        ? arquivo.DataAlteracao.Value.ToString("dd/MM/yyyy HH:mm:ss")
+                        : string.Empty
                 }).ToList();
 
                 return Ok(arquivosZipViewModel);

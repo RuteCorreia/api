@@ -4,6 +4,7 @@ using Application.DTOs.Log.Interface;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -16,21 +17,26 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ProdutoController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IProdutoService _produtoService;
         private readonly ILogService _logService;
 
-        public ProdutoController(IProdutoService produtoService, ILogService logService)
+        public ProdutoController(
+            LoggedUserInfoService loggedUserInfoService,
+            IProdutoService produtoService, 
+            ILogService logService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _produtoService = produtoService;
             _logService = logService;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll()
+        [HttpGet("{*nomeProduto}")]
+        public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAll(string? nomeProduto)
         {
             try
             {
-                var produtos = await _produtoService.GetAllAsync();
+                var produtos = await _produtoService.GetAllAsync(nomeProduto);
                 _logService.LogInformation("Lista de produtos recuperada com sucesso.");
                 return Ok(produtos);
             }
@@ -92,7 +98,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    await _produtoService.AddAsync(obj);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _produtoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo produto adicionado com sucesso.");
                     return Ok();
                 }
@@ -121,7 +128,7 @@ namespace WebApi.Controllers.APIs
 
                         await _produtoService.UpdateAsync(obj);
                         _logService.LogInformation("Produto atualizado com sucesso.");
-                        return Ok("Sucesso");
+                        return Ok();
                     }
                     else
                     {
@@ -149,7 +156,7 @@ namespace WebApi.Controllers.APIs
                 {
                     await _produtoService.DeleteAsync(id);
                     _logService.LogInformation("Produto deletado com sucesso.");
-                    return Ok("Deletado com sucesso");
+                    return Ok();
                 }
 
                 _logService.LogWarning("Solicitação inválida para deletar produto.");
@@ -159,6 +166,22 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao deletar produto: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao deletar produto: {ex.Message}");
+            }
+        }
+
+        [HttpGet("getNomesByIds")]
+        public async Task<ActionResult<IEnumerable<string>>> GetNomesByIds([FromQuery(Name = "ids")] List<int> ids)
+        {
+            try
+            {
+                var produtos = await _produtoService.GetNomesByIdsAsync(ids);
+                _logService.LogInformation("Lista de produtos recuperada com sucesso.");
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os produtos: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os produtos: {ex.Message}");
             }
         }
 

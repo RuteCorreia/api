@@ -11,6 +11,8 @@ namespace Domain.Entidades.Export_Excel
         public int Id { get; set; }
         public string? Nome { get; set; }
         public Byte[]? Dados { get; set; }
+        public DateTime? DataCriacao { get; set; }
+        public DateTime? DataAlteracao { get; set; }
 
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }

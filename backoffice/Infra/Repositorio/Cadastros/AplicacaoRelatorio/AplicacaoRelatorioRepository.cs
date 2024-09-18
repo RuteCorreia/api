@@ -75,6 +75,7 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
         objeto.ProdutoAplicado = obj.ProdutoAplicado;
         objeto.RelatorioDGPS = obj.RelatorioDGPS;
         objeto.UnidadeVolumeAplicacao = obj.UnidadeVolumeAplicacao;
+        objeto.MapaAplicacao = obj.MapaAplicacao;
 
         _contextBase.AplicacaoRelatorio.Update(objeto);
         await _contextBase.SaveChangesAsync();
