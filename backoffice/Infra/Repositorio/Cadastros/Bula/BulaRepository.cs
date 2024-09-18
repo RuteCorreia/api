@@ -91,17 +91,10 @@ public class BulaRepository : IBulaRepository
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
         var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
-        objeto.NomeProduto = obj.NomeProduto;
         objeto.IdCultura = obj.IdCultura;
-        objeto.IdClassificacaoToxicologica = obj.IdClassificacaoToxicologica;
-        objeto.Classe = obj.Classe;
-        objeto.TipoDeFormulacao = obj.TipoDeFormulacao;
         objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
         objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
-        objeto.Adjuvante = obj.Adjuvante;
-        objeto.IdTipoDeServico = obj.IdTipoDeServico;
-        var listaParaRemover = _contextBase.BulaAplicacao.Where(x => x.IdBula == obj.IdBula).ToList();
-        _contextBase.BulaAplicacao.RemoveRange(listaParaRemover);
+        objeto.IdTipoDeUnidade = obj.IdTipoDeUnidade;
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }

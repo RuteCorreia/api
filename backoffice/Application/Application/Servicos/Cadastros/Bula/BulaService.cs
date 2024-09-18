@@ -89,7 +89,19 @@ public class BulaService : IBulaService
             mapBula.IdAlvoBiologico = item.IdAlvoBiologico;
             mapBula.DoseProdutoComercial = item.DoseProdutoComercial;
             mapBula.IdTipoDeUnidade = item.IdTipoDeUnidade;
-            await _bulaRepository.AddAsync(mapBula);
+            if (item.IdBula == null || item.IdBula == 0)
+            {
+                await _bulaRepository.AddAsync(mapBula);
+            }
+            else if (item.IdBula > 0) 
+            {
+                mapBula.IdBula = item.IdBula ?? 0;
+                await _bulaRepository.UpdateAsync(mapBula);
+            }
+            else
+            {
+                throw new Exception("nao foi possivel adicionar a bula");
+            }     
         }
     }
 
