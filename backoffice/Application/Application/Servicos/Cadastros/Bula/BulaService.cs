@@ -26,10 +26,10 @@ public class BulaService : IBulaService
         return _mapper.Map<IEnumerable<BulaViewModel>>(list);
     }
 
-    public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa)
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt);
+        return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt, nomeProduto);
     }
 
     public async Task RemoveRecomendacaoAsync(int idBula)

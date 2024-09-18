@@ -13,5 +13,5 @@ public interface IBulaRepository
     Task<IEnumerable<Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id);
     Task<Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa);
-    Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa);
+    Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto);
 }

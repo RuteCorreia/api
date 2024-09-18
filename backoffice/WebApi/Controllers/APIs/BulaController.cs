@@ -133,13 +133,13 @@ public class BulaController : ControllerBase
         }
     }
 
-    [HttpGet("GetBulas")]
-    public async Task<ActionResult<List<int>>> GetBulas()
+    [HttpGet("GetBulas/{*nomeProduto}")]
+    public async Task<ActionResult<List<int>>> GetBulas(string? nomeProduto)
     {
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var bulas = await _bulaService.GetDistinctBulaAsync(loggedUser.Item3);
+            var bulas = await _bulaService.GetDistinctBulaAsync(loggedUser.Item3, nomeProduto);
             _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
             return Ok(bulas);
         }

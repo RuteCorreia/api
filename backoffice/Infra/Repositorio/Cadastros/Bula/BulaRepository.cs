@@ -124,14 +124,27 @@ public class BulaRepository : IBulaRepository
             await _contextBase.SaveChangesAsync();
         }
     }
-
-    public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa)
+    public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto)
     {
-        var query = @"SELECT DISTINCT IdProduto FROM Bula WHERE IdEmpresa = @IdEmpresa AND Removido = 0";
+        if (nomeProduto == null)
+            nomeProduto = "";
+
+        var query = @"SELECT DISTINCT(b.IdProduto) 
+                  FROM Bula b 
+                  INNER JOIN Produto p ON p.Id = b.IdProduto 
+                  WHERE p.Nome LIKE @NomeProduto 
+                  AND b.IdEmpresa = @IdEmpresa 
+                  AND b.Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdEmpresa = idEmpresa };
+            // Define os parâmetros, incluindo o nome do produto com os curingas para o LIKE
+            var parameters = new
+            {
+                IdEmpresa = idEmpresa,
+                NomeProduto = $"%{nomeProduto}%" // Adiciona os curingas para o LIKE
+            };
+
             var result = await connection.QueryAsync<int>(query, parameters);
             return result.ToList();
         }
