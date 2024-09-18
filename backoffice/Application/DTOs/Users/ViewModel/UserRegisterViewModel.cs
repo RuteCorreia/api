@@ -24,6 +24,7 @@ public class UserRegisterViewModel
     [MinLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
     [MaxLength(11, ErrorMessage = "CPF deve ter 11 dígitos")]
     public string CPF { get; set; }
+    public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
     public IEnumerable<RoleObject> Funcoes { get; set; } 
 }
