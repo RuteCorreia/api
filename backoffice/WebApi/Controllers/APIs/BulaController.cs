@@ -116,6 +116,23 @@ public class BulaController : ControllerBase
         }
     }
 
+    [HttpGet("RemoveBula/{idProduto}")]
+    public async Task<IActionResult> RemoveBula(int idProduto)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            await _bulaService.RemoveBulaAsync(idProduto, loggedUser.Item3);
+            _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            _loggerService.LogError(ex, $"Erro ao remover registro da Bula: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao remover registro da Bula: {ex.Message}");
+        }
+    }
+
     [HttpGet("GetBulas")]
     public async Task<ActionResult<List<int>>> GetBulas()
     {

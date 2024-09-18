@@ -37,6 +37,12 @@ public class BulaService : IBulaService
         await _bulaRepository.RemoveRecomendacaoAsync(idBula);
     }
 
+    public async Task RemoveBulaAsync(int idProduto, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _bulaRepository.RemoveBulaAsync(idProduto, idEmpresaInt);
+    }
+
     public async Task<BulaViewModel> GetByIdAsync(int id)
     {
         var obj = await _bulaRepository.GetByIdAsync(id);

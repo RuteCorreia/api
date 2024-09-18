@@ -107,6 +107,24 @@ public class BulaRepository : IBulaRepository
         await _contextBase.SaveChangesAsync();
     }
 
+    public async Task RemoveBulaAsync(int idProduto, int idEmpresa)
+    {
+        var bulas = await _contextBase.Bula
+            .Where(b => b.IdProduto == idProduto && b.IdEmpresa == idEmpresa)
+            .ToListAsync();
+
+        if (bulas.Any())
+        {
+            foreach (var bula in bulas)
+            {
+                bula.Removido = true;
+            }
+
+            _contextBase.Bula.UpdateRange(bulas);
+            await _contextBase.SaveChangesAsync();
+        }
+    }
+
     public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa)
     {
         var query = @"SELECT DISTINCT IdProduto FROM Bula WHERE IdEmpresa = @IdEmpresa AND Removido = 0";
