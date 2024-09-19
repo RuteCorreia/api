@@ -5,7 +5,7 @@ namespace Application.DTOs.Cadastros.AlvoBiologico.Interface;
 
 public interface IAlvoBiologicoService 
 {
-    Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync();
+    Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<AlvoBiologicoViewModel> GetByIdAsync(int id);
 

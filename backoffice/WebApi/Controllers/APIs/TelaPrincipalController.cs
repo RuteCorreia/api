@@ -1,6 +1,8 @@
 ﻿using Application.DTOs.Cadastros.TelaPrincipal.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -10,21 +12,39 @@ namespace WebApi.Controllers.APIs
     public class TelaPrincipalController : ControllerBase
     {
         private readonly IRelatorioAeronaveService _relatorioAeronaveService;
-        public TelaPrincipalController(IRelatorioAeronaveService relatorioAeronaveService)
+        private readonly LoggedUserInfoService _loggedUserInfoService;
+        public TelaPrincipalController(
+            IRelatorioAeronaveService relatorioAeronaveService,
+            LoggedUserInfoService loggedUserInfoService)
         {
             _relatorioAeronaveService = relatorioAeronaveService; 
+            _loggedUserInfoService = loggedUserInfoService;
         }
 
 
         [HttpGet("GetAllRelatoriosAeronave")]
-        public async Task<ActionResult> GetAllRelatoriosAeronave()
+        public async Task<ActionResult> GetAllRelatoriosAeronave([FromQuery] string? dataFiltro)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
-                    var relatorios = await _relatorioAeronaveService.GetAllAsync();
+                    DateTime? data = null;
+                    if (!string.IsNullOrEmpty(dataFiltro))
+                    {
+                        // Tenta converter o dataFiltro para DateTime usando o formato "yyyy-MM-dd"
+                        if (DateTime.TryParseExact(dataFiltro, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
+                        {
+                            data = parsedDate;
+                        }
+                        else
+                        {
+                            return BadRequest("Formato de data inválido. Use o formato yyyy-MM-dd.");
+                        }
+                    }
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var relatorios = await _relatorioAeronaveService.GetAllAsync(data, loggedUser.Item3);
                     return Ok(relatorios);
                 }
 

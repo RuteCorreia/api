@@ -8,9 +8,11 @@ namespace Domain.Entidades.Cadastros.TelaPrincipal
 {
     public class RelatorioAeronave
     {
-        public string NomeAeronave { get; set; }
+        public string Aeronave { get; set; }
         public decimal ExtensaoTotal { get; set; }
         public decimal ValorTotal { get; set; }
         public decimal TotalHoras { get; set; }
+        public string Piloto { get; set; }
+        public string Executor { get; set; }
     }
 }

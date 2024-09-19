@@ -184,6 +184,7 @@ public class UserAuthService : IUserAuthService
             request.Telefone,
             idEmpresa,
             request.CPF,
+            request.Comissao / 100,
             request.GerarRelatorioManutencao
             );
 
@@ -425,6 +426,7 @@ public class UserAuthService : IUserAuthService
                     userToUpdate.Email = request.Email;
                     userToUpdate.Telefone = request.Telefone;
                     userToUpdate.CPF = request.CPF;
+                    userToUpdate.Comissao = request.Comissao;
                     userToUpdate.GerarRelatorioManutencao = request.GerarRelatorioManutencao;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
                     await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToUpdate.Id);

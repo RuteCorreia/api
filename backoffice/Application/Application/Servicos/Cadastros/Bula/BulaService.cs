@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Bula.ViewModel;
 using Application.DTOs.Cadastros.Cultura.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 
@@ -19,11 +20,12 @@ public class BulaService : IBulaService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<BulaViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<IEnumerable<BulaAppViewModel>> GetAllAsync(string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _bulaRepository.GetAllAsync(idEmpresaInt);
-        return _mapper.Map<IEnumerable<BulaViewModel>>(list);
+        var bulas = await _bulaRepository.GetAllAsync(idEmpresaInt);
+        var bulaViewModel =  _mapper.Map<IEnumerable<BulaAppViewModel>>(bulas);
+        return bulaViewModel;
     }
 
     public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
@@ -49,11 +51,12 @@ public class BulaService : IBulaService
         return _mapper.Map<BulaViewModel>(obj);
     }
 
-    public async Task<BulaViewModel> GetByIdProdutoAsync(int idProduto)
+    public async Task<BulaViewModel> GetByIdProdutoAsync(int idProduto, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var recomendacoesList = new List<RecomendacaoViewModel>();
 
-        var bulas = await _bulaRepository.GetByIdProdutoAsync(idProduto);
+        var bulas = await _bulaRepository.GetByIdProdutoAsync(idProduto, idEmpresaInt);
 
         if (bulas == null || !bulas.Any())
         {

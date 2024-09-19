@@ -4,12 +4,12 @@ namespace Application.DTOs.Cadastros.Bula.Interface;
 
 public interface IBulaService 
 {
-    Task<IEnumerable<BulaViewModel>> GetAllAsync(string? idEmpresa);
+    Task<IEnumerable<BulaAppViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<BulaViewModel> GetByIdAsync(int id);
     Task<BulaViewModel> GetByName(string name, string? idEmpresa);
     Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa,string? nomeProduto);
-    Task<BulaViewModel> GetByIdProdutoAsync(int idProduto);
+    Task<BulaViewModel> GetByIdProdutoAsync(int idProduto, string? idEmpresa);
     Task RemoveRecomendacaoAsync(int idBula);
     Task RemoveBulaAsync(int idProduto, string? idEmpresa);
 

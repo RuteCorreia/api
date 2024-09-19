@@ -50,12 +50,11 @@ public class BulaRepository : IBulaRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
-        var idEmpresaRodrigo = 196;
-        var query = @"SELECT * FROM Bula WHERE (IdEmpresa = @IdEmpresa AND Removido = 0) OR (IdEmpresa = @IdEmpresaRodrigo AND Removido = 0)";
+        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa = @IdEmpresa";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdEmpresa = idEmpresa, IdEmpresaRodrigo = idEmpresaRodrigo };
+            var parameters = new { IdEmpresa = idEmpresa };
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
             return result.ToList();
         }
@@ -67,14 +66,14 @@ public class BulaRepository : IBulaRepository
         return obj;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto, int idEmpresa)
     {
 
-        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0";
+        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0 AND IdEmpresa = @IdEmpresa";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdProduto = idProduto };
+            var parameters = new { IdProduto = idProduto, IdEmpresa = idEmpresa };
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
             return result.ToList();
         }

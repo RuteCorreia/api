@@ -36,7 +36,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var produtos = await _produtoService.GetAllAsync(nomeProduto);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produtos = await _produtoService.GetAllAsync(nomeProduto, loggedUser.Item3);
                 _logService.LogInformation("Lista de produtos recuperada com sucesso.");
                 return Ok(produtos);
             }

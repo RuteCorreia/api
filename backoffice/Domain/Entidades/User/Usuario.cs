@@ -7,7 +7,7 @@ namespace Domain.Entidades.User;
 
 public class Usuario
 {
-    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf, bool gerarRelatorioManutencao)
+    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf, decimal? comissao, bool gerarRelatorioManutencao)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -20,6 +20,7 @@ public class Usuario
         Telefone = telefone;
         IdEmpresa = idEmpresa;
         CPF = cpf;
+        Comissao = comissao;
         GerarRelatorioManutencao = gerarRelatorioManutencao;
     }
 
@@ -46,6 +47,7 @@ public class Usuario
     public bool PrimeiroAcesso { get; set; }
     public byte[]? Assinatura { get; set; }
     public string CPF { get; set; }
+    public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
 
     [ForeignKey("Empresa")]

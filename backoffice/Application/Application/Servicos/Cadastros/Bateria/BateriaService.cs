@@ -1,0 +1,54 @@
+﻿using Application.DTOs.Cadastros.Bateria.Interface;
+using Application.DTOs.Cadastros.Bateria.ViewModel;
+using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Bateria;
+using Helpers;
+
+namespace Application.Application.Servicos.Cadastros.Bateria
+{
+    public class BateriaService : IBateriaService
+    {
+        private readonly IBateriaRepository _bateriaRepository;
+        private readonly IMapper _mapper;
+        public BateriaService(
+            IBateriaRepository bateriaRepository,
+            IMapper mapper)
+        {
+            _bateriaRepository = bateriaRepository;
+            _mapper = mapper;
+        }
+        public async Task<int> AddAsync(BateriaViewModel obj, string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var mapBateria = _mapper.Map<Domain.Entidades.Cadastros.Bateria.Bateria>(obj);
+            mapBateria.IdEmpresa = idEmpresaInt;
+            return await _bateriaRepository.AddAsync(mapBateria);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _bateriaRepository.DeleteAsync(id);
+        }
+
+        public async Task<IEnumerable<BateriaViewModel>> GetAllAsync(string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _bateriaRepository.GetAllAsync(idEmpresaInt);
+            return _mapper.Map<IEnumerable<BateriaViewModel>>(list);
+        }
+
+        public async Task<BateriaViewModel> GetByIdAsync(int? id)
+        {
+            var obj = await _bateriaRepository.GetByIdAsync(id);
+            return _mapper.Map<BateriaViewModel>(obj);
+        }
+
+        public async Task UpdateAsync(BateriaViewModel obj)
+        {
+            var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Bateria.Bateria>(obj);
+            await _bateriaRepository.UpdateAsync(mapBula);
+        }
+    }
+}

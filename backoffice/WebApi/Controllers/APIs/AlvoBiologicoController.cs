@@ -40,7 +40,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var alvosBiologicos = await _alvoBiologicoService.GetAllAsync();
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var alvosBiologicos = await _alvoBiologicoService.GetAllAsync(loggedUser.Item3);
                 _logService.LogInformation("Todas os alvos biológicos foram recuperados com sucesso.");
                 return Ok(alvosBiologicos);
             }

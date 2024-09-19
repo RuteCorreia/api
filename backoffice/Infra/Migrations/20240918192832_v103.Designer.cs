@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20240918192832_v103")]
+    partial class v103
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -622,38 +625,6 @@ namespace Infra.Migrations
                     b.HasIndex("IdEmpresa");
 
                     b.ToTable("AuxiliarPista");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Bateria.Bateria", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CicloAtual")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CicloMaximo")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdEmpresa")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NomeBateria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("NumeroBateria")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdEmpresa");
-
-                    b.ToTable("Baterias");
                 });
 
             modelBuilder.Entity("Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado", b =>
@@ -3079,17 +3050,6 @@ namespace Infra.Migrations
                     b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
                         .WithMany()
                         .HasForeignKey("IdEmpresa");
-
-                    b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("Domain.Entidades.Cadastros.Bateria.Bateria", b =>
-                {
-                    b.HasOne("Domain.Entidades.Cadastros.Empresa.Empresa", "Empresa")
-                        .WithMany()
-                        .HasForeignKey("IdEmpresa")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("Empresa");
                 });
