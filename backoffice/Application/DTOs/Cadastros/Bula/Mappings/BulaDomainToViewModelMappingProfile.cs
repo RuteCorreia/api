@@ -8,5 +8,6 @@ public class BulaDomainToViewModelMappingProfile : Profile
     public BulaDomainToViewModelMappingProfile()
     {
         CreateMap<Domain.Entidades.Cadastros.Empresa.Bula, BulaViewModel>();
+        CreateMap<Domain.Entidades.Cadastros.Empresa.Bula, BulaAppViewModel>();
     }
 }

@@ -20,52 +20,12 @@ public class BulaService : IBulaService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<BulaViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<IEnumerable<BulaAppViewModel>> GetAllAsync(string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var bulaViewModelList = new List<BulaViewModel>();
-
-        // Obtém todas as bulas para a empresa especificada
         var bulas = await _bulaRepository.GetAllAsync(idEmpresaInt);
-
-        if (bulas == null || !bulas.Any())
-        {
-            return new List<BulaViewModel>(); // Retorna uma lista vazia se não houver resultados
-        }
-
-        // Agrupa as bulas por IdProduto
-        var bulasAgrupadasPorProduto = bulas.GroupBy(b => b.IdProduto);
-
-        foreach (var grupo in bulasAgrupadasPorProduto)
-        {
-            var recomendacoesList = new List<RecomendacaoViewModel>();
-
-            // Para cada bula no grupo, cria uma RecomendacaoViewModel
-            foreach (var item in grupo)
-            {
-                var recomendacao = new RecomendacaoViewModel
-                {
-                    IdBula = item.IdBula,
-                    IdCultura = item.IdCultura ?? 0,
-                    IdAlvoBiologico = item.IdAlvoBiologico ?? 0,
-                    DoseProdutoComercial = item.DoseProdutoComercial ?? string.Empty,
-                    IdTipoDeUnidade = item.IdTipoDeUnidade
-                };
-
-                recomendacoesList.Add(recomendacao);
-            }
-
-            // Cria um BulaViewModel para cada IdProduto distinto
-            var bulaViewModel = new BulaViewModel
-            {
-                IdProduto = grupo.Key ?? 0,  // O IdProduto único do grupo
-                Recomendacoes = recomendacoesList
-            };
-
-            bulaViewModelList.Add(bulaViewModel);
-        }
-
-        return bulaViewModelList;
+        var bulaViewModel =  _mapper.Map<IEnumerable<BulaAppViewModel>>(bulas);
+        return bulaViewModel;
     }
 
     public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)

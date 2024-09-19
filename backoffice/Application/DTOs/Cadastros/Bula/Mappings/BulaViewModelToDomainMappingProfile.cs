@@ -8,6 +8,7 @@ namespace Application.DTOs.Cadastros.Bula.Mappings
         public BulaViewModelToDomainMappingProfile()
         {
             CreateMap<BulaViewModel, Domain.Entidades.Cadastros.Empresa.Bula>();
+            CreateMap<BulaAppViewModel, Domain.Entidades.Cadastros.Empresa.Bula>();
         }
     }
 }
