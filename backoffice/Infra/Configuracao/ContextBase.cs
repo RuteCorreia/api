@@ -45,6 +45,7 @@ using Domain.Entidades.Export_Excel;
 using Domain.Entidades.Cadastros.RelatorioManutencao;
 using Domain.Entidades.Cadastros.Municipio;
 using Domain.Entidades.Cadastros.TipoDeFormulacao;
+using Domain.Entidades.Cadastros.Bateria;
 
 namespace Infra.Configuracao;
 
@@ -121,6 +122,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<RelatorioManutencaoRevisao> RelatorioManutencaoRevisao { get; set; }
     public DbSet<Municipio> Municipios { get; set; }
     public DbSet<TipoDeFormulacao> TipoDeFormulacao { get; set; }
+    public DbSet<Bateria> Baterias { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
