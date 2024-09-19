@@ -46,7 +46,7 @@ namespace Infra.Repositorio.Cadastros.Bateria
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Bateria.Bateria obj)
         {
             var objeto = await _contextBase.Baterias.FindAsync(obj.Id);
-            objeto.NomeBateria = objeto.NomeBateria;
+            objeto.NomeBateria = obj.NomeBateria;
             objeto.NumeroBateria = obj.NumeroBateria;
             objeto.CicloAtual = obj.CicloAtual;
             objeto.CicloMaximo = obj.CicloMaximo;

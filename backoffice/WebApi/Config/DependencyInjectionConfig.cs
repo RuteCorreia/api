@@ -254,6 +254,10 @@ using Application.DTOs.Cadastros.TelaPrincipal.Interface;
 using Application.Application.Servicos.Cadastros.TelaPrincipal;
 using Domain.Interfaces.Cadastros.TelaPrincipal;
 using Infra.Repositorio.Cadastros.TelaPrincipal;
+using Application.DTOs.Cadastros.Bateria.Interface;
+using Application.Application.Servicos.Cadastros.Bateria;
+using Domain.Interfaces.Cadastros.Bateria;
+using Infra.Repositorio.Cadastros.Bateria;
 
 namespace WebApi.Config;
 
@@ -329,6 +333,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeFormulacaoService, TipoDeFormulacaoService>();
         services.AddScoped<IAtividadeService, AtividadeService>();
         services.AddScoped<IRelatorioAeronaveService, RelatorioAeronaveService>();
+        services.AddScoped<IBateriaService, BateriaService>();
         
 
         #endregion
@@ -397,6 +402,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeUnidadeRepository, TipoDeUnidadeRepository>();
         services.AddScoped<ITipoDeFormulacaoRepository, TipoDeFormulacaoRepository>();
         services.AddScoped<IRelatorioAeronaveRepository, RelatorioAeronaveRepository>();
+        services.AddScoped<IBateriaRepository, BateriaRepository>();
 
         #endregion
 
