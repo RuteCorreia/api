@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Cultura;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
@@ -69,7 +70,7 @@ public class ProdutoRepository : IProdutoRepository
         return produto;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync(string? nomeProduto)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetAllAsync(string? nomeProduto, int idEmpresa)
     {
         var query = _contextBase.Produto.AsQueryable();
 
@@ -78,6 +79,8 @@ public class ProdutoRepository : IProdutoRepository
         {
             query = query.Where(p => p.Nome.Contains(nomeProduto));
         }
+
+        query = query.Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196);
 
         var entities = await query.ToListAsync();
         return entities;

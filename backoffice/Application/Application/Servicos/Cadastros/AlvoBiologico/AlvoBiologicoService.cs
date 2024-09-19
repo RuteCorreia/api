@@ -40,9 +40,10 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync()
+    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var list = await _alvoBiologicoRepository.GetAllAsync();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _alvoBiologicoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
     }
 

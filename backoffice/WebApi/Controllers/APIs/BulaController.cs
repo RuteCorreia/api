@@ -83,7 +83,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var bula = await _bulaService.GetByIdProdutoAsync(idProduto);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var bula = await _bulaService.GetByIdProdutoAsync(idProduto, loggedUser.Item3);
             if (!ObjectNullValidation.IsObjectNull(bula))
             {
                 _loggerService.LogInformation($"A Bula com ID {idProduto} foi recuperada com sucesso.");
