@@ -34,48 +34,53 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                 return result;
             }
         }
-        public async Task<IEnumerable<RelatorioAeronave>> GetAllAplicacaoAsync()
+        public async Task<IEnumerable<RelatorioAeronave>> GetAllAplicacaoAsync(DateTime? dataFiltro, int idEmpresa)
         {
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
                 try
                 {
-                    var query = @"SELECT 
-						ra.Piloto,
-						ra.Executor,
-                        LEFT(ar.NomeAeronave, 
-        CASE 
-            WHEN CHARINDEX(' - ', ar.NomeAeronave) > 0 
-            THEN CHARINDEX(' - ', ar.NomeAeronave) - 1
-            ELSE LEN(ar.NomeAeronave)
-        END
-    ) AS Aeronave,
-                        SUM(CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                        SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                        SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras
-                    FROM 
-                        RelatorioAplicacao ra
-                    JOIN 
-                        ContratoPrestacaoServico cps ON ra.ContratoPrestacaoServicoId = cps.Id
-                    JOIN 
-                        AplicacaoRecomendacoesTecnicas ar ON ra.RecomendacoesTecnicasId = ar.Id
-                    JOIN
-                        IdentificacaoAreaTratada iat ON ra.IdentificacaoAreaTratadaId = iat.Id
-                    JOIN 
-                        AplicacaoRelatorioItem rli ON ra.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
-					JOIN
-						AplicacaoRelatorio are on ra.AplicacaoRelatorioId = are.Id
-                    WHERE 
-                        ra.IdEmpresa = 196
-                        AND ra.StatusEnvio = 0
-                    GROUP BY 
-						ra.Piloto,
-						ra.Executor,
-                        ar.NomeAeronave
-                    ORDER BY 
-                        ar.NomeAeronave;";
+                    var query = @"
+                        SELECT 
+                            ra.Piloto,
+                            ra.Executor,
+                            LEFT(ar.NomeAeronave, 
+                                CASE 
+                                    WHEN CHARINDEX(' - ', ar.NomeAeronave) > 0 
+                                    THEN CHARINDEX(' - ', ar.NomeAeronave) - 1
+                                    ELSE LEN(ar.NomeAeronave)
+                                END
+                            ) AS Aeronave,
+                            SUM(CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
+                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
+                            SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras,
+                            MIN(ra.DataCriacao) AS DataCriacao
+                        FROM 
+                            RelatorioAplicacao ra
+                        JOIN 
+                            ContratoPrestacaoServico cps ON ra.ContratoPrestacaoServicoId = cps.Id
+                        JOIN 
+                            AplicacaoRecomendacoesTecnicas ar ON ra.RecomendacoesTecnicasId = ar.Id
+                        JOIN
+                            IdentificacaoAreaTratada iat ON ra.IdentificacaoAreaTratadaId = iat.Id
+                        JOIN 
+                            AplicacaoRelatorioItem rli ON ra.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
+                        JOIN
+                            AplicacaoRelatorio are ON ra.AplicacaoRelatorioId = are.Id
+                        WHERE 
+                            ra.IdEmpresa = @IdEmpresa
+                            AND ra.StatusEnvio = 0
+                            AND (@DataFiltro IS NULL OR ra.DataCriacao > @DataFiltro)
+                        GROUP BY 
+                            ra.Piloto,
+                            ra.Executor,
+                            ar.NomeAeronave
+                        ORDER BY 
+                            DataCriacao;
+                    ";
 
-                    var result = await connection.QueryAsync<RelatorioAeronave>(query);
+                    // Passando o parâmetro dataFiltro para a consulta
+                    var result = await connection.QueryAsync<RelatorioAeronave>(query, new { DataFiltro = dataFiltro, IdEmpresa = idEmpresa });
                     return result.ToList();
                 }
                 catch (Exception ex)
@@ -86,16 +91,15 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
             }
         }
 
-        public async Task<IEnumerable<RelatorioAeronave>> GetAllIncendioAsync()
+        public async Task<IEnumerable<RelatorioAeronave>> GetAllIncendioAsync(DateTime? dataFiltro, int idEmpresa)
         {
-            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            try
             {
-                try
-                {
-                    var query = @"SELECT 
-						ci.Piloto,
-						usu.Nome as Executor,
-                        aer.Prefixo as Aeronave,
+                var query = @"
+                    SELECT 
+                        ci.Piloto,
+                        usu.Nome AS Executor,
+                        aer.Prefixo AS Aeronave,
                         SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
                         SUM(DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
                     FROM 
@@ -107,23 +111,27 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                     JOIN
                         Aeronave aer ON ci.IdAeronave = aer.Id
                     WHERE 
-                        ci.IdEmpresa = 196
+                        ci.IdEmpresa = @IdEmpresa
                         AND ci.StatusEnvio = 0
+                        AND (@DataFiltro IS NULL OR ci.DataCriacao > @DataFiltro)
                     GROUP BY 
-						ci.Piloto,
-						usu.Nome,
+                        ci.Piloto,
+                        usu.Nome,
                         aer.Prefixo
                     ORDER BY 
-                        aer.Prefixo;";
+                        aer.Prefixo;
+                ";
 
-                    var result = await connection.QueryAsync<RelatorioAeronave>(query);
+                using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+                {
+                    var parameters = new { DataFiltro = dataFiltro, IdEmpresa = idEmpresa };
+                    var result = await connection.QueryAsync<RelatorioAeronave>(query, parameters);
                     return result.ToList();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Erro ao executar a consulta: {ex.Message}");
-                    throw;
-                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter relatórios de aeronave.", ex);
             }
         }
     }

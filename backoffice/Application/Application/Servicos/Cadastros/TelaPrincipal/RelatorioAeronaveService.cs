@@ -5,6 +5,7 @@ using Application.DTOs.Cadastros.TelaPrincipal.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.TelaPrincipal;
 using Domain.Interfaces.Cadastros.TelaPrincipal;
+using Helpers;
 using System.Globalization;
 
 namespace Application.Application.Servicos.Cadastros.TelaPrincipal
@@ -20,13 +21,14 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
             _relatorioAeronaveRepository = relatorioAeronaveRepository;  
             _mapper = mapper;
         }
-        public async Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync()
+        public async Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync(DateTime? dataFiltro, string? idEmpresa)
         {
             try
             {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
                 // Obtenha todos os relatórios
-                var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync();
-                var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync();
+                var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync(dataFiltro, idEmpresaInt);
+                var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync(dataFiltro, idEmpresaInt);
 
                 var todosRelatorios = relatoriosAeronave
                     .Concat(relatoriosIncendio)
