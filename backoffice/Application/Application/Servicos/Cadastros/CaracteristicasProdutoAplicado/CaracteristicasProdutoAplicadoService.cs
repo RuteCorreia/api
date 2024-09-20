@@ -69,6 +69,12 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         await _caracteristicasProdutoAplicadoRepository.UpdateAsync(mapObj);
     }
 
+    public async Task AdicionarReceituarioAgronomicoAsync(int id, DataFormatViewModel objData)
+    {
+        var serializedData = JsonConvert.SerializeObject(objData);
+        await _caracteristicasProdutoAplicadoRepository.AdicionarReceituarioAgronomicoAsync(id, serializedData);
+    }
+
     public async Task<CaracteristicasProdutoAplicadoViewModel> GetForExportExcelAsync(int id)
     {
         var obj = await _caracteristicasProdutoAplicadoRepository.GetForExportExcelAsync(id);

@@ -15,6 +15,7 @@ namespace Application.DTOs.Cadastros.RelatorioBase
         public bool IsMapa { get; set; }
         public int? StatusEnvio { get; set; }
         public string? DataAlteracao { get; set; }
+        public int? IdCaracteristicasProdutoAplicado { get; set; }
         public DataFormatViewModel? ReceituarioAgronomico { get; set; }
     }
 }

@@ -153,6 +153,7 @@ namespace WebApi.Controllers.APIs
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
                             StatusEnvio = relatorio.State,
+                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
                             ReceituarioAgronomico = receituarioAgronomico,
                         };
 
@@ -219,6 +220,28 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpPut("adicionarReceituarioAgronomico/{id:int}")]
+        public async Task<ActionResult> adicionarReceituarioAgronomico(int id, [FromBody] DataFormatViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _caracteristicasProdutoAplicadoService.AdicionarReceituarioAgronomicoAsync(id, obj);
+                    _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar relatório de aplicação.");
+                return BadRequest("Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+            }
+        }
+
         [HttpGet("GetRelatoriosByMes/{mes}/{ano}")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetRelatoriosByMes(int mes, int ano)
         {
@@ -247,6 +270,7 @@ namespace WebApi.Controllers.APIs
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
                             StatusEnvio = relatorio.State,
+                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
                             ReceituarioAgronomico = receituarioAgronomico,
                         };
 

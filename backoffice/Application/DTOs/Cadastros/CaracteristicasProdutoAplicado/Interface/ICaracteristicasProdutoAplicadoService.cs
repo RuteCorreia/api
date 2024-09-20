@@ -13,6 +13,7 @@ public interface ICaracteristicasProdutoAplicadoService
 
     Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj);
     Task<DataFormatViewModel> GetReceituarioAgronomicoAsync(int? id);
+    Task AdicionarReceituarioAgronomicoAsync(int id, DataFormatViewModel objData);
 
     Task DeleteAsync(int id, string? idEmpresa);
 
