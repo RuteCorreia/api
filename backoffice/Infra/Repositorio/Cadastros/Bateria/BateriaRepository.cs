@@ -43,6 +43,19 @@ namespace Infra.Repositorio.Cadastros.Bateria
             return obj;
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Bateria.Bateria>> GetByNameAsync(string nome)
+        {
+            if (string.IsNullOrEmpty(nome))
+            {
+                throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
+            }
+            var baterias = await _contextBase.Baterias
+                .Where(p => p.NomeBateria.Contains(nome))
+                .ToListAsync();
+
+            return baterias;
+        }
+
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Bateria.Bateria obj)
         {
             var objeto = await _contextBase.Baterias.FindAsync(obj.Id);

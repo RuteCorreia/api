@@ -43,6 +43,19 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return obj;
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Gerador.Gerador>> GetByNameAsync(string nome)
+        {
+            if (string.IsNullOrEmpty(nome))
+            {
+                throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
+            }
+            var pistas = await _contextBase.Geradores
+                .Where(p => p.NomeGerador.Contains(nome))
+                .ToListAsync();
+
+            return pistas;
+        }
+
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Gerador.Gerador obj)
         {
             var objeto = await _contextBase.Geradores.FindAsync(obj.Id);

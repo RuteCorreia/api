@@ -258,6 +258,10 @@ using Application.DTOs.Cadastros.Bateria.Interface;
 using Application.Application.Servicos.Cadastros.Bateria;
 using Domain.Interfaces.Cadastros.Bateria;
 using Infra.Repositorio.Cadastros.Bateria;
+using Application.DTOs.Cadastros.Gerador.Interface;
+using Application.Application.Servicos.Cadastros.Gerador;
+using Domain.Interfaces.Cadastros.Gerador;
+using Infra.Repositorio.Cadastros.Gerador;
 
 namespace WebApi.Config;
 
@@ -334,6 +338,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAtividadeService, AtividadeService>();
         services.AddScoped<IRelatorioAeronaveService, RelatorioAeronaveService>();
         services.AddScoped<IBateriaService, BateriaService>();
+        services.AddScoped<IGeradorService, GeradorService>();
         
 
         #endregion
@@ -403,6 +408,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ITipoDeFormulacaoRepository, TipoDeFormulacaoRepository>();
         services.AddScoped<IRelatorioAeronaveRepository, RelatorioAeronaveRepository>();
         services.AddScoped<IBateriaRepository, BateriaRepository>();
+        services.AddScoped<IGeradorRepository, GeradorRepository>();
 
         #endregion
 

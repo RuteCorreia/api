@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.Bateria.ViewModel;
 using Application.DTOs.Cadastros.Gerador.Interface;
 using Application.DTOs.Cadastros.Gerador.ViewModel;
+using Application.DTOs.Cadastros.Pistas.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,6 +56,31 @@ namespace WebApi.Controllers.APIs
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getById - {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetByName/{name}")]
+        public async Task<ActionResult<IEnumerable<GeradorViewModel>>> GetByName(string name)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(name))
+                {
+                    return BadRequest("O nome não pode ser nulo ou vazio.");
+                }
+
+                var geradores = await _geradorService.GetByNameAsync(name);
+
+                if (geradores.Any())
+                {
+                    return Ok(geradores);
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, "Nenhuma pista encontrada.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar pistas pelo nome: {ex.Message}");
             }
         }
 

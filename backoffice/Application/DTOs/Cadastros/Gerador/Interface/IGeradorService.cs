@@ -10,5 +10,6 @@ namespace Application.DTOs.Cadastros.Gerador.Interface
         Task DeleteAsync(int id);
         Task<IEnumerable<GeradorViewModel>> GetAllAsync(string? idEmpresa);
         Task<GeradorViewModel> GetByIdAsync(int? id);
+        Task<IEnumerable<GeradorViewModel>> GetByNameAsync(string name);
     }
 }

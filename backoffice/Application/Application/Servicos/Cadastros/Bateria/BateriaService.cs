@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Bateria.Interface;
 using Application.DTOs.Cadastros.Bateria.ViewModel;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using Application.DTOs.Cadastros.Gerador.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Bateria;
@@ -43,6 +44,17 @@ namespace Application.Application.Servicos.Cadastros.Bateria
         {
             var obj = await _bateriaRepository.GetByIdAsync(id);
             return _mapper.Map<BateriaViewModel>(obj);
+        }
+
+        public async Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
+            }
+            var baterias = await _bateriaRepository.GetByNameAsync(name);
+
+            return baterias.Select(p => _mapper.Map<BateriaViewModel>(p));
         }
 
         public async Task UpdateAsync(BateriaViewModel obj)
