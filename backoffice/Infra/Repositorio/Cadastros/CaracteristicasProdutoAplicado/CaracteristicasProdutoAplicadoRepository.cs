@@ -59,6 +59,20 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         }
     }
 
+    public async Task<string> GetReceituarioAgronomicoAsync(int? id)
+    {
+        var query = @"
+            SELECT ReceiturarioAgronomico
+            FROM CaracteristicasProdutoAplicado WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
+            return result;
+        }
+    }
+
     public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetByIdAsync(int id, int idEmpresa)
     {
         //var obj = await _contextBase.CaracteristicasProdutoAplicado

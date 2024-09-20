@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,5 +15,6 @@ namespace Application.DTOs.Cadastros.RelatorioBase
         public bool IsMapa { get; set; }
         public int? StatusEnvio { get; set; }
         public string? DataAlteracao { get; set; }
+        public DataFormatViewModel? ReceituarioAgronomico { get; set; }
     }
 }

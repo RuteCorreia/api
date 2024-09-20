@@ -140,6 +140,8 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
+                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
@@ -150,7 +152,8 @@ namespace WebApi.Controllers.APIs
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
-                            StatusEnvio = relatorio.State
+                            StatusEnvio = relatorio.State,
+                            ReceituarioAgronomico = receituarioAgronomico,
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -231,6 +234,8 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
+                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
@@ -241,7 +246,8 @@ namespace WebApi.Controllers.APIs
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
-                            StatusEnvio = relatorio.State
+                            StatusEnvio = relatorio.State,
+                            ReceituarioAgronomico = receituarioAgronomico,
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);

@@ -1,4 +1,5 @@
 ﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 
 namespace Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 
@@ -11,6 +12,7 @@ public interface ICaracteristicasProdutoAplicadoService
     Task<int> AddAsync(ProdutoAplicadoViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj);
+    Task<DataFormatViewModel> GetReceituarioAgronomicoAsync(int? id);
 
     Task DeleteAsync(int id, string? idEmpresa);
 
