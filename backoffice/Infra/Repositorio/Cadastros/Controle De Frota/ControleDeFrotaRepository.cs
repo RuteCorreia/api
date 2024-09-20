@@ -102,6 +102,9 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.Combustivel = obj.Combustivel;
             objeto.IdData = obj.IdData;
             objeto.Imagem = obj.Imagem;
+            objeto.NomeRelatorio = obj.NomeRelatorio;
+            objeto.StatusEnvio = obj.StatusEnvio;
+            objeto.IsDrone = obj.IsDrone;
 
             _contextBase.ControleDeFrota.Update(objeto);
             await _contextBase.SaveChangesAsync(); 

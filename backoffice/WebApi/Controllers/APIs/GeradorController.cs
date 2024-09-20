@@ -1,42 +1,37 @@
-﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
-using Application.DTOs.Cadastros.Bateria.Interface;
+﻿using Application.DTOs.Cadastros.Bateria.Interface;
 using Application.DTOs.Cadastros.Bateria.ViewModel;
+using Application.DTOs.Cadastros.Gerador.Interface;
 using Application.DTOs.Cadastros.Gerador.ViewModel;
+using Application.DTOs.Cadastros.Pistas.ViewModel;
 using Helpers;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
-
 
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    [Authorize]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class BateriaController : ControllerBase
+    public class GeradorController : ControllerBase
     {
         private readonly LoggedUserInfoService _loggedUserInfoService;
-        private readonly IBateriaService _bateriaService;
-        public BateriaController(
+        private readonly IGeradorService _geradorService;
+        public GeradorController(
             LoggedUserInfoService loggedUserInfoService,
-            IBateriaService bateriaService
+            IGeradorService geradorService
             )
         {
             _loggedUserInfoService = loggedUserInfoService;
-            _bateriaService = bateriaService;
+            _geradorService = geradorService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<BateriaViewModel>>> GetAll()
+        public async Task<ActionResult<IAsyncEnumerable<GeradorViewModel>>> GetAll()
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var baterias = await _bateriaService.GetAllAsync(loggedUser.Item3);
+                var baterias = await _geradorService.GetAllAsync(loggedUser.Item3);
                 return Ok(baterias);
             }
             catch (Exception ex)
@@ -46,11 +41,11 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<BateriaViewModel>> GetById(int id)
+        public async Task<ActionResult<GeradorViewModel>> GetById(int id)
         {
             try
             {
-                var bateria = await _bateriaService.GetByIdAsync(id);
+                var bateria = await _geradorService.GetByIdAsync(id);
                 if (!ObjectNullValidation.IsObjectNull(bateria))
                 {
                     return Ok(bateria);
@@ -65,7 +60,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("GetByName/{name}")]
-        public async Task<ActionResult<IEnumerable<BateriaViewModel>>> GetByName(string name)
+        public async Task<ActionResult<IEnumerable<GeradorViewModel>>> GetByName(string name)
         {
             try
             {
@@ -74,11 +69,11 @@ namespace WebApi.Controllers.APIs
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
 
-                var baterias = await _bateriaService.GetByNameAsync(name);
+                var geradores = await _geradorService.GetByNameAsync(name);
 
-                if (baterias.Any())
+                if (geradores.Any())
                 {
-                    return Ok(baterias);
+                    return Ok(geradores);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Nenhuma pista encontrada.");
@@ -90,7 +85,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] BateriaViewModel obj)
+        public async Task<ActionResult> Add([FromBody] GeradorViewModel obj)
         {
             try
             {
@@ -98,7 +93,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var id = await _bateriaService.AddAsync(obj, loggedUser.Item3);
+                    var id = await _geradorService.AddAsync(obj, loggedUser.Item3);
                     return Ok(id);
                 }
 
@@ -112,18 +107,18 @@ namespace WebApi.Controllers.APIs
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] BateriaViewModel obj)
+        public async Task<ActionResult> Update(int id, [FromBody] GeradorViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _bateriaService.GetByIdAsync(id);
+                    var objeto = await _geradorService.GetByIdAsync(id);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
 
-                        await _bateriaService.UpdateAsync(obj);
+                        await _geradorService.UpdateAsync(obj);
                         return Ok();
                     }
                     else
@@ -147,7 +142,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _bateriaService.DeleteAsync(id);
+                    await _geradorService.DeleteAsync(id);
                     return Ok();
                 }
 

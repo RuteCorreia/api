@@ -10,5 +10,6 @@ namespace Application.DTOs.Cadastros.Bateria.Interface
         Task DeleteAsync(int id);
         Task<IEnumerable<BateriaViewModel>> GetAllAsync(string? idEmpresa);
         Task<BateriaViewModel> GetByIdAsync(int? id);
+        Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name);
     }
 }
