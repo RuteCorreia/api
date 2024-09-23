@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.FrotaBateria.ViewModel;
 using Application.DTOs.Cadastros.Gerador.Interface;
 using Application.DTOs.Cadastros.Gerador.ViewModel;
 using Helpers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
@@ -10,6 +11,7 @@ using WebApi.HttpRequestInfo;
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
     public class FrotaBateriaController : ControllerBase
     {
