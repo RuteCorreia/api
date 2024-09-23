@@ -13,7 +13,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
         {
             _contextBase = contextBase;
         }
-        public async Task<Domain.Entidades.Cadastros.Dashboard.Dashboard> GetAllAplicacaoAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa, string usuario, string nomeAeronave, string nomeContratante)
+        public async Task<Domain.Entidades.Cadastros.Dashboard.Dashboard> GetAllAplicacaoAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa, string? usuario, string? nomeAeronave, string? nomeContratante)
         {
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
@@ -21,6 +21,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                 {
                     var query = @"
                         SELECT 
+                            DATEPART(YEAR, ra.DataCriacao) AS Ano,
+                            DATEPART(MONTH, ra.DataCriacao) AS Mes,
                             SUM(CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
                             SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
                             SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras
@@ -46,9 +48,12 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             AND (@Usuario IS NULL OR (ra.Piloto LIKE '%' + @Usuario + '%' OR ra.Executor LIKE '%' + @Usuario + '%'))
                             AND (@NomeAeronave IS NULL OR ar.NomeAeronave LIKE '%' + @NomeAeronave + '%')
                             AND (@NomeContratante IS NULL OR c.Nome LIKE '%' + @NomeContratante + '%')
-                    ";
+                        GROUP BY 
+                            DATEPART(YEAR, ra.DataCriacao), 
+                            DATEPART(MONTH, ra.DataCriacao)
+                        ORDER BY 
+                            Ano, Mes";
 
-                    // Passando os parâmetros para a consulta
                     var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Dashboard.Dashboard>(query,
                         new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa, Usuario = usuario, NomeAeronave = nomeAeronave, NomeContratante = nomeContratante });
                     return result;
@@ -61,7 +66,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
             }
         }
 
-        public async Task<Domain.Entidades.Cadastros.Dashboard.Dashboard> GetAllIncendioAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa, string usuario, string nomeAeronave, string nomeContratante)
+        public async Task<Domain.Entidades.Cadastros.Dashboard.Dashboard> GetAllIncendioAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa, string? usuario, string? nomeAeronave, string? nomeContratante)
         {
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
@@ -69,6 +74,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                 {
                     var query = @"
                         SELECT 
+                            DATEPART(YEAR, ci.DataCriacao) AS Ano,
+                            DATEPART(MONTH, ci.DataCriacao) AS Mes,
                             SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
                             SUM(DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
                         FROM 
@@ -87,9 +94,12 @@ namespace Infra.Repositorio.Cadastros.Dashboard
 	                        AND (@Usuario IS NULL OR (ci.Piloto LIKE '%' + @Usuario + '%' OR usu.Nome LIKE '%' + @Usuario + '%'))
 	                        AND (@NomeAeronave IS NULL OR aer.Prefixo LIKE '%' + @NomeAeronave + '%')
 	                        AND (@NomeContratante IS NULL OR ci.Cliente LIKE '%' + @NomeContratante + '%')
-                    ";
+                        GROUP BY 
+                            DATEPART(YEAR, ci.DataCriacao), 
+                            DATEPART(MONTH, ci.DataCriacao)
+                        ORDER BY 
+                            Ano, Mes";
 
-                    // Passando os parâmetros para a consulta
                     var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Dashboard.Dashboard>(query,
                         new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa, Usuario = usuario, NomeAeronave = nomeAeronave, NomeContratante = nomeContratante });
                     return result;
