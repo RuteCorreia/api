@@ -222,8 +222,6 @@ using Infra.Repositorio.User;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using WebApi.HttpRequestInfo;
-using Application.DTOs.Email.Interface;
-using Application.Application.Servicos.Email;
 using Application.DTOs.Cadastros.RelatorioIncendio.Interface;
 using Application.Application.Servicos.Cadastros.RelatorioIncendio;
 using Domain.Interfaces.Cadastros.RelatorioIncendio;
@@ -262,6 +260,18 @@ using Application.DTOs.Cadastros.Gerador.Interface;
 using Application.Application.Servicos.Cadastros.Gerador;
 using Domain.Interfaces.Cadastros.Gerador;
 using Infra.Repositorio.Cadastros.Gerador;
+using Application.DTOs.Cadastros.FrotaBateria.Interface;
+using Application.Application.Servicos.Cadastros.FrotaBateria;
+using Application.DTOs.Cadastros.FrotaGerador.Interface;
+using Application.Application.Servicos.Cadastros.FrotaGerador;
+using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
+using Application.Application.Servicos.Cadastros.FrotaMotobomba;
+using Domain.Interfaces.Cadastros.FrotaBateria;
+using Infra.Repositorio.Cadastros.FrotaBateria;
+using Domain.Interfaces.Cadastros.FrotaGerador;
+using Infra.Repositorio.Cadastros.FrotaGerador;
+using Domain.Interfaces.Cadastros.FrotaMotobomba;
+using Infra.Repositorio.Cadastros.FrotaMotobomba;
 
 namespace WebApi.Config;
 
@@ -339,7 +349,10 @@ public static class DependencyInjectionConfig
         services.AddScoped<IRelatorioAeronaveService, RelatorioAeronaveService>();
         services.AddScoped<IBateriaService, BateriaService>();
         services.AddScoped<IGeradorService, GeradorService>();
-        
+        services.AddScoped<IFrotaBateriaService, FrotaBateriaService>();
+        services.AddScoped<IFrotaGeradorService, FrotaGeradorService>();
+        services.AddScoped<IFrotaMotobombaService, FrotaMotobombaService>();
+
 
         #endregion
 
@@ -409,6 +422,9 @@ public static class DependencyInjectionConfig
         services.AddScoped<IRelatorioAeronaveRepository, RelatorioAeronaveRepository>();
         services.AddScoped<IBateriaRepository, BateriaRepository>();
         services.AddScoped<IGeradorRepository, GeradorRepository>();
+        services.AddScoped<IFrotaBateriaRepository, FrotaBateriaRepository>();
+        services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
+        services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
 
         #endregion
 

@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Helpers;
+using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 
@@ -67,9 +69,23 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         await _caracteristicasProdutoAplicadoRepository.UpdateAsync(mapObj);
     }
 
+    public async Task AdicionarReceituarioAgronomicoAsync(int id, DataFormatViewModel objData)
+    {
+        var serializedData = JsonConvert.SerializeObject(objData);
+        await _caracteristicasProdutoAplicadoRepository.AdicionarReceituarioAgronomicoAsync(id, serializedData);
+    }
+
     public async Task<CaracteristicasProdutoAplicadoViewModel> GetForExportExcelAsync(int id)
     {
         var obj = await _caracteristicasProdutoAplicadoRepository.GetForExportExcelAsync(id);
         return _mapper.Map<CaracteristicasProdutoAplicadoViewModel>(obj);
+    }
+
+    public async Task<DataFormatViewModel> GetReceituarioAgronomicoAsync(int? id)
+    {
+        var obj = await _caracteristicasProdutoAplicadoRepository.GetReceituarioAgronomicoAsync(id);
+        var result = JsonConvert.DeserializeObject<DataFormatViewModel>(obj);
+        return result;
+
     }
 }

@@ -47,6 +47,9 @@ using Domain.Entidades.Cadastros.Municipio;
 using Domain.Entidades.Cadastros.TipoDeFormulacao;
 using Domain.Entidades.Cadastros.Bateria;
 using Domain.Entidades.Cadastros.Gerador;
+using Domain.Entidades.Cadastros.FrotaBateria;
+using Domain.Entidades.Cadastros.FrotaGerador;
+using Domain.Entidades.Cadastros.FrotaMotobomba;
 
 namespace Infra.Configuracao;
 
@@ -125,6 +128,9 @@ public class ContextBase : IdentityDbContext
     public DbSet<TipoDeFormulacao> TipoDeFormulacao { get; set; }
     public DbSet<Bateria> Baterias { get; set; }
     public DbSet<Gerador> Geradores { get; set; }
+    public DbSet<FrotaBateria> FrotaBaterias { get; set; }
+    public DbSet<FrotaGerador> FrotaGeradores { get; set; }
+    public DbSet<FrotaMotobomba> FrotaMotobombas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

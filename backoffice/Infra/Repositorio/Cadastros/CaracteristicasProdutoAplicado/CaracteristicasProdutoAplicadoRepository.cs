@@ -59,6 +59,20 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         }
     }
 
+    public async Task<string> GetReceituarioAgronomicoAsync(int? id)
+    {
+        var query = @"
+            SELECT ReceiturarioAgronomico
+            FROM CaracteristicasProdutoAplicado WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Id = id };
+            var result = await connection.QueryFirstOrDefaultAsync<string>(query, parameters);
+            return result;
+        }
+    }
+
     public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetByIdAsync(int id, int idEmpresa)
     {
         //var obj = await _contextBase.CaracteristicasProdutoAplicado
@@ -87,6 +101,33 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
         }
     }
 
+    public async Task AdicionarReceituarioAgronomicoAsync(int id, string data)
+    {
+        var updateQuery = "UPDATE CaracteristicasProdutoAplicado SET ReceiturarioAgronomico = @Data WHERE Id = @Id";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            await connection.OpenAsync();
+            try
+            {
+                await connection.ExecuteAsync(updateQuery, new { Id = id, Data = data });
+            }
+            catch (SqlException ex)
+            {
+                // Aqui você pode tratar a exceção, por exemplo, logando ou rethrowing
+                Console.Error.WriteLine($"Erro ao atualizar o registro: {ex.Message}");
+                // Opcionalmente, você pode lançar a exceção novamente se desejar
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Captura de outras exceções
+                Console.Error.WriteLine($"Erro inesperado: {ex.Message}");
+                throw;
+            }
+
+        }
+    }
     public async Task UpdateAsync(Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado obj)
     {
         var objeto = await _contextBase.CaracteristicasProdutoAplicado.FindAsync(obj.Id);

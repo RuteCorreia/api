@@ -37,6 +37,7 @@ using ExcelDataReader;
 using System.Data;
 using OfficeOpenXml;
 using System.IO.Compression;
+using System.Linq;
 
 namespace WebApi.Controllers.APIs
 {
@@ -140,6 +141,8 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
+                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
@@ -150,7 +153,9 @@ namespace WebApi.Controllers.APIs
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
-                            StatusEnvio = relatorio.State
+                            StatusEnvio = relatorio.State,
+                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                            ReceituarioAgronomico = receituarioAgronomico,
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -216,6 +221,28 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpPut("adicionarReceituarioAgronomico/{id:int}")]
+        public async Task<ActionResult> adicionarReceituarioAgronomico(int id, [FromBody] DataFormatViewModel obj)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    await _caracteristicasProdutoAplicadoService.AdicionarReceituarioAgronomicoAsync(id, obj);
+                    _logService.LogInformation("Relatório de aplicação atualizado com sucesso.");
+                    return Ok();
+                }
+
+                _logService.LogWarning("Modelo inválido ao atualizar relatório de aplicação.");
+                return BadRequest("Modelo inválido");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar relatório de aplicação: {ex.Message}");
+            }
+        }
+
         [HttpGet("GetRelatoriosByMes/{mes}/{ano}")]
         public async Task<ActionResult<IEnumerable<RelatorioAplicacaoViewModel>>> GetRelatoriosByMes(int mes, int ano)
         {
@@ -231,6 +258,8 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
+                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
@@ -241,7 +270,9 @@ namespace WebApi.Controllers.APIs
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
-                            StatusEnvio = relatorio.State
+                            StatusEnvio = relatorio.State,
+                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                            ReceituarioAgronomico = receituarioAgronomico,
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -278,6 +309,8 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
+                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     if (!string.IsNullOrEmpty(data.Data))
@@ -287,7 +320,8 @@ namespace WebApi.Controllers.APIs
                             NomeRelatorio = relatorio.NomeRelatorio,
                             Base64Data = data.Data,
                             IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id
+                            Id = relatorio.Id,
+                            ReceituarioAgronomico = receituarioAgronomico,
                         };
 
                         dataRelatorios.Add(relatorioBaseViewModel);
@@ -665,14 +699,15 @@ namespace WebApi.Controllers.APIs
         }
 
 
-        [HttpGet("DownloadRelatoriosMes")]
-        public async Task<IActionResult> DownloadRelatoriosMes([FromQuery] List<int> ids, [FromQuery] int mes, [FromQuery] int ano)
+        [HttpPost("DownloadRelatoriosMes")]
+        public async Task<IActionResult> DownloadRelatoriosMes([FromBody] DownloadRelatorioRequest request)
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var isMapa = 0;
-                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, ids, isMapa);
+                var relatorioIds = request.Ids.Select(x => x.Id).ToList();
+                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, relatorioIds, isMapa);
 
                 using (var memoryStream = new MemoryStream())
                 {
@@ -680,36 +715,65 @@ namespace WebApi.Controllers.APIs
                     {
                         foreach (var relatorio in relatorios)
                         {
-                            var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+                            var relatorioRequest = request.Ids.FirstOrDefault(x => x.Id == relatorio.Id);
 
+                            // Nome da pasta com base no NomeRelatorio
+                            string folderName = relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-");
+
+                            // Adicionar o arquivo do relatório
+                            var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
                             if (!string.IsNullOrEmpty(data.Data))
                             {
                                 var relatorioBytes = Convert.FromBase64String(data.Data);
-                                var nomeArquivo = $"{relatorio.NomeRelatorio}.pdf".Replace("/", "-").Replace("\\", "-");
-                                var entry = archive.CreateEntry(nomeArquivo, System.IO.Compression.CompressionLevel.Fastest);
+                                var nomeArquivoRelatorio = $"{folderName}/{folderName}.pdf"; // Nome do arquivo igual ao da pasta
+                                var entry = archive.CreateEntry(nomeArquivoRelatorio, System.IO.Compression.CompressionLevel.Fastest);
 
                                 using (var entryStream = entry.Open())
                                 {
                                     entryStream.Write(relatorioBytes, 0, relatorioBytes.Length);
                                 }
                             }
-                            else
+
+                            // Adicionar o arquivo do ReceituarioAgronomico, se disponível
+                            if (relatorioRequest?.ReceituarioAgronomico != null &&
+                                !string.IsNullOrEmpty(relatorioRequest.ReceituarioAgronomico.Data))
                             {
-                                _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
+                                var receituarioBytes = Convert.FromBase64String(relatorioRequest.ReceituarioAgronomico.Data);
+                                string receituarioFileName = $"{folderName}/receituarioAgronomico"; // Nome do arquivo do receituário
+
+                                // Verificar o formato do ReceituarioAgronomico
+                                if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "pdf")
+                                {
+                                    receituarioFileName += ".pdf";
+                                }
+                                else if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "png")
+                                {
+                                    receituarioFileName += ".png";
+                                }
+                                else
+                                {
+                                    _logService.LogWarning($"Formato desconhecido: {relatorioRequest.ReceituarioAgronomico.Format}");
+                                    continue;
+                                }
+
+                                var receituarioEntry = archive.CreateEntry(receituarioFileName, System.IO.Compression.CompressionLevel.Fastest);
+
+                                using (var entryStream = receituarioEntry.Open())
+                                {
+                                    entryStream.Write(receituarioBytes, 0, receituarioBytes.Length);
+                                }
                             }
                         }
                     }
 
-                    // Ajuste o ponteiro do stream para o início
                     memoryStream.Seek(0, SeekOrigin.Begin);
-
-                    return File(memoryStream.ToArray(), "application/zip", $"relatorios-aplicação-{mes}-{ano}.zip");
+                    return File(memoryStream.ToArray(), "application/zip", $"relatorios-aplicacao-{request.Mes}-{request.Ano}.zip");
                 }
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao recuperar e compactar os relatórios de combate a incêndio: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar e compactar os relatórios de combate a incêndio: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao recuperar e compactar os relatórios: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar e compactar os relatórios: {ex.Message}");
             }
         }
 

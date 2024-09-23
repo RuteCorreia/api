@@ -66,8 +66,8 @@ namespace Application.Application.Servicos.Cadastros.Gerador
 
         public async Task UpdateAsync(GeradorViewModel obj)
         {
-            var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Gerador.Gerador>(obj);
-            await _geradorRepository.UpdateAsync(mapBula);
+            var mapGerador = _mapper.Map<Domain.Entidades.Cadastros.Gerador.Gerador>(obj);
+            await _geradorRepository.UpdateAsync(mapGerador);
         }
     }
 }

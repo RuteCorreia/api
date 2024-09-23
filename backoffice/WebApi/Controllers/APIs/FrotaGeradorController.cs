@@ -1,8 +1,7 @@
-﻿using Application.DTOs.Cadastros.Bateria.Interface;
-using Application.DTOs.Cadastros.Bateria.ViewModel;
-using Application.DTOs.Cadastros.Gerador.Interface;
-using Application.DTOs.Cadastros.Gerador.ViewModel;
-using Application.DTOs.Cadastros.Pistas.ViewModel;
+﻿using Application.DTOs.Cadastros.FrotaBateria.Interface;
+using Application.DTOs.Cadastros.FrotaBateria.ViewModel;
+using Application.DTOs.Cadastros.FrotaGerador.Interface;
+using Application.DTOs.Cadastros.FrotaGerador.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,27 +13,27 @@ namespace WebApi.Controllers.APIs
     [Route("api/v1/[controller]")]
     [Authorize]
     [ApiController]
-    public class GeradorController : ControllerBase
+    public class FrotaGeradorController : ControllerBase
     {
         private readonly LoggedUserInfoService _loggedUserInfoService;
-        private readonly IGeradorService _geradorService;
-        public GeradorController(
+        private readonly IFrotaGeradorService _frotaGeradorService;
+        public FrotaGeradorController(
             LoggedUserInfoService loggedUserInfoService,
-            IGeradorService geradorService
+            IFrotaGeradorService frotaGeradorService
             )
         {
             _loggedUserInfoService = loggedUserInfoService;
-            _geradorService = geradorService;
+            _frotaGeradorService = frotaGeradorService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<GeradorViewModel>>> GetAll()
+        public async Task<ActionResult<IAsyncEnumerable<FrotaGeradorViewModel>>> GetAll()
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var baterias = await _geradorService.GetAllAsync(loggedUser.Item3);
-                return Ok(baterias);
+                var frotaGeradores = await _frotaGeradorService.GetAllAsync(loggedUser.Item3);
+                return Ok(frotaGeradores);
             }
             catch (Exception ex)
             {
@@ -43,14 +42,14 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<GeradorViewModel>> GetById(int id)
+        public async Task<ActionResult<FrotaGeradorViewModel>> GetById(int id)
         {
             try
             {
-                var bateria = await _geradorService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(bateria))
+                var frotaGerador = await _frotaGeradorService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(frotaGerador))
                 {
-                    return Ok(bateria);
+                    return Ok(frotaGerador);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
@@ -61,33 +60,8 @@ namespace WebApi.Controllers.APIs
             }
         }
 
-        [HttpGet("GetByName/{name}")]
-        public async Task<ActionResult<IEnumerable<GeradorViewModel>>> GetByName(string name)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(name))
-                {
-                    return BadRequest("O nome não pode ser nulo ou vazio.");
-                }
-
-                var geradores = await _geradorService.GetByNameAsync(name);
-
-                if (geradores.Any())
-                {
-                    return Ok(geradores);
-                }
-
-                return StatusCode(StatusCodes.Status404NotFound, "Nenhuma pista encontrada.");
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar pistas pelo nome: {ex.Message}");
-            }
-        }
-
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] GeradorViewModel obj)
+        public async Task<ActionResult> Add([FromBody] FrotaGeradorViewModel obj)
         {
             try
             {
@@ -95,7 +69,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var id = await _geradorService.AddAsync(obj, loggedUser.Item3);
+                    var id = await _frotaGeradorService.AddAsync(obj, loggedUser.Item3);
                     return Ok(id);
                 }
 
@@ -109,18 +83,18 @@ namespace WebApi.Controllers.APIs
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] GeradorViewModel obj)
+        public async Task<ActionResult> Update(int id, [FromBody] FrotaGeradorViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _geradorService.GetByIdAsync(id);
+                    var objeto = await _frotaGeradorService.GetByIdAsync(id);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
 
-                        await _geradorService.UpdateAsync(obj);
+                        await _frotaGeradorService.UpdateAsync(obj);
                         return Ok();
                     }
                     else
@@ -144,7 +118,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _geradorService.DeleteAsync(id);
+                    await _frotaGeradorService.DeleteAsync(id);
                     return Ok();
                 }
 
