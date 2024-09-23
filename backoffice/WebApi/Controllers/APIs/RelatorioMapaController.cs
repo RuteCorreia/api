@@ -4,6 +4,7 @@ using Application.DTOs.Cadastros.RelatorioMapa.ViewModel;
 using Application.DTOs.ExportExcel.ViewModel;
 using Application.DTOs.Log.Interface;
 using Domain.Entidades.Cadastros.Aplicacao;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO.Compression;
@@ -12,6 +13,7 @@ using WebApi.HttpRequestInfo;
 namespace WebApi.Controllers.APIs
 {
     [Route("api/v1/[controller]")]
+    [Authorize]
     [ApiController]
     public class RelatorioMapaController : ControllerBase
     {
