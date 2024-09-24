@@ -28,15 +28,23 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
 
             var aplicacao = await _dashboardRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
 
-            var rendimentoAplicacao = aplicacao.TotalHoras / aplicacao.ExtensaoTotal;
-            var rendimentoFormatado = Math.Round(rendimentoAplicacao ?? 0, 2);
+            var incendioValorTotal = incendio?.ValorTotal ?? 0;
+            var aplicacaoValorTotal = aplicacao?.ValorTotal ?? 0;
+            var incendioTotalHoras = incendio?.TotalHoras ?? 0;
+            var aplicacaoTotalHoras = aplicacao?.TotalHoras ?? 0;
+            var aplicacaoExtensaoTotal = aplicacao?.ExtensaoTotal ?? 0;
+
+            // Calcula o rendimento da aplicação
+            var rendimentoAplicacao = aplicacaoExtensaoTotal > 0 ? aplicacaoTotalHoras / aplicacaoExtensaoTotal : 0;
+            var rendimentoFormatado = Math.Round(rendimentoAplicacao, 2);
 
             // Retorna um objeto contendo os valores somados
             var dashboardViewModel = new DashboardViewModel
             {
-                ValorTotal = incendio.ValorTotal + aplicacao.ValorTotal,
-                TotalHoras = incendio.TotalHoras + aplicacao.TotalHoras,
-                ExtensaoTotal = aplicacao.ExtensaoTotal ,
+                Mes = aplicacao.Mes,
+                ValorTotal = incendioValorTotal + aplicacaoValorTotal,
+                TotalHoras = incendioTotalHoras + aplicacaoTotalHoras,
+                ExtensaoTotal = aplicacaoExtensaoTotal,
                 Rendimento = rendimentoFormatado
             };
 

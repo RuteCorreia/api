@@ -25,9 +25,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var loggedUser = "196";
-                var result = await _dashboardService.GetAllAsync(dataInicio,dataFim,loggedUser,usuario,nomeAeronave,nomeContratante);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var result = await _dashboardService.GetAllAsync(dataInicio,dataFim,loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
                 return Ok(result);
             }
             catch (Exception ex)
