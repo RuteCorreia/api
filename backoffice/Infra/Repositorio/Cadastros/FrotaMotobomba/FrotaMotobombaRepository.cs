@@ -43,7 +43,7 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
             return obj;
         }
 
-        public async Task UpdateAsync(Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba obj)
+        public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba obj)
         {
             var objeto = await _contextBase.FrotaMotobombas.FindAsync(obj.Id);
             objeto.Identificacao = obj.Identificacao;
@@ -53,6 +53,7 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
 
             _contextBase.FrotaMotobombas.Update(objeto);
             await _contextBase.SaveChangesAsync();
+            return objeto.Id;
         }
     }
 }

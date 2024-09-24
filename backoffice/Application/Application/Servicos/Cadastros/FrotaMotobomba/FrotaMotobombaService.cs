@@ -45,10 +45,10 @@ namespace Application.Application.Servicos.Cadastros.FrotaMotobomba
             return _mapper.Map<FrotaMotobombaViewModel>(obj);
         }
 
-        public async Task UpdateAsync(FrotaMotobombaViewModel obj)
+        public async Task<int> UpdateAsync(FrotaMotobombaViewModel obj)
         {
             var mapFrotaMotobomba = _mapper.Map<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba>(obj);
-            await _frotaMotobombaRepository.UpdateAsync(mapFrotaMotobomba);
+            return await _frotaMotobombaRepository.UpdateAsync(mapFrotaMotobomba);
         }
     }
 }

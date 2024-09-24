@@ -34,5 +34,50 @@ namespace WebApi.Controllers.APIs
                 return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
             }
         }
+
+        [HttpGet("getUsuarios")]
+        public async Task<IActionResult> GetUsuarios()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var result = await _dashboardService.GetUsuariosDropdownAsync(loggedUser.Item3);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
+            }
+        }
+
+        [HttpGet("getClientes")]
+        public async Task<IActionResult> GetClientes()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var result = await _dashboardService.GetClientesDropdownAsync(loggedUser.Item3);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
+            }
+        }
+
+        [HttpGet("getAeronaves")]
+        public async Task<IActionResult> GetAeronaves()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var result = await _dashboardService.GetAeronavesDropdownAsync(loggedUser.Item3);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
+            }
+        }
     }
 }

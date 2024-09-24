@@ -43,7 +43,7 @@ namespace Infra.Repositorio.Cadastros.FrotaBateria
             return obj;
         }
 
-        public async Task UpdateAsync(Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria obj)
+        public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria obj)
         {
             var objeto = await _contextBase.FrotaBaterias.FindAsync(obj.Id);
             objeto.IdBateria = obj.IdBateria;
@@ -53,6 +53,7 @@ namespace Infra.Repositorio.Cadastros.FrotaBateria
 
             _contextBase.FrotaBaterias.Update(objeto);
             await _contextBase.SaveChangesAsync();
+            return objeto.Id;
         }
     }
 }

@@ -52,5 +52,44 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
 
             return groupedData.ToList();
         }
+
+        public Task<IEnumerable<string>> GetUsuariosDropdownAsync(string? idEmpresa)
+        {
+            try
+            {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                return _dashboardRepository.GetUsuariosDropdownAsync(idEmpresaInt);
+            }
+            catch (Exception ex) 
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<IEnumerable<string>> GetClientesDropdownAsync(string? idEmpresa)
+        {
+            try
+            {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                return _dashboardRepository.GetClientesDropdownAsync(idEmpresaInt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public Task<IEnumerable<string>> GetAeronavesDropdownAsync(string? idEmpresa)
+        {
+            try
+            {
+                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                return _dashboardRepository.GetAeronavesDropdownAsync(idEmpresaInt);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

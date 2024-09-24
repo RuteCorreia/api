@@ -92,8 +92,8 @@ namespace WebApi.Controllers.APIs
                     if (!ObjectNullValidation.IsObjectNull(obj))
                     {
                         var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                        await _frotaBateriaService.UpdateAsync(obj);
-                        return Ok();
+                        var id = await _frotaBateriaService.UpdateAsync(obj);
+                        return Ok(id);
                     }
                     else
                     {

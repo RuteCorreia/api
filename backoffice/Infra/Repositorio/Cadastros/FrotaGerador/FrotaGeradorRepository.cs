@@ -43,7 +43,7 @@ namespace Infra.Repositorio.Cadastros.FrotaGerador
             return obj;
         }
 
-        public async Task UpdateAsync(Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador obj)
+        public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador obj)
         {
             var objeto = await _contextBase.FrotaGeradores.FindAsync(obj.Id);
             objeto.HoraInicio = obj.HoraInicio;
@@ -53,6 +53,7 @@ namespace Infra.Repositorio.Cadastros.FrotaGerador
 
             _contextBase.FrotaGeradores.Update(objeto);
             await _contextBase.SaveChangesAsync();
+            return objeto.Id;
         }
     }
 }

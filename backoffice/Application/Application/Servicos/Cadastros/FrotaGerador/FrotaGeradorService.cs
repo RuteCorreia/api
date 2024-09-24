@@ -43,10 +43,10 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
             return _mapper.Map<FrotaGeradorViewModel>(obj);
         }
 
-        public async Task UpdateAsync(FrotaGeradorViewModel obj)
+        public async Task<int> UpdateAsync(FrotaGeradorViewModel obj)
         {
             var mapFrotaGerador = _mapper.Map<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>(obj);
-            await _frotaGeradorRepository.UpdateAsync(mapFrotaGerador);
+            return await _frotaGeradorRepository.UpdateAsync(mapFrotaGerador);
         }
     }
 }

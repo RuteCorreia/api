@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.FrotaBateria.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.FrotaBateria;
 using Helpers;
+using System.Threading.Tasks;
 
 namespace Application.Application.Servicos.Cadastros.FrotaBateria
 {
@@ -43,10 +44,10 @@ namespace Application.Application.Servicos.Cadastros.FrotaBateria
             return _mapper.Map<FrotaBateriaViewModel>(obj);
         }
 
-        public async Task UpdateAsync(FrotaBateriaViewModel obj)
+        public async Task<int> UpdateAsync(FrotaBateriaViewModel obj)
         {
             var mapFrotaBateria = _mapper.Map<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>(obj);
-            await _frotaBateriaRepository.UpdateAsync(mapFrotaBateria);
+            return await _frotaBateriaRepository.UpdateAsync(mapFrotaBateria);
         }
     }
 }

@@ -112,5 +112,85 @@ namespace Infra.Repositorio.Cadastros.Dashboard
             }
         }
 
+        public async Task<IEnumerable<string>> GetUsuariosDropdownAsync(int idEmpresa)
+        {
+            var query = @"
+                SELECT DISTINCT Piloto AS Nome
+                FROM RelatorioAplicacao
+                WHERE StatusEnvio = 0 AND IdEmpresa = @IdEmpresa
+        
+                UNION
+        
+                SELECT DISTINCT Executor AS Nome
+                FROM RelatorioAplicacao
+                WHERE StatusEnvio = 0 AND IdEmpresa = @IdEmpresa
+        
+                UNION
+        
+                SELECT DISTINCT Piloto AS Nome
+                FROM CombateIncendio
+                WHERE StatusEnvio = 0 AND IdEmpresa = @IdEmpresa
+        
+                UNION
+        
+                SELECT DISTINCT u.Nome AS Nome
+                FROM CombateIncendio ci
+                JOIN Usuario u ON ci.IdExecutor = u.Id 
+                WHERE ci.StatusEnvio = 0 AND ci.IdEmpresa = @IdEmpresa;
+            ";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var usuarios = await connection.QueryAsync<string>(query, new { IdEmpresa = idEmpresa });
+                return usuarios.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetClientesDropdownAsync(int idEmpresa)
+        {
+            var query = @"
+                SELECT DISTINCT c.Nome AS Nome
+                FROM RelatorioAplicacao ra
+                JOIN Contratante c ON ra.ContratanteId = c.Id
+                WHERE ra.StatusEnvio = 0 AND ra.IdEmpresa = @IdEmpresa
+        
+                UNION
+        
+                SELECT DISTINCT Cliente AS Nome
+                FROM CombateIncendio
+                WHERE StatusEnvio = 0 AND IdEmpresa = @IdEmpresa;
+            ";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var usuarios = await connection.QueryAsync<string>(query, new { IdEmpresa = idEmpresa });
+                return usuarios.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetAeronavesDropdownAsync(int idEmpresa)
+        {
+            var query = @"
+                SELECT DISTINCT 
+                    LEFT(art.NomeAeronave, CHARINDEX(' ', art.NomeAeronave + ' ') - 1) AS Aeronave
+                FROM RelatorioAplicacao ra
+                JOIN AplicacaoRecomendacoesTecnicas art ON ra.RecomendacoesTecnicasId = art.Id
+                WHERE ra.StatusEnvio = 0 AND ra.IdEmpresa = @IdEmpresa
+        
+                UNION
+        
+                SELECT DISTINCT Prefixo AS Aeronave
+                FROM CombateIncendio c
+                JOIN Aeronave a ON c.IdAeronave = a.Id
+                WHERE c.StatusEnvio = 0 AND c.IdEmpresa = @IdEmpresa;
+            ";
+
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                var usuarios = await connection.QueryAsync<string>(query, new { IdEmpresa = idEmpresa });
+                return usuarios.ToList();
+            }
+        }
+
     }
 }

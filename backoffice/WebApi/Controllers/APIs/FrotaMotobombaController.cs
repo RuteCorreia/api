@@ -93,8 +93,8 @@ namespace WebApi.Controllers.APIs
                     if (!ObjectNullValidation.IsObjectNull(obj))
                     {
                         var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                        await _frotaMotobombaService.UpdateAsync(obj);
-                        return Ok();
+                        var id = await _frotaMotobombaService.UpdateAsync(obj);
+                        return Ok(id);
                     }
                     else
                     {
