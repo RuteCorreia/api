@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.DTOs.Cadastros.Dashboard.ViewModel;
+using AutoMapper;
 using Domain.Interfaces.Cadastros.Dashboard;
 using Helpers;
 
@@ -8,13 +9,15 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
     public class DashboardService : IDashboardService
     {
         private readonly IDashboardRepository _dashboardRepository;
+        private readonly IMapper _mapper;
 
-        public DashboardService(IDashboardRepository dashboardRepository)
+        public DashboardService(IDashboardRepository dashboardRepository, IMapper mapper)
         {
             _dashboardRepository = dashboardRepository;
+            _mapper = mapper;   
         }
 
-        public async Task<DashboardViewModel> GetAllAsync(
+        public async Task<IEnumerable<DashboardViewModel>> GetAllAsync(
             DateTime? dataInicio,
             DateTime? dataFim,
             string? idEmpresa,
@@ -24,31 +27,30 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
 
-            var incendio = await _dashboardRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+            // Obtém os dados do repositório
+            var incendioEntities = await _dashboardRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+            var aplicacaoEntities = await _dashboardRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
 
-            var aplicacao = await _dashboardRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+            // Mapeia as entidades para ViewModels
+            var incendioList = _mapper.Map<List<DashboardViewModel>>(incendioEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
+            var aplicacaoList = _mapper.Map<List<DashboardViewModel>>(aplicacaoEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
 
-            var incendioValorTotal = incendio?.ValorTotal ?? 0;
-            var aplicacaoValorTotal = aplicacao?.ValorTotal ?? 0;
-            var incendioTotalHoras = incendio?.TotalHoras ?? 0;
-            var aplicacaoTotalHoras = aplicacao?.TotalHoras ?? 0;
-            var aplicacaoExtensaoTotal = aplicacao?.ExtensaoTotal ?? 0;
+            // Agrupando os dados por ano e mês
+            var groupedData = from mes in incendioList.Select(i => new { i.Mes, i.Ano })
+                              .Union(aplicacaoList.Select(a => new { a.Mes, a.Ano }))
+                              .Distinct()
+                              select new DashboardViewModel
+                              {
+                                  Mes = mes.Mes,
+                                  Ano = mes.Ano,
+                                  ValorTotal = (incendioList.Where(i => i.Mes == mes.Mes && i.Ano == mes.Ano).Sum(i => i.ValorTotal ?? 0) +
+                                                aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ValorTotal ?? 0)),
+                                  TotalHoras = (incendioList.Where(i => i.Mes == mes.Mes && i.Ano == mes.Ano).Sum(i => i.TotalHoras ?? 0) +
+                                                aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.TotalHoras ?? 0)),
+                                  ExtensaoTotal = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0))
+                              };
 
-            // Calcula o rendimento da aplicação
-            var rendimentoAplicacao = aplicacaoExtensaoTotal > 0 ? aplicacaoTotalHoras / aplicacaoExtensaoTotal : 0;
-            var rendimentoFormatado = Math.Round(rendimentoAplicacao, 2);
-
-            // Retorna um objeto contendo os valores somados
-            var dashboardViewModel = new DashboardViewModel
-            {
-                Mes = aplicacao.Mes,
-                ValorTotal = incendioValorTotal + aplicacaoValorTotal,
-                TotalHoras = incendioTotalHoras + aplicacaoTotalHoras,
-                ExtensaoTotal = aplicacaoExtensaoTotal,
-                Rendimento = rendimentoFormatado
-            };
-
-            return dashboardViewModel;
+            return groupedData.ToList();
         }
     }
 }
