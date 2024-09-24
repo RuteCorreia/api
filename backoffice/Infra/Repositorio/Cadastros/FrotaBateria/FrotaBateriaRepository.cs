@@ -46,6 +46,8 @@ namespace Infra.Repositorio.Cadastros.FrotaBateria
         public async Task UpdateAsync(Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria obj)
         {
             var objeto = await _contextBase.FrotaBaterias.FindAsync(obj.Id);
+            objeto.IdBateria = obj.IdBateria;
+            objeto.IdFrota = obj.IdFrota;
             objeto.CicloInicial = obj.CicloInicial;
             objeto.CicloFinal = obj.CicloFinal;
 

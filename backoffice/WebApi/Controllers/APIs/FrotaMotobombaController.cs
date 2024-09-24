@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.FrotaGerador.Interface;
+﻿using Application.Application.Servicos.Cadastros.FrotaGerador;
+using Application.DTOs.Cadastros.FrotaGerador.Interface;
 using Application.DTOs.Cadastros.FrotaGerador.ViewModel;
 using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
 using Application.DTOs.Cadastros.FrotaMotobomba.ViewModel;
@@ -82,18 +83,16 @@ namespace WebApi.Controllers.APIs
         }
 
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] FrotaMotobombaViewModel obj)
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] FrotaMotobombaViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _frotaMotobombaService.GetByIdAsync(id);
-                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    if (!ObjectNullValidation.IsObjectNull(obj))
                     {
-                        obj.Id = objeto.Id;
-
+                        var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                         await _frotaMotobombaService.UpdateAsync(obj);
                         return Ok();
                     }

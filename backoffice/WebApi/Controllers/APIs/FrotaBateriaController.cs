@@ -82,7 +82,7 @@ namespace WebApi.Controllers.APIs
         }
 
 
-        [HttpPut("{id:int}")]
+        [HttpPut]
         public async Task<ActionResult> Update([FromBody] FrotaBateriaViewModel obj)
         {
             try
