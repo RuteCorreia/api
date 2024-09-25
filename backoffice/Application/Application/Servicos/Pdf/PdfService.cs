@@ -18,7 +18,7 @@ namespace Application.Application.Servicos.Pdf
 
                         for (int i = 1; i <= totalPages; i++)
                         {
-                            var pdfContent = stamper.GetUnderContent(i);
+                            var pdfContent = stamper.GetOverContent(i);
                             var font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
                             var text = "CANCELADO";
                             var size = 90;
