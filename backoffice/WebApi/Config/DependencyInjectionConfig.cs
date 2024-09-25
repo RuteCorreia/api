@@ -272,6 +272,10 @@ using Domain.Interfaces.Cadastros.FrotaGerador;
 using Infra.Repositorio.Cadastros.FrotaGerador;
 using Domain.Interfaces.Cadastros.FrotaMotobomba;
 using Infra.Repositorio.Cadastros.FrotaMotobomba;
+using Application.DTOs.Cadastros.Dashboard.Interface;
+using Application.Application.Servicos.Cadastros.Dashboard;
+using Domain.Interfaces.Cadastros.Dashboard;
+using Infra.Repositorio.Cadastros.Dashboard;
 
 namespace WebApi.Config;
 
@@ -352,6 +356,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaBateriaService, FrotaBateriaService>();
         services.AddScoped<IFrotaGeradorService, FrotaGeradorService>();
         services.AddScoped<IFrotaMotobombaService, FrotaMotobombaService>();
+        services.AddScoped<IDashboardService, DashboardService>();
 
 
         #endregion
@@ -425,6 +430,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaBateriaRepository, FrotaBateriaRepository>();
         services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
+        services.AddScoped<IDashboardRepository, DashboardRepository>();
 
         #endregion
 

@@ -82,20 +82,18 @@ namespace WebApi.Controllers.APIs
         }
 
 
-        [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] FrotaBateriaViewModel obj)
+        [HttpPut]
+        public async Task<ActionResult> Update([FromBody] FrotaBateriaViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _frotaBateriaService.GetByIdAsync(id);
-                    if (!ObjectNullValidation.IsObjectNull(objeto))
+                    if (!ObjectNullValidation.IsObjectNull(obj))
                     {
-                        obj.Id = objeto.Id;
-
-                        await _frotaBateriaService.UpdateAsync(obj);
-                        return Ok();
+                        var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                        var id = await _frotaBateriaService.UpdateAsync(obj);
+                        return Ok(id);
                     }
                     else
                     {

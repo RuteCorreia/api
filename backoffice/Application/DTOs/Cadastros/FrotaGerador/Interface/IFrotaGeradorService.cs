@@ -6,9 +6,9 @@ namespace Application.DTOs.Cadastros.FrotaGerador.Interface
     public interface IFrotaGeradorService
     {
         Task<int> AddAsync(FrotaGeradorViewModel obj, string? idEmpresa);
-        Task UpdateAsync(FrotaGeradorViewModel obj);
+        Task<int> UpdateAsync(FrotaGeradorViewModel obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<FrotaGeradorViewModel>> GetAllAsync(string? idEmpresa);
-        Task<FrotaGeradorViewModel> GetByIdAsync(int? id);
+        Task<IEnumerable<FrotaGeradorViewModel>> GetByIdAsync(int? id);
     }
 }

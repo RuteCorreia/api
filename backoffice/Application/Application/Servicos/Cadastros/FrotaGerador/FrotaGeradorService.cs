@@ -37,16 +37,16 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
             return _mapper.Map<IEnumerable<FrotaGeradorViewModel>>(list);
         }
 
-        public async Task<FrotaGeradorViewModel> GetByIdAsync(int? id)
+        public async Task<IEnumerable<FrotaGeradorViewModel>> GetByIdAsync(int? id)
         {
             var obj = await _frotaGeradorRepository.GetByIdAsync(id);
-            return _mapper.Map<FrotaGeradorViewModel>(obj);
+            return _mapper.Map<IEnumerable<FrotaGeradorViewModel>>(obj);
         }
 
-        public async Task UpdateAsync(FrotaGeradorViewModel obj)
+        public async Task<int> UpdateAsync(FrotaGeradorViewModel obj)
         {
             var mapFrotaGerador = _mapper.Map<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>(obj);
-            await _frotaGeradorRepository.UpdateAsync(mapFrotaGerador);
+            return await _frotaGeradorRepository.UpdateAsync(mapFrotaGerador);
         }
     }
 }
