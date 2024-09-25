@@ -13,6 +13,8 @@ using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Interfaces.User;
+using Domain.Interfaces.Cadastros.DataRelatorio;
+using Application.DTOs.Pdf.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -24,8 +26,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
         private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
+        private readonly IDataRelatorioRepository _dataRelatorioRepository;
         private readonly IContratanteRepository _contratanteRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
 
         public RelatorioAplicacaoService(
@@ -35,8 +39,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository,
             IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
+            IDataRelatorioRepository dataRelatorioRepository,
             IContratanteRepository contratanteRepository,
             IUsuarioRepository usuarioRepository,
+            IPdfService pdfService,
             IMapper mapper)
         {
             _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
@@ -45,8 +51,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
             _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
+            _dataRelatorioRepository = dataRelatorioRepository;
             _contratanteRepository = contratanteRepository;
             _usuarioRepository = usuarioRepository;
+            _pdfService = pdfService;
             _mapper = mapper;
         }
 
@@ -170,13 +178,27 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
         }
 
-        public async Task CancelarAsync(int id)
+        public async Task CancelarAsync(int id, string? idEmpresa)
         {
             var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             if (relatorioExistente != null)
             {
                 relatorioExistente.StatusEnvio = 4;
                 relatorioExistente.DataAlteracao = DateTime.Now;
+                if(relatorioExistente.IdData != null)
+                {
+                    var base64 = await _dataRelatorioRepository.GetByIdAsync(relatorioExistente.IdData, idEmpresaInt);
+
+                    if(!string.IsNullOrEmpty(base64.Data))
+                    {
+                        byte[] pdfBytes = Convert.FromBase64String(base64.Data);
+                        byte[] pdfComMarcaDagua = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(pdfBytes);
+                        string pdfComMarcaDaguaBase64 = Convert.ToBase64String(pdfComMarcaDagua);
+                        base64.Data = pdfComMarcaDaguaBase64;
+                        await _dataRelatorioRepository.UpdateAsync(base64);
+                    }
+                }
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 

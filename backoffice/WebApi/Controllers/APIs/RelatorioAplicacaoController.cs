@@ -683,7 +683,8 @@ namespace WebApi.Controllers.APIs
 
                 if (ModelState.IsValid)
                 {
-                    await _relatorioAplicacaoService.CancelarAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _relatorioAplicacaoService.CancelarAsync(id, loggedUser.Item3);
                     _logService.LogInformation("relatório de aplicação cancelado com sucesso.");
                     return Ok();
                 }

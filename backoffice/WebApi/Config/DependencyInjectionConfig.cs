@@ -276,6 +276,8 @@ using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.Application.Servicos.Cadastros.Dashboard;
 using Domain.Interfaces.Cadastros.Dashboard;
 using Infra.Repositorio.Cadastros.Dashboard;
+using Application.DTOs.Pdf.Interface;
+using Application.Application.Servicos.Pdf;
 
 namespace WebApi.Config;
 
@@ -357,6 +359,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaGeradorService, FrotaGeradorService>();
         services.AddScoped<IFrotaMotobombaService, FrotaMotobombaService>();
         services.AddScoped<IDashboardService, DashboardService>();
+        services.AddScoped<IPdfService, PdfService>();
 
 
         #endregion

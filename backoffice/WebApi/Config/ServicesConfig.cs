@@ -12,6 +12,7 @@ public static class ServicesConfig
     public static void AddServicesConfiguration(this IServiceCollection services)
     {
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+        Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         services.AddControllers()
         .AddJsonOptions(opts =>
         {
