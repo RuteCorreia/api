@@ -5,6 +5,6 @@ namespace Application.DTOs.Cadastros.TelaPrincipal.Interface
 {
     public interface IRelatorioAeronaveService
     {
-        Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync(DateTime? dataFiltro, string? idEmpresa);
+        Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync(DateTime? dataInicio, DateTime? dataFim, string? idEmpresa);
     }
 }

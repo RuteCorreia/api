@@ -23,28 +23,15 @@ namespace WebApi.Controllers.APIs
 
 
         [HttpGet("GetAllRelatoriosAeronave")]
-        public async Task<ActionResult> GetAllRelatoriosAeronave([FromQuery] string? dataFiltro)
+        public async Task<ActionResult> GetAllRelatoriosAeronave(DateTime? dataInicio, DateTime? dataFim)
         {
             try
             {
 
                 if (ModelState.IsValid)
                 {
-                    DateTime? data = null;
-                    if (!string.IsNullOrEmpty(dataFiltro))
-                    {
-                        // Tenta converter o dataFiltro para DateTime usando o formato "yyyy-MM-dd"
-                        if (DateTime.TryParseExact(dataFiltro, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime parsedDate))
-                        {
-                            data = parsedDate;
-                        }
-                        else
-                        {
-                            return BadRequest("Formato de data inválido. Use o formato yyyy-MM-dd.");
-                        }
-                    }
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var relatorios = await _relatorioAeronaveService.GetAllAsync(data, loggedUser.Item3);
+                    var relatorios = await _relatorioAeronaveService.GetAllAsync(dataInicio,dataFim, loggedUser.Item3);
                     return Ok(relatorios);
                 }
 

@@ -47,7 +47,11 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
                                                 aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ValorTotal ?? 0)),
                                   TotalHoras = (incendioList.Where(i => i.Mes == mes.Mes && i.Ano == mes.Ano).Sum(i => i.TotalHoras ?? 0) +
                                                 aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.TotalHoras ?? 0)),
-                                  ExtensaoTotal = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0))
+                                  ExtensaoTotal = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)),
+                                  Rendimento = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0) != 0) ?
+                                       (incendioList.Where(i => i.Mes == mes.Mes && i.Ano == mes.Ano).Sum(i => i.TotalHoras ?? 0) +
+                                        aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.TotalHoras ?? 0)) /
+                                       (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)) : 0
                               };
 
             return groupedData.ToList();
