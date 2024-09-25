@@ -39,10 +39,10 @@ namespace Application.Application.Servicos.Cadastros.FrotaMotobomba
             return _mapper.Map<IEnumerable<FrotaMotobombaViewModel>>(list);
         }
 
-        public async Task<FrotaMotobombaViewModel> GetByIdAsync(int? id)
+        public async Task<IEnumerable<FrotaMotobombaViewModel>> GetByIdAsync(int? id)
         {
             var obj = await _frotaMotobombaRepository.GetByIdAsync(id);
-            return _mapper.Map<FrotaMotobombaViewModel>(obj);
+            return _mapper.Map<IEnumerable<FrotaMotobombaViewModel>>(obj);
         }
 
         public async Task<int> UpdateAsync(FrotaMotobombaViewModel obj)

@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.FrotaGerador;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.FrotaGerador;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,12 @@ namespace Infra.Repositorio.Cadastros.FrotaGerador
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador> GetByIdAsync(int? id)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>> GetByIdAsync(int? id)
         {
-            var obj = await _contextBase.FrotaGeradores.FindAsync(id);
-            return obj;
+            var entities = await _contextBase.FrotaGeradores
+                                    .Where(ab => ab.Id == id)
+                                    .ToListAsync();
+            return entities;
         }
 
         public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador obj)

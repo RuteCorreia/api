@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.FrotaBateria;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.FrotaBateria;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,12 @@ namespace Infra.Repositorio.Cadastros.FrotaBateria
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria> GetByIdAsync(int? id)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>> GetByIdAsync(int? id)
         {
-            var obj = await _contextBase.FrotaBaterias.FindAsync(id);
-            return obj;
+            var entities = await _contextBase.FrotaBaterias
+                                    .Where(fb => fb.Id == id)
+                                    .ToListAsync();
+            return entities;
         }
 
         public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria obj)

@@ -38,10 +38,10 @@ namespace Application.Application.Servicos.Cadastros.FrotaBateria
             return _mapper.Map<IEnumerable<FrotaBateriaViewModel>>(list);
         }
 
-        public async Task<FrotaBateriaViewModel> GetByIdAsync(int? id)
+        public async Task<IEnumerable<FrotaBateriaViewModel>> GetByIdAsync(int? id)
         {
             var obj = await _frotaBateriaRepository.GetByIdAsync(id);
-            return _mapper.Map<FrotaBateriaViewModel>(obj);
+            return _mapper.Map<IEnumerable<FrotaBateriaViewModel>>(obj);
         }
 
         public async Task<int> UpdateAsync(FrotaBateriaViewModel obj)

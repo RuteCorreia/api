@@ -9,6 +9,6 @@ namespace Application.DTOs.Cadastros.FrotaBateria.Interface
         Task<int> UpdateAsync(FrotaBateriaViewModel obj);
         Task DeleteAsync(int id);
         Task<IEnumerable<FrotaBateriaViewModel>> GetAllAsync(string? idEmpresa);
-        Task<FrotaBateriaViewModel> GetByIdAsync(int? id);
+        Task<IEnumerable<FrotaBateriaViewModel>> GetByIdAsync(int? id);
     }
 }

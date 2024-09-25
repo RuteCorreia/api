@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.FrotaMotobomba;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.FrotaMotobomba;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -37,10 +38,12 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba> GetByIdAsync(int? id)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba>> GetByIdAsync(int? id)
         {
-            var obj = await _contextBase.FrotaMotobombas.FindAsync(id);
-            return obj;
+            var entities = await _contextBase.FrotaMotobombas
+                                    .Where(ab => ab.Id == id)
+                                    .ToListAsync();
+            return entities;
         }
 
         public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba obj)
