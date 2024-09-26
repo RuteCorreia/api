@@ -72,7 +72,10 @@ namespace Application.Application.Servicos.Export_Excel
 
         public async Task UpdateAsync(PlanilhaExcelExportada obj)
         {
-            obj.DataAlteracao = DateTime.Now;
+            TimeZoneInfo brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil/East");
+            DateTime dataAlteracao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brasilTimeZone);
+
+            obj.DataAlteracao = dataAlteracao;
             await _exportacaoPlanilhaRepository.UpdateAsync(obj);
         }
 
