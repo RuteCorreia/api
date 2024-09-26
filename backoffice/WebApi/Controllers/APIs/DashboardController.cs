@@ -44,9 +44,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                //var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var loggedUser = "196";
-                var result = await _dashboardService.GetAllAsync(dataInicio, dataFim, loggedUser, usuario, nomeAeronave, nomeContratante);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var result = await _dashboardService.GetAllAsync(dataInicio, dataFim, loggedUser.Item3, usuario, nomeAeronave, nomeContratante);
                 var dashboards = new List<ExportDashboardViewModel>();
 
                 // Iterar sobre cada ID fornecido
@@ -110,6 +109,7 @@ namespace WebApi.Controllers.APIs
 
                         // Formatar Rendimento como porcentagem
                         worksheet.Cells[row, 11].Value = item.Rendimento;
+                        worksheet.Cells[row, 11].Style.Numberformat.Format = "0.00";
 
                         // Preencher outras células
                         worksheet.Cells[row, 1].Value = item.DataInicio?.ToString("dd/MM/yyyy");
