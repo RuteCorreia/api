@@ -34,7 +34,7 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                 return result;
             }
         }
-        public async Task<IEnumerable<RelatorioAeronave>> GetAllAplicacaoAsync(DateTime? dataFiltro, int idEmpresa)
+        public async Task<IEnumerable<RelatorioAeronave>> GetAllAplicacaoAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa)
         {
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
@@ -51,9 +51,9 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                                     ELSE LEN(ar.NomeAeronave)
                                 END
                             ) AS Aeronave,
-                            SUM(CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras,
+                            SUM(DISTINCT CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
+                            SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
+                            SUM(DISTINCT DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras,
                             MIN(ra.DataCriacao) AS DataCriacao
                         FROM 
                             RelatorioAplicacao ra
@@ -70,7 +70,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                         WHERE 
                             ra.IdEmpresa = @IdEmpresa
                             AND ra.StatusEnvio = 0
-                            AND (@DataFiltro IS NULL OR ra.DataCriacao > @DataFiltro)
+                            AND (@DataInicio IS NULL OR ra.DataCriacao >= @DataInicio)
+                            AND (@DataFim IS NULL OR ra.DataCriacao <= @DataFim)
                         GROUP BY 
                             ra.Piloto,
                             ra.Executor,
@@ -80,7 +81,7 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                     ";
 
                     // Passando o parâmetro dataFiltro para a consulta
-                    var result = await connection.QueryAsync<RelatorioAeronave>(query, new { DataFiltro = dataFiltro, IdEmpresa = idEmpresa });
+                    var result = await connection.QueryAsync<RelatorioAeronave>(query, new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa });
                     return result.ToList();
                 }
                 catch (Exception ex)
@@ -91,7 +92,7 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
             }
         }
 
-        public async Task<IEnumerable<RelatorioAeronave>> GetAllIncendioAsync(DateTime? dataFiltro, int idEmpresa)
+        public async Task<IEnumerable<RelatorioAeronave>> GetAllIncendioAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa)
         {
             try
             {
@@ -100,8 +101,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                         ci.Piloto,
                         usu.Nome AS Executor,
                         aer.Prefixo AS Aeronave,
-                        SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                        SUM(DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
+                        SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
+                        SUM(DISTINCT DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
                     FROM 
                         CombateIncendio ci
                     JOIN 
@@ -113,7 +114,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                     WHERE 
                         ci.IdEmpresa = @IdEmpresa
                         AND ci.StatusEnvio = 0
-                        AND (@DataFiltro IS NULL OR ci.DataCriacao > @DataFiltro)
+                        AND (@DataInicio IS NULL OR ci.DataCriacao >= @DataInicio)
+                        AND (@DataFim IS NULL OR ci.DataCriacao <= @DataFim)
                     GROUP BY 
                         ci.Piloto,
                         usu.Nome,
@@ -124,7 +126,7 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
 
                 using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
                 {
-                    var parameters = new { DataFiltro = dataFiltro, IdEmpresa = idEmpresa };
+                    var parameters = new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa };
                     var result = await connection.QueryAsync<RelatorioAeronave>(query, parameters);
                     return result.ToList();
                 }

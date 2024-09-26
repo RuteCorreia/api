@@ -59,11 +59,13 @@ namespace WebApi.Controllers.ExportExcel
                     if (relatorio.NomeRelatorio.StartsWith("Aplicação"))
                     {
                         var relatorioAplicacao = await _relatorioAplicacaoService.ExportExcelAsync(relatorio.Id);
+                        await _relatorioAplicacaoService.UpdateDataAlteracaoAsync(relatorio.Id);
                         relatorios.Add(relatorioAplicacao);
                     }
                     else if(relatorio.NomeRelatorio.StartsWith("Combate Incendio"))
                     {
                         var relatorioIncendio = await _combateIncendioService.ExportExcelAsync(relatorio.Id);
+                        await _combateIncendioService.UpdateDataAlteracaoAsync(relatorio.Id);
                         relatorios.Add(relatorioIncendio);
                     }
                     

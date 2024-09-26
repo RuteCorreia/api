@@ -1,9 +1,6 @@
-﻿using Application.DTOs.Cadastros.Aeronave.Interface;
-using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
-using Application.DTOs.Cadastros.TelaPrincipal.Interface;
+﻿using Application.DTOs.Cadastros.TelaPrincipal.Interface;
 using Application.DTOs.Cadastros.TelaPrincipal.ViewModel;
 using AutoMapper;
-using Domain.Entidades.Cadastros.TelaPrincipal;
 using Domain.Interfaces.Cadastros.TelaPrincipal;
 using Helpers;
 using System.Globalization;
@@ -21,14 +18,14 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
             _relatorioAeronaveRepository = relatorioAeronaveRepository;  
             _mapper = mapper;
         }
-        public async Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync(DateTime? dataFiltro, string? idEmpresa)
+        public async Task<IEnumerable<RelatorioAeronaveDetalhadoViewModel>> GetAllAsync(DateTime? dataInicio, DateTime? dataFim, string? idEmpresa)
         {
             try
             {
                 var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
                 // Obtenha todos os relatórios
-                var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync(dataFiltro, idEmpresaInt);
-                var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync(dataFiltro, idEmpresaInt);
+                var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt);
+                var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt);
 
                 var todosRelatorios = relatoriosAeronave
                     .Concat(relatoriosIncendio)

@@ -13,6 +13,8 @@ using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Interfaces.User;
+using Domain.Interfaces.Cadastros.DataRelatorio;
+using Application.DTOs.Pdf.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -24,8 +26,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
         private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
+        private readonly IDataRelatorioRepository _dataRelatorioRepository;
         private readonly IContratanteRepository _contratanteRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
 
         public RelatorioAplicacaoService(
@@ -35,8 +39,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository,
             IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
+            IDataRelatorioRepository dataRelatorioRepository,
             IContratanteRepository contratanteRepository,
             IUsuarioRepository usuarioRepository,
+            IPdfService pdfService,
             IMapper mapper)
         {
             _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
@@ -45,8 +51,10 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
             _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
+            _dataRelatorioRepository = dataRelatorioRepository;
             _contratanteRepository = contratanteRepository;
             _usuarioRepository = usuarioRepository;
+            _pdfService = pdfService;
             _mapper = mapper;
         }
 
@@ -144,6 +152,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
+        public async Task UpdateDataAlteracaoAsync(int? id)
+        {
+            try
+            {
+                await _relatorioAplicacaoRepository.UpdateDataAlteracaoAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Não foi possível atualizar a DataAlteracao para o ID {id}.", ex);
+            }
+        }
+
         public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -160,29 +180,52 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 if (relatorioExistente != null)
                 {
                     relatorioExistente.IsMapa = condicao;
-                    relatorioExistente.DataAlteracao = DateTime.Now;
+
+                    // Obtendo a hora local do Brasil
+                    var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                    var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+                    relatorioExistente.DataAlteracao = dataAlteracao;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                     await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
                 }
             }
-
         }
 
-        public async Task CancelarAsync(int id)
+        public async Task CancelarAsync(int id, string? idEmpresa)
         {
             var relatorioExistente = await _relatorioAplicacaoRepository.GetByIdAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             if (relatorioExistente != null)
             {
                 relatorioExistente.StatusEnvio = 4;
-                relatorioExistente.DataAlteracao = DateTime.Now;
+
+                // Obtendo a hora local do Brasil
+                var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+                relatorioExistente.DataAlteracao = dataAlteracao;
+
+                if (relatorioExistente.IdData != null)
+                {
+                    var base64 = await _dataRelatorioRepository.GetByIdAsync(relatorioExistente.IdData, idEmpresaInt);
+
+                    if (!string.IsNullOrEmpty(base64.Data))
+                    {
+                        byte[] pdfBytes = Convert.FromBase64String(base64.Data);
+                        byte[] pdfComMarcaDagua = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(pdfBytes);
+                        string pdfComMarcaDaguaBase64 = Convert.ToBase64String(pdfComMarcaDagua);
+                        base64.Data = pdfComMarcaDaguaBase64;
+                        await _dataRelatorioRepository.UpdateAsync(base64);
+                    }
+                }
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                 await _relatorioAplicacaoRepository.CancelarAsync(mapProduto);
             }
-
         }
 
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
@@ -192,7 +235,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {contratante.Nome.ToString()} - {mapRelatorio.DataAlteracao} - {ar.TotalAreaAplicada}";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {ar.TotalAreaAplicada}";
 
             if (obj.Id > 0)
             {

@@ -59,6 +59,26 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         }
     }
 
+    public async Task UpdateDataAlteracaoAsync(int? id)
+    {
+        var objeto = await _contextBase.CombateIncendio.FindAsync(id);
+
+        if (objeto != null)
+        {
+            // Obtendo a hora local do Brasil
+            var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+            var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+            objeto.DataAlteracao = dataAlteracao;
+            _contextBase.CombateIncendio.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+        else
+        {
+            throw new KeyNotFoundException($"Relatório com ID {id} não encontrado.");
+        }
+    }
+
     public async Task<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio> ExportExcelAsync(int? id)
     {
         var query = @"

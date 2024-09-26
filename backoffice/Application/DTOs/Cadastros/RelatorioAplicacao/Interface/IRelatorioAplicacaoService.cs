@@ -9,6 +9,7 @@ public interface IRelatorioAplicacaoService
     Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataCriacaoAsync(DateTime Date, string? idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusAsync(string? idEmpresa);
+    Task UpdateDataAlteracaoAsync(int? id);
     Task<ExportRelatorioViewModel> ExportExcelAsync(int? id);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaAsync(string? idEmpresa);
@@ -18,6 +19,6 @@ public interface IRelatorioAplicacaoService
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? userId);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
     Task UpdateIsMapaAsync(List<int> obj, bool condicao);
-    Task CancelarAsync(int id);
+    Task CancelarAsync(int id, string? idEmpresa);
     Task DeleteAsync(int id);
 }

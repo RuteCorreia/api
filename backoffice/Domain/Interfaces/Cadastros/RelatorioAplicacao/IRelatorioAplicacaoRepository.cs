@@ -12,6 +12,7 @@ namespace Domain.Interfaces.Cadastros.RelatorioAplicacao
     {
         Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> AddAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
         Task UpdateAsync(Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj);
+        Task UpdateDataAlteracaoAsync(int? id);
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetAllAsync();
         Task<IEnumerable<Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetByPilotId(int pilotoId);
