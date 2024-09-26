@@ -217,7 +217,6 @@ public class CombateIncendioController : ControllerBase
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
-            // Primeiro dia do mês e último dia do mês
             var primeiroDiaMes = new DateTime(ano, mes, 1);
             var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
 

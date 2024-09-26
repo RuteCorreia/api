@@ -56,6 +56,18 @@ public class CombateIncendioService : ICombateIncendioService
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
     }
 
+    public async Task UpdateDataAlteracaoAsync(int? id)
+    {
+        try
+        {
+            await _combateIncendioRepository.UpdateDataAlteracaoAsync(id);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"Não foi possível atualizar a DataAlteracao para o ID {id}.", ex);
+        }
+    }
+
     public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id)
     {
         var ci = await _combateIncendioRepository.ExportExcelAsync(id);
@@ -145,7 +157,12 @@ public class CombateIncendioService : ICombateIncendioService
         if (relatorioExistente != null)
         {
             relatorioExistente.StatusEnvio = 4;
-            relatorioExistente.DataAlteracao = DateTime.Now;
+
+            // Obtendo a hora local do Brasil
+            var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+            var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+            relatorioExistente.DataAlteracao = dataAlteracao;
 
             var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 
@@ -205,7 +222,7 @@ public class CombateIncendioService : ICombateIncendioService
             horasIncendio = "Menos de um minuto";
         }
 
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataAlteracao} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {horasIncendio}";
         var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
         return combateIncendio;
     }
@@ -262,7 +279,7 @@ public class CombateIncendioService : ICombateIncendioService
             horasIncendio = "Menos de um minuto";
         }
 
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataAlteracao} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {horasIncendio}";
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 
@@ -274,7 +291,12 @@ public class CombateIncendioService : ICombateIncendioService
             if (relatorioExistente != null)
             {
                 relatorioExistente.IsMapa = condicao;
-                relatorioExistente.DataAlteracao = DateTime.Now;
+
+                // Obtendo a hora local do Brasil
+                var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+                relatorioExistente.DataAlteracao = dataAlteracao;
 
                 var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(relatorioExistente);
 

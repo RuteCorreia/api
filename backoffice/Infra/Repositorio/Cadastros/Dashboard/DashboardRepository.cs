@@ -41,7 +41,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         JOIN
                             Contratante c ON ra.ContratanteId = c.Id
                         WHERE
-                            ra.IdEmpresa = 196
+                            ra.IdEmpresa = @IdEmpresa
                             AND ra.StatusEnvio = 0
                             AND (ra.DataCriacao >= @DataInicio OR @DataInicio IS NULL)
                             AND (ra.DataCriacao <= @DataFim OR @DataFim IS NULL)
@@ -97,6 +97,44 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         GROUP BY 
                             DATEPART(YEAR, ci.DataCriacao), 
                             DATEPART(MONTH, ci.DataCriacao)
+                        ORDER BY 
+                            Ano, Mes;";
+
+                    var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Dashboard.Dashboard>(query,
+                        new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa, Usuario = usuario, NomeAeronave = nomeAeronave, NomeContratante = nomeContratante });
+                    return result.ToList();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Erro ao executar a consulta: {ex.Message}");
+                    throw;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Dashboard.Dashboard>> GetAllFrotaAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa, string? usuario, string? nomeAeronave, string? nomeContratante)
+        {
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+            {
+                try
+                {
+                    var query = @"
+                        SELECT 
+                            DATEPART(YEAR, cf.DataCriacao) AS Ano,
+                            DATEPART(MONTH, cf.DataCriacao) AS Mes,
+                            SUM(CAST(cf.HorimetroFinal AS DECIMAL(18, 2)) - CAST(cf.HorimetroInicial AS DECIMAL(18, 2))) AS TotalHoras
+                        FROM 
+                            ControleDeFrota cf
+                        WHERE
+                            cf.IdEmpresa = @IdEmpresa
+                            AND cf.StatusEnvio = 4
+                            AND (cf.DataCriacao >= @DataInicio OR @DataInicio IS NULL)
+                            AND (cf.DataCriacao <= @DataFim OR @DataFim IS NULL)
+                            AND (@Usuario IS NULL OR cf.NomePiloto LIKE '%' + @Usuario + '%' OR cf.NomeExecutor LIKE '%' + @Usuario + '%')
+                            AND (cf.NomeAeronave LIKE '%' + @NomeAeronave + '%' OR @NomeAeronave IS NULL)
+                        GROUP BY 
+                            DATEPART(YEAR, cf.DataCriacao), 
+                            DATEPART(MONTH, cf.DataCriacao)
                         ORDER BY 
                             Ano, Mes;";
 

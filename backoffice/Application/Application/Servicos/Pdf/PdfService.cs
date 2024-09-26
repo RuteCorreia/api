@@ -32,11 +32,6 @@ namespace Application.Application.Servicos.Pdf
                             float x = 298; // Posição X
                             float y = 421; // Posição Y
 
-                            // Desenha o fundo branco
-                            pdfContent.SetColorFill(backgroundColor);
-                            pdfContent.Rectangle(x - (textWidth / 2) - 10, y - (textHeight / 2) - 10, textWidth + 20, textHeight + 20);
-                            pdfContent.Fill();
-
                             pdfContent.SaveState();
                             pdfContent.BeginText();
                             pdfContent.SetFontAndSize(font, size);

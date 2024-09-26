@@ -152,6 +152,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             await _relatorioAplicacaoRepository.UpdateAsync(mapProduto);
         }
 
+        public async Task UpdateDataAlteracaoAsync(int? id)
+        {
+            try
+            {
+                await _relatorioAplicacaoRepository.UpdateDataAlteracaoAsync(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Não foi possível atualizar a DataAlteracao para o ID {id}.", ex);
+            }
+        }
+
         public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -168,14 +180,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 if (relatorioExistente != null)
                 {
                     relatorioExistente.IsMapa = condicao;
-                    relatorioExistente.DataAlteracao = DateTime.Now;
+
+                    // Obtendo a hora local do Brasil
+                    var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                    var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+                    relatorioExistente.DataAlteracao = dataAlteracao;
 
                     var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(relatorioExistente);
 
                     await _relatorioAplicacaoRepository.UpdateIsMapaAsync(mapProduto);
                 }
             }
-
         }
 
         public async Task CancelarAsync(int id, string? idEmpresa)
@@ -185,12 +201,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             if (relatorioExistente != null)
             {
                 relatorioExistente.StatusEnvio = 4;
-                relatorioExistente.DataAlteracao = DateTime.Now;
-                if(relatorioExistente.IdData != null)
+
+                // Obtendo a hora local do Brasil
+                var brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time");
+                var dataAlteracao = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, brasilTimeZone);
+
+                relatorioExistente.DataAlteracao = dataAlteracao;
+
+                if (relatorioExistente.IdData != null)
                 {
                     var base64 = await _dataRelatorioRepository.GetByIdAsync(relatorioExistente.IdData, idEmpresaInt);
 
-                    if(!string.IsNullOrEmpty(base64.Data))
+                    if (!string.IsNullOrEmpty(base64.Data))
                     {
                         byte[] pdfBytes = Convert.FromBase64String(base64.Data);
                         byte[] pdfComMarcaDagua = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(pdfBytes);
@@ -204,7 +226,6 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
                 await _relatorioAplicacaoRepository.CancelarAsync(mapProduto);
             }
-
         }
 
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
@@ -214,7 +235,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {contratante.Nome.ToString()} - {mapRelatorio.DataAlteracao} - {ar.TotalAreaAplicada}";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {ar.TotalAreaAplicada}";
 
             if (obj.Id > 0)
             {
