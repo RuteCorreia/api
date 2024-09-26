@@ -1,6 +1,10 @@
 ﻿using Application.DTOs.Pdf.Interface;
-using iTextSharp.text;
-using iTextSharp.text.pdf;
+using iText.IO.Font.Constants;
+using iText.Kernel.Colors;
+using iText.Kernel.Font;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Properties;
 
 namespace Application.Application.Servicos.Pdf
 {
@@ -10,35 +14,43 @@ namespace Application.Application.Servicos.Pdf
         {
             using (var memoryStream = new MemoryStream())
             {
-                using (var reader = new PdfReader(pdfBytes))
+                // Leitura do PDF de entrada
+                using (var reader = new PdfReader(new MemoryStream(pdfBytes)))
                 {
-                    using (var stamper = new PdfStamper(reader, memoryStream))
+                    using (var pdfWriter = new PdfWriter(memoryStream))
                     {
-                        int totalPages = reader.NumberOfPages;
-
-                        for (int i = 1; i <= totalPages; i++)
+                        using (var pdfDoc = new PdfDocument(reader, pdfWriter))
                         {
-                            var pdfContent = stamper.GetOverContent(i);
-                            var font = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1250, BaseFont.NOT_EMBEDDED);
-                            var text = "CANCELADO";
-                            var size = 90;
-                            var color = BaseColor.RED;
-                            var backgroundColor = BaseColor.WHITE;
+                            int totalPages = pdfDoc.GetNumberOfPages();
 
-                            var textWidth = font.GetWidthPoint(text, size);
-                            var textHeight = size; // Altura aproximada do texto
+                            // Carregar fonte (substituto do BaseFont)
+                            PdfFont font = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
 
-                            // Define a posição do texto
-                            float x = 298; // Posição X
-                            float y = 421; // Posição Y
+                            for (int i = 1; i <= totalPages; i++)
+                            {
+                                PdfPage page = pdfDoc.GetPage(i);
 
-                            pdfContent.SaveState();
-                            pdfContent.BeginText();
-                            pdfContent.SetFontAndSize(font, size);
-                            pdfContent.SetColorFill(color);
-                            pdfContent.ShowTextAligned(PdfContentByte.ALIGN_CENTER, text, x, y, 45);
-                            pdfContent.EndText();
-                            pdfContent.RestoreState();
+                                // Usar o Canvas para escrever texto
+                                var canvas = new Canvas(page, page.GetPageSize());
+
+                                var text = "CANCELADO";
+                                var size = 90;
+                                var color = ColorConstants.RED;
+
+                                // Posição e ângulo da marca d'água
+                                float x = page.GetPageSize().GetWidth() / 2;
+                                float y = page.GetPageSize().GetHeight() / 2;
+                                float angle = 45; // Ângulo de rotação
+
+                                // Adiciona o texto ao PDF
+                                canvas
+                                    .SetFontColor(color)
+                                    .SetFontSize(size)
+                                    .SetFont(font)
+                                    .ShowTextAligned(text, x, y, TextAlignment.CENTER, VerticalAlignment.MIDDLE, angle);
+
+                                canvas.Close();
+                            }
                         }
                     }
                 }
@@ -46,5 +58,6 @@ namespace Application.Application.Servicos.Pdf
                 return memoryStream.ToArray();
             }
         }
+
     }
 }

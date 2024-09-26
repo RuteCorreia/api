@@ -33,6 +33,7 @@ namespace Infra.Repositorio.Export_Excel
         public async Task UpdateAsync(PlanilhaExcelExportada obj)
         {
             var objeto = await _contextBase.PlanilhaExcelExportadas.FindAsync(obj.Id);
+            objeto.DataAlteracao = obj.DataAlteracao;
             objeto.Dados = obj.Dados;
 
             _contextBase.PlanilhaExcelExportadas.Update(objeto);
