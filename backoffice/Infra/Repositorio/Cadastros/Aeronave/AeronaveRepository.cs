@@ -58,6 +58,7 @@ public class AeronaveRepository : IAeronaveRepository
         objeto.Modelo = obj.Modelo;
         objeto.SerialNumber = obj.SerialNumber;
         objeto.Tipo = obj.Tipo;
+        objeto.Checklist = obj.Checklist;
 
         _contextBase.Aeronave.Update(objeto);
         await _contextBase.SaveChangesAsync();

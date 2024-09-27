@@ -5,6 +5,7 @@ using Domain.Enums;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.Empresa;
 using Helpers;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,13 +28,69 @@ public class AeronaveService : IAeronaveService
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var list = await _aeronaveRepository.GetAllAsync(idEmpresaInt);
-        return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
+
+        // Cria uma lista para armazenar os AeronaveViewModels
+        var aeronaveViewModels = new List<AeronaveViewModel>();
+
+        foreach (var item in list)
+        {
+            // Criação do modelo de visualização sem usar AutoMapper
+            var aeronaveViewModel = new AeronaveViewModel
+            {
+                Id = item.Id,
+                Tipo = item.Tipo,
+                Fabricante = item.Fabricante,
+                Prefixo = item.Prefixo,
+                Modelo = item.Modelo,
+                SerialNumber = item.SerialNumber,
+                // Outros campos que você tem em AeronaveViewModel
+            };
+
+            // Deserializa o checklist de JSON para IEnumerable<string>
+            if (!string.IsNullOrEmpty(item.Checklist))
+            {
+                aeronaveViewModel.Checklist = JsonConvert.DeserializeObject<IEnumerable<string>>(item.Checklist);
+            }
+            else
+            {
+                aeronaveViewModel.Checklist = Enumerable.Empty<string>(); // Inicializa como uma coleção vazia se estiver vazia
+            }
+
+            aeronaveViewModels.Add(aeronaveViewModel);
+        }
+
+        return aeronaveViewModels;
     }
 
     public async Task<AeronaveViewModel> GetByIdAsync(int id)
     {
         var obj = await _aeronaveRepository.GetByIdAsync(id);
-        return _mapper.Map<AeronaveViewModel>(obj);
+
+        if (obj == null)
+        {
+            throw new Exception($"Aeronave com ID {id} não encontrada.");
+        }
+
+        var aeronaveViewModel = new AeronaveViewModel
+        {
+            Id = obj.Id,
+            Tipo = obj.Tipo,
+            Fabricante = obj.Fabricante,
+            Prefixo = obj.Prefixo,
+            Modelo = obj.Modelo,
+            SerialNumber = obj.SerialNumber,
+        };
+
+        if (!string.IsNullOrEmpty(obj.Checklist))
+        {
+            aeronaveViewModel.Checklist = JsonConvert.DeserializeObject<IEnumerable<string>>(obj.Checklist);
+        }
+        else
+        {
+            aeronaveViewModel.Checklist = Enumerable.Empty<string>();
+        }
+
+        return aeronaveViewModel;
     }
 
     public async Task<(bool, string)> AddAsync(AeronaveViewModel obj, string? idEmpresa)
@@ -42,6 +99,12 @@ public class AeronaveService : IAeronaveService
 
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
         var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+
+        if (obj.Checklist != null) 
+        {
+            var checklistJson = JsonConvert.SerializeObject(obj.Checklist);
+            mapAeronave.Checklist = checklistJson;
+        }
 
         var empresa = await _empresaRepository.GetByIdAsync(idEmpresaAsNumber);
         var limit = await _aeronaveRepository.GetAllAsync(idEmpresaAsNumber);
@@ -62,6 +125,11 @@ public class AeronaveService : IAeronaveService
     public async Task UpdateAsync(AeronaveViewModel obj)
     {
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
+        if (obj.Checklist != null)
+        {
+            var checklistJson = JsonConvert.SerializeObject(obj.Checklist);
+            mapAeronave.Checklist = checklistJson;
+        }
         await _aeronaveRepository.UpdateAsync(mapAeronave);
     }
 
