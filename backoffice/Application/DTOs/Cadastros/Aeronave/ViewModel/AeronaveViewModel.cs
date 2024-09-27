@@ -15,4 +15,5 @@ public class AeronaveViewModel
     public IEnumerable<ManutencaoAeronaveItemsRevisaoViewModel>? ItensRevisao { get; set; }
     public IEnumerable<ComponentesViewModel>? Componentes { get; set; }
     public ETipoAeronave Tipo {  get; set; }
+    public IEnumerable<string>? Checklist { get; set; }
 }

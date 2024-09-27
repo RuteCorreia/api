@@ -15,6 +15,7 @@ public class Aeronave
     public string? SerialNumber { get; set; }
     public bool Removido { get; set; }
     public ETipoAeronave Tipo { get; set; }
+    public string? Checklist { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
