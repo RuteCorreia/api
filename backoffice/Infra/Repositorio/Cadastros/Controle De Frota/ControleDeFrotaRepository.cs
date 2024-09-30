@@ -105,6 +105,7 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.NomeRelatorio = obj.NomeRelatorio;
             objeto.StatusEnvio = obj.StatusEnvio;
             objeto.IsDrone = obj.IsDrone;
+            objeto.Checklist = obj.Checklist;
 
             _contextBase.ControleDeFrota.Update(objeto);
             await _contextBase.SaveChangesAsync(); 

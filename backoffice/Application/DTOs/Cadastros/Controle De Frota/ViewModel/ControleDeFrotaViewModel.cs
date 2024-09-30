@@ -79,5 +79,6 @@ public class ControleDeFrotaViewModel
     public string? NomeRelatorio { get; set; }
     public int? State { get; set; }
     public bool? IsDrone { get; set; }
+    public string? Checklist { get; set; }
 
 }
