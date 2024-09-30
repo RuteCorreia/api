@@ -6,6 +6,7 @@ using Application.DTOs.Cadastros.RelatorioBase;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Domain.Interfaces.User;
 using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
@@ -13,18 +14,23 @@ namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 public class ControleDeFrotaService : IControleDeFrotaService
 {
     private readonly IControleDeFrotaRepository _controleDeFrotaRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
-    public ControleDeFrotaService(IMapper mapper, IControleDeFrotaRepository controleDeFrotaRepository)
+    public ControleDeFrotaService( 
+        IControleDeFrotaRepository controleDeFrotaRepository,
+        IUsuarioRepository usuarioRepository,
+        IMapper mapper)
     {
         _controleDeFrotaRepository = controleDeFrotaRepository;
+        _usuarioRepository = usuarioRepository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? userId)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _controleDeFrotaRepository.GetAllAsync(idEmpresaInt);
+        var user = await _usuarioRepository.GetByUserIdAsync(userId);
+        var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, user.Nome);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 

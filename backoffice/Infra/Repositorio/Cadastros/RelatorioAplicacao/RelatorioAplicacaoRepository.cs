@@ -211,11 +211,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, string userName)
         {
-            string query = "SELECT * FROM RelatorioAplicacao" +
-                           " WHERE " +
-                           (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
-                           " Executor = @Executor OR Piloto = @Piloto";
-            Console.WriteLine(query);
+            string query = "SELECT * FROM RelatorioAplicacao WHERE StatusEnvio <> 4"; // Filtra por StatusEnvio diferente de 4
+
+            if (offsetDate != null)
+            {
+                query += " AND (CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
+                         "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
+            }
+
+            query += " AND (Executor = @Executor OR Piloto = @Piloto)";
+
             if (offsetDate != null)
             {
                 return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, Executor = userName, Piloto = userName });

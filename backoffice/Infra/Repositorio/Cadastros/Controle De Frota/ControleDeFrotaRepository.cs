@@ -50,13 +50,28 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(int? idEmpresa)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(DateTime? offsetDate, string userName)
     {
-        var query = @"SELECT * FROM ControleDeFrota WHERE IdEmpresa = @IdEmpresa";
+        string query = "SELECT * FROM ControleDeFrota WHERE StatusEnvio <> 4";
+
+        if (offsetDate != null)
+        {
+            query += " AND (CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
+                     "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
+        }
+
+        query += " AND (NomeExecutor = @Executor OR NomePiloto = @Piloto)";
+
+        var parameters = new
+        {
+            offsetDate = offsetDate,
+            Executor = userName,
+            Piloto = userName
+        };
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdEmpresa = idEmpresa};
+            // Executa a consulta com os parâmetros
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
             return result.ToList();
         }
