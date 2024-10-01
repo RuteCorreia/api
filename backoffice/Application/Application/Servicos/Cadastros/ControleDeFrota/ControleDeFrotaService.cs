@@ -6,6 +6,7 @@ using Application.DTOs.Cadastros.RelatorioBase;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Domain.Interfaces.User;
 using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
@@ -13,18 +14,23 @@ namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 public class ControleDeFrotaService : IControleDeFrotaService
 {
     private readonly IControleDeFrotaRepository _controleDeFrotaRepository;
+    private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
-    public ControleDeFrotaService(IMapper mapper, IControleDeFrotaRepository controleDeFrotaRepository)
+    public ControleDeFrotaService( 
+        IControleDeFrotaRepository controleDeFrotaRepository,
+        IUsuarioRepository usuarioRepository,
+        IMapper mapper)
     {
         _controleDeFrotaRepository = controleDeFrotaRepository;
+        _usuarioRepository = usuarioRepository;
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(string? idEmpresa)
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? userId)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _controleDeFrotaRepository.GetAllAsync(idEmpresaInt);
+        var user = await _usuarioRepository.GetByUserIdAsync(userId);
+        var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, user.Nome);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
@@ -47,7 +53,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao}";
+        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao:dd/MM/yyyy HH:mm:ss}";
         var id = await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
         return id;
     }
@@ -55,7 +61,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
     public async Task<int?> UpdateAsync(ControleDeFrotaViewModel obj)
     {
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
-        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao}";
+        mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao:dd/MM/yyyy HH:mm:ss}";
         return await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
     }
 

@@ -30,12 +30,12 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var result = await _dashboardService.GetAllAsync(dataInicio,dataFim,loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
+                var result = await _dashboardService.GetAllAsync(dataInicio, dataFim, loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
                 return Ok(result);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico getAll - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Dashboard graficos getAll - {ex.Message}");
             }
         }
 

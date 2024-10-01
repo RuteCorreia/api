@@ -198,9 +198,10 @@ namespace WebApi.Controllers.APIs
                             IsMapa = relatorio.IsMapa,
                             Id = relatorio.Id,
                             DataAlteracao = relatorio.DataAlteracao.HasValue
-                                            ? relatorio.DataAlteracao.Value.ToString("dd-MM-yyyy HH:mm:ss")
+                                            ? relatorio.DataAlteracao.Value.ToString("dd/MM/yyyy HH:mm:ss")
                                             : null
                         };
+
 
                         dataRelatorios.Add(relatorioBaseViewModel);
                     }

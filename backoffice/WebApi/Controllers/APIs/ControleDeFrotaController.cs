@@ -5,6 +5,7 @@ using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.Cadastros.RelatorioBase;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.User;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,12 +40,12 @@ public class ControleDeFrotaController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<IAsyncEnumerable<ControleDeFrotaViewModel>>> GetAll()
+    public async Task<ActionResult<IAsyncEnumerable<ControleDeFrotaViewModel>>> GetAll(DateTime? date)
     {
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var combustiveis = await _controleDeFrotaService.GetAllAsync(loggedUser.Item3);
+            var combustiveis = await _controleDeFrotaService.GetAllAsync(date, loggedUser.Item1);
             return Ok(combustiveis);
         }
         catch (Exception ex)

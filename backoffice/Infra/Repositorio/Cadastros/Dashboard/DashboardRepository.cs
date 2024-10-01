@@ -122,7 +122,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         SELECT 
                             DATEPART(YEAR, cf.DataCriacao) AS Ano,
                             DATEPART(MONTH, cf.DataCriacao) AS Mes,
-                            SUM(CAST(cf.HorimetroFinal AS DECIMAL(18, 2)) - CAST(cf.HorimetroInicial AS DECIMAL(18, 2))) AS TotalHoras
+                            SUM(TRY_CAST(NULLIF(cf.HorimetroFinal, '') AS DECIMAL(18, 2)) - 
+                                TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2))) AS TotalHoras
                         FROM 
                             ControleDeFrota cf
                         WHERE

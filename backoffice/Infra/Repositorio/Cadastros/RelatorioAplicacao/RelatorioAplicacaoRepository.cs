@@ -106,18 +106,29 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
         {
             var query = new StringBuilder(@"
-            SELECT i.Extensao, cps.ValorTotal
-            FROM RelatorioAplicacao r
-            JOIN IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
-            JOIN Contratante c ON r.ContratanteId = c.Id
-            JOIN AplicacaoRecomendacoesTecnicas a ON r.RecomendacoesTecnicasId = a.Id
-            JOIN ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
-            WHERE a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%' 
-            AND r.Piloto LIKE '%' + @Piloto + '%' 
-            AND r.Executor LIKE '%' + @Executor + '%'
-            AND c.Nome LIKE '%' + @Contratante + '%'
-            AND r.IdEmpresa = @IdEmpresa
-            AND r.StatusEnvio IN (0, 1)");
+            SELECT 
+                i.Extensao as Extensao, 
+                cps.ValorTotal as ValorTotalAplicacao,
+                SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHorasAplicacao
+            FROM 
+                RelatorioAplicacao r
+            JOIN 
+                IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
+            JOIN 
+                Contratante c ON r.ContratanteId = c.Id
+            JOIN 
+                AplicacaoRelatorioItem rli ON r.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
+            JOIN 
+                AplicacaoRecomendacoesTecnicas a ON r.RecomendacoesTecnicasId = a.Id
+            JOIN 
+                ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
+            WHERE 
+                a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%' 
+                AND r.Piloto LIKE '%' + @Piloto + '%' 
+                AND r.Executor LIKE '%' + @Executor + '%'
+                AND c.Nome LIKE '%' + @Contratante + '%'
+                AND r.IdEmpresa = @IdEmpresa
+                AND r.StatusEnvio IN (0, 1)");
 
             var parameters = new DynamicParameters();
             parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
@@ -132,6 +143,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
                 parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
             }
+
+            query.Append(" GROUP BY i.Extensao, cps.ValorTotal");
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
@@ -211,11 +224,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, string userName)
         {
-            string query = "SELECT * FROM RelatorioAplicacao" +
-                           " WHERE " +
-                           (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
-                           " Executor = @Executor OR Piloto = @Piloto";
-            Console.WriteLine(query);
+            string query = "SELECT * FROM RelatorioAplicacao WHERE StatusEnvio <> 4"; // Filtra por StatusEnvio diferente de 4
+
+            if (offsetDate != null)
+            {
+                query += " AND (CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
+                         "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
+            }
+
+            query += " AND (Executor = @Executor OR Piloto = @Piloto)";
+
             if (offsetDate != null)
             {
                 return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, Executor = userName, Piloto = userName });

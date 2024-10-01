@@ -2,8 +2,12 @@
 {
     public class AtividadeViewModel
     {
-        public string? Extensao { get; set; }
-        public decimal? ValorTotal { get; set; }
-        public string? HorasIncendio { get; set; }
+        public decimal? ValorAplicacao { get; set; }
+        public decimal? ValorIncendio { get; set; }
+        public double? HorasAplicacao { get; set; }
+        public double? HorasIncendio { get; set; }
+        public double? Extensao { get; set; }
+        public AtividadeRelatorioViewModel? AtividadeAplicacao { get; set; }
+        public AtividadeRelatorioViewModel? AtividadeIncendio { get; set; }
     }
 }

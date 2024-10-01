@@ -44,11 +44,15 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>> GetAllAsync(DateTime? offsetDate, Guid idUser, string userName)
     {
-        string query = "SELECT * FROM CombateIncendio" +
-                           " WHERE " +
-                           (offsetDate != null ? " ( CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120)) AND " : " ") +
-                           " IdExecutor = @IdExecutor OR Piloto = @Piloto";
-        Console.WriteLine(query);
+        string query = "SELECT * FROM CombateIncendio WHERE StatusEnvio <> 4";
+
+        if (offsetDate != null)
+        {
+            query += " AND (CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
+                     "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
+        }
+        query += " AND (IdExecutor = @IdExecutor OR Piloto = @Piloto)";
+
         if (offsetDate != null)
         {
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(query, new { offsetDate = offsetDate, IdExecutor = idUser, Piloto = userName });
@@ -221,17 +225,19 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     public async Task<List<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
     {
         var query = new StringBuilder(
-            @"SELECT c.HoraInicial, c.HorarioFinalOperacao, cps.ValorTotal
+            @"SELECT  
+	            cps.ValorTotal as ValorTotalIncendio, 
+	            SUM(DATEDIFF(MINUTE, c.HoraInicial, c.HorarioFinalOperacao) / 60.0) AS TotalHorasIncendio
             FROM CombateIncendio c
-            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
-            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id
-            JOIN Usuario u ON c.IdExecutor = u.Id
+	            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
+	            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id
+	            JOIN Usuario u ON c.IdExecutor = u.Id
             WHERE (a.Prefixo LIKE '%' + @PrefixoAeronave + '%' OR c.IdAeronave IS NULL)
-            AND c.Piloto LIKE '%' + @Piloto + '%'
-            AND u.Nome LIKE '%' + @Executor + '%'
-            AND c.Cliente LIKE '%' + @Cliente + '%'
-            AND c.IdEmpresa = @IdEmpresa
-            AND c.StatusEnvio IN (0, 1)");
+	            AND c.Piloto LIKE '%' + @Piloto + '%'
+	            AND u.Nome LIKE '%' + @Executor + '%'
+	            AND c.Cliente LIKE '%' + @Cliente + '%'
+	            AND c.IdEmpresa = @IdEmpresa
+	            AND c.StatusEnvio IN (0, 1)");
 
         var parameters = new DynamicParameters();
         parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
@@ -246,6 +252,8 @@ public class CombateIncendioRepository : ICombateIncendioRepository
             parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
             parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
         }
+
+        query.Append(" GROUP BY cps.ValorTotal");
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
