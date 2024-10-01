@@ -29,8 +29,34 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
+                //DateTime? dataInicioDt = null;
+                //DateTime? dataFimDt = null;
+                //if (!string.IsNullOrWhiteSpace(dataInicio))
+                //{
+                //    if (DateTime.TryParse(dataInicio, out DateTime parsedDataInicio))
+                //    {
+                //        dataInicioDt = parsedDataInicio;
+                //    }
+                //    else
+                //    {
+                //        return BadRequest("Formato inválido para dataInicio.");
+                //    }
+                //}
+
+                //if (!string.IsNullOrWhiteSpace(dataFim))
+                //{
+                //    if (DateTime.TryParse(dataFim, out DateTime parsedDataFim))
+                //    {
+                //        dataFimDt = parsedDataFim;
+                //    }
+                //    else
+                //    {
+                //        return BadRequest("Formato inválido para dataFim.");
+                //    }
+                //}
+
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var result = await _dashboardService.GetAllAsync(dataInicio,dataFim,loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
+                var result = await _dashboardService.GetAllAsync(dataInicio, dataFim, loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
                 return Ok(result);
             }
             catch (Exception ex)
