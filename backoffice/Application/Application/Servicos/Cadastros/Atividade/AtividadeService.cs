@@ -92,8 +92,8 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                 }
             }
 
-            viewModel.HorasAplicacao = FormatHorasMinutos(somaHorasAplicacao);
-            viewModel.HorasIncendio = FormatHorasMinutos(somaHorasIncendio);
+            viewModel.HorasAplicacao = somaHorasAplicacao;
+            viewModel.HorasIncendio = somaHorasIncendio;
             viewModel.ValorAplicacao = somaValorTotalAplicacao;
             viewModel.ValorIncendio = somaValorTotalIncendio;
             viewModel.Extensao = somaExtensoes;
