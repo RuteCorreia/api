@@ -25,6 +25,46 @@ public class PistaService : IPistaService
         return _mapper.Map<IEnumerable<PistaViewModel>>(list);
     }
 
+    public async Task<IEnumerable<PistaAppViewModel>> GetAllAppAsync(string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _pistaRepository.GetAllAsync(idEmpresaInt);
+        var viewModelList = list.Select(pista => new PistaAppViewModel
+        {
+            Id = pista.Id,
+            Nome = pista.Nome,
+            LAT = ConvertDMSStringToDecimal(pista.LAT),
+            LONG = ConvertDMSStringToDecimal(pista.LONG),
+            IdEmpresa = pista.IdEmpresa
+        });
+        return viewModelList;
+    }
+
+    private double ConvertDMSStringToDecimal(string dms)
+    {
+        // Exemplo: "49° 34' 45.30" W"
+        var parts = dms.Split(new[] { '°', '\'', '"' }, StringSplitOptions.RemoveEmptyEntries);
+
+        int graus = int.Parse(parts[0].Trim());
+        int minutos = int.Parse(parts[1].Trim());
+        double segundos = double.Parse(parts[2].Trim());
+        char direcao = parts[3].Trim()[0]; // Pega a direção (W ou S)
+
+        return ConvertDMSToDecimal(graus, minutos, segundos, direcao);
+    }
+
+    private double ConvertDMSToDecimal(int graus, int minutos, double segundos, char direcao)
+    {
+        double decimalDegrees = graus + (minutos / 60.0) + (segundos / 3600.0);
+
+        if (direcao == 'W' || direcao == 'S')
+        {
+            decimalDegrees *= -1;
+        }
+
+        return decimalDegrees;
+    }
+
     public async Task<PistaViewModel> GetByIdAsync(int id)
     {
         var obj = await _pistaRepository.GetByIdAsync(id);

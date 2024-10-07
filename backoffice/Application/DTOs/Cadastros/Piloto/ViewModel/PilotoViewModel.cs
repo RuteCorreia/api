@@ -5,7 +5,7 @@ namespace Application.DTOs.Cadastros.Piloto.ViewModel;
 
 public class PilotoViewModel
 {
-    public string Id { get; set; }
+    public string IdPiloto { get; set; }
 
     [Required(ErrorMessage = "O nome é obrigatório")]
     [MinLength(3)]

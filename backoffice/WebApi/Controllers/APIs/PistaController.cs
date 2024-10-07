@@ -49,6 +49,23 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("GetAllApp")]
+        public async Task<ActionResult<IAsyncEnumerable<PistaAppViewModel>>> GetAllApp()
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var pistas = await _pistaService.GetAllAppAsync(loggedUser.Item3);
+                _logService.LogInformation("Pistas recuperadas com sucesso.");
+                return Ok(pistas);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar pistas: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar pistas: {ex.Message}");
+            }
+        }
+
         [HttpGet("{id:int}")]
         public async Task<ActionResult<PistaViewModel>> GetById(int id)
         {

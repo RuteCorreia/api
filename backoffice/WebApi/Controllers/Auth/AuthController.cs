@@ -2,13 +2,9 @@
 using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
-using Domain.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using System.Text.Encodings.Web;
 using System.Web;
 using WebApi.HttpRequestInfo;
 
