@@ -298,7 +298,7 @@ public class UserAuthService : IUserAuthService
         {
             var userAspNet = await _userManager.FindByIdAsync(userToRemove.UserId);
             var isEmpresa = await _empresaRepository.GetByIdAsync(userToRemove.IdEmpresa);
-            if (isEmpresa == null)
+            if (isEmpresa.Email != userToRemove.Email)
             {
                 if (userAspNet != null)
                 {
@@ -307,6 +307,10 @@ public class UserAuthService : IUserAuthService
                     await _usuarioRepository.DeleteAsync(userToRemove.Id);
                 }
             }
+        }
+        else
+        {
+            throw new Exception("Este usuario é uma empresa");
         }
     }
 
