@@ -4,6 +4,6 @@ namespace Domain.Interfaces.Cadastros.Piloto;
 
 public interface IPilotoRepository
 {
-    Task<IEnumerable<UsuarioCredencial>> GetAllAsync(int idEmpresa);
+    Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetAllAsync(int idEmpresa);
     Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa);
 }

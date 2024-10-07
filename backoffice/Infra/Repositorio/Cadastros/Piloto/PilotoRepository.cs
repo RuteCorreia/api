@@ -1,7 +1,10 @@
-﻿using Domain.Entidades.User;
+﻿using Dapper;
+using Domain.Entidades.Cadastros.Piloto;
+using Domain.Entidades.User;
 using Domain.Enums;
 using Domain.Interfaces.Cadastros.Piloto;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Piloto;
@@ -15,20 +18,20 @@ public class PilotoRepository : IPilotoRepository
         _contextBase = contextBase;
     }
     
-    public async Task<IEnumerable<UsuarioCredencial>> GetAllAsync(int idEmpresa)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.UsuarioCredencial
-            .AsNoTracking()
-            .Where(x =>
-                x.Usuario != null
-                && !x.Usuario.Removido
-                && x.Funcao == ERole.PilotoAeronave
-                && (idEmpresa == 0 ? x.Usuario.IdEmpresa == null : x.Usuario.IdEmpresa == idEmpresa)
-            )
-            .Include(u => u.Usuario)
-            .ToListAsync();
+        var query = @"SELECT u.Id, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
+                    JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
+                    JOIN AspNetUserRoles r ON u.UserId = r.UserId
+                    WHERE u.IdEmpresa = 196
+                    AND r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372'";
 
-        return entities.DistinctBy(d => d.IdUsuario).ToList();
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Piloto.Piloto>(query, parameters);
+            return result.ToList();
+        }
     }
 
     public async Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa)
