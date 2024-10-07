@@ -22,7 +22,7 @@ public class ExecutorRepository : IExecutorRepository
         var query = @"SELECT u.Id, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
-                    WHERE u.IdEmpresa = 196
+                    WHERE u.IdEmpresa = @IdEmpresa
                     AND r.RoleId = '4d43cec7-f717-4f60-90d0-6e8d376a7ada'";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
