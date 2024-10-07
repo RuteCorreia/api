@@ -20,7 +20,7 @@ public class PilotoRepository : IPilotoRepository
     
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT u.Id, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
+        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
                     WHERE u.IdEmpresa = @IdEmpresa

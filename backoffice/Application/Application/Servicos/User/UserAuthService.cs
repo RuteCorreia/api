@@ -184,7 +184,7 @@ public class UserAuthService : IUserAuthService
             request.Telefone,
             idEmpresa,
             request.CPF,
-            request.Comissao / 100,
+            request.Comissao,
             request.GerarRelatorioManutencao
             );
 
