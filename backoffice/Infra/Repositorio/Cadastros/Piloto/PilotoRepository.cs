@@ -23,8 +23,8 @@ public class PilotoRepository : IPilotoRepository
         var query = @"SELECT u.Id, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
-                    WHERE u.IdEmpresa = 196
-                    AND r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372'";
+                    WHERE u.IdEmpresa = @IdEmpresa
+                    AND (r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372' OR r.RoleId = '63e712a0-c4c1-4295-8e91-64f0e43eb7fb')";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
