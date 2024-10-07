@@ -8,6 +8,7 @@ public interface IPistaService
 
     Task<PistaViewModel> GetByIdAsync(int id);
     Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name);
+    Task<IEnumerable<PistaAppViewModel>> GetAllAppAsync(string? idEmpresa);
 
     Task<int> AddAsync(PistaViewModel obj);
 

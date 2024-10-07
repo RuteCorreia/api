@@ -55,7 +55,7 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var pistas = await _pistaService.GetAllAsync(loggedUser.Item3);
+                var pistas = await _pistaService.GetAllAppAsync(loggedUser.Item3);
                 _logService.LogInformation("Pistas recuperadas com sucesso.");
                 return Ok(pistas);
             }
