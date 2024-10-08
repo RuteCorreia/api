@@ -52,8 +52,8 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
                     }
 
                     viewModel.ExtensaoTotalFormatado = $"{viewModel.ExtensaoTotal:N0} ha";
-                    viewModel.ValorTotalFormatado = $"R$ {viewModel.ValorTotal.ToString("N2", cultureInfo)}";
-                    viewModel.TotalHorasFormatado = $"{viewModel.TotalHoras.ToString("N2", cultureInfo)} horas";
+                    viewModel.ValorTotalFormatado = $"R$ {viewModel.ValorTotal.ToString("N2", new CultureInfo("pt-BR"))}";
+                    viewModel.TotalHorasFormatado = $"{viewModel.TotalHoras.ToString("N2", new CultureInfo("pt-BR"))} horas";
                     viewModel.RendimentoFormatado = viewModel.Rendimento.HasValue
                         ? $"{viewModel.Rendimento.Value.ToString("N2", cultureInfo)} ha/hora"
                         : "N/A";

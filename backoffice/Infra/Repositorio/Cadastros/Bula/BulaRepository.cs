@@ -50,7 +50,7 @@ public class BulaRepository : IBulaRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa = @IdEmpresa";
+        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa, 196)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -69,7 +69,7 @@ public class BulaRepository : IBulaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto, int idEmpresa)
     {
 
-        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0 AND IdEmpresa = @IdEmpresa";
+        var query = @"SELECT * FROM Bula WHERE IdProduto = @IdProduto AND Removido = 0 AND IdEmpresa IN (@IdEmpresa, 196)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -132,7 +132,7 @@ public class BulaRepository : IBulaRepository
                   FROM Bula b 
                   INNER JOIN Produto p ON p.Id = b.IdProduto 
                   WHERE p.Nome LIKE @NomeProduto 
-                  AND b.IdEmpresa = @IdEmpresa 
+                  AND b.IdEmpresa IN (@IdEmpresa, 196) 
                   AND b.Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
