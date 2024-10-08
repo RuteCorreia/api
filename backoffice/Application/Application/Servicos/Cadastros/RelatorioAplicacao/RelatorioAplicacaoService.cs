@@ -15,6 +15,7 @@ using Application.DTOs.ExportExcel.ViewModel;
 using Domain.Interfaces.User;
 using Domain.Interfaces.Cadastros.DataRelatorio;
 using Application.DTOs.Pdf.Interface;
+using System.Globalization;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -81,15 +82,15 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
             foreach (var item in ari)
             {
-                // Convertendo as strings de hora para TimeSpan
-                if (TimeSpan.TryParse(item.HoraInicio, out TimeSpan horaInicio) &&
-                    TimeSpan.TryParse(item.HoraTermino, out TimeSpan horaTermino))
+                // Convertendo as strings de horímetro para double
+                if (double.TryParse(item.HorimetroInicial, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroInicial) &&
+                    double.TryParse(item.HorimetroTermino, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroFinal))
                 {
-                    // Calculando a diferença de tempo
-                    TimeSpan duration = horaTermino - horaInicio;
+                    // Calculando a diferença de horímetro
+                    double duration = horimetroFinal - horimetroInicial;
 
-                    // Somando a diferença ao total
-                    totalDuration += duration;
+                    // Somando a diferença ao total como um TimeSpan
+                    totalDuration += TimeSpan.FromHours(duration); // Adiciona a duração ao total
                 }
             }
 
