@@ -19,7 +19,7 @@ public class ExecutorRepository : IExecutorRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Executor.Executor>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT u.Id as IdExecutor, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
+        var query = @"SELECT u.Id , u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
                     WHERE u.IdEmpresa = @IdEmpresa
