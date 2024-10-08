@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.TelaPrincipal.Interface;
 using Application.DTOs.Cadastros.TelaPrincipal.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.TelaPrincipal;
 using Helpers;
 using System.Globalization;
@@ -73,8 +74,8 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
                         Comissoes = grupo
                             .SelectMany(r => new List<ComissaoViewModel>
                             {
-                        new ComissaoViewModel { Nome = r.Piloto, ValorComissao = CalcularComissaoPiloto(r) },
-                        new ComissaoViewModel { Nome = r.Executor, ValorComissao = CalcularComissaoExecutor(r) }
+                        new ComissaoViewModel { Nome = r.Piloto, ValorComissao = CalcularComissaoPiloto(r, idEmpresaInt) },
+                        new ComissaoViewModel { Nome = r.Executor, ValorComissao = CalcularComissaoExecutor(r, idEmpresaInt) }
                             })
                             .GroupBy(c => c.Nome) // Agrupa comissões pelo nome
                             .Select(g => new ComissaoViewModel
@@ -96,9 +97,8 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
         }
 
 
-        private decimal CalcularComissaoPiloto(RelatorioAeronaveViewModel relatorio)
+        private decimal CalcularComissaoPiloto(RelatorioAeronaveViewModel relatorio, int idEmpresa)
         {
-            var idEmpresa = 196;
             var comissao = _relatorioAeronaveRepository.GetComissaoAsync(relatorio.Piloto, idEmpresa);
 
             decimal comissaoDecimal = comissao ?? 0;
@@ -106,9 +106,8 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
             return relatorio.ValorTotal * (comissaoDecimal / 100); // Exemplo: 10% de comissão
         }
 
-        private decimal CalcularComissaoExecutor(RelatorioAeronaveViewModel relatorio)
+        private decimal CalcularComissaoExecutor(RelatorioAeronaveViewModel relatorio, int idEmpresa)
         {
-            var idEmpresa = 196;
             var comissao = _relatorioAeronaveRepository.GetComissaoAsync(relatorio.Executor, idEmpresa);
 
             decimal comissaoDecimal = comissao ?? 0;

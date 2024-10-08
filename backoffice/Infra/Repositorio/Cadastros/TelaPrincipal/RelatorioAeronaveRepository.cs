@@ -51,9 +51,9 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                                     ELSE LEN(ar.NomeAeronave)
                                 END
                             ) AS Aeronave,
-                            SUM(DISTINCT CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                            SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(DISTINCT DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras,
+                            SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
+                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
+                            SUM(CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) AS TotalHoras,
                             MIN(ra.DataCriacao) AS DataCriacao
                         FROM 
                             RelatorioAplicacao ra
