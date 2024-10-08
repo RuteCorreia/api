@@ -23,9 +23,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         SELECT 
                             DATEPART(YEAR, ra.DataCriacao) AS Ano,
                             DATEPART(MONTH, ra.DataCriacao) AS Mes,
-                            SUM(DISTINCT CAST(REPLACE(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.'), '.', '') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                            SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(DISTINCT DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHoras
+                            SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
+                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal
                         FROM 
                             RelatorioAplicacao ra
                         JOIN 
