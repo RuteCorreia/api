@@ -227,7 +227,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         var query = new StringBuilder(
             @"SELECT  
 	            cps.ValorTotal as ValorTotalIncendio, 
-	            SUM(DATEDIFF(MINUTE, c.HoraInicial, c.HorarioFinalOperacao) / 60.0) AS TotalHorasIncendio
+	            SUM(CAST(c.HorimetroAviao AS DECIMAL(18, 2)) - CAST(c.HorimetroFinalOperacao AS DECIMAL(18, 2))) as TotalHorasIncendio
             FROM CombateIncendio c
 	            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
 	            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id

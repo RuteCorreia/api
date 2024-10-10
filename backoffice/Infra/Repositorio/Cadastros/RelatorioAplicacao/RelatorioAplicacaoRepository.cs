@@ -107,28 +107,28 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         {
             var query = new StringBuilder(@"
             SELECT 
-                i.Extensao as Extensao, 
-                cps.ValorTotal as ValorTotalAplicacao,
-                SUM(DATEDIFF(MINUTE, rli.HoraInicio, rli.HoraTermino) / 60.0) AS TotalHorasAplicacao
+                i.Extensao AS Extensao,
+                cps.ValorTotal AS ValorTotalAplicacao,
+                (SELECT SUM(CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) 
+                 FROM AplicacaoRelatorioItem rli
+                 WHERE r.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio) AS TotalHorasAplicacao
             FROM 
                 RelatorioAplicacao r
             JOIN 
                 IdentificacaoAreaTratada i ON r.IdentificacaoAreaTratadaId = i.Id
             JOIN 
-                Contratante c ON r.ContratanteId = c.Id
-            JOIN 
-                AplicacaoRelatorioItem rli ON r.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
-            JOIN 
                 AplicacaoRecomendacoesTecnicas a ON r.RecomendacoesTecnicasId = a.Id
+            JOIN 
+                Contratante c ON r.ContratanteId = c.Id
             JOIN 
                 ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
             WHERE 
-                a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%' 
-                AND r.Piloto LIKE '%' + @Piloto + '%' 
+                r.StatusEnvio IN (0, 1)
+                AND r.Piloto LIKE '%' + @Piloto + '%'
+                AND r.IdEmpresa = @IdEmpresa
                 AND r.Executor LIKE '%' + @Executor + '%'
                 AND c.Nome LIKE '%' + @Contratante + '%'
-                AND r.IdEmpresa = @IdEmpresa
-                AND r.StatusEnvio IN (0, 1)");
+                AND a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%';");
 
             var parameters = new DynamicParameters();
             parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
@@ -143,8 +143,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
                 parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
             }
-
-            query.Append(" GROUP BY i.Extensao, cps.ValorTotal");
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {

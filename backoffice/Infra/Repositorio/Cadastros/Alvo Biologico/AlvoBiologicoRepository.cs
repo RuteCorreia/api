@@ -53,7 +53,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync(int idEmpresa)
     {
         var entities = await _contextBase.AlvoBiologico
-                                    .Where(ab => ab.IdEmpresa == idEmpresa)
+                                    .Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
                                     .ToListAsync();
         return entities;
     }
