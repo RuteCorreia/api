@@ -56,6 +56,33 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return pistas;
         }
 
+        public async Task UpdateHorasAtualAsync(int? id, int? horasAtual, DateTime? dataUltimaTroca)
+        {
+            if (id == null)
+            {
+                throw new ArgumentException("O ID não pode ser nulo.");
+            }
+
+            var objeto = await _contextBase.Geradores.FindAsync(id);
+            if (objeto == null)
+            {
+                throw new KeyNotFoundException("A bateria com o ID fornecido não foi encontrada.");
+            }
+
+            if (horasAtual.HasValue)
+            {
+                objeto.QuantidadeHoras = horasAtual.Value;
+            }
+            if (dataUltimaTroca.HasValue)
+            {
+                objeto.DataUltimaTrocaOleo = dataUltimaTroca.Value;
+            }
+
+
+            _contextBase.Geradores.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Gerador.Gerador obj)
         {
             var objeto = await _contextBase.Geradores.FindAsync(obj.Id);

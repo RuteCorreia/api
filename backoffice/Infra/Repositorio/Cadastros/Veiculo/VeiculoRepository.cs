@@ -47,6 +47,29 @@ public class VeiculoRepository : IVeiculoRepository
         return obj;
     }
 
+    public async Task UpdateKmAtualAsync(int? id, int? kmAtual)
+    {
+        if (id == null)
+        {
+            throw new ArgumentException("O ID não pode ser nulo.");
+        }
+
+        var objeto = await _contextBase.Veiculo.FindAsync(id);
+        if (objeto == null)
+        {
+            throw new KeyNotFoundException("A bateria com o ID fornecido não foi encontrada.");
+        }
+
+        if (kmAtual.HasValue)
+        {
+            objeto.KM_Atual = kmAtual.Value;
+        }
+
+
+        _contextBase.Veiculo.Update(objeto);
+        await _contextBase.SaveChangesAsync();
+    }
+
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Veiculo.Veiculo obj)
     {
         var objeto = await _contextBase.Veiculo.FindAsync(obj.Id);
