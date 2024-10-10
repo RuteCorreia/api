@@ -37,6 +37,11 @@ public class ProdutoService : IProdutoService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
         mapProduto.IdEmpresa = idEmpresaInt;
+        var produto = await _produtoRepository.GetByNameAsync(obj.Nome);
+        if(produto != null)
+        {
+            throw new Exception("Produto ja cadastrado");
+        }
         await _produtoRepository.AddAsync(mapProduto);
     }
 

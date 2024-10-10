@@ -110,6 +110,12 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
+                if (ex.Message.Contains("Produto ja cadastrado"))
+                {
+                    _logService.LogWarning($"Produto já existente: {ex.Message}");
+                    return StatusCode(StatusCodes.Status409Conflict, "Produto já cadastrado.");
+                }
+
                 _logService.LogError(ex, $"Erro ao adicionar novo produto: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar novo produto: {ex.Message}");
             }
