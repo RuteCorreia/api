@@ -4,6 +4,7 @@ using Domain.Entidades.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using System.Globalization;
 using System.IO.Compression;
 using WebApi.HttpRequestInfo;
 
@@ -58,7 +59,7 @@ namespace WebApi.Controllers.APIs
                         Usuario = usuario,
                         Aeronave = nomeAeronave,
                         Cliente = nomeContratante,
-                        Mes = new DateTime(1, item.Mes, 1).ToString("MMMM"),
+                        Mes = new DateTime(1, item.Mes, 1).ToString("MMMM", new CultureInfo("pt-BR")),
                         Ano = item.Ano,
                         Faturamento = item.ValorTotal,
                         HectaresVoados = item.ExtensaoTotal,
