@@ -56,6 +56,28 @@ namespace Infra.Repositorio.Cadastros.Bateria
             return baterias;
         }
 
+        public async Task UpdateCicloAtualAsync(int? id, int? cicloAtual)
+        {
+            if (id == null)
+            {
+                throw new ArgumentException("O ID não pode ser nulo.");
+            }
+
+            var objeto = await _contextBase.Baterias.FindAsync(id);
+            if (objeto == null)
+            {
+                throw new KeyNotFoundException("A bateria com o ID fornecido não foi encontrada.");
+            }
+
+            if (cicloAtual.HasValue)
+            {
+                objeto.CicloAtual = cicloAtual.Value;
+            }
+
+            _contextBase.Baterias.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+
         public async Task UpdateAsync(Domain.Entidades.Cadastros.Bateria.Bateria obj)
         {
             var objeto = await _contextBase.Baterias.FindAsync(obj.Id);

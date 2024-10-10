@@ -2,6 +2,7 @@
 using Application.DTOs.Cadastros.FrotaGerador.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.FrotaGerador;
+using Domain.Interfaces.Cadastros.Gerador;
 using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.FrotaGerador
@@ -9,12 +10,15 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
     public class FrotaGeradorService : IFrotaGeradorService
     {
         private readonly IFrotaGeradorRepository _frotaGeradorRepository;
+        private readonly IGeradorRepository _geradorRepository;
         private readonly IMapper _mapper;
         public FrotaGeradorService(
             IFrotaGeradorRepository frotaGeradorRepository,
+            IGeradorRepository geradorRepository,
             IMapper mapper)
         {
             _frotaGeradorRepository = frotaGeradorRepository;
+            _geradorRepository = geradorRepository;
             _mapper = mapper;
         }
         public async Task<int> AddAsync(FrotaGeradorViewModel obj, string? idEmpresa)
@@ -22,6 +26,12 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapFrotaGerador = _mapper.Map<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>(obj);
             mapFrotaGerador.IdEmpresa = idEmpresaInt;
+            if (mapFrotaGerador.IdGerador != null && mapFrotaGerador.IdGerador > 0 
+                && mapFrotaGerador.HoraFim != null && mapFrotaGerador.HoraFim > 0)
+            {
+                await _geradorRepository.UpdateHorasAtualAsync(mapFrotaGerador.IdGerador, mapFrotaGerador.HoraFim, mapFrotaGerador.DataTrocaOleo);
+            }
+
             return await _frotaGeradorRepository.AddAsync(mapFrotaGerador);
         }
 

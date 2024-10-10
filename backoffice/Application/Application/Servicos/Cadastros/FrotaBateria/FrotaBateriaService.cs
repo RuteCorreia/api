@@ -1,21 +1,24 @@
 ﻿using Application.DTOs.Cadastros.FrotaBateria.Interface;
 using Application.DTOs.Cadastros.FrotaBateria.ViewModel;
 using AutoMapper;
+using Domain.Interfaces.Cadastros.Bateria;
 using Domain.Interfaces.Cadastros.FrotaBateria;
 using Helpers;
-using System.Threading.Tasks;
 
 namespace Application.Application.Servicos.Cadastros.FrotaBateria
 {
     public class FrotaBateriaService : IFrotaBateriaService
     {
         private readonly IFrotaBateriaRepository _frotaBateriaRepository;
+        private readonly IBateriaRepository _bateriaRepository;
         private readonly IMapper _mapper;
         public FrotaBateriaService(
             IFrotaBateriaRepository frotaBateriaRepository,
+            IBateriaRepository bateriaRepository,
             IMapper mapper)
         {
             _frotaBateriaRepository = frotaBateriaRepository;
+            _bateriaRepository = bateriaRepository;
             _mapper = mapper;
         }
         public async Task<int> AddAsync(FrotaBateriaViewModel obj, string? idEmpresa)
@@ -23,6 +26,11 @@ namespace Application.Application.Servicos.Cadastros.FrotaBateria
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapFrotaBateria = _mapper.Map<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>(obj);
             mapFrotaBateria.IdEmpresa = idEmpresaInt;
+
+            if(mapFrotaBateria.IdBateria != null && mapFrotaBateria.CicloFinal != null)
+            {
+                await _bateriaRepository.UpdateCicloAtualAsync(mapFrotaBateria.IdBateria, mapFrotaBateria.CicloFinal);
+            }
             return await _frotaBateriaRepository.AddAsync(mapFrotaBateria);
         }
 
