@@ -22,7 +22,9 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
 
         public async Task DeleteAsync(int id)
         {
-            var entityToRemove = await GetByIdAsync(id);
+            var entityToRemove = await _contextBase.FrotaMotobombas
+                           .FirstOrDefaultAsync(fg => fg.Id == id);
+
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
                 _contextBase.Remove(entityToRemove);

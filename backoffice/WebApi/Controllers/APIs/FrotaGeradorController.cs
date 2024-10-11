@@ -125,7 +125,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"AlvoBiologico delete - {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Frota Gerador delete - {ex.Message}");
             }
         }
     }
