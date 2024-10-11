@@ -138,8 +138,16 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             parameters.Add("Executor", atividadeFiltro.Executor);
             parameters.Add("Contratante", atividadeFiltro.Contratante);
             parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
-            parameters.Add("DataInicio", atividadeFiltro.DataInicial.Value);
-            parameters.Add("DataFim", atividadeFiltro.DataFinal.Value);
+            if(atividadeFiltro.DataInicial != null)
+            {
+                parameters.Add("DataInicio", atividadeFiltro.DataInicial);
+            }
+            if(atividadeFiltro.DataFinal != null)
+            {
+                parameters.Add("DataFim", atividadeFiltro.DataFinal);
+            }
+            
+            
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {

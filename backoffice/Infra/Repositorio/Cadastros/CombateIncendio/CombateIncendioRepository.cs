@@ -247,8 +247,16 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         parameters.Add("Executor", atividadeFiltro.Executor);
         parameters.Add("Cliente", atividadeFiltro.Contratante);
         parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
-        parameters.Add("DataInicio", atividadeFiltro.DataInicial.Value);
-        parameters.Add("DataFim", atividadeFiltro.DataFinal.Value);
+        if (atividadeFiltro.DataInicial != null)
+        {
+            parameters.Add("DataInicio", atividadeFiltro.DataInicial);
+        }
+        if (atividadeFiltro.DataFinal != null)
+        {
+            parameters.Add("DataFim", atividadeFiltro.DataFinal);
+        }
+
+        
 
         query.Append(" GROUP BY cps.ValorTotal");
 
