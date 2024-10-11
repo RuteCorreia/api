@@ -1,3 +1,4 @@
+using System.Globalization;
 using WebApi.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 /// Adiciona a configuração do Swagger para gerar a documentação da API.
 /// </summary>
 builder.AddSwaggerConfiguration();
+
+/// Culture Info
+var cultureInfo = new CultureInfo("pt-BR"); 
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo; 
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 /// <summary>
 /// Adiciona configuração de serviços personalizados.
