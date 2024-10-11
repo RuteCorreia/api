@@ -128,7 +128,9 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 AND r.IdEmpresa = @IdEmpresa
                 AND r.Executor LIKE '%' + @Executor + '%'
                 AND c.Nome LIKE '%' + @Contratante + '%'
-                AND a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%';");
+                AND a.NomeAeronave LIKE '%' + @PrefixoAeronave + '%'
+                AND (@DataInicio IS NULL OR r.DataCriacao >= @DataInicio)
+                AND (@DataFim IS NULL OR r.DataCriacao <= @DataFim)");
 
             var parameters = new DynamicParameters();
             parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
@@ -136,13 +138,18 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             parameters.Add("Executor", atividadeFiltro.Executor);
             parameters.Add("Contratante", atividadeFiltro.Contratante);
             parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
-
-            if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
-            {
-                query.Append(" AND r.DataCriacao BETWEEN @DataInicial AND @DataFinal");
-                parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
-                parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
-            }
+            parameters.Add("DataInicio", atividadeFiltro.DataInicial);
+            parameters.Add("DataFim", atividadeFiltro.DataFinal);
+            //if (atividadeFiltro.DataInicial != null)
+            //{
+            //    parameters.Add("DataInicio", atividadeFiltro.DataInicial);
+            //}
+            //if(atividadeFiltro.DataFinal != null)
+            //{
+            //    parameters.Add("DataFim", atividadeFiltro.DataFinal);
+            //}
+            
+            
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
