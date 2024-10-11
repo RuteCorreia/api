@@ -237,7 +237,9 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 	            AND u.Nome LIKE '%' + @Executor + '%'
 	            AND c.Cliente LIKE '%' + @Cliente + '%'
 	            AND c.IdEmpresa = @IdEmpresa
-	            AND c.StatusEnvio IN (0, 1)");
+	            AND c.StatusEnvio IN (0, 1)
+                AND (@DataInicio IS NULL OR c.DataCriacao >= @DataInicio)
+                AND (@DataFim IS NULL OR c.DataCriacao <= @DataFim)");
 
         var parameters = new DynamicParameters();
         parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
@@ -245,13 +247,8 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         parameters.Add("Executor", atividadeFiltro.Executor);
         parameters.Add("Cliente", atividadeFiltro.Contratante);
         parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
-
-        if (atividadeFiltro.DataInicial.HasValue && atividadeFiltro.DataFinal.HasValue)
-        {
-            query.Append(" AND c.DataCriacao BETWEEN @DataInicial AND @DataFinal");
-            parameters.Add("DataInicial", atividadeFiltro.DataInicial.Value);
-            parameters.Add("DataFinal", atividadeFiltro.DataFinal.Value);
-        }
+        parameters.Add("DataInicio", atividadeFiltro.DataInicial.Value);
+        parameters.Add("DataFim", atividadeFiltro.DataFinal.Value);
 
         query.Append(" GROUP BY cps.ValorTotal");
 
