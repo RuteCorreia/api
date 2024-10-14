@@ -5,6 +5,9 @@ namespace Application.DTOs.Cadastros.Produto.Interface;
 public interface IProdutoService 
 {
     Task<IEnumerable<ProdutoViewModel>> GetAllAsync(string? nomeProduto, string? idEmpresa);
+    Task<IEnumerable<ProdutoViewModel>> GetAllAppAsync(string? nomeProduto, string? idEmpresa);
+
+    Task<ProdutoViewModel> GetByIdAppAsync(int id);
 
     Task<ProdutoViewModel> GetByIdAsync(int id);
 
