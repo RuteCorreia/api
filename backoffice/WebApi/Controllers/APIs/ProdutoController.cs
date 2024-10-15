@@ -48,6 +48,45 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpGet("GetAllApp")]
+        public async Task<ActionResult<IAsyncEnumerable<ProdutoViewModel>>> GetAllApp(string? nomeProduto)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produtos = await _produtoService.GetAllAppAsync(nomeProduto, loggedUser.Item3);
+                _logService.LogInformation("Lista de produtos recuperada com sucesso.");
+                return Ok(produtos);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar todos os produtos: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os produtos: {ex.Message}");
+            }
+        }
+
+        [HttpGet("GetByIdApp/{id:int}")]
+        public async Task<ActionResult<ProdutoViewModel>> GetByIdApp(int id)
+        {
+            try
+            {
+                var produto = await _produtoService.GetByIdAppAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(produto))
+                {
+                    _logService.LogInformation("Produto recuperado com sucesso.");
+                    return Ok(produto);
+                }
+
+                _logService.LogWarning("Produto não encontrado.");
+                return StatusCode(StatusCodes.Status404NotFound, "Produto não encontrado");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar produto pelo ID: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar produto pelo ID: {ex.Message}");
+            }
+
+        }
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ProdutoViewModel>> GetById(int id)
         {

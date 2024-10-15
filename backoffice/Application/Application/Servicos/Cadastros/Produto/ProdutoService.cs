@@ -26,10 +26,40 @@ public class ProdutoService : IProdutoService
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
     }
 
+    public async Task<IEnumerable<ProdutoViewModel>> GetAllAppAsync(string? nomeProduto, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var list = await _produtoRepository.GetAllAsync(nomeProduto, idEmpresaInt);
+        foreach (var item in list)
+        {
+            if (!string.IsNullOrEmpty(item.ClassificacaoToxicologica) && item.ClassificacaoToxicologica.Contains("Categoria"))
+            {
+                var categoria = item.ClassificacaoToxicologica.Split('-')[0]
+                               .Replace("Categoria", "").Trim();
+
+                item.ClassificacaoToxicologica = categoria;
+            }
+        }
+        return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
+    }
+
     public async Task<ProdutoViewModel> GetByIdAsync(int id)
     {
         var obj = await _produtoRepository.GetByIdAsync(id);
         return _mapper.Map<ProdutoViewModel>(obj);
+    }
+
+    public async Task<ProdutoViewModel> GetByIdAppAsync(int id)
+    {
+        var obj = await _produtoRepository.GetByIdAsync(id);
+        if (!string.IsNullOrEmpty(obj.ClassificacaoToxicologica) && obj.ClassificacaoToxicologica.Contains("Categoria"))
+        {
+            var categoria = obj.ClassificacaoToxicologica.Split('-')[0]
+                               .Replace("Categoria", "").Trim();
+
+            obj.ClassificacaoToxicologica = categoria;
+        }
+            return _mapper.Map<ProdutoViewModel>(obj);
     }
 
     public async Task AddAsync(ProdutoViewModel obj, string? idEmpresa)
