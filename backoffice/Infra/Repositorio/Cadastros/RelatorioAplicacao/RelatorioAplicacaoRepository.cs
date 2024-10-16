@@ -109,7 +109,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             SELECT 
                 i.Extensao AS Extensao,
                 cps.ValorTotal AS ValorTotalAplicacao,
-                (SELECT SUM(CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) 
+                (SELECT SUM(TRY_CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - TRY_CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) 
                  FROM AplicacaoRelatorioItem rli
                  WHERE r.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio) AS TotalHorasAplicacao
             FROM 
