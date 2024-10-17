@@ -7,6 +7,6 @@
         public string Email { get; set; }
         public string? Telefone { get; set; }
         public byte[]? Assinatura { get; set; }
-        public string? CDAC { get; set; }
+        public string? CFTA { get; set; }
     }
 }
