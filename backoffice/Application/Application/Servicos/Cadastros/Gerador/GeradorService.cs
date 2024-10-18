@@ -67,6 +67,8 @@ namespace Application.Application.Servicos.Cadastros.Gerador
         public async Task UpdateAsync(GeradorViewModel obj)
         {
             var mapGerador = _mapper.Map<Domain.Entidades.Cadastros.Gerador.Gerador>(obj);
+            mapGerador.QuantidadeHoras = mapGerador.QuantidadeHoras > 0 ? mapGerador.QuantidadeHoras * 3600000 : mapGerador.QuantidadeHoras;
+            mapGerador.QuantidadeHorasTroca = mapGerador.QuantidadeHorasTroca > 0 ? mapGerador.QuantidadeHorasTroca * 3600000 : mapGerador.QuantidadeHorasTroca;
             await _geradorRepository.UpdateAsync(mapGerador);
         }
     }
