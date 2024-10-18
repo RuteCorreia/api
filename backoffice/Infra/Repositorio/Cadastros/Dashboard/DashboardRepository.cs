@@ -24,7 +24,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             DATEPART(YEAR, ra.DataCriacao) AS Ano,
                             DATEPART(MONTH, ra.DataCriacao) AS Mes,
                             SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal
+                            SUM(CAST(REPLACE(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal
                         FROM 
                             RelatorioAplicacao ra
                         JOIN 
@@ -75,8 +75,16 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         SELECT 
                             DATEPART(YEAR, ci.DataCriacao) AS Ano,
                             DATEPART(MONTH, ci.DataCriacao) AS Mes,
-                            SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(DISTINCT DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
+                            SUM(
+                               CAST(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), 
+                                            '.', ''), 
+                                        ',', '.')   
+                                    AS DECIMAL(18, 2)
+                                )
+                            ) AS ValorTotal
                         FROM 
                             CombateIncendio ci
                         JOIN 
@@ -127,7 +135,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             ControleDeFrota cf
                         WHERE
                             cf.IdEmpresa = @IdEmpresa
-                            AND cf.StatusEnvio = 4
+                            AND cf.StatusEnvio = 0
                             AND (cf.DataCriacao >= @DataInicio OR @DataInicio IS NULL)
                             AND (cf.DataCriacao <= @DataFim OR @DataFim IS NULL)
                             AND (@Usuario IS NULL OR cf.NomePiloto LIKE '%' + @Usuario + '%' OR cf.NomeExecutor LIKE '%' + @Usuario + '%')
