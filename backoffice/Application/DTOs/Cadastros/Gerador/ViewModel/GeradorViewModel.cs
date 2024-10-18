@@ -4,8 +4,8 @@
     {
         public int Id { get; set; }
         public string NomeGerador { get; set; }
-        public int QuantidadeHoras { get; set; }
+        public long QuantidadeHoras { get; set; }
         public DateTime DataUltimaTrocaOleo { get; set; }
-        public int QuantidadeHorasTroca { get; set; }
+        public long QuantidadeHorasTroca { get; set; }
     }
 }
