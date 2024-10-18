@@ -42,8 +42,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                 {
                     var query = @"
                         SELECT 
-                            ra.Piloto,
-                            ra.Executor,
+                            MIN(ra.Piloto) AS Piloto,
+                            MIN(ra.Executor) AS Executor,
                             LEFT(ar.NomeAeronave, 
                                 CASE 
                                     WHEN CHARINDEX(' - ', ar.NomeAeronave) > 0 
@@ -52,8 +52,18 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                                 END
                             ) AS Aeronave,
                             SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
-                            SUM(CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) AS TotalHoras,
+                            SUM(CAST(REPLACE(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
+                            SUM(
+                                CASE 
+                                WHEN rli.HoraInicio IS NOT NULL AND rli.HoraTermino IS NOT NULL THEN 
+                                    DATEDIFF(MINUTE, 
+                                        TRY_CAST(rli.HoraInicio AS TIME), 
+                                        TRY_CAST(rli.HoraTermino AS TIME)
+                                    ) / 60.0
+                                ELSE 
+                                    0 
+                            END
+                            ) AS TotalHoras,
                             MIN(ra.DataCriacao) AS DataCriacao
                         FROM 
                             RelatorioAplicacao ra
@@ -101,8 +111,16 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                         ci.Piloto,
                         usu.Nome AS Executor,
                         aer.Prefixo AS Aeronave,
-                        SUM(DISTINCT CAST(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$ ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                        SUM(DISTINCT DATEDIFF(MINUTE, ci.HoraInicial, ci.HorarioFinalOperacao) / 60.0) AS TotalHoras
+                        SUM(
+                               CAST(
+                                    REPLACE(
+                                        REPLACE(
+                                            REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), 
+                                            '.', ''), 
+                                        ',', '.')   
+                                    AS DECIMAL(18, 2)
+                                )
+                            ) AS ValorTotal
                     FROM 
                         CombateIncendio ci
                     JOIN 
