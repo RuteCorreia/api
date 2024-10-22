@@ -56,7 +56,7 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return pistas;
         }
 
-        public async Task UpdateHorasAtualAsync(int? id, int? horasAtual, DateTime? dataUltimaTroca)
+        public async Task UpdateHorasAtualAsync(int? id, long? horasAtual, DateTime? dataUltimaTroca)
         {
             if (id == null)
             {
