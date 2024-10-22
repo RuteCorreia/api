@@ -32,7 +32,9 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
                 && mapFrotaGerador.HoraFim != null && mapFrotaGerador.HoraFim > 0 )
             {
                 long horasfim = (long)mapFrotaGerador.HoraFim;
+                Console.WriteLine("horasfim: " + horasfim);
                 long horaFimEmMilissegundos = horasfim * 3600000;
+                Console.WriteLine("horaFimEmMilissegundos: " + horaFimEmMilissegundos);
 
                 await _geradorRepository.UpdateHorasAtualAsync(mapFrotaGerador.IdGerador, horaFimEmMilissegundos, mapFrotaGerador.DataTrocaOleo);
             }
