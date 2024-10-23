@@ -27,15 +27,11 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         }
         catch (DbUpdateException dbEx)
         {
-            // Captura exceções específicas do Entity Framework
             Console.WriteLine($"Erro ao atualizar o banco de dados: {dbEx.Message}");
-            // Opcional: Registrar mais detalhes, como dbEx.InnerException
         }
         catch (Exception ex)
         {
-            // Captura todas as outras exceções
             Console.WriteLine($"Erro inesperado: {ex.Message}");
-            // Opcional: Registrar mais detalhes, como ex.StackTrace
         }
 
     }
@@ -54,6 +50,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     {
         var entities = await _contextBase.AlvoBiologico
                                     .Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
+                                    .OrderBy(ab => ab.Nome)
                                     .ToListAsync();
         return entities;
     }
@@ -83,9 +80,9 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name)
+    public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name, int? idEmpresa)
     {
-        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name).FirstOrDefault();
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
         return obj;
     }
 

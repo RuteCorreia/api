@@ -11,4 +11,5 @@ public class CulturaViewModel
     [MaxLength(120)]
     public string? Nome { get; set; }
     public string? AlvoBiologico { get; set; }
+    public int? IdEmpresa { get; set; }
 }

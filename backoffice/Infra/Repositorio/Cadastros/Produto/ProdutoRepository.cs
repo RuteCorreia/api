@@ -1,7 +1,4 @@
 ﻿using Dapper;
-using Domain.Entidades.Cadastros.Cultura;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
 using Infra.Configuracao;
@@ -34,9 +31,10 @@ public class ProdutoRepository : IProdutoRepository
             await _contextBase.SaveChangesAsync();
         }
     }
-    public async Task<IEnumerable<string>> GetClasses()
+    public async Task<IEnumerable<string>> GetClasses(int idEmpresa)
     {
         var classes = await _contextBase.Produto
+            .Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196)
             .Select(p => p.Classe)
             .Distinct()
             .ToListAsync();
@@ -55,18 +53,19 @@ public class ProdutoRepository : IProdutoRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe, int idEmpresa)
     {
         var nomes = await _contextBase.Produto
-            .Where(p => p.Classe == classe)
+            .Where(p => p.Classe == classe && (p.IdEmpresa == idEmpresa || p.IdEmpresa == 196))
+            .OrderBy(p => p.Nome)
             .ToListAsync();
         return nomes;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome)
+    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome, int idEmpresa)
     {
         var produto = await _contextBase.Produto
-            .FirstOrDefaultAsync(p => p.Nome == nome);
+            .FirstOrDefaultAsync(p => p.Nome == nome && (p.IdEmpresa == idEmpresa || p.IdEmpresa == 196));
         return produto;
     }
 

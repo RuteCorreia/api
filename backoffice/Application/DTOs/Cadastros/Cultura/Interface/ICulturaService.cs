@@ -5,13 +5,13 @@ namespace Application.DTOs.Cadastros.Cultura.Interface;
 
 public interface ICulturaService 
 {
-    Task<IEnumerable<CulturaViewModel>> GetAllAsync();
+    Task<IEnumerable<CulturaViewModel>> GetAllAsync(string? idEmpresa);
 
     Task<CulturaViewModel> GetByIdAsync(int id);
 
-    Task<CulturaViewModel> GetByName(string name);
+    Task<CulturaViewModel> GetByName(string name, string? idEmpresa);
 
-    Task AddAsync(CulturaViewModel obj);
+    Task AddAsync(CulturaViewModel obj, string? idEmpresa);
 
     Task UpdateAsync(CulturaViewModel obj);
 

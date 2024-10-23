@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Produto.Interface;
 using Application.DTOs.Cadastros.Produto.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
@@ -67,11 +68,6 @@ public class ProdutoService : IProdutoService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
         mapProduto.IdEmpresa = idEmpresaInt;
-        var produto = await _produtoRepository.GetByNameAsync(obj.Nome);
-        if(produto != null)
-        {
-            throw new Exception("Produto ja cadastrado");
-        }
         await _produtoRepository.AddAsync(mapProduto);
     }
 
@@ -86,9 +82,10 @@ public class ProdutoService : IProdutoService
         await _produtoRepository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<string>> GetClasses()
+    public async Task<IEnumerable<string>> GetClasses(string? idEmpresa)
     {
-        return await _produtoRepository.GetClasses();
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        return await _produtoRepository.GetClasses(idEmpresaInt);
     }
 
     public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
@@ -96,21 +93,22 @@ public class ProdutoService : IProdutoService
         return await _produtoRepository.GetNomesByIdsAsync(ids);
     }
 
-    public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe)
+    public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe, string? idEmpresa)
     {
-        var produto = await _produtoRepository.GetNomes(classe);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var produto = await _produtoRepository.GetNomes(classe, idEmpresaInt);
         var viewModelList = produto.Select(p => new ProdutoNomeViewModel
         {
             Id = p.Id,
             Nome = p.Nome
         }).ToList();
-
         return viewModelList;
     }
 
-    public async Task<ProdutoViewModel> GetByNameAsync(string name)
+    public async Task<ProdutoViewModel> GetByNameAsync(string name, string? idEmpresa)
     {
-        var obj = await _produtoRepository.GetByNameAsync(name);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _produtoRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<ProdutoViewModel>(obj);
     }
 }

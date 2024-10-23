@@ -114,7 +114,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var produto = await _produtoService.GetByNameAsync(name);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produto = await _produtoService.GetByNameAsync(name, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(produto))
                 {
                     _logService.LogInformation("Produto recuperado com sucesso.");
@@ -139,6 +140,12 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var verificaSeProdutoExistePeloNome = await _produtoService.GetByNameAsync(obj.Nome, loggedUser.Item3);
+                    if (verificaSeProdutoExistePeloNome != null)
+                    {
+                        _logService.LogWarning("Tentativa de adição de um produto com nome duplicado"); // Registre um aviso de log
+                        return StatusCode(StatusCodes.Status409Conflict, "Já existe um produto com esse nome!");
+                    }
                     await _produtoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo produto adicionado com sucesso.");
                     return Ok();
@@ -234,15 +241,17 @@ namespace WebApi.Controllers.APIs
         [HttpGet("classes")]
         public async Task<ActionResult<IEnumerable<string>>> GetClasses()
         {
-            var classes = await _produtoService.GetClasses();
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var classes = await _produtoService.GetClasses(loggedUser.Item3);
             return Ok(classes);
         }
 
         [HttpGet("nomes/{*classe}")]
         public async Task<ActionResult<IEnumerable<ProdutoNomeViewModel>>> GetNomes(string classe)
         {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var decodedClasse = Uri.UnescapeDataString(classe);
-            var nomes = await _produtoService.GetNomes(decodedClasse);
+            var nomes = await _produtoService.GetNomes(decodedClasse, loggedUser.Item3);
             return Ok(nomes);
         }
     }

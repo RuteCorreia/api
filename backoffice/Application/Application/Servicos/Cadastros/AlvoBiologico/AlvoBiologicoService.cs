@@ -59,12 +59,13 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
     }
 
-    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto)
+    public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto, string? idEmpresa)
     {
         try
         {
-            var cultura = await _culturaRepository.GetByNameAsync(nomeCultura);
-            var produto = await _produtoRepository.GetByNameAsync(nomeProduto);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var cultura = await _culturaRepository.GetByNameAsync(nomeCultura, idEmpresaInt);
+            var produto = await _produtoRepository.GetByNameAsync(nomeProduto, idEmpresaInt);
             var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(cultura.IdCultura, produto.Id);
             return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(result);
         }
@@ -94,9 +95,10 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         await _alvoBiologicoRepository.DeleteAsync(id);
     }
 
-    public async Task<AlvoBiologicoViewModel> GetByName(string name)
+    public async Task<AlvoBiologicoViewModel> GetByName(string name, string? idEmpresa)
     {
-        var obj = await _alvoBiologicoRepository.GetByNameAsync(name);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _alvoBiologicoRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<AlvoBiologicoViewModel>(obj);
     }
 
