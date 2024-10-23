@@ -11,8 +11,8 @@ public interface IAlvoBiologicoService
 
     Task<IEnumerable<AlvoBiologicoViewModel>> GetByIdCulturaAsync(int id);
 
-    Task<AlvoBiologicoViewModel> GetByName(string name);
-    Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto);
+    Task<AlvoBiologicoViewModel> GetByName(string name, string? idEmpresa);
+    Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto, string? idEmpresa);
     Task<IEnumerable<FormulacaoViewModel>> GetFormulacaoAsync(int idBula);
     Task UpdateFormulacaoAsync(FormulacaoViewModel idBula);
     Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa);

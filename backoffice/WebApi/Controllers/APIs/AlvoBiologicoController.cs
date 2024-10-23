@@ -55,7 +55,8 @@ namespace WebApi.Controllers.APIs
         [HttpGet("DropDownListAlvosBiologicos")]
         public async Task<ActionResult<IAsyncEnumerable<AlvoBiologicoViewModel>>> GetAlvosBiologicos([FromQuery] string nomeCultura, [FromQuery] string nomeProduto)
         {
-            var alvosBiologicos = await _alvoBiologicoService.GetAlvosBiologicosAsync(nomeCultura, nomeProduto);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var alvosBiologicos = await _alvoBiologicoService.GetAlvosBiologicosAsync(nomeCultura, nomeProduto, loggedUser.Item3);
             return Ok(alvosBiologicos);
         }
 
@@ -145,6 +146,12 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var verificaSeAlvoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome, loggedUser.Item3);
+                    if (verificaSeAlvoExistePeloNome != null)
+                    {
+                        _logService.LogWarning("Tentativa de adição de um alvo biologico com nome duplicado"); // Registre um aviso de log
+                        return StatusCode(StatusCodes.Status409Conflict, "Já existe um alvo com esse nome!");
+                    }
                     await _alvoBiologicoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo alvo biológico adicionado com sucesso.");
                     return Ok();
@@ -165,7 +172,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var verificaSeAlvoBiologicoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var verificaSeAlvoBiologicoExistePeloNome = await _alvoBiologicoService.GetByName(obj.Nome, loggedUser.Item3);
                 if (verificaSeAlvoBiologicoExistePeloNome != null && verificaSeAlvoBiologicoExistePeloNome.Id != obj.Id)
                 {
                     _logService.LogWarning("Tentativa de atualização de alvo biológico com nome já existente.");

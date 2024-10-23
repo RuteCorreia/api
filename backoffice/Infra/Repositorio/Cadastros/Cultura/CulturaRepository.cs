@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Cultura;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Cultura;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -30,9 +31,12 @@ public class CulturaRepository : ICulturaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetAllAsync()
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.Cultura.ToListAsync();
+        var entities = await _contextBase.Cultura
+         .Where(c => c.IdEmpresa == idEmpresa || c.IdEmpresa == 196)
+         .OrderBy(c => c.Nome)
+         .ToListAsync();
         return entities;
     }
 
@@ -42,9 +46,9 @@ public class CulturaRepository : ICulturaRepository
         return obj;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name)
+    public async Task<Domain.Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name, int idEmpresa)
     {
-        var obj = await _contextBase.Cultura.Where(x => x.Nome == name).FirstOrDefaultAsync();
+        var obj = await _contextBase.Cultura.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefaultAsync();
         return obj;
     }
 

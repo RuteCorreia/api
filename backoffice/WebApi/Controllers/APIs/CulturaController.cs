@@ -8,6 +8,7 @@ using Application.DTOs.Log.Interface; // Importe a interface do serviço de log
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Threading.Tasks;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -20,11 +21,16 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class CulturaController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ICulturaService _culturaService;
         private readonly ILogService _logService; // Injete o serviço de log
 
-        public CulturaController(ICulturaService culturaService, ILogService logService) // Adicione o serviço de log como parâmetro do construtor
+        public CulturaController(
+            LoggedUserInfoService loggedUserInfoService,
+            ICulturaService culturaService, 
+            ILogService logService) // Adicione o serviço de log como parâmetro do construtor
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _culturaService = culturaService;
             _logService = logService; // Atribua o serviço de log
         }
@@ -34,7 +40,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var culturas = await _culturaService.GetAllAsync();
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var culturas = await _culturaService.GetAllAsync(loggedUser.Item3);
                 return Ok(culturas);
             }
             catch (Exception ex)
@@ -69,16 +76,17 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var verificaSeCulturaExistePeloNome = await _culturaService.GetByName(obj.Nome);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var verificaSeCulturaExistePeloNome = await _culturaService.GetByName(obj.Nome, loggedUser.Item3);
                 if (verificaSeCulturaExistePeloNome != null)
                 {
                     _logService.LogWarning("Tentativa de adição de uma cultura com nome duplicado"); // Registre um aviso de log
-                    return StatusCode(StatusCodes.Status400BadRequest, "Já existe uma cultura com esse nome!");
+                    return StatusCode(StatusCodes.Status409Conflict, "Já existe uma cultura com esse nome!");
                 }
 
                 if (ModelState.IsValid)
                 {
-                    await _culturaService.AddAsync(obj);
+                    await _culturaService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Cultura adicionada com sucesso"); // Registre uma informação de log
                     return Ok();
                 }
@@ -98,7 +106,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var verificaSeCulturaExistePeloNome = await _culturaService.GetByName(obj.Nome);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var verificaSeCulturaExistePeloNome = await _culturaService.GetByName(obj.Nome, loggedUser.Item3);
                 if (verificaSeCulturaExistePeloNome != null && verificaSeCulturaExistePeloNome.IdCultura != obj.IdCultura)
                 {
                     _logService.LogWarning("Tentativa de atualização de uma cultura com nome duplicado"); // Registre um aviso de log
