@@ -222,7 +222,7 @@ public class CombateIncendioService : ICombateIncendioService
             horasIncendio = "Menos de um minuto";
         }
 
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {mapCombateIncendio.Referencia} - {horasIncendio}";
         var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
         return combateIncendio;
     }
@@ -279,7 +279,7 @@ public class CombateIncendioService : ICombateIncendioService
             horasIncendio = "Menos de um minuto";
         }
 
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy HH:mm:ss} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {mapCombateIncendio.Referencia} - {horasIncendio}";
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 

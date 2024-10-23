@@ -13,6 +13,6 @@ namespace Domain.Interfaces.Cadastros.IdentificacaoAreaTratada
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>> GetAllAsync();
         Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetForExportExcelAsync(int? id);
-        Task<Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int id);
+        Task<Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int? id);
     }
 }

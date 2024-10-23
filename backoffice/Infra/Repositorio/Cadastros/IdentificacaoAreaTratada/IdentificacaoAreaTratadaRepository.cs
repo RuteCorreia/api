@@ -47,7 +47,7 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int id)
+        public async Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int? id)
         {
             using (var connection = _dbConnection)
             {
