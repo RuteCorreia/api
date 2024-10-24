@@ -53,17 +53,6 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                             ) AS Aeronave,
                             SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
                             SUM(CAST(REPLACE(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal,
-                            SUM(
-                                CASE 
-                                WHEN rli.HoraInicio IS NOT NULL AND rli.HoraTermino IS NOT NULL THEN 
-                                    DATEDIFF(MINUTE, 
-                                        TRY_CAST(rli.HoraInicio AS TIME), 
-                                        TRY_CAST(rli.HoraTermino AS TIME)
-                                    ) / 60.0
-                                ELSE 
-                                    0 
-                            END
-                            ) AS TotalHoras,
                             MIN(ra.DataCriacao) AS DataCriacao
                         FROM 
                             RelatorioAplicacao ra
@@ -73,8 +62,6 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                             AplicacaoRecomendacoesTecnicas ar ON ra.RecomendacoesTecnicasId = ar.Id
                         JOIN
                             IdentificacaoAreaTratada iat ON ra.IdentificacaoAreaTratadaId = iat.Id
-                        JOIN 
-                            AplicacaoRelatorioItem rli ON ra.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
                         JOIN
                             AplicacaoRelatorio are ON ra.AplicacaoRelatorioId = are.Id
                         WHERE 
@@ -140,6 +127,48 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                         aer.Prefixo
                     ORDER BY 
                         aer.Prefixo;
+                ";
+
+                using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+                {
+                    var parameters = new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa };
+                    var result = await connection.QueryAsync<RelatorioAeronave>(query, parameters);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter relatórios de aeronave.", ex);
+            }
+        }
+
+        public async Task<IEnumerable<RelatorioAeronave>> GetAllFrotasAsync(DateTime? dataInicio, DateTime? dataFim, int idEmpresa)
+        {
+            try
+            {
+                var query = @"
+                    SELECT
+                        LEFT(cf.NomeAeronave, 
+                            CASE 
+                                WHEN CHARINDEX(' - ', cf.NomeAeronave) > 0 
+                                THEN CHARINDEX(' - ', cf.NomeAeronave) - 1
+                                ELSE LEN(cf.NomeAeronave)
+                            END
+                        ) AS Aeronave,
+                        SUM(TRY_CAST(NULLIF(cf.HorimetroFinal, '') AS DECIMAL(18, 2)) - 
+                        TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2))) AS TotalHoras,
+                        MIN(cf.DataCriacao) AS DataCriacao
+                    FROM 
+                        ControleDeFrota cf
+                    WHERE 
+                        cf.IdEmpresa = @IdEmpresa
+                        AND cf.StatusEnvio = 0
+                        AND (@DataInicio IS NULL OR cf.DataCriacao >= @DataInicio)
+                        AND (@DataFim IS NULL OR cf.DataCriacao <= @DataFim)
+                    GROUP BY 
+                        cf.NomeAeronave
+                    ORDER BY 
+                        DataCriacao;
                 ";
 
                 using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))

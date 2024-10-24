@@ -27,9 +27,11 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
                 // Obtenha todos os relatórios
                 var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt);
                 var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt);
+                var relatoriosFrota = await _relatorioAeronaveRepository.GetAllFrotasAsync(dataInicio, dataFim, idEmpresaInt);
 
                 var todosRelatorios = relatoriosAeronave
                     .Concat(relatoriosIncendio)
+                    .Concat(relatoriosFrota)
                     .ToList();
 
                 // Mapeia os relatórios para o ViewModel correspondente

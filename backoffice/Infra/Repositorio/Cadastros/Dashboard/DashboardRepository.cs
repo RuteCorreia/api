@@ -23,7 +23,6 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         SELECT 
                             DATEPART(YEAR, ra.DataCriacao) AS Ano,
                             DATEPART(MONTH, ra.DataCriacao) AS Mes,
-                            SUM(CAST(REPLACE(LTRIM(RTRIM(are.TotalAreaAplicada)), ',', '.') AS DECIMAL(18, 2))) AS ExtensaoTotal,
                             SUM(CAST(REPLACE(REPLACE(REPLACE(REPLACE(cps.ValorTotal, 'R$', ''), ' ', ''), '.', ''), ',', '.') AS DECIMAL(18, 2))) AS ValorTotal
                         FROM 
                             RelatorioAplicacao ra
@@ -130,7 +129,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             DATEPART(YEAR, cf.DataCriacao) AS Ano,
                             DATEPART(MONTH, cf.DataCriacao) AS Mes,
                             SUM(TRY_CAST(NULLIF(cf.HorimetroFinal, '') AS DECIMAL(18, 2)) - 
-                                TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2))) AS TotalHoras
+                                TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2))) AS TotalHoras,
+                            SUM(cf.Extensao) AS ExtensaoTotal
                         FROM 
                             ControleDeFrota cf
                         WHERE

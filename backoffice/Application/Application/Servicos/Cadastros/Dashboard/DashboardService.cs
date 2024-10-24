@@ -49,9 +49,9 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
                                   ValorTotal = (incendioList.Where(i => i.Mes == mes.Mes && i.Ano == mes.Ano).Sum(i => i.ValorTotal ?? 0) +
                                                 aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ValorTotal ?? 0)),
                                   TotalHoras = frotaList.Where(f => f.Mes == mes.Mes && f.Ano == mes.Ano).Sum(f => f.TotalHoras ?? 0),
-                                  ExtensaoTotal = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)),
-                                  Rendimento = (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0) != 0) ?
-                                        (aplicacaoList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)) /
+                                  ExtensaoTotal = (frotaList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)),
+                                  Rendimento = (frotaList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0) != 0) ?
+                                        (frotaList.Where(a => a.Mes == mes.Mes && a.Ano == mes.Ano).Sum(a => a.ExtensaoTotal ?? 0)) /
                                         (frotaList.Where(f => f.Mes == mes.Mes && f.Ano == mes.Ano).Sum(f => f.TotalHoras ?? 0) != 0 ?
                                         frotaList.Where(f => f.Mes == mes.Mes && f.Ano == mes.Ano).Sum(f => f.TotalHoras ?? 0) : 1) : 0
                               };
