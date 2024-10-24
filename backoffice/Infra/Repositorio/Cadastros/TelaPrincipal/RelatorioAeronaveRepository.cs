@@ -107,7 +107,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                                         ',', '.')   
                                     AS DECIMAL(18, 2)
                                 )
-                            ) AS ValorTotal
+                            ) AS ValorTotal,
+	                SUM(CAST(cps.Extensao AS DECIMAL(10, 2))) AS TotalHoras
                     FROM 
                         CombateIncendio ci
                     JOIN 
