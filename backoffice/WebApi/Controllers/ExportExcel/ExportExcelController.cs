@@ -159,7 +159,7 @@ namespace WebApi.Controllers.ExportExcel
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar todos os relatórios de aplicação: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao exportar realtorios: {ex.Message}");
             }
         }
 

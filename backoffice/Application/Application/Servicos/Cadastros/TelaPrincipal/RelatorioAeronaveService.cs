@@ -56,9 +56,9 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
                     viewModel.ExtensaoTotalFormatado = $"{viewModel.ExtensaoTotal:N0} ha";
                     viewModel.ValorTotalFormatado = $"R$ {viewModel.ValorTotal.ToString("N2", new CultureInfo("pt-BR"))}";
                     viewModel.TotalHorasFormatado = $"{viewModel.TotalHoras.ToString("N2", new CultureInfo("pt-BR"))} horas";
-                    viewModel.RendimentoFormatado = viewModel.Rendimento.HasValue
-                        ? $"{viewModel.Rendimento.Value.ToString("N2", cultureInfo)} ha/hora"
-                        : "N/A";
+                    //viewModel.RendimentoFormatado = viewModel.Rendimento.HasValue
+                    //    ? $"{viewModel.Rendimento.Value.ToString("N2", cultureInfo)} ha/hora"
+                    //    : "N/A";
                     viewModel.ValorHorasVoadasFormatado = $"R$ {viewModel.ValorHorasVoadas.ToString("N2", cultureInfo)}";
                 }
 
@@ -71,7 +71,7 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
                         ExtensaoTotal = grupo.Sum(r => r.ExtensaoTotal),
                         ValorTotal = grupo.Sum(r => r.ValorTotal),
                         TotalHoras = grupo.Sum(r => r.TotalHoras),
-                        Rendimento = grupo.Sum(r => r.ExtensaoTotal) / (grupo.Sum(r => r.TotalHoras) > 0 ? grupo.Sum(r => r.TotalHoras) : 1),
+                        //Rendimento = grupo.Sum(r => r.ExtensaoTotal) / (grupo.Sum(r => r.TotalHoras) > 0 ? grupo.Sum(r => r.TotalHoras) : 1),
                         ValorHorasVoadas = grupo.Sum(r => r.ValorTotal) / (grupo.Sum(r => r.TotalHoras) > 0 ? grupo.Sum(r => r.TotalHoras) : 1),
                         Comissoes = grupo
                             .SelectMany(r => new List<ComissaoViewModel>
