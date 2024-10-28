@@ -20,4 +20,5 @@ public class ExecutorViewModel
     public string? Assinatura { get; set; }
 
     public string? CFTA { get; set; }
+    public string? Role { get; set; }
 }
