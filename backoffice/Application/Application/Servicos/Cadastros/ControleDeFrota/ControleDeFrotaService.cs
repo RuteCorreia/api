@@ -1,10 +1,6 @@
-﻿using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
-using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
-using Application.DTOs.Cadastros.RelatorioBase;
 using AutoMapper;
-using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.User;
@@ -50,6 +46,22 @@ public class ControleDeFrotaService : IControleDeFrotaService
     {
         var obj = await _controleDeFrotaRepository.GetByIdAsync(id);
         return _mapper.Map<ControleDeFrotaViewModel>(obj);
+    }
+
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _controleDeFrotaRepository.GetListByMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
+        return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
+    }
+
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var statusEnvio = 0;
+        var list = await _controleDeFrotaRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
+        return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
     public async Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)

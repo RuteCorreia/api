@@ -1,12 +1,8 @@
 ﻿using Dapper;
-using Domain.Entidades.Cadastros.Cultura;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
 
 namespace Infra.Repositorio.Cadastros.Controle_De_Frota;
 
@@ -50,6 +46,21 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetListByIdsAsync(List<int> ids, int idEmpresa, int statusEnvio, int isMapa)
+    {
+        var query = @"SELECT * FROM ControleDeFrota 
+            WHERE Id IN @Ids
+            AND IdEmpresa = @IdEmpresa 
+            AND (StatusEnvio = @statusEnvio OR StatusEnvio = 4)";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result;
+        }
+    }
+
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(DateTime? offsetDate, string userName)
     {
         string query = "SELECT * FROM ControleDeFrota WHERE StatusEnvio <> 4";
@@ -85,6 +96,22 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         {
             var parameters = new { Id = id };
             var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result;
+        }
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetListByMesAsync(int idEmpresa, int statusEnvio, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
+    {
+        var query = @"SELECT * FROM ControleDeFrota 
+            WHERE IdEmpresa = @IdEmpresa 
+            AND (StatusEnvio = @statusEnvio OR StatusEnvio = 4) 
+            AND DataCriacao >= @primeiroDiaMes 
+            AND DataCriacao <= @ultimoDiaMes";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { IdEmpresa = idEmpresa, StatusEnvio = statusEnvio, primeiroDiaMes = primeiroDiaMes, ultimoDiaMes = ultimoDiaMes };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
             return result;
         }
     }
