@@ -9,6 +9,9 @@ public interface IControleDeFrotaService
 
     Task<ControleDeFrotaViewModel> GetByIdAsync(int? id);
 
+    Task<IEnumerable<ControleDeFrotaViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
+    Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa);
+
     Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
     Task<IEnumerable<ControleDeFrotaViewModel>> GetListByStatusAsync(string? idEmpresa);
 
