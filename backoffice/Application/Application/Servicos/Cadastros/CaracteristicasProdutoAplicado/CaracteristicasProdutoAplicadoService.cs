@@ -1,8 +1,8 @@
-﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
-using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Helpers;
 using Newtonsoft.Json;
@@ -12,14 +12,17 @@ namespace Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplic
 public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoAplicadoService
 {
     private readonly ICaracteristicasProdutoAplicadoRepository _caracteristicasProdutoAplicadoRepository;
+    private readonly IBlobStorageRepository _blobStorageRepository;
     private readonly IMapper _mapper;
 
     public CaracteristicasProdutoAplicadoService(
         IMapper mapper,
+        IBlobStorageRepository blobStorageRepository,
         ICaracteristicasProdutoAplicadoRepository caracteristicasProdutoAplicadoRepository
     )
     {
         _mapper = mapper;
+        _blobStorageRepository = blobStorageRepository;
         _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
     }
 
@@ -29,6 +32,23 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        DataFormatViewModel receituarioDataFormat;
+        if (!string.IsNullOrEmpty(mapObj.ReceiturarioAgronomico))
+        {
+            receituarioDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(mapObj.ReceiturarioAgronomico);
+            if (!string.IsNullOrEmpty(receituarioDataFormat.Data))
+            {
+                byte[] receituarioAgronomicoBytes = Convert.FromBase64String(receituarioDataFormat.Data);
+
+                string fileName = $"ReceituarioAgronomico - {Guid.NewGuid()}.{receituarioDataFormat.Format}";
+                using (var stream = new MemoryStream(receituarioAgronomicoBytes))
+                {
+                    await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                }
+
+                mapObj.ReceiturarioAgronomico = fileName;
+            }
+        }
 
         if (obj.Id > 0)
         {

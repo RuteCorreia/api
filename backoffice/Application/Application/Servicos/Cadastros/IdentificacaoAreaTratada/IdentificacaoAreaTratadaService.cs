@@ -1,11 +1,14 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using Application.DTOs.Cadastros.Frota.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using AutoMapper;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.Frota;
 using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
 using Helpers;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +20,15 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
     public class IdentificacaoAreaTratadaService : IIdentificacaoAreaTratadaService
     {
         private readonly IIdentificacaoAreaTratadaRepository _identificacaoAreaTratadaRepository;
+        private readonly IBlobStorageRepository _blobStorageRepository;
         private readonly IMapper _mapper;
 
-        public IdentificacaoAreaTratadaService(IMapper mapper, IIdentificacaoAreaTratadaRepository identificacaoAreaTratadaRepository)
+        public IdentificacaoAreaTratadaService(IMapper mapper,
+            IBlobStorageRepository blobStorageRepository,
+            IIdentificacaoAreaTratadaRepository identificacaoAreaTratadaRepository)
         {
             _identificacaoAreaTratadaRepository = identificacaoAreaTratadaRepository;
+            _blobStorageRepository = blobStorageRepository;
             _mapper = mapper;
         }
 
@@ -42,6 +49,23 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapIdentificacaoAreaTratada = _mapper.Map<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada>(obj);
             mapIdentificacaoAreaTratada.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+            DataFormatViewModel croquiAreaDataFormat;
+            if (!string.IsNullOrEmpty(mapIdentificacaoAreaTratada.CroquiArea))
+            {
+                croquiAreaDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(mapIdentificacaoAreaTratada.CroquiArea);
+                if (!string.IsNullOrEmpty(croquiAreaDataFormat.Data))
+                {
+                    byte[] croquiAreaBytes = Convert.FromBase64String(croquiAreaDataFormat.Data);
+
+                    string fileName = $"CroquiArea - {Guid.NewGuid()}.{croquiAreaDataFormat.Format}";
+                    using (var stream = new MemoryStream(croquiAreaBytes))
+                    {
+                        await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                    }
+
+                    mapIdentificacaoAreaTratada.CroquiArea = fileName; 
+                }
+            }
 
             if (obj.Id > 0) 
             {
