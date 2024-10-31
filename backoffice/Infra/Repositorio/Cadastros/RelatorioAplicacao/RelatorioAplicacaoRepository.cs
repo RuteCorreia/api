@@ -31,7 +31,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
         public async Task<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao> AddAsync(Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao obj)
         {
-            using (var connection = _sqlConnection)
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
                 try
                 {

@@ -49,7 +49,7 @@ namespace Infra.Repositorio.Cadastros.IdentificacaoAreaTratada
 
         public async Task<Domain.Entidades.Cadastros.IdentificacaoAreaTratada.IdentificacaoAreaTratada> GetByIdAsync(int? id)
         {
-            using (var connection = _dbConnection)
+            using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
                 try
                 {

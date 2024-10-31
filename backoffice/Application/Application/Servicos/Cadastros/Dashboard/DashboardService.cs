@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.DTOs.Cadastros.Dashboard.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Aplicacao;
 using Domain.Interfaces.Cadastros.Dashboard;
 using Helpers;
 
@@ -58,6 +59,66 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
 
             return groupedData.ToList();
         }
+
+        public async Task<IEnumerable<DashboardViewModel>> GetFaturamentoExportAsync(
+            DateTime? dataInicio,
+            DateTime? dataFim,
+            string? idEmpresa,
+            string? usuario,
+            string? nomeAeronave,
+            string? nomeContratante)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+
+            // Obtém os dados do repositório
+            var aplicacaoEntities = await _dashboardRepository.GetAplicacaoForExportAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+            var incendioEntities = await _dashboardRepository.GetIncendioForExportAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+
+            var faturamento = new List<DashboardViewModel>();
+            // Mapeia as entidades para ViewModels
+            var aplicacaoList = _mapper.Map<List<DashboardViewModel>>(aplicacaoEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
+            var incendioList = _mapper.Map<List<DashboardViewModel>>(incendioEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
+
+            foreach (var aplicacao in aplicacaoList)
+            {
+                aplicacao.TipoRelatorio = "Aplicação";
+                faturamento.Add(aplicacao);
+            }
+            foreach (var incendio in incendioList) 
+            {
+                incendio.TipoRelatorio = "Incendio";
+                faturamento.Add(incendio);
+            }
+
+            return faturamento;
+        }
+
+        public async Task<IEnumerable<DashboardViewModel>> GetRendimentoExportAsync(
+            DateTime? dataInicio,
+            DateTime? dataFim,
+            string? idEmpresa,
+            string? usuario,
+            string? nomeAeronave,
+            string? nomeContratante)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+
+            // Obtém os dados do repositório
+            var frotaEntities = await _dashboardRepository.GetFrotaForExportAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
+
+            var faturamento = new List<DashboardViewModel>();
+            // Mapeia as entidades para ViewModels
+            var frotaList = _mapper.Map<List<DashboardViewModel>>(frotaEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
+
+            foreach (var frota in frotaList)
+            {
+                frota.Rendimento = frota.ExtensaoTotal / frota.TotalHoras;
+                faturamento.Add(frota);
+            }
+
+            return faturamento;
+        }
+
 
         public Task<IEnumerable<string>> GetUsuariosDropdownAsync(string? idEmpresa)
         {

@@ -8,5 +8,6 @@
         public string? Telefone { get; set; }
         public byte[]? Assinatura { get; set; }
         public string? CFTA { get; set; }
+        public string? Role { get; set; }
     }
 }
