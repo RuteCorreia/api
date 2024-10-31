@@ -103,9 +103,30 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
     public async Task<DataFormatViewModel> GetReceituarioAgronomicoAsync(int? id)
     {
+        if (id == null)
+        {
+            return null; // Retorna null se o ID for nulo
+        }
         var obj = await _caracteristicasProdutoAplicadoRepository.GetReceituarioAgronomicoAsync(id);
-        var result = JsonConvert.DeserializeObject<DataFormatViewModel>(obj);
-        return result;
+        var result = new DataFormatViewModel();
+        if (!string.IsNullOrEmpty(obj))
+        {
+            string extension = Path.GetExtension(obj).TrimStart('.');
+            var data = await _blobStorageRepository.GetPdfAsync(obj);
+            using (var memoryStream = new MemoryStream())
+            {
+                await data.CopyToAsync(memoryStream);
+                var fileBytes = memoryStream.ToArray();
+
+                string base64String = Convert.ToBase64String(fileBytes);
+
+                result.Data = base64String;
+                result.Format = extension;
+            }
+
+            return result;
+        }
+        return null;
 
     }
 }

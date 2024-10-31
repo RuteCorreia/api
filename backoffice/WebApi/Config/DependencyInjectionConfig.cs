@@ -278,6 +278,8 @@ using Domain.Interfaces.Cadastros.Dashboard;
 using Infra.Repositorio.Cadastros.Dashboard;
 using Application.DTOs.Pdf.Interface;
 using Application.Application.Servicos.Pdf;
+using Domain.Interfaces.BlobStorage;
+using Infra.Repositorio.BlobStorage;
 
 namespace WebApi.Config;
 
@@ -434,6 +436,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();
+        services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 
         #endregion
 

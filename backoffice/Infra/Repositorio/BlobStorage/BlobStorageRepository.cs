@@ -1,9 +1,10 @@
 ﻿using Azure.Storage.Blobs;
+using Domain.Interfaces.BlobStorage;
 using Microsoft.Extensions.Configuration;
 
 namespace Infra.Repositorio.BlobStorage
 {
-    public class BlobStorageRepository
+    public class BlobStorageRepository : IBlobStorageRepository
     {
         private readonly BlobContainerClient _containerClient;
 

@@ -61,7 +61,21 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var obj = await _dataRelatorioRepository.GetByIdAsync(id, idEmpresaInt);
-            return _mapper.Map<DataRelatorioViewModel>(obj);
+            var viewModel = _mapper.Map<DataRelatorioViewModel>(obj);
+            if (!string.IsNullOrEmpty(viewModel.Data))
+            {
+                var data = await _blobStorageRepository.GetPdfAsync(viewModel.Data);
+                using (var memoryStream = new MemoryStream())
+                {
+                    await data.CopyToAsync(memoryStream);
+                    var fileBytes = memoryStream.ToArray();
+
+                    string base64String = Convert.ToBase64String(fileBytes);
+
+                    viewModel.Data = base64String;
+                }
+            }
+            return viewModel;
         }
 
         public async Task<string> GerarLinksPdf(string base64Pdf)

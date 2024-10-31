@@ -8,8 +8,6 @@ using Domain.Interfaces.Cadastros.AplicacaoRelatorio;
 using Domain.Interfaces.Cadastros.AplicacaoRelatorioItem;
 using Helpers;
 using Newtonsoft.Json;
-using System.Collections.Generic;
-using System.Text.Json;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRelatorio;
 
@@ -122,7 +120,7 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                     {
                         byte[] dadosClimaticosBytes = Convert.FromBase64String(dadosClimaticosDataFormat.Data);
 
-                        string fileName = $"ReceituarioAgronomico - {Guid.NewGuid()}.{dadosClimaticosDataFormat.Format}";
+                        string fileName = $"DadosClimaticos - {Guid.NewGuid()}.{dadosClimaticosDataFormat.Format}";
                         using (var stream = new MemoryStream(dadosClimaticosBytes))
                         {
                             await _blobStorageRepository.SavePdfAsync(stream, fileName);
