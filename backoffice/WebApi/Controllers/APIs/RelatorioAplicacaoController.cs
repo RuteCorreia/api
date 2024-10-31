@@ -38,6 +38,7 @@ using System.Data;
 using OfficeOpenXml;
 using System.IO.Compression;
 using System.Linq;
+using System.Text.Json;
 
 namespace WebApi.Controllers.APIs
 {
@@ -414,7 +415,8 @@ namespace WebApi.Controllers.APIs
                     var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                                                                                          //   var data = obj.GetProperty("data").ToString();
-                    var IdData = obj.GetProperty("idData").GetInt32();
+                    var idDataProperty = obj.GetProperty("idData");
+                    var IdData = idDataProperty.ValueKind == JsonValueKind.Null ? (int?)null : idDataProperty.GetInt32();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
 
                     var Id = obj.GetProperty("id").GetInt32();
