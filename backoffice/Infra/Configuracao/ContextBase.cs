@@ -60,11 +60,7 @@ public class ContextBase : IdentityDbContext
     
     public ContextBase() {  }
 
-    public ContextBase(DbContextOptions<ContextBase> options) : base(options)
-    {
-    }
-
-    public ContextBase(IConfiguration configuration)
+    public ContextBase(DbContextOptions<ContextBase> options, IConfiguration configuration) : base(options)
     {
         _configuration = configuration;
     }
