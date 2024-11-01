@@ -8,56 +8,56 @@ namespace Infra.Repositorio.Generics
 {
     public class RepositoryGenerics<T> : InterfaceGeneric<T>, IDisposable where T : class
     {
-        private readonly DbContextOptions<ContextBase> _OptionsBuilder;
+        //private readonly DbContextOptions<ContextBase> _OptionsBuilder;
 
 
-        public RepositoryGenerics()
-        {
-            _OptionsBuilder = new DbContextOptions<ContextBase>();
-        }
+        //public RepositoryGenerics()
+        //{
+        //    _OptionsBuilder = new DbContextOptions<ContextBase>();
+        //}
 
-        public async Task AddAsync(T Objeto)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                await data.Set<T>().AddAsync(Objeto);
-                await data.SaveChangesAsync();
-            }
-        }
+        //public async Task AddAsync(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        await data.Set<T>().AddAsync(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
 
-        public async Task DeleteAsync(T Objeto)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                data.Set<T>().Remove(Objeto);
-                await data.SaveChangesAsync();
-            }
-        }
+        //public async Task DeleteAsync(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        data.Set<T>().Remove(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
 
-        public async Task<T> GetEntityByIdAsync(int Id)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                return await data.Set<T>().FindAsync(Id);
-            }
-        }
+        //public async Task<T> GetEntityByIdAsync(int Id)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        return await data.Set<T>().FindAsync(Id);
+        //    }
+        //}
 
-        public async Task<List<T>> ListAsync()
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                return await data.Set<T>().ToListAsync();
-            }
-        }
+        //public async Task<List<T>> ListAsync()
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        return await data.Set<T>().ToListAsync();
+        //    }
+        //}
 
-        public async Task UpdateAsync(T Objeto)
-        {
-            using (var data = new ContextBase(_OptionsBuilder))
-            {
-                data.Set<T>().Update(Objeto);
-                await data.SaveChangesAsync();
-            }
-        }
+        //public async Task UpdateAsync(T Objeto)
+        //{
+        //    using (var data = new ContextBase(_OptionsBuilder))
+        //    {
+        //        data.Set<T>().Update(Objeto);
+        //        await data.SaveChangesAsync();
+        //    }
+        //}
 
 
         #region Disposed https://docs.microsoft.com/pt-br/dotnet/standard/garbage-collection/implementing-dispose
