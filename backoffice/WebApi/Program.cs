@@ -1,3 +1,5 @@
+using Infra.Configuracao;
+using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using WebApi.Config;
 
@@ -20,6 +22,14 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+builder.Services.AddDbContext<ContextBase>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseSqlServer(connectionString);
+});
+
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
 /// <summary>
 /// Adiciona configuração de serviços personalizados.
 /// </summary>
@@ -47,6 +57,28 @@ app.UseSwaggerConfiguration();
 /// Redireciona todas as requisições HTTP para HTTPS.
 /// </summary>
 app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    try
+    {
+        await next();
+    }
+    catch (Exception ex)
+    {
+        // Log a exceção (substitua isso pelo seu logger de preferência)
+        // Por exemplo: _logger.LogError(ex, "An unexpected error occurred.");
+
+        // Define o código de status HTTP
+        context.Response.StatusCode = 500;
+
+        // Você pode retornar uma mensagem de erro personalizada ou detalhes específicos
+        await context.Response.WriteAsJsonAsync(new { error = "An error occurred", message = ex.Message });
+
+        // Re-dispara a exceção
+        throw; // Isto re-dispara a exceção original
+    }
+});
 
 /// <summary>
 /// Configura autenticação.

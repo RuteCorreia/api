@@ -279,6 +279,7 @@ using Infra.Repositorio.Cadastros.Dashboard;
 using Application.DTOs.Pdf.Interface;
 using Application.Application.Servicos.Pdf;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
 
 namespace WebApi.Config;
 
@@ -444,6 +445,10 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<ContextBase>();
         services.AddScoped<LoggedUserInfoService>();
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        // Registrar IDbConnection
+        services.AddScoped<IDbConnection>(db => new SqlConnection(connectionString));
 
         return services;
     }

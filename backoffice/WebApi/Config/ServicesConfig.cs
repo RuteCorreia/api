@@ -6,6 +6,7 @@ using OfficeOpenXml;
 using System.Configuration;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WebApi.Config;
 
@@ -16,20 +17,12 @@ public static class ServicesConfig
         ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
         Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         services.AddControllers()
-        .AddJsonOptions(opts =>
+        .AddJsonOptions(options =>
         {
-            opts.JsonSerializerOptions.IgnoreNullValues = true; // ou `DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull` para .NET 6+
+            options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
         });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-
-        var serviceProvider = services.BuildServiceProvider();
-        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
-        services.AddDbContext<ContextBase>(options =>
-        {
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
-            options.UseSqlServer(connectionString);
-        });
         services.AddDependencyInjection(services.BuildServiceProvider().GetRequiredService<IConfiguration>());
         services.AddAutoMapperConfig();
         services.AddIdentityConfig();
