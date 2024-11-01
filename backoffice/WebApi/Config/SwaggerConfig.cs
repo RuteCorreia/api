@@ -32,15 +32,35 @@ public static class SwaggerConfig
                 }
             });
 
-            config.SwaggerDoc("v1", new OpenApiInfo
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+            if (env == "QA")
             {
-                Title = "Flytec API",
-                Description = "",
-                Contact = new OpenApiContact
+                config.SwaggerDoc("v1", new OpenApiInfo
                 {
-                },
-                Version = "1"
-            });
+                    Title = "Ambiente de QA", 
+                    Version = "v1", 
+                    Description = "Swagger API em ambiente QA.", 
+                });
+            }
+            else if (env == "Production")
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Ambiente de Produção",
+                    Version = "v1",
+                    Description = "Swagger API em ambiente de Produção.",
+                });
+            }
+            else
+            {
+                config.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "Outro Ambiente", 
+                    Version = "v1", 
+                    Description = "Swagger API em outro ambiente.",
+                });
+            }
         });
 
         return builder;
