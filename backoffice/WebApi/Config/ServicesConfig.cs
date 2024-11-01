@@ -1,7 +1,9 @@
 ﻿using Infra.Configuracao;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using OfficeOpenXml;
+using System.Configuration;
 using System.Text;
 using System.Text.Json;
 
@@ -20,7 +22,14 @@ public static class ServicesConfig
         });
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        services.AddDbContext<ContextBase>();
+
+        var serviceProvider = services.BuildServiceProvider();
+        var configuration = serviceProvider.GetRequiredService<IConfiguration>();
+        services.AddDbContext<ContextBase>(options =>
+        {
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            options.UseSqlServer(connectionString);
+        });
         services.AddDependencyInjection(services.BuildServiceProvider().GetRequiredService<IConfiguration>());
         services.AddAutoMapperConfig();
         services.AddIdentityConfig();

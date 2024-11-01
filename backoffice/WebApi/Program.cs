@@ -13,6 +13,13 @@ var cultureInfo = new CultureInfo("pt-BR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo; 
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+// Configurações de ambientes
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
 /// <summary>
 /// Adiciona configuração de serviços personalizados.
 /// </summary>
