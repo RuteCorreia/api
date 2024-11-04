@@ -37,6 +37,26 @@
         "ASPNETCORE_URLS": "https://localhost:7221;http://localhost:5105"
       },
       "distributionName": ""
+    },
+    "MyApi QA": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "QA"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:5106;http://localhost:5105" // Altere a porta conforme necessário
+    },
+    "MyApi Production": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:5107;http://localhost:5108" // Altere a porta conforme necessário
     }
   },
   "$schema": "https://json.schemastore.org/launchsettings.json",

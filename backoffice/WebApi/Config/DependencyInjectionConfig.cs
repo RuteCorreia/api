@@ -280,6 +280,10 @@ using Application.DTOs.Pdf.Interface;
 using Application.Application.Servicos.Pdf;
 using Domain.Interfaces.BlobStorage;
 using Infra.Repositorio.BlobStorage;
+using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
+using Infra.Repositorio.Cadastros.IdentificadorAplicacao;
 
 namespace WebApi.Config;
 
@@ -436,6 +440,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();
+        services.AddScoped<IIdentificadorAplicacaoRepository, IdentificadorAplicacaoRepository>();
         services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 
         #endregion
@@ -446,11 +451,10 @@ public static class DependencyInjectionConfig
 
         services.AddScoped<ContextBase>();
         services.AddScoped<LoggedUserInfoService>();
-        services.AddScoped<IDbConnection>(sp =>
-        {
-            var context = sp.GetRequiredService<ContextBase>();
-            return new SqlConnection(context.ObterStringConexao());
-        });
+        var connectionString = configuration.GetConnectionString("DefaultConnection");
+
+        // Registrar IDbConnection
+        services.AddScoped<IDbConnection>(db => new SqlConnection(connectionString));
 
         return services;
     }

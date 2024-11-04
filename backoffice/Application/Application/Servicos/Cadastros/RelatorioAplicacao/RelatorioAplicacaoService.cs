@@ -16,6 +16,7 @@ using Domain.Interfaces.User;
 using Domain.Interfaces.Cadastros.DataRelatorio;
 using Application.DTOs.Pdf.Interface;
 using System.Globalization;
+using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -25,6 +26,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly ICaracteristicasProdutoAplicadoRepository _caracteristicasProdutoAplicadoRepository;
         private readonly IIdentificacaoAreaTratadaRepository _identificacaoAreaTratadaRepository;
         private readonly IAplicacaoRelatorioItemRepository _aplicacaoRelatorioItemRepository;
+        private readonly IIdentificadorAplicacaoRepository _identificadorAplicacaoRepository;
         private readonly IAplicacaoRelatorioRepository _aplicacaoRelatorioRepository;
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly IDataRelatorioRepository _dataRelatorioRepository;
@@ -38,6 +40,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             ICaracteristicasProdutoAplicadoRepository caracteristicasProdutoAplicadoRepository,
             IIdentificacaoAreaTratadaRepository identificacaoAreaTratadaRepository,
             IAplicacaoRelatorioItemRepository aplicacaoRelatorioItemRepository,
+            IIdentificadorAplicacaoRepository identificadorAplicacaoRepository,
             IAplicacaoRelatorioRepository aplicacaoRelatorioRepository,
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
             IDataRelatorioRepository dataRelatorioRepository,
@@ -50,6 +53,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
             _identificacaoAreaTratadaRepository = identificacaoAreaTratadaRepository;
             _aplicacaoRelatorioItemRepository = aplicacaoRelatorioItemRepository;
+            _identificadorAplicacaoRepository = identificadorAplicacaoRepository;
             _aplicacaoRelatorioRepository = aplicacaoRelatorioRepository;
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _dataRelatorioRepository = dataRelatorioRepository;
@@ -232,12 +236,18 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         public async Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            int identificador;
+            if (obj.Id == 0)
+            {
+                identificador = await _identificadorAplicacaoRepository.AddAsync(idEmpresaInt);
+                obj.RefDocument = identificador.ToString();
+            }
             var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var areaTratada = await _identificacaoAreaTratadaRepository.GetByIdAsync(obj.IdentificacaoAreaTratadaId);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.Id} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada}";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada}";
 
             if (obj.Id > 0)
             {

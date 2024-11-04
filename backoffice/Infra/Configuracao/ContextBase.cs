@@ -50,16 +50,20 @@ using Domain.Entidades.Cadastros.Gerador;
 using Domain.Entidades.Cadastros.FrotaBateria;
 using Domain.Entidades.Cadastros.FrotaGerador;
 using Domain.Entidades.Cadastros.FrotaMotobomba;
+using Microsoft.Extensions.Configuration;
+using Domain.Entidades.Cadastros.IdentificadorAplicacao;
 
 namespace Infra.Configuracao;
 
 public class ContextBase : IdentityDbContext
 {
-
+    private readonly IConfiguration _configuration;
+    
     public ContextBase() {  }
 
-    public ContextBase(DbContextOptions<ContextBase> options) : base(options)
+    public ContextBase(DbContextOptions<ContextBase> options, IConfiguration configuration) : base(options)
     {
+        _configuration = configuration;
     }
 
     public DbSet<Adjuvante> Adjuvante { get; set; }
@@ -131,6 +135,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<FrotaBateria> FrotaBaterias { get; set; }
     public DbSet<FrotaGerador> FrotaGeradores { get; set; }
     public DbSet<FrotaMotobomba> FrotaMotobombas { get; set; }
+    public DbSet<IdentificadorAplicacao> IdentificadorAplicacao { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -152,14 +157,6 @@ public class ContextBase : IdentityDbContext
 
     public string ObterStringConexao()
     {
-        return $@"
-                Data Source=tcp:flytec.database.windows.net,1433;
-                Initial Catalog=flytec_qa;Integrated Security=False;
-                User ID=sa_flytec;
-                Password=fly@123FL!#;
-                Connect Timeout=15;
-                Encrypt=False;
-                TrustServerCertificate=False
-        ";
+        return _configuration.GetConnectionString("DefaultConnection");
     }
 }
