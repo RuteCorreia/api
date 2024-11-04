@@ -594,6 +594,7 @@ namespace WebApi.Controllers.APIs
                     var result = new
                     {
                         id = relatorioAplicacao.Id,
+                        identificador = relatorioAplicacao.RefDocument,
                         contratanteId = Idcontratante,
                         identificacaoAreaTratadaId = IdIdentificacaoAreaTratada,
                         caracteristicasProdutoAplicadoId = IdcaracteristicasProdutoAplicado,
