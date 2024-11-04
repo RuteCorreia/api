@@ -280,6 +280,8 @@ using Application.DTOs.Pdf.Interface;
 using Application.Application.Servicos.Pdf;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
+using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
+using Infra.Repositorio.Cadastros.IdentificadorAplicacao;
 
 namespace WebApi.Config;
 
@@ -436,6 +438,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();
+        services.AddScoped<IIdentificadorAplicacaoRepository, IdentificadorAplicacaoRepository>();
 
         #endregion
 
