@@ -24,19 +24,24 @@ namespace Infra.Repositorio.Cadastros.IdentificadorAplicacao
 
                     BEGIN TRY
                         DECLARE @NovoIdentificador INT;
-                        SET @NovoIdentificador = (SELECT ISNULL(MAX(Identificador), 0) + 1 FROM IdentificadorAplicacao WHERE IdEmpresa = @IdEmpresa);
+                        SET @NovoIdentificador = (SELECT Identificador FROM IdentificadorAplicacao WHERE IdEmpresa = @IdEmpresa);
 
-                        -- Captura o Identificador que foi inserido
-                        DECLARE @IdentificadorInserido INT;
-
-                        INSERT INTO IdentificadorAplicacao (Identificador, IdEmpresa)
-                        VALUES (@NovoIdentificador, @IdEmpresa);
-
-                        SET @IdentificadorInserido = @NovoIdentificador;
+                        IF (@NovoIdentificador IS NULL) 
+                        BEGIN
+                            INSERT INTO IdentificadorAplicacao (Identificador, IdEmpresa)
+                            VALUES (1, @IdEmpresa);
+                        END
+                        ELSE
+                        BEGIN
+                            SET @NovoIdentificador = @NovoIdentificador + 1
+                            UPDATE IdentificadorAplicacao
+                            SET Identificador = @NovoIdentificador
+                            WHERE IdEmpresa = @IdEmpresa
+                        END
 
                         COMMIT;
 
-                        SELECT @IdentificadorInserido; 
+                        SELECT @NovoIdentificador; 
                     END TRY
                     BEGIN CATCH
                         ROLLBACK;
