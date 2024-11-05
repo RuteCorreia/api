@@ -122,13 +122,13 @@ public class AuthController : ControllerBase
             var (sucess, message) = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
             if(sucess) 
             {
-                var baseUrl = _configuration["AppSettings:TrocarSenhaUrl"];
+                var baseUrl = _configuration["AppSettings:UrlApi"];
                 var emailContent = new EmailViewModel
                 {
                     Recipient = model.Email,
                     Title = "Recuperação de Senha",
                     Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                    Link = $"{baseUrl}{HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(model.Email)}",
+                    Link = $"{baseUrl}trocarSenha?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(model.Email)}",
                     LinkText = "Criar Nova Senha"
                 };
 

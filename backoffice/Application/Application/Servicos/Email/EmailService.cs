@@ -97,6 +97,7 @@ public class EmailService : IEmailService
             // CONFIGURAÇÃO DO EMAIL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient client = new SmtpClient();
+            client.UseDefaultCredentials = false;
             client.Credentials = new NetworkCredential("atendimento@keltech.app", "mbfepucevpscjijz"); //colocar credenciais da flytec (essas são do eag)
             client.Port = 25; //verificar se essa porta esta correta
             client.Host = "smtp.gmail.com";
