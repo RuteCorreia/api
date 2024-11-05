@@ -19,17 +19,20 @@ public class AuthController : ControllerBase
     private readonly LoggedUserInfoService _loggedUserInfoService;
     private readonly IUserAuthService _userAuthService;
     private readonly IUserAuthService _authService;
+    private readonly IConfiguration _configuration;
     private readonly IEmailService _emailService;
     public AuthController(
         LoggedUserInfoService loggedUserInfoService,
         IUserAuthService userAuthService,
-        IUserAuthService authService,  
+        IUserAuthService authService,
+        IConfiguration configuration,
         IEmailService emailService )
     {
         _loggedUserInfoService = loggedUserInfoService;
         _userAuthService = userAuthService;
+        _configuration = configuration;
         _emailService = emailService;
-        _authService = authService;
+        _authService = authService;    
     }
    
     [HttpPost("registerUser")]
@@ -119,12 +122,13 @@ public class AuthController : ControllerBase
             var (sucess, message) = await _emailService.GeneratePasswordResetTokenAsync(model.Email);
             if(sucess) 
             {
+                var baseUrl = _configuration["AppSettings:TrocarSenhaUrl"];
                 var emailContent = new EmailViewModel
                 {
                     Recipient = model.Email,
                     Title = "Recuperação de Senha",
                     Body = $"Você solicitou a recuperação de senha. Clique no link abaixo para criar uma nova senha.",
-                    Link = $"https://flytec-web.azurewebsites.net/trocarSenha?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(model.Email)}",
+                    Link = $"{baseUrl}{HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(model.Email)}",
                     LinkText = "Criar Nova Senha"
                 };
 
