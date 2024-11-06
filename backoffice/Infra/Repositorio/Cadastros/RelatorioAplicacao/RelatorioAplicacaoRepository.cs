@@ -337,7 +337,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             objeto.Executor = obj.Executor;
             objeto.AuxiliarPistaId = obj.AuxiliarPistaId;
             objeto.IsDrone = obj.IsDrone;
-            objeto.RefDocument = obj.RefDocument;
             objeto.IdData = obj.IdData;
             objeto.DataAlteracao = obj.DataAlteracao;
             objeto.RefUsuario = obj.RefUsuario;

@@ -242,6 +242,11 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 identificador = await _identificadorAplicacaoRepository.AddAsync(idEmpresaInt);
                 obj.RefDocument = identificador.ToString();
             }
+            else 
+            {
+                var relatorio = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
+                obj.RefDocument = relatorio.RefDocument;
+            }
             var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var areaTratada = await _identificacaoAreaTratadaRepository.GetByIdAsync(obj.IdentificacaoAreaTratadaId);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
