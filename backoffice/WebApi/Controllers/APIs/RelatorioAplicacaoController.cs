@@ -412,7 +412,6 @@ namespace WebApi.Controllers.APIs
 
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
-                    var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                                                                                          //   var data = obj.GetProperty("data").ToString();
                     var idDataProperty = obj.GetProperty("idData");
@@ -562,7 +561,6 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.Piloto = piloto;
                     relatorioAplicacaoViewModel.Executor = executor;
                     relatorioAplicacaoViewModel.Id = Id;
-                    relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     // relatorioAplicacaoViewModel.Data = data;
                     relatorioAplicacaoViewModel.Data = "";
