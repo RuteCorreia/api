@@ -429,7 +429,6 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
                     var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
                     var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
-                    var refUsuario = obj.GetProperty("refUsuario").ToString();
                     //var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
                     //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
                     var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
@@ -573,7 +572,6 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.AplicacaoRelatorioId = IdAplicacaoRelatorio;
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
-                    relatorioAplicacaoViewModel.RefUsuario = refUsuario;
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
                     //relatorioAplicacaoViewModel.PilotoId = pilotoId;
                     //relatorioAplicacaoViewModel.ExecutorId = executorId;

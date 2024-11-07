@@ -339,7 +339,6 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             objeto.IsDrone = obj.IsDrone;
             objeto.IdData = obj.IdData;
             objeto.DataAlteracao = obj.DataAlteracao;
-            objeto.RefUsuario = obj.RefUsuario;
             objeto.StatusEnvio = obj.StatusEnvio;
             objeto.NomeRelatorio = obj.NomeRelatorio;
             _contextBase.RelatorioAplicacao.Update(objeto);

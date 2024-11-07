@@ -38,7 +38,7 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        public string RefUsuario { get; set; }
+        public string? RefUsuario { get; set; }
         public int? State { get; set; }
         public int? IdEmpresa { get; set; }
         public virtual AplicacaoRecomendacoesTecnicasViewModel? AplicacaoRecomendacoesTecnicas { get; set; }
