@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.ExportExcel.ViewModel;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
+using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
 using Domain.Interfaces.User;
 using Helpers;
 
@@ -15,6 +17,7 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendio;
 public class CombateIncendioService : ICombateIncendioService
 {
     private readonly ICombateIncendioDecolagemPousoRepository _combateIncendioDecolagemPousoRepository;
+    private readonly IContratoPrestacaoServicoRepository _contratoPrestacaoServicoRepository;
     private readonly ICombateIncendioRepository _combateIncendioRepository;
     private readonly IAeronaveRepository _aeronaveRepository;
     private readonly IUsuarioRepository _usuarioRepository;
@@ -22,6 +25,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public CombateIncendioService(
         ICombateIncendioDecolagemPousoRepository combateIncendioDecolagemPousoRepository,
+        IContratoPrestacaoServicoRepository contratoPrestacaoServicoRepository,
         ICombateIncendioRepository combateIncendioRepository,
         IAeronaveRepository aeronaveRepository,
         IUsuarioRepository usuarioRepository,
@@ -29,6 +33,7 @@ public class CombateIncendioService : ICombateIncendioService
         )
     {
         _combateIncendioDecolagemPousoRepository = combateIncendioDecolagemPousoRepository;
+        _contratoPrestacaoServicoRepository = contratoPrestacaoServicoRepository;
         _combateIncendioRepository = combateIncendioRepository;
         _aeronaveRepository = aeronaveRepository;
         _usuarioRepository = usuarioRepository;
@@ -177,52 +182,14 @@ public class CombateIncendioService : ICombateIncendioService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        TimeSpan duration = TimeSpan.Zero;
-        // Convertendo as strings de hora para TimeSpan
-        var horaInicio = mapCombateIncendio.HoraInicial;
-        var HoraTermino = mapCombateIncendio.HorarioFinalOperacao;
-        // Calculando a diferença de tempo
-
-        if (HoraTermino.HasValue && horaInicio.HasValue)
+        var contratoPrestacao = new ContratoPrestacaoServicoViewModel();
+        if (obj.ContratoPrestacaoServicoId != null && obj.ContratoPrestacaoServicoId != 0)
         {
-            duration = HoraTermino.Value - horaInicio.Value;
+            var contratoPrestacaoEntity = await _contratoPrestacaoServicoRepository.GetByIdAsync(obj.ContratoPrestacaoServicoId, idEmpresaInt);
+            contratoPrestacao = _mapper.Map<ContratoPrestacaoServicoViewModel>(contratoPrestacaoEntity);
         }
 
-
-        int hours = Math.Abs(duration.Hours);
-        int minutes = Math.Abs(duration.Minutes);
-        int seconds = Math.Abs(duration.Seconds);
-
-        string horasIncendio;
-        if (hours > 0 || minutes > 0 || seconds > 0)
-        {
-            horasIncendio = "";
-
-            if (hours > 0)
-            {
-                horasIncendio += $"{hours} hora{(hours > 1 ? "s" : "")}";
-                if (minutes > 0 || seconds > 0)
-                    horasIncendio += " ";
-            }
-
-            if (minutes > 0)
-            {
-                horasIncendio += $"{minutes} minuto{(minutes > 1 ? "s" : "")}";
-                if (seconds > 0)
-                    horasIncendio += " e ";
-            }
-
-            if (seconds > 0)
-            {
-                horasIncendio += $"{seconds} segundo{(seconds > 1 ? "s" : "")}";
-            }
-        }
-        else
-        {
-            horasIncendio = "Menos de um minuto";
-        }
-
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {contratoPrestacao.Extensao} horas";
         var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
         return combateIncendio;
     }
@@ -234,52 +201,14 @@ public class CombateIncendioService : ICombateIncendioService
         var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
-        TimeSpan duration = TimeSpan.Zero;
-        // Convertendo as strings de hora para TimeSpan
-        var horaInicio = mapCombateIncendio.HoraInicial;
-        var HoraTermino = mapCombateIncendio.HorarioFinalOperacao;
-        // Calculando a diferença de tempo
-
-        if (HoraTermino.HasValue && horaInicio.HasValue)
+        var contratoPrestacao = new ContratoPrestacaoServicoViewModel();
+        if (obj.ContratoPrestacaoServicoId != null && obj.ContratoPrestacaoServicoId != 0)
         {
-            duration = HoraTermino.Value - horaInicio.Value;
+            var contratoPrestacaoEntity = await _contratoPrestacaoServicoRepository.GetByIdAsync(obj.ContratoPrestacaoServicoId, idEmpresaInt);
+            contratoPrestacao = _mapper.Map<ContratoPrestacaoServicoViewModel>(contratoPrestacaoEntity);
         }
 
-
-        int hours = Math.Abs(duration.Hours);
-        int minutes = Math.Abs(duration.Minutes);
-        int seconds = Math.Abs(duration.Seconds);
-
-        string horasIncendio;
-        if (hours > 0 || minutes > 0 || seconds > 0)
-        {
-            horasIncendio = "";
-
-            if (hours > 0)
-            {
-                horasIncendio += $"{hours} hora{(hours > 1 ? "s" : "")}";
-                if (minutes > 0 || seconds > 0)
-                    horasIncendio += " ";
-            }
-
-            if (minutes > 0)
-            {
-                horasIncendio += $"{minutes} minuto{(minutes > 1 ? "s" : "")}";
-                if (seconds > 0)
-                    horasIncendio += " e ";
-            }
-
-            if (seconds > 0)
-            {
-                horasIncendio += $"{seconds} segundo{(seconds > 1 ? "s" : "")}";
-            }
-        }
-        else
-        {
-            horasIncendio = "Menos de um minuto";
-        }
-
-        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {horasIncendio}";
+        mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {contratoPrestacao.Extensao} horas";
         return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
     }
 

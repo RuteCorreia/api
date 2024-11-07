@@ -17,6 +17,7 @@ using Azure.Core;
 using Domain.Entidades.User;
 using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Domain.Entidades.Cadastros.Empresa;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -27,6 +28,7 @@ public class EmpresaService : IEmpresaService
     private readonly IEmpresaRepository _empresaRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IUserAuthService _userAuthService;
+    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
     private readonly IEmailService _emailService;
 
@@ -36,6 +38,7 @@ public class EmpresaService : IEmpresaService
         IEmpresaRepository empresaRepository, 
         IUsuarioRepository usuarioRepository,
         IUserAuthService userAuthService, 
+        IConfiguration configuration,
         IEmailService emailService,
         IMapper mapper
         )
@@ -44,6 +47,7 @@ public class EmpresaService : IEmpresaService
         _empresaRepository = empresaRepository;
         _usuarioRepository = usuarioRepository;
         _userAuthService = userAuthService;
+        _configuration = configuration; 
         _emailService = emailService;
         _userManager = userManager;
         _mapper = mapper;
@@ -88,12 +92,13 @@ public class EmpresaService : IEmpresaService
 
                 if (sucess)
                 {
+                    var baseUrl = _configuration["AppSettings:UrlApi"];
                     var emailContent = new EmailViewModel
                     {
                         Recipient = empresaViewModel.Email,
                         Title = "Cadastre sua Senha",
                         Body = $"Você está acessando pela primeira vez como uma empresa cadastrada. Por favor clique no link abaixo para criar uma nova senha.",
-                        Link = $"https://flytec-web.azurewebsites.net/primeiroAcessoEmpresa?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(empresaViewModel.Email)}",
+                        Link = $"{baseUrl}primeiroAcessoEmpresa?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(empresaViewModel.Email)}",
                         LinkText = "Criar Nova Senha"
                     };
 

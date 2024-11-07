@@ -146,26 +146,18 @@ namespace WebApi.Controllers.APIs
 
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
-                    if (!string.IsNullOrEmpty(data.Data))
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
-                        {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            StatusEnvio = relatorio.State,
-                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                            ReceituarioAgronomico = receituarioAgronomico,
-                        };
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State,
+                        IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                        ReceituarioAgronomico = receituarioAgronomico,
+                    };
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
-                    {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -264,26 +256,18 @@ namespace WebApi.Controllers.APIs
 
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
-                    if (!string.IsNullOrEmpty(data.Data))
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
-                        {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            StatusEnvio = relatorio.State,
-                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                            ReceituarioAgronomico = receituarioAgronomico,
-                        };
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State,
+                        IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                        ReceituarioAgronomico = receituarioAgronomico,
+                    };
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
-                    {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -412,7 +396,6 @@ namespace WebApi.Controllers.APIs
 
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
-                    var refDocument = obj.GetProperty("refDocument").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                                                                                          //   var data = obj.GetProperty("data").ToString();
                     var idDataProperty = obj.GetProperty("idData");
@@ -430,7 +413,6 @@ namespace WebApi.Controllers.APIs
                     var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
                     var contratoPrestacaoServicoJson = obj.GetProperty("contratoPrestacaoServico").ToString();
                     var dadosResponsavelJson = obj.GetProperty("dadosResponsavel").ToString();
-                    var refUsuario = obj.GetProperty("refUsuario").ToString();
                     //var pilotoId = obj.GetProperty("pilotoId").GetInt32(); // Novo campo pilotoId **
                     //var executorId = obj.GetProperty("executorId").GetInt32(); // Novo campo executorId **
                     var dataCriacao = obj.GetProperty("dataCriacao").GetDateTime(); // Novo campo dataCriacao **
@@ -562,7 +544,6 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.Piloto = piloto;
                     relatorioAplicacaoViewModel.Executor = executor;
                     relatorioAplicacaoViewModel.Id = Id;
-                    relatorioAplicacaoViewModel.RefDocument = refDocument;
                     relatorioAplicacaoViewModel.AuxiliarPistaId = IdAuxiliarPista;
                     // relatorioAplicacaoViewModel.Data = data;
                     relatorioAplicacaoViewModel.Data = "";
@@ -575,7 +556,6 @@ namespace WebApi.Controllers.APIs
                     relatorioAplicacaoViewModel.AplicacaoRelatorioId = IdAplicacaoRelatorio;
                     relatorioAplicacaoViewModel.ContratoPrestacaoServicoId = IdcontratoPrestacaoServico;
                     relatorioAplicacaoViewModel.DadosResponsavelId = IdDadosResponsavel;
-                    relatorioAplicacaoViewModel.RefUsuario = refUsuario;
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
                     //relatorioAplicacaoViewModel.PilotoId = pilotoId;
                     //relatorioAplicacaoViewModel.ExecutorId = executorId;
@@ -661,7 +641,7 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                
+
                 if (ModelState.IsValid)
                 {
                     await _relatorioAplicacaoService.UpdateIsMapaAsync(obj, condicao);

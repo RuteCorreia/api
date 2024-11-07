@@ -58,7 +58,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        public string RefUsuario { get; set; }
+        public string? RefUsuario { get; set; }
         public int? StatusEnvio { get; set; }
         public string? MapaAplicacao { get; set; }
 

@@ -44,7 +44,7 @@ public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepos
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico> GetByIdAsync(int id, int idEmpresa)
+    public async Task<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico> GetByIdAsync(int? id, int idEmpresa)
     {
         using (var connection = _dbConnection)
         {

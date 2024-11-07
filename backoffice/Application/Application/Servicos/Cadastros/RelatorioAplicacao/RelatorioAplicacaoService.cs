@@ -242,12 +242,17 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 identificador = await _identificadorAplicacaoRepository.AddAsync(idEmpresaInt);
                 obj.RefDocument = identificador.ToString();
             }
+            else 
+            {
+                var relatorio = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
+                obj.RefDocument = relatorio.RefDocument;
+            }
             var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var areaTratada = await _identificacaoAreaTratadaRepository.GetByIdAsync(obj.IdentificacaoAreaTratadaId);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada}";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada} ha";
 
             if (obj.Id > 0)
             {

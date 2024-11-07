@@ -33,12 +33,12 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public string? Executor { get; set; }
         public int? AuxiliarPistaId { get; set; }
         public bool? IsDrone { get; set; }
-        public string RefDocument { get; set; }
+        public string? RefDocument { get; set; }
         public string? Data { get; set; }
         public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        public string RefUsuario { get; set; }
+        public string? RefUsuario { get; set; }
         public int? State { get; set; }
         public int? IdEmpresa { get; set; }
         public virtual AplicacaoRecomendacoesTecnicasViewModel? AplicacaoRecomendacoesTecnicas { get; set; }
