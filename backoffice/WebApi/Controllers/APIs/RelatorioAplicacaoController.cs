@@ -146,26 +146,18 @@ namespace WebApi.Controllers.APIs
 
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
-                    if (!string.IsNullOrEmpty(data.Data))
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
-                        {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            StatusEnvio = relatorio.State,
-                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                            ReceituarioAgronomico = receituarioAgronomico,
-                        };
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State,
+                        IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                        ReceituarioAgronomico = receituarioAgronomico,
+                    };
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
-                    {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -264,26 +256,18 @@ namespace WebApi.Controllers.APIs
 
                     var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
-                    if (!string.IsNullOrEmpty(data.Data))
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
-                        {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            StatusEnvio = relatorio.State,
-                            IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                            ReceituarioAgronomico = receituarioAgronomico,
-                        };
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        Base64Data = data.Data,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State,
+                        IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                        ReceituarioAgronomico = receituarioAgronomico,
+                    };
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
-                    {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -657,7 +641,7 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                
+
                 if (ModelState.IsValid)
                 {
                     await _relatorioAplicacaoService.UpdateIsMapaAsync(obj, condicao);
