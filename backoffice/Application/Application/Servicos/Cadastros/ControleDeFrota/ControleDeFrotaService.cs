@@ -70,10 +70,9 @@ public class ControleDeFrotaService : IControleDeFrotaService
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao:dd/MM/yyyy HH:mm:ss}";
-        if (mapControleDeFrota.IdVeiculo != null && mapControleDeFrota.IdVeiculo > 0
-               && mapControleDeFrota.KmFinal != null && mapControleDeFrota.KmFinal > 0)
+        if (!string.IsNullOrEmpty(mapControleDeFrota.NomeVeiculo) && (mapControleDeFrota.KmFinal != null && mapControleDeFrota.KmFinal > 0))
         {
-            await _veiculoRepository.UpdateKmAtualAsync(mapControleDeFrota.IdVeiculo, mapControleDeFrota.KmFinal);
+            await _veiculoRepository.UpdateKmAtualAsync(mapControleDeFrota.NomeVeiculo, mapControleDeFrota.KmFinal);
         }
         var id = await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
         return id;

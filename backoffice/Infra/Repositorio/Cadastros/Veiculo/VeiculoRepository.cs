@@ -47,17 +47,18 @@ public class VeiculoRepository : IVeiculoRepository
         return obj;
     }
 
-    public async Task UpdateKmAtualAsync(int? id, int? kmAtual)
+    public async Task UpdateKmAtualAsync(string? nomeVeiculo, int? kmAtual)
     {
-        if (id == null)
+        if (nomeVeiculo == null)
         {
-            throw new ArgumentException("O ID não pode ser nulo.");
+            throw new ArgumentException("O nomeVeiculo não pode ser nulo.");
         }
 
-        var objeto = await _contextBase.Veiculo.FindAsync(id);
+        var objeto = await _contextBase.Veiculo
+                               .FirstOrDefaultAsync(v => v.Placa == nomeVeiculo);
         if (objeto == null)
         {
-            throw new KeyNotFoundException("A bateria com o ID fornecido não foi encontrada.");
+            throw new KeyNotFoundException("o Veiculo com a placa fornecida não foi encontrada.");
         }
 
         if (kmAtual.HasValue)
