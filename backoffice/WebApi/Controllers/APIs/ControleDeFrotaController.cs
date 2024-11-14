@@ -44,7 +44,7 @@ public class ControleDeFrotaController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var combustiveis = await _controleDeFrotaService.GetAllAsync(date, loggedUser.Item1);
+            var combustiveis = await _controleDeFrotaService.GetAllAsync(date, loggedUser.Item3);
             return Ok(combustiveis);
         }
         catch (Exception ex)
