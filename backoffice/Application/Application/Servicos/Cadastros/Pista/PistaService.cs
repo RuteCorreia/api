@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Pistas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Pista;
 using Helpers;
+using System.Globalization;
 using System.Text.RegularExpressions;
 
 namespace Application.Application.Servicos.Cadastros.Pista;
@@ -47,7 +48,7 @@ public class PistaService : IPistaService
 
         int graus = int.Parse(parts[0].Trim());
         int minutos = int.Parse(parts[1].Trim());
-        double segundos = double.Parse(parts[2].Trim());
+        double segundos = double.Parse(parts[2].Trim(), CultureInfo.InvariantCulture);
         char direcao = parts[3].Trim()[0]; // Pega a direção (W ou S)
 
         return ConvertDMSToDecimal(graus, minutos, segundos, direcao);
@@ -55,7 +56,7 @@ public class PistaService : IPistaService
 
     private double ConvertDMSToDecimal(int graus, int minutos, double segundos, char direcao)
     {
-        double decimalDegrees = graus + ((minutos / 60) + (segundos / 3600));
+        double decimalDegrees = graus + (minutos / 60.0) + (segundos / 3600.0);
 
         if (direcao == 'W' || direcao == 'S')
         {
