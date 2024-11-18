@@ -55,7 +55,7 @@ public class PistaService : IPistaService
 
     private double ConvertDMSToDecimal(int graus, int minutos, double segundos, char direcao)
     {
-        double decimalDegrees = graus + (minutos / 60.0) + (segundos / 3600.0);
+        double decimalDegrees = graus + ((minutos / 60) + (segundos / 3600));
 
         if (direcao == 'W' || direcao == 'S')
         {
