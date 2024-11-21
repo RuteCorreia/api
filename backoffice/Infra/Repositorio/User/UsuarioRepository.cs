@@ -39,6 +39,17 @@ public class UsuarioRepository : IUsuarioRepository
         } 
     }
 
+    public async Task RemoveAsync(Guid id)
+    {
+        var usuario = _contextBase.Usuario.Where(x => x.Id == id).FirstOrDefault();
+        if (usuario != null)
+        {
+            usuario.Removido = true;
+            _contextBase.Update(usuario);
+            await _contextBase.SaveChangesAsync();
+        }
+    }
+
     public async Task<IEnumerable<Usuario>> GetAllAsync(int? idEmpresa)
     {
        return await _contextBase.Usuario
