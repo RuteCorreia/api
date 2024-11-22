@@ -302,9 +302,7 @@ public class UserAuthService : IUserAuthService
             {
                 if (userAspNet != null)
                 {
-                    await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToRemove.Id);
-                    await _userManager.DeleteAsync(userAspNet);
-                    await _usuarioRepository.DeleteAsync(userToRemove.Id);
+                    await _usuarioRepository.RemoveAsync(userToRemove.Id);
                 }
             }
         }

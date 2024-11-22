@@ -232,7 +232,7 @@ public class AuthController : ControllerBase
         return BadRequest("falha na busca");
     }
 
-    [HttpDelete("RemoveUser")]
+    [HttpPut("RemoveUser")]
     [Authorize]
     public async Task<IActionResult> RemoveUser(string userId)
     {

@@ -118,7 +118,8 @@ namespace Infra.Repositorio.Cadastros.TelaPrincipal
                     JOIN
                         Aeronave aer ON ci.IdAeronave = aer.Id
                     WHERE 
-                        ci.IdEmpresa = @IdEmpresa
+                        cps.Extensao IS NOT NULL AND cps.Extensao != ''
+                        AND ci.IdEmpresa = @IdEmpresa
                         AND ci.StatusEnvio = 0
                         AND (@DataInicio IS NULL OR ci.DataCriacao >= @DataInicio)
                         AND (@DataFim IS NULL OR ci.DataCriacao <= @DataFim)
