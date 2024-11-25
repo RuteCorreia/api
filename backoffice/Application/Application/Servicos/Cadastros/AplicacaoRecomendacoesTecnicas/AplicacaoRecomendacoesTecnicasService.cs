@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Helpers;
+using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 
@@ -21,7 +23,14 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     public async Task<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>> GetAllAsync()
     {
         var list = await _aplicacaoRecomendacoesTecnicasRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
+        var recomendacoesTecnicasViewModel = _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
+        foreach (var item in recomendacoesTecnicasViewModel)
+        {
+            if(!string.IsNullOrEmpty(item.ArquivoDrone))
+            item.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(item.ArquivoDrone);
+        }
+        return recomendacoesTecnicasViewModel;
+
     }
 
     public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetForExportExcelAsync(int id)
