@@ -1,7 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
+﻿using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using Newtonsoft.Json;
 
 namespace Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 
@@ -48,7 +46,10 @@ public class AplicacaoRecomendacoesTecnicasViewModel
     [JsonProperty("angulo")]
     public string? Angulo { get; set; }
 
-    [JsonProperty("arquiv")]
+    [JsonProperty("arquivoDrone")]
+    public DataFormatViewModel? ArquivoDroneDataFormat { get; set; }
+
+    [JsonIgnore]
     public string? ArquivoDrone { get; set; }
     //[JsonIgnore]
     //public virtual Veiculante.Veiculante? Veiculante { get; set; }

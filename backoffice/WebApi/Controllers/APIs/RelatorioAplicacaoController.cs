@@ -460,6 +460,7 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var aplicacaoRecomendacoesTecnicasViewModel = JsonConvert.DeserializeObject<AplicacaoRecomendacoesTecnicasViewModel>(recomendacoesTecnicasJson);
+                    aplicacaoRecomendacoesTecnicasViewModel.ArquivoDrone = JsonConvert.SerializeObject(aplicacaoRecomendacoesTecnicasViewModel.ArquivoDroneDataFormat);
 
                     var aplicacaoRelatorio = JsonConvert.DeserializeObject<AplicacaoRelatorioViewModel>(relatorioAplicacaoJson);
                     var aplicacoesViewModel = aplicacaoRelatorio.Aplicacoes;
