@@ -30,10 +30,19 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             }
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync()
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync(int idEmpresa)
         {
-            var entities = await _contextBase.TipoDeFormulacao.ToListAsync();
+            var entities = await _contextBase.TipoDeFormulacao.
+                                        Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
+                                        .OrderBy(ab => ab.NomeFormulacao)
+                                        .ToListAsync();
             return entities;
+        }
+
+        public async Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByNameAsync(string name, int? idEmpresa)
+        {
+            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
+            return obj;
         }
 
         public async Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByIdAsync(int id)
