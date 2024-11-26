@@ -89,7 +89,7 @@ namespace WebApi.Controllers.APIs
                     }
                     await _tipoDeFormulacaoService.AddAsync(obj, loggedUser.Item3);
                     _logService.LogInformation("Novo tipo de formulação adicionado com sucesso.");
-                    return Ok("Sucesso");
+                    return Ok();
                 }
 
                 _logService.LogWarning("Modelo inválido ao adicionar novo tipo de formulação.");
