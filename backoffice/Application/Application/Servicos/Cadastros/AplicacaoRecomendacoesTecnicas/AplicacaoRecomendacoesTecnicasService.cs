@@ -41,7 +41,10 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id)
     {
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
-        return _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+        var recomendacoesTecnicasViewModel = _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+        if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone))
+            recomendacoesTecnicasViewModel.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(recomendacoesTecnicasViewModel.ArquivoDrone);
+        return recomendacoesTecnicasViewModel;
     }
 
     public async Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj, string? idEmpresa)
