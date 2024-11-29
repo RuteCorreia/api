@@ -16,7 +16,7 @@ public interface IRelatorioAplicacaoService
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByStatusMapaMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetByDataAlteracaoAsync(DateTime Date, string? idEmpresa);
-    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? userId);
+    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? date, string? userId, IEnumerable<string>? roleNames, string? idEmpresa);
     Task UpdateAsync(RelatorioAplicacaoViewModel obj);
     Task UpdateIsMapaAsync(List<int> obj, bool condicao);
     Task CancelarAsync(int id, string? idEmpresa);

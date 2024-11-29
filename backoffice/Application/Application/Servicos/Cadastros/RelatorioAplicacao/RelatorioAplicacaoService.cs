@@ -328,10 +328,11 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
-        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? userId)
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? userId, IEnumerable<string>? roleNames, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var user = await _usuarioRepository.GetByUserIdAsync(userId);
-            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome);
+            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
