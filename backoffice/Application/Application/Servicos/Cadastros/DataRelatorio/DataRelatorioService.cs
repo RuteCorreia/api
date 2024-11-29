@@ -91,6 +91,18 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
         public async Task<int> UpdateAsync(DataRelatorioViewModel obj)
         {
             var mapDataRelatorio = _mapper.Map<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(obj);
+            if (!string.IsNullOrEmpty(mapDataRelatorio.Data))
+            {
+                byte[] dataBytes = Convert.FromBase64String(mapDataRelatorio.Data);
+
+                string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+                using (var stream = new MemoryStream(dataBytes))
+                {
+                    await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                }
+
+                mapDataRelatorio.Data = fileName;
+            }
             return await _dataRelatorioRepository.UpdateAsync(mapDataRelatorio);
         }
     }
