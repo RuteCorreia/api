@@ -184,7 +184,7 @@ namespace WebApi.Controllers.ExportExcel
                 }
                 // Preparar o stream para download
                 zipStream.Position = 0;
-                return File(zipStream, "application/zip", nomeZip);
+                return Ok();
             }
             catch (Exception ex)
             {
