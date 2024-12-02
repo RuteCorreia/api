@@ -87,14 +87,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             foreach (var item in ari)
             {
                 // Convertendo as strings de horímetro para double
-                if (double.TryParse(item.HorimetroInicial, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroInicial) &&
-                    double.TryParse(item.HorimetroTermino, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroFinal))
+                if (TimeSpan.TryParseExact(item.HoraInicio, @"hh\:mm", CultureInfo.InvariantCulture, out TimeSpan horaInicial) &&
+                    TimeSpan.TryParseExact(item.HoraTermino, @"hh\:mm", CultureInfo.InvariantCulture, out TimeSpan horaFinal))
                 {
-                    // Calculando a diferença de horímetro
-                    double duration = horimetroFinal - horimetroInicial;
+                    // Calculando a diferença entre os horários
+                    TimeSpan duration = horaFinal - horaInicial;
 
-                    // Somando a diferença ao total como um TimeSpan
-                    totalDuration += TimeSpan.FromHours(duration); // Adiciona a duração ao total
+                    // Somando a diferença ao total
+                    totalDuration += duration;
                 }
             }
 

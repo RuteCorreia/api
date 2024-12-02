@@ -46,7 +46,7 @@ public class AplicacaoRelatorioItemRepository : IAplicacaoRelatorioItemRepositor
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorioItem>> GetForExportExcelAsync(int id)
     {
         var query = @"
-            SELECT HorimetroInicial, HorimetroTermino
+            SELECT HoraInicio, HoraTermino
             FROM AplicacaoRelatorioItem WHERE IdAplicacaoRelatorio = @Id";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
