@@ -92,6 +92,7 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
         objeto.IdEquipamento = obj.IdEquipamento;
         objeto.NomeAeronave = obj.NomeAeronave;
         objeto.NomeEquipamento = obj.NomeEquipamento;
+        objeto.ArquivoDrone = obj.ArquivoDrone;
         objeto.TipoDeProduto = obj.TipoDeProduto;
         objeto.UnidadeVolumeAplicacao = obj.UnidadeVolumeAplicacao;
         objeto.Veinculante = obj.Veinculante;

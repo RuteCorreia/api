@@ -22,7 +22,6 @@ namespace WebApi.Controllers.APIs
     {
         private readonly IAplicacaoCaracteristicasService _aplicacaoCaracteristicasService;
         private readonly ILogService _logService;
-
         public AplicacaoCaracteristicasController(IAplicacaoCaracteristicasService aplicacaoCaracteristicasService, ILogService logService)
         {
             _aplicacaoCaracteristicasService = aplicacaoCaracteristicasService;

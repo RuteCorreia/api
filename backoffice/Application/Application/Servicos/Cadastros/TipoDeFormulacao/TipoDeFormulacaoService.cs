@@ -1,10 +1,13 @@
-﻿using Application.DTOs.Cadastros.TipoDeFormulacao.Interfaces;
+﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
+using Application.DTOs.Cadastros.TipoDeFormulacao.Interfaces;
 using Application.DTOs.Cadastros.TipoDeFormulacao.ViewModel;
 using Application.DTOs.Cadastros.TipoDeServico.Interface;
 using Application.DTOs.Cadastros.TipoDeServico.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.TipoDeFormulacao;
 using Domain.Interfaces.Cadastros.TipoDeServico;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
 {
@@ -19,10 +22,18 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<TipoDeFormulacaoViewModel>> GetAllAsync()
+        public async Task<IEnumerable<TipoDeFormulacaoViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var list = await _tipoDeFormulacaoRepository.GetAllAsync();
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var list = await _tipoDeFormulacaoRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<TipoDeFormulacaoViewModel>>(list);
+        }
+
+        public async Task<TipoDeFormulacaoViewModel> GetByNameAsync(string name, string? idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var obj = await _tipoDeFormulacaoRepository.GetByNameAsync(name, idEmpresaInt);
+            return _mapper.Map<TipoDeFormulacaoViewModel>(obj);
         }
 
         public async Task<TipoDeFormulacaoViewModel> GetByIdAsync(int id)
@@ -31,9 +42,11 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
             return _mapper.Map<TipoDeFormulacaoViewModel>(obj);
         }
 
-        public async Task AddAsync(TipoDeFormulacaoViewModel obj)
+        public async Task AddAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapTipoDeFormulacao = _mapper.Map<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>(obj);
+            mapTipoDeFormulacao.IdEmpresa = idEmpresaInt;
             await _tipoDeFormulacaoRepository.AddAsync(mapTipoDeFormulacao);
         }
 

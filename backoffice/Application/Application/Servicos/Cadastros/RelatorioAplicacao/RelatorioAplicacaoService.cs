@@ -87,14 +87,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             foreach (var item in ari)
             {
                 // Convertendo as strings de horímetro para double
-                if (double.TryParse(item.HorimetroInicial, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroInicial) &&
-                    double.TryParse(item.HorimetroTermino, NumberStyles.Any, CultureInfo.InvariantCulture, out double horimetroFinal))
+                if (TimeSpan.TryParseExact(item.HoraInicio, @"hh\:mm", CultureInfo.InvariantCulture, out TimeSpan horaInicial) &&
+                    TimeSpan.TryParseExact(item.HoraTermino, @"hh\:mm", CultureInfo.InvariantCulture, out TimeSpan horaFinal))
                 {
-                    // Calculando a diferença de horímetro
-                    double duration = horimetroFinal - horimetroInicial;
+                    // Calculando a diferença entre os horários
+                    TimeSpan duration = horaFinal - horaInicial;
 
-                    // Somando a diferença ao total como um TimeSpan
-                    totalDuration += TimeSpan.FromHours(duration); // Adiciona a duração ao total
+                    // Somando a diferença ao total
+                    totalDuration += duration;
                 }
             }
 
@@ -328,10 +328,11 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 
-        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? userId)
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetNovosAsync(DateTime? offsetDate, string? userId, IEnumerable<string>? roleNames, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var user = await _usuarioRepository.GetByUserIdAsync(userId);
-            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome);
+            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
             return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
         }
 

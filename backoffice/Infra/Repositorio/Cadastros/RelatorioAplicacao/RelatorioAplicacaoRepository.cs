@@ -227,7 +227,11 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { DataAlteracao = dataAlteracao, IdEmpresa = idEmpresa });
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(DateTime? offsetDate, string userName)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(
+            DateTime? offsetDate, 
+            string userName, 
+            IEnumerable<string>? roleNames, 
+            int IdEmpresa)
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE StatusEnvio <> 4"; // Filtra por StatusEnvio diferente de 4
 
@@ -237,16 +241,23 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                          "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
             }
 
-            query += " AND (Executor = @Executor OR Piloto = @Piloto)";
+            query += " AND IdEmpresa = @IdEmpresa";
 
-            if (offsetDate != null)
+            if (roleNames != null && (!roleNames.Contains("Administrativo") && !roleNames.Contains("Administrativo") && !roleNames.Contains("Administrador")))
             {
-                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { offsetDate = offsetDate, Executor = userName, Piloto = userName });
+                query += " AND (Executor = @Executor OR Piloto = @Piloto)";
             }
-            else
+
+
+            var parameters = new
             {
-                return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, new { Executor = userName, Piloto = userName });
-            }
+                offsetDate,
+                Executor = userName,
+                Piloto = userName,
+                IdEmpresa
+            };
+
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, parameters);
 
         }
 

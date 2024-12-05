@@ -55,7 +55,6 @@ Thumbs.db
 *.suo
 *.v2
 *.bin
-*.json
 project.nuget.cache
 
 backoffice/WebApi/bin
@@ -227,3 +226,6 @@ backoffice/Helpers/obj
 /.vs/VSWorkspaceState.json
 /backoffice/WebApi/Properties/PublishProfiles
 /.gitignore
+/backoffice/WebApi/.vs/WebApi/v17/DocumentLayout.json
+/backoffice/WebApi/appsettings.Production.json
+/backoffice/WebApi/appsettings.QA.json

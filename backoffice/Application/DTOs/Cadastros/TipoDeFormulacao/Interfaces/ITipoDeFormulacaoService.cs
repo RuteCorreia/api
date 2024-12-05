@@ -4,11 +4,12 @@ namespace Application.DTOs.Cadastros.TipoDeFormulacao.Interfaces
 {
     public interface ITipoDeFormulacaoService
     {
-        Task<IEnumerable<TipoDeFormulacaoViewModel>> GetAllAsync();
+        Task<IEnumerable<TipoDeFormulacaoViewModel>> GetAllAsync(string? idEmpresa);
 
         Task<TipoDeFormulacaoViewModel> GetByIdAsync(int id);
+        Task<TipoDeFormulacaoViewModel> GetByNameAsync(string name, string? idEmpresa);
 
-        Task AddAsync(TipoDeFormulacaoViewModel obj);
+        Task AddAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa);
 
         Task UpdateAsync(TipoDeFormulacaoViewModel obj);
 

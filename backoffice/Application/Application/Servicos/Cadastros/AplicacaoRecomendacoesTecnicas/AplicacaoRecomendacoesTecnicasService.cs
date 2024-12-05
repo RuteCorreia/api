@@ -1,9 +1,11 @@
 ﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Helpers;
+using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecnicas;
 
@@ -21,7 +23,14 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     public async Task<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>> GetAllAsync()
     {
         var list = await _aplicacaoRecomendacoesTecnicasRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
+        var recomendacoesTecnicasViewModel = _mapper.Map<IEnumerable<AplicacaoRecomendacoesTecnicasViewModel>>(list);
+        foreach (var item in recomendacoesTecnicasViewModel)
+        {
+            if(!string.IsNullOrEmpty(item.ArquivoDrone))
+            item.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(item.ArquivoDrone);
+        }
+        return recomendacoesTecnicasViewModel;
+
     }
 
     public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetForExportExcelAsync(int id)
@@ -32,7 +41,10 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     public async Task<AplicacaoRecomendacoesTecnicasViewModel> GetByIdAsync(int id)
     {
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
-        return _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+        var recomendacoesTecnicasViewModel = _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
+        if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone))
+            recomendacoesTecnicasViewModel.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(recomendacoesTecnicasViewModel.ArquivoDrone);
+        return recomendacoesTecnicasViewModel;
     }
 
     public async Task<int> AddAsync(AplicacaoRecomendacoesTecnicasViewModel obj, string? idEmpresa)

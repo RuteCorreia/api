@@ -43,7 +43,7 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
         public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba>> GetByIdAsync(int? id)
         {
             var entities = await _contextBase.FrotaMotobombas
-                                    .Where(ab => ab.Id == id)
+                                    .Where(ab => ab.IdFrota == id)
                                     .ToListAsync();
             return entities;
         }
