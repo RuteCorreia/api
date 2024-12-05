@@ -22,6 +22,8 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+Console.WriteLine(builder.Environment.EnvironmentName);
+
 builder.Services.AddDbContext<ContextBase>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
