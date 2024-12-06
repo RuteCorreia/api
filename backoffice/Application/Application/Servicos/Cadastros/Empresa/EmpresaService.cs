@@ -18,6 +18,8 @@ using Domain.Entidades.User;
 using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Domain.Entidades.Cadastros.Empresa;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -27,6 +29,7 @@ public class EmpresaService : IEmpresaService
     private readonly UserManager<IdentityUser> _userManager;
     private readonly IEmpresaRepository _empresaRepository;
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IHostEnvironment _hostEnvironment;
     private readonly IUserAuthService _userAuthService;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
@@ -37,7 +40,8 @@ public class EmpresaService : IEmpresaService
         UserManager<IdentityUser> userManager, 
         IEmpresaRepository empresaRepository, 
         IUsuarioRepository usuarioRepository,
-        IUserAuthService userAuthService, 
+        IUserAuthService userAuthService,
+        IHostEnvironment hostEnvironment,
         IConfiguration configuration,
         IEmailService emailService,
         IMapper mapper
@@ -47,6 +51,7 @@ public class EmpresaService : IEmpresaService
         _empresaRepository = empresaRepository;
         _usuarioRepository = usuarioRepository;
         _userAuthService = userAuthService;
+        _hostEnvironment = hostEnvironment;
         _configuration = configuration; 
         _emailService = emailService;
         _userManager = userManager;
@@ -93,6 +98,22 @@ public class EmpresaService : IEmpresaService
                 if (sucess)
                 {
                     var baseUrl = _configuration["AppSettings:UrlApi"];
+                    if (_hostEnvironment.IsDevelopment())
+                    {
+                        baseUrl = _configuration["AppSettings:UrlApi"]; // URL para Desenvolvimento
+                    }
+                    else if (_hostEnvironment.IsEnvironment("QA"))
+                    {
+                        baseUrl = _configuration["AppSettings:UrlApiQA"]; // URL para QA
+                    }
+                    else if (_hostEnvironment.IsProduction())
+                    {
+                        baseUrl = _configuration["AppSettings:UrlApiProd"]; // URL para Produção
+                    }
+                    else
+                    {
+                        baseUrl = _configuration["AppSettings:UrlApi"]; // URL padrão caso o ambiente não seja reconhecido
+                    }
                     var emailContent = new EmailViewModel
                     {
                         Recipient = empresaViewModel.Email,
