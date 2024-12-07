@@ -99,7 +99,7 @@ public class EmpresaService : IEmpresaService
                     {
                         Recipient = empresaViewModel.Email,
                         Title = "Cadastre sua Senha",
-                        Body = $"Você está acessando pela primeira vez como uma empresa cadastrada. Por favor clique no link abaixo para criar uma nova senha.{_hostEnvironment.EnvironmentName}",
+                        Body = $"Você está acessando pela primeira vez como uma empresa cadastrada. Por favor clique no link abaixo para criar uma nova senha.",
                         Link = $"{baseUrl}primeiroAcessoEmpresa?token={HttpUtility.UrlEncode(message)}&email={HttpUtility.UrlEncode(empresaViewModel.Email)}",
                         LinkText = "Criar Nova Senha"
                     };
