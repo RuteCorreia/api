@@ -233,7 +233,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 	            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id
 	            JOIN Usuario u ON c.IdExecutor = u.Id
             WHERE (a.Prefixo LIKE '%' + @PrefixoAeronave + '%' OR c.IdAeronave IS NULL)
-                WHERE cps.Extensao IS NOT NULL AND cps.Extensao != ''
+                AND cps.Extensao IS NOT NULL AND cps.Extensao != ''
 	            AND c.Piloto LIKE '%' + @Piloto + '%'
 	            AND u.Nome LIKE '%' + @Executor + '%'
 	            AND c.Cliente LIKE '%' + @Cliente + '%'
@@ -259,7 +259,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         //    parameters.Add("DataFim", atividadeFiltro.DataFinal);
         //}
 
-        
+
 
         query.Append(" GROUP BY cps.ValorTotal");
 
