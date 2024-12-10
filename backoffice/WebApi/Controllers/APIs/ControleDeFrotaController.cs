@@ -64,25 +64,14 @@ public class ControleDeFrotaController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        Id = relatorio.Id,
-                        StatusEnvio = relatorio.State
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    Id = relatorio.Id,
+                    StatusEnvio = relatorio.State
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -129,25 +118,14 @@ public class ControleDeFrotaController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        Id = relatorio.Id,
-                        StatusEnvio = relatorio.State
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    Id = relatorio.Id,
+                    StatusEnvio = relatorio.State
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _logService.LogInformation("Todos os relatórios de frota foram recuperados com sucesso.");
