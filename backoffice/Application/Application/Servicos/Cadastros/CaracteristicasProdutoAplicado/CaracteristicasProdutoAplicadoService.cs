@@ -48,6 +48,10 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
                 mapObj.ReceiturarioAgronomico = fileName;
             }
+            else
+            {
+                mapObj.ReceiturarioAgronomico = "";
+            }
         }
 
         if (obj.Id > 0)
@@ -91,8 +95,20 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
     public async Task AdicionarReceituarioAgronomicoAsync(int id, DataFormatViewModel objData)
     {
-        var serializedData = JsonConvert.SerializeObject(objData);
-        await _caracteristicasProdutoAplicadoRepository.AdicionarReceituarioAgronomicoAsync(id, serializedData);
+        var receituario = "";
+        if (!string.IsNullOrEmpty(objData.Data))
+        {
+            byte[] receituarioAgronomicoBytes = Convert.FromBase64String(objData.Data);
+
+            string fileName = $"ReceituarioAgronomico - {Guid.NewGuid()}.{objData.Format}";
+            using (var stream = new MemoryStream(receituarioAgronomicoBytes))
+            {
+                await _blobStorageRepository.SavePdfAsync(stream, fileName);
+            }
+
+            receituario = fileName;
+        }
+        await _caracteristicasProdutoAplicadoRepository.AdicionarReceituarioAgronomicoAsync(id, receituario);
     }
 
     public async Task<CaracteristicasProdutoAplicadoViewModel> GetForExportExcelAsync(int id)
