@@ -1,27 +1,32 @@
 ﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using AutoMapper;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.User;
 using Helpers;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 
 public class ControleDeFrotaService : IControleDeFrotaService
 {
     private readonly IControleDeFrotaRepository _controleDeFrotaRepository;
+    private readonly IBlobStorageRepository _blobStorageRepository;
     private readonly IVeiculoRepository _veiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IMapper _mapper;
 
     public ControleDeFrotaService( 
         IControleDeFrotaRepository controleDeFrotaRepository,
+        IBlobStorageRepository blobStorageRepository,
         IVeiculoRepository veiculoRepository,
         IUsuarioRepository usuarioRepository,
         IMapper mapper)
     {
         _controleDeFrotaRepository = controleDeFrotaRepository;
+        _blobStorageRepository = blobStorageRepository;
         _veiculoRepository = veiculoRepository;
         _usuarioRepository = usuarioRepository;
         _mapper = mapper;
@@ -69,6 +74,18 @@ public class ControleDeFrotaService : IControleDeFrotaService
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        if (!string.IsNullOrEmpty(mapControleDeFrota.Imagem))
+        {
+            byte[] dataBytes = Convert.FromBase64String(mapControleDeFrota.Imagem);
+
+            string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+            using (var stream = new MemoryStream(dataBytes))
+            {
+                await _blobStorageRepository.SavePdfAsync(stream, fileName);
+            }
+
+            mapControleDeFrota.Imagem = fileName;
+        }
         mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao:dd/MM/yyyy HH:mm:ss}";
         if (!string.IsNullOrEmpty(mapControleDeFrota.NomeVeiculo) && (mapControleDeFrota.KmFinal != null && mapControleDeFrota.KmFinal > 0))
         {
@@ -81,6 +98,18 @@ public class ControleDeFrotaService : IControleDeFrotaService
     public async Task<int?> UpdateAsync(ControleDeFrotaViewModel obj)
     {
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
+        if (!string.IsNullOrEmpty(mapControleDeFrota.Imagem))
+        {
+            byte[] dataBytes = Convert.FromBase64String(mapControleDeFrota.Imagem);
+
+            string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+            using (var stream = new MemoryStream(dataBytes))
+            {
+                await _blobStorageRepository.SavePdfAsync(stream, fileName);
+            }
+
+            mapControleDeFrota.Imagem = fileName;
+        }
         mapControleDeFrota.NomeRelatorio = $"Frota - {mapControleDeFrota.NomeExecutor} - {mapControleDeFrota.NomePiloto} - {mapControleDeFrota.DataCriacao:dd/MM/yyyy HH:mm:ss}";
         if (!string.IsNullOrEmpty(mapControleDeFrota.NomeVeiculo) && (mapControleDeFrota.KmFinal != null && mapControleDeFrota.KmFinal > 0))
         {
