@@ -175,29 +175,18 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
-                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                    if (!string.IsNullOrEmpty(data.Data))
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
-                        {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            DataAlteracao = relatorio.DataAlteracao.HasValue
-                                            ? relatorio.DataAlteracao.Value.ToString("dd/MM/yyyy HH:mm:ss")
-                                            : null
-                        };
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        DataAlteracao = relatorio.DataAlteracao.HasValue
+                                        ? relatorio.DataAlteracao.Value.ToString("dd/MM/yyyy HH:mm:ss")
+                                        : null
+                    };
 
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
-                    {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
@@ -295,28 +284,28 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
-                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
 
-                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                    if (!string.IsNullOrEmpty(data.Data))
+                    bool receituarioExist = false;
+                    if (relatorio.CaracteristicasProdutoAplicadoId.HasValue)
                     {
-                        var relatorioBaseViewModel = new RelatorioBaseViewModel
+                        var caracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.GetByIdAsync(relatorio.CaracteristicasProdutoAplicadoId.Value, loggedUser.Item3);
+                        if (!string.IsNullOrEmpty(caracteristicasProdutoAplicado.ReceiturarioAgronomico))
                         {
-                            NomeRelatorio = relatorio.NomeRelatorio,
-                            Base64Data = data.Data,
-                            IsMapa = relatorio.IsMapa,
-                            Id = relatorio.Id,
-                            ReceituarioAgronomico = receituarioAgronomico,
-                        };
+                            receituarioExist = true;
+                        }
+                    }
 
-                        dataRelatorios.Add(relatorioBaseViewModel);
-                    }
-                    else
+                    var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
-                        // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                        _logService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                    }
+                        NomeRelatorio = relatorio.NomeRelatorio,
+                        IsMapa = relatorio.IsMapa,
+                        Id = relatorio.Id,
+                        StatusEnvio = relatorio.State,
+                        IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
+                        ReceituarioExiste = receituarioExist,
+                    };
+
+                    dataRelatorios.Add(relatorioBaseViewModel);
                 }
 
                 _logService.LogInformation("Todos os relatórios de aplicação foram recuperados com sucesso.");
