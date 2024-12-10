@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+﻿using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
+using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
@@ -252,6 +253,38 @@ public class ControleDeFrotaController : ControllerBase
             _logService.LogError(ex, $"Erro ao deletar ControleDeFrota: {ex.Message}"); // Registre um erro de log
 
             return StatusCode(StatusCodes.Status500InternalServerError, $"ControleDeFrota delete - {ex.Message}");
+        }
+    }
+
+    [HttpGet("DownloadArquivo/{id}")]
+    public async Task<IActionResult> DownloadArquivo(int id)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorio = await _controleDeFrotaService.GetByIdAsync(id);
+
+            // Obter os dados do relatório
+            var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+            if (!string.IsNullOrEmpty(data.Data))
+            {
+                // Converter os dados do relatório para bytes
+                var relatorioBytes = Convert.FromBase64String(data.Data);
+
+                // Nome do arquivo
+                var nomeArquivoRelatorio = $"{relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-")}.pdf";
+
+                // Retornar o arquivo PDF
+                return File(relatorioBytes, "application/pdf", nomeArquivoRelatorio);
+            }
+
+            // Caso não haja dados
+            return NotFound("Relatório não encontrado ou não possui dados.");
+        }
+        catch (Exception ex)
+        {
+            _logService.LogError(ex, $"Erro ao recuperar o relatório: {ex.Message}");
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar o relatório: {ex.Message}");
         }
     }
 }
