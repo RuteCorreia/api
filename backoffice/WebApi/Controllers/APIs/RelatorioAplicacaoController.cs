@@ -142,19 +142,14 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
-                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
-
-                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
                     var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
                         NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
                         IsMapa = relatorio.IsMapa,
                         Id = relatorio.Id,
                         StatusEnvio = relatorio.State,
                         IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                        ReceituarioAgronomico = receituarioAgronomico,
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
@@ -252,19 +247,24 @@ namespace WebApi.Controllers.APIs
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
                 foreach (var relatorio in relatorios)
                 {
-                    var receituarioAgronomico = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
-
-                    var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+                    bool receituarioExist = false;
+                    if (relatorio.CaracteristicasProdutoAplicadoId.HasValue)
+                    {
+                        var caracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.GetByIdAsync(relatorio.CaracteristicasProdutoAplicadoId.Value, loggedUser.Item3);
+                        if (!string.IsNullOrEmpty(caracteristicasProdutoAplicado.ReceiturarioAgronomico))
+                        {
+                            receituarioExist = true;
+                        }
+                    }
 
                     var relatorioBaseViewModel = new RelatorioBaseViewModel
                     {
                         NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
                         IsMapa = relatorio.IsMapa,
                         Id = relatorio.Id,
                         StatusEnvio = relatorio.State,
                         IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
-                        ReceituarioAgronomico = receituarioAgronomico,
+                        ReceituarioExiste = receituarioExist,
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
@@ -692,8 +692,7 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var isMapa = 0;
-                var relatorioIds = request.Ids.Select(x => x.Id).ToList();
-                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, relatorioIds, isMapa);
+                var relatorios = await _relatorioAplicacaoService.GetListByIdsAsync(loggedUser.Item3, request.Ids, isMapa);
 
                 using (var memoryStream = new MemoryStream())
                 {
@@ -701,7 +700,6 @@ namespace WebApi.Controllers.APIs
                     {
                         foreach (var relatorio in relatorios)
                         {
-                            var relatorioRequest = request.Ids.FirstOrDefault(x => x.Id == relatorio.Id);
 
                             // Nome da pasta com base no NomeRelatorio
                             string folderName = relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-");
@@ -721,24 +719,29 @@ namespace WebApi.Controllers.APIs
                             }
 
                             // Adicionar o arquivo do ReceituarioAgronomico, se disponível
-                            if (relatorioRequest?.ReceituarioAgronomico != null &&
-                                !string.IsNullOrEmpty(relatorioRequest.ReceituarioAgronomico.Data))
+                            var receituario = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+                            if (receituario != null &&
+                                !string.IsNullOrEmpty(receituario.Data))
                             {
-                                var receituarioBytes = Convert.FromBase64String(relatorioRequest.ReceituarioAgronomico.Data);
+                                var receituarioBytes = Convert.FromBase64String(receituario.Data);
                                 string receituarioFileName = $"{folderName}/receituarioAgronomico"; // Nome do arquivo do receituário
 
                                 // Verificar o formato do ReceituarioAgronomico
-                                if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "pdf")
+                                if (receituario.Format.ToLower() == "pdf")
                                 {
                                     receituarioFileName += ".pdf";
                                 }
-                                else if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "png")
+                                else if (receituario.Format.ToLower() == "png")
                                 {
                                     receituarioFileName += ".png";
                                 }
+                                else if (receituario.Format.ToLower() == "raw")
+                                {
+                                    receituarioFileName += ".raw";
+                                }
                                 else
                                 {
-                                    _logService.LogWarning($"Formato desconhecido: {relatorioRequest.ReceituarioAgronomico.Format}");
+                                    _logService.LogWarning($"Formato desconhecido: {receituario.Format}");
                                     continue;
                                 }
 
@@ -760,6 +763,86 @@ namespace WebApi.Controllers.APIs
             {
                 _logService.LogError(ex, $"Erro ao recuperar e compactar os relatórios: {ex.Message}");
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar e compactar os relatórios: {ex.Message}");
+            }
+        }
+
+        [HttpGet("DownloadArquivo/{id}")]
+        public async Task<IActionResult> DownloadArquivo(int id)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var relatorio = await _relatorioAplicacaoService.GetByIdAsync(id);
+
+                // Obter os dados do relatório
+                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+                if (!string.IsNullOrEmpty(data.Data))
+                {
+                    // Converter os dados do relatório para bytes
+                    var relatorioBytes = Convert.FromBase64String(data.Data);
+
+                    // Nome do arquivo
+                    var nomeArquivoRelatorio = $"{relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-")}.pdf";
+
+                    // Retornar o arquivo PDF
+                    return File(relatorioBytes, "application/pdf", nomeArquivoRelatorio);
+                }
+
+                // Caso não haja dados
+                return NotFound("Relatório não encontrado ou não possui dados.");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar o relatório: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar o relatório: {ex.Message}");
+            }
+        }
+
+        [HttpGet("DownloadReceituario/{id}")]
+        public async Task<IActionResult> DownloadReceituario(int id)
+        {
+            try
+            {
+                var receituario = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(id);
+
+                if (receituario != null && !string.IsNullOrEmpty(receituario.Data))
+                {
+                    var receituarioBytes = Convert.FromBase64String(receituario.Data);
+
+                    // Nome do arquivo com base no formato
+                    string receituarioFileName = $"receituarioAgronomico";
+                    string contentType = string.Empty;
+
+                    switch (receituario.Format.ToLower())
+                    {
+                        case "pdf":
+                            receituarioFileName += ".pdf";
+                            contentType = "application/pdf";
+                            break;
+                        case "png":
+                            receituarioFileName += ".png";
+                            contentType = "image/png";
+                            break;
+                        case "raw":
+                            receituarioFileName += ".png";
+                            contentType = "image/png";
+                            break;
+                        default:
+                            _logService.LogWarning($"Formato desconhecido: {receituario.Format}");
+                            return BadRequest($"Formato desconhecido: {receituario.Format}");
+                    }
+
+                    // Retornar o arquivo diretamente
+                    return File(receituarioBytes, contentType, receituarioFileName);
+                }
+
+                // Caso não haja dados no receituário
+                return NotFound("Receituário não encontrado ou não possui dados.");
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar o receituário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar o receituário: {ex.Message}");
             }
         }
 
