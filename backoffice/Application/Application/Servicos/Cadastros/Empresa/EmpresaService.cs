@@ -18,6 +18,8 @@ using Domain.Entidades.User;
 using Application.DTOs.Cadastros.MenuUsuario.Interface;
 using Domain.Entidades.Cadastros.Empresa;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
+using System;
 
 namespace Application.Application.Servicos.Cadastros.Empresa;
 
@@ -37,7 +39,7 @@ public class EmpresaService : IEmpresaService
         UserManager<IdentityUser> userManager, 
         IEmpresaRepository empresaRepository, 
         IUsuarioRepository usuarioRepository,
-        IUserAuthService userAuthService, 
+        IUserAuthService userAuthService,
         IConfiguration configuration,
         IEmailService emailService,
         IMapper mapper
