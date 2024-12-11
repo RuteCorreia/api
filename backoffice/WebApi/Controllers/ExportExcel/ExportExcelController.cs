@@ -160,7 +160,7 @@ namespace WebApi.Controllers.ExportExcel
                 var zipStream = new MemoryStream();
                 using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
                 {
-                    var zipEntry = zip.CreateEntry("relatorios.xlsx", System.IO.Compression.CompressionLevel.Fastest);
+                    var zipEntry = zip.CreateEntry($"Relatorio Mensal.xlsx", System.IO.Compression.CompressionLevel.Fastest);
                     using (var entryStream = zipEntry.Open())
                     {
                         stream.Position = 0;
