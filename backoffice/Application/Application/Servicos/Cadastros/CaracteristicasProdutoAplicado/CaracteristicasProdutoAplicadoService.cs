@@ -51,7 +51,7 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
             }
             else
             {
-                mapObj.ReceiturarioAgronomico = "";
+                mapObj.ReceiturarioAgronomico = string.Empty;
             }
         }
 
@@ -89,19 +89,19 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         if (!string.IsNullOrEmpty(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico))
         {
             var fileExtension = Path.GetExtension(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico)?.ToLower().TrimStart('.');
-            var croquiArea = await _blobStorageRepository.GetPdfAsync(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico);
-            string croquiAreaBase64 = "";
+            var receiturarioAgronomico = await _blobStorageRepository.GetPdfAsync(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico);
+            string receiturarioAgronomicoBase64 = "";
             using (var memoryStream = new MemoryStream())
             {
-                await croquiArea.CopyToAsync(memoryStream);
+                await receiturarioAgronomico.CopyToAsync(memoryStream);
                 var byteArray = memoryStream.ToArray();
-                croquiAreaBase64 = Convert.ToBase64String(byteArray);
+                receiturarioAgronomicoBase64 = Convert.ToBase64String(byteArray);
             }
 
             var croquiAreaDataFormat = new DataFormatViewModel
             {
                 Format = fileExtension,
-                Data = croquiAreaBase64
+                Data = receiturarioAgronomicoBase64
             };
 
             mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico = JsonConvert.SerializeObject(croquiAreaDataFormat);

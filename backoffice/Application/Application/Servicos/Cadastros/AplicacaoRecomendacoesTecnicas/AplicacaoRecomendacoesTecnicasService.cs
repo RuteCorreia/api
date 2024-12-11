@@ -95,7 +95,7 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
             }
             else
             {
-                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = "";
+                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = string.Empty;
             }
         }
         if (obj.Id > 0)

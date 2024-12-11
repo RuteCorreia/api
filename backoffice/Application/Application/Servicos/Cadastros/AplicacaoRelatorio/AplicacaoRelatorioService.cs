@@ -44,16 +44,40 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         {
             return null;
         }
+        var aplicacaoRelatorio = _mapper.Map<AplicacaoRelatorioViewModel>(obj);
 
-        List<DataFormatViewModel> mapaAplicado = null;
+        List<string> mapaAplicado = null;
+        List<DataFormatViewModel> mapasAplicadosDataFormat = null;
 
         if (!string.IsNullOrEmpty(obj.MapaAplicacao))
         {
-            mapaAplicado = JsonConvert.DeserializeObject<List<DataFormatViewModel>>(obj.MapaAplicacao);
+            mapaAplicado = JsonConvert.DeserializeObject<List<string>>(obj.MapaAplicacao);
+            foreach (var item in mapaAplicado) 
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+                    var fileExtension = Path.GetExtension(item)?.ToLower().TrimStart('.');
+                    var mapaAplicadoStream = await _blobStorageRepository.GetPdfAsync(item);
+                    string mapaAplicadoBase64 = "";
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await mapaAplicadoStream.CopyToAsync(memoryStream);
+                        var byteArray = memoryStream.ToArray();
+                        mapaAplicadoBase64 = Convert.ToBase64String(byteArray);
+                    }
+
+                    var mapaAplicadoDataFormat = new DataFormatViewModel
+                    {
+                        Format = fileExtension,
+                        Data = mapaAplicadoBase64
+                    };
+
+                    mapasAplicadosDataFormat.Add(mapaAplicadoDataFormat);
+                }
+            }
         }
-        
-        var aplicacaoRelatorio = _mapper.Map<AplicacaoRelatorioViewModel>(obj);
-        aplicacaoRelatorio.MapaAplicado = mapaAplicado;
+       
+        aplicacaoRelatorio.MapaAplicado = mapasAplicadosDataFormat;
 
         return aplicacaoRelatorio;
     }
@@ -127,6 +151,10 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                         }
 
                         mapAplicacaoRelatorioItem.ImagemDadosClimaticos = fileName;
+                    }
+                    else
+                    {
+                        mapAplicacaoRelatorioItem.ImagemDadosClimaticos = string.Empty;
                     }
                 }
 

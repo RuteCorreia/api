@@ -89,7 +89,7 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
                 }
                 else
                 {
-                    mapIdentificacaoAreaTratada.CroquiArea = "";
+                    mapIdentificacaoAreaTratada.CroquiArea = string.Empty;
                 }
             }
 
