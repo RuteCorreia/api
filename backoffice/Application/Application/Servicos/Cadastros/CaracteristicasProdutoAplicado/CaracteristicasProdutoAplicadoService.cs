@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
@@ -84,7 +85,28 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var obj = await _caracteristicasProdutoAplicadoRepository.GetByIdAsync(id, idEmpresaInt);
-        return _mapper.Map<ProdutoAplicadoViewModel>(obj);
+        var mapCaracteristicasProdutoAplicado = _mapper.Map<ProdutoAplicadoViewModel>(obj);
+        if (!string.IsNullOrEmpty(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico))
+        {
+            var fileExtension = Path.GetExtension(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico)?.ToLower().TrimStart('.');
+            var croquiArea = await _blobStorageRepository.GetPdfAsync(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico);
+            string croquiAreaBase64 = "";
+            using (var memoryStream = new MemoryStream())
+            {
+                await croquiArea.CopyToAsync(memoryStream);
+                var byteArray = memoryStream.ToArray();
+                croquiAreaBase64 = Convert.ToBase64String(byteArray);
+            }
+
+            var croquiAreaDataFormat = new DataFormatViewModel
+            {
+                Format = fileExtension,
+                Data = croquiAreaBase64
+            };
+
+            mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico = JsonConvert.SerializeObject(croquiAreaDataFormat);
+        }
+        return mapCaracteristicasProdutoAplicado;
     }
 
     public async Task UpdateAsync(CaracteristicasProdutoAplicadoViewModel obj)
