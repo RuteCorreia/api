@@ -1,10 +1,7 @@
-﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
-using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
-using Application.DTOs.Cadastros.DataRelatorio.Interface;
+﻿using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.DataRelatorio.ViewModel;
-using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using AutoMapper;
-using Domain.Interfaces.Cadastros.DadosResponsavel;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.DataRelatorio;
 using Helpers;
 
@@ -13,14 +10,17 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
     public class DataRelatorioService : IDataRelatorioService
     {
         private readonly IDataRelatorioRepository _dataRelatorioRepository;
+        private readonly IBlobStorageRepository _blobStorageRepository;
         private readonly IMapper _mapper;
 
         public DataRelatorioService(
             IMapper mapper,
-            IDataRelatorioRepository dataRelatorioRepository
+            IDataRelatorioRepository dataRelatorioRepository,
+            IBlobStorageRepository blobStorageRepository
         )
         {
             _dataRelatorioRepository = dataRelatorioRepository;
+            _blobStorageRepository = blobStorageRepository;
             _mapper = mapper;
         }
 
@@ -29,6 +29,18 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapDataRelatorio = _mapper.Map<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(obj);
             mapDataRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+            if (!string.IsNullOrEmpty(mapDataRelatorio.Data))
+            {
+                byte[] dataBytes = Convert.FromBase64String(mapDataRelatorio.Data);
+
+                string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+                using (var stream = new MemoryStream(dataBytes))
+                {
+                    await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                }
+
+                mapDataRelatorio.Data = fileName;
+            }
             return await _dataRelatorioRepository.AddAsync(mapDataRelatorio);
         }
 
@@ -49,7 +61,21 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var obj = await _dataRelatorioRepository.GetByIdAsync(id, idEmpresaInt);
-            return _mapper.Map<DataRelatorioViewModel>(obj);
+            var viewModel = _mapper.Map<DataRelatorioViewModel>(obj);
+            if (!string.IsNullOrEmpty(viewModel.Data))
+            {
+                var data = await _blobStorageRepository.GetPdfAsync(viewModel.Data);
+                using (var memoryStream = new MemoryStream())
+                {
+                    await data.CopyToAsync(memoryStream);
+                    var fileBytes = memoryStream.ToArray();
+
+                    string base64String = Convert.ToBase64String(fileBytes);
+
+                    viewModel.Data = base64String;
+                }
+            }
+            return viewModel;
         }
 
         public async Task<string> GerarLinksPdf(string base64Pdf)
@@ -65,6 +91,18 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
         public async Task<int> UpdateAsync(DataRelatorioViewModel obj)
         {
             var mapDataRelatorio = _mapper.Map<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(obj);
+            if (!string.IsNullOrEmpty(mapDataRelatorio.Data))
+            {
+                byte[] dataBytes = Convert.FromBase64String(mapDataRelatorio.Data);
+
+                string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+                using (var stream = new MemoryStream(dataBytes))
+                {
+                    await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                }
+
+                mapDataRelatorio.Data = fileName;
+            }
             return await _dataRelatorioRepository.UpdateAsync(mapDataRelatorio);
         }
     }

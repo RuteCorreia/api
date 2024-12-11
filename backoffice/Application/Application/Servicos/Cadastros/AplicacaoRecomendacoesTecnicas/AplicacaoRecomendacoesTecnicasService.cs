@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Helpers;
 using Newtonsoft.Json;
@@ -12,11 +13,15 @@ namespace Application.Application.Servicos.Cadastros.AplicacaoRecomendacoesTecni
 public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecnicasService
 {
     private readonly IAplicacaoRecomendacoesTecnicasRepository _aplicacaoRecomendacoesTecnicasRepository;
+    private readonly IBlobStorageRepository _blobStorageRepository;
     private readonly IMapper _mapper;
 
-    public AplicacaoRecomendacoesTecnicasService(IMapper mapper, IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository)
+    public AplicacaoRecomendacoesTecnicasService(IMapper mapper, 
+        IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository,
+        IBlobStorageRepository blobStorageRepository)
     {
         _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
+        _blobStorageRepository = blobStorageRepository;
         _mapper = mapper;
     }
 
@@ -43,7 +48,27 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
         var recomendacoesTecnicasViewModel = _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
         if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone))
+        {
+            var fileExtension = Path.GetExtension(recomendacoesTecnicasViewModel.ArquivoDrone)?.ToLower().TrimStart('.');
+            var croquiArea = await _blobStorageRepository.GetPdfAsync(recomendacoesTecnicasViewModel.ArquivoDrone);
+            string croquiAreaBase64 = "";
+            using (var memoryStream = new MemoryStream())
+            {
+                await croquiArea.CopyToAsync(memoryStream);
+                var byteArray = memoryStream.ToArray();
+                croquiAreaBase64 = Convert.ToBase64String(byteArray);
+            }
+
+            var croquiAreaDataFormat = new DataFormatViewModel
+            {
+                Format = fileExtension,
+                Data = croquiAreaBase64
+            };
+
+            recomendacoesTecnicasViewModel.ArquivoDrone = JsonConvert.SerializeObject(croquiAreaDataFormat);
             recomendacoesTecnicasViewModel.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(recomendacoesTecnicasViewModel.ArquivoDrone);
+        }
+           
         return recomendacoesTecnicasViewModel;
     }
 
@@ -52,6 +77,27 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapAplicacaoRecomendacoesTecnicas = _mapper.Map<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas>(obj);
         mapAplicacaoRecomendacoesTecnicas.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+        DataFormatViewModel arquivoDroneDataFormat;
+        if (!string.IsNullOrEmpty(mapAplicacaoRecomendacoesTecnicas.ArquivoDrone))
+        {
+            arquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(mapAplicacaoRecomendacoesTecnicas.ArquivoDrone);
+            if (!string.IsNullOrEmpty(arquivoDroneDataFormat.Data))
+            {
+                byte[] croquiAreaBytes = Convert.FromBase64String(arquivoDroneDataFormat.Data);
+
+                string fileName = $"ArquivoDrone - {Guid.NewGuid()}.{arquivoDroneDataFormat.Format}";
+                using (var stream = new MemoryStream(croquiAreaBytes))
+                {
+                    await _blobStorageRepository.SavePdfAsync(stream, fileName);
+                }
+
+                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = fileName;
+            }
+            else
+            {
+                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = string.Empty;
+            }
+        }
         if (obj.Id > 0)
         {
             await _aplicacaoRecomendacoesTecnicasRepository.UpdateAsync(mapAplicacaoRecomendacoesTecnicas);

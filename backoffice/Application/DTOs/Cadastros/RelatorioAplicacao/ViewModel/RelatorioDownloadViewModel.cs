@@ -5,6 +5,6 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
     public class RelatorioDownloadViewModel
     {
         public int Id { get; set; }
-        public DataFormatViewModel? ReceituarioAgronomico { get; set; }
+        public int? IdReceituarioAgronomico { get; set; }
     }
 }

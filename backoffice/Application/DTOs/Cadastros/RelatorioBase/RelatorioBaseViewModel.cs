@@ -17,5 +17,6 @@ namespace Application.DTOs.Cadastros.RelatorioBase
         public string? DataAlteracao { get; set; }
         public int? IdCaracteristicasProdutoAplicado { get; set; }
         public DataFormatViewModel? ReceituarioAgronomico { get; set; }
+        public bool? ReceituarioExiste { get; set; }
     }
 }

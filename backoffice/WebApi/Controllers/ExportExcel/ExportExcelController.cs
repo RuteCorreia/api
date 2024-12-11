@@ -160,7 +160,7 @@ namespace WebApi.Controllers.ExportExcel
                 var zipStream = new MemoryStream();
                 using (var zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
                 {
-                    var zipEntry = zip.CreateEntry("relatorios.xlsx", System.IO.Compression.CompressionLevel.Fastest);
+                    var zipEntry = zip.CreateEntry($"Relatorio Mensal.xlsx", System.IO.Compression.CompressionLevel.Fastest);
                     using (var entryStream = zipEntry.Open())
                     {
                         stream.Position = 0;
@@ -174,8 +174,8 @@ namespace WebApi.Controllers.ExportExcel
                 var existingFile = await _exportacaoPlanilhaService.GetFileByNameAsync(loggedUser.Item3,nomeZip);
                 if (existingFile != null)
                 {
-                    existingFile.Dados = zipStream.ToArray();
-                    await _exportacaoPlanilhaService.UpdateAsync(existingFile);
+                    zipStream.Position = 0;
+                    await _exportacaoPlanilhaService.UpdateAsync(existingFile, zipStream);
                 }
                 else
                 {
@@ -208,7 +208,7 @@ namespace WebApi.Controllers.ExportExcel
                 {
                     Id = arquivo.Id,
                     Nome = arquivo.Nome,
-                    DadosBase64 = arquivo.Dados != null ? Convert.ToBase64String(arquivo.Dados) : null,
+                    DadosBase64 = arquivo.Dados,
                     DataAlteracao = arquivo.DataAlteracao.HasValue
                         ? arquivo.DataAlteracao.Value.ToString("dd/MM/yyyy HH:mm:ss")
                         : string.Empty

@@ -74,12 +74,8 @@ public class CaracteristicasProdutoAplicadoRepository : ICaracteristicasProdutoA
     }
 
     public async Task<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado> GetByIdAsync(int id, int idEmpresa)
-    {
-        //var obj = await _contextBase.CaracteristicasProdutoAplicado
-        //    .FirstOrDefaultAsync(x => x.Id == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
-        //return obj;
-        
-        using (var connection = _dbConnection)
+    {   
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             try
             {
