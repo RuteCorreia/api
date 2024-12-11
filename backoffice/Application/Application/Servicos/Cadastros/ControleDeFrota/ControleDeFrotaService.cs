@@ -78,7 +78,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
         {
             byte[] dataBytes = Convert.FromBase64String(mapControleDeFrota.Imagem);
 
-            string fileName = $"DataRelatorio - {Guid.NewGuid()}.pdf";
+            string fileName = $"ImagemFrota - {Guid.NewGuid()}.pdf";
             using (var stream = new MemoryStream(dataBytes))
             {
                 await _blobStorageRepository.SavePdfAsync(stream, fileName);

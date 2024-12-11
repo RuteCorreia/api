@@ -28,7 +28,31 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
     public async Task<IEnumerable<RelatorioItemViewModel>> GetAllAsync(int idRelatorioAplicacao)
     {
         var list = await _aplicacaoRelatorioItemRepository.GetAllByAplicacaoRelatorioIdAsync(idRelatorioAplicacao);
-        return _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
+        var aplicacaoRelatorioItemViewModel = _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
+        foreach (var item in aplicacaoRelatorioItemViewModel)
+        {
+            if (!string.IsNullOrEmpty(item.ImagemCondicaoClimatica))
+            {
+                var fileExtension = Path.GetExtension(item.ImagemCondicaoClimatica)?.ToLower().TrimStart('.');
+                var croquiArea = await _blobStorageRepository.GetPdfAsync(item.ImagemCondicaoClimatica);
+                string croquiAreaBase64 = "";
+                using (var memoryStream = new MemoryStream())
+                {
+                    await croquiArea.CopyToAsync(memoryStream);
+                    var byteArray = memoryStream.ToArray();
+                    croquiAreaBase64 = Convert.ToBase64String(byteArray);
+                }
+
+                var croquiAreaDataFormat = new DataFormatViewModel
+                {
+                    Format = fileExtension,
+                    Data = croquiAreaBase64
+                };
+
+                item.ImagemCondicaoClimatica = JsonConvert.SerializeObject(croquiAreaDataFormat);
+            }
+        }
+        return aplicacaoRelatorioItemViewModel;
     }
 
     public async Task<IEnumerable<RelatorioItemViewModel>> GetForExportExcelAsync(int id)
