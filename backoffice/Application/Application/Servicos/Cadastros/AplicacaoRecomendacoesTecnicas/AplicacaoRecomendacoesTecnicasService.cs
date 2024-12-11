@@ -48,7 +48,27 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
         var recomendacoesTecnicasViewModel = _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
         if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone))
+        {
+            var fileExtension = Path.GetExtension(recomendacoesTecnicasViewModel.ArquivoDrone)?.ToLower().TrimStart('.');
+            var croquiArea = await _blobStorageRepository.GetPdfAsync(recomendacoesTecnicasViewModel.ArquivoDrone);
+            string croquiAreaBase64 = "";
+            using (var memoryStream = new MemoryStream())
+            {
+                await croquiArea.CopyToAsync(memoryStream);
+                var byteArray = memoryStream.ToArray();
+                croquiAreaBase64 = Convert.ToBase64String(byteArray);
+            }
+
+            var croquiAreaDataFormat = new DataFormatViewModel
+            {
+                Format = fileExtension,
+                Data = croquiAreaBase64
+            };
+
+            recomendacoesTecnicasViewModel.ArquivoDrone = JsonConvert.SerializeObject(croquiAreaDataFormat);
             recomendacoesTecnicasViewModel.ArquivoDroneDataFormat = JsonConvert.DeserializeObject<DataFormatViewModel>(recomendacoesTecnicasViewModel.ArquivoDrone);
+        }
+           
         return recomendacoesTecnicasViewModel;
     }
 
@@ -72,6 +92,10 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
                 }
 
                 mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = fileName;
+            }
+            else
+            {
+                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = "";
             }
         }
         if (obj.Id > 0)
