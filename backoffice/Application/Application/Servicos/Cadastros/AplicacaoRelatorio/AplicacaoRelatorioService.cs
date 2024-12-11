@@ -118,7 +118,14 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
             }
         }
 
-        mapAplicacaoRelatorio.MapaAplicacao = JsonConvert.SerializeObject(fileNames);
+        if (fileNames.Count > 0) 
+        {
+            mapAplicacaoRelatorio.MapaAplicacao = JsonConvert.SerializeObject(fileNames);
+        }
+        else
+        {
+            mapAplicacaoRelatorio.MapaAplicacao = string.Empty;
+        }
 
         if (obj.Id > 0)
         {
