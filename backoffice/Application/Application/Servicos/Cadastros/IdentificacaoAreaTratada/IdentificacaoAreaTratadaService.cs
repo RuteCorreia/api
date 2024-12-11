@@ -11,6 +11,7 @@ using Helpers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,7 +42,28 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
         public async Task<AreaTratadaViewModel> GetByIdAsync(int id)
         {
             var obj = await _identificacaoAreaTratadaRepository.GetByIdAsync(id);
-            return _mapper.Map<AreaTratadaViewModel>(obj);
+            var mapIdentificacaoAreaTratada = _mapper.Map<AreaTratadaViewModel>(obj);
+            if (!string.IsNullOrEmpty(mapIdentificacaoAreaTratada.CroquiArea))
+            {
+                var fileExtension = Path.GetExtension(mapIdentificacaoAreaTratada.CroquiArea)?.ToLower().TrimStart('.');
+                var croquiArea = await _blobStorageRepository.GetPdfAsync(mapIdentificacaoAreaTratada.CroquiArea);
+                string croquiAreaBase64 = "";
+                using (var memoryStream = new MemoryStream())
+                {
+                    await croquiArea.CopyToAsync(memoryStream);
+                    var byteArray = memoryStream.ToArray();
+                    croquiAreaBase64 = Convert.ToBase64String(byteArray);
+                }
+
+                var croquiAreaDataFormat = new DataFormatViewModel
+                {
+                    Format = fileExtension,
+                    Data = croquiAreaBase64
+                };
+
+                mapIdentificacaoAreaTratada.CroquiArea = JsonConvert.SerializeObject(croquiAreaDataFormat);
+            }
+            return mapIdentificacaoAreaTratada;
         }
 
         public async Task<int> AddAsync(AreaTratadaViewModel obj, string? idEmpresa)
@@ -64,6 +86,10 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
                     }
 
                     mapIdentificacaoAreaTratada.CroquiArea = fileName; 
+                }
+                else
+                {
+                    mapIdentificacaoAreaTratada.CroquiArea = "";
                 }
             }
 
