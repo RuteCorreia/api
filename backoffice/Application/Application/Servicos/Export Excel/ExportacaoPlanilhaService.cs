@@ -1,35 +1,38 @@
-﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
-using Application.DTOs.ExportExcel.Interfaces;
-using Domain.Entidades.Cadastros.Empresa;
+﻿using Application.DTOs.ExportExcel.Interfaces;
 using Domain.Entidades.Export_Excel;
+using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Export_Excel;
 using Helpers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Application.Servicos.Export_Excel
 {
     public class ExportacaoPlanilhaService : IExportacaoPlanilhaService
     {
         private readonly IExportacaoPlanilhaRepository _exportacaoPlanilhaRepository;
-        public ExportacaoPlanilhaService(IExportacaoPlanilhaRepository exportacaoPlanilhaRepository)
+        private readonly IBlobStorageRepository _blobStorageRepository;
+        public ExportacaoPlanilhaService(
+            IExportacaoPlanilhaRepository exportacaoPlanilhaRepository,
+            IBlobStorageRepository blobStorageRepository)
         {
             _exportacaoPlanilhaRepository = exportacaoPlanilhaRepository;
+            _blobStorageRepository = blobStorageRepository;
         }
         public async Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo, string? idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-            var arquivoZip = new PlanilhaExcelExportada
+            var arquivoZip = new PlanilhaExcelExportada();
+            if (zipStream != null)
             {
-                Nome = nomeArquivo,
-                Dados = zipStream.ToArray(),
-                DataCriacao = DateTime.Now,
-                DataAlteracao = DateTime.Now,
-                IdEmpresa = idEmpresaInt
-            };
+
+                string fileName = $"RelatorioAtividades - {Guid.NewGuid()}.zip";
+                await _blobStorageRepository.SavePdfAsync(zipStream, fileName);
+
+                arquivoZip.Dados = fileName;
+            }
+            arquivoZip.Nome = nomeArquivo;
+            arquivoZip.DataCriacao = DateTime.Now;
+            arquivoZip.DataAlteracao = DateTime.Now;
+            arquivoZip.IdEmpresa = idEmpresaInt;
 
             return await _exportacaoPlanilhaRepository.AddAsync(arquivoZip);
         }
@@ -39,7 +42,18 @@ namespace Application.Application.Servicos.Export_Excel
             try
             {
                 var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-                return await _exportacaoPlanilhaRepository.GetAllAsync(idEmpresaInt);
+                var planilhaExcelExportadas = await _exportacaoPlanilhaRepository.GetAllAsync(idEmpresaInt);
+                foreach (var item in planilhaExcelExportadas) 
+                {
+                    var planilhaStream = await _blobStorageRepository.GetPdfAsync(item.Dados);
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await planilhaStream.CopyToAsync(memoryStream);
+                        var byteArray = memoryStream.ToArray();
+                        item.Dados = Convert.ToBase64String(byteArray);
+                    }
+                }
+                return planilhaExcelExportadas;
             }
             catch (Exception ex)
             {
@@ -70,19 +84,27 @@ namespace Application.Application.Servicos.Export_Excel
             }
         }
 
-        public async Task UpdateAsync(PlanilhaExcelExportada obj)
+        public async Task UpdateAsync(PlanilhaExcelExportada obj, MemoryStream zipStream)
         {
             TimeZoneInfo brasilTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Brazil/East");
             DateTime dataAlteracao = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, brasilTimeZone);
+            if (zipStream != null)
+            {
+
+                string fileName = $"RelatorioAtividades - {Guid.NewGuid()}.zip";
+                await _blobStorageRepository.SavePdfAsync(zipStream, fileName);
+
+                obj.Dados = fileName;
+            }
 
             obj.DataAlteracao = dataAlteracao;
             await _exportacaoPlanilhaRepository.UpdateAsync(obj);
         }
 
-        public async Task<MemoryStream> GetByIdAsync(int id)
+        public async Task<Stream> GetByIdAsync(int id)
         {
             var arquivoZip = await _exportacaoPlanilhaRepository.GetByIdAsync(id);
-            return new MemoryStream(arquivoZip.Dados);
+            return await _blobStorageRepository.GetPdfAsync(arquivoZip.Dados);
         }
     }
 }
