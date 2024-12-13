@@ -6,7 +6,7 @@ public interface IAplicacaoRelatorioItemService
 {
     Task<IEnumerable<RelatorioItemViewModel>> GetAllAsync(int aplicacaoRelatorioId);
 
-    Task<AplicacaoRelatorioItemViewModel> GetByIdAsync(int id);
+    Task<RelatorioItemViewModel> GetByIdAsync(int id);
 
     Task<IEnumerable<RelatorioItemViewModel>> GetAllByAplicacaoRelatorioIdAsync(int aplicacaoRelatorioId);
 

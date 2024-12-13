@@ -43,13 +43,13 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var dadoRelatorio = await _dataRelatorioService.GetAllAsync(loggedUser.Item3);
-                _logService.LogInformation("Lista de todas as identificações de área tratada obtida com sucesso.");
+                _logService.LogInformation("Lista de todas as Data relatorio obtida com sucesso.");
                 return Ok(dadoRelatorio);
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao obter todas as identificações de área tratada: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todas as identificações de área tratada: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao obter todas as Data relatorio: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter todas as Data relatorio: {ex.Message}");
             }
         }
 
@@ -62,7 +62,7 @@ namespace WebApi.Controllers.APIs
                 var dadoRelatorio = await _dataRelatorioService.GetByIdAsync(id,loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(dadoRelatorio))
                 {
-                    _logService.LogInformation($"Detalhes da identificação de área tratada com ID {id} obtidos com sucesso.");
+                    _logService.LogInformation($"Detalhes da Data relatorio com ID {id} obtidos com sucesso.");
                     return Ok(dadoRelatorio);
                 }
 
@@ -70,8 +70,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da identificação de área tratada com ID {id}: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao obter detalhes da Data relatorio com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao obter detalhes da Data relatorio com ID {id}: {ex.Message}");
             }
         }
 
@@ -85,7 +85,7 @@ namespace WebApi.Controllers.APIs
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                     var Id = await _dataRelatorioService.AddAsync(obj, loggedUser.Item3);
-                    _logService.LogInformation("Identificação de área tratada adicionada com sucesso.");
+                    _logService.LogInformation("Data relatorio adicionada com sucesso.");
                     return Ok(Id);
                 }
 
@@ -93,8 +93,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao adicionar identificação de área tratada: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar identificação de área tratada: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao adicionar Data relatorio: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao adicionar Data relatorio: {ex.Message}");
             }
         }
 
@@ -111,7 +111,7 @@ namespace WebApi.Controllers.APIs
                     {
                         obj.Id = existingObj.Id;
                         var retId = await _dataRelatorioService.UpdateAsync(obj);
-                        _logService.LogInformation($"Identificação de área tratada com ID {id} atualizada com sucesso.");
+                        _logService.LogInformation($"Data relatorio com ID {id} atualizada com sucesso.");
                         return Ok(retId);
                     }
                     else
@@ -124,8 +124,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar identificação de área tratada com ID {id}: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao atualizar Data relatorio com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao atualizar Data relatorio com ID {id}: {ex.Message}");
             }
         }
 
@@ -138,7 +138,7 @@ namespace WebApi.Controllers.APIs
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                     await _dataRelatorioService.DeleteAsync(id, loggedUser.Item3);
-                    _logService.LogInformation($"Identificação de área tratada com ID {id} excluída com sucesso.");
+                    _logService.LogInformation($"Data relatorio com ID {id} excluída com sucesso.");
                     return Ok();
                 }
 
@@ -146,8 +146,8 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _logService.LogError(ex, $"Erro ao excluir identificação de área tratada com ID {id}: {ex.Message}");
-                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir identificação de área tratada com ID {id}: {ex.Message}");
+                _logService.LogError(ex, $"Erro ao excluir Data relatorio com ID {id}: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao excluir Data relatorio com ID {id}: {ex.Message}");
             }
         }
     }

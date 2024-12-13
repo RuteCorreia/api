@@ -88,26 +88,16 @@ public class CombateIncendioController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
 
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id,
-                        StatusEnvio = relatorio.State
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    IsMapa = relatorio.IsMapa,
+                    Id = relatorio.Id,
+                    StatusEnvio = relatorio.State
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
@@ -130,28 +120,17 @@ public class CombateIncendioController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id,
-                        DataAlteracao = relatorio.DataAlteracao.HasValue
-                                        ? relatorio.DataAlteracao.Value.ToString("dd-MM-yyyy HH:mm:ss")
-                                        : null
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    IsMapa = relatorio.IsMapa,
+                    Id = relatorio.Id,
+                    DataAlteracao = relatorio.DataAlteracao.HasValue
+                                    ? relatorio.DataAlteracao.Value.ToString("dd-MM-yyyy HH:mm:ss")
+                                    : null
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
@@ -179,25 +158,14 @@ public class CombateIncendioController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    IsMapa = relatorio.IsMapa,
+                    Id = relatorio.Id
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
@@ -224,26 +192,15 @@ public class CombateIncendioController : ControllerBase
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
             foreach (var relatorio in relatorios)
             {
-                var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
-
-                if (!string.IsNullOrEmpty(data.Data))
+                var relatorioBaseViewModel = new RelatorioBaseViewModel
                 {
-                    var relatorioBaseViewModel = new RelatorioBaseViewModel
-                    {
-                        NomeRelatorio = relatorio.NomeRelatorio,
-                        Base64Data = data.Data,
-                        IsMapa = relatorio.IsMapa,
-                        Id = relatorio.Id,
-                        StatusEnvio = relatorio.State
-                    };
+                    NomeRelatorio = relatorio.NomeRelatorio,
+                    IsMapa = relatorio.IsMapa,
+                    Id = relatorio.Id,
+                    StatusEnvio = relatorio.State
+                };
 
-                    dataRelatorios.Add(relatorioBaseViewModel);
-                }
-                else
-                {
-                    // Caso não haja base64 válido, você pode continuar com o próximo relatório ou registrar um aviso
-                    _loggerService.LogWarning($"O relatório com IdData {relatorio.IdData} não possui dados válidos.");
-                }
+                dataRelatorios.Add(relatorioBaseViewModel);
             }
 
             _loggerService.LogInformation("Todos os relatórios de combate a incêndio foram recuperados com sucesso.");
@@ -418,6 +375,37 @@ public class CombateIncendioController : ControllerBase
         {
             _loggerService.LogError(ex, $"Erro ao recuperar e compactar os relatórios de combate a incêndio: {ex.Message}");
             return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar e compactar os relatórios de combate a incêndio: {ex.Message}");
+        }
+    }
+
+    [HttpGet("DownloadArquivo/{id}")]
+    public async Task<IActionResult> DownloadArquivo(int id)
+    {
+        try
+        {
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var relatorio = await _combateIncendioService.GetByIdAsync(id);
+
+            // Obter os dados do relatório
+            var data = await _dataRelatorioService.GetByIdAsync(relatorio.IdData, loggedUser.Item3);
+            if (!string.IsNullOrEmpty(data.Data))
+            {
+                // Converter os dados do relatório para bytes
+                var relatorioBytes = Convert.FromBase64String(data.Data);
+
+                // Nome do arquivo
+                var nomeArquivoRelatorio = $"{relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-")}.pdf";
+
+                // Retornar o arquivo PDF
+                return File(relatorioBytes, "application/pdf", nomeArquivoRelatorio);
+            }
+
+            // Caso não haja dados
+            return NotFound("Relatório não encontrado ou não possui dados.");
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar o relatório: {ex.Message}");
         }
     }
 }

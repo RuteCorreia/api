@@ -278,6 +278,8 @@ using Domain.Interfaces.Cadastros.Dashboard;
 using Infra.Repositorio.Cadastros.Dashboard;
 using Application.DTOs.Pdf.Interface;
 using Application.Application.Servicos.Pdf;
+using Domain.Interfaces.BlobStorage;
+using Infra.Repositorio.BlobStorage;
 using Microsoft.EntityFrameworkCore;
 using System.Configuration;
 using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
@@ -439,6 +441,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();
         services.AddScoped<IIdentificadorAplicacaoRepository, IdentificadorAplicacaoRepository>();
+        services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 
         #endregion
 

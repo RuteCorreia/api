@@ -259,7 +259,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
         //    parameters.Add("DataFim", atividadeFiltro.DataFinal);
         //}
 
-        
+
 
         query.Append(" GROUP BY cps.ValorTotal");
 
