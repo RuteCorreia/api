@@ -63,10 +63,20 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                     somaValorTotalAplicacao += 0; 
                 }
 
-                if (!string.IsNullOrWhiteSpace(atividade.Extensao) && 
-                    double.TryParse(atividade.Extensao, NumberStyles.Any, CultureInfo.InvariantCulture, out double extensaoAplicacao))
+                if (!string.IsNullOrWhiteSpace(atividade.Extensao))
                 {
-                    somaExtensoes += extensaoAplicacao;
+                    // Tenta interpretar o número com vírgula como separador decimal
+                    string extensao = atividade.Extensao.Replace(",", ".");
+
+                    if (double.TryParse(extensao, NumberStyles.Any, CultureInfo.InvariantCulture, out double extensaoAplicacao))
+                    {
+                        somaExtensoes += extensaoAplicacao;
+                    }
+                    else
+                    {
+                        // Opcional: Log ou tratamento caso o valor não seja válido
+                        Console.WriteLine($"Valor inválido: {atividade.Extensao}");
+                    }
                 }
                 else
                 {
