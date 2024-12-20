@@ -30,6 +30,7 @@ namespace Infra.Repositorio.Cadastros.IdentificadorAplicacao
                         BEGIN
                             INSERT INTO IdentificadorAplicacao (Identificador, IdEmpresa)
                             VALUES (1, @IdEmpresa);
+                            SET @NovoIdentificador = 1;
                         END
                         ELSE
                         BEGIN
