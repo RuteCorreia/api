@@ -68,7 +68,8 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         var aplicacaoRelatorioItemViewModel = _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
         foreach (var item in aplicacaoRelatorioItemViewModel) 
         {
-            if (!string.IsNullOrEmpty(item.ImagemCondicaoClimatica))
+            if (!string.IsNullOrEmpty(item.ImagemCondicaoClimatica) &&
+                item.ImagemCondicaoClimatica != "{\"Format\":\"raw\",\"Data\":null}")
             {
                 var fileExtension = Path.GetExtension(item.ImagemCondicaoClimatica)?.ToLower().TrimStart('.');
                 var croquiArea = await _blobStorageRepository.GetPdfAsync(item.ImagemCondicaoClimatica);
@@ -98,7 +99,8 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
     {
         var obj = await _aplicacaoRelatorioItemRepository.GetByIdAsync(id);
         var aplicacaoRelatorioItemViewModel = _mapper.Map<RelatorioItemViewModel>(obj);
-        if (!string.IsNullOrEmpty(aplicacaoRelatorioItemViewModel.ImagemCondicaoClimatica))
+        if (!string.IsNullOrEmpty(aplicacaoRelatorioItemViewModel.ImagemCondicaoClimatica) &&
+            aplicacaoRelatorioItemViewModel.ImagemCondicaoClimatica != "{\"Format\":\"raw\",\"Data\":null}")
         {
             var fileExtension = Path.GetExtension(aplicacaoRelatorioItemViewModel.ImagemCondicaoClimatica)?.ToLower().TrimStart('.');
             var croquiArea = await _blobStorageRepository.GetPdfAsync(aplicacaoRelatorioItemViewModel.ImagemCondicaoClimatica);
