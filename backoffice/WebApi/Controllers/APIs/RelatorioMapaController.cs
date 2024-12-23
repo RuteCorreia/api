@@ -1,9 +1,11 @@
-﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
+﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.RelatorioMapa.ViewModel;
 using Application.DTOs.ExportExcel.ViewModel;
 using Application.DTOs.Log.Interface;
 using Domain.Entidades.Cadastros.Aplicacao;
+using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,18 +19,21 @@ namespace WebApi.Controllers.APIs
     [ApiController]
     public class RelatorioMapaController : ControllerBase
     {
+        private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
         private readonly ICombateIncendioService _combateIncendioService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IDataRelatorioService _dataRelatorioService;
         private readonly ILogService _loggerService;
         public RelatorioMapaController(
+            ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
             ICombateIncendioService combateIncendioService,
             LoggedUserInfoService loggedUserInfoService,
             IDataRelatorioService dataRelatorioService,
             ILogService loggerService)
         {
+            _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _combateIncendioService = combateIncendioService;
             _loggedUserInfoService = loggedUserInfoService;
@@ -96,24 +101,25 @@ namespace WebApi.Controllers.APIs
                             }
 
                             // Adicionar o arquivo do ReceituarioAgronomico, se disponível
-                            if (relatorioRequest?.ReceituarioAgronomico != null &&
-                                !string.IsNullOrEmpty(relatorioRequest.ReceituarioAgronomico.Data))
+                            var receituario = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
+                            if (receituario != null &&
+                                !string.IsNullOrEmpty(receituario.Data))
                             {
-                                var receituarioBytes = Convert.FromBase64String(relatorioRequest.ReceituarioAgronomico.Data);
+                                var receituarioBytes = Convert.FromBase64String(receituario.Data);
                                 string receituarioFileName = $"{folderName}/receituarioAgronomico"; // Nome do arquivo do receituário
 
                                 // Verificar o formato do ReceituarioAgronomico
-                                if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "pdf")
+                                if (receituario.Format.ToLower() == "pdf")
                                 {
                                     receituarioFileName += ".pdf";
                                 }
-                                else if (relatorioRequest.ReceituarioAgronomico.Format.ToLower() == "png")
+                                else if (receituario.Format.ToLower() == "png")
                                 {
                                     receituarioFileName += ".png";
                                 }
                                 else
                                 {
-                                    _loggerService.LogWarning($"Formato desconhecido: {relatorioRequest.ReceituarioAgronomico.Format}");
+                                    _loggerService.LogWarning($"Formato desconhecido: {receituario.Format}");
                                     continue; // Pula para o próximo relatório se o formato for desconhecido
                                 }
 

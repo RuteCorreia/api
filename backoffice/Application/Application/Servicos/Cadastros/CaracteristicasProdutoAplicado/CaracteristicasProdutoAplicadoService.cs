@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Helpers;
@@ -144,7 +145,8 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         }
         var obj = await _caracteristicasProdutoAplicadoRepository.GetReceituarioAgronomicoAsync(id);
         var result = new DataFormatViewModel();
-        if (!string.IsNullOrEmpty(obj))
+        if (!string.IsNullOrEmpty(obj) &&
+                            obj != "{\"Format\":\"raw\",\"Data\":null}")
         {
             string extension = Path.GetExtension(obj).TrimStart('.');
             var data = await _blobStorageRepository.GetPdfAsync(obj);
