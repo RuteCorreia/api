@@ -31,7 +31,8 @@ public class AplicacaoRelatorioItemService : IAplicacaoRelatorioItemService
         var aplicacaoRelatorioItemViewModel = _mapper.Map<IEnumerable<RelatorioItemViewModel>>(list);
         foreach (var item in aplicacaoRelatorioItemViewModel)
         {
-            if (!string.IsNullOrEmpty(item.ImagemCondicaoClimatica))
+            if (!string.IsNullOrEmpty(item.ImagemCondicaoClimatica) &&
+                item.ImagemCondicaoClimatica != "{\"Format\":\"raw\",\"Data\":null}")
             {
                 var fileExtension = Path.GetExtension(item.ImagemCondicaoClimatica)?.ToLower().TrimStart('.');
                 var croquiArea = await _blobStorageRepository.GetPdfAsync(item.ImagemCondicaoClimatica);

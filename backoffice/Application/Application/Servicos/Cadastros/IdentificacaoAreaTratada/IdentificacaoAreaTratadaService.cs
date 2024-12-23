@@ -43,7 +43,8 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
         {
             var obj = await _identificacaoAreaTratadaRepository.GetByIdAsync(id);
             var mapIdentificacaoAreaTratada = _mapper.Map<AreaTratadaViewModel>(obj);
-            if (!string.IsNullOrEmpty(mapIdentificacaoAreaTratada.CroquiArea))
+            if (!string.IsNullOrEmpty(mapIdentificacaoAreaTratada.CroquiArea) &&
+            mapIdentificacaoAreaTratada.CroquiArea != "{\"Format\":\"raw\",\"Data\":null}")
             {
                 var fileExtension = Path.GetExtension(mapIdentificacaoAreaTratada.CroquiArea)?.ToLower().TrimStart('.');
                 var croquiArea = await _blobStorageRepository.GetPdfAsync(mapIdentificacaoAreaTratada.CroquiArea);
@@ -86,10 +87,6 @@ namespace Application.Application.Servicos.Cadastros.IdentificacaoAreaTratada
                     }
 
                     mapIdentificacaoAreaTratada.CroquiArea = fileName; 
-                }
-                else
-                {
-                    mapIdentificacaoAreaTratada.CroquiArea = string.Empty;
                 }
             }
 

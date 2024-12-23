@@ -47,7 +47,8 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
     {
         var obj = await _aplicacaoRecomendacoesTecnicasRepository.GetByIdAsync(id);
         var recomendacoesTecnicasViewModel = _mapper.Map<AplicacaoRecomendacoesTecnicasViewModel>(obj);
-        if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone))
+        if (!string.IsNullOrEmpty(recomendacoesTecnicasViewModel.ArquivoDrone) &&
+            recomendacoesTecnicasViewModel.ArquivoDrone != "{\"Format\":\"raw\",\"Data\":null}")
         {
             var fileExtension = Path.GetExtension(recomendacoesTecnicasViewModel.ArquivoDrone)?.ToLower().TrimStart('.');
             var croquiArea = await _blobStorageRepository.GetPdfAsync(recomendacoesTecnicasViewModel.ArquivoDrone);
@@ -92,10 +93,6 @@ public class AplicacaoRecomendacoesTecnicasService : IAplicacaoRecomendacoesTecn
                 }
 
                 mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = fileName;
-            }
-            else
-            {
-                mapAplicacaoRecomendacoesTecnicas.ArquivoDrone = string.Empty;
             }
         }
         if (obj.Id > 0)

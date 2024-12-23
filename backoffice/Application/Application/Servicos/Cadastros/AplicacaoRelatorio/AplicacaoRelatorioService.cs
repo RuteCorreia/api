@@ -122,10 +122,6 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         {
             mapAplicacaoRelatorio.MapaAplicacao = JsonConvert.SerializeObject(fileNames);
         }
-        else
-        {
-            mapAplicacaoRelatorio.MapaAplicacao = string.Empty;
-        }
 
         if (obj.Id > 0)
         {
@@ -158,10 +154,6 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
                         }
 
                         mapAplicacaoRelatorioItem.ImagemDadosClimaticos = fileName;
-                    }
-                    else
-                    {
-                        mapAplicacaoRelatorioItem.ImagemDadosClimaticos = string.Empty;
                     }
                 }
 

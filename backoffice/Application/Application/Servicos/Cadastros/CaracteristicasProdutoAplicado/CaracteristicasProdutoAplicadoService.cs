@@ -49,10 +49,6 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
                 mapObj.ReceiturarioAgronomico = fileName;
             }
-            else
-            {
-                mapObj.ReceiturarioAgronomico = string.Empty;
-            }
         }
 
         if (obj.Id > 0)
@@ -86,7 +82,8 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var obj = await _caracteristicasProdutoAplicadoRepository.GetByIdAsync(id, idEmpresaInt);
         var mapCaracteristicasProdutoAplicado = _mapper.Map<ProdutoAplicadoViewModel>(obj);
-        if (!string.IsNullOrEmpty(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico))
+        if (!string.IsNullOrEmpty(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico) &&
+            mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico != "{\"Format\":\"raw\",\"Data\":null}")
         {
             var fileExtension = Path.GetExtension(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico)?.ToLower().TrimStart('.');
             var receiturarioAgronomico = await _blobStorageRepository.GetPdfAsync(mapCaracteristicasProdutoAplicado.ReceiturarioAgronomico);
