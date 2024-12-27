@@ -30,7 +30,7 @@ namespace WebApi.Controllers.APIs
         private readonly IComponentesService _componentesService;
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ILogService _logService;
-
+        //Aeronave
         public AeronaveController(IAeronaveService aeronaveService, LoggedUserInfoService loggedUserInfoService, ILogService logService, IManutencaoAeronaveService manutencaoAeronaveService, IComponentesService componentesService)
         {
             _aeronaveService = aeronaveService;
