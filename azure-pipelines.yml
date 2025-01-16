@@ -11,9 +11,11 @@ variables:
 
 steps:
 # Usar a versão do .NET necessária
-- script: |
-    echo Installing .NET SDK
-    curl -sSL https://dotnet.microsoft.com/download/dotnet/scripts/v1/dotnet-install.sh | bash /dev/stdin --version 8.x
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'  # Versão do .NET que você deseja instalar
+    installationPath: $(Agent.ToolsDirectory)/dotnet
   displayName: 'Install .NET SDK'
 
 # Restaurar pacotes NuGet
