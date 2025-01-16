@@ -88,7 +88,7 @@ public class EmailService : IEmailService
             }
 
             var mailSend = new MailMessage();
-            mailSend.From = new MailAddress("atendimento@keltech"); //colocar email da flytec aqui
+            mailSend.From = new MailAddress("suporte@flytecsa.com.br");
             mailSend.To.Add(emailContent.Recipient);
             mailSend.Body = msg.ToString();
             mailSend.Subject = emailContent.Title;
@@ -97,9 +97,9 @@ public class EmailService : IEmailService
             // CONFIGURAÇÃO DO EMAIL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient client = new SmtpClient();
-            client.Credentials = new NetworkCredential("atendimento@keltech.app", "mbfepucevpscjijz"); //colocar credenciais da flytec (essas são do eag)
-            client.Port = 587; //verificar se essa porta esta correta
-            client.Host = "smtp.gmail.com";
+            client.Credentials = new NetworkCredential("suporte@flytecsa.com.br", "Sup@990-777@");
+            client.Port = 587;
+            client.Host = "mail.flytecsa.com.br";
             client.EnableSsl = true;
             //enviar
             await client.SendMailAsync(mailSend);
