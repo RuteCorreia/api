@@ -19,13 +19,13 @@ steps:
 # Restaurar pacotes NuGet
 - script: |
     echo Restoring NuGet packages
-    dotnet restore
+    dotnet restore backoffice/Flytec.sln
   displayName: 'Restore NuGet Packages'
 
 # Construir o projeto
 - script: |
     echo Building project
-    dotnet build --configuration $(buildConfiguration)
+    dotnet build backoffice/Flytec.sln --configuration $(buildConfiguration)
   displayName: 'Build Project'
 
 # Publicar artefatos gerados
