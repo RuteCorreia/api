@@ -33,7 +33,7 @@ steps:
 # Publicar artefatos gerados
 - script: |
     echo Publishing artifacts
-    dotnet publish --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    dotnet publish backoffice/Flytec.sln --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'Publish Artifacts'
 
 # Publicar os artefatos para o Azure DevOps
