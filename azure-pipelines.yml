@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - QA02  # Ou 'QA' se você preferir que a build seja disparada a partir de outra branch
+      - main  # Ou 'QA' se você preferir que a build seja disparada a partir de outra branch
 
 pool:
   vmImage: 'windows-latest'  # Usando uma máquina virtual do Azure DevOps com Windows
