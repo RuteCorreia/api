@@ -24,16 +24,22 @@ steps:
     dotnet restore backoffice/Flytec.sln
   displayName: 'Restore NuGet Packages'
 
-# Construir o projeto
+# Listar os arquivos no diretório atual para verificar o caminho
+- script: |
+    echo "Listando arquivos no diretório atual:"
+    ls -R
+  displayName: 'Diagnóstico de Arquivos'
+
+# Construir o projeto principal
 - script: |
     echo Building project
-    dotnet build backoffice/Flytec.sln --configuration $(buildConfiguration)
+    dotnet build backoffice/WebApi/WebApi.csproj --configuration $(buildConfiguration)
   displayName: 'Build Project'
 
 # Publicar artefatos gerados
 - script: |
     echo Publishing artifacts
-    dotnet backoffice/WebApi/WebApi.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    dotnet publish backoffice/WebApi/WebApi.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'Publish Artifacts'
 
 # Publicar os artefatos para o Azure DevOps
