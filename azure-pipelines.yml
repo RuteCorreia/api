@@ -46,5 +46,6 @@ steps:
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)' # Diretório onde os artefatos foram gerados
+    artifact: drop
     publishLocation: 'pipeline' # Publicar no pipeline
   displayName: 'Publish Build Artifacts'
