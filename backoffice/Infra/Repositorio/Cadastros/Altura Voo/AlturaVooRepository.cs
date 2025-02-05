@@ -14,6 +14,13 @@ public class AlturaVooRepository : IAlturaVooRepository
         _contextBase = contextBase;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Altura_Voo.AlturaVoo>> GetByDateAsync(DateTime dataUltimaSincronizacao)
+    {
+        return await _contextBase.AlturaVoo
+            .Where(av => av.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+    }
+
     public async Task AddAsync(Domain.Entidades.Cadastros.Altura_Voo.AlturaVoo obj)
     {
         await _contextBase.AddAsync(obj);

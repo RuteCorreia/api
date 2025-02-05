@@ -36,6 +36,14 @@ public class VeiculanteRepository : IVeiculanteRepository
         return entities;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Veiculante.Veiculante>> GetByDateAsync(DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Veiculante
+            .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+        return entities;
+    }
+
     public async Task<Domain.Entidades.Cadastros.Veiculante.Veiculante> GetByIdAsync(int id)
     {
         var obj = await _contextBase.Veiculante.FindAsync(id);

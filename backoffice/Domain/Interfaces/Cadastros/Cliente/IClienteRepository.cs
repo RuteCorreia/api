@@ -9,4 +9,5 @@ public interface IClienteRepository
     Task<Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id, int idEmpresa);
     Task<Entidades.Cadastros.Cliente.Cliente> GetByLoginAsync(string email, string password);
     Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetByNameAsync(string name, int idEmpresa);
+    Task<IEnumerable<Entidades.Cadastros.Cliente.Cliente>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

@@ -19,6 +19,22 @@ public class BulaRepository : IBulaRepository
         _contextBase = contextBase;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa, 196) AND DataSituacao > @DataUltimaSincronizacao";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new
+            {
+                IdEmpresa = idEmpresa,
+                DataUltimaSincronizacao = dataUltimaSincronizacao
+            };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Empresa.Bula>(query, parameters);
+            return result.ToList();
+        }
+    }
+
     public async Task AddAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
         await _contextBase.AddAsync(obj);

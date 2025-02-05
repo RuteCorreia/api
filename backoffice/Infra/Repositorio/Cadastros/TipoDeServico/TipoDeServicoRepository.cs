@@ -41,6 +41,14 @@ namespace Infra.Repositorio.Cadastros.TipoDeServico
             return entities;
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico>> GetByDateAsync(DateTime dataUltimaSincronizacao)
+        {
+            var entities = await _contextBase.TipoDeServico
+                .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+                .ToListAsync();
+            return entities;
+        }
+
         public async Task<Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico> GetByIdAsync(int id)
         {
             var obj = await _contextBase.TipoDeServico.FindAsync(id);

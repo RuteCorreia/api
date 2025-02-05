@@ -8,4 +8,5 @@ public interface IVeiculoRepository
     Task<IEnumerable<Entidades.Cadastros.Veiculo.Veiculo>> GetAllAsync(int idEmpresa);
     Task UpdateKmAtualAsync(string? nomeVeiculo, int? kmAtual);
     Task<Entidades.Cadastros.Veiculo.Veiculo> GetByIdAsync(int id, int idEmpresa);
+    Task<IEnumerable<Entidades.Cadastros.Veiculo.Veiculo>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

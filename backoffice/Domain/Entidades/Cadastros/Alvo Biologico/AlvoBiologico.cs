@@ -30,4 +30,7 @@ public class AlvoBiologico
     public virtual Cultura.Cultura? Cultura { get; set; }
     [JsonIgnore]
     public virtual TipoDeUnidade? TipoDeUnidade { get; set; }
+    
+    public DateTime DataSituacao { get; private set; } = 
+        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 }

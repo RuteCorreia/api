@@ -9,4 +9,5 @@ public interface IEquipamentoRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Equipamento.Equipamento>> GetAllAsync();
     Task<Entidades.Cadastros.Equipamento.Equipamento> GetByIdAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Equipamento.Equipamento>> GetByDateAsync(DateTime dataUltimaSincronizacao);
 }

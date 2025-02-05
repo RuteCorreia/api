@@ -14,6 +14,17 @@ public class AeronaveRepository : IAeronaveRepository
         _contextBase = contextBase;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Aeronave.Aeronave>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        return await _contextBase.Aeronave
+            .AsNoTracking()
+            .Where(a =>
+                !a.Removido
+                && (idEmpresa == 0 ? a.IdEmpresa == null : a.IdEmpresa == idEmpresa)
+                && a.DataSituacao > dataUltimaSincronizacao
+            ).ToListAsync();
+    }
+
     public async Task AddAsync(Domain.Entidades.Cadastros.Aeronave.Aeronave obj)
     {
         await _contextBase.AddAsync(obj);

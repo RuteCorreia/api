@@ -85,6 +85,15 @@ public class ProdutoRepository : IProdutoRepository
         return entities;
     }
 
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Produto
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+        return entities;
+    }
+
     public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id)
     {
         var obj = await _contextBase.Produto.FindAsync(id);

@@ -15,6 +15,16 @@ public class ClienteRepository : IClienteRepository
         _contextBase = contextBase;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cliente.Cliente>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Cliente
+            .AsNoTracking()
+            .Where(x => (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa) && x.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+
+        return entities;
+    }
+
     public async Task AddAsync(Domain.Entidades.Cadastros.Cliente.Cliente obj)
     {
         await _contextBase.AddAsync(obj);
@@ -78,4 +88,5 @@ public class ClienteRepository : IClienteRepository
         var obj = await _contextBase.Cliente.Where(x => x.NomeCliente.Contains(name) && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)).ToListAsync();
         return obj;
     }
+
 }

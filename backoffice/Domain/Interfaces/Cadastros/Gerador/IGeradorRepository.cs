@@ -9,5 +9,6 @@
         Task<Entidades.Cadastros.Gerador.Gerador> GetByIdAsync(int? id);
         Task UpdateHorasAtualAsync(int? id, long? horasAtual, DateTime? dataUltimaTroca);
         Task<IEnumerable<Domain.Entidades.Cadastros.Gerador.Gerador>> GetByNameAsync(string nome);
+        Task<IEnumerable<Entidades.Cadastros.Gerador.Gerador>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
     }
 }

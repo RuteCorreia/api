@@ -8,5 +8,6 @@
         Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByNameAsync(string name, int? idEmpresa);
         Task<IEnumerable<Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync(int idEmpresa);
         Task<Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByIdAsync(int id);
+        Task<IEnumerable<Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
     }
 }

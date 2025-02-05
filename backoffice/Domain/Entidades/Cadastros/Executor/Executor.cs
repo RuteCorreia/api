@@ -9,5 +9,7 @@
         public byte[]? Assinatura { get; set; }
         public string? CFTA { get; set; }
         public string? Role { get; set; }
+        public DateTime DataSituacao { get; private set; } =
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
     }
 }

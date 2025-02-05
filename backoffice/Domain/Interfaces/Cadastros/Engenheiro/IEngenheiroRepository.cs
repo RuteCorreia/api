@@ -6,4 +6,5 @@ public interface IEngenheiroRepository
 {
     Task<IEnumerable<UsuarioCredencial>> GetAllAsync(int idEmpresa);
     Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa);
+    Task<IEnumerable<UsuarioCredencial>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

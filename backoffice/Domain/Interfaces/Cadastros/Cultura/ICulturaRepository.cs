@@ -10,4 +10,5 @@ public interface ICulturaRepository
     Task<IEnumerable<Entidades.Cadastros.Cultura.Cultura>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Cultura.Cultura> GetByIdAsync(int id);
     Task<Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name, int idEmpresa);
+    Task<IEnumerable<Entidades.Cadastros.Cultura.Cultura>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

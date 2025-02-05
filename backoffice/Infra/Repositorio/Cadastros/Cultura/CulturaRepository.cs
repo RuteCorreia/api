@@ -1,4 +1,5 @@
-﻿using Domain.Entidades.Cadastros.Empresa;
+﻿using Azure.Core.Serialization;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Cultura;
 using Helpers;
 using Infra.Configuracao;
@@ -13,6 +14,15 @@ public class CulturaRepository : ICulturaRepository
     public CulturaRepository(ContextBase contextBase)
     {
         _contextBase = contextBase;
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Cultura
+             .Where(c => (c.IdEmpresa == idEmpresa || c.IdEmpresa == 196) && c.DataSituacao > dataUltimaSincronizacao)
+             .OrderBy(c => c.Nome)
+             .ToListAsync();
+        return entities;
     }
 
     public async Task AddAsync(Domain.Entidades.Cadastros.Cultura.Cultura obj)

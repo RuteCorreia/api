@@ -281,9 +281,10 @@ using Application.Application.Servicos.Pdf;
 using Domain.Interfaces.BlobStorage;
 using Infra.Repositorio.BlobStorage;
 using Microsoft.EntityFrameworkCore;
-using System.Configuration;
 using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
 using Infra.Repositorio.Cadastros.IdentificadorAplicacao;
+using Application.Application.Servicos.Cadastros.Sincronizacao;
+using Application.DTOs.Cadastros.Sincronizacao.Interface;
 
 namespace WebApi.Config;
 
@@ -366,6 +367,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaMotobombaService, FrotaMotobombaService>();
         services.AddScoped<IDashboardService, DashboardService>();
         services.AddScoped<IPdfService, PdfService>();
+        services.AddScoped<ISincronizacaoService, SincronizacaoService>();
 
 
         #endregion

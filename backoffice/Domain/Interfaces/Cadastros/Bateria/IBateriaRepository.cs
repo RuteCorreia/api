@@ -8,6 +8,7 @@
         Task<IEnumerable<Entidades.Cadastros.Bateria.Bateria>> GetAllAsync(int idEmpresa);
         Task<Entidades.Cadastros.Bateria.Bateria> GetByIdAsync(int? id);
         Task UpdateCicloAtualAsync(int? id, int? cicloAtual);
-        Task<IEnumerable<Domain.Entidades.Cadastros.Bateria.Bateria>> GetByNameAsync(string nome);
+        Task<IEnumerable<Entidades.Cadastros.Bateria.Bateria>> GetByNameAsync(string nome);
+        Task<IEnumerable<Entidades.Cadastros.Bateria.Bateria>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
     }
 }
