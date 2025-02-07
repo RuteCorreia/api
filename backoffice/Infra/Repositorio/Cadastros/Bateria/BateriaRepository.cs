@@ -12,6 +12,14 @@ namespace Infra.Repositorio.Cadastros.Bateria
         {
             _contextBase = contextBase;
         }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Bateria.Bateria>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+        {
+            return await _contextBase.Baterias
+                .Where(b => b.IdEmpresa == idEmpresa && b.DataSituacao > dataUltimaSincronizacao)
+                .ToListAsync();
+        }
+
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.Bateria.Bateria obj)
         {
             await _contextBase.AddAsync(obj);

@@ -12,6 +12,15 @@ namespace Infra.Repositorio.Cadastros.Gerador
         {
             _contextBase = contextBase;
         }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Gerador.Gerador>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+        {
+            var entities = await _contextBase.Geradores
+                .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+                .ToListAsync();
+            return entities;
+        }
+
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.Gerador.Gerador obj)
         {
             await _contextBase.AddAsync(obj);

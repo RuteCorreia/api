@@ -1,7 +1,4 @@
-﻿using Domain.Entidades.Cadastros.Empresa;
-using Domain.Interfaces.Genericos;
-
-namespace Domain.Interfaces.Cadastros.Produto;
+﻿namespace Domain.Interfaces.Cadastros.Produto;
 
 public interface IProdutoRepository
 {
@@ -14,4 +11,5 @@ public interface IProdutoRepository
     Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Produto.Produto>> GetAllAsync(string? nomeProduto, int idEmpresa);
     Task<Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id);
+    Task<IEnumerable<Entidades.Cadastros.Produto.Produto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

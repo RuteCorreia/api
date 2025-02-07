@@ -9,9 +9,10 @@ public interface IBulaRepository
     Task DeleteAsync(int id);
     Task RemoveRecomendacaoAsync(int idBula);
     Task RemoveBulaAsync(int idProduto, int idEmpresa);
-    Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto, int idEmpresa);
+    Task<IEnumerable<Entidades.Cadastros.Empresa.Bula>> GetByIdProdutoAsync(int idProduto, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id);
     Task<Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa);
     Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto);
+    Task<IEnumerable<Entidades.Cadastros.Empresa.Bula>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

@@ -87,4 +87,14 @@ public class VeiculoRepository : IVeiculoRepository
         _contextBase.Veiculo.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Veiculo.Veiculo>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Veiculo
+            .AsNoTracking()
+            .Where(x => (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa) && x.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+
+        return entities;
+    }
 }

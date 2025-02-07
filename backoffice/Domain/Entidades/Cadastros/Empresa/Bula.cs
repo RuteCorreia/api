@@ -41,4 +41,7 @@ public class Bula
     public virtual Empresa? Empresa { get; set; }
     [JsonIgnore]
     public virtual Produto.Produto? Produto { get; set; }
+
+    public DateTime DataSituacao { get; private set; } =
+        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 }

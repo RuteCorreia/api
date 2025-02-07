@@ -59,5 +59,14 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             _contextBase.TipoDeFormulacao.Update(objeto);
             await _contextBase.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+        {
+            var entities = await _contextBase.TipoDeFormulacao
+                .Where(ab => (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa) && ab.DataSituacao > dataUltimaSincronizacao)
+                .OrderBy(ab => ab.NomeFormulacao)
+                .ToListAsync();
+            return entities;
+        }
     }
 }

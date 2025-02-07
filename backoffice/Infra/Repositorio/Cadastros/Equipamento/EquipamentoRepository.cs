@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Equipamento;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Equipamento;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,14 @@ public class EquipamentoRepository : IEquipamentoRepository
     public EquipamentoRepository(ContextBase contextBase)
     {
         _contextBase = contextBase;
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Equipamento.Equipamento>> GetByDateAsync(DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Equipamento
+            .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+        return entities;
     }
 
     public async Task AddAsync(Domain.Entidades.Cadastros.Equipamento.Equipamento obj)

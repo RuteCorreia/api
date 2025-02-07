@@ -10,4 +10,5 @@ public interface IPistaRepository
     Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id);
     Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome);
+    Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

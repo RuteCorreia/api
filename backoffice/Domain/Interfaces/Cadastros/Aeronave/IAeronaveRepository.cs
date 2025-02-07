@@ -10,4 +10,5 @@ public interface IAeronaveRepository
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync(int idEmpresa);
     Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name, int idEmpresa);
+    Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

@@ -49,6 +49,8 @@ public class Usuario
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
+    public DateTime DataSituacao { get; private set; } =
+        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

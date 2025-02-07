@@ -16,5 +16,8 @@ namespace Domain.Entidades.Cadastros.TipoDeFormulacao
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
 
+        public DateTime DataSituacao { get; private set; } =
+            TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
     }
 }

@@ -9,4 +9,5 @@ public interface ITipoProdutoRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Tipo_Produto.TipoProduto>> GetAllAsync();
     Task<Entidades.Cadastros.Tipo_Produto.TipoProduto> GetByIdAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Tipo_Produto.TipoProduto>> GetByDateAsync(DateTime dataUltimaSincronizacao);
 }

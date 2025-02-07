@@ -18,6 +18,16 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         _contextBase = contextBase;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        return await _contextBase.AlvoBiologico
+           .Where(ab =>
+               (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
+               && ab.DataSituacao > dataUltimaSincronizacao)
+           .OrderBy(ab => ab.Nome)
+           .ToListAsync();
+    }
+
     public async Task AddAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
     {
         await _contextBase.AddAsync(obj);

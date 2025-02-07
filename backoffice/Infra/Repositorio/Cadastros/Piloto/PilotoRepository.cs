@@ -34,6 +34,28 @@ public class PilotoRepository : IPilotoRepository
         }
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC FROM Usuario u
+                    JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
+                    JOIN AspNetUserRoles r ON u.UserId = r.UserId
+                    WHERE u.IdEmpresa = @IdEmpresa
+                    AND (r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372' OR r.RoleId = '63e712a0-c4c1-4295-8e91-64f0e43eb7fb')
+                    AND u.DataSituacao > @DataUltimaSincronizacao";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new
+            {
+                IdEmpresa = idEmpresa,
+                DataUltimaSincronizacao = dataUltimaSincronizacao
+            };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Piloto.Piloto>(query, parameters);
+
+            return result.ToList();
+        }
+    }
+
     public async Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa)
     {
         var obj = await _contextBase.UsuarioCredencial

@@ -23,4 +23,6 @@ public class Aeronave
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
 
+    public DateTime DataSituacao { get; private set; } = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+    TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 }

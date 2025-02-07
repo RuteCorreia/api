@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Pista;
+﻿using Domain.Entidades.Cadastros.Pistas;
+using Domain.Interfaces.Cadastros.Pista;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,14 @@ public class PistaRepository : IPistaRepository
         var entities = await _contextBase.Pista
         .Where(p => p.IdEmpresa == idEmpresa)
         .ToListAsync();
+        return entities;
+    }
+
+    public async Task<IEnumerable<Pista>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.Pista
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
         return entities;
     }
 

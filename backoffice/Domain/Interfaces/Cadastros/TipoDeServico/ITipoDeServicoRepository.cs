@@ -7,5 +7,6 @@
         Task DeleteAsync(int id);
         Task<IEnumerable<Entidades.Cadastros.TipoDeServico.TipoDeServico>> GetAllAsync();
         Task<Entidades.Cadastros.TipoDeServico.TipoDeServico> GetByIdAsync(int id);
+        Task<IEnumerable<Entidades.Cadastros.TipoDeServico.TipoDeServico>> GetByDateAsync(DateTime dataUltimaSincronizacao);
     }
 }

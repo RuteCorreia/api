@@ -9,4 +9,5 @@ public interface IAlturaVooRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.Altura_Voo.AlturaVoo>> GetAllAsync();
     Task<Entidades.Cadastros.Altura_Voo.AlturaVoo> GetByIdAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.Altura_Voo.AlturaVoo>> GetByDateAsync(DateTime dataUltimaSincronizacao);
 }

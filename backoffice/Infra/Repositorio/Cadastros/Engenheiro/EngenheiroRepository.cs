@@ -30,6 +30,22 @@ public class EngenheiroRepository : IEngenheiroRepository
         return entities;
     }
 
+    public async Task<IEnumerable<UsuarioCredencial>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.UsuarioCredencial
+            .AsNoTracking()
+            .Where(x =>
+                x.Usuario != null
+                && !x.Usuario.Removido
+                && x.Funcao == ERole.EngAgronomoCoord
+                && (idEmpresa == 0 ? x.Usuario.IdEmpresa == null : x.Usuario.IdEmpresa == idEmpresa)
+                && x.Usuario.DataSituacao > dataUltimaSincronizacao)
+            .Include(u => u.Usuario)
+            .ToListAsync();
+
+        return entities;
+    }
+
     public async Task<UsuarioCredencial?> GetByIdAsync(string id, int idEmpresa)
     {
         var obj = await _contextBase.UsuarioCredencial

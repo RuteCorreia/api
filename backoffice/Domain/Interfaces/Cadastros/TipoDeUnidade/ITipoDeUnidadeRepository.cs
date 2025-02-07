@@ -4,5 +4,6 @@
     {
         Task<IEnumerable<Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade>> GetAllAsync();
         Task<Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade> GetByIdAsync(int? id);
+        Task<IEnumerable<Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade>> GetByDateAsync(DateTime dataUltimaSincronizacao);
     }
 }

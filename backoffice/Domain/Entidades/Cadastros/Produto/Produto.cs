@@ -32,4 +32,7 @@ public class Produto
 
     [JsonIgnore]
     public virtual Cultura.Cultura? Cultura { get; set; }
+    
+    public DateTime DataSituacao { get; private set; } =
+        TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 }

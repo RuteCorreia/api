@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.TipoProduto;
+﻿using Domain.Entidades.Cadastros.Tipo_Produto;
+using Domain.Interfaces.Cadastros.TipoProduto;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +34,14 @@ public class TipoProdutoRepository : ITipoProdutoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Tipo_Produto.TipoProduto>> GetAllAsync()
     {
         var entities = await _contextBase.TipoProduto.ToListAsync();
+        return entities;
+    }
+
+    public async Task<IEnumerable<TipoProduto>> GetByDateAsync(DateTime dataUltimaSincronizacao)
+    {
+        var entities = await _contextBase.TipoProduto
+            .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
         return entities;
     }
 
