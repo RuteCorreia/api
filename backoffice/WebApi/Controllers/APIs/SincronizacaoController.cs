@@ -41,7 +41,7 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var sincronizacao = await _sincronizacaoService.GetAsync("196", dataUltimaSincronizacao);
+                var sincronizacao = await _sincronizacaoService.GetAsync(loggedUser.Item3, dataUltimaSincronizacao);
                 _logService.LogInformation("Consulta dos dados para sincronização feita com sucesso");
                 return Ok(sincronizacao);
             }
