@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
 using Infra.Configuracao;
@@ -89,7 +90,8 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
         var entities = await _contextBase.Produto
-            .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+            .Where(ab => (ab.IdEmpresa == idEmpresa || ab.IdEmpresa == 196) && 
+                          ab.DataSituacao > dataUltimaSincronizacao)
             .ToListAsync();
         return entities;
     }

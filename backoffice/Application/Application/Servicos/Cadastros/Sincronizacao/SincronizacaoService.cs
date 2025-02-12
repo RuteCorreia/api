@@ -121,56 +121,6 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var sincronizacao = new SincronizacaoViewModel();
 
-            //var aeronavesTask = _aeronaveRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var alvosBiologicosTask = _alvoBiologicoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var alturasTask = _alturaVooRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var bateriasTask = _bateriaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var bulasTask = _bulaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var clientesTask = _clienteRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var culturasTask = _culturaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var equipamentosTask = _equipamentoRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var geradoresTask = _geradoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var pistasTask = _pistaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var produtosTask = _produtoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var tiposDeFormulacaoTask = _tipoDeFormulacaoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var tiposProdutoTask = _tipoProdutoRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var tiposDeServicoTask = _tipoDeServicoRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var tiposDeUnidadeTask = _tipoDeUnidadeRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var veiculantesTask = _veiculanteRepository.GetByDateAsync(dataUltimaSincronizacao);
-            //var veiculosTask = _veiculoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var engenheirosTask = _engenheiroRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var executoresTask = _executoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            //var pilotosTask = _pilotoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-
-
-            //await Task.WhenAll(
-            //    aeronavesTask, alvosBiologicosTask, alturasTask, bateriasTask, bulasTask,
-            //    clientesTask, culturasTask, equipamentosTask, geradoresTask, pistasTask,
-            //    produtosTask, tiposDeFormulacaoTask, tiposProdutoTask, tiposDeServicoTask,
-            //    tiposDeUnidadeTask, veiculantesTask, veiculosTask, engenheirosTask, executoresTask, pilotosTask
-            //);
-
-            //sincronizacao.Aeronaves = _mapper.Map<IEnumerable<AeronaveViewModel>>(await aeronavesTask);
-            //sincronizacao.AlvosBiologicos = _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(await alvosBiologicosTask);
-            //sincronizacao.Alturas = _mapper.Map<IEnumerable<AlturaVooViewModel>>(await alturasTask);
-            //sincronizacao.Baterias = _mapper.Map<IEnumerable<BateriaViewModel>>(await bateriasTask);
-            //sincronizacao.Bulas = _mapper.Map<IEnumerable<BulaViewModel>>(await bulasTask);
-            //sincronizacao.Clientes = _mapper.Map<IEnumerable<ClienteViewModel>>(await clientesTask);
-            //sincronizacao.Culturas = _mapper.Map<IEnumerable<CulturaViewModel>>(await culturasTask);
-            //sincronizacao.Equipamentos = _mapper.Map<IEnumerable<EquipamentoViewModel>>(await equipamentosTask);
-            //sincronizacao.Geradores = _mapper.Map<IEnumerable<GeradorViewModel>>(await geradoresTask);
-            //sincronizacao.Pistas = _mapper.Map<IEnumerable<PistaViewModel>>(await pistasTask);
-            //sincronizacao.Produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await produtosTask);
-            //sincronizacao.TiposDeFormulacao = _mapper.Map<IEnumerable<TipoDeFormulacaoViewModel>>(await tiposDeFormulacaoTask);
-            //sincronizacao.TiposProduto = _mapper.Map<IEnumerable<TipoProdutoViewModel>>(await tiposProdutoTask);
-            //sincronizacao.TiposDeServico = _mapper.Map<IEnumerable<TipoDeServicoViewModel>>(await tiposDeServicoTask);
-            //sincronizacao.TiposDeUnidade = _mapper.Map<IEnumerable<TipoDeUnidadeViewModel>>(await tiposDeUnidadeTask);
-            //sincronizacao.Veiculantes = _mapper.Map<IEnumerable<VeiculanteViewModel>>(await veiculantesTask);
-            //sincronizacao.Veiculos = _mapper.Map<IEnumerable<VeiculoViewModel>>(await veiculosTask);
-            //sincronizacao.Engenheiros = _mapper.Map<IEnumerable<EngenheiroViewModel>>(await engenheirosTask);
-            //sincronizacao.Executores = _mapper.Map<IEnumerable<ExecutorViewModel>>(await executoresTask);
-            //sincronizacao.Pilotos = _mapper.Map<IEnumerable<PilotoViewModel>>(await pilotosTask);
-
             sincronizacao.Aeronaves = await GetAeronavesAsync(idEmpresaInt, dataUltimaSincronizacao);
             sincronizacao.AlvosBiologicos = _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(await _alvoBiologicoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Alturas = _mapper.Map<IEnumerable<AlturaVooViewModel>>(await _alturaVooRepository.GetByDateAsync(dataUltimaSincronizacao));
@@ -197,13 +147,11 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
 
         private async Task<IEnumerable<AeronaveViewModel>> GetAeronavesAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
         {
-            // Cria uma lista para armazenar os AeronaveViewModels
             var aeronaves = await _aeronaveRepository.GetByDateAsync(idEmpresa, dataUltimaSincronizacao);
             var aeronaveViewModels = new List<AeronaveViewModel>();
 
             foreach (var a in aeronaves)
             {
-                // Criação do modelo de visualização sem usar AutoMapper
                 var aeronaveViewModel = new AeronaveViewModel
                 {
                     Id = a.Id,
@@ -214,14 +162,13 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
                     SerialNumber = a.SerialNumber
                 };
 
-                // Deserializa o checklist de JSON para IEnumerable<string>
                 if (!string.IsNullOrEmpty(a.Checklist))
                 {
                     aeronaveViewModel.Checklist = JsonConvert.DeserializeObject<IEnumerable<string>>(a.Checklist);
                 }
                 else
                 {
-                    aeronaveViewModel.Checklist = Enumerable.Empty<string>(); // Inicializa como uma coleção vazia se estiver vazia
+                    aeronaveViewModel.Checklist = Enumerable.Empty<string>();
                 }
 
                 aeronaveViewModels.Add(aeronaveViewModel);
