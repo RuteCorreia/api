@@ -1,16 +1,11 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+﻿using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.ViewModel;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.Contratante.ViewModel;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
-using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
 {
@@ -43,9 +38,11 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int? IdEmpresa { get; set; }
         public virtual AplicacaoRecomendacoesTecnicasViewModel? AplicacaoRecomendacoesTecnicas { get; set; }
         public virtual ContratanteViewModel? Contratante { get; set; }
-        public virtual IdentificacaoAreaTratadaViewModel? IdentificacaoAreaTratada { get; set; }
-        public virtual CaracteristicasProdutoAplicadoViewModel? CaracteristicasProdutoAplicado { get; set; }
+        public virtual AreaTratadaViewModel? IdentificacaoAreaTratada { get; set; }
+        public virtual ProdutoAplicadoViewModel? CaracteristicasProdutoAplicado { get; set; }
         public virtual ContratoPrestacaoServicoViewModel? ContratoPrestacaoServico { get; set; }
         public virtual DadosResponsavelViewModel? DadosResponsavel { get; set; }
+        public virtual AplicacaoRelatorioViewModel? AplicacaoRelatorio { get; set; }
+        public virtual IEnumerable<RelatorioItemViewModel>? Aplicacoes{ get; set; }
     }
 }

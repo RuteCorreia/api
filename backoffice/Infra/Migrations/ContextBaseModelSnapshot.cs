@@ -50,6 +50,9 @@ namespace Infra.Migrations
                     b.Property<string>("Checklist")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Fabricante")
                         .HasColumnType("nvarchar(max)");
 
@@ -86,6 +89,9 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -102,6 +108,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DoseProdutoPorHectare")
                         .HasColumnType("nvarchar(max)");
@@ -141,6 +150,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("NomeUnidade")
                         .HasColumnType("nvarchar(max)");
@@ -641,6 +653,9 @@ namespace Infra.Migrations
                     b.Property<int>("CicloMaximo")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("IdEmpresa")
                         .HasColumnType("int");
 
@@ -774,6 +789,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("Cidade")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -1357,6 +1375,9 @@ namespace Infra.Migrations
                     b.Property<string>("AlvoBiologico")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
@@ -1450,6 +1471,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("Classe")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("DoseProdutoComercial")
                         .HasColumnType("nvarchar(max)");
@@ -1636,6 +1660,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -1826,6 +1853,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataUltimaTrocaOleo")
                         .HasColumnType("datetime2");
@@ -2083,6 +2113,9 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
@@ -2143,6 +2176,9 @@ namespace Infra.Migrations
 
                     b.Property<string>("ClassificacaoToxicologica")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("IdCultura")
                         .HasColumnType("int");
@@ -2518,6 +2554,9 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
@@ -2539,6 +2578,9 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("NomeServico")
                         .HasColumnType("nvarchar(max)");
 
@@ -2554,6 +2596,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -2571,6 +2616,9 @@ namespace Infra.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdVeiculante"));
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -2591,6 +2639,9 @@ namespace Infra.Migrations
 
                     b.Property<int>("CapacidadeLitros")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DataSituacao")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
@@ -2757,6 +2808,9 @@ namespace Infra.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataSituacao")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
