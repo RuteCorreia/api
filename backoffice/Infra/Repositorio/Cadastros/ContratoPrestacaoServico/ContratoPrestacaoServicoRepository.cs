@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -46,7 +47,7 @@ public class ContratoPrestacaoServicoRepository : IContratoPrestacaoServicoRepos
 
     public async Task<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico> GetByIdAsync(int? id, int idEmpresa)
     {
-        using (var connection = _dbConnection)
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             try
             {

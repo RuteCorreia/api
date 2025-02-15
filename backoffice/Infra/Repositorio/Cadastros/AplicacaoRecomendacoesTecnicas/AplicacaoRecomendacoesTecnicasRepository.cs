@@ -58,7 +58,7 @@ public class AplicacaoRecomendacoesTecnicasRepository : IAplicacaoRecomendacoesT
 
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRecomendacoesTecnicas> GetByIdAsync(int id)
     {
-        using (var connection = _dbConnection)
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             try
             {

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Interfaces.Cadastros.DadosResponsavel;
 using Infra.Configuracao;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -46,7 +47,7 @@ public class DadosResponsavelRepository : IDadosResponsavelRepository
 
     public async Task<Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel> GetByIdAsync(int id, int idEmpresa)
     {
-        using (var connection = _dbConnection)
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             try
             {

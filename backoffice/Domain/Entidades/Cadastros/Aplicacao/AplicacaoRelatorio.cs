@@ -13,6 +13,9 @@ public class AplicacaoRelatorio
     [ForeignKey("Aplicacao")]
     public int? IdAplicacao { get; set; }
 
+    [ForeignKey("RelatorioAplicacao")]
+    public int? RelatorioAplicacaoId { get; set; }
+
     [ForeignKey("Pista")]
     public int? IdPista { get; set; }
     public decimal? Dosagem { get; set; }

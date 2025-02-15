@@ -17,6 +17,19 @@ using Domain.Interfaces.Cadastros.DataRelatorio;
 using Application.DTOs.Pdf.Interface;
 using System.Globalization;
 using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
+using Domain.Entidades.Cadastros.Aplicacao;
+using Domain.Entidades.Cadastros.Contratante;
+using System.Reflection.PortableExecutable;
+using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
+using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.Contratante.Interface;
+using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
+using Application.DTOs.Cadastros.DadosResponsavel.Interface;
+using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
+using Application.DTOs.Cadastros.Aplicacao.Interface;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
+using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -32,6 +45,16 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IDataRelatorioRepository _dataRelatorioRepository;
         private readonly IContratanteRepository _contratanteRepository;
         private readonly IUsuarioRepository _usuarioRepository;
+
+        private readonly IContratanteService _contratanteService;
+        private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
+        private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
+        private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
+        private readonly IAplicacaoRelatorioService _aplicacaoRelatorioService;
+        private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
+        private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
+        private readonly IDadosResponsavelService _dadosResponsavelService;
+        
         private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
 
@@ -46,6 +69,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IDataRelatorioRepository dataRelatorioRepository,
             IContratanteRepository contratanteRepository,
             IUsuarioRepository usuarioRepository,
+            IContratanteService contratanteService,
+            IIdentificacaoAreaTratadaService identificacaoAreaTratadaService,
+            ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+            IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
+            IAplicacaoRelatorioService aplicacaoRelatorioService,
+            IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
+            IContratoPrestacaoServicoService contratoPrestacaoServicoService,
+            IDadosResponsavelService dadosResponsavelService,
             IPdfService pdfService,
             IMapper mapper)
         {
@@ -59,6 +90,14 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _dataRelatorioRepository = dataRelatorioRepository;
             _contratanteRepository = contratanteRepository;
             _usuarioRepository = usuarioRepository;
+            _contratanteService = contratanteService;
+            _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
+            _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
+            _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
+            _aplicacaoRelatorioService = aplicacaoRelatorioService;
+            _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
+            _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
+            _dadosResponsavelService = dadosResponsavelService;
             _pdfService = pdfService;
             _mapper = mapper;
         }
@@ -332,8 +371,23 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var user = await _usuarioRepository.GetByUserIdAsync(userId);
-            var list = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
-            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+            var relatorios = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
+
+            var ralatoriosViewModel = _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(relatorios);
+
+            foreach (var relatorio in ralatoriosViewModel)
+            {
+                relatorio.Contratante = await _contratanteService.GetByIdAsync(relatorio.ContratanteId!.Value);
+                relatorio.IdentificacaoAreaTratada = await _identificacaoAreaTratadaService.GetByIdAsync(relatorio.IdentificacaoAreaTratadaId!.Value);
+                relatorio.CaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.GetByIdAsync(relatorio.CaracteristicasProdutoAplicadoId!.Value, idEmpresa);
+                relatorio.AplicacaoRecomendacoesTecnicas = await _aplicacaoRecomendacoesTecnicasService.GetByIdAsync(relatorio.RecomendacoesTecnicasId!.Value);
+                relatorio.AplicacaoRelatorio = await _aplicacaoRelatorioService.GetByIdAsync(relatorio.AplicacaoRelatorioId!.Value);
+                relatorio.Aplicacoes = await _aplicacaoRelatorioItemService.GetAllAsync(relatorio.AplicacaoRelatorioId!.Value);
+                relatorio.ContratoPrestacaoServico = await _contratoPrestacaoServicoService.GetByIdAsync(relatorio.ContratoPrestacaoServicoId!.Value, idEmpresa);
+                relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
+            }
+
+            return ralatoriosViewModel;
         }
 
     }
