@@ -125,7 +125,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             sincronizacao.AlvosBiologicos = _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(await _alvoBiologicoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Alturas = _mapper.Map<IEnumerable<AlturaVooViewModel>>(await _alturaVooRepository.GetByDateAsync(dataUltimaSincronizacao));
             sincronizacao.Baterias = _mapper.Map<IEnumerable<BateriaViewModel>>(await _bateriaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
-            sincronizacao.Bulas = _mapper.Map<IEnumerable<BulaViewModel>>(await _bulaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
+            sincronizacao.Bulas = _mapper.Map<IEnumerable<BulaAppViewModel>>(await _bulaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Clientes = _mapper.Map<IEnumerable<ClienteViewModel>>(await _clienteRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Culturas = _mapper.Map<IEnumerable<CulturaViewModel>>(await _culturaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Equipamentos = _mapper.Map<IEnumerable<EquipamentoViewModel>>(await _equipamentoRepository.GetByDateAsync(dataUltimaSincronizacao));

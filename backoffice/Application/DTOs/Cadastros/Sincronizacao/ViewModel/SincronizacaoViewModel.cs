@@ -27,7 +27,7 @@ public class SincronizacaoViewModel
     public IEnumerable<AlvoBiologicoViewModel> AlvosBiologicos { get; set; }
     public IEnumerable<AlturaVooViewModel> Alturas { get; set; }
     public IEnumerable<BateriaViewModel> Baterias { get; set; }
-    public IEnumerable<BulaViewModel> Bulas { get; set; }
+    public IEnumerable<BulaAppViewModel> Bulas { get; set; }
     public IEnumerable<ClienteViewModel> Clientes { get; set; }
     public IEnumerable<CulturaViewModel> Culturas { get; set; }
     public IEnumerable<EquipamentoViewModel> Equipamentos { get; set; }
