@@ -29,6 +29,27 @@ public class ControleDeFrotaViewModel
     [JsonProperty("kmfinal")]
     public int? KmFinal { get; set; }
 
+    [JsonProperty("kmRodadosDia")]
+    public int? KmRodadosDia { get; set; }
+
+    [JsonProperty("abastecimento")]
+    public decimal? Abastecimento { get; set; }
+
+    [JsonProperty("valorAbastecimento")]
+    public decimal? ValorAbastecimento { get; set; }
+
+    [JsonProperty("combustivelUtilizado")]
+    public decimal? CombustivelUtilizado { get; set; }
+
+    [JsonProperty("combustivelRemanescente")]
+    public decimal? CombustivelRemanescente { get; set; }
+
+    [JsonProperty("kmRevisao")]
+    public int? KmRevisao { get; set; }
+
+    [JsonProperty("dataRevisao")]
+    public DateTime? DataRevisao { get; set; }
+
     [JsonProperty("idAeronave")]
     public int? IdAeronave { get; set; }
 
@@ -68,8 +89,14 @@ public class ControleDeFrotaViewModel
     [JsonProperty("extensao")]
     public decimal? Extensao { get; set; }
 
+    [JsonProperty("oleoMotor")]
+    public decimal? OleoMotor { get; set; }
+
     [JsonProperty("combustivel")]
     public string? Combustivel { get; set; }
+
+    [JsonProperty("horimetros")]
+    public string? Horimetros { get; set; }
 
     [JsonProperty("data_id")]
     public int? IdData { get; set; }

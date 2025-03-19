@@ -19,6 +19,12 @@ public class ControleDeFrota
     public DateTime? DataAtualizacao { get; set; }
     public int? KmInicial { get; set; }
     public int? KmFinal { get; set; }
+    public decimal? Abastecimento { get; set; }
+    public decimal? ValorAbastecimento { get; set; }
+    public decimal? CombustivelUtilizado { get; set; }
+    public decimal? CombustivelRemanescente { get; set; }
+    public int? KmRevisao { get; set; }
+    public DateTime? DataRevisao { get; set; }
     [ForeignKey("Aeronave")]
     public int? IdAeronave { get; set; }
     public string? NomeAeronave { get; set; }
@@ -35,7 +41,9 @@ public class ControleDeFrota
     public string? NomeExecutor { get; set; }
     public DateTime? Data { get; set; }
     public decimal? Extensao { get; set; }
+    public decimal? OleoMotor { get; set; }
     public string? Combustivel { get; set; }
+    public string? Horimetros { get; set; }
     public int? LocalInicial { get; set; }
     public string? LocalizacaoPistaLat { get; set; }
     public string? LocalizacaoPistaLon { get; set; }

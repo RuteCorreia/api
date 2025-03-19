@@ -67,7 +67,7 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
 
         if (offsetDate != null)
         {
-            query += " AND (CONVERT(VARCHAR, DataAlteracao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
+            query += " AND (CONVERT(VARCHAR, DataAtualizacao, 120) > CONVERT(VARCHAR, @offsetDate, 120) " +
                      "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
         }
 
