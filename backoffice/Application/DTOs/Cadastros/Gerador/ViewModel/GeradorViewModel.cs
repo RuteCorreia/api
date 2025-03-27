@@ -7,5 +7,6 @@
         public long QuantidadeHoras { get; set; }
         public DateTime DataUltimaTrocaOleo { get; set; }
         public long QuantidadeHorasTroca { get; set; }
+        public IEnumerable<string>? Checklist { get; set; }
     }
 }

@@ -1,26 +1,21 @@
-﻿using Application.DTOs.Cadastros.Gerador.ViewModel;
+﻿using Application.DTOs.Cadastros.Motobomba.ViewModel;
 using AutoMapper;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Application.DTOs.Cadastros.Gerador.Mappings
+namespace Application.DTOs.Cadastros.Motobomba.Mappings
 {
-    public class GeradorMappingProfile : Profile
+    public class MotobombaMappingProfile : Profile
     {
-        public GeradorMappingProfile()
+        public MotobombaMappingProfile()
         {
-            CreateMap<GeradorViewModel, Domain.Entidades.Cadastros.Gerador.Gerador>()
+            CreateMap<MotobombaViewModel, Domain.Entidades.Cadastros.Motobomba.Motobomba>()
                 .ForMember(dest => dest.Checklist, opt => opt.MapFrom(src =>
                     src.Checklist != null && src.Checklist.Any()
                         ? JsonConvert.SerializeObject(src.Checklist)
                         : null
                 ));
             
-            CreateMap<Domain.Entidades.Cadastros.Gerador.Gerador, GeradorViewModel>()
+            CreateMap<Domain.Entidades.Cadastros.Motobomba.Motobomba, MotobombaViewModel>()
                 .ForMember(dest => dest.Checklist, opt => opt.MapFrom(src =>
                     string.IsNullOrEmpty(src.Checklist)
                         ? Enumerable.Empty<string>()

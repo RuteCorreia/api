@@ -83,6 +83,7 @@ public class VeiculoRepository : IVeiculoRepository
         objeto.KM_EntreRevisoes = obj.KM_EntreRevisoes;
         objeto.CapacidadeLitros = obj.CapacidadeLitros;
         objeto.QtdAtualLitros = obj.QtdAtualLitros;
+        objeto.Checklist = obj.Checklist;
 
         _contextBase.Veiculo.Update(objeto);
         await _contextBase.SaveChangesAsync();

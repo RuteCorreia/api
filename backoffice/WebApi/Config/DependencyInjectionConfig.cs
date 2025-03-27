@@ -285,6 +285,10 @@ using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
 using Infra.Repositorio.Cadastros.IdentificadorAplicacao;
 using Application.Application.Servicos.Cadastros.Sincronizacao;
 using Application.DTOs.Cadastros.Sincronizacao.Interface;
+using Application.Application.Servicos.Cadastros.Motobomba;
+using Application.DTOs.Cadastros.Motobomba.Interface;
+using Infra.Repositorio.Cadastros.Motobomba;
+using Domain.Interfaces.Cadastros.Motobomba;
 
 namespace WebApi.Config;
 
@@ -362,6 +366,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IRelatorioAeronaveService, RelatorioAeronaveService>();
         services.AddScoped<IBateriaService, BateriaService>();
         services.AddScoped<IGeradorService, GeradorService>();
+        services.AddScoped<IMotobombaService, MotobombaService>();
         services.AddScoped<IFrotaBateriaService, FrotaBateriaService>();
         services.AddScoped<IFrotaGeradorService, FrotaGeradorService>();
         services.AddScoped<IFrotaMotobombaService, FrotaMotobombaService>();
@@ -438,6 +443,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IRelatorioAeronaveRepository, RelatorioAeronaveRepository>();
         services.AddScoped<IBateriaRepository, BateriaRepository>();
         services.AddScoped<IGeradorRepository, GeradorRepository>();
+        services.AddScoped<IMotobombaRepository, MotobombaRepository>();
         services.AddScoped<IFrotaBateriaRepository, FrotaBateriaRepository>();
         services.AddScoped<IFrotaGeradorRepository, FrotaGeradorRepository>();
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();

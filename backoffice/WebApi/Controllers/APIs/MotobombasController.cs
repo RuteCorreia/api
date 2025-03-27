@@ -1,11 +1,7 @@
-﻿using Application.DTOs.Cadastros.Bateria.Interface;
-using Application.DTOs.Cadastros.Bateria.ViewModel;
-using Application.DTOs.Cadastros.Gerador.Interface;
-using Application.DTOs.Cadastros.Gerador.ViewModel;
-using Application.DTOs.Cadastros.Pistas.ViewModel;
+﻿using Application.DTOs.Cadastros.Motobomba.Interface;
+using Application.DTOs.Cadastros.Motobomba.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 
@@ -14,27 +10,27 @@ namespace WebApi.Controllers.APIs
     [Route("api/v1/[controller]")]
     [Authorize]
     [ApiController]
-    public class GeradorController : ControllerBase
+    public class MotobombaController : ControllerBase
     {
         private readonly LoggedUserInfoService _loggedUserInfoService;
-        private readonly IGeradorService _geradorService;
-        public GeradorController(
+        private readonly IMotobombaService _motobombaService;
+        public MotobombaController(
             LoggedUserInfoService loggedUserInfoService,
-            IGeradorService geradorService
+            IMotobombaService motobombaService
             )
         {
             _loggedUserInfoService = loggedUserInfoService;
-            _geradorService = geradorService;
+            _motobombaService = motobombaService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IAsyncEnumerable<GeradorViewModel>>> GetAll()
+        public async Task<ActionResult<IAsyncEnumerable<MotobombaViewModel>>> GetAll()
         {
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var geradores = await _geradorService.GetAllAsync(loggedUser.Item3);
-                return Ok(geradores);
+                var motobombas = await _motobombaService.GetAllAsync(loggedUser.Item3);
+                return Ok(motobombas);
             }
             catch (Exception ex)
             {
@@ -43,14 +39,14 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<GeradorViewModel>> GetById(int id)
+        public async Task<ActionResult<MotobombaViewModel>> GetById(int id)
         {
             try
             {
-                var bateria = await _geradorService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(bateria))
+                var motobomba = await _motobombaService.GetByIdAsync(id);
+                if (!ObjectNullValidation.IsObjectNull(motobomba))
                 {
-                    return Ok(bateria);
+                    return Ok(motobomba);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
@@ -62,7 +58,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("GetByName/{name}")]
-        public async Task<ActionResult<IEnumerable<GeradorViewModel>>> GetByName(string name)
+        public async Task<ActionResult<IEnumerable<MotobombaViewModel>>> GetByName(string name)
         {
             try
             {
@@ -71,11 +67,11 @@ namespace WebApi.Controllers.APIs
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
 
-                var geradores = await _geradorService.GetByNameAsync(name);
+                var motobombas = await _motobombaService.GetByNameAsync(name);
 
-                if (geradores.Any())
+                if (motobombas.Any())
                 {
-                    return Ok(geradores);
+                    return Ok(motobombas);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Nenhuma pista encontrada.");
@@ -87,7 +83,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody] GeradorViewModel obj)
+        public async Task<ActionResult> Add([FromBody] MotobombaViewModel obj)
         {
             try
             {
@@ -95,7 +91,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var id = await _geradorService.AddAsync(obj, loggedUser.Item3);
+                    var id = await _motobombaService.AddAsync(obj, loggedUser.Item3);
                     return Ok(id);
                 }
 
@@ -109,18 +105,18 @@ namespace WebApi.Controllers.APIs
 
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Update(int id, [FromBody] GeradorViewModel obj)
+        public async Task<ActionResult> Update(int id, [FromBody] MotobombaViewModel obj)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _geradorService.GetByIdAsync(id);
+                    var objeto = await _motobombaService.GetByIdAsync(id);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
 
-                        await _geradorService.UpdateAsync(obj);
+                        await _motobombaService.UpdateAsync(obj);
                         return Ok();
                     }
                     else
@@ -144,7 +140,7 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _geradorService.DeleteAsync(id);
+                    await _motobombaService.DeleteAsync(id);
                     return Ok();
                 }
 

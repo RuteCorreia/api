@@ -107,5 +107,5 @@ public class ControleDeFrotaViewModel
     public int? State { get; set; }
     public bool? IsDrone { get; set; }
     public string? Checklist { get; set; }
-
+    public string? ChecklistVeiculo { get; set; }
 }

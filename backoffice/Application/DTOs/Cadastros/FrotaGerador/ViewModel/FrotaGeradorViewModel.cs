@@ -11,5 +11,6 @@
         public double? HorasUso { get; set; }
         public DateTime? DataTrocaOleo { get; set; }
         public int? IdEmpresa { get; set; }
+        public string? CheckList { get; set; }
     }
 }
