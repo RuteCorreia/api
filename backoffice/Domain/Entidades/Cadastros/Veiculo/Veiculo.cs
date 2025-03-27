@@ -17,6 +17,7 @@ public class Veiculo
     public int KM_EntreRevisoes { get; set; }
     public int CapacidadeLitros { get; set; }
     public int QtdAtualLitros { get; set; }
+    public string? Checklist { get; set; }
 
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }

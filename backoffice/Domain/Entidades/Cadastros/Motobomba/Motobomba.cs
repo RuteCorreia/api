@@ -1,17 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace Domain.Entidades.Cadastros.Gerador
+namespace Domain.Entidades.Cadastros.Motobomba
 {
-    public class Gerador
+    public class Motobomba
     {
         [Key]
         public int Id { get; set; }
-        public string NomeGerador { get; set; }
-        public long QuantidadeHoras { get; set; }
+        public string Nome { get; set; }
         public DateTime DataUltimaTrocaOleo { get; set; }
-        public long QuantidadeHorasTroca { get; set; }
         [ForeignKey("Empresa")]
         public int IdEmpresa { get; set; }
         public string? Checklist { get; set; }

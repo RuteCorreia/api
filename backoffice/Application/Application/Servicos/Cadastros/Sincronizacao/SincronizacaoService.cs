@@ -9,6 +9,7 @@ using Application.DTOs.Cadastros.Engenheiro.ViewModel;
 using Application.DTOs.Cadastros.Equipamento.ViewModel;
 using Application.DTOs.Cadastros.Executor.ViewModel;
 using Application.DTOs.Cadastros.Gerador.ViewModel;
+using Application.DTOs.Cadastros.Motobomba.ViewModel;
 using Application.DTOs.Cadastros.Piloto.ViewModel;
 using Application.DTOs.Cadastros.Pistas.ViewModel;
 using Application.DTOs.Cadastros.Produto.ViewModel;
@@ -32,6 +33,7 @@ using Domain.Interfaces.Cadastros.Engenheiro;
 using Domain.Interfaces.Cadastros.Equipamento;
 using Domain.Interfaces.Cadastros.Executor;
 using Domain.Interfaces.Cadastros.Gerador;
+using Domain.Interfaces.Cadastros.Motobomba;
 using Domain.Interfaces.Cadastros.Piloto;
 using Domain.Interfaces.Cadastros.Pista;
 using Domain.Interfaces.Cadastros.Produto;
@@ -42,6 +44,7 @@ using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Helpers;
+using Infra.Repositorio.Cadastros.Motobomba;
 using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.Sincronizacao
@@ -68,6 +71,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
         private readonly IEngenheiroRepository _engenheiroRepository;
         private readonly IExecutorRepository _executoreRepository;
         private readonly IPilotoRepository _pilotoRepository;
+        private readonly IMotobombaRepository _motobombaRepository;
         private readonly IMapper _mapper;
 
         public SincronizacaoService(
@@ -91,6 +95,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             IEngenheiroRepository engenheiroRepository,
             IExecutorRepository executoreRepository,
             IPilotoRepository pilotoRepository,
+            IMotobombaRepository motobombaRepository,
             IMapper mapper)
         {
             _aeronaveRepository = aeronaveRepository;
@@ -113,6 +118,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             _engenheiroRepository = engenheiroRepository;
             _executoreRepository = executoreRepository;
             _pilotoRepository = pilotoRepository;
+            _motobombaRepository = motobombaRepository;
             _mapper = mapper;
         }
 
@@ -141,6 +147,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             sincronizacao.Engenheiros = await GetEngenheirosAsync(idEmpresaInt, dataUltimaSincronizacao);
             sincronizacao.Executores = _mapper.Map<IEnumerable<ExecutorViewModel>>(await _executoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Pilotos = _mapper.Map<IEnumerable<PilotoViewModel>>(await _pilotoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
+            sincronizacao.Motobombas = _mapper.Map<IEnumerable<MotobombaViewModel>>(await _motobombaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
 
             return sincronizacao;
         }

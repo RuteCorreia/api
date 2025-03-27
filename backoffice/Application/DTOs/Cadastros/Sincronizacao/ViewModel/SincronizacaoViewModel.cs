@@ -9,6 +9,7 @@ using Application.DTOs.Cadastros.Engenheiro.ViewModel;
 using Application.DTOs.Cadastros.Equipamento.ViewModel;
 using Application.DTOs.Cadastros.Executor.ViewModel;
 using Application.DTOs.Cadastros.Gerador.ViewModel;
+using Application.DTOs.Cadastros.Motobomba.ViewModel;
 using Application.DTOs.Cadastros.Piloto.ViewModel;
 using Application.DTOs.Cadastros.Pistas.ViewModel;
 using Application.DTOs.Cadastros.Produto.ViewModel;
@@ -32,6 +33,7 @@ public class SincronizacaoViewModel
     public IEnumerable<CulturaViewModel> Culturas { get; set; }
     public IEnumerable<EquipamentoViewModel> Equipamentos { get; set; }
     public IEnumerable<GeradorViewModel> Geradores { get; set; }
+    public IEnumerable<MotobombaViewModel> Motobombas { get; set; }
     public IEnumerable<PistaViewModel> Pistas { get; set; }
     public IEnumerable<ProdutoViewModel> Produtos { get; set; }
     public IEnumerable<TipoDeFormulacaoViewModel> TiposDeFormulacao { get; set; }

@@ -17,7 +17,7 @@ namespace Domain.Entidades.Cadastros.FrotaGerador
         public DateTime? DataTrocaOleo { get; set; }
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
-
+        public string? CheckList { get; set; }
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
         [JsonIgnore]

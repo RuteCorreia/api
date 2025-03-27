@@ -52,6 +52,7 @@ using Domain.Entidades.Cadastros.FrotaGerador;
 using Domain.Entidades.Cadastros.FrotaMotobomba;
 using Microsoft.Extensions.Configuration;
 using Domain.Entidades.Cadastros.IdentificadorAplicacao;
+using Domain.Entidades.Cadastros.Motobomba;
 
 namespace Infra.Configuracao;
 
@@ -132,6 +133,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<TipoDeFormulacao> TipoDeFormulacao { get; set; }
     public DbSet<Bateria> Baterias { get; set; }
     public DbSet<Gerador> Geradores { get; set; }
+    public DbSet<Motobomba> Motobombas { get; set; }
     public DbSet<FrotaBateria> FrotaBaterias { get; set; }
     public DbSet<FrotaGerador> FrotaGeradores { get; set; }
     public DbSet<FrotaMotobomba> FrotaMotobombas { get; set; }

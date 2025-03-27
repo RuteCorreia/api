@@ -84,19 +84,17 @@ namespace WebApi.Controllers.ExportExcel
                     worksheet.Cells[1, 3].Value = "TIPO AERONAVE";
                     worksheet.Cells[1, 4].Value = "PREFIXO AERONAVE";
                     worksheet.Cells[1, 5].Value = "HORAS APLICAÇÃO";
-                    worksheet.Cells[1, 6].Value = "HORAS APLICAÇÃO";
-                    worksheet.Cells[1, 7].Value = "CULTURA";
-                    worksheet.Cells[1, 8].Value = "TIPO DE SERVIÇO";
-                    worksheet.Cells[1, 9].Value = "CLASSE AGROTÓXICOS";
-                    worksheet.Cells[1, 10].Value = "ÁREA (ha)";
-                    worksheet.Cells[1, 11].Value = "AGROTÓXICO";
-                    worksheet.Cells[1, 12].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
-                    worksheet.Cells[1, 13].Value = "SEMEADURA";
-                    worksheet.Cells[1, 14].Value = "COMBATE A INCÊNDIO (HORAS)";
-                    worksheet.Cells[1, 15].Value = "COMBATE A INCÊNDIO (HORAS)";
-                    worksheet.Cells[1, 16].Value = "VOLUME (l/ha)";
-                    worksheet.Cells[1, 17].Value = "DOSAGEM";
-                    worksheet.Cells[1, 18].Value = "Unidade";
+                    worksheet.Cells[1, 6].Value = "CULTURA";
+                    worksheet.Cells[1, 7].Value = "TIPO DE SERVIÇO";
+                    worksheet.Cells[1, 8].Value = "CLASSE AGROTÓXICOS";
+                    worksheet.Cells[1, 9].Value = "ÁREA (ha)";
+                    worksheet.Cells[1, 10].Value = "AGROTÓXICO";
+                    worksheet.Cells[1, 11].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
+                    worksheet.Cells[1, 12].Value = "SEMEADURA";
+                    worksheet.Cells[1, 13].Value = "COMBATE A INCÊNDIO (HORAS)";
+                    worksheet.Cells[1, 14].Value = "VOLUME (l/ha)";
+                    worksheet.Cells[1, 15].Value = "DOSAGEM";
+                    worksheet.Cells[1, 16].Value = "Unidade";
 
                     // Preencher dados
                     int row = 2;
@@ -133,20 +131,18 @@ namespace WebApi.Controllers.ExportExcel
                         worksheet.Cells[row, 2].Value = relatorio.Municipio;
                         worksheet.Cells[row, 3].Value = relatorio.TipoAeronave;
                         worksheet.Cells[row, 4].Value = relatorio.PrefixoAeronave;
-                        worksheet.Cells[row, 5].Value = relatorio.HorasAplicacao;
-                        worksheet.Cells[row, 6].Value = horasAplicacaoFormatado;
-                        worksheet.Cells[row, 7].Value = relatorio.Cultura;
-                        worksheet.Cells[row, 8].Value = relatorio.TipoDeServico;
-                        worksheet.Cells[row, 9].Value = relatorio.ClasseAgrotoxico;
-                        worksheet.Cells[row, 10].Value = relatorio.Area;
-                        worksheet.Cells[row, 11].Value = relatorio.Agrotoxico;
-                        worksheet.Cells[row, 12].Value = relatorio.Adjuvante;
-                        worksheet.Cells[row, 13].Value = relatorio.Semeadura;
-                        worksheet.Cells[row, 14].Value = relatorio.HorasCombateIncendio;
-                        worksheet.Cells[row, 15].Value = horasIncendioFormatado;
-                        worksheet.Cells[row, 16].Value = relatorio.Volume;
-                        worksheet.Cells[row, 17].Value = relatorio.Dosagem;
-                        worksheet.Cells[row, 18].Value = relatorio.Unidade;
+                        worksheet.Cells[row, 5].Value = horasAplicacaoFormatado;
+                        worksheet.Cells[row, 6].Value = relatorio.Cultura;
+                        worksheet.Cells[row, 7].Value = relatorio.TipoDeServico;
+                        worksheet.Cells[row, 8].Value = relatorio.ClasseAgrotoxico;
+                        worksheet.Cells[row, 9].Value = relatorio.Area;
+                        worksheet.Cells[row, 10].Value = relatorio.Agrotoxico;
+                        worksheet.Cells[row, 11].Value = relatorio.Adjuvante;
+                        worksheet.Cells[row, 12].Value = relatorio.Semeadura;
+                        worksheet.Cells[row, 13].Value = horasIncendioFormatado;
+                        worksheet.Cells[row, 14].Value = relatorio.Volume;
+                        worksheet.Cells[row, 15].Value = relatorio.Dosagem;
+                        worksheet.Cells[row, 16].Value = relatorio.Unidade;
                         row++;
                     }
 

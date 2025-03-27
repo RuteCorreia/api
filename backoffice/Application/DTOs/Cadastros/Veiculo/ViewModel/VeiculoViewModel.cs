@@ -21,5 +21,6 @@ public class VeiculoViewModel
     public int KM_Inspecao { get; set; }
     public int KM_EntreRevisoes { get; set; }
     public int CapacidadeLitros { get; set; }
-    public int QtdAtualLitros { get; set; }   
+    public int QtdAtualLitros { get; set; }
+    public IEnumerable<string>? Checklist { get; set; }
 }

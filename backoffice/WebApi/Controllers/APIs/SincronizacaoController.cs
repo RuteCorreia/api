@@ -1,13 +1,6 @@
-﻿using Application.Application.Servicos.Cadastros.TipoDeServico;
-using Application.DTOs.Cadastros.Sincronizacao.Interface;
+﻿using Application.DTOs.Cadastros.Sincronizacao.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.ViewModel;
-using Application.DTOs.Cadastros.TipoDeServico.Interface;
-using Application.DTOs.Cadastros.TipoDeServico.ViewModel;
-using Application.DTOs.Cadastros.TipoDeUnidade.Interface;
-using Application.DTOs.Cadastros.TipoDeUnidade.ViewModel;
 using Application.DTOs.Log.Interface;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 
