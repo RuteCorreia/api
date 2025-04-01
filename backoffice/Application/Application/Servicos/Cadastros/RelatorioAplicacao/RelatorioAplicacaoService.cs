@@ -178,8 +178,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Area = ar.TotalAreaAplicada,
                 Agrotoxico = cpa.NomeProduto,
                 Adjuvante = cpa.Adjuvante,
-                Volume = art.VolumeAplicacao,
-                Dosagem = cpa.DoseProdutoHectare,
+                Volume = ar.VolumeAplicacao,
+                Dosagem = ar.Dosagem.ToString(),
                 Unidade = cpa.UnidadeDoseProdutoHectare
             };
             return viewModel;
