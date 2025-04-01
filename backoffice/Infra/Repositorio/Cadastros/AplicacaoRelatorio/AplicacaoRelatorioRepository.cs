@@ -47,7 +47,7 @@ public class AplicacaoRelatorioRepository : IAplicacaoRelatorioRepository
     public async Task<Domain.Entidades.Cadastros.Aplicacao.AplicacaoRelatorio> GetForExportExcelAsync(int? id)
     {
         var query = @"
-            SELECT Id, TotalAreaAplicada
+            SELECT Id, Dosagem, TotalAreaAplicada, VolumeAplicacao
             FROM AplicacaoRelatorio WHERE Id = @Id";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
