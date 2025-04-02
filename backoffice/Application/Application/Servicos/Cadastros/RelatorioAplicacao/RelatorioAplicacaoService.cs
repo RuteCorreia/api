@@ -180,7 +180,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Adjuvante = cpa.Adjuvante,
                 Volume = ar.VolumeAplicacao,
                 Dosagem = ar.Dosagem.ToString(),
-                Unidade = cpa.UnidadeDoseProdutoHectare
+                Unidade = ar.UnidadeVolumeAplicacao
             };
             return viewModel;
         }
