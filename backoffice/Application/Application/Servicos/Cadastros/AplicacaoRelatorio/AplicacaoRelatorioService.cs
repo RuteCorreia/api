@@ -47,7 +47,7 @@ public class AplicacaoRelatorioService : IAplicacaoRelatorioService
         var aplicacaoRelatorio = _mapper.Map<AplicacaoRelatorioViewModel>(obj);
 
         List<string> mapaAplicado = null;
-        List<DataFormatViewModel> mapasAplicadosDataFormat = null;
+        List<DataFormatViewModel> mapasAplicadosDataFormat = new List<DataFormatViewModel>();
 
         if (!string.IsNullOrEmpty(obj.MapaAplicacao))
         {

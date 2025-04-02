@@ -1,7 +1,7 @@
 trigger:
   branches:
     include:
-      - QA  # Ou 'QA' se você preferir que a build seja disparada a partir de outra branch
+      - main  # Ou 'QA' se você preferir que a build seja disparada a partir de outra branch
 
 pool:
   vmImage: 'windows-latest'  # Usando uma máquina virtual do Azure DevOps com Windows
@@ -24,28 +24,19 @@ steps:
     dotnet restore backoffice/Flytec.sln
   displayName: 'Restore NuGet Packages'
 
-# Listar os arquivos no diretório atual para verificar o caminho
-- script: |
-    echo "Listando arquivos no diretório atual:"
-    ls -R
-  displayName: 'Diagnóstico de Arquivos'
-
-# Construir o projeto principal
+# Construir o projeto
 - script: |
     echo Building project
-    dotnet build backoffice/WebApi/WebApi.csproj --configuration $(buildConfiguration)
+    dotnet build backoffice/Flytec.sln --configuration $(buildConfiguration)
   displayName: 'Build Project'
 
 # Publicar artefatos gerados
 - script: |
     echo Publishing artifacts
-    dotnet publish backoffice/WebApi/WebApi.csproj --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
+    dotnet publish backoffice/Flytec.sln --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)
   displayName: 'Publish Artifacts'
 
 # Publicar os artefatos para o Azure DevOps
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' # Diretório onde os artefatos foram gerados
-    artifact: drop
-    publishLocation: 'pipeline' # Publicar no pipeline
+- publish: $(Build.ArtifactStagingDirectory)
+  artifact: drop
   displayName: 'Publish Build Artifacts'
