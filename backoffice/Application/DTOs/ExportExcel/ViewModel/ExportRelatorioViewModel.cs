@@ -22,7 +22,8 @@ namespace Application.DTOs.ExportExcel.ViewModel
         public string? Semeadura { get; set; }
         public string? HorasCombateIncendio { get; set; }
         public int? Volume { get; set; }
+        public string? UnidadeVolume { get; set; }
         public string? Dosagem { get; set; }
-        public string? Unidade { get; set; }
+        public string? UnidadeDosagem { get; set; }
     }
 }

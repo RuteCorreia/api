@@ -92,9 +92,10 @@ namespace WebApi.Controllers.ExportExcel
                     worksheet.Cells[1, 11].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
                     worksheet.Cells[1, 12].Value = "SEMEADURA";
                     worksheet.Cells[1, 13].Value = "COMBATE A INCÊNDIO (HORAS)";
-                    worksheet.Cells[1, 14].Value = "VOLUME (l/ha)";
-                    worksheet.Cells[1, 15].Value = "DOSAGEM";
-                    worksheet.Cells[1, 16].Value = "Unidade";
+                    worksheet.Cells[1, 14].Value = "VOLUME";
+                    worksheet.Cells[1, 15].Value = "UNIDADE VOLUME";
+                    worksheet.Cells[1, 16].Value = "DOSAGEM";
+                    worksheet.Cells[1, 17].Value = "UNIDADE DOSAGEM";
 
                     // Preencher dados
                     int row = 2;
@@ -141,8 +142,9 @@ namespace WebApi.Controllers.ExportExcel
                         worksheet.Cells[row, 12].Value = relatorio.Semeadura;
                         worksheet.Cells[row, 13].Value = horasIncendioFormatado;
                         worksheet.Cells[row, 14].Value = relatorio.Volume;
-                        worksheet.Cells[row, 15].Value = relatorio.Dosagem;
-                        worksheet.Cells[row, 16].Value = relatorio.Unidade;
+                        worksheet.Cells[row, 15].Value = relatorio.UnidadeVolume;
+                        worksheet.Cells[row, 16].Value = relatorio.Dosagem;
+                        worksheet.Cells[row, 17].Value = relatorio.UnidadeDosagem;
                         row++;
                     }
 

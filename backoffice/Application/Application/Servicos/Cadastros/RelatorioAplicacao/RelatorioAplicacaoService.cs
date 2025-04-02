@@ -179,8 +179,9 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Agrotoxico = cpa.NomeProduto,
                 Adjuvante = cpa.Adjuvante,
                 Volume = ar.VolumeAplicacao,
+                UnidadeVolume = ar.UnidadeVolumeAplicacao,
                 Dosagem = ar.Dosagem.ToString(),
-                Unidade = ar.UnidadeVolumeAplicacao
+                UnidadeDosagem = ar.KG_LT
             };
             return viewModel;
         }
