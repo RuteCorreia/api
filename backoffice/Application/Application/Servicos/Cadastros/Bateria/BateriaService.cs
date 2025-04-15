@@ -1,9 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Bateria.Interface;
 using Application.DTOs.Cadastros.Bateria.ViewModel;
-using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
-using Application.DTOs.Cadastros.Gerador.ViewModel;
 using AutoMapper;
-using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Bateria;
 using Helpers;
 
@@ -28,9 +25,10 @@ namespace Application.Application.Servicos.Cadastros.Bateria
             return await _bateriaRepository.AddAsync(mapBateria);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            await _bateriaRepository.DeleteAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            await _bateriaRepository.DeleteAsync(id, idEmpresaInt);
         }
 
         public async Task<IEnumerable<BateriaViewModel>> GetAllAsync(string? idEmpresa)
@@ -40,19 +38,21 @@ namespace Application.Application.Servicos.Cadastros.Bateria
             return _mapper.Map<IEnumerable<BateriaViewModel>>(list);
         }
 
-        public async Task<BateriaViewModel> GetByIdAsync(int? id)
+        public async Task<BateriaViewModel> GetByIdAsync(int? id, string? idEmpresa)
         {
-            var obj = await _bateriaRepository.GetByIdAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var obj = await _bateriaRepository.GetByIdAsync(id, idEmpresaInt);
             return _mapper.Map<BateriaViewModel>(obj);
         }
 
-        public async Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name)
+        public async Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name, string? idEmpresa)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
             }
-            var baterias = await _bateriaRepository.GetByNameAsync(name);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var baterias = await _bateriaRepository.GetByNameAsync(name, idEmpresaInt);
 
             return baterias.Select(p => _mapper.Map<BateriaViewModel>(p));
         }

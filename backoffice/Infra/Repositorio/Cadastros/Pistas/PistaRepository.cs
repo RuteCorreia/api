@@ -22,9 +22,9 @@ public class PistaRepository : IPistaRepository
         return obj.Id;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
-        var entityToRemove = await GetByIdAsync(id);
+        var entityToRemove = await GetByIdAsync(id, idEmpresa);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
@@ -48,20 +48,24 @@ public class PistaRepository : IPistaRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id, int idEmpresa)
     {
-        var obj = await _contextBase.Pista.FindAsync(id);
+        var obj = await _contextBase.Pista
+            .Where(x => x.Id == id)
+            .Where(x => x.IdEmpresa == idEmpresa)
+            .FirstOrDefaultAsync();
+
         return obj;
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome, int idEmpresa)
     {
         if (string.IsNullOrEmpty(nome))
         {
             throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
         }
         var pistas = await _contextBase.Pista
-            .Where(p => p.Nome.Contains(nome))
+            .Where(p => p.Nome.Contains(nome) && p.IdEmpresa == idEmpresa)
             .ToListAsync();
 
         return pistas;

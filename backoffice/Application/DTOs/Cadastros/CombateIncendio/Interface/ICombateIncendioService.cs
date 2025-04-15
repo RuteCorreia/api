@@ -23,7 +23,7 @@ public interface ICombateIncendioService
     Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa);
 
     Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa);
-    Task<ExportRelatorioViewModel> ExportExcelAsync(int? id);
+    Task<ExportRelatorioViewModel> ExportExcelAsync(int? id, string? idEmpresa);
     Task DeleteAsync(int id);
     Task UpdateIsMapaAsync(List<int> obj, bool condicao);
 }

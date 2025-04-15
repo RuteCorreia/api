@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Aeronave;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Aeronave;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -31,9 +32,9 @@ public class AeronaveRepository : IAeronaveRepository
         await _contextBase.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
-        var entityToRemove = await GetByIdAsync(id);
+        var entityToRemove = await GetByIdAsync(id, idEmpresa);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             entityToRemove.Removido = true;
@@ -51,13 +52,14 @@ public class AeronaveRepository : IAeronaveRepository
                 && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa)
             )
             .ToListAsync();
-
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id)
+    public async Task<Domain.Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id, int idEmpresa)
     {
-        var obj = await _contextBase.Aeronave.FindAsync(id);
+        var obj = await _contextBase.Aeronave
+            .Where(x => x.Id == id && x.IdEmpresa == idEmpresa)
+            .FirstOrDefaultAsync();
         return obj;
     }
 

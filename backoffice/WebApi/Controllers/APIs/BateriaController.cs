@@ -50,7 +50,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var bateria = await _bateriaService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var bateria = await _bateriaService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(bateria))
                 {
                     return Ok(bateria);
@@ -74,7 +75,8 @@ namespace WebApi.Controllers.APIs
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
 
-                var baterias = await _bateriaService.GetByNameAsync(name);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var baterias = await _bateriaService.GetByNameAsync(name, loggedUser.Item3);
 
                 if (baterias.Any())
                 {
@@ -118,7 +120,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _bateriaService.GetByIdAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var objeto = await _bateriaService.GetByIdAsync(id, loggedUser.Item3);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
@@ -145,9 +148,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var objeto = await _bateriaService.GetByIdAsync(id, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _bateriaService.DeleteAsync(id);
+                    await _bateriaService.DeleteAsync(id, loggedUser.Item3);
                     return Ok();
                 }
 

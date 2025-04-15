@@ -1,9 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Bula.Interface;
 using Application.DTOs.Cadastros.Bula.ViewModel;
-using Application.DTOs.Cadastros.Cultura.ViewModel;
 using AutoMapper;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 
@@ -28,15 +25,16 @@ public class BulaService : IBulaService
         return bulaViewModel;
     }
 
-    public async Task<IEnumerable<int>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
+    public async Task<IEnumerable<(int, int)>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt, nomeProduto);
     }
 
-    public async Task RemoveRecomendacaoAsync(int idBula)
+    public async Task RemoveRecomendacaoAsync(int idBula, string? idEmpresa)
     {
-        await _bulaRepository.RemoveRecomendacaoAsync(idBula);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _bulaRepository.RemoveRecomendacaoAsync(idBula, idEmpresaInt);
     }
 
     public async Task RemoveBulaAsync(int idProduto, string? idEmpresa)
@@ -45,9 +43,10 @@ public class BulaService : IBulaService
         await _bulaRepository.RemoveBulaAsync(idProduto, idEmpresaInt);
     }
 
-    public async Task<BulaViewModel> GetByIdAsync(int id)
+    public async Task<BulaViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var obj = await _bulaRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _bulaRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<BulaViewModel>(obj);
     }
 
@@ -120,9 +119,10 @@ public class BulaService : IBulaService
         await _bulaRepository.UpdateAsync(mapBula);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        await _bulaRepository.DeleteAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _bulaRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<BulaViewModel> GetByName(string name, string? idEmpresa)

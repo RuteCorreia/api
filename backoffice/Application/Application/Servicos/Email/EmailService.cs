@@ -88,7 +88,7 @@ public class EmailService : IEmailService
             }
 
             var mailSend = new MailMessage();
-            mailSend.From = new MailAddress("suporte@flytecsa.com.br");
+            mailSend.From = new MailAddress("naoresponda@mensageria.flytecsa.com.br");
             mailSend.To.Add(emailContent.Recipient);
             mailSend.Body = msg.ToString();
             mailSend.Subject = emailContent.Title;
@@ -97,9 +97,9 @@ public class EmailService : IEmailService
             // CONFIGURAÇÃO DO EMAIL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient client = new SmtpClient();
-            client.Credentials = new NetworkCredential("suporte@flytecsa.com.br", "Sup@990-777@");
+            client.Credentials = new NetworkCredential("naoresponda@mensageria.flytecsa.com.br", "GEg5te0pngku12E");
             client.Port = 587;
-            client.Host = "mail.flytecsa.com.br";
+            client.Host = "mensageria.flytecsa.com.br";
             client.EnableSsl = true;
             //enviar
             await client.SendMailAsync(mailSend);

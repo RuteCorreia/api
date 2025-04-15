@@ -28,9 +28,9 @@ namespace Infra.Repositorio.Cadastros.Motobomba
             return obj.Id;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int idEmpresa)
         {
-            var entityToRemove = await GetByIdAsync(id);
+            var entityToRemove = await GetByIdAsync(id, idEmpresa);
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
                 _contextBase.Remove(entityToRemove);
@@ -46,23 +46,23 @@ namespace Infra.Repositorio.Cadastros.Motobomba
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.Motobomba.Motobomba> GetByIdAsync(int? id)
+        public async Task<Domain.Entidades.Cadastros.Motobomba.Motobomba> GetByIdAsync(int? id, int idEmpresa)
         {
-            var obj = await _contextBase.Motobombas.FindAsync(id);
+            var obj = await _contextBase.Motobombas.FirstOrDefaultAsync(x => x.Id == id && x.IdEmpresa == idEmpresa);
             return obj;
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Motobomba.Motobomba>> GetByNameAsync(string nome)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Motobomba.Motobomba>> GetByNameAsync(string nome, int idEmpresa)
         {
             if (string.IsNullOrEmpty(nome))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
             }
-            var pistas = await _contextBase.Motobombas
-                .Where(p => p.Nome.Contains(nome))
+            var motobombas = await _contextBase.Motobombas
+                .Where(x => x.Nome.Contains(nome) && x.IdEmpresa == idEmpresa)
                 .ToListAsync();
 
-            return pistas;
+            return motobombas;
         }
 
         public async Task UpdateUltimaTrocaOleoAsync(int? id, DateTime? dataUltimaTroca)

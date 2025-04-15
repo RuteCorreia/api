@@ -81,7 +81,7 @@ public class UserAuthService : IUserAuthService
         return (false, "login inválido");
     }
 
-    public async Task<(bool, string)> LoginBackofficeAsync(UserLoginViewModel user)
+    public async Task<(bool, string, IList<string>, int?)> LoginBackofficeAsync(UserLoginViewModel user)
     {
         var identityUser = await _userManager.FindByEmailAsync(user.Email);
         if (identityUser is not null)
@@ -104,12 +104,12 @@ public class UserAuthService : IUserAuthService
                         }
                         token.Append(await GenerateToken(identityUser, usuario));
 
-                        return (true, token.ToString());
+                        return (true, token.ToString(), roles, usuario.IdEmpresa);
                     }
                 }
             }
         }
-        return (false, "login inválido");
+        return (false, "login inválido", [], null);
     }
 
     public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request, string loggedUserId)

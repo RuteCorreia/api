@@ -23,9 +23,9 @@ public class ProdutoRepository : IProdutoRepository
         await _contextBase.SaveChangesAsync();
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
-        var entityToRemove = await GetByIdAsync(id);
+        var entityToRemove = await GetByIdAsync(id, idEmpresa);
         if(!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
@@ -42,13 +42,16 @@ public class ProdutoRepository : IProdutoRepository
         return classes;
     }
 
-    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids, int idEmpresa)
     {
-        var query = @"SELECT Nome FROM Produto WHERE Id IN @Ids";
+        var query = @"SELECT Nome 
+                      FROM Produto 
+                      WHERE Id IN @Ids
+                      AND IdEmpresa IN (@IdEmpresa, 196)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { Ids = ids };
+            var parameters = new { Ids = ids, IdEmpresa = idEmpresa };
             var result = await connection.QueryAsync<string>(query, parameters);
             return result.ToList();
         }
@@ -96,9 +99,12 @@ public class ProdutoRepository : IProdutoRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id)
+    public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByIdAsync(int? id, int idEmpresa)
     {
-        var obj = await _contextBase.Produto.FindAsync(id);
+        var obj = await _contextBase.Produto
+            .Where(x => x.Id == id &&
+                        (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196))
+            .FirstOrDefaultAsync();
         return obj;
     }
 

@@ -6,9 +6,9 @@ namespace Application.DTOs.Cadastros.Motobomba.Interface
     {
         Task<int> AddAsync(MotobombaViewModel obj, string? idEmpresa);
         Task UpdateAsync(MotobombaViewModel obj);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? idEmpresa);
         Task<IEnumerable<MotobombaViewModel>> GetAllAsync(string? idEmpresa);
-        Task<MotobombaViewModel> GetByIdAsync(int? id);
-        Task<IEnumerable<MotobombaViewModel>> GetByNameAsync(string name);
+        Task<MotobombaViewModel> GetByIdAsync(int? id, string? idEmpresa);
+        Task<IEnumerable<MotobombaViewModel>> GetByNameAsync(string name, string? idEmpresa);
     }
 }

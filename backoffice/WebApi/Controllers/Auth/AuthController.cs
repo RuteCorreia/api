@@ -79,7 +79,7 @@ public class AuthController : ControllerBase
         {
             var result = await _authService.LoginBackofficeAsync(user);
             if (result.Item1)
-                return Ok(new { success = true, token = result.Item2 });
+                return Ok(new { success = true, token = result.Item2, roles = result.Item3, idEmpresa = result.Item4 });
 
             resultError.Clear();
             resultError.Append(result.Item2);

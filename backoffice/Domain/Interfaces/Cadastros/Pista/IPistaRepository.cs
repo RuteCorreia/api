@@ -6,9 +6,9 @@ public interface IPistaRepository
 {
     Task<int> AddAsync(Entidades.Cadastros.Pistas.Pista obj);
     Task UpdateAsync(Entidades.Cadastros.Pistas.Pista obj);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int id, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetAllAsync(int idEmpresa);
-    Task<Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id);
-    Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome);
+    Task<Entidades.Cadastros.Pistas.Pista> GetByIdAsync(int id, int idEmpresa);
+    Task<IEnumerable<Domain.Entidades.Cadastros.Pistas.Pista>> GetByNameAsync(string nome, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Pistas.Pista>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

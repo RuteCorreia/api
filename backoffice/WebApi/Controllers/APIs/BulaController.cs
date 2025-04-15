@@ -61,7 +61,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            var bula = await _bulaService.GetByIdAsync(id);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var bula = await _bulaService.GetByIdAsync(id, loggedUser.Item3);
             if (!ObjectNullValidation.IsObjectNull(bula))
             {
                 _loggerService.LogInformation($"A Bula com ID {id} foi recuperada com sucesso.");
@@ -106,7 +107,8 @@ public class BulaController : ControllerBase
     {
         try
         {
-            await _bulaService.RemoveRecomendacaoAsync(idBula);
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            await _bulaService.RemoveRecomendacaoAsync(idBula, loggedUser.Item3);
             _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
             return Ok();
         }
@@ -135,14 +137,18 @@ public class BulaController : ControllerBase
     }
 
     [HttpGet("GetBulas/{*nomeProduto}")]
-    public async Task<ActionResult<List<int>>> GetBulas(string? nomeProduto)
+    public async Task<ActionResult<List<(int, int)>>> GetBulas(string? nomeProduto)
     {
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var bulas = await _bulaService.GetDistinctBulaAsync(loggedUser.Item3, nomeProduto);
             _loggerService.LogInformation("Todos os registros de Bulas foram recuperados com sucesso.");
-            return Ok(bulas);
+            return Ok(bulas.Select(b => new
+            {
+                Id = b.Item1,
+                IdEmpresa = b.Item2
+            }));
         }
         catch (Exception ex)
         {
@@ -232,9 +238,11 @@ public class BulaController : ControllerBase
     {
         try
         {
-            if (id != 0)
+            var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+            var objeto = await _bulaService.GetByIdAsync(id, loggedUser.Item3);
+            if (!ObjectNullValidation.IsObjectNull(objeto))
             {
-                await _bulaService.DeleteAsync(id);
+                await _bulaService.DeleteAsync(id, loggedUser.Item3);
                 _loggerService.LogInformation($"Bula com ID {id} deletada com sucesso.");
                 return Ok();
             }

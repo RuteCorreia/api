@@ -70,7 +70,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var produto = await _produtoService.GetByIdAppAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produto = await _produtoService.GetByIdAppAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(produto))
                 {
                     _logService.LogInformation("Produto recuperado com sucesso.");
@@ -92,7 +93,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var produto = await _produtoService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produto = await _produtoService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(produto))
                 {
                     _logService.LogInformation("Produto recuperado com sucesso.");
@@ -174,7 +176,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _produtoService.GetByIdAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var objeto = await _produtoService.GetByIdAsync(id, loggedUser.Item3);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
@@ -205,9 +208,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var objeto = await _produtoService.GetByIdAsync(id, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _produtoService.DeleteAsync(id);
+                    await _produtoService.DeleteAsync(id, loggedUser.Item3);
                     _logService.LogInformation("Produto deletado com sucesso.");
                     return Ok();
                 }
@@ -227,7 +232,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var produtos = await _produtoService.GetNomesByIdsAsync(ids);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var produtos = await _produtoService.GetNomesByIdsAsync(ids, loggedUser.Item3);
                 _logService.LogInformation("Lista de produtos recuperada com sucesso.");
                 return Ok(produtos);
             }
