@@ -43,7 +43,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var motobomba = await _motobombaService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var motobomba = await _motobombaService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(motobomba))
                 {
                     return Ok(motobomba);
@@ -66,8 +67,9 @@ namespace WebApi.Controllers.APIs
                 {
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
-
-                var motobombas = await _motobombaService.GetByNameAsync(name);
+                
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var motobombas = await _motobombaService.GetByNameAsync(name, loggedUser.Item3);
 
                 if (motobombas.Any())
                 {
@@ -111,7 +113,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _motobombaService.GetByIdAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var objeto = await _motobombaService.GetByIdAsync(id, loggedUser.Item3);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
@@ -138,9 +141,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var objeto = await _motobombaService.GetByIdAsync(id, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _motobombaService.DeleteAsync(id);
+                    await _motobombaService.DeleteAsync(id, loggedUser.Item3);
                     return Ok();
                 }
 

@@ -6,13 +6,13 @@ public interface IPistaService
 {
     Task<IEnumerable<PistaViewModel>> GetAllAsync(string? idEmpresa);
 
-    Task<PistaViewModel> GetByIdAsync(int id);
-    Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name);
+    Task<PistaViewModel> GetByIdAsync(int id, string? idEmpresa);
+    Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name, string? idEmpresa);
     Task<IEnumerable<PistaAppViewModel>> GetAllAppAsync(string? idEmpresa);
 
     Task<int> AddAsync(PistaViewModel obj);
 
     Task UpdateAsync(PistaViewModel obj);
 
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int id, string? idEmpresa);
 }

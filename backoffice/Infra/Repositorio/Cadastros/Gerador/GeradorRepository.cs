@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Gerador;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Gerador;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -28,9 +29,9 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return obj.Id;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int idEmpresa)
         {
-            var entityToRemove = await GetByIdAsync(id);
+            var entityToRemove = await GetByIdAsync(id, idEmpresa);
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
                 _contextBase.Remove(entityToRemove);
@@ -46,23 +47,23 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.Gerador.Gerador> GetByIdAsync(int? id)
+        public async Task<Domain.Entidades.Cadastros.Gerador.Gerador> GetByIdAsync(int? id, int idEmpresa)
         {
-            var obj = await _contextBase.Geradores.FindAsync(id);
+            var obj = await _contextBase.Geradores.FirstOrDefaultAsync(x => x.Id == id && x.IdEmpresa == idEmpresa);
             return obj;
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Gerador.Gerador>> GetByNameAsync(string nome)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Gerador.Gerador>> GetByNameAsync(string nome, int idEmpresa)
         {
             if (string.IsNullOrEmpty(nome))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
             }
-            var pistas = await _contextBase.Geradores
-                .Where(p => p.NomeGerador.Contains(nome))
+            var geradores = await _contextBase.Geradores
+                .Where(x => x.NomeGerador.Contains(nome) && x.IdEmpresa == idEmpresa)
                 .ToListAsync();
 
-            return pistas;
+            return geradores;
         }
 
         public async Task UpdateHorasAtualAsync(int? id, long? horasAtual, DateTime? dataUltimaTroca)

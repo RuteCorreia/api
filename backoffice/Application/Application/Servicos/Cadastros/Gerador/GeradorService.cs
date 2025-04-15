@@ -28,9 +28,10 @@ namespace Application.Application.Servicos.Cadastros.Gerador
             return await _geradorRepository.AddAsync(mapGerador);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            await _geradorRepository.DeleteAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            await _geradorRepository.DeleteAsync(id, idEmpresaInt);
         }
 
         public async Task<IEnumerable<GeradorViewModel>> GetAllAsync(string? idEmpresa)
@@ -45,20 +46,22 @@ namespace Application.Application.Servicos.Cadastros.Gerador
             return _mapper.Map<IEnumerable<GeradorViewModel>>(list);
         }
 
-        public async Task<IEnumerable<GeradorViewModel>> GetByNameAsync(string name)
+        public async Task<IEnumerable<GeradorViewModel>> GetByNameAsync(string name, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
             }
-            var geradores = await _geradorRepository.GetByNameAsync(name);
+            var geradores = await _geradorRepository.GetByNameAsync(name, idEmpresaInt);
 
             return geradores.Select(p => _mapper.Map<GeradorViewModel>(p));
         }
 
-        public async Task<GeradorViewModel> GetByIdAsync(int? id)
+        public async Task<GeradorViewModel> GetByIdAsync(int? id, string? idEmpresa)
         {
-            var obj = await _geradorRepository.GetByIdAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var obj = await _geradorRepository.GetByIdAsync(id, idEmpresaInt);
             obj.QuantidadeHoras = obj.QuantidadeHoras / 3600000;
             obj.QuantidadeHorasTroca = obj.QuantidadeHorasTroca / 3600000;
             return _mapper.Map<GeradorViewModel>(obj);

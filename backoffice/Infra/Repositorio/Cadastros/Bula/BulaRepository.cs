@@ -1,7 +1,4 @@
 ﻿using Dapper;
-using Domain.Entidades.Cadastros.Cultura;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Bula;
 using Helpers;
 using Infra.Configuracao;
@@ -42,9 +39,9 @@ public class BulaRepository : IBulaRepository
         
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
-        var entityToRemoveOrDeactivate = await GetByIdAsync(id);
+        var entityToRemoveOrDeactivate = await GetByIdAsync(id, idEmpresa);
         if(!ObjectNullValidation.IsObjectNull(entityToRemoveOrDeactivate))
         {
             var hasFk = await _contextBase.BulaAplicacao
@@ -76,9 +73,13 @@ public class BulaRepository : IBulaRepository
         }
     }
 
-    public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id)
+    public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByIdAsync(int id, int idEmpresa)
     {
-        var obj = await _contextBase.Bula.FirstOrDefaultAsync(x => !x.Removido && x.IdProduto == id);
+        var obj = await _contextBase.Bula
+            .FirstOrDefaultAsync(
+                x => !x.Removido && 
+                     x.IdProduto == id && 
+                     (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196));
         return obj;
     }
 
@@ -97,7 +98,7 @@ public class BulaRepository : IBulaRepository
 
     public async Task<Domain.Entidades.Cadastros.Empresa.Bula> GetByNameAsync(string name, int idEmpresa)
     {
-        var idEmpresaAdministracao = 21;
+        var idEmpresaAdministracao = 196;
         var obj = await _contextBase.Bula
             .FirstOrDefaultAsync(x => x.NomeProduto == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == idEmpresaAdministracao) && !x.Removido);
         return obj;
@@ -114,9 +115,10 @@ public class BulaRepository : IBulaRepository
         await _contextBase.SaveChangesAsync();
     }
 
-    public async Task RemoveRecomendacaoAsync(int idBula)
+    public async Task RemoveRecomendacaoAsync(int idBula, int idEmpresa)
     {
-        var objeto = await _contextBase.Bula.FindAsync(idBula);
+        var objeto = await _contextBase.Bula
+            .FirstOrDefaultAsync(x => x.IdBula == idBula && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196));
         objeto.Removido = true;
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
@@ -139,12 +141,12 @@ public class BulaRepository : IBulaRepository
             await _contextBase.SaveChangesAsync();
         }
     }
-    public async Task<IEnumerable<int>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto)
+    public async Task<IEnumerable<(int, int)>> GetDistinctBulaAsync(int idEmpresa, string? nomeProduto)
     {
         if (nomeProduto == null)
             nomeProduto = "";
 
-        var query = @"SELECT DISTINCT(b.IdProduto) 
+        var query = @"SELECT DISTINCT b.IdProduto, b.IdEmpresa
                   FROM Bula b 
                   INNER JOIN Produto p ON p.Id = b.IdProduto 
                   WHERE p.Nome LIKE @NomeProduto 
@@ -160,7 +162,7 @@ public class BulaRepository : IBulaRepository
                 NomeProduto = $"%{nomeProduto}%" // Adiciona os curingas para o LIKE
             };
 
-            var result = await connection.QueryAsync<int>(query, parameters);
+            var result = await connection.QueryAsync<(int, int)>(query, parameters);
             return result.ToList();
         }
     }

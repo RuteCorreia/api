@@ -66,19 +66,21 @@ public class PistaService : IPistaService
         return decimalDegrees;
     }
 
-    public async Task<PistaViewModel> GetByIdAsync(int id)
+    public async Task<PistaViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var obj = await _pistaRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _pistaRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<PistaViewModel>(obj);
     }
 
-    public async Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name)
+    public async Task<IEnumerable<PistaViewModel>> GetByNameAsync(string name, string? idEmpresa)
     {
         if (string.IsNullOrEmpty(name))
         {
             throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
         }
-        var pistas = await _pistaRepository.GetByNameAsync(name);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var pistas = await _pistaRepository.GetByNameAsync(name, idEmpresaInt);
 
         return pistas.Select(p => _mapper.Map<PistaViewModel>(p));
     }
@@ -95,8 +97,9 @@ public class PistaService : IPistaService
         await _pistaRepository.UpdateAsync(mapPista);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        await _pistaRepository.DeleteAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _pistaRepository.DeleteAsync(id, idEmpresaInt);
     }
 }

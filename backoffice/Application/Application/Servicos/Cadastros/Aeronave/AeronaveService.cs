@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.Aeronave.Interface;
 using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using AutoMapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Enums;
 using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.Empresa;
@@ -58,13 +59,13 @@ public class AeronaveService : IAeronaveService
 
             aeronaveViewModels.Add(aeronaveViewModel);
         }
-
         return aeronaveViewModels;
     }
 
-    public async Task<AeronaveViewModel> GetByIdAsync(int id)
+    public async Task<AeronaveViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var obj = await _aeronaveRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _aeronaveRepository.GetByIdAsync(id, idEmpresaInt);
 
         if (obj == null)
         {
@@ -140,8 +141,9 @@ public class AeronaveService : IAeronaveService
         return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        await _aeronaveRepository.DeleteAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _aeronaveRepository.DeleteAsync(id, idEmpresaInt);
     }
 }

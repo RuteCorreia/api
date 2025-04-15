@@ -71,14 +71,16 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var aeronave = await _aeronaveService.GetByIdAsync(id);
-                var manutencao = await _manutencaoAeronaveService.GetByIdAeronaveAsync(id);
-                var componentes = await _componentesService.GetByIdAeronaveAsync(id);
-                aeronave.ItensRevisao = manutencao.SelectMany(s => s.ItensRevisao);
-                aeronave.Componentes = componentes;
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var aeronave = await _aeronaveService.GetByIdAsync(id, loggedUser.Item3);
 
                 if (!ObjectNullValidation.IsObjectNull(aeronave))
                 {
+                    var manutencao = await _manutencaoAeronaveService.GetByIdAeronaveAsync(id);
+                    var componentes = await _componentesService.GetByIdAeronaveAsync(id);
+                    aeronave.ItensRevisao = manutencao.SelectMany(s => s.ItensRevisao);
+                    aeronave.Componentes = componentes;
+
                     _logService.LogInformation($"Aeronave com ID {id} foi recuperada com sucesso.");
                     return Ok(aeronave);
                 }
@@ -141,7 +143,7 @@ namespace WebApi.Controllers.APIs
                 {
                     if (ModelState.IsValid)
                     {
-                        var objeto = await _aeronaveService.GetByIdAsync(id);
+                        var objeto = await _aeronaveService.GetByIdAsync(id, loggedUser.Item3);
                         if (!ObjectNullValidation.IsObjectNull(objeto))
                         {
                             obj.Id = objeto.Id;
@@ -196,9 +198,12 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var aeronave = await _aeronaveService.GetByIdAsync(id, loggedUser.Item3);
+
+                if (!ObjectNullValidation.IsObjectNull(aeronave))
                 {
-                    await _aeronaveService.DeleteAsync(id);
+                    await _aeronaveService.DeleteAsync(id, loggedUser.Item3);
                     _logService.LogInformation($"Aeronave com ID {id} excluída com sucesso.");
                     return Ok();
                 }

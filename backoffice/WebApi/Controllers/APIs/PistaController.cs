@@ -71,7 +71,9 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var pista = await _pistaService.GetByIdAsync(id);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+
+                var pista = await _pistaService.GetByIdAsync(id, loggedUser.Item3);
                 if (!ObjectNullValidation.IsObjectNull(pista))
                 {
                     _logService.LogInformation("Pista recuperada com sucesso.");
@@ -98,8 +100,8 @@ namespace WebApi.Controllers.APIs
                     _logService.LogWarning("O nome fornecido é nulo ou vazio.");
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
-
-                var pistas = await _pistaService.GetByNameAsync(name);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var pistas = await _pistaService.GetByNameAsync(name, loggedUser.Item3);
 
                 if (pistas.Any())
                 {
@@ -149,7 +151,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _pistaService.GetByIdAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var objeto = await _pistaService.GetByIdAsync(id, loggedUser.Item3);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
@@ -179,9 +182,12 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var pista = await _pistaService.GetByIdAsync(id, loggedUser.Item3);
+
+                if (!ObjectNullValidation.IsObjectNull(pista))
                 {
-                    await _pistaService.DeleteAsync(id);
+                    await _pistaService.DeleteAsync(id, loggedUser.Item3);
                     _logService.LogInformation("Pista deletada com sucesso.");
                     return Ok();
                 }

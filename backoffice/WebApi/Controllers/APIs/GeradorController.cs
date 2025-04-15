@@ -47,10 +47,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                var bateria = await _geradorService.GetByIdAsync(id);
-                if (!ObjectNullValidation.IsObjectNull(bateria))
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var gerador = await _geradorService.GetByIdAsync(id, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(gerador))
                 {
-                    return Ok(bateria);
+                    return Ok(gerador);
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, "Não encontrado");
@@ -71,7 +72,8 @@ namespace WebApi.Controllers.APIs
                     return BadRequest("O nome não pode ser nulo ou vazio.");
                 }
 
-                var geradores = await _geradorService.GetByNameAsync(name);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var geradores = await _geradorService.GetByNameAsync(name, loggedUser.Item3);
 
                 if (geradores.Any())
                 {
@@ -115,7 +117,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (ModelState.IsValid)
                 {
-                    var objeto = await _geradorService.GetByIdAsync(id);
+                    var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    var objeto = await _geradorService.GetByIdAsync(id, loggedUser.Item3);
                     if (!ObjectNullValidation.IsObjectNull(objeto))
                     {
                         obj.Id = objeto.Id;
@@ -142,9 +145,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                if (id != 0)
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var objeto = await _geradorService.GetByIdAsync(id, loggedUser.Item3);
+                if (!ObjectNullValidation.IsObjectNull(objeto))
                 {
-                    await _geradorService.DeleteAsync(id);
+                    await _geradorService.DeleteAsync(id, loggedUser.Item3);
                     return Ok();
                 }
 

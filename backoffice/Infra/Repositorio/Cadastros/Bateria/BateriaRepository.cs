@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Cadastros.Bateria;
+﻿using Domain.Entidades.Cadastros.Empresa;
+using Domain.Interfaces.Cadastros.Bateria;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +28,9 @@ namespace Infra.Repositorio.Cadastros.Bateria
             return obj.Id;
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int idEmpresa)
         {
-            var entityToRemove = await GetByIdAsync(id);
+            var entityToRemove = await GetByIdAsync(id, idEmpresa);
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
                 _contextBase.Remove(entityToRemove);
@@ -45,20 +46,21 @@ namespace Infra.Repositorio.Cadastros.Bateria
             return entities;
         }
 
-        public async Task<Domain.Entidades.Cadastros.Bateria.Bateria> GetByIdAsync(int? id)
+        public async Task<Domain.Entidades.Cadastros.Bateria.Bateria> GetByIdAsync(int? id, int idEmpresa)
         {
-            var obj = await _contextBase.Baterias.FindAsync(id);
+            var obj = await _contextBase.Baterias
+                .FirstOrDefaultAsync(x => x.Id == id && x.IdEmpresa == idEmpresa);
             return obj;
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Bateria.Bateria>> GetByNameAsync(string nome)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Bateria.Bateria>> GetByNameAsync(string nome, int idEmpresa)
         {
             if (string.IsNullOrEmpty(nome))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(nome));
             }
             var baterias = await _contextBase.Baterias
-                .Where(p => p.NomeBateria.Contains(nome))
+                .Where(x => x.NomeBateria.Contains(nome) && x.IdEmpresa == idEmpresa)
                 .ToListAsync();
 
             return baterias;

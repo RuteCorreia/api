@@ -73,12 +73,13 @@ public class CombateIncendioService : ICombateIncendioService
         }
     }
 
-    public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id)
+    public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var ci = await _combateIncendioRepository.ExportExcelAsync(id);
         var cidp = await _combateIncendioDecolagemPousoRepository.GetByCombateIncendioIdAsync(id);
         var qtdExecucao = cidp?.Count() ?? 0;
-        var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave);
+        var aeronave = await _aeronaveRepository.GetByIdAsync(ci.IdAeronave, idEmpresaInt);
         var tipoAeronave = "";
         string capacidadeString = ci.CapacidadeCargaAeronave;
         string capacidadeSemPonto = capacidadeString.Replace(".", "");

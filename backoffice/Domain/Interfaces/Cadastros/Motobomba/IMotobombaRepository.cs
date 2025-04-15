@@ -4,11 +4,11 @@
     {
         Task<int> AddAsync(Entidades.Cadastros.Motobomba.Motobomba obj);
         Task UpdateAsync(Entidades.Cadastros.Motobomba.Motobomba obj);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, int idEmpresa);
         Task<IEnumerable<Entidades.Cadastros.Motobomba.Motobomba>> GetAllAsync(int idEmpresa);
-        Task<Entidades.Cadastros.Motobomba.Motobomba> GetByIdAsync(int? id);
+        Task<Entidades.Cadastros.Motobomba.Motobomba> GetByIdAsync(int? id, int idEmpresa);
         Task UpdateUltimaTrocaOleoAsync(int? id, DateTime? dataUltimaTroca);
-        Task<IEnumerable<Entidades.Cadastros.Motobomba.Motobomba>> GetByNameAsync(string nome);
+        Task<IEnumerable<Entidades.Cadastros.Motobomba.Motobomba>> GetByNameAsync(string nome, int idEmpresa);
         Task<IEnumerable<Entidades.Cadastros.Motobomba.Motobomba>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
     }
 }

@@ -6,9 +6,9 @@ public interface IAeronaveRepository
 {
     Task AddAsync(Entidades.Cadastros.Aeronave.Aeronave obj);
     Task UpdateAsync(Entidades.Cadastros.Aeronave.Aeronave obj);
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int id, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetAllAsync(int idEmpresa);
-    Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id);
+    Task<Entidades.Cadastros.Aeronave.Aeronave> GetByIdAsync(int? id, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetByNameAsync(string name, int idEmpresa);
     Task<IEnumerable<Entidades.Cadastros.Aeronave.Aeronave>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao);
 }

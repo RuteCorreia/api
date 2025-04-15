@@ -7,9 +7,9 @@ namespace Application.DTOs.Cadastros.Bateria.Interface
     {
         Task<int> AddAsync(BateriaViewModel obj, string? idEmpresa);
         Task UpdateAsync(BateriaViewModel obj);
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? idEmpresa);
         Task<IEnumerable<BateriaViewModel>> GetAllAsync(string? idEmpresa);
-        Task<BateriaViewModel> GetByIdAsync(int? id);
-        Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name);
+        Task<BateriaViewModel> GetByIdAsync(int? id, string? idEmpresa);
+        Task<IEnumerable<BateriaViewModel>> GetByNameAsync(string name, string? idEmpresa);
     }
 }

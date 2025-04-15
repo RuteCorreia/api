@@ -46,6 +46,7 @@ namespace WebApi.Controllers.ExportExcel
         {
             try
             {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 if (relatorioInfo == null || relatorioInfo.Count == 0)
                 {
                     return BadRequest("Nenhum ID fornecido para exportação.");
@@ -64,7 +65,7 @@ namespace WebApi.Controllers.ExportExcel
                     }
                     else if(relatorio.NomeRelatorio.StartsWith("Combate Incendio"))
                     {
-                        var relatorioIncendio = await _combateIncendioService.ExportExcelAsync(relatorio.Id);
+                        var relatorioIncendio = await _combateIncendioService.ExportExcelAsync(relatorio.Id, loggedUser.Item3);
                         await _combateIncendioService.UpdateDataAlteracaoAsync(relatorio.Id);
                         relatorios.Add(relatorioIncendio);
                     }
@@ -165,9 +166,6 @@ namespace WebApi.Controllers.ExportExcel
                         await stream.CopyToAsync(entryStream);
                     }
                 }
-                
-
-                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
                 var existingFile = await _exportacaoPlanilhaService.GetFileByNameAsync(loggedUser.Item3,nomeZip);
                 if (existingFile != null)

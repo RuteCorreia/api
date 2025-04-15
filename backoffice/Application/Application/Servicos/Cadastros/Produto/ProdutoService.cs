@@ -1,11 +1,8 @@
 ﻿using Application.DTOs.Cadastros.Produto.Interface;
 using Application.DTOs.Cadastros.Produto.ViewModel;
 using AutoMapper;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.Produto;
 using Domain.Interfaces.Cadastros.Produto;
 using Helpers;
-using System.Collections.Immutable;
 
 namespace Application.Application.Servicos.Cadastros.Produto;
 
@@ -44,15 +41,17 @@ public class ProdutoService : IProdutoService
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
     }
 
-    public async Task<ProdutoViewModel> GetByIdAsync(int id)
+    public async Task<ProdutoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var obj = await _produtoRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _produtoRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<ProdutoViewModel>(obj);
     }
 
-    public async Task<ProdutoViewModel> GetByIdAppAsync(int id)
+    public async Task<ProdutoViewModel> GetByIdAppAsync(int id, string? idEmpresa)
     {
-        var obj = await _produtoRepository.GetByIdAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var obj = await _produtoRepository.GetByIdAsync(id, idEmpresaInt);
         if (!string.IsNullOrEmpty(obj.ClassificacaoToxicologica) && obj.ClassificacaoToxicologica.Contains("Categoria"))
         {
             var categoria = obj.ClassificacaoToxicologica.Split('-')[0]
@@ -77,9 +76,10 @@ public class ProdutoService : IProdutoService
         await _produtoRepository.UpdateAsync(mapProduto);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        await _produtoRepository.DeleteAsync(id);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        await _produtoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<string>> GetClasses(string? idEmpresa)
@@ -88,9 +88,10 @@ public class ProdutoService : IProdutoService
         return await _produtoRepository.GetClasses(idEmpresaInt);
     }
 
-    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids)
+    public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids, string? idEmpresa)
     {
-        return await _produtoRepository.GetNomesByIdsAsync(ids);
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        return await _produtoRepository.GetNomesByIdsAsync(ids, idEmpresaInt);
     }
 
     public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe, string? idEmpresa)

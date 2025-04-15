@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.Cadastros.Motobomba.Interface;
 using Application.DTOs.Cadastros.Motobomba.ViewModel;
-using Application.DTOs.Cadastros.Pistas.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Motobomba;
 using Helpers;
@@ -26,9 +25,10 @@ namespace Application.Application.Servicos.Cadastros.Motobomba
             return await _motobombaRepository.AddAsync(mapMotobomba);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            await _motobombaRepository.DeleteAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            await _motobombaRepository.DeleteAsync(id, idEmpresaInt);
         }
 
         public async Task<IEnumerable<MotobombaViewModel>> GetAllAsync(string? idEmpresa)
@@ -39,20 +39,22 @@ namespace Application.Application.Servicos.Cadastros.Motobomba
             return _mapper.Map<IEnumerable<MotobombaViewModel>>(list);
         }
 
-        public async Task<IEnumerable<MotobombaViewModel>> GetByNameAsync(string name)
+        public async Task<IEnumerable<MotobombaViewModel>> GetByNameAsync(string name, string? idEmpresa)
         {
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
             }
-            var motobombaes = await _motobombaRepository.GetByNameAsync(name);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var motobombas = await _motobombaRepository.GetByNameAsync(name, idEmpresaInt);
 
-            return motobombaes.Select(p => _mapper.Map<MotobombaViewModel>(p));
+            return motobombas.Select(p => _mapper.Map<MotobombaViewModel>(p));
         }
 
-        public async Task<MotobombaViewModel> GetByIdAsync(int? id)
+        public async Task<MotobombaViewModel> GetByIdAsync(int? id, string? idEmpresa)
         {
-            var obj = await _motobombaRepository.GetByIdAsync(id);
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var obj = await _motobombaRepository.GetByIdAsync(id, idEmpresaInt);
 
             return _mapper.Map<MotobombaViewModel>(obj);
         }

@@ -5,7 +5,7 @@ namespace Application.DTOs.Users.Interface;
 public interface IUserAuthService
 {
     Task<(bool, string)> LoginAsync(UserLoginViewModel user);
-    Task<(bool, string)> LoginBackofficeAsync(UserLoginViewModel user);
+    Task<(bool, string, IList<string>, int?)> LoginBackofficeAsync(UserLoginViewModel user);
     Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel user, string loggedUserId);
     Task<(bool, string)> RegisterUserFromEmpresaAsync(UserRegisterViewModel user, int? idEmpresa);
     Task<(bool, string)> ChangeUserPasswordAsync(UserChangePasswordViewModel user);
