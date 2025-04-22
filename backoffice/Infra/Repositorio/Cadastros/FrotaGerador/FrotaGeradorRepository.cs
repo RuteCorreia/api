@@ -43,7 +43,8 @@ namespace Infra.Repositorio.Cadastros.FrotaGerador
         public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>> GetByIdAsync(int? id)
         {
             var entities = await _contextBase.FrotaGeradores
-                                    .Where(ab => ab.Id == id)
+                                    .Where(ab => ab.IdFrota == id)
+                                    .Include(ab => ab.Gerador)
                                     .ToListAsync();
             return entities;
         }

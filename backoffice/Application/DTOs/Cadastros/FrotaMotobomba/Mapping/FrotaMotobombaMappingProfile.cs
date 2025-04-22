@@ -8,7 +8,8 @@ namespace Application.DTOs.Cadastros.FrotaMotobomba.Mapping
         public FrotaMotobombaMappingProfile()
         {
             CreateMap<FrotaMotobombaViewModel, Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba>();
-            CreateMap<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba, FrotaMotobombaViewModel>();
+            CreateMap<Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba, FrotaMotobombaViewModel>()
+                .ForMember(dest => dest.NomeMotobomba, opt => opt.MapFrom(src => src.Motobomba != null ? src.Motobomba.Nome : null)); ;
         }
     }
 }

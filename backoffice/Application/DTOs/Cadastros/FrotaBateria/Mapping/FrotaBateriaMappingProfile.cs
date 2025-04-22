@@ -9,7 +9,8 @@ namespace Application.DTOs.Cadastros.FrotaBateria.Mapping
         public FrotaBateriaMappingProfile()
         {
             CreateMap<FrotaBateriaViewModel, Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>();
-            CreateMap<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria, FrotaBateriaViewModel>();
+            CreateMap<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria, FrotaBateriaViewModel>()
+                .ForMember(dest => dest.NumeroBateria, opt => opt.MapFrom(src => src.Bateria != null ? src.Bateria.NumeroBateria : null)); ;
         }
     }
 }

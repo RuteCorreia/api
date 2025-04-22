@@ -14,7 +14,8 @@ namespace Application.DTOs.Cadastros.FrotaGerador.Mapping
         public FrotaGeradorMappingProfile()
         {
             CreateMap<FrotaGeradorViewModel, Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>();
-            CreateMap<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador, FrotaGeradorViewModel>();
+            CreateMap<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador, FrotaGeradorViewModel>()
+                .ForMember(dest => dest.NomeGerador, opt => opt.MapFrom(src => src.Gerador != null ? src.Gerador.NomeGerador : null));
         }
     }
 }

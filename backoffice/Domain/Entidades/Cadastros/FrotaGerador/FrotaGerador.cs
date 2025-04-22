@@ -20,7 +20,6 @@ namespace Domain.Entidades.Cadastros.FrotaGerador
         public string? CheckList { get; set; }
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
-        [JsonIgnore]
         public virtual Gerador.Gerador? Gerador { get; set; }
         [JsonIgnore]
         public virtual Controle_De_Frota.ControleDeFrota? ControleDeFrota { get; set; }

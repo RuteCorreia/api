@@ -44,6 +44,7 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
         {
             var entities = await _contextBase.FrotaMotobombas
                                     .Where(ab => ab.IdFrota == id)
+                                    .Include(ab => ab.Motobomba)
                                     .ToListAsync();
             return entities;
         }

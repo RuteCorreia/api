@@ -43,7 +43,8 @@ namespace Infra.Repositorio.Cadastros.FrotaBateria
         public async Task<IEnumerable<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>> GetByIdAsync(int? id)
         {
             var entities = await _contextBase.FrotaBaterias
-                                    .Where(fb => fb.Id == id)
+                                    .Where(fb => fb.IdFrota == id)
+                                    .Include(fb => fb.Bateria)
                                     .ToListAsync();
             return entities;
         }
