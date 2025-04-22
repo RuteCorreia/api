@@ -135,7 +135,6 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             sincronizacao.Clientes = _mapper.Map<IEnumerable<ClienteViewModel>>(await _clienteRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Culturas = _mapper.Map<IEnumerable<CulturaViewModel>>(await _culturaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Equipamentos = _mapper.Map<IEnumerable<EquipamentoViewModel>>(await _equipamentoRepository.GetByDateAsync(dataUltimaSincronizacao));
-            sincronizacao.Geradores = _mapper.Map<IEnumerable<GeradorViewModel>>(await _geradoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Pistas = _mapper.Map<IEnumerable<PistaViewModel>>(await _pistaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Produtos = _mapper.Map<IEnumerable<ProdutoViewModel>>(await _produtoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.TiposDeFormulacao = _mapper.Map<IEnumerable<TipoDeFormulacaoViewModel>>(await _tipoDeFormulacaoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
@@ -148,6 +147,15 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             sincronizacao.Executores = _mapper.Map<IEnumerable<ExecutorViewModel>>(await _executoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Pilotos = _mapper.Map<IEnumerable<PilotoViewModel>>(await _pilotoRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
             sincronizacao.Motobombas = _mapper.Map<IEnumerable<MotobombaViewModel>>(await _motobombaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
+
+            var geradores = await _geradoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
+            foreach (var gerador in geradores)
+            {
+                gerador.QuantidadeHoras = gerador.QuantidadeHoras / 3600000;
+                gerador.QuantidadeHorasTroca = gerador.QuantidadeHorasTroca / 3600000;
+            }
+
+            sincronizacao.Geradores = _mapper.Map<IEnumerable<GeradorViewModel>>(geradores);
 
             return sincronizacao;
         }

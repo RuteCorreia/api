@@ -1,5 +1,6 @@
 ﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
+using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
@@ -7,6 +8,7 @@ using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.User;
 using Helpers;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 
@@ -36,6 +38,25 @@ public class ControleDeFrotaService : IControleDeFrotaService
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, idEmpresaInt);
+
+        foreach (var item in list)
+        {
+            if (!item.Imagem.IsNullOrEmpty())
+            {
+                var imagemFrotas = await _blobStorageRepository.GetPdfAsync(item.Imagem);
+                string imagemBase64 = "";
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imagemFrotas.CopyToAsync(memoryStream);
+                    var byteArray = memoryStream.ToArray();
+                    imagemBase64 = Convert.ToBase64String(byteArray);
+                }
+
+                item.Imagem = imagemBase64;
+
+            }
+        }
+
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
