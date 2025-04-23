@@ -4,6 +4,7 @@
     {
         public int? Id { get; set; }
         public int? IdGerador { get; set; }
+        public string? NomeGerador { get; set; }
         public int? IdFrota { get; set; }
         public DateTime? CreatedAt { get; set; }
         public double? HoraInicio { get; set; }

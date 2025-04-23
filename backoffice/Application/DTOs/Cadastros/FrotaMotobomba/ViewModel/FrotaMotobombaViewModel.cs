@@ -10,5 +10,6 @@
         public double? LitrosGasolina { get; set; }
         public string? CheckList { get; set; }
         public int? IdEmpresa { get; set; }
+        public string? NomeMotobomba { get; set; }
     }
 }

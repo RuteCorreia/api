@@ -10,6 +10,8 @@ namespace Domain.Entidades.Cadastros.FrotaMotobomba
         public int Id { get; set; }
         [ForeignKey("ControleDeFrota")]
         public int? IdFrota { get; set; }
+        [ForeignKey("Motobomba")]
+        public int? IdMotobomba { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string? Identificacao { get; set; }
         public double? LitrosOleo { get; set; }
@@ -17,7 +19,7 @@ namespace Domain.Entidades.Cadastros.FrotaMotobomba
         public string? CheckList { get; set; }
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
-
+        public virtual Motobomba.Motobomba? Motobomba { get; set; }
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
         [JsonIgnore]

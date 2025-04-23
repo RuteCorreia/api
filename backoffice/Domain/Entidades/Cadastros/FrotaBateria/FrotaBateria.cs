@@ -20,7 +20,6 @@ namespace Domain.Entidades.Cadastros.FrotaBateria
 
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
-        [JsonIgnore]
         public virtual Bateria.Bateria? Bateria { get; set; }
         [JsonIgnore]
         public virtual Controle_De_Frota.ControleDeFrota? ControleDeFrota { get; set; }
