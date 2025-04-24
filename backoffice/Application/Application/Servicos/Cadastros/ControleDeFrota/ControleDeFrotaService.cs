@@ -34,10 +34,11 @@ public class ControleDeFrotaService : IControleDeFrotaService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? idEmpresa)
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? userId, IEnumerable<string>? roleNames, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-        var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, idEmpresaInt);
+        var user = await _usuarioRepository.GetByUserIdAsync(userId);
+        var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
 
         foreach (var item in list)
         {

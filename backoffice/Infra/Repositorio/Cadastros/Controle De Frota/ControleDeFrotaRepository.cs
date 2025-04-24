@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 using Infra.Configuracao;
@@ -61,9 +62,13 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(DateTime? offsetDate, int idEmpresa)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetAllAsync(
+        DateTime? offsetDate,
+        string userName,
+        IEnumerable<string>? roleNames,
+        int IdEmpresa)
     {
-        string query = "SELECT * FROM ControleDeFrota WHERE StatusEnvio <> 4 AND IdEmpresa = @IdEmpresa";
+        string query = "SELECT * FROM ControleDeFrota WHERE StatusEnvio <> 4";
 
         if (offsetDate != null)
         {
@@ -71,10 +76,20 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
                      "OR CONVERT(VARCHAR, DataCriacao, 120) > CONVERT(VARCHAR, @offsetDate, 120))";
         }
 
+        query += " AND IdEmpresa = @IdEmpresa";
+
+        if (roleNames != null && (!roleNames.Contains("Administrativo") && !roleNames.Contains("Administrativo") && !roleNames.Contains("Administrador")))
+        {
+            query += " AND (NomeExecutor = @Executor OR NomePiloto = @Piloto)";
+        }
+
+
         var parameters = new
         {
-            offsetDate = offsetDate,
-            IdEmpresa = idEmpresa
+            offsetDate,
+            Executor = userName,
+            Piloto = userName,
+            IdEmpresa
         };
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
