@@ -45,7 +45,7 @@ public class ControleDeFrotaController : ControllerBase
         try
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            var relatorios = await _controleDeFrotaService.GetAllAsync(date, loggedUser.Item3);
+            var relatorios = await _controleDeFrotaService.GetAllAsync(date, loggedUser.Item1, loggedUser.Item2, loggedUser.Item3);
             return Ok(relatorios);
         }
         catch (Exception ex)
