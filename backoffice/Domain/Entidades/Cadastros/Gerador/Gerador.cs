@@ -9,7 +9,7 @@ namespace Domain.Entidades.Cadastros.Gerador
         [Key]
         public int Id { get; set; }
         public string NomeGerador { get; set; }
-        public long QuantidadeHoras { get; set; }
+        public decimal QuantidadeHoras { get; set; }
         public DateTime DataUltimaTrocaOleo { get; set; }
         public long QuantidadeHorasTroca { get; set; }
         [ForeignKey("Empresa")]
