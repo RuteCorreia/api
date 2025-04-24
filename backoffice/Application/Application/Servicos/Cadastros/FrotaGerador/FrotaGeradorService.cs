@@ -26,14 +26,13 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var mapFrotaGerador = _mapper.Map<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>(obj);
             mapFrotaGerador.IdEmpresa = idEmpresaInt;
-            mapFrotaGerador.HorasUso = mapFrotaGerador.HoraFim - mapFrotaGerador.HoraInicio;
-            
+            var horasUso = mapFrotaGerador.HoraFim - mapFrotaGerador.HoraInicio;
+            mapFrotaGerador.HorasUso = (double)Math.Round((decimal)horasUso, 1);
+
             if (mapFrotaGerador.IdGerador != null && mapFrotaGerador.IdGerador > 0 
                 && mapFrotaGerador.HoraFim != null && mapFrotaGerador.HoraFim > 0 )
             {
-                long horasfim = (long)mapFrotaGerador.HoraFim;
-                Console.WriteLine("horasfim: " + horasfim);
-                long horaFimEmMilissegundos = horasfim * 3600000;
+                double? horaFimEmMilissegundos = mapFrotaGerador.HoraFim * 3600000;
                 Console.WriteLine("horaFimEmMilissegundos: " + horaFimEmMilissegundos);
 
                 await _geradorRepository.UpdateHorasAtualAsync(mapFrotaGerador.IdGerador, horaFimEmMilissegundos, mapFrotaGerador.DataTrocaOleo);

@@ -66,7 +66,7 @@ namespace Infra.Repositorio.Cadastros.Gerador
             return geradores;
         }
 
-        public async Task UpdateHorasAtualAsync(int? id, long? horasAtual, DateTime? dataUltimaTroca)
+        public async Task UpdateHorasAtualAsync(int? id, double? horasAtual, DateTime? dataUltimaTroca)
         {
             if (id == null)
             {
@@ -76,18 +76,17 @@ namespace Infra.Repositorio.Cadastros.Gerador
             var objeto = await _contextBase.Geradores.FindAsync(id);
             if (objeto == null)
             {
-                throw new KeyNotFoundException("A bateria com o ID fornecido não foi encontrada.");
+                throw new KeyNotFoundException("O gerador com o ID fornecido não foi encontrada.");
             }
 
             if (horasAtual.HasValue)
             {
-                objeto.QuantidadeHoras = horasAtual.Value;
+                objeto.QuantidadeHoras = Math.Round((decimal)horasAtual.Value, 1);
             }
             if (dataUltimaTroca.HasValue)
             {
                 objeto.DataUltimaTrocaOleo = dataUltimaTroca.Value;
             }
-
 
             _contextBase.Geradores.Update(objeto);
             await _contextBase.SaveChangesAsync();
