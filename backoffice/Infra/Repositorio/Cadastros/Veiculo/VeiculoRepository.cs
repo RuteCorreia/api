@@ -47,7 +47,7 @@ public class VeiculoRepository : IVeiculoRepository
         return obj;
     }
 
-    public async Task UpdateKmAtualAsync(string? nomeVeiculo, int? kmAtual)
+    public async Task UpdateKmAtualAsync(string? nomeVeiculo, int? kmAtual, int? kmRevisao)
     {
         if (nomeVeiculo == null)
         {
@@ -66,6 +66,15 @@ public class VeiculoRepository : IVeiculoRepository
             objeto.KM_Atual = kmAtual.Value;
         }
 
+        if (kmAtual.HasValue)
+        {
+            objeto.KM_Atual = kmAtual.Value;
+        }
+
+        if (kmRevisao.HasValue)
+        {
+            objeto.KM_Inspecao = kmRevisao.Value;
+        }
 
         _contextBase.Veiculo.Update(objeto);
         await _contextBase.SaveChangesAsync();
