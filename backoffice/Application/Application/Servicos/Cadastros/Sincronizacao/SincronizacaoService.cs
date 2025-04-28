@@ -149,13 +149,13 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
             sincronizacao.Motobombas = _mapper.Map<IEnumerable<MotobombaViewModel>>(await _motobombaRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao));
 
             var geradores = await _geradoreRepository.GetByDateAsync(idEmpresaInt, dataUltimaSincronizacao);
-            foreach (var gerador in geradores)
+
+            sincronizacao.Geradores = _mapper.Map<IEnumerable<GeradorViewModel>>(geradores);
+            foreach (var gerador in sincronizacao.Geradores)
             {
                 gerador.QuantidadeHoras = gerador.QuantidadeHoras / 3600000;
                 gerador.QuantidadeHorasTroca = gerador.QuantidadeHorasTroca / 3600000;
             }
-
-            sincronizacao.Geradores = _mapper.Map<IEnumerable<GeradorViewModel>>(geradores);
 
             return sincronizacao;
         }
