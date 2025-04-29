@@ -12,10 +12,10 @@ public interface IControleDeFrotaService
     Task<IEnumerable<ControleDeFrotaViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa);
 
-    Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
+    Task<ControleDeFrotaViewModel> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa);
     Task<IEnumerable<ControleDeFrotaViewModel>> GetListByStatusAsync(string? idEmpresa);
 
-    Task<int?> UpdateAsync(ControleDeFrotaViewModel obj);
+    Task<ControleDeFrotaViewModel?> UpdateAsync(ControleDeFrotaViewModel obj);
 
     Task DeleteAsync(int id);
 }

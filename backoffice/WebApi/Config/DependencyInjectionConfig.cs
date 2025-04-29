@@ -289,6 +289,8 @@ using Application.Application.Servicos.Cadastros.Motobomba;
 using Application.DTOs.Cadastros.Motobomba.Interface;
 using Infra.Repositorio.Cadastros.Motobomba;
 using Domain.Interfaces.Cadastros.Motobomba;
+using Infra.Repositorio.Cadastros.IdentificadorFrotas;
+using Domain.Interfaces.Cadastros.IdentificadorFrotas;
 
 namespace WebApi.Config;
 
@@ -449,6 +451,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IFrotaMotobombaRepository, FrotaMotobombaRepository>();
         services.AddScoped<IDashboardRepository, DashboardRepository>();
         services.AddScoped<IIdentificadorAplicacaoRepository, IdentificadorAplicacaoRepository>();
+        services.AddScoped<IIdentificadorFrotasRepository, IdentificadorFrotasRepository>();
         services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 
         #endregion

@@ -4,9 +4,11 @@ using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
+using Domain.Interfaces.Cadastros.IdentificadorFrotas;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.User;
 using Helpers;
+using Infra.Repositorio.Cadastros.IdentificadorFrotas;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 
@@ -18,6 +20,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
     private readonly IBlobStorageRepository _blobStorageRepository;
     private readonly IVeiculoRepository _veiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IIdentificadorFrotasRepository _identificadorFrotasRepository;
     private readonly IMapper _mapper;
 
     public ControleDeFrotaService( 
@@ -25,12 +28,14 @@ public class ControleDeFrotaService : IControleDeFrotaService
         IBlobStorageRepository blobStorageRepository,
         IVeiculoRepository veiculoRepository,
         IUsuarioRepository usuarioRepository,
+        IIdentificadorFrotasRepository identificadorFrotasRepository,
         IMapper mapper)
     {
         _controleDeFrotaRepository = controleDeFrotaRepository;
         _blobStorageRepository = blobStorageRepository;
         _veiculoRepository = veiculoRepository;
         _usuarioRepository = usuarioRepository;
+        _identificadorFrotasRepository = identificadorFrotasRepository;
         _mapper = mapper;
     }
 
@@ -91,9 +96,11 @@ public class ControleDeFrotaService : IControleDeFrotaService
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
     }
 
-    public async Task<int> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)
+    public async Task<ControleDeFrotaViewModel> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        obj.RefDocument = await _identificadorFrotasRepository.AddAsync(idEmpresaInt);  
+
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         mapControleDeFrota.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         if (!string.IsNullOrEmpty(mapControleDeFrota.Imagem))
@@ -113,11 +120,11 @@ public class ControleDeFrotaService : IControleDeFrotaService
         {
             await _veiculoRepository.UpdateKmAtualAsync(mapControleDeFrota.NomeVeiculo, mapControleDeFrota.KmFinal, mapControleDeFrota.KmRevisao);
         }
-        var id = await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
-        return id;
+        await _controleDeFrotaRepository.AddAsync(mapControleDeFrota);
+        return _mapper.Map<ControleDeFrotaViewModel>(mapControleDeFrota);
     }
 
-    public async Task<int?> UpdateAsync(ControleDeFrotaViewModel obj)
+    public async Task<ControleDeFrotaViewModel?> UpdateAsync(ControleDeFrotaViewModel obj)
     {
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);
         if (!string.IsNullOrEmpty(mapControleDeFrota.Imagem))
@@ -137,7 +144,9 @@ public class ControleDeFrotaService : IControleDeFrotaService
         {
             await _veiculoRepository.UpdateKmAtualAsync(mapControleDeFrota.NomeVeiculo, mapControleDeFrota.KmFinal, mapControleDeFrota.KmRevisao);
         }
-        return await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
+        await _controleDeFrotaRepository.UpdateAsync(mapControleDeFrota);
+
+        return _mapper.Map<ControleDeFrotaViewModel>(mapControleDeFrota);
     }
 
     public async Task DeleteAsync(int id)

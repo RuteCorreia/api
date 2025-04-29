@@ -195,9 +195,9 @@ public class ControleDeFrotaController : ControllerBase
             if (ModelState.IsValid)
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                var id = await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
+                var report = await _controleDeFrotaService.AddAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("ControleDeFrota adicionado com sucesso"); // Registre uma informação de log
-                return Ok(id);
+                return Ok(new { id = report.Id, refDocument = report.RefDocument });
             }
 
             _logService.LogWarning("Tentativa de adição de ControleDeFrota com modelo inválido"); // Registre um aviso de log
@@ -217,10 +217,10 @@ public class ControleDeFrotaController : ControllerBase
         {
             if (ModelState.IsValid)
             {
-                var id = await _controleDeFrotaService.UpdateAsync(obj);
-                if (id.HasValue)
+                var report = await _controleDeFrotaService.UpdateAsync(obj);
+                if (report != null)
                 {
-                    return Ok(id); // Retorna o ID do objeto atualizado
+                    return Ok(new { id = report.Id, refDocument = report.RefDocument });
                 }
                 return NotFound("Objeto não encontrado"); // Caso o objeto não seja encontrado
             }
