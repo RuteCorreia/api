@@ -108,4 +108,7 @@ public class ControleDeFrotaViewModel
     public bool? IsDrone { get; set; }
     public string? Checklist { get; set; }
     public string? ChecklistVeiculo { get; set; }
+
+    [JsonProperty("refDocument")]
+    public int? RefDocument { get; set; }
 }

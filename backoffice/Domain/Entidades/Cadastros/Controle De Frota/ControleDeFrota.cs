@@ -58,6 +58,7 @@ public class ControleDeFrota
     public bool? IsDrone { get; set; }
     public string? Checklist { get; set; }
     public string? ChecklistVeiculo { get; set; }
+    public int? RefDocument { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }
