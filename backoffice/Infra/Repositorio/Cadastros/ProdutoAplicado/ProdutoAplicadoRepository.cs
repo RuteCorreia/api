@@ -37,11 +37,11 @@ public class ProdutoAplicadoRepository : IProdutoAplicadoRepository
         }
     }
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado>> GetAllByIdCaracteristicaProdutoAplicadoAsync(int idCaracteristiacaProdutoAplicado)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado>> GetAllByIdRelatorioAplicacaoAsync(int relatorioAplicacaoId)
     {
         var entities = await _contextBase.ProdutoAplicado
         .AsNoTracking()
-        .Where(x => x.IdCaracteristicasProdutoAplicado == idCaracteristiacaProdutoAplicado)
+        .Where(x => x.IdRelatorioAplicacao == relatorioAplicacaoId)
         .ToListAsync();
 
         return entities;
@@ -79,6 +79,8 @@ public class ProdutoAplicadoRepository : IProdutoAplicadoRepository
         objeto.AlvoBiologico = obj.AlvoBiologico;
         objeto.DoseProdutoHectare = obj.DoseProdutoHectare;
         objeto.UnidadeDoseProdutoHectare = obj.UnidadeDoseProdutoHectare;
+        objeto.DosagemProdutoAplicado = obj.DosagemProdutoAplicado;
+        objeto.UnidadeProdutoAplicado = obj.UnidadeProdutoAplicado;
         objeto.TipoServico = obj.TipoServico;
 
         _contextBase.ProdutoAplicado.Update(objeto);

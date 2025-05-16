@@ -2,10 +2,14 @@
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using Application.DTOs.Cadastros.Gerador.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado;
+using Domain.Entidades.Cadastros.Gerador;
+using Domain.Entidades.Cadastros.ProdutoAplicado;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
 using Domain.Interfaces.Cadastros.ProdutoAplicado;
@@ -31,28 +35,32 @@ public class ProdutoAplicadoService : IProdutoAplicadoService
         _produtoAplicadoRepository = produtoAplicadoRepository;
     }
 
-    public Task<int> AddAsync(ProdutoAplicadoCaracteristicasViewModel obj)
+    public async Task<int> AddAsync(ProdutoAplicadoCaracteristicasViewModel obj)
     {
-        throw new NotImplementedException();
+        return await _produtoAplicadoRepository.AddAsync(_mapper.Map<ProdutoAplicado>(obj));
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await _produtoAplicadoRepository.DeleteAsync(id);
     }
 
-    public Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllByIdCaracteristicaProdutoAplicadoAsync(int idCaracteristiacaProdutoAplicado)
+    public async Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllByIdRelatorioAplicacaoAsync(int relatorioAplicacaoId)
     {
-        throw new NotImplementedException();
+        var produtos = await _produtoAplicadoRepository.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacaoId);
+
+        return produtos.Select(p => _mapper.Map<ProdutoAplicadoCaracteristicasViewModel>(p));
     }
 
-    public Task<ProdutoAplicadoCaracteristicasViewModel> GetByIdAsync(int id)
+    public async Task<ProdutoAplicadoCaracteristicasViewModel> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        var produto = await _produtoAplicadoRepository.GetByIdAsync(id);
+
+        return _mapper.Map<ProdutoAplicadoCaracteristicasViewModel>(produto);
     }
 
-    public Task UpdateAsync(ProdutoAplicadoCaracteristicasViewModel obj)
+    public async Task UpdateAsync(ProdutoAplicadoCaracteristicasViewModel obj)
     {
-        throw new NotImplementedException();
+        await _produtoAplicadoRepository.UpdateAsync(_mapper.Map<ProdutoAplicado>(obj));
     }
 }

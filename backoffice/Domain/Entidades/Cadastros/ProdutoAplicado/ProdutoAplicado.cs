@@ -8,8 +8,8 @@ public class ProdutoAplicado
 {
     [Key]
     public int Id { get; set; }
-    [ForeignKey("CaracteristicasProdutoAplicado")]
-    public int IdCaracteristicasProdutoAplicado { get; set; }
+    [ForeignKey("RelatorioAplicacao")]
+    public int? IdRelatorioAplicacao { get; set; }
     public string TipoServico { get; set; }
     public string NomeProduto { get; set; }
     public string AlvoBiologico { get; set; }
@@ -17,4 +17,6 @@ public class ProdutoAplicado
     public string Classe { get; set; }
     public string DoseProdutoHectare { get; set; }
     public string UnidadeDoseProdutoHectare { get; set; }
+    public decimal? DosagemProdutoAplicado { get; set; }
+    public string UnidadeProdutoAplicado { get; set; }
 }

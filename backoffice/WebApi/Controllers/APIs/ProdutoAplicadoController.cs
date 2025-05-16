@@ -37,7 +37,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("{idCaracteristicasProdutoAplicado}")]
-        public async Task<ActionResult<IAsyncEnumerable<ProdutoAplicadoCaracteristicasViewModel>>> GetAllByIdCaracteristicaProdutoAplicadoAsync(int idCaracteristicasProdutoAplicado)
+        public async Task<ActionResult<IAsyncEnumerable<ProdutoAplicadoCaracteristicasViewModel>>> GetAllByIdRelatorioAplicacaoAsync(int idRelatorioAplicacao)
         {
             var returnMsg = new StringBuilder().Append("Não encontrado");
             try
@@ -45,7 +45,7 @@ namespace WebApi.Controllers.APIs
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
 
-                var obj = await _produtoAplicadoService.GetAllByIdCaracteristicaProdutoAplicadoAsync(idCaracteristicasProdutoAplicado);
+                var obj = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(idRelatorioAplicacao);
                 if (obj is not null)
                     returnMsg.Clear();
 
@@ -53,7 +53,7 @@ namespace WebApi.Controllers.APIs
             }
             catch (Exception ex)
             {
-                _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao buscar produtos da CaracteristicasProdutoAplicado ID {idCaracteristicasProdutoAplicado}: {ex.Message}").ToString());
+                _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao buscar produtos da RelatorioAplicacao ID {idRelatorioAplicacao}: {ex.Message}").ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao buscar a produtos aplicados: {ex.Message}").ToString());
             }
         }

@@ -6,8 +6,8 @@ public class ProdutoAplicadoCaracteristicasViewModel
 {
     public int? Id { get; set; }
 
-    [JsonPropertyName("idCaracteristicasProdutoAplicado")]
-    public int? IdCaracteristicasProdutoAplicado { get; set; }
+    [JsonPropertyName("idRelatorioAplicacao")]
+    public int? IdRelatorioAplicacao { get; set; }
 
     [JsonPropertyName("tipoServico")]
     public string TipoServico { get; set; }
@@ -29,4 +29,10 @@ public class ProdutoAplicadoCaracteristicasViewModel
 
     [JsonPropertyName("unidadeDoseProdutoHectare")]
     public string UnidadeDoseProdutoHectare { get; set; }
+
+    [JsonPropertyName("dosagemProdutoAplicado")]
+    public decimal? DosagemProdutoAplicado { get; set; }
+    
+    [JsonPropertyName("unidadeProdutoAplicado")]
+    public string UnidadeProdutoAplicado { get; set; }
 }

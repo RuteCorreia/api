@@ -7,6 +7,6 @@ public interface IProdutoAplicadoService
     Task<int> AddAsync(ProdutoAplicadoCaracteristicasViewModel obj);
     Task UpdateAsync(ProdutoAplicadoCaracteristicasViewModel obj);
     Task DeleteAsync(int id);
-    Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllByIdCaracteristicaProdutoAplicadoAsync(int idCaracteristiacaProdutoAplicado);
+    Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllByIdRelatorioAplicacaoAsync(int relatorioAplicacaoId);
     Task<ProdutoAplicadoCaracteristicasViewModel> GetByIdAsync(int id);
 }
