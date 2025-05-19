@@ -291,6 +291,9 @@ using Infra.Repositorio.Cadastros.Motobomba;
 using Domain.Interfaces.Cadastros.Motobomba;
 using Infra.Repositorio.Cadastros.IdentificadorFrotas;
 using Domain.Interfaces.Cadastros.IdentificadorFrotas;
+using Domain.Interfaces.Cadastros.ProdutoAplicado;
+using Infra.Repositorio.Cadastros.ProdutoAplicado;
+using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 
 namespace WebApi.Config;
 
@@ -353,6 +356,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ILocalIncendioService, LocalIncendioService>();
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
+        services.AddScoped<IProdutoAplicadoService, ProdutoAplicadoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
         services.AddScoped<ILogService, LogService>();
@@ -432,6 +436,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<ILocalIncendioRepository, LocalIncendioRepository>();
         services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
+        services.AddScoped<IProdutoAplicadoRepository, ProdutoAplicadoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
         services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
         services.AddScoped<ILogRepository, LogRepository>();

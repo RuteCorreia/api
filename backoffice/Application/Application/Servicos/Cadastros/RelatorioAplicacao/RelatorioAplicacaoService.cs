@@ -1,11 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
-using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Helpers;
-using Domain.Entidades.Cadastros.Empresa;
 using Domain.Interfaces.Cadastros.Contratante;
-using Application.DTOs.Cadastros.AplicacaoAreaTratada.ViewModel;
 using Domain.Interfaces.Cadastros.IdentificacaoAreaTratada;
 using Domain.Interfaces.Cadastros.AplicacaoRecomendacoesTecnicas;
 using Domain.Interfaces.Cadastros.CaracteristicasProdutoAplicado;
@@ -17,9 +14,6 @@ using Domain.Interfaces.Cadastros.DataRelatorio;
 using Application.DTOs.Pdf.Interface;
 using System.Globalization;
 using Domain.Interfaces.Cadastros.IdentificadorAplicacao;
-using Domain.Entidades.Cadastros.Aplicacao;
-using Domain.Entidades.Cadastros.Contratante;
-using System.Reflection.PortableExecutable;
 using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorio.Interface;
 using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
@@ -27,9 +21,10 @@ using Application.DTOs.Cadastros.Contratante.Interface;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.DadosResponsavel.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
-using Application.DTOs.Cadastros.Aplicacao.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
-using Application.DTOs.Cadastros.AplicacaoRelatorioItem.ViewModel;
+using Domain.Interfaces.Cadastros.ProdutoAplicado;
+using Infra.Repositorio.Cadastros.ProdutoAplicado;
+using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -54,7 +49,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
-        
+        private readonly IProdutoAplicadoService _produtoAplicadoService;
+
         private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
 
@@ -77,6 +73,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IDadosResponsavelService dadosResponsavelService,
+            IProdutoAplicadoService produtoAplicadoService,
             IPdfService pdfService,
             IMapper mapper)
         {
@@ -90,6 +87,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _dataRelatorioRepository = dataRelatorioRepository;
             _contratanteRepository = contratanteRepository;
             _usuarioRepository = usuarioRepository;
+            _produtoAplicadoService = produtoAplicadoService;
             _contratanteService = contratanteService;
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
@@ -386,6 +384,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.Aplicacoes = await _aplicacaoRelatorioItemService.GetAllAsync(relatorio.AplicacaoRelatorioId!.Value);
                 relatorio.ContratoPrestacaoServico = await _contratoPrestacaoServicoService.GetByIdAsync(relatorio.ContratoPrestacaoServicoId!.Value, idEmpresa);
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
+                relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
             }
 
             return ralatoriosViewModel;
