@@ -41,7 +41,7 @@ public class ProdutoAplicadoRepository : IProdutoAplicadoRepository
     {
         var entities = await _contextBase.ProdutoAplicado
         .AsNoTracking()
-        .Where(x => x.IdRelatorioAplicacao == relatorioAplicacaoId)
+        .Where(x => x.RelatorioAplicacaoId == relatorioAplicacaoId)
         .ToListAsync();
 
         return entities;

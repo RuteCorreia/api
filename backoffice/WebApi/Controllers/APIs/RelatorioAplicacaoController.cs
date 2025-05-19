@@ -19,26 +19,19 @@ using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
-using Application.DTOs.Importação_Planilha.ViewModel;
 using Application.DTOs.Log.Interface;
-using Domain.Entidades.Cadastros.Aplicacao;
-using Domain.Entidades.Cadastros.Cidades;
-using Domain.Entidades.Cadastros.Cultura;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Text.Json.Serialization;
 using WebApi.HttpRequestInfo;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
-using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.RelatorioBase;
-using ExcelDataReader;
 using System.Data;
-using OfficeOpenXml;
 using System.IO.Compression;
-using System.Linq;
 using System.Text.Json;
+using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
+using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 
 namespace WebApi.Controllers.APIs
 {
@@ -53,6 +46,7 @@ namespace WebApi.Controllers.APIs
     {
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
         private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
+        private readonly IProdutoAplicadoService _produtoAplicadoService;
         private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
@@ -69,6 +63,7 @@ namespace WebApi.Controllers.APIs
         public RelatorioAplicacaoController(
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
+            IProdutoAplicadoService produtoAplicadoService,
             IIdentificacaoAreaTratadaService identificacaoAreaTratadaService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
@@ -85,6 +80,7 @@ namespace WebApi.Controllers.APIs
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
+            _produtoAplicadoService = produtoAplicadoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _aplicacaoRelatorioService = aplicacaoRelatorioService;
@@ -398,7 +394,7 @@ namespace WebApi.Controllers.APIs
                     var isDrone = obj.GetProperty("isDrone").GetBoolean(); // Novo campo isDrone 
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
-
+                    var produtosAplicados = obj.GetProperty("produtosAplicados").ToString();
                     var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
                     var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
                     var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
@@ -428,7 +424,7 @@ namespace WebApi.Controllers.APIs
                         Marcadores = identificacaoAreaTratadaViewModel.Marcadores
                     };
 
-
+                    var produtosAplicadosViewModel = JsonConvert.DeserializeObject<List<ProdutoAplicadoCaracteristicasViewModel>>(produtosAplicados);
                     var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
                     var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
@@ -561,7 +557,22 @@ namespace WebApi.Controllers.APIs
 
                     var aplicacoes = await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
 
-                    //_logService.LogInformation("Novo relatório de aplicação adicionado com sucesso.");
+                    for (int i = 0; i < produtosAplicadosViewModel.Count; i++)
+                    {
+                        var produto = produtosAplicadosViewModel[i];
+                        produto.RelatorioAplicacaoId = relatorioAplicacao.Id;
+
+                        if (produto.Id > 0)
+                        {
+                            await _produtoAplicadoService.UpdateAsync(produto);
+                        }
+                        else
+                        {
+                            await _produtoAplicadoService.AddAsync(produto);
+                        }
+                    }
+
+                    var produtosAplicadosResult = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacao.Id);
 
                     var result = new
                     {
@@ -580,6 +591,7 @@ namespace WebApi.Controllers.APIs
                             id = IdAplicacaoRelatorio,
                             aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
                         },
+                        produtosAplicados = produtosAplicadosResult.Select(p => p.Id)
                     };
 
                     //return Ok(relatorioAplicacaoId);

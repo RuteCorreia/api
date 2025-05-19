@@ -6,8 +6,8 @@ public class ProdutoAplicadoCaracteristicasViewModel
 {
     public int? Id { get; set; }
 
-    [JsonPropertyName("idRelatorioAplicacao")]
-    public int? IdRelatorioAplicacao { get; set; }
+    [JsonPropertyName("relatorioAplicacaoId")]
+    public int? RelatorioAplicacaoId { get; set; }
 
     [JsonPropertyName("tipoServico")]
     public string TipoServico { get; set; }
