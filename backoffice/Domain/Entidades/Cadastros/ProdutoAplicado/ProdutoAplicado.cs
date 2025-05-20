@@ -11,6 +11,7 @@ public class ProdutoAplicado
     [ForeignKey("RelatorioAplicacao")]
     public int? RelatorioAplicacaoId { get; set; }
     public string? TipoServico { get; set; }
+    public string? TipoFormulacao { get; set; }
     public string? NomeProduto { get; set; }
     public string? AlvoBiologico { get; set; }
     public int? ClassificacaoToxicologica { get; set; }

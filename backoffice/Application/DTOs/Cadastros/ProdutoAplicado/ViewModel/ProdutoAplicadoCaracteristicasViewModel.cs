@@ -12,6 +12,9 @@ public class ProdutoAplicadoCaracteristicasViewModel
     [JsonPropertyName("tipoServico")]
     public string TipoServico { get; set; }
 
+    [JsonPropertyName("tipoFormulacao")]
+    public string TipoFormulacao { get; set; }
+
     [JsonPropertyName("nomeProduto")]
     public string NomeProduto { get; set; }
 
