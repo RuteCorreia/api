@@ -594,7 +594,6 @@ namespace WebApi.Controllers.APIs
                         produtosAplicados = produtosAplicadosResult.Select(p => p.Id)
                     };
 
-                    //return Ok(relatorioAplicacaoId);
                     var jsonResult = JsonConvert.SerializeObject(result);
                     return Ok(result);
                 }
