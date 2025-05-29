@@ -54,6 +54,7 @@ using Microsoft.Extensions.Configuration;
 using Domain.Entidades.Cadastros.IdentificadorAplicacao;
 using Domain.Entidades.Cadastros.Motobomba;
 using Domain.Entidades.Cadastros.ProdutoAplicado;
+using Domain.Entidades.Cadastros.ReceituarioAgronomico;
 
 namespace Infra.Configuracao;
 
@@ -117,6 +118,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<IdentificacaoAreaTratada> IdentificacaoAreaTratada { get; set; }
     public DbSet<CaracteristicasProdutoAplicado> CaracteristicasProdutoAplicado { get; set; }
     public DbSet<ProdutoAplicado> ProdutoAplicado { get; set; }
+    public DbSet<ReceituarioAgronomico> ReceituarioAgronomico { get; set; }
     public DbSet<ContratoPrestacaoServico> ContratoPrestacaoServico { get; set; }
     public DbSet<DadosResponsavel> DadosResponsavel { get; set; }
     public DbSet<ImportacaoPlanilhas> ImportacaoPlanilha { get; set; }

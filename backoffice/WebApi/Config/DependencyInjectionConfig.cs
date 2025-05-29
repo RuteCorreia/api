@@ -294,6 +294,10 @@ using Domain.Interfaces.Cadastros.IdentificadorFrotas;
 using Domain.Interfaces.Cadastros.ProdutoAplicado;
 using Infra.Repositorio.Cadastros.ProdutoAplicado;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
+using Application.Application.Servicos.Cadastros.CaracteristicasReceituarioAgronomico;
+using Domain.Interfaces.Cadastros.ReceituarioAgronomico;
+using Infra.Repositorio.Cadastros.ReceituarioAgronomico;
 
 namespace WebApi.Config;
 
@@ -357,6 +361,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IIdentificacaoAreaTratadaService, IdentificacaoAreaTratadaService>();
         services.AddScoped<ICaracteristicasProdutoAplicadoService, CaracteristicasProdutoAplicadoService>();
         services.AddScoped<IProdutoAplicadoService, ProdutoAplicadoService>();
+        services.AddScoped<IReceituarioAgronomicoService, ReceituarioAgronomicoService>();
         services.AddScoped<IContratoPrestacaoServicoService, ContratoPrestacaoServicoService>();
         services.AddScoped<IDadosResponsavelService, DadosResponsavelService>();
         services.AddScoped<ILogService, LogService>();
@@ -437,6 +442,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IIdentificacaoAreaTratadaRepository, IdentificacaoAreaTratadaRepository>();
         services.AddScoped<ICaracteristicasProdutoAplicadoRepository, CaracteristicasProdutoAplicadoRepository>();
         services.AddScoped<IProdutoAplicadoRepository, ProdutoAplicadoRepository>();
+        services.AddScoped<IReceituarioAgronomicoRepository, ReceituarioAgronomicoRepository>();
         services.AddScoped<IContratoPrestacaoServicoRepository, ContratoPrestacaoServicoRepository>();
         services.AddScoped<IDadosResponsavelRepository, DadosResponsavelRepository>();
         services.AddScoped<ILogRepository, LogRepository>();

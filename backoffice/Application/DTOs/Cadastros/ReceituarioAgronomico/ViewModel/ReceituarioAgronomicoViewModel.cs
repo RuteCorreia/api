@@ -1,0 +1,20 @@
+﻿using System.Text.Json.Serialization;
+
+namespace Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
+
+public class ReceituarioAgronomicoViewModel
+{
+    public int? Id { get; set; }
+
+    [JsonPropertyName("relatorioAplicacaoId")]
+    public int? RelatorioAplicacaoId { get; set; }
+
+    [JsonPropertyName("nomeArquivo")]
+    public string NomeArquivo { get; set; }
+
+    [JsonPropertyName("numero")]
+    public string Numero { get; set; }
+
+    [JsonPropertyName("dataEmissao")]
+    public string DataEmissao { get; set; }
+}
