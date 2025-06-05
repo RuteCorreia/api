@@ -7,6 +7,7 @@ using Application.DTOs.Cadastros.Contratante.ViewModel;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
 
 namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
 {
@@ -46,5 +47,6 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public virtual AplicacaoRelatorioViewModel? AplicacaoRelatorio { get; set; }
         public virtual IEnumerable<RelatorioItemViewModel>? Aplicacoes{ get; set; }
         public virtual IEnumerable<ProdutoAplicadoCaracteristicasViewModel>? ProdutosAplicados { get; set; }
+        public virtual IEnumerable<ReceituarioAgronomicoViewModel>? ReceituariosAgronomicos { get; set; }
     }
 }

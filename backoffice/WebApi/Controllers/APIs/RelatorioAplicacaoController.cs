@@ -32,6 +32,8 @@ using System.Text.Json;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 
 namespace WebApi.Controllers.APIs
 {
@@ -47,6 +49,7 @@ namespace WebApi.Controllers.APIs
         private readonly IAplicacaoRecomendacoesTecnicasService _aplicacaoRecomendacoesTecnicasService;
         private readonly ICaracteristicasProdutoAplicadoService _caracteristicasProdutoAplicadoService;
         private readonly IProdutoAplicadoService _produtoAplicadoService;
+        private readonly IReceituarioAgronomicoService _receituarioAgronomicoService;
         private readonly IIdentificacaoAreaTratadaService _identificacaoAreaTratadaService;
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
@@ -64,6 +67,7 @@ namespace WebApi.Controllers.APIs
             IAplicacaoRecomendacoesTecnicasService aplicacaoRecomendacoesTecnicasService,
             ICaracteristicasProdutoAplicadoService caracteristicasProdutoAplicadoService,
             IProdutoAplicadoService produtoAplicadoService,
+            IReceituarioAgronomicoService receituarioAgronomicoService,
             IIdentificacaoAreaTratadaService identificacaoAreaTratadaService,
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IRelatorioAplicacaoService relatorioAplicacaoService,
@@ -81,6 +85,7 @@ namespace WebApi.Controllers.APIs
             _aplicacaoRecomendacoesTecnicasService = aplicacaoRecomendacoesTecnicasService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
             _produtoAplicadoService = produtoAplicadoService;
+            _receituarioAgronomicoService = receituarioAgronomicoService;
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
             _relatorioAplicacaoService = relatorioAplicacaoService;
             _aplicacaoRelatorioService = aplicacaoRelatorioService;
@@ -395,6 +400,7 @@ namespace WebApi.Controllers.APIs
                     var contratanteJson = obj.GetProperty("contratante").ToString();
                     var identificacaoAreaTratadaJson = obj.GetProperty("identificacaoAreaTratada").ToString();
                     var produtosAplicados = obj.GetProperty("produtosAplicados").ToString();
+                    var receituariosAgronomicos = obj.GetProperty("receituariosAgronomicos").ToString();
                     var caracteristicasProdutoAplicadoJson = obj.GetProperty("caracteristicasProdutoAplicado").ToString();
                     var recomendacoesTecnicasJson = obj.GetProperty("recomendacoesTecnicas").ToString();
                     var relatorioAplicacaoJson = obj.GetProperty("relatorioAplicacao").ToString(); // Aplicaçoes(aplicacaorelatorioitem)
@@ -425,6 +431,7 @@ namespace WebApi.Controllers.APIs
                     };
 
                     var produtosAplicadosViewModel = JsonConvert.DeserializeObject<List<ProdutoAplicadoCaracteristicasViewModel>>(produtosAplicados);
+                    var receituariosAgronomicosViewModel = JsonConvert.DeserializeObject<List<ReceituarioAgronomicoViewModel>>(receituariosAgronomicos);
                     var caracteristicasProdutoAplicadoViewModel = JsonConvert.DeserializeObject<CaracteristicasProdutoAplicadoViewModel>(caracteristicasProdutoAplicadoJson);
                     string receituarioAgronomicoString = JsonConvert.SerializeObject(caracteristicasProdutoAplicadoViewModel.ReceiturarioAgronomico);
                     var receituarioAgronomicoViewModel = new ProdutoAplicadoViewModel()
@@ -572,7 +579,24 @@ namespace WebApi.Controllers.APIs
                         }
                     }
 
+                    for (int i = 0; i < receituariosAgronomicosViewModel.Count; i++)
+                    {
+                        var receituario = receituariosAgronomicosViewModel[i];
+                        receituario.RelatorioAplicacaoId = relatorioAplicacao.Id;
+
+                        if (receituario.Id > 0)
+                        {
+                            await _receituarioAgronomicoService.UpdateAsync(receituario);
+                        }
+                        else
+                        {
+                            await _receituarioAgronomicoService.AddAsync(receituario);
+                        }
+                    }
+
+
                     var produtosAplicadosResult = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacao.Id);
+                    var receituariosAgronomicosResult = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacao.Id);
 
                     var result = new
                     {
@@ -591,7 +615,8 @@ namespace WebApi.Controllers.APIs
                             id = IdAplicacaoRelatorio,
                             aplicacoes = aplicacoes.Select(item => item.Id).ToArray()
                         },
-                        produtosAplicados = produtosAplicadosResult.Select(p => p.Id)
+                        produtosAplicados = produtosAplicadosResult.Select(p => p.Id),
+                        receituariosAgronomicos = receituariosAgronomicosResult.Select(p => p.Id)
                     };
 
                     var jsonResult = JsonConvert.SerializeObject(result);
