@@ -25,6 +25,7 @@ using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Domain.Interfaces.Cadastros.ProdutoAplicado;
 using Infra.Repositorio.Cadastros.ProdutoAplicado;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -50,6 +51,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IContratoPrestacaoServicoService _contratoPrestacaoServicoService;
         private readonly IDadosResponsavelService _dadosResponsavelService;
         private readonly IProdutoAplicadoService _produtoAplicadoService;
+        private readonly IReceituarioAgronomicoService _receituarioAgronomicoService;
 
         private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
@@ -74,6 +76,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IContratoPrestacaoServicoService contratoPrestacaoServicoService,
             IDadosResponsavelService dadosResponsavelService,
             IProdutoAplicadoService produtoAplicadoService,
+            IReceituarioAgronomicoService receituarioAgronomicoService,
             IPdfService pdfService,
             IMapper mapper)
         {
@@ -88,6 +91,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _contratanteRepository = contratanteRepository;
             _usuarioRepository = usuarioRepository;
             _produtoAplicadoService = produtoAplicadoService;
+            _receituarioAgronomicoService = receituarioAgronomicoService;
             _contratanteService = contratanteService;
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
             _caracteristicasProdutoAplicadoService = caracteristicasProdutoAplicadoService;
@@ -385,6 +389,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.ContratoPrestacaoServico = await _contratoPrestacaoServicoService.GetByIdAsync(relatorio.ContratoPrestacaoServicoId!.Value, idEmpresa);
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+                relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
             }
 
             return ralatoriosViewModel;
