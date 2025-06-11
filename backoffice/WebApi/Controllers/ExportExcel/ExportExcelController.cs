@@ -88,15 +88,16 @@ namespace WebApi.Controllers.ExportExcel
                     worksheet.Cells[1, 6].Value = "CULTURA";
                     worksheet.Cells[1, 7].Value = "TIPO DE SERVIÇO";
                     worksheet.Cells[1, 8].Value = "CLASSE AGROTÓXICOS";
-                    worksheet.Cells[1, 9].Value = "ÁREA (ha)";
-                    worksheet.Cells[1, 10].Value = "AGROTÓXICO";
-                    worksheet.Cells[1, 11].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
-                    worksheet.Cells[1, 12].Value = "SEMEADURA";
-                    worksheet.Cells[1, 13].Value = "COMBATE A INCÊNDIO (HORAS)";
-                    worksheet.Cells[1, 14].Value = "VOLUME";
-                    worksheet.Cells[1, 15].Value = "UNIDADE VOLUME";
-                    worksheet.Cells[1, 16].Value = "DOSAGEM";
-                    worksheet.Cells[1, 17].Value = "UNIDADE DOSAGEM";
+                    worksheet.Cells[1, 9].Value = "CLASSE BIOINSUMO";
+                    worksheet.Cells[1, 10].Value = "ÁREA (ha)";
+                    worksheet.Cells[1, 11].Value = "AGROTÓXICO";
+                    worksheet.Cells[1, 12].Value = "BIOINSUMO";
+                    worksheet.Cells[1, 13].Value = "FERTILIZANTES/ADJUVANTES/OUTROS";
+                    worksheet.Cells[1, 14].Value = "SEMEADURA";
+                    worksheet.Cells[1, 15].Value = "COMBATE A INCÊNDIO (HORAS)";
+                    worksheet.Cells[1, 16].Value = "VOLUME (l/ha)";
+                    worksheet.Cells[1, 17].Value = "DOSAGEM";
+                    worksheet.Cells[1, 18].Value = "UNIDADE DOSAGEM";
 
                     // Preencher dados
                     int row = 2;
@@ -108,15 +109,15 @@ namespace WebApi.Controllers.ExportExcel
                         string horasAplicacaoFormatado = "";
                         string horasIncendioFormatado = "";
 
-                        if (!string.IsNullOrEmpty(relatorio.HorasAplicacao))
-                        {
-                            int horasAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(0, relatorio.HorasAplicacao.Length - 2));
-                            int minutosAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(relatorio.HorasAplicacao.Length - 2, 2));
+                        //if (!string.IsNullOrEmpty(relatorio.HorasAplicacao))
+                        //{
+                        //    int horasAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(0, relatorio.HorasAplicacao.Length - 2));
+                        //    int minutosAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(relatorio.HorasAplicacao.Length - 2, 2));
 
-                            timeSpanAplicacao = new TimeSpan(horasAplicacao, minutosAplicacao, 0);
+                        //    timeSpanAplicacao = new TimeSpan(horasAplicacao, minutosAplicacao, 0);
 
-                            horasAplicacaoFormatado = timeSpanAplicacao.ToString(@"hh\:mm\:ss");
-                        }
+                        //    horasAplicacaoFormatado = timeSpanAplicacao.ToString(@"hh\mm");
+                        //}
 
                         if (!string.IsNullOrEmpty(relatorio.HorasCombateIncendio))
                         {
@@ -126,27 +127,32 @@ namespace WebApi.Controllers.ExportExcel
                             timeSpanIncendio = new TimeSpan(horasIncendio, minutosIncendio, 0);
 
                             horasIncendioFormatado = timeSpanIncendio.ToString(@"hh\:mm\:ss");
-                        }                         
+                        }
 
-                        // Preencher células
-                        worksheet.Cells[row, 1].Value = relatorio.UF;
-                        worksheet.Cells[row, 2].Value = relatorio.Municipio;
-                        worksheet.Cells[row, 3].Value = relatorio.TipoAeronave;
-                        worksheet.Cells[row, 4].Value = relatorio.PrefixoAeronave;
-                        worksheet.Cells[row, 5].Value = horasAplicacaoFormatado;
-                        worksheet.Cells[row, 6].Value = relatorio.Cultura;
-                        worksheet.Cells[row, 7].Value = relatorio.TipoDeServico;
-                        worksheet.Cells[row, 8].Value = relatorio.ClasseAgrotoxico;
-                        worksheet.Cells[row, 9].Value = relatorio.Area;
-                        worksheet.Cells[row, 10].Value = relatorio.Agrotoxico;
-                        worksheet.Cells[row, 11].Value = relatorio.Adjuvante;
-                        worksheet.Cells[row, 12].Value = relatorio.Semeadura;
-                        worksheet.Cells[row, 13].Value = horasIncendioFormatado;
-                        worksheet.Cells[row, 14].Value = relatorio.Volume;
-                        worksheet.Cells[row, 15].Value = relatorio.UnidadeVolume;
-                        worksheet.Cells[row, 16].Value = relatorio.Dosagem;
-                        worksheet.Cells[row, 17].Value = relatorio.UnidadeDosagem;
-                        row++;
+                        int subRow = 1;
+                        foreach (var produto in relatorio.Produtos)
+                        {
+                            worksheet.Cells[row, 1].Value = relatorio.UF;
+                            worksheet.Cells[row, 2].Value = relatorio.Municipio;
+                            worksheet.Cells[row, 3].Value = relatorio.TipoAeronave;
+                            worksheet.Cells[row, 4].Value = relatorio.PrefixoAeronave;
+                            worksheet.Cells[row, 5].Value = subRow == 1 ? relatorio.HorasAplicacao : "";
+                            worksheet.Cells[row, 6].Value = relatorio.Cultura;
+                            worksheet.Cells[row, 7].Value = produto.TipoServico;
+                            worksheet.Cells[row, 8].Value = IsAgrotoxico(produto.TipoServico) ? produto.Classe : "";
+                            worksheet.Cells[row, 9].Value = IsBioinsumo(produto.TipoServico) ? produto.Classe : "";
+                            worksheet.Cells[row, 10].Value = subRow == 1 ? relatorio.Area : "";
+                            worksheet.Cells[row, 11].Value = IsAgrotoxico(produto.TipoServico) ? produto.NomeProduto : "";
+                            worksheet.Cells[row, 12].Value = IsBioinsumo(produto.TipoServico) ? produto.NomeProduto : "";
+                            worksheet.Cells[row, 13].Value = IsOutrosTiposServicos(produto.TipoServico) ? produto.NomeProduto : "";
+                            worksheet.Cells[row, 14].Value = IsSemeadura(produto.TipoServico) ? produto.NomeProduto : "";
+                            worksheet.Cells[row, 15].Value = horasIncendioFormatado;
+                            worksheet.Cells[row, 16].Value = relatorio.Volume;
+                            worksheet.Cells[row, 17].Value = produto.DosagemProdutoAplicado;
+                            worksheet.Cells[row, 18].Value = produto.UnidadeProdutoAplicado;
+                            subRow++;
+                            row++;
+                        }
                     }
 
                     // Ajustar o estilo das células, se necessário
@@ -218,5 +224,24 @@ namespace WebApi.Controllers.ExportExcel
             }
         }
 
+        private bool IsAgrotoxico(string tipoServico)
+        {
+            return tipoServico == "APLICAÇÃO DE AGROTÓXICO";
+        }
+
+        private bool IsBioinsumo(string tipoServico)
+        {
+            return tipoServico == "APLICAÇÃO DE BIOINSUMO";
+        }
+
+        private bool IsSemeadura(string tipoServico)
+        {
+            return tipoServico == "SEMEADURA";
+        }
+
+        private bool IsOutrosTiposServicos(string tipoServico)
+        {
+            return (!IsAgrotoxico(tipoServico) && !IsBioinsumo(tipoServico) && !IsSemeadura(tipoServico));
+        }
     }
 }
