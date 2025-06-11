@@ -1,8 +1,10 @@
-﻿using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
+﻿using Application.Application.Servicos.Log;
+using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Text;
 using WebApi.HttpRequestInfo;
 
@@ -31,7 +33,7 @@ namespace WebApi.Controllers.APIs
             _loggerService = loggerService;
         }
 
-        [HttpGet("{idCaracteristicasReceituarioAgronomico}")]
+        [HttpGet("{idRelatorioAplicacao}")]
         public async Task<ActionResult<IAsyncEnumerable<ReceituarioAgronomicoViewModel>>> GetAllByIdRelatorioAplicacaoAsync(int idRelatorioAplicacao)
         {
             var returnMsg = new StringBuilder().Append("Não encontrado");
@@ -144,6 +146,54 @@ namespace WebApi.Controllers.APIs
             {
                 _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao deletar ReceituarioAgronomico: {ex.Message}").ToString());
                 return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao deletar ReceituarioAgronomico: {ex.Message}").ToString());
+            }
+        }
+
+        [HttpGet("DownloadReceituario/{id}")]
+        public async Task<IActionResult> DownloadReceituario(int id)
+        {
+            try
+            {
+                var receituario = await _receituarioAgronomicoService.GetByIdAsync(id);
+
+                if (receituario.NomeArquivo != null && !string.IsNullOrEmpty(receituario.NomeArquivo.Data))
+                {
+                    var receituarioBytes = Convert.FromBase64String(receituario.NomeArquivo.Data);
+
+                    // Nome do arquivo com base no formato
+                    string receituarioFileName = receituario.Titulo;
+                    string contentType = string.Empty;
+
+                    switch (receituario.NomeArquivo.Format.ToLower())
+                    {
+                        case "pdf":
+                            receituarioFileName += ".pdf";
+                            contentType = "application/pdf";
+                            break;
+                        case "png":
+                            receituarioFileName += ".png";
+                            contentType = "image/png";
+                            break;
+                        case "raw":
+                            receituarioFileName += ".png";
+                            contentType = "image/png";
+                            break;
+                        default:
+                            _loggerService.LogWarning($"Formato desconhecido: {receituario.NomeArquivo.Format}");
+                            return BadRequest($"Formato desconhecido: {receituario.NomeArquivo.Format}");
+                    }
+
+                    // Retornar o arquivo diretamente
+                    return File(receituarioBytes, contentType, receituarioFileName);
+                }
+
+                // Caso não haja dados no receituário
+                return NotFound("Receituário não encontrado ou não possui dados.");
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, $"Erro ao recuperar o receituário: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar o receituário: {ex.Message}");
             }
         }
     }

@@ -10,11 +10,14 @@ public class ReceituarioAgronomicoViewModel
     [JsonPropertyName("relatorioAplicacaoId")]
     public int? RelatorioAplicacaoId { get; set; }
 
+    [JsonPropertyName("titulo")]
+    public string? Titulo{ get; set; }
+
     [JsonPropertyName("nomeArquivo")]
     public DataFormatViewModel NomeArquivo { get; set; }
 
     [JsonPropertyName("nomeArquivoStr")]
-    public string NomeArquivoStr { get; set; }
+    public string? NomeArquivoStr { get; set; }
 
     [JsonPropertyName("numero")]
     public string Numero { get; set; }
