@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,6 @@ namespace Application.DTOs.ExportExcel.ViewModel
         public string? UnidadeVolume { get; set; }
         public string? Dosagem { get; set; }
         public string? UnidadeDosagem { get; set; }
+        public IEnumerable<ProdutoAplicadoCaracteristicasViewModel>? Produtos { get; set; }
     }
 }

@@ -26,6 +26,7 @@ using Domain.Interfaces.Cadastros.ProdutoAplicado;
 using Infra.Repositorio.Cadastros.ProdutoAplicado;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
+using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -123,6 +124,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var cpa = await _caracteristicasProdutoAplicadoRepository.GetForExportExcelAsync(ra.CaracteristicasProdutoAplicadoId);
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(ra.AplicacaoRelatorioId);
             var ari = await _aplicacaoRelatorioItemRepository.GetForExportExcelAsync(ar.Id);
+            var pro = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(id.Value);
             TimeSpan totalDuration = TimeSpan.Zero;
 
             foreach (var item in ari)
@@ -183,7 +185,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Volume = ar.VolumeAplicacao,
                 UnidadeVolume = ar.UnidadeVolumeAplicacao,
                 Dosagem = ar.Dosagem.ToString(),
-                UnidadeDosagem = ar.KG_LT
+                UnidadeDosagem = ar.KG_LT,
+                Produtos = pro
             };
             return viewModel;
         }
