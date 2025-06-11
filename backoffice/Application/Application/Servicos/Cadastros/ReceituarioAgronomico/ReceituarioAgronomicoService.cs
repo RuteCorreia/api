@@ -92,6 +92,7 @@ public class ReceituarioAgronomicoService : IReceituarioAgronomicoService
         var fileExtension = Path.GetExtension(receituario.NomeArquivo)?.ToLower().TrimStart('.');
 
         var response = _mapper.Map<ReceituarioAgronomicoViewModel>(receituario);
+        response.Titulo = receituario.NomeArquivo;
         response.NomeArquivo.Data = await GetReceituarioFileBase64(receituario.NomeArquivo);
         response.NomeArquivo.Format = fileExtension;
         response.NomeArquivoStr = JsonConvert.SerializeObject(response.NomeArquivo);
