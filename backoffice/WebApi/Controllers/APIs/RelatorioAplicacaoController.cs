@@ -747,38 +747,38 @@ namespace WebApi.Controllers.APIs
                                 }
                             }
 
-                            // Adicionar o arquivo do ReceituarioAgronomico, se disponível
-                            var receituario = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
-                            if (receituario != null &&
-                                !string.IsNullOrEmpty(receituario.Data))
+                            foreach(var receituario in relatorio.ReceituariosAgronomicos)
                             {
-                                var receituarioBytes = Convert.FromBase64String(receituario.Data);
-                                string receituarioFileName = $"{folderName}/receituarioAgronomico"; // Nome do arquivo do receituário
+                                if (receituario != null && !string.IsNullOrEmpty(receituario.NomeArquivo.Data) && Int32.Parse(receituario.Numero) == 0)
+                                {
+                                    var receituarioBytes = Convert.FromBase64String(receituario.NomeArquivo.Data);
+                                    string receituarioFileName = $"{folderName}/{receituario.Titulo}";
 
-                                // Verificar o formato do ReceituarioAgronomico
-                                if (receituario.Format.ToLower() == "pdf")
-                                {
-                                    receituarioFileName += ".pdf";
-                                }
-                                else if (receituario.Format.ToLower() == "png")
-                                {
-                                    receituarioFileName += ".png";
-                                }
-                                else if (receituario.Format.ToLower() == "raw")
-                                {
-                                    receituarioFileName += ".raw";
-                                }
-                                else
-                                {
-                                    _logService.LogWarning($"Formato desconhecido: {receituario.Format}");
-                                    continue;
-                                }
+                                    // Verificar o formato do ReceituarioAgronomico
+                                    if (receituario.NomeArquivo.Format.ToLower() == "pdf")
+                                    {
+                                        receituarioFileName += ".pdf";
+                                    }
+                                    else if (receituario.NomeArquivo.Format.ToLower() == "png")
+                                    {
+                                        receituarioFileName += ".png";
+                                    }
+                                    else if (receituario.NomeArquivo.Format.ToLower() == "raw")
+                                    {
+                                        receituarioFileName += ".raw";
+                                    }
+                                    else
+                                    {
+                                        _logService.LogWarning($"Formato desconhecido: {receituario.NomeArquivo.Format}");
+                                        continue;
+                                    }
 
-                                var receituarioEntry = archive.CreateEntry(receituarioFileName, System.IO.Compression.CompressionLevel.Fastest);
+                                    var receituarioEntry = archive.CreateEntry(receituarioFileName, System.IO.Compression.CompressionLevel.Fastest);
 
-                                using (var entryStream = receituarioEntry.Open())
-                                {
-                                    entryStream.Write(receituarioBytes, 0, receituarioBytes.Length);
+                                    using (var entryStream = receituarioEntry.Open())
+                                    {
+                                        entryStream.Write(receituarioBytes, 0, receituarioBytes.Length);
+                                    }
                                 }
                             }
                         }

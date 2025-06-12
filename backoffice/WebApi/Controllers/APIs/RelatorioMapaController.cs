@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
+﻿using Application.Application.Servicos.Log;
+using Application.DTOs.Cadastros.CaracteristicasProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
 using Application.DTOs.Cadastros.RelatorioMapa.ViewModel;
@@ -100,34 +101,38 @@ namespace WebApi.Controllers.APIs
                                 _loggerService.LogWarning($"O relatório de aplicação com IdData {relatorio.IdData} não possui dados válidos.");
                             }
 
-                            // Adicionar o arquivo do ReceituarioAgronomico, se disponível
-                            var receituario = await _caracteristicasProdutoAplicadoService.GetReceituarioAgronomicoAsync(relatorio.CaracteristicasProdutoAplicadoId);
-                            if (receituario != null &&
-                                !string.IsNullOrEmpty(receituario.Data))
+                            foreach (var receituario in relatorio.ReceituariosAgronomicos)
                             {
-                                var receituarioBytes = Convert.FromBase64String(receituario.Data);
-                                string receituarioFileName = $"{folderName}/receituarioAgronomico"; // Nome do arquivo do receituário
+                                if (receituario != null && !string.IsNullOrEmpty(receituario.NomeArquivo.Data) && Int32.Parse(receituario.Numero) == 0)
+                                {
+                                    var receituarioBytes = Convert.FromBase64String(receituario.NomeArquivo.Data);
+                                    string receituarioFileName = $"{folderName}/{receituario.Titulo}";
 
-                                // Verificar o formato do ReceituarioAgronomico
-                                if (receituario.Format.ToLower() == "pdf")
-                                {
-                                    receituarioFileName += ".pdf";
-                                }
-                                else if (receituario.Format.ToLower() == "png")
-                                {
-                                    receituarioFileName += ".png";
-                                }
-                                else
-                                {
-                                    _loggerService.LogWarning($"Formato desconhecido: {receituario.Format}");
-                                    continue; // Pula para o próximo relatório se o formato for desconhecido
-                                }
+                                    // Verificar o formato do ReceituarioAgronomico
+                                    if (receituario.NomeArquivo.Format.ToLower() == "pdf")
+                                    {
+                                        receituarioFileName += ".pdf";
+                                    }
+                                    else if (receituario.NomeArquivo.Format.ToLower() == "png")
+                                    {
+                                        receituarioFileName += ".png";
+                                    }
+                                    else if (receituario.NomeArquivo.Format.ToLower() == "raw")
+                                    {
+                                        receituarioFileName += ".raw";
+                                    }
+                                    else
+                                    {
+                                        _loggerService.LogWarning($"Formato desconhecido: {receituario.NomeArquivo.Format}");
+                                        continue;
+                                    }
 
-                                var receituarioEntry = archive.CreateEntry(receituarioFileName, CompressionLevel.Fastest);
+                                    var receituarioEntry = archive.CreateEntry(receituarioFileName, System.IO.Compression.CompressionLevel.Fastest);
 
-                                using (var entryStream = receituarioEntry.Open())
-                                {
-                                    entryStream.Write(receituarioBytes, 0, receituarioBytes.Length);
+                                    using (var entryStream = receituarioEntry.Open())
+                                    {
+                                        entryStream.Write(receituarioBytes, 0, receituarioBytes.Length);
+                                    }
                                 }
                             }
                         }
