@@ -183,7 +183,6 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 Agrotoxico = cpa.NomeProduto,
                 Adjuvante = cpa.Adjuvante,
                 Volume = ar.VolumeAplicacao,
-                UnidadeVolume = ar.UnidadeVolumeAplicacao,
                 Dosagem = ar.Dosagem.ToString(),
                 UnidadeDosagem = ar.KG_LT,
                 Produtos = pro
@@ -219,7 +218,15 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
             var statusEnvio = 0;
             var list = await _relatorioAplicacaoRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
-            return _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+
+            var relatorios = _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(list);
+
+            foreach (var relatorio in relatorios)
+            {
+                relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+            }
+
+            return relatorios;
         }
 
         public async Task UpdateIsMapaAsync(List<int> relatorios, bool condicao)
