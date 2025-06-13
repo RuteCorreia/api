@@ -308,6 +308,7 @@ namespace WebApi.Controllers.APIs
                         StatusEnvio = relatorio.State,
                         IdCaracteristicasProdutoAplicado = relatorio.CaracteristicasProdutoAplicadoId,
                         ReceituarioExiste = receituarioExist,
+                        ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id)
                     };
 
                     dataRelatorios.Add(relatorioBaseViewModel);
