@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.AlvoBiologico.ViewModel;
 using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.ExportExcel.Interfaces;
 using Application.DTOs.ExportExcel.ViewModel;
@@ -10,6 +11,7 @@ using Domain.Interfaces.Cadastros.CombateIncendio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Azure;
 using OfficeOpenXml;
 using System.IO.Compression;
 using WebApi.HttpRequestInfo;
@@ -109,16 +111,6 @@ namespace WebApi.Controllers.ExportExcel
                         string horasAplicacaoFormatado = "";
                         string horasIncendioFormatado = "";
 
-                        //if (!string.IsNullOrEmpty(relatorio.HorasAplicacao))
-                        //{
-                        //    int horasAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(0, relatorio.HorasAplicacao.Length - 2));
-                        //    int minutosAplicacao = int.Parse(relatorio.HorasAplicacao.Substring(relatorio.HorasAplicacao.Length - 2, 2));
-
-                        //    timeSpanAplicacao = new TimeSpan(horasAplicacao, minutosAplicacao, 0);
-
-                        //    horasAplicacaoFormatado = timeSpanAplicacao.ToString(@"hh\mm");
-                        //}
-
                         if (!string.IsNullOrEmpty(relatorio.HorasCombateIncendio))
                         {
                             int horasIncendio = int.Parse(relatorio.HorasCombateIncendio.Substring(0, relatorio.HorasCombateIncendio.Length - 2));
@@ -127,6 +119,19 @@ namespace WebApi.Controllers.ExportExcel
                             timeSpanIncendio = new TimeSpan(horasIncendio, minutosIncendio, 0);
 
                             horasIncendioFormatado = timeSpanIncendio.ToString(@"hh\:mm\:ss");
+                        }
+
+
+                        if (relatorio.Produtos != null && relatorio.Produtos.Count() == 0)
+                        {
+                            var produto = new ProdutoAplicadoCaracteristicasViewModel();
+                            produto.TipoServico = relatorio.TipoDeServico;
+                            produto.Classe = relatorio.ClasseAgrotoxico;
+                            produto.NomeProduto = relatorio.Agrotoxico;
+                            produto.DosagemProdutoAplicado = relatorio.Dosagem;
+                            produto.UnidadeProdutoAplicado = relatorio.UnidadeDosagem;
+
+                            relatorio.Produtos.Add(produto);
                         }
 
                         int subRow = 1;
