@@ -24,8 +24,8 @@ namespace Application.DTOs.ExportExcel.ViewModel
         public string? HorasCombateIncendio { get; set; }
         public int? Volume { get; set; }
         public string? UnidadeVolume { get; set; }
-        public string? Dosagem { get; set; }
+        public decimal? Dosagem { get; set; }
         public string? UnidadeDosagem { get; set; }
-        public IEnumerable<ProdutoAplicadoCaracteristicasViewModel>? Produtos { get; set; }
+        public List<ProdutoAplicadoCaracteristicasViewModel>? Produtos { get; set; }
     }
 }
