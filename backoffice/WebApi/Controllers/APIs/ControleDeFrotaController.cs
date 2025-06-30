@@ -113,7 +113,7 @@ public class ControleDeFrotaController : ControllerBase
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
             var primeiroDiaMes = new DateTime(ano, mes, 1);
-            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddTicks(-1);
 
             var relatorios = await _controleDeFrotaService.GetListByMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();

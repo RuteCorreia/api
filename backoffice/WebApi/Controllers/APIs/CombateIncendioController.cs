@@ -152,7 +152,7 @@ public class CombateIncendioController : ControllerBase
 
             // Primeiro dia do mês e último dia do mês
             var primeiroDiaMes = new DateTime(ano, mes, 1);
-            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddTicks(-1);
 
             var relatorios = await _combateIncendioService.GetListByStatusMapaMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
@@ -186,7 +186,7 @@ public class CombateIncendioController : ControllerBase
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
 
             var primeiroDiaMes = new DateTime(ano, mes, 1);
-            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+            var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddTicks(-1);
 
             var relatorios = await _combateIncendioService.GetListByMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
             List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
