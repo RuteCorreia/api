@@ -232,7 +232,7 @@ namespace WebApi.Controllers.APIs
 
                 // Primeiro dia do mês e último dia do mês
                 var primeiroDiaMes = new DateTime(ano, mes, 1);
-                var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+                var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddTicks(-1);
 
                 var relatorios = await _relatorioAplicacaoService.GetListByMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
@@ -282,7 +282,7 @@ namespace WebApi.Controllers.APIs
 
                 // Primeiro dia do mês e último dia do mês
                 var primeiroDiaMes = new DateTime(ano, mes, 1);
-                var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddDays(-1);
+                var ultimoDiaMes = primeiroDiaMes.AddMonths(1).AddTicks(-1);
 
                 var relatorios = await _relatorioAplicacaoService.GetListByStatusMapaMesAsync(loggedUser.Item3, primeiroDiaMes, ultimoDiaMes);
                 List<RelatorioBaseViewModel> dataRelatorios = new List<RelatorioBaseViewModel>();
