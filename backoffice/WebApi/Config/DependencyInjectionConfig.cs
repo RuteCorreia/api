@@ -298,6 +298,8 @@ using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 using Application.Application.Servicos.Cadastros.CaracteristicasReceituarioAgronomico;
 using Domain.Interfaces.Cadastros.ReceituarioAgronomico;
 using Infra.Repositorio.Cadastros.ReceituarioAgronomico;
+using Infra.Repositorio.Cadastros.IdentificadorIncendio;
+using Domain.Interfaces.Cadastros.IdentificadorIncendio;
 
 namespace WebApi.Config;
 
@@ -463,6 +465,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IDashboardRepository, DashboardRepository>();
         services.AddScoped<IIdentificadorAplicacaoRepository, IdentificadorAplicacaoRepository>();
         services.AddScoped<IIdentificadorFrotasRepository, IdentificadorFrotasRepository>();
+        services.AddScoped<IIdentificadorIncendioRepository, IdentificadorIncendioRepository>();
         services.AddScoped<IBlobStorageRepository, BlobStorageRepository>();
 
         #endregion

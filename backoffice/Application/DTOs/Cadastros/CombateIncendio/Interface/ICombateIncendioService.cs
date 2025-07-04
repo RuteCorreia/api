@@ -20,9 +20,9 @@ public interface ICombateIncendioService
     Task<IEnumerable<CombateIncendioViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);
     Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa);
 
-    Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa);
+    Task<CombateIncendioViewModel> AddAsync(CombateIncendioViewModel obj, string? idEmpresa);
 
-    Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa);
+    Task<CombateIncendioViewModel> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa);
     Task<ExportRelatorioViewModel> ExportExcelAsync(int? id, string? idEmpresa);
     Task DeleteAsync(int id);
     Task UpdateIsMapaAsync(List<int> obj, bool condicao);
