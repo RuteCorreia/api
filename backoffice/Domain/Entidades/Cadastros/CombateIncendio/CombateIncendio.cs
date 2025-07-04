@@ -57,6 +57,7 @@ public class CombateIncendio
     public string? Observacao { get; set; }
     public string? CapacidadeCargaAeronave { get; set; }
     public string? Piloto { get; set; }
+    public int? RefDocument { get; set; }
 
     [ForeignKey("ContratoPrestacaoServico")]
     public int? ContratoPrestacaoServicoId { get; set; }

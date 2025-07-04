@@ -53,4 +53,6 @@ public class CombateIncendioViewModel
     public DateTime? DataCriacao { get; set; }
     public DateTime? DataAlteracao { get; set; }
     public int? State { get; set; }
+    [JsonProperty("refDocument")]
+    public int? RefDocument { get; set; }
 }

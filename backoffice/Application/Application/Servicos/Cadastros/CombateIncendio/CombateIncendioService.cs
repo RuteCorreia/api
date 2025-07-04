@@ -1,6 +1,7 @@
 ﻿using Application.DTOs.Cadastros.CombateIncendio.Interface;
 using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
+using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using Application.DTOs.ExportExcel.ViewModel;
 using AutoMapper;
@@ -9,8 +10,10 @@ using Domain.Interfaces.Cadastros.Aeronave;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.CombateIncendioDecolagemPouso;
 using Domain.Interfaces.Cadastros.ContratoPrestacaoServico;
+using Domain.Interfaces.Cadastros.IdentificadorIncendio;
 using Domain.Interfaces.User;
 using Helpers;
+using Infra.Repositorio.Cadastros.IdentificadorIncendio;
 
 namespace Application.Application.Servicos.Cadastros.CombateIncendio;
 
@@ -21,6 +24,7 @@ public class CombateIncendioService : ICombateIncendioService
     private readonly ICombateIncendioRepository _combateIncendioRepository;
     private readonly IAeronaveRepository _aeronaveRepository;
     private readonly IUsuarioRepository _usuarioRepository;
+    private readonly IIdentificadorIncendioRepository _identificadorIncendioRepository;
     private readonly IMapper _mapper;
 
     public CombateIncendioService(
@@ -29,6 +33,7 @@ public class CombateIncendioService : ICombateIncendioService
         ICombateIncendioRepository combateIncendioRepository,
         IAeronaveRepository aeronaveRepository,
         IUsuarioRepository usuarioRepository,
+        IIdentificadorIncendioRepository identificadorIncendioRepository,
         IMapper mapper
         )
     {
@@ -37,6 +42,7 @@ public class CombateIncendioService : ICombateIncendioService
         _combateIncendioRepository = combateIncendioRepository;
         _aeronaveRepository = aeronaveRepository;
         _usuarioRepository = usuarioRepository;
+        _identificadorIncendioRepository = identificadorIncendioRepository;
         _mapper = mapper;
     }
 
@@ -178,7 +184,7 @@ public class CombateIncendioService : ICombateIncendioService
     }
 
 
-    public async Task<int> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
+    public async Task<CombateIncendioViewModel> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
@@ -191,11 +197,12 @@ public class CombateIncendioService : ICombateIncendioService
         }
 
         mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {contratoPrestacao.Extensao} horas";
-        var combateIncendio = await _combateIncendioRepository.AddAsync(mapCombateIncendio);
-        return combateIncendio;
+        mapCombateIncendio.RefDocument = await _identificadorIncendioRepository.AddAsync(idEmpresaInt);
+        await _combateIncendioRepository.AddAsync(mapCombateIncendio);
+        return _mapper.Map<CombateIncendioViewModel>(mapCombateIncendio);
     }
 
-    public async Task<int> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa)
+    public async Task<CombateIncendioViewModel> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
 
         var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
@@ -210,7 +217,13 @@ public class CombateIncendioService : ICombateIncendioService
         }
 
         mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {contratoPrestacao.Extensao} horas";
-        return await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
+        
+        if (mapCombateIncendio.RefDocument == null)
+        {
+            mapCombateIncendio.RefDocument = await _identificadorIncendioRepository.AddAsync(idEmpresaInt);
+        }
+        await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
+        return _mapper.Map<CombateIncendioViewModel>(mapCombateIncendio);
     }
 
     public async Task UpdateIsMapaAsync(List<int> relatorios, bool condicao)
