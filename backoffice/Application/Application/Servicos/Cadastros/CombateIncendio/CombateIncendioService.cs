@@ -218,10 +218,6 @@ public class CombateIncendioService : ICombateIncendioService
 
         mapCombateIncendio.NomeRelatorio = $"Combate Incendio - {mapCombateIncendio.Id} - {mapCombateIncendio.Referencia} - {mapCombateIncendio.Cliente} - {mapCombateIncendio.DataCriacao:dd/MM/yyyy} - {contratoPrestacao.Extensao} horas";
         
-        if (mapCombateIncendio.RefDocument == null)
-        {
-            mapCombateIncendio.RefDocument = await _identificadorIncendioRepository.AddAsync(idEmpresaInt);
-        }
         await _combateIncendioRepository.UpdateAsync(mapCombateIncendio);
         return _mapper.Map<CombateIncendioViewModel>(mapCombateIncendio);
     }
