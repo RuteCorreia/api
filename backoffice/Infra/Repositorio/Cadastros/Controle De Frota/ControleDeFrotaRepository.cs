@@ -160,6 +160,10 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.StatusEnvio = obj.StatusEnvio;
             objeto.IsDrone = obj.IsDrone;
             objeto.Checklist = obj.Checklist;
+            objeto.Abastecimento = obj.Abastecimento;
+            objeto.ValorAbastecimento = obj.ValorAbastecimento;
+            objeto.DataRevisao = obj.DataRevisao;
+            objeto.KmRevisao = obj.KmRevisao;
 
             _contextBase.ControleDeFrota.Update(objeto);
             await _contextBase.SaveChangesAsync(); 
