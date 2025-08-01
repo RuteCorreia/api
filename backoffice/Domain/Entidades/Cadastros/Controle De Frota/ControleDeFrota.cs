@@ -59,6 +59,7 @@ public class ControleDeFrota
     public string? Checklist { get; set; }
     public string? ChecklistVeiculo { get; set; }
     public int? RefDocument { get; set; }
+    public decimal? HorasAplicacao { get; set; }
 
     [JsonIgnore]
     public virtual Frota.Frota? Frota { get; set; }
