@@ -111,4 +111,6 @@ public class ControleDeFrotaViewModel
 
     [JsonProperty("refDocument")]
     public int? RefDocument { get; set; }
+    [JsonProperty("horasAplicacao")]
+    public decimal? HorasAplicacao{ get; set; }
 }
