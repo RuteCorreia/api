@@ -16,6 +16,7 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int Id { get; set; }
         public bool IsMapa { get; set; }
         public int? ContratanteId { get; set; }
+        public int? StatusEnvio { get; set; }
         public string? NomeRelatorio { get; set; }
         public int? IdentificacaoAreaTratadaId { get; set; }
         public int? CaracteristicasProdutoAplicadoId { get; set; }
