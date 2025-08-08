@@ -5,9 +5,11 @@ using AutoMapper;
 using Domain.Entidades.Cadastros.Atividade;
 using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.CombateIncendio;
+using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.User;
 using Helpers;
+using Microsoft.IdentityModel.Tokens;
 using System.Globalization;
 
 namespace Application.Application.Servicos.Cadastros.Atividade
@@ -16,34 +18,40 @@ namespace Application.Application.Servicos.Cadastros.Atividade
     {
         private readonly IRelatorioAplicacaoRepository _relatorioAplicacaoRepository;
         private readonly ICombateIncendioRepository _combateIncendioRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IControleDeFrotaRepository _controleDeFrotaRepository;
         private readonly IMapper _mapper;
         public AtividadeService(
             IRelatorioAplicacaoRepository relatorioAplicacaoRepository,
             ICombateIncendioRepository combateIncendioRepository,
-            IUsuarioRepository usuarioRepository,
+            IControleDeFrotaRepository controleDeFrotaRepository,
             IMapper mapper)
         {
             _relatorioAplicacaoRepository = relatorioAplicacaoRepository;
             _combateIncendioRepository = combateIncendioRepository;
-            _usuarioRepository = usuarioRepository;
+            _controleDeFrotaRepository = controleDeFrotaRepository;
             _mapper = mapper;
         }
         public async Task<AtividadeViewModel> GetAtividadeByFiltrosAsync(AtividadeFiltroViewModel atividadeFiltroViewModel, string idEmpresa)
         {
             var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
-            var mapAtividades = _mapper.Map<Domain.Entidades.Cadastros.Atividade.AtividadeFiltro>(atividadeFiltroViewModel);
+            var mapAtividades = _mapper.Map<AtividadeFiltro>(atividadeFiltroViewModel);
             mapAtividades.IdEmpresa = idEmpresaInt;
 
             var atividadesAplicacao = await _relatorioAplicacaoRepository.GetAtividadesByFiltrosAsync(mapAtividades);
-
             var atividadesIncendio = await _combateIncendioRepository.GetAtividadesByFiltrosAsync(mapAtividades);
+
+            IEnumerable<Domain.Entidades.Cadastros.Atividade.Atividade> atividadesFrota = null;
+            if (mapAtividades.Contratante.IsNullOrEmpty())
+            {
+                atividadesFrota = await _controleDeFrotaRepository.GetAtividadesByFiltrosAsync(mapAtividades);
+            }
 
             decimal somaValorTotalAplicacao = 0;
             decimal somaValorTotalIncendio = 0;
             double somaExtensoes = 0;
             double somaHorasAplicacao = 0;
             double somaHorasIncendio = 0;
+            double somaHorasTranslado = 0;
             var comissoesPilotoAplicacao = new Dictionary<string, decimal>();
             var comissoesExecutorAplicacao = new Dictionary<string, decimal>();
             var comissoesPilotoIncendio = new Dictionary<string, decimal>();
@@ -83,18 +91,11 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                     somaExtensoes += 0;
                 }
 
-                if (atividade.TotalHorasAplicacao.HasValue)
-                {
-                    somaHorasAplicacao += atividade.TotalHorasAplicacao ?? 0;
-                }
+
             }
 
             foreach (var atividade in atividadesIncendio)
             {
-                if (atividade.TotalHorasIncendio.HasValue)
-                {
-                    somaHorasIncendio += atividade.TotalHorasIncendio ?? 0;
-                }
 
                 if (TryParseValorTotal(atividade.ValorTotalIncendio, out decimal valorTotal))
                 {
@@ -102,8 +103,31 @@ namespace Application.Application.Servicos.Cadastros.Atividade
                 }
             }
 
+            if (atividadesFrota != null)
+            {
+                foreach (var atividade in atividadesFrota)
+                {
+                    if (atividade.TotalHorasAplicacao.HasValue && atividade.TotalHorasAplicacao > 0)
+                    {
+                        somaHorasAplicacao += atividade.TotalHorasAplicacao ?? 0;
+                    }
+
+                    if (atividade.TotalHorasIncendio.HasValue && atividade.TotalHorasIncendio > 0)
+                    {
+                        somaHorasIncendio += atividade.TotalHorasIncendio ?? 0;
+                    }
+
+                    if (atividade.TotalHorasTranslado.HasValue && atividade.TotalHorasTranslado > 0)
+                    {
+                        somaHorasTranslado += atividade.TotalHorasTranslado ?? 0;
+                    }
+                }
+            }
+
+
             viewModel.HorasAplicacao = somaHorasAplicacao;
             viewModel.HorasIncendio = somaHorasIncendio;
+            viewModel.HorasTranslado = somaHorasTranslado;
             viewModel.ValorAplicacao = somaValorTotalAplicacao;
             viewModel.ValorIncendio = somaValorTotalIncendio;
             viewModel.Extensao = somaExtensoes;
