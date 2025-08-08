@@ -226,8 +226,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
     {
         var query = new StringBuilder(
             @"SELECT  
-	            cps.ValorTotal as ValorTotalIncendio, 
-                SUM(TRY_CAST(REPLACE(cps.Extensao, ',', '.') AS DECIMAL(10,2))) AS TotalHorasIncendio
+	            cps.ValorTotal as ValorTotalIncendio
             FROM CombateIncendio c
 	            JOIN ContratoPrestacaoServico cps ON c.ContratoPrestacaoServicoId = cps.Id
 	            LEFT JOIN Aeronave a ON c.IdAeronave = a.Id
@@ -238,7 +237,7 @@ public class CombateIncendioRepository : ICombateIncendioRepository
 	            AND u.Nome LIKE '%' + @Executor + '%'
 	            AND c.Cliente LIKE '%' + @Cliente + '%'
 	            AND c.IdEmpresa = @IdEmpresa
-	            AND c.StatusEnvio IN (0, 1)
+	            AND c.StatusEnvio IN (0)
                 AND (@DataInicio IS NULL OR c.DataCriacao >= @DataInicio)
                 AND (@DataFim IS NULL OR c.DataCriacao <= @DataFim)");
 

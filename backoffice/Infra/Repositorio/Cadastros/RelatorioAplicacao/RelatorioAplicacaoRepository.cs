@@ -108,10 +108,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             var query = new StringBuilder(@"
             SELECT 
                 i.Extensao AS Extensao,
-                cps.ValorTotal AS ValorTotalAplicacao,
-                (SELECT SUM(TRY_CAST(rli.HorimetroTermino AS DECIMAL(18, 2)) - TRY_CAST(rli.HorimetroInicial AS DECIMAL(18, 2))) 
-                 FROM AplicacaoRelatorioItem rli
-                 WHERE r.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio) AS TotalHorasAplicacao
+                cps.ValorTotal AS ValorTotalAplicacao
             FROM 
                 RelatorioAplicacao r
             JOIN 
@@ -123,7 +120,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             JOIN 
                 ContratoPrestacaoServico cps ON r.ContratoPrestacaoServicoId = cps.Id
             WHERE 
-                r.StatusEnvio IN (0, 1)
+                r.StatusEnvio IN (0)
                 AND r.Piloto LIKE '%' + @Piloto + '%'
                 AND r.IdEmpresa = @IdEmpresa
                 AND r.Executor LIKE '%' + @Executor + '%'
@@ -139,17 +136,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             parameters.Add("Contratante", atividadeFiltro.Contratante);
             parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
             parameters.Add("DataInicio", atividadeFiltro.DataInicial);
-            parameters.Add("DataFim", atividadeFiltro.DataFinal);
-            //if (atividadeFiltro.DataInicial != null)
-            //{
-            //    parameters.Add("DataInicio", atividadeFiltro.DataInicial);
-            //}
-            //if(atividadeFiltro.DataFinal != null)
-            //{
-            //    parameters.Add("DataFim", atividadeFiltro.DataFinal);
-            //}
-            
-            
+            parameters.Add("DataFim", atividadeFiltro.DataFinal);        
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {

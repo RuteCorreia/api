@@ -1,9 +1,16 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
 using Domain.Entidades.Cadastros.Empresa;
+using Domain.Entidades.Cadastros.Horimetro;
+using Domain.Enums;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Azure;
+using System.Globalization;
+using System.Text;
+using System.Text.Json;
 
 namespace Infra.Repositorio.Cadastros.Controle_De_Frota;
 
@@ -171,5 +178,111 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             return objeto.Id;
         }
         return null;
+    }
+
+    public async Task<IEnumerable<Atividade>> GetAtividadesByFiltrosAsync(AtividadeFiltro atividadeFiltro)
+    {
+        var query = new StringBuilder(@"
+            SELECT CASE WHEN Horimetros = 'null' THEN NULL ELSE Horimetros END Horimetros, 
+                   HorasAplicacao,
+                   IsDrone
+            FROM ControleDeFrota
+            WHERE StatusEnvio IN (0)
+                AND NomePiloto LIKE '%' + @Piloto + '%'
+                AND IdEmpresa = @IdEmpresa
+                AND NomeExecutor LIKE '%' + @Executor + '%'
+                AND NomeAeronave LIKE '%' + @PrefixoAeronave + '%'
+                AND (@DataInicio IS NULL OR DataCriacao >= @DataInicio)
+                AND (@DataFim IS NULL OR DataCriacao <= @DataFim)
+        ");
+
+        var parameters = new DynamicParameters();
+        parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
+        parameters.Add("Piloto", atividadeFiltro.Piloto);
+        parameters.Add("Executor", atividadeFiltro.Executor);
+        parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
+        parameters.Add("DataInicio", atividadeFiltro.DataInicial);
+        parameters.Add("DataFim", atividadeFiltro.DataFinal);
+
+        dynamic result;
+        List<Atividade> atividades = new List<Atividade>();
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            result = await connection.QueryAsync<dynamic>(query.ToString(), parameters);
+        }
+
+        foreach (var item in result)
+        {
+            double horasAplicacao = 0, horasIncendio = 0, horasTranslado = 0;
+            List<Horimetro> horimetros;
+
+            if (item.IsDrone && item.HorasAplicacao != null)
+            {
+                horasAplicacao += Convert.ToDouble(item.HorasAplicacao);
+                atividades.Add(new Atividade { TotalHorasAplicacao = horasAplicacao });
+            }
+
+
+            if (!item.IsDrone && item.Horimetros != null)
+            {
+                horimetros = GetHorimetros(item.Horimetros);
+                foreach (var horimetro in horimetros)
+                {
+                    switch (horimetro.Tipo)
+                    {
+                        case HorimetroTypeEnum.Aplicacao:
+                            horasAplicacao += horimetro.Fim - horimetro.Inicio;
+                            break;
+                        case HorimetroTypeEnum.Incendio:
+                            horasIncendio += horimetro.Fim - horimetro.Inicio;
+                            break;
+                        case HorimetroTypeEnum.Translado:
+                            horasTranslado += horimetro.Fim - horimetro.Inicio;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                atividades.Add(new Atividade
+                {
+                    TotalHorasAplicacao = horasAplicacao,
+                    TotalHorasIncendio = horasIncendio,
+                    TotalHorasTranslado = horasTranslado
+                });
+            }
+        }
+
+        return atividades;
+    }
+
+    private List<Horimetro> GetHorimetros(dynamic horimetrosJson)
+    {
+        var options = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+
+        dynamic deserialezedList = JsonSerializer.Deserialize<List<dynamic>>(horimetrosJson, options);
+
+        List<Horimetro> result = new List<Horimetro>();
+
+        foreach (var item in deserialezedList)
+        {
+            double inicio = double.Parse(item.GetProperty("inicio").GetString(), new CultureInfo("pt-BR"));
+            double fim = double.Parse(item.GetProperty("fim").GetString(), new CultureInfo("pt-BR"));
+            int tipoInt = item.GetProperty("tipo").GetInt32();
+            HorimetroTypeEnum tipoEnum = (HorimetroTypeEnum)tipoInt;
+
+            result.Add(new Horimetro 
+            {
+                Inicio = inicio,
+                Fim = fim,
+                Tipo = tipoEnum,
+            });
+        }
+
+        return result;
     }
 }

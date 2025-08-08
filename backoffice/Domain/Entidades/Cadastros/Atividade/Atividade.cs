@@ -4,6 +4,7 @@
     {
         public double? TotalHorasAplicacao { get; set; }
         public double? TotalHorasIncendio { get; set; }
+        public double? TotalHorasTranslado { get; set; }
         public string? Extensao { get; set; }
         public string? ValorTotalIncendio { get; set; }
         public string? ValorTotalAplicacao { get; set; }
