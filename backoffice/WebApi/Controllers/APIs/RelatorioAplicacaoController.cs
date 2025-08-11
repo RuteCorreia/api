@@ -35,6 +35,7 @@ using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 using Application.Application.Servicos.Cadastros.CaracteristicasReceituarioAgronomico;
+using Application.DTOs.Pdf.Interface;
 
 namespace WebApi.Controllers.APIs
 {
@@ -62,6 +63,8 @@ namespace WebApi.Controllers.APIs
         private readonly IContratanteService _contratanteService;
         private readonly IAplicacaoRelatorioItemService _aplicacaoRelatorioItemService;
         private readonly ILogService _logService;
+        private readonly IPdfService _pdfService;
+
 
 
         public RelatorioAplicacaoController(
@@ -79,7 +82,8 @@ namespace WebApi.Controllers.APIs
             IAuxiliarPistaService auxiliarPistaService,
             IContratanteService contratanteService,
             IAplicacaoRelatorioItemService aplicacaoRelatorioItemService,
-            ILogService logService
+            ILogService logService,
+            IPdfService pdfService
             )
         {
             _identificacaoAreaTratadaService = identificacaoAreaTratadaService;
@@ -97,6 +101,7 @@ namespace WebApi.Controllers.APIs
             _contratanteService = contratanteService;
             _aplicacaoRelatorioItemService = aplicacaoRelatorioItemService;
             _logService = logService;
+            _pdfService = pdfService;
         }
 
         [HttpGet]
@@ -739,6 +744,12 @@ namespace WebApi.Controllers.APIs
                             if (!string.IsNullOrEmpty(data.Data))
                             {
                                 var relatorioBytes = Convert.FromBase64String(data.Data);
+
+                                if (relatorio.StatusEnvio == 4)
+                                {
+                                    relatorioBytes = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(relatorioBytes);
+                                }
+
                                 var nomeArquivoRelatorio = $"{folderName}/{folderName}.pdf"; // Nome do arquivo igual ao da pasta
                                 var entry = archive.CreateEntry(nomeArquivoRelatorio, System.IO.Compression.CompressionLevel.Fastest);
 
@@ -810,6 +821,12 @@ namespace WebApi.Controllers.APIs
                 {
                     // Converter os dados do relatório para bytes
                     var relatorioBytes = Convert.FromBase64String(data.Data);
+
+                    if (relatorio.StatusEnvio == 4)
+                    {
+                        // Adiciona marca d'água dinamicamente
+                        relatorioBytes = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(relatorioBytes);
+                    }
 
                     // Nome do arquivo
                     var nomeArquivoRelatorio = $"{relatorio.NomeRelatorio.Replace("/", "-").Replace("\\", "-")}.pdf";
