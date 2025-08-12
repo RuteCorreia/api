@@ -247,7 +247,7 @@ namespace WebApi.Controllers.APIs
                     if (relatorio.CaracteristicasProdutoAplicadoId.HasValue)
                     {
                         var caracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.GetByIdAsync(relatorio.CaracteristicasProdutoAplicadoId.Value, loggedUser.Item3);
-                        if (!string.IsNullOrEmpty(caracteristicasProdutoAplicado.ReceiturarioAgronomico) &&
+                        if (!string.IsNullOrEmpty(caracteristicasProdutoAplicado?.ReceiturarioAgronomico) &&
                             caracteristicasProdutoAplicado.ReceiturarioAgronomico != "{\"Format\":\"raw\",\"Data\":null}")
                         {
                             receituarioExist = true;

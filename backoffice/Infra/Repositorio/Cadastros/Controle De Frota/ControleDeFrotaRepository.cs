@@ -172,6 +172,7 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.DataRevisao = obj.DataRevisao;
             objeto.KmRevisao = obj.KmRevisao;
             objeto.HorasAplicacao = obj.HorasAplicacao;
+            objeto.Horimetros = obj.Horimetros;
 
             _contextBase.ControleDeFrota.Update(objeto);
             await _contextBase.SaveChangesAsync(); 
