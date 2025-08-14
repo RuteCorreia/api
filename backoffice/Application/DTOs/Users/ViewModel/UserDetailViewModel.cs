@@ -14,6 +14,10 @@ public class UserDetailViewModel
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
 
+    public bool Removido { get; set; }
+
+    public int? IdEmpresa { get; set; }
+
     //public ERole Funcao { get; set; }
     public IEnumerable<RoleObject> Funcoes { get; set; }
 }

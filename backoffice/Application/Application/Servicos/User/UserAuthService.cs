@@ -1,4 +1,5 @@
-﻿using Application.DTOs.Cadastros.Empresa.Interface;
+﻿using Application.Application.Servicos.Cadastros.Empresa;
+using Application.DTOs.Cadastros.Empresa.Interface;
 using Application.DTOs.Email.Interface;
 using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
@@ -7,17 +8,17 @@ using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.User;
 using Domain.Enums;
+using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.User;
+using Infra.Repositorio.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Web;
 using System.Text.RegularExpressions;
-using Domain.Interfaces.Cadastros.Empresa;
-using Infra.Repositorio.User;
+using System.Web;
 
 namespace Application.Application.Servicos.User;
 
@@ -159,6 +160,38 @@ public class UserAuthService : IUserAuthService
         };
 
         return (false, "Usuário não encontrado.", [], null);
+    }
+
+    public async Task<(bool, string)> VerifyTokenAsync(string userId)
+    {
+        if (string.IsNullOrEmpty(userId))
+            return (false, "Token inválido");
+
+
+        var usuario = await _usuarioRepository.GetByUserIdAsync(userId);
+        if (usuario is null)
+            return (false, "Usuário não encontrado");
+
+        if (usuario.Removido)
+            return (false, "Usuário removido. Entre em contato com o administrador.");
+
+        if (usuario.IdEmpresa is null)
+        {
+            return (false, "Usuário sem empresa vinculada.");
+        }
+        else
+        {
+            var empresa = await _empresaRepository.GetByIdAsync(usuario.IdEmpresa);
+
+            if (empresa is null)
+                return (false, "Empresa não encontrada.");
+
+            if (empresa.Status != 0)
+                return (false, "Empresa desativada. Entre em contato com o administrador.");
+
+
+            return (true, "Token válido");
+        }
     }
 
     public async Task<(bool, string)> RegisterUserAsync(UserRegisterViewModel request, string loggedUserId)
@@ -372,6 +405,14 @@ public class UserAuthService : IUserAuthService
         return mapObjUsuario;
     }
 
+    public async Task<UserDetailViewModel> GetByUserIdAsync(string id)
+    {
+        var obj = await _usuarioRepository.GetByUserIdAsync(id);
+        var mapObjUsuario = _mapper.Map<UserDetailViewModel>(obj);
+        var usuarioCredencialList = await _usuarioCredencialRepository.GetUsuarioCredencialsAsync(obj.Id);
+        mapObjUsuario.Funcoes = _mapper.Map<IEnumerable<RoleObject>>(usuarioCredencialList);
+        return mapObjUsuario;
+    }
 
     public async Task RecoveryUserAsync(int id)
     {
