@@ -74,6 +74,7 @@ public class UsuarioRepository : IUsuarioRepository
     }
     public async Task<Usuario> GetUserByIdAsync(string id) => await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Id == Guid.Parse(id));
 
+
     public async Task<Usuario> GetByUserIdAsync(string id) => await _contextBase.Usuario.Include("Empresa").FirstOrDefaultAsync(x => string.Equals(x.UserId, id) && !x.Removido);
 
     public async Task<Usuario> GetLastAsync() => await _contextBase.Usuario
