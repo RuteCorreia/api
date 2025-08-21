@@ -1,9 +1,14 @@
-﻿using Application.DTOs.Email.Interface;
+﻿using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Email.Interface;
 using Application.DTOs.Email.ViewModel;
 using Application.DTOs.Users.Interface;
 using Application.DTOs.Users.ViewModel;
+using Domain.Entidades.User;
+using Domain.Interfaces.Cadastros.Empresa;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 using WebApi.HttpRequestInfo;
@@ -21,18 +26,21 @@ public class AuthController : ControllerBase
     private readonly IUserAuthService _authService;
     private readonly IConfiguration _configuration;
     private readonly IEmailService _emailService;
+    private readonly IEmpresaService _empresaService;
     public AuthController(
         LoggedUserInfoService loggedUserInfoService,
         IUserAuthService userAuthService,
         IUserAuthService authService,
         IConfiguration configuration,
+        IEmpresaService empresaService,
         IEmailService emailService )
     {
         _loggedUserInfoService = loggedUserInfoService;
         _userAuthService = userAuthService;
         _configuration = configuration;
         _emailService = emailService;
-        _authService = authService;    
+        _authService = authService;
+        _empresaService = empresaService;
     }
    
     [HttpPost("registerUser")]
@@ -265,5 +273,29 @@ public class AuthController : ControllerBase
         }
 
         return Unauthorized();
+    }
+
+    [HttpGet("validate-token")]
+    [Authorize]
+    public async Task<IActionResult> ValidateTokenAsync()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        var resultError = new StringBuilder();
+
+        if (!string.IsNullOrEmpty(userId))
+        {
+
+            var result = await _authService.VerifyTokenAsync(userId);
+
+            if (result.Item1)
+                return Ok(new { success = true, token = result.Item2 });
+
+            resultError.Clear();
+            resultError.Append(result.Item2);
+        }
+
+        return BadRequest(resultError.ToString());
+    
     }
 }
