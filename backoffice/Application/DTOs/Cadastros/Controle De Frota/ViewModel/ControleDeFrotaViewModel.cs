@@ -1,4 +1,7 @@
-﻿using Newtonsoft.Json;
+﻿using Application.DTOs.Cadastros.FrotaBateria.ViewModel;
+using Application.DTOs.Cadastros.FrotaGerador.ViewModel;
+using Application.DTOs.Cadastros.FrotaMotobomba.ViewModel;
+using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
@@ -112,5 +115,9 @@ public class ControleDeFrotaViewModel
     [JsonProperty("refDocument")]
     public int? RefDocument { get; set; }
     [JsonProperty("horasAplicacao")]
-    public decimal? HorasAplicacao{ get; set; }
+    public decimal? HorasAplicacao  { get; set; }
+
+    public IEnumerable<FrotaBateriaViewModel> Baterias { get; set; }
+    public IEnumerable<FrotaGeradorViewModel> Geradores { get; set; }
+    public IEnumerable<FrotaMotobombaViewModel> Motobombas { get; set; }
 }

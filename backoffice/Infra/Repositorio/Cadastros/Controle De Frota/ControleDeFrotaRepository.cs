@@ -1,13 +1,11 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Atividade;
-using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.Cadastros.Horimetro;
 using Domain.Enums;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Azure;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
@@ -64,6 +62,18 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
             var parameters = new { Ids = ids, IdEmpresa = idEmpresa, StatusEnvio = statusEnvio };
+            var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
+            return result;
+        }
+    }
+
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>> GetListByIdsAsync(List<int> ids)
+    {
+        var query = @"SELECT * FROM ControleDeFrota WHERE Id IN @Ids";
+
+        using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
+        {
+            var parameters = new { Ids = ids };
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(query, parameters);
             return result;
         }

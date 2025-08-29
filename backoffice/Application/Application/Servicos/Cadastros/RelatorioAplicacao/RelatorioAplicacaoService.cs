@@ -22,11 +22,8 @@ using Application.DTOs.Cadastros.ContratoPrestacaoServico.Interface;
 using Application.DTOs.Cadastros.DadosResponsavel.Interface;
 using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
-using Domain.Interfaces.Cadastros.ProdutoAplicado;
-using Infra.Repositorio.Cadastros.ProdutoAplicado;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
-using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -386,6 +383,29 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var user = await _usuarioRepository.GetByUserIdAsync(userId);
             var relatorios = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
 
+            var ralatoriosViewModel = _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(relatorios);
+
+            foreach (var relatorio in ralatoriosViewModel)
+            {
+                relatorio.Contratante = await _contratanteService.GetByIdAsync(relatorio.ContratanteId!.Value);
+                relatorio.IdentificacaoAreaTratada = await _identificacaoAreaTratadaService.GetByIdAsync(relatorio.IdentificacaoAreaTratadaId!.Value);
+                relatorio.CaracteristicasProdutoAplicado = await _caracteristicasProdutoAplicadoService.GetByIdAsync(relatorio.CaracteristicasProdutoAplicadoId!.Value, idEmpresa);
+                relatorio.AplicacaoRecomendacoesTecnicas = await _aplicacaoRecomendacoesTecnicasService.GetByIdAsync(relatorio.RecomendacoesTecnicasId!.Value);
+                relatorio.AplicacaoRelatorio = await _aplicacaoRelatorioService.GetByIdAsync(relatorio.AplicacaoRelatorioId!.Value);
+                relatorio.Aplicacoes = await _aplicacaoRelatorioItemService.GetAllAsync(relatorio.AplicacaoRelatorioId!.Value);
+                relatorio.ContratoPrestacaoServico = await _contratoPrestacaoServicoService.GetByIdAsync(relatorio.ContratoPrestacaoServicoId!.Value, idEmpresa);
+                relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
+                relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+                relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+            }
+
+            return ralatoriosViewModel;
+        }
+
+        public async Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(List<int> ids, string idEmpresa)
+        {
+            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var relatorios = await _relatorioAplicacaoRepository.GetListByIdsAsync(ids);
             var ralatoriosViewModel = _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(relatorios);
 
             foreach (var relatorio in ralatoriosViewModel)
