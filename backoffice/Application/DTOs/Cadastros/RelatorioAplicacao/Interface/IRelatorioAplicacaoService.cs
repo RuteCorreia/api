@@ -4,6 +4,7 @@ using Application.DTOs.ExportExcel.ViewModel;
 public interface IRelatorioAplicacaoService
 {
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllAsync();
+    Task<IEnumerable<RelatorioAplicacaoViewModel>> GetListByIdsAsync(List<int> ids, string idEmpresa);
     Task<IEnumerable<RelatorioAplicacaoViewModel>> GetAllByIdEmpresaAsync(string? idEmpresa);
     Task<RelatorioAplicacaoViewModel> GetByIdAsync(int id);
     Task<RelatorioAplicacaoViewModel> AddAsync(RelatorioAplicacaoViewModel obj, string? idEmpresa);

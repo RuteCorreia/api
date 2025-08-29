@@ -6,7 +6,7 @@ namespace Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 public interface IControleDeFrotaService 
 {
     Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? userId, IEnumerable<string>? roleNames, string? idEmpresa);
-
+    Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(List<int> ids, string idEmpresa);
     Task<ControleDeFrotaViewModel> GetByIdAsync(int? id);
 
     Task<IEnumerable<ControleDeFrotaViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes);

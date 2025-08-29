@@ -1,6 +1,9 @@
 ﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using Application.DTOs.Cadastros.DataFormat.ViewModel;
+using Application.DTOs.Cadastros.FrotaBateria.Interface;
+using Application.DTOs.Cadastros.FrotaGerador.Interface;
+using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
 using AutoMapper;
 using Domain.Interfaces.BlobStorage;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
@@ -21,6 +24,9 @@ public class ControleDeFrotaService : IControleDeFrotaService
     private readonly IVeiculoRepository _veiculoRepository;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IIdentificadorFrotasRepository _identificadorFrotasRepository;
+    private readonly IFrotaBateriaService _frotaBateriaService;
+    private readonly IFrotaGeradorService _frotaGeradorService;
+    private readonly IFrotaMotobombaService _frotaMotobombaService;
     private readonly IMapper _mapper;
 
     public ControleDeFrotaService( 
@@ -29,6 +35,9 @@ public class ControleDeFrotaService : IControleDeFrotaService
         IVeiculoRepository veiculoRepository,
         IUsuarioRepository usuarioRepository,
         IIdentificadorFrotasRepository identificadorFrotasRepository,
+        IFrotaBateriaService frotaBateriaService,
+        IFrotaGeradorService frotaGeradorService,
+        IFrotaMotobombaService frotaMotobombaService,
         IMapper mapper)
     {
         _controleDeFrotaRepository = controleDeFrotaRepository;
@@ -36,6 +45,9 @@ public class ControleDeFrotaService : IControleDeFrotaService
         _veiculoRepository = veiculoRepository;
         _usuarioRepository = usuarioRepository;
         _identificadorFrotasRepository = identificadorFrotasRepository;
+        _frotaBateriaService = frotaBateriaService;
+        _frotaGeradorService = frotaGeradorService;
+        _frotaMotobombaService = frotaMotobombaService;
         _mapper = mapper;
     }
 
@@ -94,6 +106,22 @@ public class ControleDeFrotaService : IControleDeFrotaService
         var statusEnvio = 0;
         var list = await _controleDeFrotaRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
+    }
+
+    public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(List<int> ids, string? idEmpresa)
+    {
+        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var relatorios = await _controleDeFrotaRepository.GetListByIdsAsync(ids);
+        var relatoriosViewModel = _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(relatorios);
+
+        foreach (var relatorio in relatoriosViewModel)
+        {
+            relatorio.Baterias = await _frotaBateriaService.GetByIdAsync(relatorio.Id);
+            relatorio.Geradores = await _frotaGeradorService.GetByIdAsync(relatorio.Id);
+            relatorio.Motobombas = await _frotaMotobombaService.GetByIdAsync(relatorio.Id);
+        }
+
+        return relatoriosViewModel;
     }
 
     public async Task<ControleDeFrotaViewModel> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)

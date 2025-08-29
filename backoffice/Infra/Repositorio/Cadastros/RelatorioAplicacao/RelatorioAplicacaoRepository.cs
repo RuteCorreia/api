@@ -1,19 +1,12 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.Atividade;
-using Domain.Entidades.Cadastros.Contratante;
-using Domain.Entidades.Cadastros.Empresa;
-using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
 using Helpers;
 using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 {
@@ -164,6 +157,13 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         {
             string query = "SELECT * FROM RelatorioAplicacao";
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query);
+        }
+
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByIdsAsync(List<int> ids)
+        {
+            string query = "SELECT * FROM RelatorioAplicacao WHERE Id IN @Ids";
+            return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(
+                query, new { Ids = ids });
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetListByStatusAsync(int idEmpresa, int statusEnvio)

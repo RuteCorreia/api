@@ -1,4 +1,7 @@
-﻿using Application.DTOs.Cadastros.Sincronizacao.Interface;
+﻿using Application.Application.Servicos.Cadastros.ControleDeFrota;
+using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
+using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+using Application.DTOs.Cadastros.Sincronizacao.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.ViewModel;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -16,15 +19,21 @@ namespace WebApi.Controllers.APIs
     {
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly ISincronizacaoService _sincronizacaoService;
+        private readonly IRelatorioAplicacaoService _relatorioAplicacaoService;
+        private readonly IControleDeFrotaService _controleDeFrotaService;
         private readonly ILogService _logService;
 
         public SincronizacaoController(
             LoggedUserInfoService loggedUserInfoService,
-            ISincronizacaoService sincronizacaoService, 
+            ISincronizacaoService sincronizacaoService,
+            IRelatorioAplicacaoService relatorioAplicacaoService,
+            IControleDeFrotaService controleDeFrotaService,
             ILogService logService)
         {
             _loggedUserInfoService = loggedUserInfoService;
             _sincronizacaoService = sincronizacaoService;
+            _relatorioAplicacaoService = relatorioAplicacaoService;
+            _controleDeFrotaService = controleDeFrotaService;
             _logService = logService;
         }
 
@@ -45,6 +54,24 @@ namespace WebApi.Controllers.APIs
             }
         }
 
+        [HttpPost("getRelatorios")]
+        public async Task<ActionResult<SincronizacaoRelatorioViewModel>> GetReports([FromBody] SincronizacaoRelatorioParams relatorioParams)
+        {
+            try
+            {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var response = new SincronizacaoRelatorioViewModel();
+                response.RelatoriosAplicacao = await _relatorioAplicacaoService.GetListByIdsAsync(relatorioParams.IdsAplicacao, loggedUser.Item3);
+                response.RelatoriosFrota = await _controleDeFrotaService.GetListByIdsAsync(relatorioParams.IdsFrota, loggedUser.Item3);
 
+                _logService.LogInformation("Consulta de atualização dos relatórios feita com sucesso");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                _logService.LogError(ex, $"Erro ao recuperar dados para sincronização: {ex.Message}");
+                return StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao recuperar dados para sincronização: {ex.Message}");
+            }
+        }
     }
 }
