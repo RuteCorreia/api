@@ -75,7 +75,15 @@ public class ControleDeFrotaService : IControleDeFrotaService
             }
         }
 
-        return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
+        var relatoriosViewModel = _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
+        foreach (var relatorio in relatoriosViewModel)
+        {
+            relatorio.Baterias = await _frotaBateriaService.GetByIdAsync(relatorio.Id);
+            relatorio.Geradores = await _frotaGeradorService.GetByIdAsync(relatorio.Id);
+            relatorio.Motobombas = await _frotaMotobombaService.GetByIdAsync(relatorio.Id);
+        }
+
+        return relatoriosViewModel;
     }
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByStatusAsync(string? idEmpresa)
