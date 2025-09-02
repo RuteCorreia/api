@@ -117,7 +117,7 @@ public class ControleDeFrotaViewModel
     [JsonProperty("horasAplicacao")]
     public decimal? HorasAplicacao  { get; set; }
 
-    public IEnumerable<FrotaBateriaViewModel> Baterias { get; set; }
-    public IEnumerable<FrotaGeradorViewModel> Geradores { get; set; }
-    public IEnumerable<FrotaMotobombaViewModel> Motobombas { get; set; }
+    public IEnumerable<FrotaBateriaViewModel>? Baterias { get; set; }
+    public IEnumerable<FrotaGeradorViewModel>? Geradores { get; set; }
+    public IEnumerable<FrotaMotobombaViewModel>? Motobombas { get; set; }
 }
