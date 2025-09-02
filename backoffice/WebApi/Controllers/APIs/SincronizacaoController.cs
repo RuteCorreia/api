@@ -4,8 +4,10 @@ using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.ViewModel;
 using Application.DTOs.Log.Interface;
+using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApi.Controllers.APIs
 {
@@ -61,8 +63,20 @@ namespace WebApi.Controllers.APIs
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 var response = new SincronizacaoRelatorioViewModel();
+
                 response.RelatoriosAplicacao = await _relatorioAplicacaoService.GetListByIdsAsync(relatorioParams.IdsAplicacao, loggedUser.Item3);
+                var novosAplicacao = await _relatorioAplicacaoService.GetNovosAsync(relatorioParams.DataUltimaAtualizacao, loggedUser.Item1, loggedUser.Item2, loggedUser.Item3);
+                novosAplicacao = novosAplicacao.Where(x => !relatorioParams.IdsAplicacao.Contains(x.Id));
+                var listaAplicacoes = response.RelatoriosAplicacao.ToList();
+                listaAplicacoes.AddRange(novosAplicacao);
+                response.RelatoriosAplicacao = listaAplicacoes;
+
                 response.RelatoriosFrota = await _controleDeFrotaService.GetListByIdsAsync(relatorioParams.IdsFrota, loggedUser.Item3);
+                var novosFrota = await _controleDeFrotaService.GetAllAsync(relatorioParams.DataUltimaAtualizacao, loggedUser.Item1, loggedUser.Item2, loggedUser.Item3);
+                novosFrota = novosFrota.Where(x => !relatorioParams.IdsFrota.Contains(x.Id));
+                var listaFrota = response.RelatoriosFrota.ToList();
+                listaFrota.AddRange(novosFrota);
+                response.RelatoriosFrota = listaFrota;
 
                 _logService.LogInformation("Consulta de atualização dos relatórios feita com sucesso");
                 return Ok(response);
