@@ -196,7 +196,7 @@ namespace WebApi.Controllers.APIs
                         worksheet.Cells[row, 8].Value = item.HectaresVoados;
 
                         // Formatar Horas Voadas como "hh:mm:ss"
-                        var horasVoadasDecimal = item.HorasVoadas;
+                        var horasVoadasDecimal = item.HorasVoadas != null ? item.HorasVoadas : 0;
                         int horas = (int)horasVoadasDecimal;
                         int minutos = (int)((horasVoadasDecimal - horas) * 60);
                         int segundos = (int)(((horasVoadasDecimal - horas) * 60 - minutos) * 60);
