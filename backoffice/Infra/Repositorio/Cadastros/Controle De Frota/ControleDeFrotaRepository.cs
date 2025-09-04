@@ -183,6 +183,8 @@ public class ControleDeFrotaRepository : IControleDeFrotaRepository
             objeto.KmRevisao = obj.KmRevisao;
             objeto.HorasAplicacao = obj.HorasAplicacao;
             objeto.Horimetros = obj.Horimetros;
+            objeto.CombustivelRemanescente = obj.CombustivelRemanescente;
+            objeto.CombustivelUtilizado = obj.CombustivelUtilizado;
 
             _contextBase.ControleDeFrota.Update(objeto);
             await _contextBase.SaveChangesAsync(); 
