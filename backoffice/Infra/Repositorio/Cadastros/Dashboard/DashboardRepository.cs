@@ -1,8 +1,13 @@
 ﻿using Dapper;
+using Domain.Entidades.Cadastros.Atividade;
+using Domain.Entidades.Cadastros.Horimetro;
 using Domain.Entidades.Cadastros.TelaPrincipal;
+using Domain.Enums;
 using Domain.Interfaces.Cadastros.Dashboard;
 using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
+using System.Globalization;
+using System.Text.Json;
 
 namespace Infra.Repositorio.Cadastros.Dashboard
 {
@@ -300,7 +305,9 @@ namespace Infra.Repositorio.Cadastros.Dashboard
 	                        ) AS Aeronave,
                             TRY_CAST(NULLIF(cf.HorimetroFinal, '') AS DECIMAL(18, 2)) - 
                                 TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2)) AS TotalHoras,
-                            cf.Extensao AS ExtensaoTotal
+                            cf.Extensao AS ExtensaoTotal,
+                            CASE WHEN cf.Horimetros = 'null' THEN NULL ELSE cf.Horimetros END Horimetros,
+                            IsDrone
                         FROM 
                             ControleDeFrota cf
                         WHERE
@@ -313,9 +320,63 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                         ORDER BY 
                             Ano, Mes;";
 
-                    var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Dashboard.Dashboard>(query,
+                    var result = await connection.QueryAsync<dynamic>(query,
                         new { DataInicio = dataInicio, DataFim = dataFim, IdEmpresa = idEmpresa, Usuario = usuario, NomeAeronave = nomeAeronave, NomeContratante = nomeContratante });
-                    return result.ToList();
+
+                    List<Domain.Entidades.Cadastros.Dashboard.Dashboard> dashboards = new List<Domain.Entidades.Cadastros.Dashboard.Dashboard>();
+
+                    foreach (var item in result)
+                    {
+                        double horasAplicacao = 0, horasIncendio = 0, horasTranslado = 0;
+                        List<Horimetro> horimetros;
+
+                        if (item.IsDrone && item.HorasAplicacao != null)
+                        {
+                            horasAplicacao += Convert.ToDouble(item.HorasAplicacao);
+                        }
+
+                        if (!item.IsDrone && item.Horimetros != null)
+                        {
+                            horimetros = GetHorimetros(item.Horimetros);
+                            foreach (var horimetro in horimetros)
+                            {
+                                switch (horimetro.Tipo)
+                                {
+                                    case HorimetroTypeEnum.Aplicacao:
+                                        horasAplicacao += horimetro.Fim - horimetro.Inicio;
+                                        break;
+                                    case HorimetroTypeEnum.Incendio:
+                                        horasIncendio += horimetro.Fim - horimetro.Inicio;
+                                        break;
+                                    case HorimetroTypeEnum.Translado:
+                                        horasTranslado += horimetro.Fim - horimetro.Inicio;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+
+                            dashboards.Add(new Domain.Entidades.Cadastros.Dashboard.Dashboard
+                            {
+                                NumeroDocumento = item.NumeroDocumento,
+                                Ano = item.Ano,
+                                Mes = item.Mes,
+                                ExtensaoTotal = item.ExtensaoTotal,
+                                Piloto = item.Piloto,
+                                Executor = item.Executor,
+                                Aeronave = item.Aeronave,
+                                Cliente = item.Cliente,
+                                DataCriacao = item.DataCriacao,
+                                ValorTotal = item.ValorTotal,
+                                TotalHoras = item.TotalHoras,
+                                TotalHorasAplicacao = horasAplicacao,
+                                TotalHorasIncendio = horasIncendio,
+                                TotalHorasTranslado = horasTranslado
+                            });
+                        }
+                    }
+
+                    return dashboards;
                 }
                 catch (Exception ex)
                 {
@@ -323,6 +384,35 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                     throw;
                 }
             }
+        }
+
+        private List<Horimetro> GetHorimetros(dynamic horimetrosJson)
+        {
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            dynamic deserialezedList = JsonSerializer.Deserialize<List<dynamic>>(horimetrosJson, options);
+
+            List<Horimetro> result = new List<Horimetro>();
+
+            foreach (var item in deserialezedList)
+            {
+                double inicio = double.Parse(item.GetProperty("inicio").GetString(), new CultureInfo("pt-BR"));
+                double fim = double.Parse(item.GetProperty("fim").GetString(), new CultureInfo("pt-BR"));
+                int tipoInt = item.GetProperty("tipo").GetInt32();
+                HorimetroTypeEnum tipoEnum = (HorimetroTypeEnum)tipoInt;
+
+                result.Add(new Horimetro
+                {
+                    Inicio = inicio,
+                    Fim = fim,
+                    Tipo = tipoEnum,
+                });
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<string>> GetUsuariosDropdownAsync(int idEmpresa)
