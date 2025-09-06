@@ -14,6 +14,9 @@
         public decimal? HectaresVoados { get; set; }
         public decimal? Faturamento { get; set; }
         public decimal? HorasVoadas { get; set; }
+        public double? TotalHorasAplicacao { get; set; }
+        public double? TotalHorasIncendio { get; set; }
+        public double? TotalHorasTranslado { get; set; }
         public decimal? Rendimento { get; set; }
     }
 }

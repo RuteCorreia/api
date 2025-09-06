@@ -162,6 +162,9 @@ namespace WebApi.Controllers.APIs
                         Executor = item.Executor,
                         HectaresVoados = item.ExtensaoTotal,
                         HorasVoadas = item.TotalHoras,
+                        TotalHorasAplicacao = item.TotalHorasAplicacao,
+                        TotalHorasIncendio = item.TotalHorasIncendio,
+                        TotalHorasTranslado = item.TotalHorasTranslado,
                         Rendimento = item.Rendimento,
                     };
                     dashboards.Add(dashboard);
@@ -182,29 +185,48 @@ namespace WebApi.Controllers.APIs
                     worksheet.Cells[1, 6].Value = "Piloto";
                     worksheet.Cells[1, 7].Value = "Executor";
                     worksheet.Cells[1, 8].Value = "Hectares Voados";
-                    worksheet.Cells[1, 9].Value = "Horas Voadas";
-                    worksheet.Cells[1, 10].Value = "Rendimento";
+                    worksheet.Cells[1, 9].Value = "Horas Voadas Total (TR+SA)";
+                    worksheet.Cells[1, 10].Value = "Horas Voadas SA";
+                    worksheet.Cells[1, 11].Value = "Horas Voadas TR";
+                    worksheet.Cells[1, 12].Value = "Horas Voadas IN";
+                    worksheet.Cells[1, 13].Value = "Rendimento Total";
+                    worksheet.Cells[1, 14].Value = "Rendimento SA";
 
                     // Preencher dados
                     int row = 2;
                     foreach (var item in dashboards)
                     {
-
-
                         // Formatar Hectares Voados como "xx.xxx ha"
                         worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
                         worksheet.Cells[row, 8].Value = item.HectaresVoados;
 
-                        // Formatar Horas Voadas como "hh:mm:ss"
-                        var horasVoadasDecimal = item.HorasVoadas != null ? item.HorasVoadas : 0;
-                        int horas = (int)horasVoadasDecimal;
-                        int minutos = (int)((horasVoadasDecimal - horas) * 60);
-                        int segundos = (int)(((horasVoadasDecimal - horas) * 60 - minutos) * 60);
-                        worksheet.Cells[row, 9].Value = $"{horas:D2}:{minutos:D2}:{segundos:D2}";
+                        // Formatar Horas Aplicacao como "hh:mm:ss"
+                        decimal horasAplicacao = item.TotalHorasAplicacao.HasValue ? Convert.ToDecimal(item.TotalHorasAplicacao.Value) : 0m;
+
+                        // Formatar Horas Translado como "hh:mm:ss"
+                        decimal horasTranslado = item.TotalHorasTranslado.HasValue ? Convert.ToDecimal(item.TotalHorasTranslado.Value) : 0m;
+
+                        // Formatar Horas Incendio como "hh:mm:ss"
+                        decimal horasIncendio = item.TotalHorasIncendio.HasValue ? Convert.ToDecimal(item.TotalHorasIncendio.Value) : 0m;
+
+                        TimeSpan tsAplicacao = TimeSpan.FromHours((double)horasAplicacao);
+                        TimeSpan tsTranslado = TimeSpan.FromHours((double)horasTranslado);
+                        TimeSpan tsIncendio = TimeSpan.FromHours((double)horasIncendio);
+
+                        TimeSpan tsTotal = tsAplicacao + tsTranslado + tsIncendio;
+
+                        worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
+                        worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
+                        worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
+                        worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
 
                         // Formatar Rendimento como porcentagem
-                        worksheet.Cells[row, 10].Style.Numberformat.Format = "0.00 \"ha/hr\"";
-                        worksheet.Cells[row, 10].Value = item.Rendimento;
+                        worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                        worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+
+                        // Formatar Rendimento como porcentagem
+                        worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                        worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
 
                         // Preencher outras células
                         worksheet.Cells[row, 1].Value = item.Relatorio;
@@ -219,8 +241,8 @@ namespace WebApi.Controllers.APIs
                     }
 
                     // Ajustar o estilo das células, se necessário
-                    worksheet.Cells[1, 1, row - 1, 10].Style.Font.Bold = true;
-                    worksheet.Cells[1, 1, row - 1, 10].AutoFitColumns();
+                    worksheet.Cells[1, 1, row - 1, 14].Style.Font.Bold = true;
+                    worksheet.Cells[1, 1, row - 1, 14].AutoFitColumns();
 
                     package.Save();
                 }
@@ -232,6 +254,12 @@ namespace WebApi.Controllers.APIs
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, $"Export Excel Faturamento - {ex.Message}");
             }
+        }
+
+        private string FormatarHoras(decimal horasDecimais)
+        {
+            TimeSpan tempo = TimeSpan.FromHours((double)horasDecimais);
+            return $"{(int)tempo.TotalHours:D2}:{tempo.Minutes:D2}:{tempo.Seconds:D2}";
         }
 
 

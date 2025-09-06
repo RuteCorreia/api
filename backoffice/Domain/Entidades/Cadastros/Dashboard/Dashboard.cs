@@ -13,5 +13,8 @@
         public DateTime? DataCriacao { get; set; }
         public decimal? ValorTotal { get; set; }
         public decimal? TotalHoras { get; set; }
+        public double? TotalHorasAplicacao { get; set; }
+        public double? TotalHorasIncendio { get; set; }
+        public double? TotalHorasTranslado { get; set; }
     }
 }
