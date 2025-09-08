@@ -1,6 +1,5 @@
 ﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
-using Application.DTOs.Cadastros.DataFormat.ViewModel;
 using Application.DTOs.Cadastros.FrotaBateria.Interface;
 using Application.DTOs.Cadastros.FrotaGerador.Interface;
 using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
@@ -11,9 +10,7 @@ using Domain.Interfaces.Cadastros.IdentificadorFrotas;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Domain.Interfaces.User;
 using Helpers;
-using Infra.Repositorio.Cadastros.IdentificadorFrotas;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.ControleDeFrota;
 

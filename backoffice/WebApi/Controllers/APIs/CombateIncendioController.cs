@@ -7,9 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 using Application.DTOs.Cadastros.RelatorioBase;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
-using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
-using Application.Application.Servicos.Log;
-using Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel;
 using System.IO.Compression;
 namespace WebApi.Controllers.APIs;
 

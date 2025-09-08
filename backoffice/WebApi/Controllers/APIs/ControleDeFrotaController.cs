@@ -1,5 +1,4 @@
-﻿using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
-using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
+﻿using Application.DTOs.Cadastros.CombateIncendio.ViewModel;
 using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Controle_De_Frota.ViewModel;
 using Application.DTOs.Cadastros.DataRelatorio.Interface;
