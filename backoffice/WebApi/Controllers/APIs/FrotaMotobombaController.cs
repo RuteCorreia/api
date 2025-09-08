@@ -1,11 +1,7 @@
-﻿using Application.Application.Servicos.Cadastros.FrotaGerador;
-using Application.DTOs.Cadastros.FrotaGerador.Interface;
-using Application.DTOs.Cadastros.FrotaGerador.ViewModel;
-using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
+﻿using Application.DTOs.Cadastros.FrotaMotobomba.Interface;
 using Application.DTOs.Cadastros.FrotaMotobomba.ViewModel;
 using Helpers;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 

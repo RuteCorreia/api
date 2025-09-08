@@ -1,13 +1,10 @@
 ﻿using Application.DTOs.Cadastros.Atividade.Interface;
 using Application.DTOs.Cadastros.Atividade.ViewModel;
-using Application.DTOs.Users.ViewModel;
 using AutoMapper;
 using Domain.Entidades.Cadastros.Atividade;
-using Domain.Entidades.Cadastros.Contratante;
 using Domain.Interfaces.Cadastros.CombateIncendio;
 using Domain.Interfaces.Cadastros.ControleDeFrota;
 using Domain.Interfaces.Cadastros.RelatorioAplicacao;
-using Domain.Interfaces.User;
 using Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.Globalization;

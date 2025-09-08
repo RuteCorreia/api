@@ -44,7 +44,6 @@ using Domain.Interfaces.Cadastros.TipoProduto;
 using Domain.Interfaces.Cadastros.Veiculante;
 using Domain.Interfaces.Cadastros.Veiculo;
 using Helpers;
-using Infra.Repositorio.Cadastros.Motobomba;
 using Newtonsoft.Json;
 
 namespace Application.Application.Servicos.Cadastros.Sincronizacao

@@ -31,10 +31,8 @@ using System.IO.Compression;
 using System.Text.Json;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
-using Application.Application.Servicos.Cadastros.CaracteristicasProdutoAplicado;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
-using Application.Application.Servicos.Cadastros.CaracteristicasReceituarioAgronomico;
 using Application.DTOs.Pdf.Interface;
 
 namespace WebApi.Controllers.APIs

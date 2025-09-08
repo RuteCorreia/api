@@ -1,13 +1,9 @@
-﻿using Application.Application.Servicos.Cadastros.ControleDeFrota;
-using Application.Application.Servicos.Cadastros.RelatorioAplicacao;
-using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
+﻿using Application.DTOs.Cadastros.Controle_De_Frota.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.Interface;
 using Application.DTOs.Cadastros.Sincronizacao.ViewModel;
 using Application.DTOs.Log.Interface;
-using Domain.Entidades.Cadastros.RelatorioAplicacao;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WebApi.Controllers.APIs
 {
