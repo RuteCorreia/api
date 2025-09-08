@@ -1,11 +1,8 @@
 ﻿using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.DTOs.Cadastros.Dashboard.ViewModel;
-using Domain.Entidades.User;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System.Globalization;
-using System.IO.Compression;
 using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
