@@ -50,7 +50,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetAllAsync(DateTime? offsetDate, string? userId, IEnumerable<string>? roleNames, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var user = await _usuarioRepository.GetByUserIdAsync(userId);
         var list = await _controleDeFrotaRepository.GetAllAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
 
@@ -85,7 +85,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByStatusAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _controleDeFrotaRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
@@ -99,7 +99,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _controleDeFrotaRepository.GetListByMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
@@ -107,7 +107,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _controleDeFrotaRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
         return _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(list);
@@ -115,7 +115,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<IEnumerable<ControleDeFrotaViewModel>> GetListByIdsAsync(List<int> ids, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var relatorios = await _controleDeFrotaRepository.GetListByIdsAsync(ids);
         var relatoriosViewModel = _mapper.Map<IEnumerable<ControleDeFrotaViewModel>>(relatorios);
 
@@ -131,7 +131,7 @@ public class ControleDeFrotaService : IControleDeFrotaService
 
     public async Task<ControleDeFrotaViewModel> AddAsync(ControleDeFrotaViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         obj.RefDocument = await _identificadorFrotasRepository.AddAsync(idEmpresaInt);  
 
         var mapControleDeFrota = _mapper.Map<Domain.Entidades.Cadastros.Controle_De_Frota.ControleDeFrota>(obj);

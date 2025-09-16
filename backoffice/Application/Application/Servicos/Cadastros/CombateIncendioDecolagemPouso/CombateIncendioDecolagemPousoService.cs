@@ -19,7 +19,7 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
 
     public async Task<IEnumerable<CombateIncendioDecolagemPousoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _combateIncendioDecolagemPousoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<CombateIncendioDecolagemPousoViewModel>>(list);
     }
@@ -38,7 +38,7 @@ public class CombateIncendioDecolagemPousoService : ICombateIncendioDecolagemPou
 
     public async Task<int> AddAsync(CombateIncendioDecolagemPousoViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapCombateIncendioDecolagemPouso = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioDecolagemPouso>(obj);
         mapCombateIncendioDecolagemPouso.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var id = await _combateIncendioDecolagemPousoRepository.AddAsync(mapCombateIncendioDecolagemPouso);

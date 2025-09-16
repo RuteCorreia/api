@@ -307,7 +307,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                                 TRY_CAST(NULLIF(cf.HorimetroInicial, '') AS DECIMAL(18, 2)) AS TotalHoras,
                             cf.Extensao AS ExtensaoTotal,
                             CASE WHEN cf.Horimetros = 'null' THEN NULL ELSE cf.Horimetros END Horimetros,
-                            IsDrone
+                            IsDrone,
+                            HorasAplicacao
                         FROM 
                             ControleDeFrota cf
                         WHERE
@@ -327,53 +328,65 @@ namespace Infra.Repositorio.Cadastros.Dashboard
 
                     foreach (var item in result)
                     {
-                        double horasAplicacao = 0, horasIncendio = 0, horasTranslado = 0;
+                        double horasAplicacao = 0, horasIncendio = 0, horasTranslado = 0, horasDrone = 0;
+                        decimal extensaoAviao = 0, extensaoDrone = 0;
                         List<Horimetro> horimetros;
 
-                        if (item.IsDrone && item.HorasAplicacao != null)
+                        if (item.IsDrone)
                         {
-                            horasAplicacao += Convert.ToDouble(item.HorasAplicacao);
+                            extensaoDrone += item.ExtensaoTotal;
+
+                            if (item.HorasAplicacao != null)
+                                horasDrone += Convert.ToDouble(item.HorasAplicacao);
                         }
 
-                        if (!item.IsDrone && item.Horimetros != null)
+                        if (!item.IsDrone)
                         {
-                            horimetros = GetHorimetros(item.Horimetros);
-                            foreach (var horimetro in horimetros)
+                            extensaoAviao += item.ExtensaoTotal;
+
+                            if (item.Horimetros != null)
                             {
-                                switch (horimetro.Tipo)
+                                horimetros = GetHorimetros(item.Horimetros);
+                                foreach (var horimetro in horimetros)
                                 {
-                                    case HorimetroTypeEnum.Aplicacao:
-                                        horasAplicacao += horimetro.Fim - horimetro.Inicio;
-                                        break;
-                                    case HorimetroTypeEnum.Incendio:
-                                        horasIncendio += horimetro.Fim - horimetro.Inicio;
-                                        break;
-                                    case HorimetroTypeEnum.Translado:
-                                        horasTranslado += horimetro.Fim - horimetro.Inicio;
-                                        break;
-                                    default:
-                                        break;
+                                    switch (horimetro.Tipo)
+                                    {
+                                        case HorimetroTypeEnum.Aplicacao:
+                                            horasAplicacao += horimetro.Fim - horimetro.Inicio;
+                                            break;
+                                        case HorimetroTypeEnum.Incendio:
+                                            horasIncendio += horimetro.Fim - horimetro.Inicio;
+                                            break;
+                                        case HorimetroTypeEnum.Translado:
+                                            horasTranslado += horimetro.Fim - horimetro.Inicio;
+                                            break;
+                                        default:
+                                            break;
+                                    }
                                 }
                             }
-
-                            dashboards.Add(new Domain.Entidades.Cadastros.Dashboard.Dashboard
-                            {
-                                NumeroDocumento = item.NumeroDocumento,
-                                Ano = item.Ano,
-                                Mes = item.Mes,
-                                ExtensaoTotal = item.ExtensaoTotal,
-                                Piloto = item.Piloto,
-                                Executor = item.Executor,
-                                Aeronave = item.Aeronave,
-                                Cliente = item.Cliente,
-                                DataCriacao = item.DataCriacao,
-                                ValorTotal = item.ValorTotal,
-                                TotalHoras = item.TotalHoras,
-                                TotalHorasAplicacao = horasAplicacao,
-                                TotalHorasIncendio = horasIncendio,
-                                TotalHorasTranslado = horasTranslado
-                            });
                         }
+
+                        dashboards.Add(new Domain.Entidades.Cadastros.Dashboard.Dashboard
+                        {
+                            NumeroDocumento = item.NumeroDocumento,
+                            Ano = item.Ano,
+                            Mes = item.Mes,
+                            ExtensaoTotal = extensaoAviao,
+                            ExtensaoDrone = extensaoDrone,
+                            Piloto = item.Piloto,
+                            Executor = item.Executor,
+                            Aeronave = item.Aeronave,
+                            Cliente = item.Cliente,
+                            DataCriacao = item.DataCriacao,
+                            ValorTotal = item.ValorTotal,
+                            TotalHoras = item.TotalHoras,
+                            TotalHorasAplicacao = horasAplicacao,
+                            TotalHorasIncendio = horasIncendio,
+                            TotalHorasTranslado = horasTranslado,
+                            TotalHorasDrone = horasDrone,
+                            IsDrone = item.IsDrone
+                        });
                     }
 
                     return dashboards;

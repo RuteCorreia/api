@@ -42,7 +42,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
 
     public async Task<IEnumerable<AlvoBiologicoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _alvoBiologicoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(list);
     }
@@ -63,7 +63,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
     {
         try
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var cultura = await _culturaRepository.GetByNameAsync(nomeCultura, idEmpresaInt);
             var produto = await _produtoRepository.GetByNameAsync(nomeProduto, idEmpresaInt);
             var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(cultura.IdCultura, produto.Id);
@@ -78,7 +78,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
 
     public async Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
         mapAlvoBiologico.IdEmpresa = idEmpresaInt;
         await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
@@ -97,7 +97,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
 
     public async Task<AlvoBiologicoViewModel> GetByName(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _alvoBiologicoRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<AlvoBiologicoViewModel>(obj);
     }

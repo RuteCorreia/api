@@ -23,7 +23,7 @@ namespace Application.Application.Servicos.Cadastros.FrotaBateria
         }
         public async Task<int> AddAsync(FrotaBateriaViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapFrotaBateria = _mapper.Map<Domain.Entidades.Cadastros.FrotaBateria.FrotaBateria>(obj);
             mapFrotaBateria.IdEmpresa = idEmpresaInt;
 
@@ -41,7 +41,7 @@ namespace Application.Application.Servicos.Cadastros.FrotaBateria
 
         public async Task<IEnumerable<FrotaBateriaViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _frotaBateriaRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<FrotaBateriaViewModel>>(list);
         }

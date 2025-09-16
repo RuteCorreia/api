@@ -22,7 +22,7 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
 
     public async Task<int> AddAsync(ContratoPrestacaoServicoViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.ContratoPrestacaoServico.ContratoPrestacaoServico>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
@@ -40,20 +40,20 @@ public class ContratoPrestacaoServicoService : IContratoPrestacaoServicoService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _contratoPrestacaoServicoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<ContratoPrestacaoServicoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _contratoPrestacaoServicoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<ContratoPrestacaoServicoViewModel>>(list);
     }
 
     public async Task<ContratoPrestacaoServicoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _contratoPrestacaoServicoRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<ContratoPrestacaoServicoViewModel>(obj);
     }

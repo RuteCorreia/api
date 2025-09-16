@@ -19,7 +19,7 @@ public class CulturaService : ICulturaService
 
     public async Task<IEnumerable<CulturaViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _culturaRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<CulturaViewModel>>(list);
     }
@@ -32,7 +32,7 @@ public class CulturaService : ICulturaService
 
     public async Task AddAsync(CulturaViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapCultura = _mapper.Map<Domain.Entidades.Cadastros.Cultura.Cultura>(obj);
         mapCultura.IdEmpresa = idEmpresaInt;
         await _culturaRepository.AddAsync(mapCultura);
@@ -51,7 +51,7 @@ public class CulturaService : ICulturaService
 
     public async Task<CulturaViewModel> GetByName(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _culturaRepository.GetByNameAsync(name, idEmpresaInt);
 
         return _mapper.Map<CulturaViewModel>(obj);

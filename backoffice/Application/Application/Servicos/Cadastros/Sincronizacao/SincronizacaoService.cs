@@ -123,7 +123,7 @@ namespace Application.Application.Servicos.Cadastros.Sincronizacao
 
         public async Task<SincronizacaoViewModel> GetAsync(string? idEmpresa, DateTime dataUltimaSincronizacao)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var sincronizacao = new SincronizacaoViewModel();
 
             sincronizacao.Aeronaves = await GetAeronavesAsync(idEmpresaInt, dataUltimaSincronizacao);

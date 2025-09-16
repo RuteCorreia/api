@@ -19,7 +19,7 @@ public class BulaService : IBulaService
 
     public async Task<IEnumerable<BulaAppViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var bulas = await _bulaRepository.GetAllAsync(idEmpresaInt);
         var bulaViewModel =  _mapper.Map<IEnumerable<BulaAppViewModel>>(bulas);
         return bulaViewModel;
@@ -27,32 +27,32 @@ public class BulaService : IBulaService
 
     public async Task<IEnumerable<(int, int)>> GetDistinctBulaAsync(string? idEmpresa, string? nomeProduto)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         return await _bulaRepository.GetDistinctBulaAsync(idEmpresaInt, nomeProduto);
     }
 
     public async Task RemoveRecomendacaoAsync(int idBula, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _bulaRepository.RemoveRecomendacaoAsync(idBula, idEmpresaInt);
     }
 
     public async Task RemoveBulaAsync(int idProduto, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _bulaRepository.RemoveBulaAsync(idProduto, idEmpresaInt);
     }
 
     public async Task<BulaViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _bulaRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<BulaViewModel>(obj);
     }
 
     public async Task<BulaViewModel> GetByIdProdutoAsync(int idProduto, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var recomendacoesList = new List<RecomendacaoViewModel>();
 
         var bulas = await _bulaRepository.GetByIdProdutoAsync(idProduto, idEmpresaInt);
@@ -90,7 +90,7 @@ public class BulaService : IBulaService
     {
         foreach (var item in obj.Recomendacoes) 
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
             mapBula.IdEmpresa = idEmpresaInt;
             mapBula.IdCultura = item.IdCultura;
@@ -121,13 +121,13 @@ public class BulaService : IBulaService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _bulaRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<BulaViewModel> GetByName(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _bulaRepository.GetByNameAsync(name, idEmpresaInt);
 
         return _mapper.Map<BulaViewModel>(obj);

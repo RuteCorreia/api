@@ -31,7 +31,7 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
     public async Task<int> AddAsync(ProdutoAplicadoViewModel obj, string? idEmpresa)
     {
         
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.CaracteristicasProdutoAplicado.CaracteristicasProdutoAplicado>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         DataFormatViewModel receituarioDataFormat;
@@ -67,20 +67,20 @@ public class CaracteristicasProdutoAplicadoService : ICaracteristicasProdutoApli
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _caracteristicasProdutoAplicadoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<CaracteristicasProdutoAplicadoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _caracteristicasProdutoAplicadoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<CaracteristicasProdutoAplicadoViewModel>>(list);
     }
 
     public async Task<ProdutoAplicadoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _caracteristicasProdutoAplicadoRepository.GetByIdAsync(id, idEmpresaInt);
         var mapCaracteristicasProdutoAplicado = _mapper.Map<ProdutoAplicadoViewModel>(obj);
         if (!string.IsNullOrEmpty(mapCaracteristicasProdutoAplicado?.ReceiturarioAgronomico) &&

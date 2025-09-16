@@ -61,7 +61,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _combateIncendioRepository.GetListByStatusAsync(idEmpresaInt, statusEnvio);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
@@ -81,7 +81,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<ExportRelatorioViewModel> ExportExcelAsync(int? id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var ci = await _combateIncendioRepository.ExportExcelAsync(id);
         var cidp = await _combateIncendioDecolagemPousoRepository.GetByCombateIncendioIdAsync(id);
         var qtdExecucao = cidp?.Count() ?? 0;
@@ -133,7 +133,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _combateIncendioRepository.GetListByStatusMapaAsync(idEmpresaInt, statusEnvio);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
@@ -141,7 +141,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByStatusMapaMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _combateIncendioRepository.GetListByStatusMapaMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
@@ -149,7 +149,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByMesAsync(string? idEmpresa, DateTime primeiroDiaMes, DateTime ultimoDiaMes)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _combateIncendioRepository.GetListByMesAsync(idEmpresaInt, statusEnvio, primeiroDiaMes, ultimoDiaMes);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
@@ -157,7 +157,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<IEnumerable<CombateIncendioViewModel>> GetListByIdsAsync(string? idEmpresa, List<int> ids, int isMapa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var statusEnvio = 0;
         var list = await _combateIncendioRepository.GetListByIdsAsync(ids, idEmpresaInt, statusEnvio, isMapa);
         return _mapper.Map<IEnumerable<CombateIncendioViewModel>>(list);
@@ -186,7 +186,7 @@ public class CombateIncendioService : ICombateIncendioService
 
     public async Task<CombateIncendioViewModel> AddAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         var contratoPrestacao = new ContratoPrestacaoServicoViewModel();
@@ -205,7 +205,7 @@ public class CombateIncendioService : ICombateIncendioService
     public async Task<CombateIncendioViewModel> UpdateAsync(CombateIncendioViewModel obj, string? idEmpresa)
     {
 
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var executor = await _usuarioRepository.GetUserByIdAsync(obj.IdExecutor);
         var mapCombateIncendio = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendio>(obj);
         mapCombateIncendio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;

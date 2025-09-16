@@ -24,14 +24,14 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
 
         public async Task<IEnumerable<TipoDeFormulacaoViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _tipoDeFormulacaoRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<TipoDeFormulacaoViewModel>>(list);
         }
 
         public async Task<TipoDeFormulacaoViewModel> GetByNameAsync(string name, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var obj = await _tipoDeFormulacaoRepository.GetByNameAsync(name, idEmpresaInt);
             return _mapper.Map<TipoDeFormulacaoViewModel>(obj);
         }
@@ -44,7 +44,7 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
 
         public async Task AddAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapTipoDeFormulacao = _mapper.Map<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>(obj);
             mapTipoDeFormulacao.IdEmpresa = idEmpresaInt;
             await _tipoDeFormulacaoRepository.AddAsync(mapTipoDeFormulacao);

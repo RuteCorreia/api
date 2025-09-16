@@ -19,14 +19,14 @@ public class ClienteService : IClienteService
 
     public async Task<IEnumerable<ClienteViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _clienteRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<ClienteViewModel>>(list);
     }
 
     public async Task<ClienteViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _clienteRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<ClienteViewModel>(obj);
     }
@@ -39,7 +39,7 @@ public class ClienteService : IClienteService
 
     public async Task AddAsync(ClienteViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapCliente = _mapper.Map<Domain.Entidades.Cadastros.Cliente.Cliente>(obj);
         mapCliente.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
         await _clienteRepository.AddAsync(mapCliente);
@@ -53,14 +53,14 @@ public class ClienteService : IClienteService
 
     public async Task<IEnumerable<ClienteViewModel>> GetByNameAsync(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _clienteRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<IEnumerable<ClienteViewModel>>(list);
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _clienteRepository.DeleteAsync(id, idEmpresaInt);
     }
 }

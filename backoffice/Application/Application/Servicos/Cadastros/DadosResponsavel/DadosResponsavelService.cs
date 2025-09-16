@@ -22,7 +22,7 @@ public class DadosResponsavelService : IDadosResponsavelService
 
     public async Task<int> AddAsync(DadosResponsavelViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var entityToCreate = new Domain.Entidades.Cadastros.DadosResponsavel.DadosResponsavel
         {
             Data = obj.Data,
@@ -50,13 +50,13 @@ public class DadosResponsavelService : IDadosResponsavelService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _dadosResponsavelRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<DadosResponsavelViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _dadosResponsavelRepository.GetAllAsync(idEmpresaInt);
         var returnList = list.Select(x => new DadosResponsavelViewModel
         {
@@ -73,7 +73,7 @@ public class DadosResponsavelService : IDadosResponsavelService
 
     public async Task<DadosResponsavelViewModel?> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _dadosResponsavelRepository.GetByIdAsync(id, idEmpresaInt);
         var returnObj = obj is not null ? _mapper.Map<DadosResponsavelViewModel>(obj) : null;
         if (returnObj is not null)

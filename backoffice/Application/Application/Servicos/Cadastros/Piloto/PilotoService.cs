@@ -19,7 +19,7 @@ public class PilotoService : IPilotoService
 
     public async Task<IEnumerable<PilotoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var pilotoList = await _pilotoRepository.GetAllAsync(idEmpresaInt);
         var viewModel = _mapper.Map<IEnumerable<PilotoViewModel>>(pilotoList); 
         return viewModel;
@@ -27,7 +27,7 @@ public class PilotoService : IPilotoService
 
     public async Task<PilotoViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var usuarioCredencialObj = await _pilotoRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
         var mappedObj = usuarioObj is not null ? _mapper.Map<PilotoViewModel>(usuarioObj) : null;

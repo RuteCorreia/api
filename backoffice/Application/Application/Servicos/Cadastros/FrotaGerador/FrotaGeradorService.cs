@@ -23,7 +23,7 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
         }
         public async Task<int> AddAsync(FrotaGeradorViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapFrotaGerador = _mapper.Map<Domain.Entidades.Cadastros.FrotaGerador.FrotaGerador>(obj);
             mapFrotaGerador.IdEmpresa = idEmpresaInt;
             var horasUso = mapFrotaGerador.HoraFim - mapFrotaGerador.HoraInicio;
@@ -48,7 +48,7 @@ namespace Application.Application.Servicos.Cadastros.FrotaGerador
 
         public async Task<IEnumerable<FrotaGeradorViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _frotaGeradorRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<FrotaGeradorViewModel>>(list);
         }

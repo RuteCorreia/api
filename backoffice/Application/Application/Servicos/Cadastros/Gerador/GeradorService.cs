@@ -20,7 +20,7 @@ namespace Application.Application.Servicos.Cadastros.Gerador
         }
         public async Task<int> AddAsync(GeradorViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapGerador = _mapper.Map<Domain.Entidades.Cadastros.Gerador.Gerador>(obj);
             mapGerador.QuantidadeHoras = mapGerador.QuantidadeHoras > 0 ? mapGerador.QuantidadeHoras * 3600000 : mapGerador.QuantidadeHoras;
             mapGerador.QuantidadeHorasTroca = mapGerador.QuantidadeHorasTroca > 0 ? mapGerador.QuantidadeHorasTroca * 3600000 : mapGerador.QuantidadeHorasTroca;
@@ -30,13 +30,13 @@ namespace Application.Application.Servicos.Cadastros.Gerador
 
         public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             await _geradorRepository.DeleteAsync(id, idEmpresaInt);
         }
 
         public async Task<IEnumerable<GeradorViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _geradorRepository.GetAllAsync(idEmpresaInt);
             foreach (var item in list) 
             {
@@ -48,7 +48,7 @@ namespace Application.Application.Servicos.Cadastros.Gerador
 
         public async Task<IEnumerable<GeradorViewModel>> GetByNameAsync(string name, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             if (string.IsNullOrEmpty(name))
             {
                 throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
@@ -60,7 +60,7 @@ namespace Application.Application.Servicos.Cadastros.Gerador
 
         public async Task<GeradorViewModel> GetByIdAsync(int? id, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var obj = await _geradorRepository.GetByIdAsync(id, idEmpresaInt);
             obj.QuantidadeHoras = obj.QuantidadeHoras / 3600000;
             obj.QuantidadeHorasTroca = obj.QuantidadeHorasTroca / 3600000;

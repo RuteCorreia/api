@@ -1,5 +1,13 @@
-﻿using Application.DTOs.Cadastros.Dashboard.Interface;
+﻿using Application.DTOs.Cadastros.Aeronave.Interface;
+using Application.DTOs.Cadastros.Aeronave.ViewModel;
+using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.DTOs.Cadastros.Dashboard.ViewModel;
+using Application.DTOs.Cadastros.Empresa.Interface;
+using Application.DTOs.Cadastros.Empresa.ViewModel;
+using Application.DTOs.Users.Interface;
+using Application.DTOs.Users.ViewModel;
+using Domain.Enums;
+using Helpers;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
 using System.Globalization;
@@ -13,13 +21,22 @@ namespace WebApi.Controllers.APIs
     {
         private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IDashboardService _dashboardService;
+        private readonly IEmpresaService _empresaService;
+        private readonly IUserAuthService _userAuthService;
+        private readonly IAeronaveService _aeronaveService;
 
         public DashboardController(
             LoggedUserInfoService loggedUserInfoService,
-            IDashboardService dashboardService)
+            IDashboardService dashboardService,
+            IEmpresaService empresaService,
+            IUserAuthService userAuthService,
+            IAeronaveService aeronaveService)
         {
             _loggedUserInfoService = loggedUserInfoService;
             _dashboardService = dashboardService;
+            _empresaService = empresaService;
+            _userAuthService = userAuthService;
+            _aeronaveService = aeronaveService;
         }
 
         [HttpGet]
@@ -142,6 +159,10 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var empresa = await _empresaService.GetByIdAsync(ConvertTypes.ConvertStringToInt(loggedUser.Item3));
+                bool isEmpresaDrone = empresa.QtdAeronaves == 0 && empresa.QtdDrones > 0;
+                bool isEmpresaMista = empresa.QtdAeronaves > 0 && empresa.QtdDrones > 0;
+
                 var result = await _dashboardService.GetRendimentoExportAsync(dataInicio, dataFim, loggedUser.Item3, usuario, nomeAeronave, nomeContratante);
                 var dashboards = new List<ExportDashboardViewModel>();
 
@@ -158,11 +179,13 @@ namespace WebApi.Controllers.APIs
                         Piloto = item.Piloto,
                         Executor = item.Executor,
                         HectaresVoados = item.ExtensaoTotal,
+                        HectaresVoadosDrone = item.ExtensaoDrone,
                         HorasVoadas = item.TotalHoras,
                         TotalHorasAplicacao = item.TotalHorasAplicacao,
                         TotalHorasIncendio = item.TotalHorasIncendio,
                         TotalHorasTranslado = item.TotalHorasTranslado,
-                        Rendimento = item.Rendimento,
+                        TotalHorasDrone = item.TotalHorasDrone,
+                        IsDrone = item.IsDrone
                     };
                     dashboards.Add(dashboard);
                 }
@@ -181,65 +204,135 @@ namespace WebApi.Controllers.APIs
                     worksheet.Cells[1, 5].Value = "Aeronave";
                     worksheet.Cells[1, 6].Value = "Piloto";
                     worksheet.Cells[1, 7].Value = "Executor";
-                    worksheet.Cells[1, 8].Value = "Hectares Voados";
-                    worksheet.Cells[1, 9].Value = "Horas Voadas Total (TR+SA)";
-                    worksheet.Cells[1, 10].Value = "Horas Voadas SA";
-                    worksheet.Cells[1, 11].Value = "Horas Voadas TR";
-                    worksheet.Cells[1, 12].Value = "Horas Voadas IN";
-                    worksheet.Cells[1, 13].Value = "Rendimento Total";
-                    worksheet.Cells[1, 14].Value = "Rendimento SA";
+
+                    if (isEmpresaDrone)
+                    {
+                        worksheet.Cells[1, 8].Value = "Hectares Voados";
+                        worksheet.Cells[1, 9].Value = "Horas Voadas";
+                        worksheet.Cells[1, 10].Value = "Rendimento";
+                    } 
+                    else if (isEmpresaMista)
+                    {
+                        worksheet.Cells[1, 8].Value = "Hectares Voados Avião";
+                        worksheet.Cells[1, 9].Value = "Horas Voadas Total (TR+SA)";
+                        worksheet.Cells[1, 10].Value = "Horas Voadas SA";
+                        worksheet.Cells[1, 11].Value = "Horas Voadas TR";
+                        worksheet.Cells[1, 12].Value = "Horas Voadas IN";
+                        worksheet.Cells[1, 13].Value = "Rendimento Total";
+                        worksheet.Cells[1, 14].Value = "Rendimento SA";
+                        worksheet.Cells[1, 15].Value = "Hectares Voados Drone";
+                        worksheet.Cells[1, 16].Value = "Horas Voadas Drone";
+                        worksheet.Cells[1, 17].Value = "Rendimento Drone";
+                    } 
+                    else
+                    {
+                        worksheet.Cells[1, 8].Value = "Hectares Voados";
+                        worksheet.Cells[1, 9].Value = "Horas Voadas Total (TR+SA)";
+                        worksheet.Cells[1, 10].Value = "Horas Voadas SA";
+                        worksheet.Cells[1, 11].Value = "Horas Voadas TR";
+                        worksheet.Cells[1, 12].Value = "Horas Voadas IN";
+                        worksheet.Cells[1, 13].Value = "Rendimento Total";
+                        worksheet.Cells[1, 14].Value = "Rendimento SA";
+                    }
 
                     // Preencher dados
                     int row = 2;
                     foreach (var item in dashboards)
                     {
-                        // Formatar Hectares Voados como "xx.xxx ha"
-                        worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
-                        worksheet.Cells[row, 8].Value = item.HectaresVoados;
-
-                        // Formatar Horas Aplicacao como "hh:mm:ss"
                         decimal horasAplicacao = item.TotalHorasAplicacao.HasValue ? Convert.ToDecimal(item.TotalHorasAplicacao.Value) : 0m;
-
-                        // Formatar Horas Translado como "hh:mm:ss"
                         decimal horasTranslado = item.TotalHorasTranslado.HasValue ? Convert.ToDecimal(item.TotalHorasTranslado.Value) : 0m;
-
-                        // Formatar Horas Incendio como "hh:mm:ss"
                         decimal horasIncendio = item.TotalHorasIncendio.HasValue ? Convert.ToDecimal(item.TotalHorasIncendio.Value) : 0m;
+                        decimal horasDrone = item.TotalHorasDrone.HasValue ? Convert.ToDecimal(item.TotalHorasDrone.Value) : 0m;
 
                         TimeSpan tsAplicacao = TimeSpan.FromHours((double)horasAplicacao);
                         TimeSpan tsTranslado = TimeSpan.FromHours((double)horasTranslado);
                         TimeSpan tsIncendio = TimeSpan.FromHours((double)horasIncendio);
+                        TimeSpan tsDrone = TimeSpan.FromHours((double)horasDrone);
 
                         TimeSpan tsTotal = tsAplicacao + tsTranslado + tsIncendio;
 
-                        worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
-                        worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
-                        worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
-                        worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
+                        if (isEmpresaDrone)
+                        {
+                            if (item.IsDrone ?? false)
+                            {
+                                worksheet.Cells[row, 1].Value = item.Relatorio;
+                                worksheet.Cells[row, 2].Value = item.Mes;
+                                worksheet.Cells[row, 3].Value = item.Ano;
+                                worksheet.Cells[row, 4].Value = item.DataCriacao?.ToString("dd/MM/yyyy");
+                                worksheet.Cells[row, 5].Value = item.Aeronave;
+                                worksheet.Cells[row, 6].Value = item.Piloto;
+                                worksheet.Cells[row, 7].Value = item.Executor;
 
-                        // Formatar Rendimento como porcentagem
-                        worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
-                        worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                                worksheet.Cells[row, 8].Value = item.HectaresVoadosDrone > 0 ? item.HectaresVoadosDrone : "";
+                                worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsDrone.TotalHours);
+                                worksheet.Cells[row, 10].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                                worksheet.Cells[row, 10].Value = (decimal)tsDrone.TotalHours > 0 ? item.HectaresVoadosDrone / (decimal)tsDrone.TotalHours : "";
 
-                        // Formatar Rendimento como porcentagem
-                        worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
-                        worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
+                                row++;
+                            }
+                        }
+                        else if (isEmpresaMista)
+                        {
+                            worksheet.Cells[row, 1].Value = item.Relatorio;
+                            worksheet.Cells[row, 2].Value = item.Mes;
+                            worksheet.Cells[row, 3].Value = item.Ano;
+                            worksheet.Cells[row, 4].Value = item.DataCriacao?.ToString("dd/MM/yyyy");
+                            worksheet.Cells[row, 5].Value = item.Aeronave;
+                            worksheet.Cells[row, 6].Value = item.Piloto;
+                            worksheet.Cells[row, 7].Value = item.Executor;
 
-                        // Preencher outras células
-                        worksheet.Cells[row, 1].Value = item.Relatorio;
-                        worksheet.Cells[row, 2].Value = item.Mes;
-                        worksheet.Cells[row, 3].Value = item.Ano;
-                        worksheet.Cells[row, 4].Value = item.DataCriacao?.ToString("dd/MM/yyyy");
-                        worksheet.Cells[row, 5].Value = item.Aeronave;
-                        worksheet.Cells[row, 6].Value = item.Piloto;
-                        worksheet.Cells[row, 7].Value = item.Executor;
+                            worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                            worksheet.Cells[row, 8].Value = item.HectaresVoados > 0 ? item.HectaresVoados : "";
+                            worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
+                            worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
+                            worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
+                            worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
 
-                        row++;
+                            worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                            worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+
+                            worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                            worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
+
+                            worksheet.Cells[row, 15].Style.Numberformat.Format = "0 \"ha\"";
+                            worksheet.Cells[row, 15].Value = item.HectaresVoadosDrone > 0 ? item.HectaresVoadosDrone : "";
+                            worksheet.Cells[row, 16].Value = FormatarHoras((decimal)tsDrone.TotalHours);
+                            worksheet.Cells[row, 17].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                            worksheet.Cells[row, 17].Value = (decimal)tsDrone.TotalHours > 0 ? item.HectaresVoadosDrone / (decimal)tsDrone.TotalHours : "";
+                            row++;
+                        }
+                        else
+                        {
+                            if (!(item.IsDrone ?? false))
+                            {
+                                worksheet.Cells[row, 1].Value = item.Relatorio;
+                                worksheet.Cells[row, 2].Value = item.Mes;
+                                worksheet.Cells[row, 3].Value = item.Ano;
+                                worksheet.Cells[row, 4].Value = item.DataCriacao?.ToString("dd/MM/yyyy");
+                                worksheet.Cells[row, 5].Value = item.Aeronave;
+                                worksheet.Cells[row, 6].Value = item.Piloto;
+                                worksheet.Cells[row, 7].Value = item.Executor;
+
+                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                                worksheet.Cells[row, 8].Value = item.HectaresVoados > 0 ? item.HectaresVoados : "";
+                                worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
+                                worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
+                                worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
+                                worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
+
+                                worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                                worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+
+                                worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
+                                worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
+                                row++;
+                            }
+                        }
                     }
 
-                    // Ajustar o estilo das células, se necessário
-                    worksheet.Cells[1, 1, row - 1, 14].Style.Font.Bold = true;
-                    worksheet.Cells[1, 1, row - 1, 14].AutoFitColumns();
+                    worksheet.Cells[1, 1, row - 1, 17].Style.Font.Bold = true;
+                    worksheet.Cells[1, 1, row - 1, 17].AutoFitColumns();
 
                     package.Save();
                 }
@@ -256,7 +349,15 @@ namespace WebApi.Controllers.APIs
         private string FormatarHoras(decimal horasDecimais)
         {
             TimeSpan tempo = TimeSpan.FromHours((double)horasDecimais);
-            return $"{(int)tempo.TotalHours:D2}:{tempo.Minutes:D2}:{tempo.Seconds:D2}";
+
+            var horas = (int)tempo.TotalHours;
+            var minutos = (int)tempo.Minutes;
+            var segundos = (int)tempo.Seconds;
+
+            if (horas == 0 && minutos == 0 && segundos == 0)
+                return "";
+
+            return $"{horas:D2}:{minutos:D2}:{segundos:D2}";
         }
 
 

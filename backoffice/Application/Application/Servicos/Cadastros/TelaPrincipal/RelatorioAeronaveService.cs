@@ -23,7 +23,7 @@ namespace Application.Application.Servicos.Cadastros.TelaPrincipal
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 // Obtenha todos os relatórios
                 var relatoriosAeronave = await _relatorioAeronaveRepository.GetAllAplicacaoAsync(dataInicio, dataFim, idEmpresaInt);
                 var relatoriosIncendio = await _relatorioAeronaveRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt);

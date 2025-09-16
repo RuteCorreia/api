@@ -20,7 +20,7 @@ namespace Application.Application.Servicos.Cadastros.AuxiliarPista
             if (obj == null)
                 return 0;
 
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapAuxiliarPista = _mapper.Map<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(obj);
             mapAuxiliarPista.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 
