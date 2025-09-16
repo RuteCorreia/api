@@ -27,7 +27,7 @@ public class AeronaveService : IAeronaveService
 
     public async Task<IEnumerable<AeronaveViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _aeronaveRepository.GetAllAsync(idEmpresaInt);
 
         // Cria uma lista para armazenar os AeronaveViewModels
@@ -64,7 +64,7 @@ public class AeronaveService : IAeronaveService
 
     public async Task<AeronaveViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _aeronaveRepository.GetByIdAsync(id, idEmpresaInt);
 
         if (obj == null)
@@ -99,7 +99,7 @@ public class AeronaveService : IAeronaveService
         var resultMsg = new StringBuilder();
 
         var mapAeronave = _mapper.Map<Domain.Entidades.Cadastros.Aeronave.Aeronave>(obj);
-        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaAsNumber = ConvertTypes.ConvertStringToInt(idEmpresa);
 
         if (obj.Checklist != null) 
         {
@@ -136,14 +136,14 @@ public class AeronaveService : IAeronaveService
 
     public async Task<IEnumerable<AeronaveViewModel>> GetByNameAsync(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _aeronaveRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<IEnumerable<AeronaveViewModel>>(list);
     }
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _aeronaveRepository.DeleteAsync(id, idEmpresaInt);
     }
 }

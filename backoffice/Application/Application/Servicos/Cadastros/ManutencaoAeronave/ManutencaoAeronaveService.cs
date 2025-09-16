@@ -28,7 +28,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
 
     public async Task<IEnumerable<ManutencaoAeronaveViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaAsNumber = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _manutencaoAeronaveRepository.GetAllAsync(idEmpresaAsNumber);
         return _mapper.Map<IEnumerable<ManutencaoAeronaveViewModel>>(list);
     }
@@ -69,7 +69,7 @@ public class ManutencaoAeronaveService : IManutencaoAeronaveService
 
     public async Task AddAsync(ManutencaoAeronaveViewModel obj, string? idEmpresa)
     {
-        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaAsNumber = ConvertTypes.ConvertStringToInt(idEmpresa);
         var docBase64 = ConvertBase64StringToByteArray(obj.DocumentoBase64);
         var fichaInspecaoBase64 = ConvertBase64StringToByteArray(obj.FichaInspecaoBase64);
         var manualAeronaveBase64 = ConvertBase64StringToByteArray(obj.ManualAeronaveBase64);

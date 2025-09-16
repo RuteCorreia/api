@@ -19,14 +19,14 @@ public class ProdutoService : IProdutoService
 
     public async Task<IEnumerable<ProdutoViewModel>> GetAllAsync(string? nomeProduto, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _produtoRepository.GetAllAsync(nomeProduto, idEmpresaInt);
         return _mapper.Map<IEnumerable<ProdutoViewModel>>(list);
     }
 
     public async Task<IEnumerable<ProdutoViewModel>> GetAllAppAsync(string? nomeProduto, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _produtoRepository.GetAllAsync(nomeProduto, idEmpresaInt);
         foreach (var item in list)
         {
@@ -43,14 +43,14 @@ public class ProdutoService : IProdutoService
 
     public async Task<ProdutoViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _produtoRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<ProdutoViewModel>(obj);
     }
 
     public async Task<ProdutoViewModel> GetByIdAppAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _produtoRepository.GetByIdAsync(id, idEmpresaInt);
         if (!string.IsNullOrEmpty(obj.ClassificacaoToxicologica) && obj.ClassificacaoToxicologica.Contains("Categoria"))
         {
@@ -64,7 +64,7 @@ public class ProdutoService : IProdutoService
 
     public async Task AddAsync(ProdutoViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapProduto = _mapper.Map<Domain.Entidades.Cadastros.Produto.Produto>(obj);
         mapProduto.IdEmpresa = idEmpresaInt;
         await _produtoRepository.AddAsync(mapProduto);
@@ -78,25 +78,25 @@ public class ProdutoService : IProdutoService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _produtoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<string>> GetClasses(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         return await _produtoRepository.GetClasses(idEmpresaInt);
     }
 
     public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         return await _produtoRepository.GetNomesByIdsAsync(ids, idEmpresaInt);
     }
 
     public async Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var produto = await _produtoRepository.GetNomes(classe, idEmpresaInt);
         var viewModelList = produto.Select(p => new ProdutoNomeViewModel
         {
@@ -108,7 +108,7 @@ public class ProdutoService : IProdutoService
 
     public async Task<ProdutoViewModel> GetByNameAsync(string name, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _produtoRepository.GetByNameAsync(name, idEmpresaInt);
         return _mapper.Map<ProdutoViewModel>(obj);
     }

@@ -19,7 +19,7 @@ public class ExecutorService : IExecutorService
 
     public async Task<IEnumerable<ExecutorViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var pilotoList = await _executorRepository.GetAllAsync(idEmpresaInt);
         var viewModel = _mapper.Map<IEnumerable<ExecutorViewModel>>(pilotoList);
         return viewModel;
@@ -27,7 +27,7 @@ public class ExecutorService : IExecutorService
 
     public async Task<ExecutorViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var usuarioCredencialObj = await _executorRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null;
         var mappedObj = usuarioObj is not null ? _mapper.Map<ExecutorViewModel>(usuarioObj) : null;

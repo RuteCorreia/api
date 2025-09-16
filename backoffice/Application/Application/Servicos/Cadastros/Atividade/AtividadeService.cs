@@ -30,7 +30,7 @@ namespace Application.Application.Servicos.Cadastros.Atividade
         }
         public async Task<AtividadeViewModel> GetAtividadeByFiltrosAsync(AtividadeFiltroViewModel atividadeFiltroViewModel, string idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapAtividades = _mapper.Map<AtividadeFiltro>(atividadeFiltroViewModel);
             mapAtividades.IdEmpresa = idEmpresaInt;
 

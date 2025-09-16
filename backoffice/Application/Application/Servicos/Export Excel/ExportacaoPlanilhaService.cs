@@ -19,7 +19,7 @@ namespace Application.Application.Servicos.Export_Excel
         }
         public async Task<int> AddAsync(MemoryStream zipStream, string nomeArquivo, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var arquivoZip = new PlanilhaExcelExportada();
             if (zipStream != null)
             {
@@ -41,7 +41,7 @@ namespace Application.Application.Servicos.Export_Excel
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 var planilhaExcelExportadas = await _exportacaoPlanilhaRepository.GetAllAsync(idEmpresaInt);
                 foreach (var item in planilhaExcelExportadas) 
                 {
@@ -66,7 +66,7 @@ namespace Application.Application.Servicos.Export_Excel
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 var planilhas = await _exportacaoPlanilhaRepository.GetFileByNameAsync(idEmpresaInt, name);
                 if (planilhas != null) 
                 {

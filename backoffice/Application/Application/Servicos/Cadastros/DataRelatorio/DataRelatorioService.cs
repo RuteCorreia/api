@@ -26,7 +26,7 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
 
         public async Task<int> AddAsync(DataRelatorioViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapDataRelatorio = _mapper.Map<Domain.Entidades.Cadastros.DataRelatorio.DataRelatorio>(obj);
             mapDataRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             if (!string.IsNullOrEmpty(mapDataRelatorio.Data))
@@ -46,20 +46,20 @@ namespace Application.Application.Servicos.Cadastros.DataRelatorio
 
         public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             await _dataRelatorioRepository.DeleteAsync(id, idEmpresaInt);
         }
 
         public async Task<IEnumerable<DataRelatorioViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _dataRelatorioRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<DataRelatorioViewModel>>(list);
         }
 
         public async Task<DataRelatorioViewModel?> GetByIdAsync(int? id, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var obj = await _dataRelatorioRepository.GetByIdAsync(id, idEmpresaInt);
             var viewModel = _mapper.Map<DataRelatorioViewModel>(obj);
             if (!string.IsNullOrEmpty(viewModel.Data))

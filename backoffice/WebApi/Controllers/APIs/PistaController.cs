@@ -127,7 +127,7 @@ namespace WebApi.Controllers.APIs
                 if (ModelState.IsValid)
                 {
                     var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-                    var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(loggedUser.Item3);
+                    var idEmpresaInt = ConvertTypes.ConvertStringToInt(loggedUser.Item3);
                     obj.IdEmpresa = idEmpresaInt;
                     await _pistaService.AddAsync(obj);
                     _logService.LogInformation("Pista adicionada com sucesso.");

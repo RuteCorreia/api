@@ -22,7 +22,7 @@ public class VeiculoService : IVeiculoService
 
     public async Task AddAsync(VeiculoViewModel obj, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         obj.Placa = obj.Placa.ToUpper();
         var mapObj = _mapper.Map<Domain.Entidades.Cadastros.Veiculo.Veiculo>(obj);
         mapObj.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;  
@@ -31,20 +31,20 @@ public class VeiculoService : IVeiculoService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _veiculoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<IEnumerable<VeiculoViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _veiculoRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<VeiculoViewModel>>(list);
     }
 
     public async Task<VeiculoViewModel?> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _veiculoRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<VeiculoViewModel>(obj);
     }
@@ -58,7 +58,7 @@ public class VeiculoService : IVeiculoService
 
     public async Task<int?> GetKmAtualByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var veiculo = await _veiculoRepository.GetByIdAsync(id, idEmpresaInt);
         return veiculo?.KM_Atual;
     }

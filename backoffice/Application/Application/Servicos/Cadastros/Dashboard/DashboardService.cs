@@ -26,7 +26,7 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
             string? nomeAeronave,
             string? nomeContratante)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
 
             // Obtém os dados do repositório
             var incendioEntities = await _dashboardRepository.GetAllIncendioAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
@@ -68,7 +68,7 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
             string? nomeAeronave,
             string? nomeContratante)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
 
             // Obtém os dados do repositório
             var aplicacaoEntities = await _dashboardRepository.GetAplicacaoForExportAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
@@ -101,22 +101,12 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
             string? nomeAeronave,
             string? nomeContratante)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
 
             // Obtém os dados do repositório
             var frotaEntities = await _dashboardRepository.GetFrotaForExportAsync(dataInicio, dataFim, idEmpresaInt, usuario, nomeAeronave, nomeContratante);
 
-            var faturamento = new List<DashboardViewModel>();
-            // Mapeia as entidades para ViewModels
-            var frotaList = _mapper.Map<List<DashboardViewModel>>(frotaEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
-
-            foreach (var frota in frotaList)
-            {
-                frota.Rendimento = frota.ExtensaoTotal / frota.TotalHoras;
-                faturamento.Add(frota);
-            }
-
-            return faturamento;
+            return _mapper.Map<List<DashboardViewModel>>(frotaEntities ?? Enumerable.Empty<Domain.Entidades.Cadastros.Dashboard.Dashboard>().ToList());
         }
 
 
@@ -124,7 +114,7 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 return _dashboardRepository.GetUsuariosDropdownAsync(idEmpresaInt);
             }
             catch (Exception ex) 
@@ -137,7 +127,7 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 return _dashboardRepository.GetClientesDropdownAsync(idEmpresaInt);
             }
             catch (Exception ex)
@@ -150,7 +140,7 @@ namespace Application.Application.Servicos.Cadastros.Dashboard
         {
             try
             {
-                var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+                var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
                 return _dashboardRepository.GetAeronavesDropdownAsync(idEmpresaInt);
             }
             catch (Exception ex)

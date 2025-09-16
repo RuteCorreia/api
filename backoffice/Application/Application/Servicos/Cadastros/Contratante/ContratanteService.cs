@@ -39,7 +39,7 @@ namespace Application.Application.Servicos.Cadastros.Contratante
         public async Task<int> AddAsync(ContratanteViewModel obj, string? idEmpresa)
         {
             
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapContratante = _mapper.Map<Domain.Entidades.Cadastros.Contratante.Contratante>(obj);
             mapContratante.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
 

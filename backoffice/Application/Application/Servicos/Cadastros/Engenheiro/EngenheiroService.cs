@@ -19,7 +19,7 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task<IEnumerable<EngenheiroViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var usuarioCredencialList = await _engenheiroRepository.GetAllAsync(idEmpresaInt);
         var usuarioList = usuarioCredencialList
             .Select(u => u.Usuario)
@@ -46,7 +46,7 @@ public class EngenheiroService : IEngenheiroService
 
     public async Task<EngenheiroViewModel?> GetByIdAsync(string id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var usuarioCredencialObj = await _engenheiroRepository.GetByIdAsync(id, idEmpresaInt);
         var usuarioObj = usuarioCredencialObj?.Usuario ?? null; 
         var mappedObj = usuarioObj is not null ? _mapper.Map<EngenheiroViewModel>(usuarioObj) : null;

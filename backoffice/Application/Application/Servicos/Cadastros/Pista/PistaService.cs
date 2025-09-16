@@ -21,14 +21,14 @@ public class PistaService : IPistaService
 
     public async Task<IEnumerable<PistaViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _pistaRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<PistaViewModel>>(list);
     }
 
     public async Task<IEnumerable<PistaAppViewModel>> GetAllAppAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _pistaRepository.GetAllAsync(idEmpresaInt);
         var viewModelList = list.Select(pista => new PistaAppViewModel
         {
@@ -68,7 +68,7 @@ public class PistaService : IPistaService
 
     public async Task<PistaViewModel> GetByIdAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var obj = await _pistaRepository.GetByIdAsync(id, idEmpresaInt);
         return _mapper.Map<PistaViewModel>(obj);
     }
@@ -79,7 +79,7 @@ public class PistaService : IPistaService
         {
             throw new ArgumentException("O nome não pode ser nulo ou vazio.", nameof(name));
         }
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var pistas = await _pistaRepository.GetByNameAsync(name, idEmpresaInt);
 
         return pistas.Select(p => _mapper.Map<PistaViewModel>(p));
@@ -99,7 +99,7 @@ public class PistaService : IPistaService
 
     public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         await _pistaRepository.DeleteAsync(id, idEmpresaInt);
     }
 }

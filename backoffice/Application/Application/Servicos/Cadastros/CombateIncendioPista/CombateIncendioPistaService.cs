@@ -21,7 +21,7 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendioPista
 
         public async Task<int> AddAsync(CombateIncendioPistaViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapCombateIncendioPista = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista>(obj);
             mapCombateIncendioPista.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var combateIncendio = await _combateIncendioPistaRepository.AddAsync(mapCombateIncendioPista);
@@ -35,7 +35,7 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendioPista
 
         public async Task<IEnumerable<CombateIncendioPistaViewModel>> GetAllAsync(string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var list = await _combateIncendioPistaRepository.GetAllAsync(idEmpresaInt);
             return _mapper.Map<IEnumerable<CombateIncendioPistaViewModel>>(list);
         }
@@ -54,7 +54,7 @@ namespace Application.Application.Servicos.Cadastros.CombateIncendioPista
 
         public async Task<int> UpdateAsync(CombateIncendioPistaViewModel obj, string? idEmpresa)
         {
-            var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapCombateIncendioPista = _mapper.Map<Domain.Entidades.Cadastros.CombateIncendio.CombateIncendioPista>(obj);
             mapCombateIncendioPista.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             return await _combateIncendioPistaRepository.UpdateAsync(mapCombateIncendioPista);

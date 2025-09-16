@@ -20,7 +20,7 @@ public class ComponentesService : IComponentesService
 
     public async Task<IEnumerable<ComponentesViewModel>> GetAllAsync(string? idEmpresa)
     {
-        var idEmpresaInt = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var list = await _componenteRepository.GetAllAsync(idEmpresaInt);
         return _mapper.Map<IEnumerable<ComponentesViewModel>>(list);
     }
@@ -34,7 +34,7 @@ public class ComponentesService : IComponentesService
     public async Task AddAsync(ComponentesViewModel obj, string? idEmpresa)
     {
         var mapComponente = _mapper.Map<Domain.Entidades.Cadastros.Componentes.Componentes>(obj);
-        var idEmpresaAsNumber = ConvertIdEmpresaFromStringToInt.GetIdEmpresaAsInt(idEmpresa);
+        var idEmpresaAsNumber = ConvertTypes.ConvertStringToInt(idEmpresa);
         mapComponente.IdEmpresa = idEmpresaAsNumber == 0 ? null : idEmpresaAsNumber;
         await _componenteRepository.AddAsync(mapComponente);
     }
