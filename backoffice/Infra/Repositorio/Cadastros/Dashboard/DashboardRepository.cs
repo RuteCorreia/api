@@ -197,8 +197,6 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             AplicacaoRecomendacoesTecnicas ar ON ra.RecomendacoesTecnicasId = ar.Id
                         JOIN
                             IdentificacaoAreaTratada iat ON ra.IdentificacaoAreaTratadaId = iat.Id
-                        JOIN 
-                            AplicacaoRelatorioItem rli ON ra.AplicacaoRelatorioId = rli.IdAplicacaoRelatorio
                         JOIN
                             AplicacaoRelatorio are ON ra.AplicacaoRelatorioId = are.Id
                         JOIN
@@ -290,7 +288,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                 {
                     var query = @"
                         SELECT 
-                            CAST(cf.Id AS VARCHAR(50)) AS NumeroDocumento,
+                            CAST(cf.RefDocument AS VARCHAR(50)) AS NumeroDocumento,
                             DATEPART(YEAR, cf.DataCriacao) AS Ano,
                             DATEPART(MONTH, cf.DataCriacao) AS Mes,
 	                        cf.NomePiloto AS Piloto,
