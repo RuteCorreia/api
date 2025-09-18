@@ -110,21 +110,9 @@ namespace WebApi.Controllers.APIs
                         worksheet.Cells[row, 10].Value = item.Faturamento;
 
                         // Formatar Hectares Voados como "xx.xxx ha"
-                        worksheet.Cells[row, 9].Style.Numberformat.Format = "0 \"ha\"";
+                        worksheet.Cells[row, 9].Style.Numberformat.Format = "0.00 \"ha\"";
                         worksheet.Cells[row, 9].Value = item.HectaresVoados;
 
-                        // Formatar Horas Voadas como "hh:mm:ss"
-                        //var horasVoadasDecimal = item.HorasVoadas;
-                        //int horas = (int)horasVoadasDecimal;
-                        //int minutos = (int)((horasVoadasDecimal - horas) * 60);
-                        //int segundos = (int)(((horasVoadasDecimal - horas) * 60 - minutos) * 60);
-                        //worksheet.Cells[row, 10].Value = $"{horas:D2}:{minutos:D2}:{segundos:D2}";
-
-                        // Formatar Rendimento como porcentagem
-                        //worksheet.Cells[row, 11].Value = item.Rendimento;
-                        //worksheet.Cells[row, 11].Style.Numberformat.Format = "0.00";
-
-                        // Preencher outras células
                         worksheet.Cells[row, 1].Value = item.Relatorio;
                         worksheet.Cells[row, 2].Value = item.Mes;
                         worksheet.Cells[row, 3].Value = item.Ano;
@@ -171,7 +159,7 @@ namespace WebApi.Controllers.APIs
                 {
                     var dashboard = new ExportDashboardViewModel
                     {
-                        Relatorio = item.NumeroDocumento,
+                        Relatorio = $"Frota - {item.NumeroDocumento}",
                         Mes = new DateTime(1, item.Mes, 1).ToString("MMMM", new CultureInfo("pt-BR")),
                         Ano = item.Ano,
                         DataCriacao = item.DataCriacao,
@@ -244,6 +232,8 @@ namespace WebApi.Controllers.APIs
                         decimal horasIncendio = item.TotalHorasIncendio.HasValue ? Convert.ToDecimal(item.TotalHorasIncendio.Value) : 0m;
                         decimal horasDrone = item.TotalHorasDrone.HasValue ? Convert.ToDecimal(item.TotalHorasDrone.Value) : 0m;
 
+                        bool exibirTotal = horasAplicacao > 0 && horasTranslado > 0;
+
                         TimeSpan tsAplicacao = TimeSpan.FromHours((double)horasAplicacao);
                         TimeSpan tsTranslado = TimeSpan.FromHours((double)horasTranslado);
                         TimeSpan tsIncendio = TimeSpan.FromHours((double)horasIncendio);
@@ -263,7 +253,7 @@ namespace WebApi.Controllers.APIs
                                 worksheet.Cells[row, 6].Value = item.Piloto;
                                 worksheet.Cells[row, 7].Value = item.Executor;
 
-                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0.00 \"ha\"";
                                 worksheet.Cells[row, 8].Value = item.HectaresVoadosDrone > 0 ? item.HectaresVoadosDrone : "";
                                 worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsDrone.TotalHours);
                                 worksheet.Cells[row, 10].Style.Numberformat.Format = "0.00 \"ha/hr\"";
@@ -282,20 +272,20 @@ namespace WebApi.Controllers.APIs
                             worksheet.Cells[row, 6].Value = item.Piloto;
                             worksheet.Cells[row, 7].Value = item.Executor;
 
-                            worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                            worksheet.Cells[row, 8].Style.Numberformat.Format = "0.00 \"ha\"";
                             worksheet.Cells[row, 8].Value = item.HectaresVoados > 0 ? item.HectaresVoados : "";
-                            worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
+                            worksheet.Cells[row, 9].Value = exibirTotal ? FormatarHoras((decimal)tsTotal.TotalHours) : "";
                             worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
                             worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
                             worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
 
                             worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
-                            worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+                            worksheet.Cells[row, 13].Value = exibirTotal && (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
 
                             worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
                             worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
 
-                            worksheet.Cells[row, 15].Style.Numberformat.Format = "0 \"ha\"";
+                            worksheet.Cells[row, 15].Style.Numberformat.Format = "0.00 \"ha\"";
                             worksheet.Cells[row, 15].Value = item.HectaresVoadosDrone > 0 ? item.HectaresVoadosDrone : "";
                             worksheet.Cells[row, 16].Value = FormatarHoras((decimal)tsDrone.TotalHours);
                             worksheet.Cells[row, 17].Style.Numberformat.Format = "0.00 \"ha/hr\"";
@@ -314,15 +304,15 @@ namespace WebApi.Controllers.APIs
                                 worksheet.Cells[row, 6].Value = item.Piloto;
                                 worksheet.Cells[row, 7].Value = item.Executor;
 
-                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0 \"ha\"";
+                                worksheet.Cells[row, 8].Style.Numberformat.Format = "0.00 \"ha\"";
                                 worksheet.Cells[row, 8].Value = item.HectaresVoados > 0 ? item.HectaresVoados : "";
-                                worksheet.Cells[row, 9].Value = FormatarHoras((decimal)tsTotal.TotalHours);
+                                worksheet.Cells[row, 9].Value = exibirTotal ? FormatarHoras((decimal)tsTotal.TotalHours) : "";
                                 worksheet.Cells[row, 10].Value = FormatarHoras((decimal)tsAplicacao.TotalHours);
                                 worksheet.Cells[row, 11].Value = FormatarHoras((decimal)tsTranslado.TotalHours);
                                 worksheet.Cells[row, 12].Value = FormatarHoras((decimal)tsIncendio.TotalHours);
 
                                 worksheet.Cells[row, 13].Style.Numberformat.Format = "0.00 \"ha/hr\"";
-                                worksheet.Cells[row, 13].Value = (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
+                                worksheet.Cells[row, 13].Value = exibirTotal && (decimal)tsTotal.TotalHours > 0 ? item.HectaresVoados / (decimal)tsTotal.TotalHours : "";
 
                                 worksheet.Cells[row, 14].Style.Numberformat.Format = "0.00 \"ha/hr\"";
                                 worksheet.Cells[row, 14].Value = horasAplicacao > 0 ? item.HectaresVoados / horasAplicacao : "";
