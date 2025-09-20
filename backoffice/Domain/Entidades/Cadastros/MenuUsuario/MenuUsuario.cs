@@ -26,5 +26,8 @@ namespace Domain.Entidades.Cadastros.MenuUsuario
 
         [JsonIgnore]
         public virtual IdentityUser? Usuario { get; set; }
+
+        [JsonIgnore]
+        public int? IdCliente { get; set; } = 0;
     }
 }

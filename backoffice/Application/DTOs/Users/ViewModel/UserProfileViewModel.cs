@@ -6,5 +6,6 @@
         public string? Nome { get; set; }
         public string? Email { get; set; }
         public int? IdEmpresa { get; set; }
+        public int? IdCliente{ get; set; } = 0;
     }
 }
