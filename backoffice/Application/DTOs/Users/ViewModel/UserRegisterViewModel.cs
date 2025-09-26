@@ -26,7 +26,9 @@ public class UserRegisterViewModel
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
-    public IEnumerable<RoleObject> Funcoes { get; set; } 
+    public IEnumerable<RoleObject> Funcoes { get; set; }
+
+    public int IdCliente { get; set; }
 }
 
 public class RoleObject

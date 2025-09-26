@@ -1,4 +1,5 @@
-﻿using Domain.Entidades.Cadastros.Empresa;
+﻿using Domain.Entidades.Cadastros.Cliente;
+using Domain.Entidades.Cadastros.Empresa;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -7,7 +8,7 @@ namespace Domain.Entidades.User;
 
 public class Usuario
 {
-    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf, decimal? comissao, bool gerarRelatorioManutencao)
+    public Usuario(string email, string nome, string userId, int nrUsuario, string? telefone, int? idEmpresa, string cpf, decimal? comissao, bool gerarRelatorioManutencao, int? idCliente)
     {
         Id = Guid.NewGuid();
         Email = email;
@@ -21,6 +22,7 @@ public class Usuario
         IdEmpresa = idEmpresa;
         CPF = cpf;
         Comissao = comissao;
+        IdCliente = idCliente;
         GerarRelatorioManutencao = gerarRelatorioManutencao;
     }
 
@@ -48,6 +50,7 @@ public class Usuario
     public byte[]? Assinatura { get; set; }
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
+    public int? IdCliente { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
     public DateTime DataSituacao { get; private set; } =
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));

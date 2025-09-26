@@ -267,7 +267,8 @@ public class UserAuthService : IUserAuthService
             idEmpresa,
             request.CPF,
             request.Comissao,
-            request.GerarRelatorioManutencao
+            request.GerarRelatorioManutencao,
+            request.IdCliente
             );
 
         await _usuarioRepository.AddAsync(usuario);
@@ -697,6 +698,7 @@ public class UserAuthService : IUserAuthService
             Nome = usuario.Nome,
             Email = usuario.Email,
             IdEmpresa = usuario.IdEmpresa,
+            IdCliente = usuario.IdCliente
         };
 
         return viewModel;

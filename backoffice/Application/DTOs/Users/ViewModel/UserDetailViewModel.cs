@@ -20,4 +20,6 @@ public class UserDetailViewModel
 
     //public ERole Funcao { get; set; }
     public IEnumerable<RoleObject> Funcoes { get; set; }
+
+    public int? IdCliente { get; set; }
 }
