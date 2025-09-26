@@ -4,6 +4,7 @@
     {
         public int? Id { get; set; }
         public int? IdFrota { get; set; }
+        public int? IdMotobomba { get; set; }
         public DateTime? CreatedAt { get; set; }
         public string? Identificacao { get; set; }
         public double? LitrosOleo { get; set; }
@@ -11,5 +12,6 @@
         public string? CheckList { get; set; }
         public int? IdEmpresa { get; set; }
         public string? NomeMotobomba { get; set; }
+        public DateTime? DataTrocaOleo { get; set; }
     }
 }

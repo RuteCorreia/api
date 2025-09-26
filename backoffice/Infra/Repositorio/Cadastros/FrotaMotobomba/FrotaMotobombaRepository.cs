@@ -16,6 +16,14 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba obj)
         {
             await _contextBase.AddAsync(obj);
+            
+            if (obj.DataTrocaOleo != null && obj.IdMotobomba != null)
+            {
+                var motobomba = await _contextBase.Motobombas.FindAsync(obj.IdMotobomba);
+                motobomba.DataUltimaTrocaOleo = obj.DataTrocaOleo.Value;
+                _contextBase.Motobombas.Update(motobomba);
+            }
+
             await _contextBase.SaveChangesAsync();
             return obj.Id;
         }
@@ -52,10 +60,19 @@ namespace Infra.Repositorio.Cadastros.FrotaMotobomba
         public async Task<int> UpdateAsync(Domain.Entidades.Cadastros.FrotaMotobomba.FrotaMotobomba obj)
         {
             var objeto = await _contextBase.FrotaMotobombas.FindAsync(obj.Id);
+            objeto.IdMotobomba = obj.IdMotobomba;
             objeto.Identificacao = obj.Identificacao;
             objeto.LitrosOleo = obj.LitrosOleo;
             objeto.LitrosGasolina = obj.LitrosGasolina;
             objeto.CheckList = obj.CheckList;
+            objeto.DataTrocaOleo = obj.DataTrocaOleo;
+
+            if (objeto.DataTrocaOleo != null && objeto.IdMotobomba != null)
+            {
+                var motobomba = await _contextBase.Motobombas.FindAsync(objeto.IdMotobomba);
+                motobomba.DataUltimaTrocaOleo = objeto.DataTrocaOleo.Value;
+                _contextBase.Motobombas.Update(motobomba);
+            }
 
             _contextBase.FrotaMotobombas.Update(objeto);
             await _contextBase.SaveChangesAsync();

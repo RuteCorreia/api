@@ -17,6 +17,7 @@ namespace Domain.Entidades.Cadastros.FrotaMotobomba
         public double? LitrosOleo { get; set; }
         public double? LitrosGasolina { get; set; }
         public string? CheckList { get; set; }
+        public DateTime? DataTrocaOleo { get; set; }
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
         public virtual Motobomba.Motobomba? Motobomba { get; set; }
