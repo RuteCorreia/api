@@ -1,12 +1,8 @@
 ﻿using Application.DTOs.Cadastros.Aeronave.Interface;
-using Application.DTOs.Cadastros.Aeronave.ViewModel;
 using Application.DTOs.Cadastros.Dashboard.Interface;
 using Application.DTOs.Cadastros.Dashboard.ViewModel;
 using Application.DTOs.Cadastros.Empresa.Interface;
-using Application.DTOs.Cadastros.Empresa.ViewModel;
 using Application.DTOs.Users.Interface;
-using Application.DTOs.Users.ViewModel;
-using Domain.Enums;
 using Helpers;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
@@ -45,6 +41,7 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                dataFim = dataFim != null ? dataFim.Value.AddDays(1).AddSeconds(-1) : dataFim;
                 var result = await _dashboardService.GetAllAsync(dataInicio, dataFim, loggedUser.Item3,usuario,nomeAeronave,nomeContratante);
                 return Ok(result);
             }
