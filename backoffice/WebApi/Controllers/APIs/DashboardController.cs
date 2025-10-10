@@ -60,6 +60,7 @@ namespace WebApi.Controllers.APIs
             try
             {
                 var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                dataFim = dataFim != null ? dataFim.Value.AddDays(1).AddSeconds(-1) : dataFim;
                 var result = await _dashboardService.GetFaturamentoExportAsync(dataInicio, dataFim, loggedUser.Item3, usuario, nomeAeronave, nomeContratante);
                 var dashboards = new List<ExportDashboardViewModel>();
 
@@ -150,6 +151,8 @@ namespace WebApi.Controllers.APIs
                 var empresa = await _empresaService.GetByIdAsync(ConvertTypes.ConvertStringToInt(loggedUser.Item3));
                 bool isEmpresaDrone = empresa.QtdAeronaves == 0 && empresa.QtdDrones > 0;
                 bool isEmpresaMista = empresa.QtdAeronaves > 0 && empresa.QtdDrones > 0;
+
+                dataFim = dataFim != null ? dataFim.Value.AddDays(1).AddSeconds(-1) : dataFim;
 
                 var result = await _dashboardService.GetRendimentoExportAsync(dataInicio, dataFim, loggedUser.Item3, usuario, nomeAeronave, nomeContratante);
                 var dashboards = new List<ExportDashboardViewModel>();
