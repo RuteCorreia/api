@@ -19,12 +19,14 @@ public class ExecutorRepository : IExecutorRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Executor.Executor>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT u.Id , u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CFTA, r.Name as Role FROM Usuario u
+        var query = @"SELECT u.Id , u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CFTA, r.Name as Role 
+                    FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles ur ON u.UserId = ur.UserId
 					JOIN AspNetRoles r ON ur.RoleId = r.Id
                     WHERE u.IdEmpresa = @IdEmpresa
-                    AND (ur.RoleId = '4d43cec7-f717-4f60-90d0-6e8d376a7ada' OR ur.RoleId = '213a9ee0-b7fd-4cd8-b3aa-099ccda9fa39')";
+                    AND (ur.RoleId = '4d43cec7-f717-4f60-90d0-6e8d376a7ada' OR ur.RoleId = '213a9ee0-b7fd-4cd8-b3aa-099ccda9fa39')
+                    AND u.Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -36,13 +38,15 @@ public class ExecutorRepository : IExecutorRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Executor.Executor>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
-        var query = @"SELECT u.Id , u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CFTA, r.Name as Role FROM Usuario u
+        var query = @"SELECT u.Id , u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CFTA, r.Name as Role 
+                    FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles ur ON u.UserId = ur.UserId
 					JOIN AspNetRoles r ON ur.RoleId = r.Id
                     WHERE u.IdEmpresa = @IdEmpresa
                     AND (ur.RoleId = '4d43cec7-f717-4f60-90d0-6e8d376a7ada' OR ur.RoleId = '213a9ee0-b7fd-4cd8-b3aa-099ccda9fa39')
-                    AND u.DataSituacao > @DataUltimaSincronizacao";
+                    AND u.DataSituacao > @DataUltimaSincronizacao
+                    AND u.Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {

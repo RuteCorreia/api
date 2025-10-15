@@ -1,8 +1,6 @@
-﻿using Application.DTOs.Cadastros.AplicacaoRecomendacoesTecnicas.ViewModel;
-using Application.DTOs.Cadastros.AuxiliarPista.Interface;
+﻿using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.HttpRequestInfo;
 
