@@ -10,5 +10,6 @@
         public string? CDAC { get; set; }
         public DateTime DataSituacao { get; private set; } =
             TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+        public string? Role { get; set; }
     }
 }
