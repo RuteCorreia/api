@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Cadastros.Piloto.ViewModel;
 
@@ -17,8 +16,7 @@ public class PilotoViewModel
     public string Email { get; set; }
 
     public string? Telefone { get; set; }
-
     public string? Assinatura { get; set; }
-
     public string? CDAC { get; set; }
+    public string? Role { get; set; }
 }

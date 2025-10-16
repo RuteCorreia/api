@@ -20,10 +20,11 @@ public class PilotoRepository : IPilotoRepository
     
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC 
+        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC, rl.Name as Role 
                     FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
+					JOIN AspNetRoles rl ON r.RoleId = rl.Id
                     WHERE u.IdEmpresa = @IdEmpresa
                     AND (r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372' OR r.RoleId = '63e712a0-c4c1-4295-8e91-64f0e43eb7fb')
                     AND u.Removido = 0";
@@ -38,10 +39,11 @@ public class PilotoRepository : IPilotoRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Piloto.Piloto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
-        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC 
+        var query = @"SELECT u.Id as IdPiloto, u.Nome, u.Email, u.Telefone, u.Assinatura, uc.Credencial as CDAC, rl.Name as Role 
                     FROM Usuario u
                     JOIN UsuarioCredencial uc ON u.Id = uc.IdUsuario
                     JOIN AspNetUserRoles r ON u.UserId = r.UserId
+					JOIN AspNetRoles rl ON r.RoleId = rl.Id
                     WHERE u.IdEmpresa = @IdEmpresa
                     AND (r.RoleId = '4ac92ff7-0d7f-4bde-9cd1-0532a2a5e372' OR r.RoleId = '63e712a0-c4c1-4295-8e91-64f0e43eb7fb')
                     AND u.DataSituacao > @DataUltimaSincronizacao
