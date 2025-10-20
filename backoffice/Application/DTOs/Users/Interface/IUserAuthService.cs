@@ -1,4 +1,7 @@
 ﻿using Application.DTOs.Users.ViewModel;
+using AutoMapper;
+using Domain.Entidades.User;
+using Domain.Interfaces.User;
 
 namespace Application.DTOs.Users.Interface;
 
@@ -22,4 +25,5 @@ public interface IUserAuthService
     Task RemoveUserAsync(string id);
     Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);
     Task<string> GetUserSignatureAsync(string userId);
+    Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente, int? idEmpresa);
 }

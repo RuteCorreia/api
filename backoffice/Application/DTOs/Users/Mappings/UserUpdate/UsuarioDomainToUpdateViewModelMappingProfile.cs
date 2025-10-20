@@ -8,6 +8,7 @@ public class UsuarioDomainToUpdateViewModelMappingProfile : Profile
 {
     public UsuarioDomainToUpdateViewModelMappingProfile()
     {
-        CreateMap<Usuario, UserUpdateViewModel>();
+        CreateMap<Usuario, UserUpdateViewModel>()
+            .ForMember(d => d.FlagTermoResp, opt => opt.MapFrom(s => s.FlagTermoResp ?? false));
     }
 }

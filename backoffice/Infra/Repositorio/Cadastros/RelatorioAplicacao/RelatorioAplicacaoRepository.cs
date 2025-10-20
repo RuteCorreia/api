@@ -230,7 +230,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
 
             query += " AND IdEmpresa = @IdEmpresa";
 
-            if (roleNames != null && (!roleNames.Contains("Administrativo") && !roleNames.Contains("Administrativo") && !roleNames.Contains("Administrador")))
+            // Aplica filtro por Executor/Piloto apenas quando NÃO for Administrativo, Administrador OU Cliente
+            if (roleNames != null && !roleNames.Any(r => r == "Administrativo" || r == "Administrador" || r == "Cliente"))
             {
                 query += " AND (Executor = @Executor OR Piloto = @Piloto)";
             }

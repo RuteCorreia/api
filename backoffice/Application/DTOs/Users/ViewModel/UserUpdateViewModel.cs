@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace Application.DTOs.Users.ViewModel;
 
@@ -22,6 +23,7 @@ public class UserUpdateViewModel
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
+    public bool FlagTermoResp { get; set; }
 
     //[JsonConverter(typeof(JsonStringEnumConverter))]
     public IEnumerable<RoleObject> Funcoes { get; set; }

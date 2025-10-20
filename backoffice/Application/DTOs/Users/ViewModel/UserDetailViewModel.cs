@@ -13,6 +13,7 @@ public class UserDetailViewModel
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
+    public bool FlagTermoResp { get; set; }
 
     public bool Removido { get; set; }
 

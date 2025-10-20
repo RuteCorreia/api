@@ -271,6 +271,8 @@ public class UserAuthService : IUserAuthService
             request.IdCliente
             );
 
+        usuario.FlagTermoResp = request.FlagTermoResp;
+
         await _usuarioRepository.AddAsync(usuario);
     }
 
@@ -522,6 +524,7 @@ public class UserAuthService : IUserAuthService
                     userToUpdate.CPF = request.CPF;
                     userToUpdate.Comissao = request.Comissao;
                     userToUpdate.GerarRelatorioManutencao = request.GerarRelatorioManutencao;
+                    userToUpdate.FlagTermoResp = request.FlagTermoResp;
                     await _usuarioRepository.UpdateAsync(userToUpdate);
                     await _usuarioCredencialRepository.RemoveAllByUserIdAsync(userToUpdate.Id);
                     await CreateUserCredencial(identityUser, request.Funcoes);
@@ -698,9 +701,15 @@ public class UserAuthService : IUserAuthService
             Nome = usuario.Nome,
             Email = usuario.Email,
             IdEmpresa = usuario.IdEmpresa,
-            IdCliente = usuario.IdCliente
+            IdCliente = usuario.IdCliente,
+            FlagTermoResp = usuario.FlagTermoResp ?? false
         };
 
         return viewModel;
+    }
+
+    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente, int? idEmpresa)
+    {
+        return await _usuarioRepository.GetUsuariosClientesAsync(idCliente, idEmpresa);
     }
 }
