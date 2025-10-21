@@ -19,7 +19,7 @@ public class Empresa
     [Required]
     public string CNPJ { get; set; }
     public string? InscricaoEstadual { get; set; }
-    public int? NrCDA { get; set; }
+    public string? NrCDA { get; set; }
     public string? CEP { get; set; }
     public string? Endereco { get; set; }
     public string? Numero { get; set; }

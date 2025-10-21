@@ -325,7 +325,7 @@ public class UserAuthService : IUserAuthService
             new("TelefoneEmpresa", usuario.Empresa?.Telefone ?? ""),
             new("cnpj", usuario.Empresa?.CNPJ ?? ""),
             new("inscricaoEstadualEmpresa", usuario.Empresa?.InscricaoEstadual ?? ""),
-            new("nrCDAEmpresa", usuario.Empresa?.NrCDA?.ToString() ?? ""),
+            new("nrCDAEmpresa", usuario.Empresa?.NrCDA ?? ""),
             new("registroMapaEmpresa", usuario.Empresa?.RegistroMapa ?? ""),
             new("cepEmpresa", usuario.Empresa?.CEP ?? ""),
             new("enderecoEmpresa", usuario.Empresa?.Endereco ?? ""),
