@@ -29,7 +29,7 @@ public class UserRegisterViewModel
     public IEnumerable<RoleObject> Funcoes { get; set; }
 
     public int IdCliente { get; set; }
-    public bool FlagTermoResp { get; set; }
+    public string FlagTermoResp { get; set; }
 }
 
 public class RoleObject

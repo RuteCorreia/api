@@ -23,7 +23,7 @@ public class UserUpdateViewModel
     public string CPF { get; set; }
     public decimal? Comissao { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
-    public bool FlagTermoResp { get; set; }
+    public string FlagTermoResp { get; set; }
 
     //[JsonConverter(typeof(JsonStringEnumConverter))]
     public IEnumerable<RoleObject> Funcoes { get; set; }

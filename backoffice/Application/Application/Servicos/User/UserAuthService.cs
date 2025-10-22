@@ -319,6 +319,8 @@ public class UserAuthService : IUserAuthService
             new("cpfUsuario", usuario.CPF),
             new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
             new("NomeEmpresa", usuario.Empresa?.Nome ?? ""),
+            new("FlagTermoResp", usuario.FlagTermoResp ?? ""),
+            new("IdCliente", usuario.IdCliente?.ToString() ?? ""),
             new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
             new("FrotaRelatoriosAplicacaoIncendio", usuario.Empresa?.FrotaRelatoriosAplicacaoIncendio.ToString() ?? string.Empty),
             new("Manutencao", usuario.Empresa?.Manutencao.ToString() ?? string.Empty),
@@ -702,7 +704,7 @@ public class UserAuthService : IUserAuthService
             Email = usuario.Email,
             IdEmpresa = usuario.IdEmpresa,
             IdCliente = usuario.IdCliente,
-            FlagTermoResp = usuario.FlagTermoResp ?? false
+            FlagTermoResp = usuario.FlagTermoResp ?? string.Empty
         };
 
         return viewModel;

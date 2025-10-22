@@ -24,7 +24,7 @@ public class Usuario
         Comissao = comissao;
         IdCliente = idCliente;
         GerarRelatorioManutencao = gerarRelatorioManutencao;
-        FlagTermoResp = false;
+        FlagTermoResp = string.Empty;
     }
 
     public Usuario(Guid id, string email, string nome, string userId, int nrUsuario)
@@ -53,7 +53,7 @@ public class Usuario
     public decimal? Comissao { get; set; }
     public int? IdCliente { get; set; }
     public bool GerarRelatorioManutencao { get; set; }
-    public bool? FlagTermoResp { get; set; }
+    public string? FlagTermoResp { get; set; }
     public DateTime DataSituacao { get; private set; } =
         TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
 
