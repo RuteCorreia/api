@@ -131,25 +131,32 @@ public class UserAuthService : IUserAuthService
 
                         } else {
                             if (roles.Contains("Administrativo") || roles.Contains("Administrador")) {
+
+                                var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
+                                
+                                if (passwordCheck) {
+                                    var token = new StringBuilder();
+                                    token.Append(await GenerateToken(identityUser, usuario));
+                                    return (true, token.ToString(), roles, usuario.IdEmpresa);
+                                }
+                                else {
+                                    return (false, "Senha incorreta. Por favor, tente novamente.", [], null);
+                                }
+
+                            } else {
+                            var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
+
+                            if (passwordCheck) {
                                 var token = new StringBuilder();
                                 token.Append(await GenerateToken(identityUser, usuario));
 
                                 return (true, token.ToString(), roles, usuario.IdEmpresa);
 
                             } else {
-                                var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
-
-                                if (passwordCheck) {
-                                    var token = new StringBuilder();
-                                    token.Append(await GenerateToken(identityUser, usuario));
-
-                                    return (true, token.ToString(), roles, usuario.IdEmpresa);
-
-                                } else {
-                                    return (false, "Senha incorreta. Por favor, tente novamente.", [], null);
+                                return (false, "Senha incorreta. Por favor, tente novamente.", [], null);
                                 };
-                            };
                         };
+                    };
                     };
                 } else {
                     return (false, "Usuário não possui empresa vinculada. Entre em contato com o administrador do sistema.", [], null);
