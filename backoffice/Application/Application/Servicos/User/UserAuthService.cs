@@ -8,6 +8,7 @@ using AutoMapper;
 using Domain.Entidades.Cadastros.Empresa;
 using Domain.Entidades.User;
 using Domain.Enums;
+using Domain.Interfaces.Cadastros.Cliente;
 using Domain.Interfaces.Cadastros.Empresa;
 using Domain.Interfaces.User;
 using Infra.Repositorio.User;
@@ -29,6 +30,7 @@ public class UserAuthService : IUserAuthService
     private readonly RoleManager<IdentityRole> _roleManager;
     private readonly IUsuarioRepository _usuarioRepository;
     private readonly IEmpresaRepository _empresaRepository;
+    private readonly IClienteRepository _clienteRepository;
     private readonly IEmailService _emailService;
     private readonly IConfiguration _config;
     private readonly IMapper _mapper;
@@ -39,6 +41,7 @@ public class UserAuthService : IUserAuthService
         RoleManager<IdentityRole> roleManager,
         IUsuarioRepository usuarioRepository,
         IEmpresaRepository empresaRepository,
+        IClienteRepository clienteRepository,
         IEmailService emailService,
         IConfiguration config,
         IMapper mapper
@@ -48,6 +51,7 @@ public class UserAuthService : IUserAuthService
         _usuarioCredencialRepository = usuarioCredencialRepository;
         _usuarioRepository = usuarioRepository;
         _empresaRepository = empresaRepository;
+        _clienteRepository = clienteRepository;
         _emailService = emailService;
         _userManager = userManager;
         _roleManager = roleManager;
@@ -349,6 +353,15 @@ public class UserAuthService : IUserAuthService
             new(JwtRegisteredClaimNames.Nbf, ToUnixEpochDate(DateTime.UtcNow).ToString()),
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
         };
+
+        // Buscar NomeCliente se houver IdCliente
+        string nomeCliente = string.Empty;
+        if (usuario.IdCliente.HasValue)
+        {
+            var cliente = await _clienteRepository.GetByIdAsync(usuario.IdCliente.Value, usuario.IdEmpresa ?? 0);
+            nomeCliente = cliente?.NomeCliente ?? string.Empty;
+        }
+        claims.Add(new Claim("NomeCliente", nomeCliente));
 
         claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
         return claims;

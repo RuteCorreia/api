@@ -50,9 +50,9 @@ public class ClienteRepository : IClienteRepository
         return entities;
     }
 
-    public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id, int idEmpresa)
+    public async Task<Domain.Entidades.Cadastros.Cliente.Cliente> GetByIdAsync(int id, int empresa)
     {
-        var obj = await _contextBase.Cliente.FirstOrDefaultAsync(x => x.IdCliente == id && (idEmpresa == 0 ? x.IdEmpresa == null : x.IdEmpresa == idEmpresa));
+        var obj = await _contextBase.Cliente.FirstOrDefaultAsync(x => x.IdCliente == id);
         return obj;
     }
     
