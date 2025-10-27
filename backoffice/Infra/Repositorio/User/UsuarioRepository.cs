@@ -108,26 +108,26 @@ public class UsuarioRepository : IUsuarioRepository
         return await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Nome == name);
     }
 
-    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente, int? idEmpresa)
+    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente)
     {
-        using var connection = new SqlConnection(_contextBase.ObterStringConexao());
-        var sql = @"SELECT 
-                u.Nome AS nome, 
-                u.CPF AS documento,
-                u.Telefone AS telefone,
-                c.Cidade AS cidade,
-                c.UF AS uf,
-                a.Id AS userId,        
-                u.IdCliente
-            FROM dbo.AspNetUsers a
-            INNER JOIN dbo.Usuario u ON u.UserId = a.Id
-            INNER JOIN dbo.Cliente c ON c.IdCliente = u.IdCliente
-            INNER JOIN dbo.AspNetUserRoles ur ON ur.UserId = a.Id
-            INNER JOIN dbo.AspNetRoles r ON r.Id = ur.RoleId
-            WHERE (@IdEmpresa IS NULL OR u.IdEmpresa = @IdEmpresa)
-              AND r.Name = '12'
-              AND u.IdCliente = @IdCliente;";
-        var result = await connection.QueryAsync<UsuarioClienteInfo>(sql, new { IdCliente = idCliente, IdEmpresa = idEmpresa });
-        return result;
+        return await _contextBase.Usuario
+       .Where(x => x.IdCliente == idCliente)
+       .Join(
+           _contextBase.Cliente,
+           usuario => usuario.IdCliente,
+           cliente => cliente.IdCliente,
+           (usuario, cliente) => new UsuarioClienteInfo
+           {
+               UserId = usuario.UserId,
+               IdCliente = cliente.IdCliente,
+               Nome = cliente.NomeCliente,
+               Documento = usuario.CPF,
+               Telefone = usuario.Empresa.Telefone,
+               Cidade = usuario.Empresa.Cidade,
+               Uf = usuario.Empresa.Estado
+               // Adicione outros campos do DTO se necessário
+           }
+       )
+       .ToListAsync();
     }
 }

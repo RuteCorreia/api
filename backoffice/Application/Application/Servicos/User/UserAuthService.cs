@@ -730,8 +730,8 @@ public class UserAuthService : IUserAuthService
         return viewModel;
     }
 
-    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente, int? idEmpresa)
+    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente)
     {
-        return await _usuarioRepository.GetUsuariosClientesAsync(idCliente, idEmpresa);
+        return await _usuarioRepository.GetUsuariosClientesAsync(idCliente);
     }
 }

@@ -20,15 +20,12 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get(int idCliente)
+        public async Task<IActionResult> Get()
         {
-            var logged = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
-            // if (string.IsNullOrEmpty(logged.Item1)) return Unauthorized();
+            var idClienteClaim = User.Claims.FirstOrDefault(c => c.Type == "IdCliente")?.Value;
+            int.TryParse(idClienteClaim, out var idCliente);
 
-            int? idEmpresa = null;
-            if (int.TryParse(logged.Item3, out var parsed)) idEmpresa = parsed;
-
-            var result = await _userAuthService.GetUsuariosClientesAsync(idCliente, idEmpresa);
+            var result = await _userAuthService.GetUsuariosClientesAsync(idCliente);
             return Ok(result);
         }
     }
