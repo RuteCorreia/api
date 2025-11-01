@@ -97,7 +97,7 @@ public class EmailService : IEmailService
             // CONFIGURAÇÃO DO EMAIL
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             SmtpClient client = new SmtpClient();
-            client.Credentials = new NetworkCredential("naoresponda@mensageria.flytecsa.com.br", "GEg5te0pngku12E");
+            client.Credentials = new NetworkCredential("naoresponda@mensageria.flytecsa.com.br", "zhWojXi7Cz2pFpe");
             client.Port = 587;
             client.Host = "mensageria.flytecsa.com.br";
             client.EnableSsl = true;
