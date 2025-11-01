@@ -17,5 +17,5 @@ public interface IUsuarioRepository
     Task<Usuario> GetLastAsync();
     Task<Usuario> GetUserByNameAsync(string name);
     Task<Usuario> GetUserByIdAsync(string id);
-    Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente);
+    Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idEmpresa, string userId);
 }

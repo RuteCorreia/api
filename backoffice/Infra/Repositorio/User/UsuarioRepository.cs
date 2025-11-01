@@ -108,26 +108,30 @@ public class UsuarioRepository : IUsuarioRepository
         return await _contextBase.Usuario.FirstOrDefaultAsync(x => x.Nome == name);
     }
 
-    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente)
+    // Retorna informações do cliente para os usuários com role '12' dentro de uma empresa
+    public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idEmpresa, string userId)
     {
-        return await _contextBase.Usuario
-       .Where(x => x.IdCliente == idCliente)
-       .Join(
-           _contextBase.Cliente,
-           usuario => usuario.IdCliente,
-           cliente => cliente.IdCliente,
-           (usuario, cliente) => new UsuarioClienteInfo
-           {
-               UserId = usuario.UserId,
-               IdCliente = cliente.IdCliente,
-               Nome = cliente.NomeCliente,
-               Documento = usuario.CPF,
-               Telefone = usuario.Empresa.Telefone,
-               Cidade = usuario.Empresa.Cidade,
-               Uf = usuario.Empresa.Estado
-               // Adicione outros campos do DTO se necessário
-           }
-       )
-       .ToListAsync();
+        var roleName = "12"; // 12 = CLIENTES
+
+        var query = from a in _contextBase.Users
+                    join u in _contextBase.Usuario on a.Id equals u.UserId
+                    join c in _contextBase.Cliente on u.IdCliente equals c.IdCliente
+                    join ur in _contextBase.UserRoles on a.Id equals ur.UserId
+                    join r in _contextBase.Roles on ur.RoleId equals r.Id
+                    where u.IdEmpresa == idEmpresa && r.Name == roleName
+                    select new UsuarioClienteInfo
+                    {
+                        UserId = a.Id,
+                        Nome = u.Nome,
+                        Documento = u.CPF,
+                        Telefone = u.Empresa.Telefone,
+                        Cidade = c.Empresa.Cidade,
+                        Uf = c.Empresa.Estado,
+                        IdCliente = u.IdCliente
+                    };
+
+
+        return await query.Distinct().ToListAsync();
     }
+
 }

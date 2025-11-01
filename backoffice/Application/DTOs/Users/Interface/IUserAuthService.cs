@@ -25,5 +25,5 @@ public interface IUserAuthService
     Task RemoveUserAsync(string id);
     Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);
     Task<string> GetUserSignatureAsync(string userId);
-    Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idCliente);
+    Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idEmpresa, string userId);
 }
