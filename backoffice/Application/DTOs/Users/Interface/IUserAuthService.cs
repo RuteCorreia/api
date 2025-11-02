@@ -26,4 +26,5 @@ public interface IUserAuthService
     Task<(bool, string)> SaveUserSignatureAsync(UserSaveSignatureViewModel obj, string loggedUserId);
     Task<string> GetUserSignatureAsync(string userId);
     Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idEmpresa, string userId);
+    Task<(bool, string)> SaveUserFlagTermoRespAsync(string userId, string flag);
 }

@@ -734,4 +734,18 @@ public class UserAuthService : IUserAuthService
     {
         return await _usuarioRepository.GetUsuariosClientesAsync(idEmpresa, userId);
     }
+
+    public async Task<(bool, string)> SaveUserFlagTermoRespAsync(string userId, string flag)
+    {
+        if (string.IsNullOrWhiteSpace(userId))
+            return (false, "userId inválido");
+
+        var usuario = await _usuarioRepository.GetByUserIdAsync(userId);
+        if (usuario == null)
+            return (false, "Usuário não encontrado");
+
+        usuario.FlagTermoResp = flag;
+        await _usuarioRepository.UpdateAsync(usuario);
+        return (true, "Flag salva com sucesso");
+    }
 }
