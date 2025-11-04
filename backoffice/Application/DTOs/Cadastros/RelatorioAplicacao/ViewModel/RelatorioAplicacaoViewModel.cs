@@ -8,6 +8,8 @@ using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
 {
@@ -36,6 +38,8 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
+        public int? AssinaturaType { get; set; }
+        public string? UserId { get; set; }
         public string? RefUsuario { get; set; }
         public int? State { get; set; }
         public int? IdEmpresa { get; set; }
