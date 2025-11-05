@@ -34,14 +34,14 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                          RecomendacoesTecnicasId, AplicacaoRelatorioId, ContratoPrestacaoServicoId, 
                          DadosResponsavelId, CulturaId, PilotoId, Piloto, 
                          ExecutorId, Executor, AuxiliarPistaId, IsDrone, RefDocument, 
-                         DataCriacao, DataAlteracao, Data, IdData, RefUsuario, StatusEnvio, IdEmpresa)
+                         DataCriacao, DataAlteracao, assinaturaType, userId, Data, IdData, RefUsuario, StatusEnvio, IdEmpresa)
                         OUTPUT INSERTED.*
                         VALUES 
                         (@ContratanteId, @NomeRelatorio, @IdentificacaoAreaTratadaId, @CaracteristicasProdutoAplicadoId, 
                          @RecomendacoesTecnicasId, @AplicacaoRelatorioId, @ContratoPrestacaoServicoId, 
                          @DadosResponsavelId, @CulturaId, @PilotoId, @Piloto,  
                          @ExecutorId, @Executor, @AuxiliarPistaId, @IsDrone, @RefDocument, 
-                         @DataCriacao, @DataAlteracao, @Data, @IdData, @RefUsuario, @StatusEnvio, @IdEmpresa);
+                         @DataCriacao, @DataAlteracao, @assinaturaType, @userId, @Data, @IdData, @RefUsuario, @StatusEnvio, @IdEmpresa);
                         SELECT CAST(SCOPE_IDENTITY() as int)";
 
                     //relatorioAplicacaoViewModel.CulturaId = culturaId;
@@ -72,6 +72,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                         obj.IdData,
                         obj.DataCriacao,
                         obj.DataAlteracao,
+                        obj.assinaturaType,
+                        obj.userId,
                         obj.RefUsuario,
                         obj.StatusEnvio,
                         obj.IdEmpresa
@@ -334,6 +336,8 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             objeto.Piloto = obj.Piloto;
             objeto.ExecutorId = obj.ExecutorId;
             objeto.Executor = obj.Executor;
+            objeto.assinaturaType = obj.assinaturaType;
+            objeto.userId = obj.userId;
             objeto.AuxiliarPistaId = obj.AuxiliarPistaId;
             objeto.IsDrone = obj.IsDrone;
             objeto.IdData = obj.IdData;

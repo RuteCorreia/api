@@ -395,7 +395,11 @@ namespace WebApi.Controllers.APIs
                     var piloto = obj.GetProperty("piloto").ToString();
                     var executor = obj.GetProperty("executor").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
-                                                                                         //   var data = obj.GetProperty("data").ToString();
+                    // novos campos no mesmo nível de executor
+                    var assinaturaTypeProp = obj.GetProperty("assinaturaType");
+                    var assinaturaType = assinaturaTypeProp.ValueKind == JsonValueKind.Null ? (int?)null : assinaturaTypeProp.GetInt32();
+                    var userId = obj.GetProperty("userId").ValueKind == JsonValueKind.Null ? null : obj.GetProperty("userId").GetString();
+
                     var idDataProperty = obj.GetProperty("idData");
                     var IdData = idDataProperty.ValueKind == JsonValueKind.Null ? (int?)null : idDataProperty.GetInt32();
                     var statusEnvio = obj.GetProperty("state").GetInt32(); // Campo a ser implementado **
@@ -562,6 +566,8 @@ namespace WebApi.Controllers.APIs
                     //relatorioAplicacaoViewModel.ExecutorId = executorId;
                     relatorioAplicacaoViewModel.DataCriacao = dataCriacao;
                     relatorioAplicacaoViewModel.DataAlteracao = dataAlteracao;
+                    relatorioAplicacaoViewModel.assinaturaType = assinaturaType;
+                    relatorioAplicacaoViewModel.userId = userId;
                     relatorioAplicacaoViewModel.State = statusEnvio;
                     relatorioAplicacaoViewModel.IdData = IdData;
 

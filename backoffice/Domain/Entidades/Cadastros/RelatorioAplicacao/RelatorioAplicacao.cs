@@ -74,7 +74,7 @@ namespace Domain.Entidades.Cadastros.RelatorioAplicacao
         [JsonIgnore]
         public virtual DataRelatorio.DataRelatorio? DataRelatorio { get; set; }
 
-
-
+        public int? assinaturaType { get; set; }
+        public string? userId { get; set; }
     }
 }

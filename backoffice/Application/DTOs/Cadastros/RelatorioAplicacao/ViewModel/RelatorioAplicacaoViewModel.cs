@@ -38,8 +38,8 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public int? IdData { get; set; }
         public DateTime? DataCriacao { get; set; }
         public DateTime? DataAlteracao { get; set; }
-        public int? AssinaturaType { get; set; }
-        public string? UserId { get; set; }
+        public int? assinaturaType { get; set; }
+        public string? userId { get; set; }
         public string? RefUsuario { get; set; }
         public int? State { get; set; }
         public int? IdEmpresa { get; set; }
