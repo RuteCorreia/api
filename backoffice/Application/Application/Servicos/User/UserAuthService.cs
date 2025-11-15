@@ -134,8 +134,9 @@ public class UserAuthService : IUserAuthService
                             return (false, "Empresa desativada. Entre em contato com o administrador do sistema.", [], null);
 
                         } else {
-                            if (roles.Contains("Administrativo") || roles.Contains("Administrador")) {
-
+                            // permitir acesso apenas para usuários com as roles Administrativo ou AuxiliarAdministrativo
+                            if (roles.Contains("Administrativo") || roles.Contains("AuxiliarAdministrativo") || roles.Contains("Administrador"))
+                            {
                                 var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
                                 
                                 if (passwordCheck) {
@@ -143,24 +144,13 @@ public class UserAuthService : IUserAuthService
                                     token.Append(await GenerateToken(identityUser, usuario));
                                     return (true, token.ToString(), roles, usuario.IdEmpresa);
                                 }
-                                else {
-                                    return (false, "Senha incorreta. Por favor, tente novamente.", [], null);
-                                }
 
-                            } else {
-                            var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
-
-                            if (passwordCheck) {
-                                var token = new StringBuilder();
-                                token.Append(await GenerateToken(identityUser, usuario));
-
-                                return (true, token.ToString(), roles, usuario.IdEmpresa);
-
-                            } else {
                                 return (false, "Senha incorreta. Por favor, tente novamente.", [], null);
-                                };
+                            }
+
+                            // usuário sem permissão para acessar o backoffice
+                            return (false, "Acesso não autorizado. Recurso disponível apenas para Administrativo e Auxiliar Administrativo.", roles, null);
                         };
-                    };
                     };
                 } else {
                     return (false, "Usuário não possui empresa vinculada. Entre em contato com o administrador do sistema.", [], null);
