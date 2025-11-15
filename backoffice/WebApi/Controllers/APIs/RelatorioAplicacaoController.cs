@@ -396,9 +396,18 @@ namespace WebApi.Controllers.APIs
                     var executor = obj.GetProperty("executor").ToString();
                     var auxiliarPistaJson = obj.GetProperty("auxiliarPista").ToString(); // Novo campo auxiliarPistaId **
                     // novos campos no mesmo nível de executor
-                    var assinaturaTypeProp = obj.GetProperty("assinaturaType");
-                    var assinaturaType = assinaturaTypeProp.ValueKind == JsonValueKind.Null ? (int?)null : assinaturaTypeProp.GetInt32();
-                    var userId = obj.GetProperty("userId").ValueKind == JsonValueKind.Null ? null : obj.GetProperty("userId").GetString();
+                    // assinaturaType e userId são opcionais -> usar TryGetProperty para evitar exceção quando ausentes
+                    int? assinaturaType = null;
+                    string? userId = null;
+                    if (obj.TryGetProperty("assinaturaType", out JsonElement assinaturaTypeProp) && assinaturaTypeProp.ValueKind != JsonValueKind.Null)
+                    {
+                        try { assinaturaType = assinaturaTypeProp.GetInt32(); } catch { assinaturaType = null; }
+                    }
+
+                    if (obj.TryGetProperty("userId", out JsonElement userIdProp) && userIdProp.ValueKind != JsonValueKind.Null)
+                    {
+                        userId = userIdProp.GetString();
+                    }
 
                     var idDataProperty = obj.GetProperty("idData");
                     var IdData = idDataProperty.ValueKind == JsonValueKind.Null ? (int?)null : idDataProperty.GetInt32();
