@@ -220,7 +220,9 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             DateTime? offsetDate, 
             string userName, 
             IEnumerable<string>? roleNames, 
-            int IdEmpresa)
+            int IdEmpresa,
+            string UserId
+            )
         {
             string query = "SELECT * FROM RelatorioAplicacao WHERE StatusEnvio <> 4"; // Filtra por StatusEnvio diferente de 4
 
@@ -238,13 +240,18 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 query += " AND (Executor = @Executor OR Piloto = @Piloto)";
             }
 
+            if (roleNames.Any(r => r == "12"))
+            {
+                query += " AND UserId = @UserId ";
+            }
 
             var parameters = new
             {
                 offsetDate,
                 Executor = userName,
                 Piloto = userName,
-                IdEmpresa
+                IdEmpresa,
+                UserId
             };
 
             return await _dbConnection.QueryAsync<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(query, parameters);

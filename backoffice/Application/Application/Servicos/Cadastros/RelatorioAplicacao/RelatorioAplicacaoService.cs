@@ -381,7 +381,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         {
             var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var user = await _usuarioRepository.GetByUserIdAsync(userId);
-            var relatorios = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt);
+            var relatorios = await _relatorioAplicacaoRepository.GetNovosAsync(offsetDate, user.Nome, roleNames, idEmpresaInt,userId);
 
             var ralatoriosViewModel = _mapper.Map<IEnumerable<RelatorioAplicacaoViewModel>>(relatorios);
 
