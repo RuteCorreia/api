@@ -118,7 +118,7 @@ public class UsuarioRepository : IUsuarioRepository
                     join c in _contextBase.Cliente on u.IdCliente equals c.IdCliente
                     join ur in _contextBase.UserRoles on a.Id equals ur.UserId
                     join r in _contextBase.Roles on ur.RoleId equals r.Id
-                    where u.IdEmpresa == idEmpresa && r.Name == roleName
+                    where u.IdEmpresa == idEmpresa && r.Name == roleName && u.Removido == false
                     select new UsuarioClienteInfo
                     {
                         UserId = a.Id,
