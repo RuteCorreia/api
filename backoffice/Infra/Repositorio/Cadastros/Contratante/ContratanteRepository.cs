@@ -66,6 +66,10 @@ namespace Infra.Repositorio.Cadastros.Contratante
             objeto.InscricaoEstadual = obj.InscricaoEstadual;
             objeto.Cidade = obj.Cidade;
             objeto.CPF = obj.CPF;
+            // Ensure ContratanteRef is updated when provided
+            objeto.ContratanteRef = obj.ContratanteRef;
+            // Propagate IdEmpresa if present
+            objeto.IdEmpresa = obj.IdEmpresa;
 
             _contextBase.Contratante.Update(objeto);
             await _contextBase.SaveChangesAsync();
