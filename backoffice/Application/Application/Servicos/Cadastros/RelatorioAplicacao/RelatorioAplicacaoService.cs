@@ -24,6 +24,7 @@ using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
+using Application.DTOs.Cadastros.DataRelatorio.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -53,6 +54,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
         private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
+        private readonly IDataRelatorioService _dataRelatorioService;
 
         public RelatorioAplicacaoService(
             IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository,
@@ -76,6 +78,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IProdutoAplicadoService produtoAplicadoService,
             IReceituarioAgronomicoService receituarioAgronomicoService,
             IPdfService pdfService,
+            IDataRelatorioService dataRelatorioService,
             IMapper mapper)
         {
             _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
@@ -99,6 +102,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _contratoPrestacaoServicoService = contratoPrestacaoServicoService;
             _dadosResponsavelService = dadosResponsavelService;
             _pdfService = pdfService;
+            _dataRelatorioService = dataRelatorioService;
             _mapper = mapper;
         }
 
@@ -264,15 +268,19 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 
                 if (relatorioExistente.IdData != null)
                 {
-                    var base64 = await _dataRelatorioRepository.GetByIdAsync(relatorioExistente.IdData, idEmpresaInt);
+                    // Use the DataRelatorioService to obtain the actual PDF content (base64) and update it
+                    var dataViewModel = await _dataRelatorioService.GetByIdAsync(relatorioExistente.IdData, idEmpresa);
 
-                    if (!string.IsNullOrEmpty(base64.Data))
+                    if (dataViewModel != null && !string.IsNullOrEmpty(dataViewModel.Data))
                     {
-                        byte[] pdfBytes = Convert.FromBase64String(base64.Data);
+                        // dataViewModel.Data is base64 content — convert, apply watermark and update via service
+                        byte[] pdfBytes = Convert.FromBase64String(dataViewModel.Data);
                         byte[] pdfComMarcaDagua = await _pdfService.AdicionarMarcaDaguaCanceladoAsync(pdfBytes);
                         string pdfComMarcaDaguaBase64 = Convert.ToBase64String(pdfComMarcaDagua);
-                        base64.Data = pdfComMarcaDaguaBase64;
-                        await _dataRelatorioRepository.UpdateAsync(base64);
+                        dataViewModel.Data = pdfComMarcaDaguaBase64;
+
+                        // UpdateAsync on the service will save the new file to blob and update DB record to point to the new file name
+                        await _dataRelatorioService.UpdateAsync(dataViewModel);
                     }
                 }
 
