@@ -402,7 +402,24 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
                 relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
-                relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId!.Value);
+
+                
+                if (relatorio.AuxiliarPistaId.HasValue)
+                {
+                    try
+                    {
+                        relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId.Value);
+                    }
+                    catch
+                    {
+                        
+                        relatorio.AuxiliarPista = null;
+                    }
+                }
+                else
+                {
+                    relatorio.AuxiliarPista = null;
+                }
             }
 
             return ralatoriosViewModel;
@@ -426,7 +443,23 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
                 relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
-                relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId!.Value);
+
+                
+                if (relatorio.AuxiliarPistaId.HasValue)
+                {
+                    try
+                    {
+                        relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId.Value);
+                    }
+                    catch
+                    {
+                        relatorio.AuxiliarPista = null;
+                    }
+                }
+                else
+                {
+                    relatorio.AuxiliarPista = null;
+                }
             }
 
             return ralatoriosViewModel;
