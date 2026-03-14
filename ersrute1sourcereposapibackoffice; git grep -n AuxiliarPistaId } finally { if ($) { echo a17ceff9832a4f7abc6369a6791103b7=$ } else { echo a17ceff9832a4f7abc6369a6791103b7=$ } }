@@ -1,0 +1,556 @@
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m1[m[36m:[m﻿using Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Interface;
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m2[m[36m:[musing Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m4[m[36m:[musing Domain.Interfaces.Cadastros.[1;31mAuxiliarPista[m;
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m7[m[36m:[mnamespace Application.Application.Servicos.Cadastros.[1;31mAuxiliarPista[m
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m9[m[36m:[m    public class [1;31mAuxiliarPista[mService : I[1;31mAuxiliarPista[mService
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m11[m[36m:[m        private readonly I[1;31mAuxiliarPista[mRepository _auxiliarPistaRepository;
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m13[m[36m:[m        public [1;31mAuxiliarPista[mService(I[1;31mAuxiliarPista[mRepository auxiliarPistaRepository, IMapper mapper)
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m18[m[36m:[m        public async Task<int> AddAsync([1;31mAuxiliarPista[mViewModel obj, string? idEmpresa)
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m24[m[36m:[m            var map[1;31mAuxiliarPista[m = _mapper.Map<Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m>(obj);
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m25[m[36m:[m            map[1;31mAuxiliarPista[m.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m28[m[36m:[m            //    await _auxiliarPistaRepository.UpdateAsync(map[1;31mAuxiliarPista[m);
+[35mApplication/Application/Servicos/Cadastros/AuxiliarPista/AuxiliarPistaService.cs[m[36m:[m[32m30[m[36m:[m            var auxiliarPista = await _auxiliarPistaRepository.AddAsync(map[1;31mAuxiliarPista[m);
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Interface/IAuxiliarPistaService.cs[m[36m:[m[32m1[m[36m:[m﻿using Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Interface/IAuxiliarPistaService.cs[m[36m:[m[32m4[m[36m:[mnamespace Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Interface
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Interface/IAuxiliarPistaService.cs[m[36m:[m[32m6[m[36m:[m    public interface I[1;31mAuxiliarPista[mService
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Interface/IAuxiliarPistaService.cs[m[36m:[m[32m8[m[36m:[m        Task<int> AddAsync([1;31mAuxiliarPista[mViewModel obj, string? idEmpresa);
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoDomainToViewModelMappingProfile.cs[m[36m:[m[32m1[m[36m:[m﻿using Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoDomainToViewModelMappingProfile.cs[m[36m:[m[32m4[m[36m:[mnamespace Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Mappings
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoDomainToViewModelMappingProfile.cs[m[36m:[m[32m6[m[36m:[m    public class [1;31mAuxiliarPista[mAplicacaoDomainToViewModelMappingProfile : Profile
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoDomainToViewModelMappingProfile.cs[m[36m:[m[32m8[m[36m:[m        public [1;31mAuxiliarPista[mAplicacaoDomainToViewModelMappingProfile()
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoDomainToViewModelMappingProfile.cs[m[36m:[m[32m10[m[36m:[m            CreateMap<Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m, [1;31mAuxiliarPista[mViewModel>();
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoViewModelToDomainMappingProfile.cs[m[36m:[m[32m1[m[36m:[m﻿using Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoViewModelToDomainMappingProfile.cs[m[36m:[m[32m4[m[36m:[mnamespace Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Mappings
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoViewModelToDomainMappingProfile.cs[m[36m:[m[32m6[m[36m:[m    public class [1;31mAuxiliarPista[mAplicacaoViewModelToDomainMappingProfile : Profile
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoViewModelToDomainMappingProfile.cs[m[36m:[m[32m8[m[36m:[m        public [1;31mAuxiliarPista[mAplicacaoViewModelToDomainMappingProfile()
+[35mApplication/DTOs/Cadastros/AuxiliarPista/Mappings/AuxiliarPistaAplicacaoViewModelToDomainMappingProfile.cs[m[36m:[m[32m10[m[36m:[m            CreateMap<[1;31mAuxiliarPista[mViewModel, Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m>();
+[35mApplication/DTOs/Cadastros/AuxiliarPista/ViewModel/AuxiliarPistaViewModel.cs[m[36m:[m[32m1[m[36m:[m﻿namespace Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel
+[35mApplication/DTOs/Cadastros/AuxiliarPista/ViewModel/AuxiliarPistaViewModel.cs[m[36m:[m[32m3[m[36m:[m    public class [1;31mAuxiliarPista[mViewModel
+[35mApplication/DTOs/Cadastros/RelatorioAplicacao/ViewModel/RelatorioAplicacaoViewModel.cs[m[36m:[m[32m34[m[36m:[m        public int? [1;31mAuxiliarPista[mId { get; set; }
+[35mDomain/Entidades/Cadastros/AuxiliarPista/AuxiliarPista.cs[m[36m:[m[32m5[m[36m:[mnamespace Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m
+[35mDomain/Entidades/Cadastros/AuxiliarPista/AuxiliarPista.cs[m[36m:[m[32m7[m[36m:[m    public class [1;31mAuxiliarPista[m
+[35mDomain/Entidades/Cadastros/RelatorioAplicacao/RelatorioAplicacao.cs[m[36m:[m[32m42[m[36m:[m        [ForeignKey("[1;31mAuxiliarPista[m")]
+[35mDomain/Entidades/Cadastros/RelatorioAplicacao/RelatorioAplicacao.cs[m[36m:[m[32m43[m[36m:[m        public int? [1;31mAuxiliarPista[mId { get; set; }
+[35mDomain/Entidades/Cadastros/RelatorioAplicacao/RelatorioAplicacao.cs[m[36m:[m[32m72[m[36m:[m        public virtual [1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m? [1;31mAuxiliarPista[m { get; set; }
+[35mDomain/Enums/ERole.cs[m[36m:[m[32m15[m[36m:[m    [1;31mAuxiliarPista[m = 11
+[35mDomain/Interfaces/Cadastros/AuxiliarPista/IAuxiliarPistaRepository.cs[m[36m:[m[32m1[m[36m:[m﻿using Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m;
+[35mDomain/Interfaces/Cadastros/AuxiliarPista/IAuxiliarPistaRepository.cs[m[36m:[m[32m3[m[36m:[mnamespace Domain.Interfaces.Cadastros.[1;31mAuxiliarPista[m
+[35mDomain/Interfaces/Cadastros/AuxiliarPista/IAuxiliarPistaRepository.cs[m[36m:[m[32m5[m[36m:[m    public interface I[1;31mAuxiliarPista[mRepository
+[35mDomain/Interfaces/Cadastros/AuxiliarPista/IAuxiliarPistaRepository.cs[m[36m:[m[32m7[m[36m:[m        Task<int> AddAsync(Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m obj);
+[35mInfra/Configuracao/ContextBase.cs[m[36m:[m[32m41[m[36m:[musing Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m;
+[35mInfra/Configuracao/ContextBase.cs[m[36m:[m[32m77[m[36m:[m    public DbSet<[1;31mAuxiliarPista[m> [1;31mAuxiliarPista[m { get; set; }
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m510[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m528[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m1622[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m1687[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m2593[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m2595[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627154557_v59.Designer.cs[m[36m:[m[32m2623[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m39[m[36m:[m                name: "[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m81[m[36m:[m                name: "[1;31mAuxiliarPista[m",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m91[m[36m:[m                    table.PrimaryKey("PK_[1;31mAuxiliarPista[m", x => x.Id);
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m95[m[36m:[m                name: "IX_RelatorioAplicacao_[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m97[m[36m:[m                column: "[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m100[m[36m:[m                name: "FK_RelatorioAplicacao_[1;31mAuxiliarPista[m_[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m102[m[36m:[m                column: "[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m103[m[36m:[m                principalTable: "[1;31mAuxiliarPista[m",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m111[m[36m:[m                name: "FK_RelatorioAplicacao_[1;31mAuxiliarPista[m_[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m115[m[36m:[m                name: "[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m118[m[36m:[m                name: "IX_RelatorioAplicacao_[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627154557_v59.cs[m[36m:[m[32m122[m[36m:[m                name: "[1;31mAuxiliarPista[mId",
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m554[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m572[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m1672[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m1731[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m2637[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m2639[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627194610_v60.Designer.cs[m[36m:[m[32m2667[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m554[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m572[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m1672[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m1733[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m2643[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m2645[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627195615_v61.Designer.cs[m[36m:[m[32m2675[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m554[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m572[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m1672[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m1733[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m2643[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m2645[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240627200043_v62.Designer.cs[m[36m:[m[32m2675[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m554[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m572[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m1678[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m1742[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m2652[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m2654[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240628145426_v63.Designer.cs[m[36m:[m[32m2684[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m1708[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m1775[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m2487[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m2732[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m2734[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240628192516_v65.Designer.cs[m[36m:[m[32m2768[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m33[m[36m:[m                table: "[1;31mAuxiliarPista[m",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m71[m[36m:[m                name: "IX_[1;31mAuxiliarPista[m_IdEmpresa",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m72[m[36m:[m                table: "[1;31mAuxiliarPista[m",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m112[m[36m:[m                name: "FK_[1;31mAuxiliarPista[m_Empresa_IdEmpresa",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m113[m[36m:[m                table: "[1;31mAuxiliarPista[m",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m156[m[36m:[m                name: "FK_[1;31mAuxiliarPista[m_Empresa_IdEmpresa",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m157[m[36m:[m                table: "[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m184[m[36m:[m                name: "IX_[1;31mAuxiliarPista[m_IdEmpresa",
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m185[m[36m:[m                table: "[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240628192516_v65.cs[m[36m:[m[32m213[m[36m:[m                table: "[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m1731[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m1798[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m2510[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m2761[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m2763[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701193636_v66.Designer.cs[m[36m:[m[32m2797[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m1731[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m1798[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m2510[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m2761[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m2763[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701195043_v67.Designer.cs[m[36m:[m[32m2797[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m1737[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m1804[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m2516[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m2767[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m2769[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701220408_v68.Designer.cs[m[36m:[m[32m2803[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m1773[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m1840[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m2552[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m2814[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m2816[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701221702_v69.Designer.cs[m[36m:[m[32m2850[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m1778[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m1845[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m2557[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m2825[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m2827[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240701223353_v70.Designer.cs[m[36m:[m[32m2861[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m1783[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m1850[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m2562[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m2836[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m2838[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240702122020_v71.Designer.cs[m[36m:[m[32m2872[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m1775[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m1842[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m2554[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m2828[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m2830[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240702174216_v72.Designer.cs[m[36m:[m[32m2864[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m1778[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m1845[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m2557[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m2831[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m2833[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240703170321_v73.Designer.cs[m[36m:[m[32m2867[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m1802[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m1872[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m2586[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m2866[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m2868[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240705114649_v74.Designer.cs[m[36m:[m[32m2906[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m569[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m592[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m1807[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m1877[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m2591[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m2880[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m2882[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240705122553_v75.Designer.cs[m[36m:[m[32m2920[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m1835[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m1908[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m2672[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m2961[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m2963[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240709150719_v76.Designer.cs[m[36m:[m[32m3001[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m1838[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m1911[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m2675[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m2964[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m2966[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240709195947_v77.Designer.cs[m[36m:[m[32m3004[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m1838[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m1914[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m2681[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m2970[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m2972[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710124501__v78.Designer.cs[m[36m:[m[32m3010[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m1838[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m1914[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m2681[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m2970[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m2972[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710152528__teste.Designer.cs[m[36m:[m[32m3010[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m1833[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m1909[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m2676[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m2965[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m2967[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240710192749_v79.Designer.cs[m[36m:[m[32m3005[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m1836[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m1912[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m2679[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m2968[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m2970[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240711172343__v80.Designer.cs[m[36m:[m[32m3008[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m1836[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m1912[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m2695[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m2984[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m2986[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240711212009_v81.Designer.cs[m[36m:[m[32m3024[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m1836[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m1912[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m2714[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m3003[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m3005[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240716155454_v82.Designer.cs[m[36m:[m[32m3043[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m572[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m595[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m1836[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m1912[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m2719[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m3008[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m3010[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717122329_v83.Designer.cs[m[36m:[m[32m3048[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m588[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m611[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m1852[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m1928[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m2735[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m3024[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m3026[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717175246_v84.Designer.cs[m[36m:[m[32m3064[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m588[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m611[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m1852[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m1928[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m2872[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m3161[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m3163[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717185300_v85.Designer.cs[m[36m:[m[32m3201[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m588[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m611[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m1871[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m1947[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m2891[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m3180[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m3182[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240717195648_v86.Designer.cs[m[36m:[m[32m3220[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m1879[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m1955[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m2915[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m3204[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m3206[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240718140735_v87.Designer.cs[m[36m:[m[32m3244[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m588[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m611[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m1876[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m1952[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m2896[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m3191[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m3193[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240719111620_v88.Designer.cs[m[36m:[m[32m3231[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m1884[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m1960[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m2936[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m3231[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m3233[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240719171354_v89.Designer.cs[m[36m:[m[32m3271[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m1921[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m1997[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m2973[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m3280[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m3282[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240814155613_v90.Designer.cs[m[36m:[m[32m3320[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m1931[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m2007[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m2983[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m3302[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m3304[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240814161602_v91.Designer.cs[m[36m:[m[32m3342[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m1934[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m2010[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m2986[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m3305[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m3307[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240815163707_v92.Designer.cs[m[36m:[m[32m3345[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m1940[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m2016[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m2992[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m3311[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m3313[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240823152950_v93.Designer.cs[m[36m:[m[32m3351[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m1948[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m2024[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m3006[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m3334[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m3336[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240913162641_v94.Designer.cs[m[36m:[m[32m3374[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m596[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m619[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m1951[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m2030[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m3012[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m3340[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m3342[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916134706_v95.Designer.cs[m[36m:[m[32m3380[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m599[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m622[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m1954[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m2033[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m3015[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m3343[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m3345[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916142123_v96.Designer.cs[m[36m:[m[32m3383[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m1964[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m2043[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m3031[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m3365[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m3367[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916160518_v97.Designer.cs[m[36m:[m[32m3405[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m1972[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m2051[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m3039[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m3379[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m3381[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916183346_v98.Designer.cs[m[36m:[m[32m3419[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m1970[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m2049[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m3037[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m3377[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m3379[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916193524_v99.Designer.cs[m[36m:[m[32m3417[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m1980[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m2059[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m3047[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m3399[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m3401[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240916210926_v100.Designer.cs[m[36m:[m[32m3439[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m1980[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m2059[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m3043[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m3395[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m3397[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240917124826_v101.Designer.cs[m[36m:[m[32m3435[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m1982[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m2061[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m3045[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m3405[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m3407[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240917125910_v102.Designer.cs[m[36m:[m[32m3445[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m1982[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m2061[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m3048[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m3408[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m3410[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240918192832_v103.Designer.cs[m[36m:[m[32m3448[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m2014[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m2093[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m3080[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m3451[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m3453[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240919185622_v104.Designer.cs[m[36m:[m[32m3491[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m2045[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m2124[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m3111[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m3493[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m3495[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240920152821_v105.Designer.cs[m[36m:[m[32m3533[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m604[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m627[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m2163[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m2242[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m3229[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m3668[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m3670[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240923141204_v106.Designer.cs[m[36m:[m[32m3708[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m2166[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m2245[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m3232[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m3671[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m3673[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240927144230_v107.Designer.cs[m[36m:[m[32m3711[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m2169[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m2248[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m3235[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m3674[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m3676[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20240930134153_v108.Designer.cs[m[36m:[m[32m3714[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m2169[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m2248[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m3235[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m3674[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m3676[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241011154916_v109.Designer.cs[m[36m:[m[32m3714[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m2169[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m2248[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m3235[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m3674[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m3676[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241018130231_v110.Designer.cs[m[36m:[m[32m3714[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m2174[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m2253[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m3240[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m3688[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m3690[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241023160819_v111.Designer.cs[m[36m:[m[32m3728[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m2195[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m2274[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m3261[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m3718[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m3720[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241104142332_v112.Designer.cs[m[36m:[m[32m3758[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m2195[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m2273[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m3260[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m3717[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m3719[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241107150343_v113.Designer.cs[m[36m:[m[32m3757[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m2195[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m2273[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m3265[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m3722[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m3724[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241126171201_v114.Designer.cs[m[36m:[m[32m3762[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m607[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m630[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m2195[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m2273[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m3265[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m3722[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m3724[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/20241211195330_v115.Designer.cs[m[36m:[m[32m3762[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m616[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m639[m[36m:[m                    b.ToTable("[1;31mAuxiliarPista[m");
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m2228[m[36m:[m                    b.Property<int?>("[1;31mAuxiliarPista[mId")
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m2306[m[36m:[m                    b.HasIndex("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m3316[m[36m:[m            modelBuilder.Entity("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", b =>
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m3773[m[36m:[m                    b.HasOne("Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m", "[1;31mAuxiliarPista[m")
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m3775[m[36m:[m                        .HasForeignKey("[1;31mAuxiliarPista[mId");
+[35mInfra/Migrations/ContextBaseModelSnapshot.cs[m[36m:[m[32m3813[m[36m:[m                    b.Navigation("[1;31mAuxiliarPista[m");
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m2[m[36m:[musing Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m;
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m3[m[36m:[musing Domain.Interfaces.Cadastros.[1;31mAuxiliarPista[m;
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m7[m[36m:[mnamespace Infra.Repositorio.Cadastros.[1;31mAuxiliarPista[m
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m9[m[36m:[m    public class [1;31mAuxiliarPista[mRepository : I[1;31mAuxiliarPista[mRepository
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m12[m[36m:[m        public [1;31mAuxiliarPista[mRepository(IDbConnection dbConnection)
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m16[m[36m:[m        public async Task<int> AddAsync(Domain.Entidades.Cadastros.[1;31mAuxiliarPista[m.[1;31mAuxiliarPista[m obj)
+[35mInfra/Repositorio/Cadastros/AuxiliarPista/AuxiliarPistaRepository.cs[m[36m:[m[32m22[m[36m:[m                    string sqlQuery = @"INSERT INTO [1;31mAuxiliarPista[m (Nome, Documento, IdEmpresa) VALUES (@Nome, @Documento, @IdEmpresa);
+[35mInfra/Repositorio/Cadastros/RelatorioAplicacao/RelatorioAplicacaoRepository.cs[m[36m:[m[32m36[m[36m:[m                         ExecutorId, Executor, [1;31mAuxiliarPista[mId, IsDrone, RefDocument, 
+[35mInfra/Repositorio/Cadastros/RelatorioAplicacao/RelatorioAplicacaoRepository.cs[m[36m:[m[32m43[m[36m:[m                         @ExecutorId, @Executor, @[1;31mAuxiliarPista[mId, @IsDrone, @RefDocument, 
+[35mInfra/Repositorio/Cadastros/RelatorioAplicacao/RelatorioAplicacaoRepository.cs[m[36m:[m[32m68[m[36m:[m                        obj.[1;31mAuxiliarPista[mId,
+[35mInfra/Repositorio/Cadastros/RelatorioAplicacao/RelatorioAplicacaoRepository.cs[m[36m:[m[32m348[m[36m:[m            objeto.[1;31mAuxiliarPista[mId = obj.[1;31mAuxiliarPista[mId;
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m15[m[36m:[musing Application.Application.Servicos.Cadastros.[1;31mAuxiliarPista[m;
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m70[m[36m:[musing Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Interface;
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m125[m[36m:[musing Domain.Interfaces.Cadastros.[1;31mAuxiliarPista[m;
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m181[m[36m:[musing Infra.Repositorio.Cadastros.[1;31mAuxiliarPista[m;
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m372[m[36m:[m        services.AddScoped<I[1;31mAuxiliarPista[mService, [1;31mAuxiliarPista[mService>();
+[35mWebApi/Config/DependencyInjectionConfig.cs[m[36m:[m[32m452[m[36m:[m        services.AddScoped<I[1;31mAuxiliarPista[mRepository, [1;31mAuxiliarPista[mRepository>();
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m1[m[36m:[m﻿using Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Interface;
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m2[m[36m:[musing Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m16[m[36m:[m    public class [1;31mAuxiliarPista[mController : ControllerBase
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m19[m[36m:[m        private readonly I[1;31mAuxiliarPista[mService _auxiliarPistaService;
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m20[m[36m:[m        public [1;31mAuxiliarPista[mController(I[1;31mAuxiliarPista[mService auxiliarPistaService, LoggedUserInfoService loggedUserInfoService)
+[35mWebApi/Controllers/APIs/AuxiliarPistaController.cs[m[36m:[m[32m26[m[36m:[m        public async Task<ActionResult> Add([FromBody] [1;31mAuxiliarPista[mViewModel obj)
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m8[m[36m:[musing Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.Interface;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m9[m[36m:[musing Application.DTOs.Cadastros.[1;31mAuxiliarPista[m.ViewModel;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m60[m[36m:[m        private readonly I[1;31mAuxiliarPista[mService _auxiliarPistaService;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m80[m[36m:[m            I[1;31mAuxiliarPista[mService auxiliarPistaService,
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m531[m[36m:[m                    var auxiliarPistaViewModel = JsonConvert.DeserializeObject<[1;31mAuxiliarPista[mViewModel>(auxiliarPistaJson);
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m545[m[36m:[m                    var Id[1;31mAuxiliarPista[m = await _auxiliarPistaService.AddAsync(auxiliarPistaViewModel, loggedUser.Item3); // OK
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m546[m[36m:[m                    if (Id[1;31mAuxiliarPista[m == 0)
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m548[m[36m:[m                        Id[1;31mAuxiliarPista[m = null;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m561[m[36m:[m                    relatorioAplicacaoViewModel.[1;31mAuxiliarPista[mId = Id[1;31mAuxiliarPista[m;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m565[m[36m:[m                    relatorioAplicacaoViewModel.[1;31mAuxiliarPista[mId = Id[1;31mAuxiliarPista[m;
+[35mWebApi/Controllers/APIs/RelatorioAplicacaoController.cs[m[36m:[m[32m632[m[36m:[m                        auxiliarPistaId = Id[1;31mAuxiliarPista[m,

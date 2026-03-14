@@ -24,6 +24,7 @@ using Application.DTOs.Cadastros.IdentificacaoAreaTratada.Interface;
 using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
+using Application.DTOs.Cadastros.AuxiliarPista.Interface;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -54,6 +55,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
         private readonly IPdfService _pdfService;
         private readonly IMapper _mapper;
 
+        private readonly IAuxiliarPistaService _auxiliarPistaService;
+
         public RelatorioAplicacaoService(
             IAplicacaoRecomendacoesTecnicasRepository aplicacaoRecomendacoesTecnicasRepository,
             ICaracteristicasProdutoAplicadoRepository caracteristicasProdutoAplicadoRepository,
@@ -76,7 +79,8 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             IProdutoAplicadoService produtoAplicadoService,
             IReceituarioAgronomicoService receituarioAgronomicoService,
             IPdfService pdfService,
-            IMapper mapper)
+            IMapper mapper,
+            IAuxiliarPistaService auxiliarPistaService)
         {
             _aplicacaoRecomendacoesTecnicasRepository = aplicacaoRecomendacoesTecnicasRepository;
             _caracteristicasProdutoAplicadoRepository = caracteristicasProdutoAplicadoRepository;
@@ -100,6 +104,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             _dadosResponsavelService = dadosResponsavelService;
             _pdfService = pdfService;
             _mapper = mapper;
+            _auxiliarPistaService = auxiliarPistaService;
         }
 
         public async Task DeleteAsync(int id)
@@ -397,6 +402,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
                 relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+                relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId!.Value);
             }
 
             return ralatoriosViewModel;
@@ -420,6 +426,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
                 relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
+                relatorio.AuxiliarPista = await _auxiliarPistaService.GetByIdAsync(relatorio.AuxiliarPistaId!.Value);
             }
 
             return ralatoriosViewModel;

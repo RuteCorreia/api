@@ -31,7 +31,24 @@ namespace Infra.Repositorio.Cadastros.AuxiliarPista
             }
             catch (Exception ex)
             {
-                throw new Exception("Erro ao adicionar relatório de aplicação: " + ex.Message);
+                throw new Exception("Erro ao adicionar AuxiliarPista: " + ex.Message);
+            }
+        }
+
+        public async Task<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista?> GetByIdAsync(int id)
+        {
+            try
+            {
+                string sqlQuery = "SELECT Id, Nome, Documento, IdEmpresa FROM AuxiliarPista WHERE Id = @Id";
+                using (var connection = _dbConnection)
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(sqlQuery, new { Id = id });
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Erro ao obter AuxiliarPista: " + ex.Message);
             }
         }
     }

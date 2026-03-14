@@ -6,5 +6,6 @@ namespace Application.DTOs.Cadastros.AuxiliarPista.Interface
     public interface IAuxiliarPistaService
     {
         Task<int> AddAsync(AuxiliarPistaViewModel obj, string? idEmpresa);
+        Task<AuxiliarPistaViewModel?> GetByIdAsync(int id);
     }
 }

@@ -8,6 +8,7 @@ using Application.DTOs.Cadastros.ContratoPrestacaoServico.ViewModel;
 using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
 using Application.DTOs.Cadastros.ProdutoAplicado.ViewModel;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.ViewModel;
+using Application.DTOs.Cadastros.AuxiliarPista.ViewModel;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
 
@@ -53,5 +54,8 @@ namespace Application.DTOs.Cadastros.RelatorioAplicacao.ViewModel
         public virtual IEnumerable<RelatorioItemViewModel>? Aplicacoes{ get; set; }
         public virtual IEnumerable<ProdutoAplicadoCaracteristicasViewModel>? ProdutosAplicados { get; set; }
         public virtual IEnumerable<ReceituarioAgronomicoViewModel>? ReceituariosAgronomicos { get; set; }
+
+        // Retornar nome e documento do Auxiliar junto com o Id
+        public virtual AuxiliarPistaViewModel? AuxiliarPista { get; set; }
     }
 }

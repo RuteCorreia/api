@@ -30,5 +30,12 @@ namespace Application.Application.Servicos.Cadastros.AuxiliarPista
             var auxiliarPista = await _auxiliarPistaRepository.AddAsync(mapAuxiliarPista);
             return auxiliarPista;
         }
+
+        public async Task<AuxiliarPistaViewModel?> GetByIdAsync(int id)
+        {
+            var entity = await _auxiliarPistaRepository.GetByIdAsync(id);
+            if (entity == null) return null;
+            return _mapper.Map<AuxiliarPistaViewModel>(entity);
+        }
     }
 }
