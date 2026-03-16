@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Domain.Entidades.Cadastros.AuxiliarPista;
 using Domain.Interfaces.Cadastros.AuxiliarPista;
+using Infra.Configuracao;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -8,16 +9,16 @@ namespace Infra.Repositorio.Cadastros.AuxiliarPista
 {
     public class AuxiliarPistaRepository : IAuxiliarPistaRepository
     {
-        private readonly IDbConnection _dbConnection;
-        public AuxiliarPistaRepository(IDbConnection dbConnection)
+        private readonly ContextBase _contextBase;
+        public AuxiliarPistaRepository(ContextBase contextBase)
         {
-            _dbConnection = dbConnection;
+            _contextBase = contextBase;
         }
         public async Task<int> AddAsync(Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista obj)
         {
             try
             {
-                using (var connection = _dbConnection)
+                using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
                 {
                     string sqlQuery = @"INSERT INTO AuxiliarPista (Nome, Documento, IdEmpresa) VALUES (@Nome, @Documento, @IdEmpresa);
                                 SELECT CAST(SCOPE_IDENTITY() as int)"
@@ -40,7 +41,7 @@ namespace Infra.Repositorio.Cadastros.AuxiliarPista
             try
             {
                 string sqlQuery = "SELECT Id, Nome, Documento, IdEmpresa FROM AuxiliarPista WHERE Id = @Id";
-                using (var connection = _dbConnection)
+                using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
                 {
                     var result = await connection.QueryFirstOrDefaultAsync<Domain.Entidades.Cadastros.AuxiliarPista.AuxiliarPista>(sqlQuery, new { Id = id });
                     return result;
