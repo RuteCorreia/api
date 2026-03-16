@@ -36,6 +36,30 @@ namespace WebApi.Controllers.APIs
             _loggerService = loggerService;
         }
 
+        // New: GET /api/v1/produto  (absolute route to support frontend path)
+        [HttpGet("/api/v1/produto")]
+        [AllowAnonymous]
+        public async Task<ActionResult<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>>> GetAll()
+        {
+            var returnMsg = new StringBuilder().Append("Não encontrado");
+            try
+            {
+                // optional: still attempt to get logged user, but allow anonymous
+                try { var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole(); } catch { }
+
+                var obj = await _produtoAplicadoService.GetAllAsync();
+                if (obj is not null)
+                    returnMsg.Clear();
+
+                return string.IsNullOrEmpty(returnMsg.ToString()) ? Ok(obj) : StatusCode(StatusCodes.Status404NotFound, returnMsg.ToString());
+            }
+            catch (Exception ex)
+            {
+                _loggerService.LogError(ex, returnMsg.Clear().Append($"Erro ao buscar todos os produtos: {ex.Message}").ToString());
+                return StatusCode(StatusCodes.Status500InternalServerError, returnMsg.Clear().Append($"Erro ao buscar produtos: {ex.Message}").ToString());
+            }
+        }
+
         [HttpGet("{idCaracteristicasProdutoAplicado}")]
         public async Task<ActionResult<IAsyncEnumerable<ProdutoAplicadoCaracteristicasViewModel>>> GetAllByIdRelatorioAplicacaoAsync(int idRelatorioAplicacao)
         {

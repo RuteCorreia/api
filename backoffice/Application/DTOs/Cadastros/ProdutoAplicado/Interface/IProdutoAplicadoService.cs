@@ -9,4 +9,5 @@ public interface IProdutoAplicadoService
     Task DeleteAsync(int id);
     Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllByIdRelatorioAplicacaoAsync(int relatorioAplicacaoId);
     Task<ProdutoAplicadoCaracteristicasViewModel> GetByIdAsync(int id);
+    Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllAsync();
 }

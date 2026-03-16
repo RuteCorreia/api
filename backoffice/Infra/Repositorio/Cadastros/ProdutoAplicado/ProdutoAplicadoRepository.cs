@@ -47,6 +47,15 @@ public class ProdutoAplicadoRepository : IProdutoAplicadoRepository
         return entities;
     }
 
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado>> GetAllAsync()
+    {
+        var entities = await _contextBase.ProdutoAplicado
+            .AsNoTracking()
+            .ToListAsync();
+
+        return entities;
+    }
+
     public async Task<Domain.Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado> GetByIdAsync(int id)
     {   
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
