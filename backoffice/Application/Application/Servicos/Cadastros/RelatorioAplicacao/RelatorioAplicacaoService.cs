@@ -25,6 +25,8 @@ using Application.DTOs.Cadastros.AplicacaoRelatorioItem.Interface;
 using Application.DTOs.Cadastros.ProdutoAplicado.Interface;
 using Application.DTOs.Cadastros.ReceituarioAgronomico.Interface;
 using Application.DTOs.Cadastros.AuxiliarPista.Interface;
+using Application.DTOs.Cadastros.DadosResponsavel.ViewModel;
+using System.Linq;
 
 namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
 {
@@ -400,6 +402,23 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 relatorio.Aplicacoes = await _aplicacaoRelatorioItemService.GetAllAsync(relatorio.AplicacaoRelatorioId!.Value);
                 relatorio.ContratoPrestacaoServico = await _contratoPrestacaoServicoService.GetByIdAsync(relatorio.ContratoPrestacaoServicoId!.Value, idEmpresa);
                 relatorio.DadosResponsavel = await _dadosResponsavelService.GetByIdAsync(relatorio.DadosResponsavelId!.Value, idEmpresa);
+
+                // If the logged user has client role ("12"), set the phone from the user into DadosResponsavel.Telefone
+                if (roleNames != null && roleNames.Contains("12"))
+                {
+                    if (relatorio.DadosResponsavel != null)
+                    {
+                        relatorio.DadosResponsavel.Telefone = user?.Telefone;
+                    }
+                    else
+                    {
+                        relatorio.DadosResponsavel = new DadosResponsavelViewModel
+                        {
+                            Telefone = user?.Telefone
+                        };
+                    }
+                }
+
                 relatorio.ProdutosAplicados = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
                 relatorio.ReceituariosAgronomicos = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorio.Id);
 
