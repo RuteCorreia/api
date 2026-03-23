@@ -124,7 +124,7 @@ public class UsuarioRepository : IUsuarioRepository
                         UserId = a.Id,
                         Nome = u.Nome,
                         Documento = u.CPF,
-                        Telefone = u.Empresa.Telefone,
+                        Telefone = r.Name == "12" ? u.Telefone : u.Empresa.Telefone,
                         Cidade = c.Empresa.Cidade,
                         Uf = c.Empresa.Estado,
                         IdCliente = u.IdCliente
