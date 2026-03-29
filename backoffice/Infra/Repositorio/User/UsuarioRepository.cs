@@ -111,6 +111,7 @@ public class UsuarioRepository : IUsuarioRepository
     // Retorna informações do cliente para os usuários com role '12' dentro de uma empresa
     public async Task<IEnumerable<UsuarioClienteInfo>> GetUsuariosClientesAsync(int idEmpresa, string userId)
     {
+
         var roleName = "12"; // 12 = CLIENTES
 
         var query = from a in _contextBase.Users
