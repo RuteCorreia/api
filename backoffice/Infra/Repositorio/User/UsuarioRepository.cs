@@ -122,7 +122,7 @@ public class UsuarioRepository : IUsuarioRepository
                     select new UsuarioClienteInfo
                     {
                         UserId = a.Id,
-                        Nome = r.Name == "12" ? u.Empresa.Nome : u.Nome,
+                        Nome = r.Name == "12" ? c.NomeCliente : u.Nome,
                         Documento = u.CPF,
                         Telefone = r.Name == "12" ? u.Telefone : u.Empresa.Telefone,
                         Cidade = c.Empresa.Cidade,
