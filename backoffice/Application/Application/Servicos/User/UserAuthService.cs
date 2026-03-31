@@ -313,13 +313,28 @@ public class UserAuthService : IUserAuthService
     {
         var roles = await _userManager.GetRolesAsync(identityUser);
         var imgEmpresa = usuario.Empresa?.Imagem?.Length > 0 ? Convert.ToBase64String(usuario.Empresa?.Imagem ?? []) : "";
+
+        // Determine NomeEmpresa: default to Empresa.Nome, but if user has role '12' use Cliente.NomeCliente
+        string nomeEmpresa = usuario.Empresa?.Nome ?? string.Empty;
+        if (roles != null && roles.Contains("12"))
+        {
+            if (usuario.IdCliente.HasValue)
+            {
+                var cliente = await _clienteRepository.GetByIdAsync(usuario.IdCliente.Value, usuario.IdEmpresa ?? 0);
+                if (cliente != null && !string.IsNullOrEmpty(cliente.NomeCliente))
+                {
+                    nomeEmpresa = cliente.NomeCliente;
+                }
+            }
+        }
+
         var claims = new List<Claim>
         {
             new("NrUsuario", usuario.NrUsuario.ToString()),
             new("IdUsuario", usuario.Id.ToString()),
             new("cpfUsuario", usuario.CPF),
             new("IdEmpresa", usuario.IdEmpresa.ToString() ?? ""),
-            new("NomeEmpresa", usuario.Empresa?.Nome ?? ""),
+            new("NomeEmpresa", nomeEmpresa),
             new("FlagTermoResp", usuario.FlagTermoResp ?? ""),
             new("IdCliente", usuario.IdCliente?.ToString() ?? ""),
             new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
@@ -344,7 +359,7 @@ public class UserAuthService : IUserAuthService
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
         };
 
-        // Buscar NomeCliente se houver IdCliente
+        // Buscar NomeCliente se houver IdCliente (mantido for other uses)
         string nomeCliente = string.Empty;
         if (usuario.IdCliente.HasValue)
         {
