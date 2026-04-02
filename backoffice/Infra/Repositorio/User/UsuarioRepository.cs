@@ -128,7 +128,8 @@ public class UsuarioRepository : IUsuarioRepository
                         Telefone = r.Name == "12" ? u.Telefone : u.Empresa.Telefone,
                         Cidade = c.Empresa.Cidade,
                         Uf = c.Empresa.Estado,
-                        IdCliente = u.IdCliente
+                        IdCliente = u.IdCliente,
+                        NomeUsuarioCliente = u.Nome
                     };
 
 
