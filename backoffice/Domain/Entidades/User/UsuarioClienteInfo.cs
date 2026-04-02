@@ -9,7 +9,6 @@ public class UsuarioClienteInfo
     public string? Uf { get; set; }
     public string UserId { get; set; }
     public int? IdCliente { get; set; }
-    public string? NomeUsuarioCliente { get; set; }
 
 
 }

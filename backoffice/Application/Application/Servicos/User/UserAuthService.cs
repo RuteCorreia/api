@@ -316,17 +316,7 @@ public class UserAuthService : IUserAuthService
 
         // Determine NomeEmpresa: default to Empresa.Nome, but if user has role '12' use Cliente.NomeCliente
         string nomeEmpresa = usuario.Empresa?.Nome ?? string.Empty;
-        if (roles != null && roles.Contains("12"))
-        {
-            if (usuario.IdCliente.HasValue)
-            {
-                var cliente = await _clienteRepository.GetByIdAsync(usuario.IdCliente.Value, usuario.IdEmpresa ?? 0);
-                if (cliente != null && !string.IsNullOrEmpty(cliente.NomeCliente))
-                {
-                    nomeEmpresa = cliente.NomeCliente;
-                }
-            }
-        }
+
 
         var claims = new List<Claim>
         {
