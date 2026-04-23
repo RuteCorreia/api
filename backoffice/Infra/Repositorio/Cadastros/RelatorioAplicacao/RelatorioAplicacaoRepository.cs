@@ -125,13 +125,36 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
                 AND (@DataFim IS NULL OR r.DataCriacao <= @DataFim)");
 
             var parameters = new DynamicParameters();
-            parameters.Add("PrefixoAeronave", atividadeFiltro.PrefixoAeronave);
-            parameters.Add("Piloto", atividadeFiltro.Piloto);
-            parameters.Add("Executor", atividadeFiltro.Executor);
-            parameters.Add("Contratante", atividadeFiltro.Contratante);
+
+            
+            static string NormalizeFilter(string? s)
+            {
+                if (string.IsNullOrWhiteSpace(s)) return string.Empty;
+                var trimmed = s.Trim();
+                return string.Equals(trimmed, "string", StringComparison.OrdinalIgnoreCase) ? string.Empty : trimmed;
+            }
+
+            parameters.Add("PrefixoAeronave", NormalizeFilter(atividadeFiltro.PrefixoAeronave));
+            parameters.Add("Piloto", NormalizeFilter(atividadeFiltro.Piloto));
+            parameters.Add("Executor", NormalizeFilter(atividadeFiltro.Executor));
+            parameters.Add("Contratante", NormalizeFilter(atividadeFiltro.Contratante));
             parameters.Add("IdEmpresa", atividadeFiltro.IdEmpresa);
-            parameters.Add("DataInicio", atividadeFiltro.DataInicial);
-            parameters.Add("DataFim", atividadeFiltro.DataFinal);        
+
+            DateTime? dataInicio = null;
+            DateTime? dataFim = null;
+            if (atividadeFiltro.DataInicial.HasValue)
+            {
+                dataInicio = atividadeFiltro.DataInicial.Value.Date; 
+            }
+
+            if (atividadeFiltro.DataFinal.HasValue)
+            {
+
+                dataFim = atividadeFiltro.DataFinal.Value.Date.AddDays(1).AddTicks(-1);
+            }
+
+            parameters.Add("DataInicio", dataInicio);
+            parameters.Add("DataFim", dataFim);
 
             using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
             {
@@ -217,9 +240,9 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>> GetNovosAsync(
-            DateTime? offsetDate, 
-            string userName, 
-            IEnumerable<string>? roleNames, 
+            DateTime? offsetDate,
+            string userName,
+            IEnumerable<string>? roleNames,
             int IdEmpresa,
             string UserId
             )
@@ -308,7 +331,7 @@ namespace Infra.Repositorio.Cadastros.RelatorioAplicacao
             }
         }
 
-        public async Task UpdateDataAlteracaoAsync(int? id) 
+        public async Task UpdateDataAlteracaoAsync(int? id)
         {
             var objeto = await _contextBase.RelatorioAplicacao.FindAsync(id);
 
