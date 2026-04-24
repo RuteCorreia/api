@@ -7,4 +7,5 @@ public interface IProdutoAplicadoRepository
     Task DeleteAsync(int id);
     Task<IEnumerable<Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado>> GetAllByIdRelatorioAplicacaoAsync(int relatorioAplicacaoId);
     Task<Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado> GetByIdAsync(int id);
+    Task<IEnumerable<Entidades.Cadastros.ProdutoAplicado.ProdutoAplicado>> GetAllAsync();
 }

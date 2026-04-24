@@ -63,4 +63,10 @@ public class ProdutoAplicadoService : IProdutoAplicadoService
     {
         await _produtoAplicadoRepository.UpdateAsync(_mapper.Map<ProdutoAplicado>(obj));
     }
+
+    public async Task<IEnumerable<ProdutoAplicadoCaracteristicasViewModel>> GetAllAsync()
+    {
+        var produtos = await _produtoAplicadoRepository.GetAllAsync();
+        return produtos.Select(p => _mapper.Map<ProdutoAplicadoCaracteristicasViewModel>(p));
+    }
 }
