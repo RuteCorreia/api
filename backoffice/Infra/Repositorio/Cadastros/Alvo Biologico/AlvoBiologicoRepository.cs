@@ -22,7 +22,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     {
         return await _contextBase.AlvoBiologico
            .Where(ab =>
-               (ab.IdEmpresa == idEmpresa)
+               (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
                && ab.DataSituacao > dataUltimaSincronizacao)
            .OrderBy(ab => ab.Nome)
            .ToListAsync();
@@ -59,7 +59,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync(int idEmpresa)
     {
         var entities = await _contextBase.AlvoBiologico
-                                    .Where(ab => ab.IdEmpresa == idEmpresa)
+                                    .Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
                                     .OrderBy(ab => ab.Nome)
                                     .ToListAsync();
         return entities;
@@ -78,7 +78,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdCultura = idCultura, IdProduto = idProduto  };
+            var parameters = new { IdCultura = idCultura, IdProduto = idProduto };
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(query, parameters);
             return result.ToList();
         }
@@ -92,7 +92,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name, int? idEmpresa)
     {
-        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa)).FirstOrDefault();
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
         return obj;
     }
 
