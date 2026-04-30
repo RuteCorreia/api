@@ -33,7 +33,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync(int idEmpresa)
         {
             var entities = await _contextBase.TipoDeFormulacao.
-                                        Where(ab => ab.IdEmpresa == idEmpresa)
+                                        Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
                                         .OrderBy(ab => ab.NomeFormulacao)
                                         .ToListAsync();
             return entities;
@@ -41,7 +41,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
 
         public async Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByNameAsync(string name, int? idEmpresa)
         {
-            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa)).FirstOrDefault();
+            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
             return obj;
         }
 
@@ -63,7 +63,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
         {
             var entities = await _contextBase.TipoDeFormulacao
-                .Where(ab => (ab.IdEmpresa == idEmpresa) && ab.DataSituacao > dataUltimaSincronizacao)
+                .Where(ab => (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa) && ab.DataSituacao > dataUltimaSincronizacao)
                 .OrderBy(ab => ab.NomeFormulacao)
                 .ToListAsync();
             return entities;
