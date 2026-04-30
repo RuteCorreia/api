@@ -35,7 +35,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<IEnumerable<string>> GetClasses(int idEmpresa)
     {
         var classes = await _contextBase.Produto
-            .Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196)
+            .Where(p => p.IdEmpresa == idEmpresa)
             .Select(p => p.Classe)
             .Distinct()
             .ToListAsync();
@@ -47,7 +47,7 @@ public class ProdutoRepository : IProdutoRepository
         var query = @"SELECT Nome 
                       FROM Produto 
                       WHERE Id IN @Ids
-                      AND IdEmpresa IN (@IdEmpresa, 196)";
+                      AND IdEmpresa IN (@IdEmpresa)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -60,7 +60,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetNomes(string classe, int idEmpresa)
     {
         var nomes = await _contextBase.Produto
-            .Where(p => p.Classe == classe && (p.IdEmpresa == idEmpresa || p.IdEmpresa == 196))
+            .Where(p => p.Classe == classe && (p.IdEmpresa == idEmpresa))
             .OrderBy(p => p.Nome)
             .ToListAsync();
         return nomes;
@@ -69,7 +69,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<Domain.Entidades.Cadastros.Produto.Produto> GetByNameAsync(string nome, int idEmpresa)
     {
         var produto = await _contextBase.Produto
-            .FirstOrDefaultAsync(p => p.Nome == nome && (p.IdEmpresa == idEmpresa || p.IdEmpresa == 196));
+            .FirstOrDefaultAsync(p => p.Nome == nome && (p.IdEmpresa == idEmpresa));
         return produto;
     }
 
@@ -83,7 +83,7 @@ public class ProdutoRepository : IProdutoRepository
             query = query.Where(p => p.Nome.Contains(nomeProduto));
         }
 
-        query = query.Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196);
+        query = query.Where(p => p.IdEmpresa == idEmpresa);
 
         var entities = await query.ToListAsync();
         return entities;
@@ -93,7 +93,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
         var entities = await _contextBase.Produto
-            .Where(ab => (ab.IdEmpresa == idEmpresa || ab.IdEmpresa == 196) && 
+            .Where(ab => (ab.IdEmpresa == idEmpresa) && 
                           ab.DataSituacao > dataUltimaSincronizacao)
             .ToListAsync();
         return entities;
@@ -103,7 +103,7 @@ public class ProdutoRepository : IProdutoRepository
     {
         var obj = await _contextBase.Produto
             .Where(x => x.Id == id &&
-                        (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196))
+                        (x.IdEmpresa == idEmpresa))
             .FirstOrDefaultAsync();
         return obj;
     }

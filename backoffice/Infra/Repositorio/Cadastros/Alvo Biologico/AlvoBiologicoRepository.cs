@@ -22,7 +22,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     {
         return await _contextBase.AlvoBiologico
            .Where(ab =>
-               (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
+               (ab.IdEmpresa == idEmpresa)
                && ab.DataSituacao > dataUltimaSincronizacao)
            .OrderBy(ab => ab.Nome)
            .ToListAsync();
@@ -59,7 +59,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync(int idEmpresa)
     {
         var entities = await _contextBase.AlvoBiologico
-                                    .Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
+                                    .Where(ab => ab.IdEmpresa == idEmpresa)
                                     .OrderBy(ab => ab.Nome)
                                     .ToListAsync();
         return entities;
@@ -92,7 +92,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name, int? idEmpresa)
     {
-        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa)).FirstOrDefault();
         return obj;
     }
 

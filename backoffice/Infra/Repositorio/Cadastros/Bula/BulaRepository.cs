@@ -18,7 +18,7 @@ public class BulaRepository : IBulaRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
-        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa, 196) AND DataSituacao > @DataUltimaSincronizacao";
+        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa) AND DataSituacao > @DataUltimaSincronizacao";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -63,7 +63,7 @@ public class BulaRepository : IBulaRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Empresa.Bula>> GetAllAsync(int idEmpresa)
     {
-        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa, 196)";
+        var query = @"SELECT * FROM Bula WHERE Removido = 0 AND IdEmpresa IN (@IdEmpresa)";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
@@ -79,7 +79,7 @@ public class BulaRepository : IBulaRepository
             .FirstOrDefaultAsync(
                 x => !x.Removido && 
                      x.IdProduto == id && 
-                     (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196));
+                     (x.IdEmpresa == idEmpresa ));
         return obj;
     }
 
@@ -118,7 +118,7 @@ public class BulaRepository : IBulaRepository
     public async Task RemoveRecomendacaoAsync(int idBula, int idEmpresa)
     {
         var objeto = await _contextBase.Bula
-            .FirstOrDefaultAsync(x => x.IdBula == idBula && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196));
+            .FirstOrDefaultAsync(x => x.IdBula == idBula && (x.IdEmpresa == idEmpresa));
         objeto.Removido = true;
         _contextBase.Bula.Update(objeto);
         await _contextBase.SaveChangesAsync();
@@ -150,7 +150,7 @@ public class BulaRepository : IBulaRepository
                   FROM Bula b 
                   INNER JOIN Produto p ON p.Id = b.IdProduto 
                   WHERE p.Nome LIKE @NomeProduto 
-                  AND b.IdEmpresa IN (@IdEmpresa, 196) 
+                  AND b.IdEmpresa IN (@IdEmpresa) 
                   AND b.Removido = 0";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
