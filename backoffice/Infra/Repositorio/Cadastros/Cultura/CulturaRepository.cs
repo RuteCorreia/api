@@ -34,7 +34,7 @@ public class CulturaRepository : ICulturaRepository
     public async Task DeleteAsync(int id)
     {
         var entityToRemove = await GetByIdAsync(id);
-        if(!ObjectNullValidation.IsObjectNull(entityToRemove))
+        if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
