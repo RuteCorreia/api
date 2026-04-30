@@ -19,7 +19,7 @@ public class CulturaRepository : ICulturaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
         var entities = await _contextBase.Cultura
-             .Where(c => (c.IdEmpresa == idEmpresa) && c.DataSituacao > dataUltimaSincronizacao)
+             .Where(c => (c.IdEmpresa == idEmpresa || c.IdEmpresa == 196) && c.DataSituacao > dataUltimaSincronizacao)
              .OrderBy(c => c.Nome)
              .ToListAsync();
         return entities;
