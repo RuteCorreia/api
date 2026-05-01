@@ -35,7 +35,7 @@ public class ProdutoRepository : IProdutoRepository
     public async Task<IEnumerable<string>> GetClasses(int idEmpresa)
     {
         var classes = await _contextBase.Produto
-            .Where(p => p.IdEmpresa == idEmpresa)
+            .Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196)
             .Select(p => p.Classe)
             .Distinct()
             .ToListAsync();
