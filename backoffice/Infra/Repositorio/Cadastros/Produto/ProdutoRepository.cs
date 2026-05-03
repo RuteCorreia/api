@@ -114,7 +114,8 @@ public class ProdutoRepository : IProdutoRepository
         objeto.ClassificacaoToxicologica = obj.ClassificacaoToxicologica;
         objeto.IdTipoDeFormulacao = obj.IdTipoDeFormulacao;
         objeto.IdTipoDeServico = obj.IdTipoDeServico;
-
+        objeto.Classe = obj.Classe;
+        objeto.Nome = obj.Nome;
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
