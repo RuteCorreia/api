@@ -116,6 +116,7 @@ public class ProdutoRepository : IProdutoRepository
         objeto.IdTipoDeServico = obj.IdTipoDeServico;
         objeto.Classe = obj.Classe;
         objeto.Nome = obj.Nome;
+        objeto.ExclusaoCampo = obj.ExclusaoCampo;
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }
