@@ -245,7 +245,7 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet("classes")]
-        public async Task<ActionResult<IEnumerable<string>>> GetClasses()
+        public async Task<ActionResult<IEnumerable<ClasseViewModel>>> GetClasses()
         {
             var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
             var classes = await _produtoService.GetClasses(loggedUser.Item3);
