@@ -32,12 +32,12 @@ public class ProdutoRepository : IProdutoRepository
             await _contextBase.SaveChangesAsync();
         }
     }
-    public async Task<IEnumerable<string>> GetClasses(int idEmpresa)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetClasses(int idEmpresa)
     {
         var classes = await _contextBase.Produto
             .Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196)
-            .Select(p => p.Classe)
-            .Distinct()
+            .GroupBy(p => p.Classe)
+            .Select(g => g.First())
             .ToListAsync();
         return classes;
     }
@@ -117,6 +117,7 @@ public class ProdutoRepository : IProdutoRepository
         objeto.Classe = obj.Classe;
         objeto.Nome = obj.Nome;
         objeto.ExclusaoCampo = obj.ExclusaoCampo;
+        objeto.TipoServico = obj.TipoServico;
         _contextBase.Produto.Update(objeto);
         await _contextBase.SaveChangesAsync();
     }

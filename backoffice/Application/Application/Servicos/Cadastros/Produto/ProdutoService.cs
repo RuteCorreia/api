@@ -82,10 +82,16 @@ public class ProdutoService : IProdutoService
         await _produtoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
-    public async Task<IEnumerable<string>> GetClasses(string? idEmpresa)
+    public async Task<IEnumerable<ClasseViewModel>> GetClasses(string? idEmpresa)
     {
         var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
-        return await _produtoRepository.GetClasses(idEmpresaInt);
+        var produtos = await _produtoRepository.GetClasses(idEmpresaInt);
+        return produtos.Select(p => new ClasseViewModel
+        {
+            Classe = p.Classe,
+            TipoServico = p.TipoServico,
+            CampoAdiconado = p.ExclusaoCampo
+        }).ToList();
     }
 
     public async Task<IEnumerable<string>> GetNomesByIdsAsync(List<int> ids, string? idEmpresa)
