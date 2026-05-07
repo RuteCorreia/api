@@ -19,7 +19,7 @@ public interface IProdutoService
     Task UpdateAsync(ProdutoViewModel obj);
     Task DeleteAsync(int id, string? idEmpresa);
 
-    Task<IEnumerable<string>> GetClasses(string? idEmpresa);
+    Task<IEnumerable<ClasseViewModel>> GetClasses(string? idEmpresa);
     Task<IEnumerable<ProdutoNomeViewModel>> GetNomes(string classe, string? idEmpresa);
 
 
