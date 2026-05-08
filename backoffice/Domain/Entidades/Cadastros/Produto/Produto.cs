@@ -22,8 +22,8 @@ public class Produto
     public int? IdTipoDeFormulacao { get; set; }
     [ForeignKey("TipoDeServico")]
     public int? IdTipoDeServico { get; set; }
-    public int ExclusaoCampo { get; set; }
-    public int CampoAdiconado { get; set; }
+    public int? ExclusaoCampo { get; set; }
+    public int? CampoAdiconado { get; set; }
 
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }

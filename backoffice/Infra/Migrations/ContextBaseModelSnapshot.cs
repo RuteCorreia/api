@@ -2171,7 +2171,7 @@ namespace Infra.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CampoAdiconado")
+                    b.Property<int?>("CampoAdiconado")
                         .HasColumnType("int");
 
                     b.Property<string>("Classe")
@@ -2183,7 +2183,7 @@ namespace Infra.Migrations
                     b.Property<DateTime>("DataSituacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("ExclusaoCampo")
+                    b.Property<int?>("ExclusaoCampo")
                         .HasColumnType("int");
 
                     b.Property<int?>("IdCultura")

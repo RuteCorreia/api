@@ -18,6 +18,6 @@ public class ProdutoViewModel
     public string? IdEmpresa { get; set; }
     public int? IdTipoDeFormulacao { get; set; }
     public int? IdTipoDeServico { get; set; }
-    public int ExclusaoCampo { get; set; }
-    public int CampoAdiconado { get; set; }
+    public int? ExclusaoCampo { get; set; }
+    public int? CampoAdiconado { get; set; }
 }
