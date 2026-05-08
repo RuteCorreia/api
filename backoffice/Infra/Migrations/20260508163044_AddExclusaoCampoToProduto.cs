@@ -14,8 +14,7 @@ namespace Infra.Migrations
                 name: "ExclusaoCampo",
                 table: "Produto",
                 type: "int",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
         }
 
         /// <inheritdoc />
