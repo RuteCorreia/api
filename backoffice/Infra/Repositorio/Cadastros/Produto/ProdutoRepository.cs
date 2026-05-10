@@ -34,11 +34,15 @@ public class ProdutoRepository : IProdutoRepository
     }
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Produto.Produto>> GetClasses(int idEmpresa)
     {
-        var classes = await _contextBase.Produto
+        var produtos = await _contextBase.Produto
             .Where(p => p.IdEmpresa == idEmpresa || p.IdEmpresa == 196)
-            .GroupBy(p => p.Classe)
-            .Select(g => g.First())
             .ToListAsync();
+
+        var classes = produtos
+            .GroupBy(p => p.Classe)
+            .Select(g => g.OrderByDescending(p => p.IdEmpresa == idEmpresa ? 1 : 0).First())
+            .ToList();
+
         return classes;
     }
 
