@@ -7,7 +7,7 @@ public class ClasseViewModel
     public string? Classe { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
-    public string? TipoServico { get; set; }
+    public int? IdTipoDeServico { get; set; }
 
     [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
     public int? CampoAdiconado { get; set; }

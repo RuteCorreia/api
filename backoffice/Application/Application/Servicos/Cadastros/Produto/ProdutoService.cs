@@ -89,7 +89,7 @@ public class ProdutoService : IProdutoService
         return produtos.Select(p => new ClasseViewModel
         {
             Classe = p.Classe,
-            TipoServico = p.TipoServico,
+            IdTipoDeServico = p.IdTipoDeServico,
             CampoAdiconado = p.CampoAdiconado
         }).ToList();
     }
