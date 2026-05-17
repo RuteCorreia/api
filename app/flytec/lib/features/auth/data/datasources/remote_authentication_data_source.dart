@@ -36,7 +36,10 @@ class RemoteAuthenticationDataSourceImpl
           authModelFromJson(response.body),
         );
       } else if (response.statusCode == 400) {
-        throw LoginException(message: "Login incorrecto");
+        final errorMessage = response.body.isNotEmpty
+            ? response.body.replaceAll('"', '')
+            : "Login incorrecto";
+        throw LoginException(message: errorMessage);
       } else {
         throw ServerException(message: "StatusCode: ${response.statusCode}");
       }
