@@ -84,9 +84,8 @@ public class UserAuthService : IUserAuthService
                             var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
                             if (passwordCheck) {
 
-                                var camposFaltantes = ValidarDadosCabecalhoRelatorio(empresa);
-                                if (camposFaltantes.Any())
-                                    return (false, $"Faltam dados obrigatórios para utilização do app. Entrar em contato com FlyTec S.A. (16) 99737-7438. Campos faltantes: {string.Join(", ", camposFaltantes)}.");
+                                if (!ValidarLogoEmpresa(empresa))
+                                    return (false, "Faltam dados obrigatórios para utilização do app. Entrar em contato com FlyTec S.A. (16) 99737-7438.");
 
                                 var token = new StringBuilder();
 
@@ -307,32 +306,9 @@ public class UserAuthService : IUserAuthService
         return funcoes.Any(x => x.Funcao == ERole.PilotoAeronave) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
     }
 
-    private List<string> ValidarDadosCabecalhoRelatorio(Domain.Entidades.Cadastros.Empresa.Empresa empresa)
+    private bool ValidarLogoEmpresa(Domain.Entidades.Cadastros.Empresa.Empresa empresa)
     {
-        var camposFaltantes = new List<string>();
-
-        if (empresa.Imagem == null || empresa.Imagem.Length == 0)
-            camposFaltantes.Add("Logo da Empresa");
-
-        if (string.IsNullOrWhiteSpace(empresa.Nome))
-            camposFaltantes.Add("Nome da Empresa");
-
-        if (string.IsNullOrWhiteSpace(empresa.CNPJ))
-            camposFaltantes.Add("CNPJ");
-
-        if (string.IsNullOrWhiteSpace(empresa.Endereco))
-            camposFaltantes.Add("Endereço");
-
-        if (string.IsNullOrWhiteSpace(empresa.Cidade))
-            camposFaltantes.Add("Cidade");
-
-        if (string.IsNullOrWhiteSpace(empresa.Estado))
-            camposFaltantes.Add("Estado");
-
-        if (string.IsNullOrWhiteSpace(empresa.Telefone))
-            camposFaltantes.Add("Telefone");
-
-        return camposFaltantes;
+        return empresa.Imagem != null && empresa.Imagem.Length > 0;
     }
 
     private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
