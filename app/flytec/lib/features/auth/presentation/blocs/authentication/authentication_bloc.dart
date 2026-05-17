@@ -19,7 +19,10 @@ class AuthenticationBloc
         case ServerFailure:
           return serverFailureMessage;
         case LoginFailure:
-          return loginFailureMessage;
+          final loginFailure = failure as LoginFailure;
+          return loginFailure.message.isNotEmpty
+              ? loginFailure.message
+              : loginFailureMessage;
         case NetWorkFailure:
           return netWorkFailureMessage;
         default:

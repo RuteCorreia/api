@@ -83,6 +83,10 @@ public class UserAuthService : IUserAuthService
                         } else {
                             var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
                             if (passwordCheck) {
+
+                                if (!ValidarLogoEmpresa(empresa))
+                                    return (false, "Faltam dados obrigatórios para utilização do app. Entrar em contato com FlyTec S.A. (16) 99737-7438.");
+
                                 var token = new StringBuilder();
 
                                 if (usuario.PrimeiroAcesso) {
@@ -300,6 +304,11 @@ public class UserAuthService : IUserAuthService
     private bool VerificarSeUsuarioEstaSendoCadastradoOuAtualizadoComoPiloto_E_Executor(IEnumerable<RoleObject> funcoes)
     {
         return funcoes.Any(x => x.Funcao == ERole.PilotoAeronave) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
+    }
+
+    private bool ValidarLogoEmpresa(Domain.Entidades.Cadastros.Empresa.Empresa empresa)
+    {
+        return empresa.Imagem != null && empresa.Imagem.Length > 0;
     }
 
     private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)

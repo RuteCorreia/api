@@ -33,6 +33,8 @@ class NetWorkFailure extends Failure {
 }
 
 class LoginFailure extends Failure {
+  final String message;
+  LoginFailure({this.message = ''});
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }

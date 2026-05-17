@@ -23,8 +23,8 @@ class AuthenticationRepositoryImpl implements IAuthenticationRepository {
       return Right(userData);
     } on ServerException {
       return Left(ServerFailure(message: "Ocorreu um erro ao fazer o login"));
-    } on LoginException {
-      return Left(LoginFailure());
+    } on LoginException catch (e) {
+      return Left(LoginFailure(message: e.message));
     } on NetWorkException {
       return Left(NetWorkFailure());
     }
