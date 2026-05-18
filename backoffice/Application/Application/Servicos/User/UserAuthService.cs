@@ -387,7 +387,7 @@ public class UserAuthService : IUserAuthService
             new("numeroEmpresa", numero),
             new("cidadeEmpresa", cidade),
             new("estadoEmpresa", estado),
-            new("logoEmpresa", logoEmpresa),
+           // new("logoEmpresa", logoEmpresa),
             new("porcentagem", usuario.Comissao?.ToString() ?? "0"),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
