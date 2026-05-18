@@ -84,7 +84,8 @@ public class UserAuthService : IUserAuthService
                             var passwordCheck = await _userManager.CheckPasswordAsync(identityUser, user.Password);
                             if (passwordCheck) {
 
-                                if (!ValidarLogoEmpresa(empresa))
+                                var camposFaltantes = ValidarCamposCabecalhoRelatorio(empresa);
+                                if (camposFaltantes.Any())
                                     return (false, "Faltam dados obrigatórios para utilização do app. Entrar em contato com FlyTec S.A. (16) 99737-7438.");
 
                                 var token = new StringBuilder();
@@ -306,9 +307,36 @@ public class UserAuthService : IUserAuthService
         return funcoes.Any(x => x.Funcao == ERole.PilotoAeronave) && funcoes.Any(x => x.Funcao == ERole.TecnicoExecutor);
     }
 
-    private bool ValidarLogoEmpresa(Domain.Entidades.Cadastros.Empresa.Empresa empresa)
+    private List<string> ValidarCamposCabecalhoRelatorio(Domain.Entidades.Cadastros.Empresa.Empresa empresa)
     {
-        return empresa.Imagem != null && empresa.Imagem.Length > 0;
+        var camposFaltantes = new List<string>();
+
+        if (empresa.Imagem == null || empresa.Imagem.Length == 0)
+            camposFaltantes.Add("Logo da Empresa");
+        if (string.IsNullOrWhiteSpace(empresa.Nome))
+            camposFaltantes.Add("Nome da Empresa");
+        if (string.IsNullOrWhiteSpace(empresa.Telefone))
+            camposFaltantes.Add("Telefone");
+        if (string.IsNullOrWhiteSpace(empresa.CNPJ))
+            camposFaltantes.Add("CNPJ");
+        if (string.IsNullOrWhiteSpace(empresa.InscricaoEstadual))
+            camposFaltantes.Add("Inscrição Estadual");
+        if (string.IsNullOrWhiteSpace(empresa.RegistroMapa))
+            camposFaltantes.Add("Registro MAPA");
+        if (string.IsNullOrWhiteSpace(empresa.CEP))
+            camposFaltantes.Add("CEP");
+        if (string.IsNullOrWhiteSpace(empresa.Endereco))
+            camposFaltantes.Add("Endereço");
+        if (string.IsNullOrWhiteSpace(empresa.Numero))
+            camposFaltantes.Add("Número");
+        if (string.IsNullOrWhiteSpace(empresa.Cidade))
+            camposFaltantes.Add("Cidade");
+        if (string.IsNullOrWhiteSpace(empresa.Estado))
+            camposFaltantes.Add("Estado");
+        if (string.IsNullOrWhiteSpace(empresa.NrCDA))
+            camposFaltantes.Add("NrCDA");
+
+        return camposFaltantes;
     }
 
     private async Task<string> GenerateToken(IdentityUser identityUser, Usuario usuario)
