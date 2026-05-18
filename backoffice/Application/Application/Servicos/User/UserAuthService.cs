@@ -321,10 +321,20 @@ public class UserAuthService : IUserAuthService
     private async Task<IEnumerable<Claim>> GetUserClaims(IdentityUser identityUser, Usuario usuario)
     {
         var roles = await _userManager.GetRolesAsync(identityUser);
-        var imgEmpresa = usuario.Empresa?.Imagem?.Length > 0 ? Convert.ToBase64String(usuario.Empresa?.Imagem ?? []) : "";
+        var logoEmpresa = usuario.Empresa?.Imagem?.Length > 0 ? Convert.ToBase64String(usuario.Empresa?.Imagem ?? []) : "";
 
-        // Determine NomeEmpresa: default to Empresa.Nome, but if user has role '12' use Cliente.NomeCliente
-        string nomeEmpresa = usuario.Empresa?.Nome ?? string.Empty;
+        var empresa = usuario.Empresa;
+        string nomeEmpresa = !string.IsNullOrWhiteSpace(empresa?.Nome) ? empresa.Nome : "N/A";
+        string telefoneEmpresa = !string.IsNullOrWhiteSpace(empresa?.Telefone) ? empresa.Telefone : "N/A";
+        string cnpjEmpresa = !string.IsNullOrWhiteSpace(empresa?.CNPJ) ? empresa.CNPJ : "N/A";
+        string inscricaoEstadual = !string.IsNullOrWhiteSpace(empresa?.InscricaoEstadual) ? empresa.InscricaoEstadual : "N/A";
+        string registroMapa = !string.IsNullOrWhiteSpace(empresa?.RegistroMapa) ? empresa.RegistroMapa : "N/A";
+        string cep = !string.IsNullOrWhiteSpace(empresa?.CEP) ? empresa.CEP : "N/A";
+        string endereco = !string.IsNullOrWhiteSpace(empresa?.Endereco) ? empresa.Endereco : "N/A";
+        string numero = !string.IsNullOrWhiteSpace(empresa?.Numero) ? empresa.Numero : "N/A";
+        string cidade = !string.IsNullOrWhiteSpace(empresa?.Cidade) ? empresa.Cidade : "N/A";
+        string estado = !string.IsNullOrWhiteSpace(empresa?.Estado) ? empresa.Estado : "N/A";
+        string nrCDA = !string.IsNullOrWhiteSpace(empresa?.NrCDA) ? empresa.NrCDA : "N/A";
 
 
         var claims = new List<Claim>
@@ -336,19 +346,20 @@ public class UserAuthService : IUserAuthService
             new("NomeEmpresa", nomeEmpresa),
             new("FlagTermoResp", usuario.FlagTermoResp ?? ""),
             new("IdCliente", usuario.IdCliente?.ToString() ?? ""),
-            new("EmailEmpresa", usuario.Empresa?.Email ?? ""),
-            new("FrotaRelatoriosAplicacaoIncendio", usuario.Empresa?.FrotaRelatoriosAplicacaoIncendio.ToString() ?? string.Empty),
-            new("Manutencao", usuario.Empresa?.Manutencao.ToString() ?? string.Empty),
-            new("TelefoneEmpresa", usuario.Empresa?.Telefone ?? ""),
-            new("cnpj", usuario.Empresa?.CNPJ ?? ""),
-            new("inscricaoEstadualEmpresa", usuario.Empresa?.InscricaoEstadual ?? ""),
-            new("nrCDAEmpresa", usuario.Empresa?.NrCDA ?? ""),
-            new("registroMapaEmpresa", usuario.Empresa?.RegistroMapa ?? ""),
-            new("cepEmpresa", usuario.Empresa?.CEP ?? ""),
-            new("enderecoEmpresa", usuario.Empresa?.Endereco ?? ""),
-            new("numeroEmpresa", usuario.Empresa?.Numero ?? ""),
-            new("cidadeEmpresa", usuario.Empresa?.Cidade ?? ""),
-            new("estadoEmpresa", usuario.Empresa?.Estado ?? ""),
+            new("EmailEmpresa", empresa?.Email ?? ""),
+            new("FrotaRelatoriosAplicacaoIncendio", empresa?.FrotaRelatoriosAplicacaoIncendio.ToString() ?? string.Empty),
+            new("Manutencao", empresa?.Manutencao.ToString() ?? string.Empty),
+            new("TelefoneEmpresa", telefoneEmpresa),
+            new("cnpj", cnpjEmpresa),
+            new("inscricaoEstadualEmpresa", inscricaoEstadual),
+            new("nrCDAEmpresa", nrCDA),
+            new("registroMapaEmpresa", registroMapa),
+            new("cepEmpresa", cep),
+            new("enderecoEmpresa", endereco),
+            new("numeroEmpresa", numero),
+            new("cidadeEmpresa", cidade),
+            new("estadoEmpresa", estado),
+            new("logoEmpresa", logoEmpresa),
             new("porcentagem", usuario.Comissao?.ToString() ?? "0"),
             new(JwtRegisteredClaimNames.Sub, identityUser.Id),
             new(JwtRegisteredClaimNames.Name, usuario.Nome),
