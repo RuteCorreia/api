@@ -589,15 +589,15 @@ namespace WebApi.Controllers.APIs
                     var incomingProdutoIds = new HashSet<int>();
                     foreach (var p in produtosAplicadosViewModel)
                     {
-                        if (p.Id.HasValue && p.Id.Value > 0)
-                            incomingProdutoIds.Add(p.Id.Value);
+                        if (p.Id != null && p.Id > 0)
+                            incomingProdutoIds.Add((int)p.Id);
                     }
 
                     foreach (var existing in existingProdutos)
                     {
-                        if (existing.Id.HasValue && !incomingProdutoIds.Contains(existing.Id.Value))
+                        if (existing.Id != null && !incomingProdutoIds.Contains((int)existing.Id))
                         {
-                            await _produtoAplicadoService.DeleteAsync(existing.Id.Value);
+                            await _produtoAplicadoService.DeleteAsync((int)existing.Id);
                         }
                     }
 
@@ -620,15 +620,15 @@ namespace WebApi.Controllers.APIs
                     var incomingReceituarioIds = new HashSet<int>();
                     foreach (var r in receituariosAgronomicosViewModel)
                     {
-                        if (r.Id.HasValue && r.Id.Value > 0)
-                            incomingReceituarioIds.Add(r.Id.Value);
+                        if (r.Id != null && r.Id > 0)
+                            incomingReceituarioIds.Add((int)r.Id);
                     }
 
                     foreach (var existing in existingReceituarios)
                     {
-                        if (existing.Id.HasValue && !incomingReceituarioIds.Contains(existing.Id.Value))
+                        if (existing.Id != null && !incomingReceituarioIds.Contains((int)existing.Id))
                         {
-                            await _receituarioAgronomicoService.DeleteAsync(existing.Id.Value);
+                            await _receituarioAgronomicoService.DeleteAsync((int)existing.Id);
                         }
                     }
 
