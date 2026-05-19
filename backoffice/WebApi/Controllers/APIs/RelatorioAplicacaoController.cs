@@ -585,6 +585,22 @@ namespace WebApi.Controllers.APIs
 
                     var aplicacoes = await _aplicacaoRelatorioItemService.GetAllByAplicacaoRelatorioIdAsync(IdAplicacaoRelatorio);
 
+                    var existingProdutos = await _produtoAplicadoService.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacao.Id);
+                    var incomingProdutoIds = new HashSet<int>();
+                    foreach (var p in produtosAplicadosViewModel)
+                    {
+                        if (p.Id.HasValue && p.Id.Value > 0)
+                            incomingProdutoIds.Add(p.Id.Value);
+                    }
+
+                    foreach (var existing in existingProdutos)
+                    {
+                        if (existing.Id.HasValue && !incomingProdutoIds.Contains(existing.Id.Value))
+                        {
+                            await _produtoAplicadoService.DeleteAsync(existing.Id.Value);
+                        }
+                    }
+
                     for (int i = 0; i < produtosAplicadosViewModel.Count; i++)
                     {
                         var produto = produtosAplicadosViewModel[i];
@@ -597,6 +613,22 @@ namespace WebApi.Controllers.APIs
                         else
                         {
                             await _produtoAplicadoService.AddAsync(produto);
+                        }
+                    }
+
+                    var existingReceituarios = await _receituarioAgronomicoService.GetAllByIdRelatorioAplicacaoAsync(relatorioAplicacao.Id);
+                    var incomingReceituarioIds = new HashSet<int>();
+                    foreach (var r in receituariosAgronomicosViewModel)
+                    {
+                        if (r.Id.HasValue && r.Id.Value > 0)
+                            incomingReceituarioIds.Add(r.Id.Value);
+                    }
+
+                    foreach (var existing in existingReceituarios)
+                    {
+                        if (existing.Id.HasValue && !incomingReceituarioIds.Contains(existing.Id.Value))
+                        {
+                            await _receituarioAgronomicoService.DeleteAsync(existing.Id.Value);
                         }
                     }
 
