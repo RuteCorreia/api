@@ -234,6 +234,10 @@ using Application.DTOs.Cadastros.TipoDeServico.Interface;
 using Application.Application.Servicos.Cadastros.TipoDeServico;
 using Domain.Interfaces.Cadastros.TipoDeServico;
 using Infra.Repositorio.Cadastros.TipoDeServico;
+using Application.DTOs.Cadastros.Classe.Interface;
+using Application.Application.Servicos.Cadastros.Classe;
+using Domain.Interfaces.Cadastros.Classe;
+using Infra.Repositorio.Cadastros.Classe;
 using Application.DTOs.ExportExcel.Interfaces;
 using Application.Application.Servicos.Export_Excel;
 using Domain.Interfaces.Export_Excel;
@@ -372,6 +376,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAuxiliarPistaService, AuxiliarPistaService>();
         services.AddScoped<IDataRelatorioService, DataRelatorioService>();
         services.AddScoped<ITipoDeServicoService, TipoDeServicoService>();
+        services.AddScoped<IClasseService, ClasseService>();
         services.AddScoped<IExportacaoPlanilhaService, ExportacaoPlanilhaService>();
         services.AddScoped<ITipoDeUnidadeService, TipoDeUnidadeService>();
         services.AddScoped<ITipoDeFormulacaoService, TipoDeFormulacaoService>();
@@ -452,6 +457,7 @@ public static class DependencyInjectionConfig
         services.AddScoped<IAuxiliarPistaRepository, AuxiliarPistaRepository>();
         services.AddScoped<IDataRelatorioRepository, DataRelatorioRepository>();
         services.AddScoped<ITipoDeServicoRepository, TipoDeServicoRepository>();
+        services.AddScoped<IClasseRepository, ClasseRepository>();
         services.AddScoped<IExportacaoPlanilhaRepository, ExportacaoPlanilhaRepository>();
         services.AddScoped<ITipoDeUnidadeRepository, TipoDeUnidadeRepository>();
         services.AddScoped<ITipoDeFormulacaoRepository, TipoDeFormulacaoRepository>();

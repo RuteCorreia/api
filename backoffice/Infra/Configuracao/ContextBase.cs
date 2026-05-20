@@ -55,6 +55,7 @@ using Domain.Entidades.Cadastros.IdentificadorAplicacao;
 using Domain.Entidades.Cadastros.Motobomba;
 using Domain.Entidades.Cadastros.ProdutoAplicado;
 using Domain.Entidades.Cadastros.ReceituarioAgronomico;
+using Domain.Entidades.Cadastros.Classe;
 
 namespace Infra.Configuracao;
 
@@ -142,6 +143,7 @@ public class ContextBase : IdentityDbContext
     public DbSet<FrotaGerador> FrotaGeradores { get; set; }
     public DbSet<FrotaMotobomba> FrotaMotobombas { get; set; }
     public DbSet<IdentificadorAplicacao> IdentificadorAplicacao { get; set; }
+    public DbSet<Classe> Classe { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
