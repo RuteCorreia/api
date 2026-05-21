@@ -4,6 +4,7 @@ namespace Application.DTOs.Cadastros.Classe.Interface
 {
     public interface IClasseService
     {
+        Task<IEnumerable<ClasseViewModel>> GetAllAsync();
         Task<IEnumerable<ClasseViewModel>> GetByTipoServicoAsync(int idTipoDeServico);
         Task<ClasseViewModel?> GetByIdAsync(int id);
         Task<ClasseViewModel> AddAsync(ClasseCreateViewModel obj);

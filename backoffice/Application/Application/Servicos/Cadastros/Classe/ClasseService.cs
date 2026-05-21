@@ -16,6 +16,12 @@ namespace Application.Application.Servicos.Cadastros.Classe
             _mapper = mapper;
         }
 
+        public async Task<IEnumerable<ClasseViewModel>> GetAllAsync()
+        {
+            var list = await _classeRepository.GetAllAsync();
+            return _mapper.Map<IEnumerable<ClasseViewModel>>(list);
+        }
+
         public async Task<IEnumerable<ClasseViewModel>> GetByTipoServicoAsync(int idTipoDeServico)
         {
             var list = await _classeRepository.GetByTipoServicoAsync(idTipoDeServico);

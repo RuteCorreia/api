@@ -25,11 +25,19 @@ namespace WebApi.Controllers.APIs
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ClasseViewModel>>> GetByTipoServico([FromQuery] int tipoServico)
+        public async Task<ActionResult<IEnumerable<ClasseViewModel>>> Get([FromQuery] int? tipoServico)
         {
             try
             {
-                var classes = await _classeService.GetByTipoServicoAsync(tipoServico);
+                IEnumerable<ClasseViewModel> classes;
+                if (tipoServico.HasValue && tipoServico.Value > 0)
+                {
+                    classes = await _classeService.GetByTipoServicoAsync(tipoServico.Value);
+                }
+                else
+                {
+                    classes = await _classeService.GetAllAsync();
+                }
                 _logService.LogInformation("Classes recuperadas com sucesso.");
                 return Ok(classes);
             }
