@@ -2,6 +2,7 @@ namespace Domain.Interfaces.Cadastros.Classe
 {
     public interface IClasseRepository
     {
+        Task<IEnumerable<Entidades.Cadastros.Classe.Classe>> GetAllAsync();
         Task<IEnumerable<Entidades.Cadastros.Classe.Classe>> GetByTipoServicoAsync(int idTipoDeServico);
         Task<Entidades.Cadastros.Classe.Classe?> GetByIdAsync(int id);
         Task<bool> ExistsDuplicateAsync(string descricao, int idTipoDeServico, int? excludeId = null);

@@ -13,6 +13,13 @@ namespace Infra.Repositorio.Cadastros.Classe
             _contextBase = contextBase;
         }
 
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetAllAsync()
+        {
+            return await _contextBase.Classe
+                .OrderBy(c => c.Descricao)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetByTipoServicoAsync(int idTipoDeServico)
         {
             return await _contextBase.Classe
