@@ -22,7 +22,6 @@ public static class ServicesConfig
             options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
         });
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
         services.AddDependencyInjection(services.BuildServiceProvider().GetRequiredService<IConfiguration>());
         services.AddAutoMapperConfig();
         services.AddIdentityConfig();
