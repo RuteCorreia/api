@@ -13,6 +13,8 @@ namespace Domain.Entidades.Cadastros.Classe
         [ForeignKey("TipoDeServico")]
         public int IdTipoDeServico { get; set; }
         public string ClassePublica { get; set; } = "N";
+
+        [NotMapped]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
     }
 }
