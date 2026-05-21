@@ -7,7 +7,7 @@ namespace Application.DTOs.Cadastros.Classe.Mappings
     {
         public ClasseViewModelToDomainMappingProfile()
         {
-            CreateMap<ClasseViewModel, Domain.Entidades.Cadastros.Classe.Classe>();
+            CreateMap<ClasseViewModel, Domain.Entidades.Cadastros.Classe.Classe>().ReverseMap();
             CreateMap<ClasseCreateViewModel, Domain.Entidades.Cadastros.Classe.Classe>();
         }
     }
