@@ -8,6 +8,8 @@ public static class SwaggerConfig
     {
         builder.Services.AddSwaggerGen(config =>
         {
+            config.CustomSchemaIds(type => type.FullName);
+
             config.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
             {
                 Description = "JWT Authorization header using the Bearer scheme. Exemplo: 'Bearer {token}'",
