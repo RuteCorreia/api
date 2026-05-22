@@ -6,5 +6,6 @@ namespace Application.DTOs.Cadastros.Classe.ViewModel
         public string? Descricao { get; set; }
         public int IdTipoDeServico { get; set; }
         public string? ClassePublica { get; set; }
+        public int? IdEmpresa { get; set; }
     }
 }

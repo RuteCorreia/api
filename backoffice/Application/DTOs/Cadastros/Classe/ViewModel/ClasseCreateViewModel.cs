@@ -9,5 +9,7 @@ namespace Application.DTOs.Cadastros.Classe.ViewModel
 
         [Required(ErrorMessage = "Tipo de Serviço é obrigatório")]
         public int IdTipoDeServico { get; set; }
+
+        public int? IdEmpresa { get; set; }
     }
 }

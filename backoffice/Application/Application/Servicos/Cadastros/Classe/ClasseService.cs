@@ -38,6 +38,7 @@ namespace Application.Application.Servicos.Cadastros.Classe
         {
             var entity = _mapper.Map<Domain.Entidades.Cadastros.Classe.Classe>(obj);
             entity.ClassePublica = "S";
+            entity.IdEmpresa = obj.IdEmpresa;
             var created = await _classeRepository.AddAsync(entity);
             return _mapper.Map<ClasseViewModel>(created);
         }
