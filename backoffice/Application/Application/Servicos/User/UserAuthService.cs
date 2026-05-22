@@ -311,7 +311,7 @@ public class UserAuthService : IUserAuthService
     {
         var camposFaltantes = new List<string>();
 
-        if (empresa.Imagem == null || empresa.Imagem.Length == 0)
+        if (empresa.Imagem == null || !empresa.Imagem.Any())
             camposFaltantes.Add("Logo da Empresa");
         if (string.IsNullOrWhiteSpace(empresa.Nome))
             camposFaltantes.Add("Nome da Empresa");
