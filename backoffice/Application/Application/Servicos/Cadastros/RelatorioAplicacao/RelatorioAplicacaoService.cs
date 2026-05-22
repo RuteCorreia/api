@@ -309,9 +309,9 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
 
-            DateTime dataConvertida = DateTimeOffset
-                    .FromUnixTimeMilliseconds(Convert.ToInt64(mapRelatorio.DadosResponsavel.Data))
-                    .DateTime;
+            var dataConvertida = DateTimeOffset
+                .FromUnixTimeMilliseconds(Convert.ToInt64(mapRelatorio.DadosResponsavel.Data))
+                .ToLocalTime(); // ou usar timezone específico
 
             string dataFormatada = dataConvertida.ToString("dd/MM/yyyy");
 
