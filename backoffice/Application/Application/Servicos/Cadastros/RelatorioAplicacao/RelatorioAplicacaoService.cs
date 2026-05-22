@@ -308,7 +308,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DadosResponsavel.Data:dd/MM/yyyy} - {ar.TotalAreaAplicada} ha";
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada} ha";
 
             if (obj.Id > 0)
             {
