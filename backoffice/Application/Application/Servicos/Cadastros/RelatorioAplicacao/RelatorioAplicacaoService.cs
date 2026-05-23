@@ -308,7 +308,23 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
-            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {mapRelatorio.DataCriacao:dd/MM/yyyy} - {ar.TotalAreaAplicada} ha";
+
+            string dataFormatada = string.Empty;
+            if (obj.DadosResponsavelId.HasValue)
+            {
+                var dadosResponsavel = await _dadosResponsavelService.GetByIdAsync(obj.DadosResponsavelId.Value, idEmpresa);
+                if (dadosResponsavel != null &&
+                    !string.IsNullOrWhiteSpace(dadosResponsavel.Data) &&
+                    long.TryParse(dadosResponsavel.Data, out long unixTime))
+                {
+                    var dataConvertida = DateTimeOffset
+                        .FromUnixTimeMilliseconds(unixTime)
+                        .ToLocalTime();
+                    dataFormatada = dataConvertida.ToString("dd/MM/yyyy");
+                }
+            }
+
+            mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {dataFormatada} - {ar.TotalAreaAplicada} ha";
 
             if (obj.Id > 0)
             {
