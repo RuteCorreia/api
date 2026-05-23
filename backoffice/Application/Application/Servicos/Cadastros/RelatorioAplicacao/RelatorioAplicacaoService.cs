@@ -303,17 +303,25 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 var relatorio = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
                 obj.RefDocument = relatorio.RefDocument;
             }
+            obj.RefDocument = "320";
+
             var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var areaTratada = await _identificacaoAreaTratadaRepository.GetByIdAsync(obj.IdentificacaoAreaTratadaId);
             var mapRelatorio = _mapper.Map<Domain.Entidades.Cadastros.RelatorioAplicacao.RelatorioAplicacao>(obj);
             mapRelatorio.IdEmpresa = idEmpresaInt == 0 ? null : idEmpresaInt;
             var ar = await _aplicacaoRelatorioRepository.GetForExportExcelAsync(mapRelatorio.AplicacaoRelatorioId);
 
-            var dataConvertida = DateTimeOffset
-                .FromUnixTimeMilliseconds(Convert.ToInt64(mapRelatorio.DadosResponsavel.Data))
-                .ToLocalTime(); // ou usar timezone específico
+            string dataFormatada = string.Empty;
 
-            string dataFormatada = dataConvertida.ToString("dd/MM/yyyy");
+            if (!string.IsNullOrWhiteSpace(mapRelatorio?.DadosResponsavel?.Data) &&
+                long.TryParse(mapRelatorio.DadosResponsavel.Data, out long unixTime))
+            {
+                var dataConvertida = DateTimeOffset
+                    .FromUnixTimeMilliseconds(unixTime)
+                    .ToLocalTime();
+
+                dataFormatada = dataConvertida.ToString("dd/MM/yyyy");
+            }
 
             mapRelatorio.NomeRelatorio = $"Aplicação - {mapRelatorio.RefDocument} - {areaTratada.Localizacao} - {contratante.Nome.ToString()} - {dataFormatada} - {ar.TotalAreaAplicada} ha";
 
