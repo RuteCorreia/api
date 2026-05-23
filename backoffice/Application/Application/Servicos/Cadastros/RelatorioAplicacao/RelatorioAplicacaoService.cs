@@ -303,7 +303,7 @@ namespace Application.Application.Servicos.Cadastros.RelatorioAplicacao
                 var relatorio = await _relatorioAplicacaoRepository.GetByIdAsync(obj.Id);
                 obj.RefDocument = relatorio.RefDocument;
             }
-            obj.RefDocument = "320";
+            
 
             var contratante = await _contratanteRepository.GetByIdAsync(obj.ContratanteId);
             var areaTratada = await _identificacaoAreaTratadaRepository.GetByIdAsync(obj.IdentificacaoAreaTratadaId);
