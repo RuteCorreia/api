@@ -18,4 +18,5 @@ public class AlvoBiologicoViewModel
     public string? DoseProdutoPorHectare { get; set; }
     public int? IdTipoDeUnidade { get; set; }
     public int? IdRef { get; set; }
+    public int? IdEmpresa { get; set; }
 }
