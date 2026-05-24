@@ -81,7 +81,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                await _alvoBiologicoService.UpdateFormulacaoAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                await _alvoBiologicoService.UpdateFormulacaoAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("Todas os alvos biológicos foram atualizados com sucesso.");
                 return Ok();
             }
@@ -186,7 +187,7 @@ namespace WebApi.Controllers.APIs
                     {
                         obj.Id = objeto.Id;
 
-                        await _alvoBiologicoService.UpdateAsync(obj);
+                        await _alvoBiologicoService.UpdateAsync(obj, loggedUser.Item3);
                         _logService.LogInformation($"Alvo biológico com ID {id} atualizado com sucesso.");
                         return Ok();
                     }
@@ -214,7 +215,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _alvoBiologicoService.DeleteAsync(id);
+                    var loggedUserDelete = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _alvoBiologicoService.DeleteAsync(id, loggedUserDelete.Item3);
                     _logService.LogInformation($"Alvo biológico com ID {id} deletado com sucesso.");
                     return Ok();
                 }

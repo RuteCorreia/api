@@ -11,8 +11,8 @@ namespace Application.DTOs.Cadastros.TipoDeFormulacao.Interfaces
 
         Task AddAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa);
 
-        Task UpdateAsync(TipoDeFormulacaoViewModel obj);
+        Task UpdateAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa);
 
-        Task DeleteAsync(int id);
+        Task DeleteAsync(int id, string? idEmpresa);
     }
 }

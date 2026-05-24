@@ -14,10 +14,10 @@ public interface IAlvoBiologicoService
     Task<AlvoBiologicoViewModel> GetByName(string name, string? idEmpresa);
     Task<IEnumerable<AlvoBiologicoViewModel>> GetAlvosBiologicosAsync(string nomeCultura, string nomeProduto, string? idEmpresa);
     Task<IEnumerable<FormulacaoViewModel>> GetFormulacaoAsync(int idBula);
-    Task UpdateFormulacaoAsync(FormulacaoViewModel idBula);
+    Task UpdateFormulacaoAsync(FormulacaoViewModel idBula, string? idEmpresa);
     Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa);
 
-    Task UpdateAsync(AlvoBiologicoViewModel obj);
+    Task UpdateAsync(AlvoBiologicoViewModel obj, string? idEmpresa);
 
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int id, string? idEmpresa);
 }

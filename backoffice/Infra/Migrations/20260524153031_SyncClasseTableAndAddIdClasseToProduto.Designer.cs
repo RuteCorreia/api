@@ -4,6 +4,7 @@ using Infra.Configuracao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infra.Migrations
 {
     [DbContext(typeof(ContextBase))]
-    partial class ContextBaseModelSnapshot : ModelSnapshot
+    [Migration("20260524153031_SyncClasseTableAndAddIdClasseToProduto")]
+    partial class SyncClasseTableAndAddIdClasseToProduto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -124,9 +127,6 @@ namespace Infra.Migrations
                     b.Property<int?>("IdProduto")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdRef")
-                        .HasColumnType("int");
-
                     b.Property<int?>("IdTipoDeUnidade")
                         .HasColumnType("int");
 
@@ -142,9 +142,6 @@ namespace Infra.Migrations
                     b.HasIndex("IdProduto");
 
                     b.HasIndex("IdTipoDeUnidade");
-
-                    b.HasIndex("IdEmpresa", "IdRef")
-                        .HasDatabaseName("IX_AlvoBiologico_IdEmpresa_IdRef");
 
                     b.ToTable("AlvoBiologico");
                 });
@@ -2767,18 +2764,12 @@ namespace Infra.Migrations
                     b.Property<int?>("IdEmpresa")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IdRef")
-                        .HasColumnType("int");
-
                     b.Property<string>("NomeFormulacao")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("IdEmpresa");
-
-                    b.HasIndex("IdEmpresa", "IdRef")
-                        .HasDatabaseName("IX_TipoDeFormulacao_IdEmpresa_IdRef");
 
                     b.ToTable("TipoDeFormulacao");
                 });
