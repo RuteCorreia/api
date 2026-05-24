@@ -74,14 +74,23 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             var objeto = await _contextBase.TipoDeFormulacao.FindAsync(obj.Id);
             if (objeto == null) return;
 
-            var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
+            if (objeto.IdEmpresa == idEmpresa)
             {
-                NomeFormulacao = obj.NomeFormulacao,
-                IdEmpresa = idEmpresa,
-                IdRef = objeto.Id
-            };
-            await _contextBase.AddAsync(overrideRecord);
-            await _contextBase.SaveChangesAsync();
+                objeto.NomeFormulacao = obj.NomeFormulacao;
+                _contextBase.TipoDeFormulacao.Update(objeto);
+                await _contextBase.SaveChangesAsync();
+            }
+            else
+            {
+                var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
+                {
+                    NomeFormulacao = obj.NomeFormulacao,
+                    IdEmpresa = idEmpresa,
+                    IdRef = objeto.Id
+                };
+                await _contextBase.AddAsync(overrideRecord);
+                await _contextBase.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
