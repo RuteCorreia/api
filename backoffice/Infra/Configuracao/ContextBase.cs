@@ -160,6 +160,14 @@ public class ContextBase : IdentityDbContext
             .HasIndex(x => x.Placa)
             .IsUnique();
 
+        builder.Entity<TipoDeFormulacao>()
+            .HasIndex(x => new { x.IdEmpresa, x.IdRef })
+            .HasDatabaseName("IX_TipoDeFormulacao_IdEmpresa_IdRef");
+
+        builder.Entity<AlvoBiologico>()
+            .HasIndex(x => new { x.IdEmpresa, x.IdRef })
+            .HasDatabaseName("IX_AlvoBiologico_IdEmpresa_IdRef");
+
         base.OnModelCreating(builder);
     }
 

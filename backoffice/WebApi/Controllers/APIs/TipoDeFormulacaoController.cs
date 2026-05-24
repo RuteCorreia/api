@@ -114,7 +114,8 @@ namespace WebApi.Controllers.APIs
                     {
                         obj.Id = objeto.Id;
 
-                        await _tipoDeFormulacaoService.UpdateAsync(obj);
+                        var loggedUserUpdate = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                        await _tipoDeFormulacaoService.UpdateAsync(obj, loggedUserUpdate.Item3);
                         _logService.LogInformation("Tipo de formulação atualizado com sucesso.");
                         return Ok("Sucesso");
                     }
@@ -142,7 +143,8 @@ namespace WebApi.Controllers.APIs
             {
                 if (id != 0)
                 {
-                    await _tipoDeFormulacaoService.DeleteAsync(id);
+                    var loggedUserDelete = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                    await _tipoDeFormulacaoService.DeleteAsync(id, loggedUserDelete.Item3);
                     _logService.LogInformation("Tipo de formulação deletado com sucesso.");
                     return Ok("Deletado com sucesso");
                 }

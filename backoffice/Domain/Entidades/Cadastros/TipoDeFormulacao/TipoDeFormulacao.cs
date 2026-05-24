@@ -13,6 +13,8 @@ namespace Domain.Entidades.Cadastros.TipoDeFormulacao
         [ForeignKey("Empresa")]
         public int? IdEmpresa { get; set; }
 
+        public int? IdRef { get; set; }
+
         [JsonIgnore]
         public virtual Empresa.Empresa? Empresa { get; set; }
 
