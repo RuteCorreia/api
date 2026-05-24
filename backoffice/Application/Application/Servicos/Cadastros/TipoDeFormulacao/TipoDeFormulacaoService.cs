@@ -50,15 +50,17 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
             await _tipoDeFormulacaoRepository.AddAsync(mapTipoDeFormulacao);
         }
 
-        public async Task UpdateAsync(TipoDeFormulacaoViewModel obj)
+        public async Task UpdateAsync(TipoDeFormulacaoViewModel obj, string? idEmpresa)
         {
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapTipoDeFormulacao = _mapper.Map<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>(obj);
-            await _tipoDeFormulacaoRepository.UpdateAsync(mapTipoDeFormulacao);
+            await _tipoDeFormulacaoRepository.UpdateAsync(mapTipoDeFormulacao, idEmpresaInt);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, string? idEmpresa)
         {
-            await _tipoDeFormulacaoRepository.DeleteAsync(id);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
+            await _tipoDeFormulacaoRepository.DeleteAsync(id, idEmpresaInt);
         }
     }
 }

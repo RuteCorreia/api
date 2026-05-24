@@ -17,7 +17,7 @@ public interface IAlvoBiologicoService
     Task UpdateFormulacaoAsync(FormulacaoViewModel idBula);
     Task AddAsync(AlvoBiologicoViewModel obj, string? idEmpresa);
 
-    Task UpdateAsync(AlvoBiologicoViewModel obj);
+    Task UpdateAsync(AlvoBiologicoViewModel obj, string? idEmpresa);
 
-    Task DeleteAsync(int id);
+    Task DeleteAsync(int id, string? idEmpresa);
 }

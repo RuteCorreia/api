@@ -20,11 +20,14 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             await _contextBase.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id, int idEmpresa)
         {
             var entityToRemove = await GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
+                if (entityToRemove.IdEmpresa == 196)
+                    return;
+
                 _contextBase.Remove(entityToRemove);
                 await _contextBase.SaveChangesAsync();
             }
@@ -32,16 +35,25 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync(int idEmpresa)
         {
-            var entities = await _contextBase.TipoDeFormulacao.
-                                        Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
-                                        .OrderBy(ab => ab.NomeFormulacao)
-                                        .ToListAsync();
-            return entities;
+            var empresaRecords = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == idEmpresa)
+                .ToListAsync();
+
+            var overriddenIds = empresaRecords
+                .Where(t => t.IdRef != null)
+                .Select(t => t.IdRef.Value)
+                .ToHashSet();
+
+            var defaultRecords = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == 196 && !overriddenIds.Contains(t.Id))
+                .ToListAsync();
+
+            return empresaRecords.Concat(defaultRecords).OrderBy(t => t.NomeFormulacao).ToList();
         }
 
         public async Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByNameAsync(string name, int? idEmpresa)
         {
-            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
+            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefault();
             return obj;
         }
 
@@ -51,22 +63,47 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             return obj;
         }
 
-        public async Task UpdateAsync(Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao obj)
+        public async Task UpdateAsync(Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao obj, int idEmpresa)
         {
             var objeto = await _contextBase.TipoDeFormulacao.FindAsync(obj.Id);
-            objeto.NomeFormulacao = obj.NomeFormulacao;
+            if (objeto == null) return;
 
-            _contextBase.TipoDeFormulacao.Update(objeto);
-            await _contextBase.SaveChangesAsync();
+            if (objeto.IdEmpresa == 196)
+            {
+                var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
+                {
+                    NomeFormulacao = obj.NomeFormulacao,
+                    IdEmpresa = idEmpresa,
+                    IdRef = objeto.Id
+                };
+                await _contextBase.AddAsync(overrideRecord);
+                await _contextBase.SaveChangesAsync();
+            }
+            else
+            {
+                objeto.NomeFormulacao = obj.NomeFormulacao;
+                _contextBase.TipoDeFormulacao.Update(objeto);
+                await _contextBase.SaveChangesAsync();
+            }
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
         {
-            var entities = await _contextBase.TipoDeFormulacao
-                .Where(ab => (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa) && ab.DataSituacao > dataUltimaSincronizacao)
-                .OrderBy(ab => ab.NomeFormulacao)
+            var empresaRecords = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == idEmpresa && t.DataSituacao > dataUltimaSincronizacao)
                 .ToListAsync();
-            return entities;
+
+            var allOverriddenIds = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == idEmpresa && t.IdRef != null)
+                .Select(t => t.IdRef.Value)
+                .ToListAsync();
+            var overriddenIdsSet = allOverriddenIds.ToHashSet();
+
+            var defaultRecords = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == 196 && t.DataSituacao > dataUltimaSincronizacao && !overriddenIdsSet.Contains(t.Id))
+                .ToListAsync();
+
+            return empresaRecords.Concat(defaultRecords).OrderBy(t => t.NomeFormulacao).ToList();
         }
     }
 }

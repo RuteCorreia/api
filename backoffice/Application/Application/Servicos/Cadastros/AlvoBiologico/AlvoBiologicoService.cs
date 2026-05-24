@@ -84,15 +84,17 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
     }
 
-    public async Task UpdateAsync(AlvoBiologicoViewModel obj)
+    public async Task UpdateAsync(AlvoBiologicoViewModel obj, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
-        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico);
+        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico, idEmpresaInt);
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, string? idEmpresa)
     {
-        await _alvoBiologicoRepository.DeleteAsync(id);
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
+        await _alvoBiologicoRepository.DeleteAsync(id, idEmpresaInt);
     }
 
     public async Task<AlvoBiologicoViewModel> GetByName(string name, string? idEmpresa)
@@ -147,7 +149,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         alvoBiologico.IdTipoDeUnidade = unidadeDeMedida.Id;
 
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(alvoBiologico);
-        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico);
+        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico, alvoBiologico.IdEmpresa ?? 0);
         
     }
 }

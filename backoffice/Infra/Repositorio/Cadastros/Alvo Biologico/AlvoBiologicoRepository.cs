@@ -20,12 +20,21 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
-        return await _contextBase.AlvoBiologico
-           .Where(ab =>
-               (ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
-               && ab.DataSituacao > dataUltimaSincronizacao)
-           .OrderBy(ab => ab.Nome)
-           .ToListAsync();
+        var empresaRecords = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+            .ToListAsync();
+
+        var allOverriddenIds = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.IdRef != null)
+            .Select(ab => ab.IdRef.Value)
+            .ToListAsync();
+        var overriddenIdsSet = allOverriddenIds.ToHashSet();
+
+        var defaultRecords = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == 196 && ab.DataSituacao > dataUltimaSincronizacao && !overriddenIdsSet.Contains(ab.Id))
+            .ToListAsync();
+
+        return empresaRecords.Concat(defaultRecords).OrderBy(ab => ab.Nome).ToList();
     }
 
     public async Task AddAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
@@ -46,11 +55,14 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id, int idEmpresa)
     {
         var entityToRemove = await GetByIdAsync(id);
         if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
+            if (entityToRemove.IdEmpresa == 196)
+                return;
+
             _contextBase.Remove(entityToRemove);
             await _contextBase.SaveChangesAsync();
         }
@@ -58,11 +70,20 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync(int idEmpresa)
     {
-        var entities = await _contextBase.AlvoBiologico
-                                    .Where(ab => ab.IdEmpresa == 196 || ab.IdEmpresa == idEmpresa)
-                                    .OrderBy(ab => ab.Nome)
-                                    .ToListAsync();
-        return entities;
+        var empresaRecords = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == idEmpresa)
+            .ToListAsync();
+
+        var overriddenIds = empresaRecords
+            .Where(ab => ab.IdRef != null)
+            .Select(ab => ab.IdRef.Value)
+            .ToHashSet();
+
+        var defaultRecords = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == 196 && !overriddenIds.Contains(ab.Id))
+            .ToListAsync();
+
+        return empresaRecords.Concat(defaultRecords).OrderBy(ab => ab.Nome).ToList();
     }
 
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByIdAsync(int? id)
@@ -92,18 +113,37 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name, int? idEmpresa)
     {
-        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa && x.IdEmpresa == 196)).FirstOrDefault();
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefault();
         return obj;
     }
 
-    public async Task UpdateAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj)
+    public async Task UpdateAsync(Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico obj, int idEmpresa)
     {
         var objeto = await _contextBase.AlvoBiologico.FindAsync(obj.Id);
-        objeto.IdProduto = obj.IdProduto;
-        objeto.Nome = obj.Nome;
-        objeto.DoseProdutoPorHectare = obj.DoseProdutoPorHectare;
+        if (objeto == null) return;
 
-        _contextBase.AlvoBiologico.Update(objeto);
-        await _contextBase.SaveChangesAsync();
+        if (objeto.IdEmpresa == 196)
+        {
+            var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
+            {
+                IdProduto = obj.IdProduto,
+                Nome = obj.Nome,
+                DoseProdutoPorHectare = obj.DoseProdutoPorHectare,
+                IdCultura = obj.IdCultura,
+                IdTipoDeUnidade = obj.IdTipoDeUnidade,
+                IdEmpresa = idEmpresa,
+                IdRef = objeto.Id
+            };
+            await _contextBase.AddAsync(overrideRecord);
+            await _contextBase.SaveChangesAsync();
+        }
+        else
+        {
+            objeto.IdProduto = obj.IdProduto;
+            objeto.Nome = obj.Nome;
+            objeto.DoseProdutoPorHectare = obj.DoseProdutoPorHectare;
+            _contextBase.AlvoBiologico.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
     }
 }

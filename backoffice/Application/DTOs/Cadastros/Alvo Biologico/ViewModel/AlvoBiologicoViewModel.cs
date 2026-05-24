@@ -17,4 +17,5 @@ public class AlvoBiologicoViewModel
     public int? IdCultura { get; set; }
     public string? DoseProdutoPorHectare { get; set; }
     public int? IdTipoDeUnidade { get; set; }
+    public int? IdRef { get; set; }
 }
