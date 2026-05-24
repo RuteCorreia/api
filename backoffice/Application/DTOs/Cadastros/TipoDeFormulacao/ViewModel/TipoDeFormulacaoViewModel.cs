@@ -8,5 +8,6 @@ namespace Application.DTOs.Cadastros.TipoDeFormulacao.ViewModel
         public string? NomeFormulacao { get; set; }
         public int? IdRef { get; set; }
         public int? IdEmpresa { get; set; }
+        public int? CampoExcluido { get; set; }
     }
 }
