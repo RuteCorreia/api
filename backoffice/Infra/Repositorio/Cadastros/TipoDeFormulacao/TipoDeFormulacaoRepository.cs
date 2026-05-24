@@ -25,7 +25,10 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             var entityToRemove = await GetByIdAsync(id);
             if (!ObjectNullValidation.IsObjectNull(entityToRemove))
             {
-                if (entityToRemove.IdEmpresa == 196)
+                if (entityToRemove.IdRef == null)
+                    return;
+
+                if (entityToRemove.IdEmpresa != idEmpresa)
                     return;
 
                 _contextBase.Remove(entityToRemove);
@@ -71,23 +74,14 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             var objeto = await _contextBase.TipoDeFormulacao.FindAsync(obj.Id);
             if (objeto == null) return;
 
-            if (objeto.IdEmpresa == 196)
+            var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
             {
-                var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
-                {
-                    NomeFormulacao = obj.NomeFormulacao,
-                    IdEmpresa = idEmpresa,
-                    IdRef = objeto.Id
-                };
-                await _contextBase.AddAsync(overrideRecord);
-                await _contextBase.SaveChangesAsync();
-            }
-            else
-            {
-                objeto.NomeFormulacao = obj.NomeFormulacao;
-                _contextBase.TipoDeFormulacao.Update(objeto);
-                await _contextBase.SaveChangesAsync();
-            }
+                NomeFormulacao = obj.NomeFormulacao,
+                IdEmpresa = idEmpresa,
+                IdRef = objeto.Id
+            };
+            await _contextBase.AddAsync(overrideRecord);
+            await _contextBase.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)

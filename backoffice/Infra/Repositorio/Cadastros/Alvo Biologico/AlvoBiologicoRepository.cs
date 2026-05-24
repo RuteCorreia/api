@@ -63,7 +63,10 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         var entityToRemove = await GetByIdAsync(id);
         if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
-            if (entityToRemove.IdEmpresa == 196)
+            if (entityToRemove.IdRef == null)
+                return;
+
+            if (entityToRemove.IdEmpresa != idEmpresa)
                 return;
 
             _contextBase.Remove(entityToRemove);
@@ -137,28 +140,17 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         var objeto = await _contextBase.AlvoBiologico.FindAsync(obj.Id);
         if (objeto == null) return;
 
-        if (objeto.IdEmpresa == 196)
+        var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
         {
-            var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
-            {
-                IdProduto = obj.IdProduto,
-                Nome = obj.Nome,
-                DoseProdutoPorHectare = obj.DoseProdutoPorHectare,
-                IdCultura = obj.IdCultura,
-                IdTipoDeUnidade = obj.IdTipoDeUnidade,
-                IdEmpresa = idEmpresa,
-                IdRef = objeto.Id
-            };
-            await _contextBase.AddAsync(overrideRecord);
-            await _contextBase.SaveChangesAsync();
-        }
-        else
-        {
-            objeto.IdProduto = obj.IdProduto;
-            objeto.Nome = obj.Nome;
-            objeto.DoseProdutoPorHectare = obj.DoseProdutoPorHectare;
-            _contextBase.AlvoBiologico.Update(objeto);
-            await _contextBase.SaveChangesAsync();
-        }
+            IdProduto = obj.IdProduto,
+            Nome = obj.Nome,
+            DoseProdutoPorHectare = obj.DoseProdutoPorHectare,
+            IdCultura = obj.IdCultura,
+            IdTipoDeUnidade = obj.IdTipoDeUnidade,
+            IdEmpresa = idEmpresa,
+            IdRef = objeto.Id
+        };
+        await _contextBase.AddAsync(overrideRecord);
+        await _contextBase.SaveChangesAsync();
     }
 }
