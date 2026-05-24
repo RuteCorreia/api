@@ -140,17 +140,28 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         var objeto = await _contextBase.AlvoBiologico.FindAsync(obj.Id);
         if (objeto == null) return;
 
-        var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
+        if (objeto.IdEmpresa == idEmpresa)
         {
-            IdProduto = obj.IdProduto,
-            Nome = obj.Nome,
-            DoseProdutoPorHectare = obj.DoseProdutoPorHectare,
-            IdCultura = obj.IdCultura,
-            IdTipoDeUnidade = obj.IdTipoDeUnidade,
-            IdEmpresa = idEmpresa,
-            IdRef = objeto.Id
-        };
-        await _contextBase.AddAsync(overrideRecord);
-        await _contextBase.SaveChangesAsync();
+            objeto.Nome = obj.Nome;
+            objeto.IdProduto = obj.IdProduto;
+            objeto.DoseProdutoPorHectare = obj.DoseProdutoPorHectare;
+            _contextBase.AlvoBiologico.Update(objeto);
+            await _contextBase.SaveChangesAsync();
+        }
+        else
+        {
+            var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
+            {
+                IdProduto = obj.IdProduto,
+                Nome = obj.Nome,
+                DoseProdutoPorHectare = obj.DoseProdutoPorHectare,
+                IdCultura = obj.IdCultura,
+                IdTipoDeUnidade = obj.IdTipoDeUnidade,
+                IdEmpresa = idEmpresa,
+                IdRef = objeto.Id
+            };
+            await _contextBase.AddAsync(overrideRecord);
+            await _contextBase.SaveChangesAsync();
+        }
     }
 }
