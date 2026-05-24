@@ -63,9 +63,6 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         var entityToRemove = await GetByIdAsync(id);
         if (!ObjectNullValidation.IsObjectNull(entityToRemove))
         {
-            if (entityToRemove.IdRef == null)
-                return;
-
             if (entityToRemove.IdEmpresa != idEmpresa)
                 return;
 
