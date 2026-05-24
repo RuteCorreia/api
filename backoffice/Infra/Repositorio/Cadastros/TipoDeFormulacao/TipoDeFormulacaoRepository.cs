@@ -39,6 +39,9 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
                 .Where(t => t.IdEmpresa == idEmpresa)
                 .ToListAsync();
 
+            if (idEmpresa == 196)
+                return empresaRecords.OrderBy(t => t.NomeFormulacao).ToList();
+
             var overriddenIds = empresaRecords
                 .Where(t => t.IdRef != null)
                 .Select(t => t.IdRef.Value)
@@ -92,6 +95,9 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
             var empresaRecords = await _contextBase.TipoDeFormulacao
                 .Where(t => t.IdEmpresa == idEmpresa && t.DataSituacao > dataUltimaSincronizacao)
                 .ToListAsync();
+
+            if (idEmpresa == 196)
+                return empresaRecords.OrderBy(t => t.NomeFormulacao).ToList();
 
             var allOverriddenIds = await _contextBase.TipoDeFormulacao
                 .Where(t => t.IdEmpresa == idEmpresa && t.IdRef != null)

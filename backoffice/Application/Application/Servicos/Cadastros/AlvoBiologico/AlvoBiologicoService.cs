@@ -66,7 +66,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
             var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var cultura = await _culturaRepository.GetByNameAsync(nomeCultura, idEmpresaInt);
             var produto = await _produtoRepository.GetByNameAsync(nomeProduto, idEmpresaInt);
-            var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(cultura.IdCultura, produto.Id);
+            var result = await _alvoBiologicoRepository.GetAlvosBiologicosAsync(cultura.IdCultura, produto.Id, idEmpresaInt);
             return _mapper.Map<IEnumerable<AlvoBiologicoViewModel>>(result);
         }
         catch (Exception ex)
@@ -128,8 +128,9 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         return result;
     }
 
-    public async Task UpdateFormulacaoAsync(FormulacaoViewModel objeto)
+    public async Task UpdateFormulacaoAsync(FormulacaoViewModel objeto, string? idEmpresa)
     {
+        var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var alvoBiologico = await _alvoBiologicoRepository.GetByIdAsync(objeto.Id);
 
         if (alvoBiologico == null)
@@ -149,7 +150,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         alvoBiologico.IdTipoDeUnidade = unidadeDeMedida.Id;
 
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(alvoBiologico);
-        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico, alvoBiologico.IdEmpresa ?? 0);
+        await _alvoBiologicoRepository.UpdateAsync(mapAlvoBiologico, idEmpresaInt);
         
     }
 }

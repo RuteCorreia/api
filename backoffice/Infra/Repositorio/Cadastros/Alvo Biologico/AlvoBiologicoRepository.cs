@@ -24,6 +24,9 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
             .ToListAsync();
 
+        if (idEmpresa == 196)
+            return empresaRecords.OrderBy(ab => ab.Nome).ToList();
+
         var allOverriddenIds = await _contextBase.AlvoBiologico
             .Where(ab => ab.IdEmpresa == idEmpresa && ab.IdRef != null)
             .Select(ab => ab.IdRef.Value)
@@ -74,6 +77,9 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             .Where(ab => ab.IdEmpresa == idEmpresa)
             .ToListAsync();
 
+        if (idEmpresa == 196)
+            return empresaRecords.OrderBy(ab => ab.Nome).ToList();
+
         var overriddenIds = empresaRecords
             .Where(ab => ab.IdRef != null)
             .Select(ab => ab.IdRef.Value)
@@ -93,13 +99,22 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     }
 
 
-    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(int idCultura, int idProduto)
+    public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAlvosBiologicosAsync(int idCultura, int idProduto, int idEmpresa)
     {
-        var query = @"SELECT * FROM AlvoBiologico WHERE IdCultura = @IdCultura AND IdProduto = @IdProduto";
+        var query = @"
+            SELECT * FROM AlvoBiologico
+            WHERE IdCultura = @IdCultura AND IdProduto = @IdProduto AND IdEmpresa = @IdEmpresa
+            UNION ALL
+            SELECT * FROM AlvoBiologico ab
+            WHERE ab.IdCultura = @IdCultura AND ab.IdProduto = @IdProduto AND ab.IdEmpresa = 196
+            AND NOT EXISTS (
+                SELECT 1 FROM AlvoBiologico o
+                WHERE o.IdEmpresa = @IdEmpresa AND o.IdRef = ab.Id
+            )";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
-            var parameters = new { IdCultura = idCultura, IdProduto = idProduto };
+            var parameters = new { IdCultura = idCultura, IdProduto = idProduto, IdEmpresa = idEmpresa };
             var result = await connection.QueryAsync<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(query, parameters);
             return result.ToList();
         }

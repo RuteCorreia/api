@@ -81,7 +81,8 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
-                await _alvoBiologicoService.UpdateFormulacaoAsync(obj);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                await _alvoBiologicoService.UpdateFormulacaoAsync(obj, loggedUser.Item3);
                 _logService.LogInformation("Todas os alvos biológicos foram atualizados com sucesso.");
                 return Ok();
             }
