@@ -21,7 +21,9 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
         var empresaRecords = await _contextBase.AlvoBiologico
-            .Where(ab => ab.IdEmpresa == idEmpresa && ab.DataSituacao > dataUltimaSincronizacao)
+            .Where(ab => ab.IdEmpresa == idEmpresa
+                && ab.DataSituacao > dataUltimaSincronizacao
+                && (ab.CampoExcluido == null || ab.CampoExcluido == 0))
             .ToListAsync();
 
         if (idEmpresa == 196)
@@ -33,8 +35,18 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             .ToListAsync();
         var overriddenIdsSet = allOverriddenIds.ToHashSet();
 
+        var excludedDefaultIds = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.IdRef != null && ab.CampoExcluido == 1)
+            .Select(ab => ab.IdRef.Value)
+            .ToListAsync();
+        foreach (var eid in excludedDefaultIds)
+            overriddenIdsSet.Add(eid);
+
         var defaultRecords = await _contextBase.AlvoBiologico
-            .Where(ab => ab.IdEmpresa == 196 && ab.DataSituacao > dataUltimaSincronizacao && !overriddenIdsSet.Contains(ab.Id))
+            .Where(ab => ab.IdEmpresa == 196
+                && ab.DataSituacao > dataUltimaSincronizacao
+                && !overriddenIdsSet.Contains(ab.Id)
+                && (ab.CampoExcluido == null || ab.CampoExcluido == 0))
             .ToListAsync();
 
         return empresaRecords.Concat(defaultRecords).OrderBy(ab => ab.Nome).ToList();
@@ -61,12 +73,29 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task DeleteAsync(int id, int idEmpresa)
     {
         var entityToRemove = await GetByIdAsync(id);
-        if (!ObjectNullValidation.IsObjectNull(entityToRemove))
-        {
-            if (entityToRemove.IdEmpresa != idEmpresa)
-                return;
+        if (ObjectNullValidation.IsObjectNull(entityToRemove))
+            return;
 
-            _contextBase.Remove(entityToRemove);
+        if (entityToRemove.IdEmpresa == idEmpresa)
+        {
+            entityToRemove.CampoExcluido = 1;
+            _contextBase.AlvoBiologico.Update(entityToRemove);
+            await _contextBase.SaveChangesAsync();
+        }
+        else
+        {
+            var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
+            {
+                Nome = entityToRemove.Nome,
+                IdProduto = entityToRemove.IdProduto,
+                IdCultura = entityToRemove.IdCultura,
+                DoseProdutoPorHectare = entityToRemove.DoseProdutoPorHectare,
+                IdTipoDeUnidade = entityToRemove.IdTipoDeUnidade,
+                IdEmpresa = idEmpresa,
+                IdRef = entityToRemove.Id,
+                CampoExcluido = 1
+            };
+            await _contextBase.AddAsync(overrideRecord);
             await _contextBase.SaveChangesAsync();
         }
     }
@@ -74,7 +103,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>> GetAllAsync(int idEmpresa)
     {
         var empresaRecords = await _contextBase.AlvoBiologico
-            .Where(ab => ab.IdEmpresa == idEmpresa)
+            .Where(ab => ab.IdEmpresa == idEmpresa && (ab.CampoExcluido == null || ab.CampoExcluido == 0))
             .ToListAsync();
 
         if (idEmpresa == 196)
@@ -85,8 +114,17 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             .Select(ab => ab.IdRef.Value)
             .ToHashSet();
 
+        var excludedDefaultIds = await _contextBase.AlvoBiologico
+            .Where(ab => ab.IdEmpresa == idEmpresa && ab.IdRef != null && ab.CampoExcluido == 1)
+            .Select(ab => ab.IdRef.Value)
+            .ToListAsync();
+        foreach (var eid in excludedDefaultIds)
+            overriddenIds.Add(eid);
+
         var defaultRecords = await _contextBase.AlvoBiologico
-            .Where(ab => ab.IdEmpresa == 196 && !overriddenIds.Contains(ab.Id))
+            .Where(ab => ab.IdEmpresa == 196
+                && !overriddenIds.Contains(ab.Id)
+                && (ab.CampoExcluido == null || ab.CampoExcluido == 0))
             .ToListAsync();
 
         return empresaRecords.Concat(defaultRecords).OrderBy(ab => ab.Nome).ToList();
@@ -104,12 +142,18 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
         var query = @"
             SELECT * FROM AlvoBiologico
             WHERE IdCultura = @IdCultura AND IdProduto = @IdProduto AND IdEmpresa = @IdEmpresa
+            AND (CampoExcluido IS NULL OR CampoExcluido = 0)
             UNION ALL
             SELECT * FROM AlvoBiologico ab
             WHERE ab.IdCultura = @IdCultura AND ab.IdProduto = @IdProduto AND ab.IdEmpresa = 196
+            AND (ab.CampoExcluido IS NULL OR ab.CampoExcluido = 0)
             AND NOT EXISTS (
                 SELECT 1 FROM AlvoBiologico o
                 WHERE o.IdEmpresa = @IdEmpresa AND o.IdRef = ab.Id
+            )
+            AND NOT EXISTS (
+                SELECT 1 FROM AlvoBiologico o2
+                WHERE o2.IdEmpresa = @IdEmpresa AND o2.IdRef = ab.Id AND o2.CampoExcluido = 1
             )
             ORDER BY Nome";
 

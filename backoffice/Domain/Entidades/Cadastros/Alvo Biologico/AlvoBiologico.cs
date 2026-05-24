@@ -23,6 +23,8 @@ public class AlvoBiologico
 
     public int? IdRef { get; set; }
 
+    public int? CampoExcluido { get; set; }
+
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
 
