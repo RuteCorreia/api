@@ -41,6 +41,7 @@ public class ProdutoRepository : IProdutoRepository
         var classes = produtos
             .GroupBy(p => p.Classe)
             .Select(g => g.OrderByDescending(p => p.IdEmpresa == idEmpresa ? 1 : 0).First())
+            .OrderBy(p => p.Classe)
             .ToList();
 
         return classes;
@@ -89,7 +90,7 @@ public class ProdutoRepository : IProdutoRepository
 
         query = query.Where(p => p.IdEmpresa == idEmpresa);
 
-        var entities = await query.ToListAsync();
+        var entities = await query.OrderBy(p => p.Nome).ToListAsync();
         return entities;
     }
 
@@ -99,6 +100,7 @@ public class ProdutoRepository : IProdutoRepository
         var entities = await _contextBase.Produto
             .Where(ab => (ab.IdEmpresa == idEmpresa) && 
                           ab.DataSituacao > dataUltimaSincronizacao)
+            .OrderBy(p => p.Nome)
             .ToListAsync();
         return entities;
     }

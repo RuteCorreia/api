@@ -113,7 +113,8 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             AND NOT EXISTS (
                 SELECT 1 FROM AlvoBiologico o
                 WHERE o.IdEmpresa = @IdEmpresa AND o.IdRef = ab.Id
-            )";
+            )
+            ORDER BY Nome";
 
         using (var connection = new SqlConnection(_contextBase.ObterStringConexao()))
         {
