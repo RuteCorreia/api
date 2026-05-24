@@ -7,5 +7,6 @@ namespace Application.DTOs.Cadastros.TipoDeFormulacao.ViewModel
         public int Id { get; set; }
         public string? NomeFormulacao { get; set; }
         public int? IdRef { get; set; }
+        public int? IdEmpresa { get; set; }
     }
 }
