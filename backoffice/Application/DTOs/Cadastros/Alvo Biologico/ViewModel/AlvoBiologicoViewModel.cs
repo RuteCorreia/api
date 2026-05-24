@@ -19,4 +19,5 @@ public class AlvoBiologicoViewModel
     public int? IdTipoDeUnidade { get; set; }
     public int? IdRef { get; set; }
     public int? IdEmpresa { get; set; }
+    public int? CampoExcluido { get; set; }
 }
