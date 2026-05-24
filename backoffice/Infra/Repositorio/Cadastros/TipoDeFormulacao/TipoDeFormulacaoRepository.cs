@@ -23,12 +23,25 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
         public async Task DeleteAsync(int id, int idEmpresa)
         {
             var entityToRemove = await GetByIdAsync(id);
-            if (!ObjectNullValidation.IsObjectNull(entityToRemove))
-            {
-                if (entityToRemove.IdEmpresa != idEmpresa)
-                    return;
+            if (ObjectNullValidation.IsObjectNull(entityToRemove))
+                return;
 
-                _contextBase.Remove(entityToRemove);
+            if (entityToRemove.IdEmpresa == idEmpresa)
+            {
+                entityToRemove.CampoExcluido = 1;
+                _contextBase.TipoDeFormulacao.Update(entityToRemove);
+                await _contextBase.SaveChangesAsync();
+            }
+            else
+            {
+                var overrideRecord = new Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao
+                {
+                    NomeFormulacao = entityToRemove.NomeFormulacao,
+                    IdEmpresa = idEmpresa,
+                    IdRef = entityToRemove.Id,
+                    CampoExcluido = 1
+                };
+                await _contextBase.AddAsync(overrideRecord);
                 await _contextBase.SaveChangesAsync();
             }
         }
@@ -36,7 +49,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetAllAsync(int idEmpresa)
         {
             var empresaRecords = await _contextBase.TipoDeFormulacao
-                .Where(t => t.IdEmpresa == idEmpresa)
+                .Where(t => t.IdEmpresa == idEmpresa && (t.CampoExcluido == null || t.CampoExcluido == 0))
                 .ToListAsync();
 
             if (idEmpresa == 196)
@@ -47,8 +60,17 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
                 .Select(t => t.IdRef.Value)
                 .ToHashSet();
 
+            var excludedDefaultIds = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == idEmpresa && t.IdRef != null && t.CampoExcluido == 1)
+                .Select(t => t.IdRef.Value)
+                .ToListAsync();
+            foreach (var eid in excludedDefaultIds)
+                overriddenIds.Add(eid);
+
             var defaultRecords = await _contextBase.TipoDeFormulacao
-                .Where(t => t.IdEmpresa == 196 && !overriddenIds.Contains(t.Id))
+                .Where(t => t.IdEmpresa == 196
+                    && !overriddenIds.Contains(t.Id)
+                    && (t.CampoExcluido == null || t.CampoExcluido == 0))
                 .ToListAsync();
 
             return empresaRecords.Concat(defaultRecords).OrderBy(t => t.NomeFormulacao).ToList();
@@ -93,7 +115,9 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
         {
             var empresaRecords = await _contextBase.TipoDeFormulacao
-                .Where(t => t.IdEmpresa == idEmpresa && t.DataSituacao > dataUltimaSincronizacao)
+                .Where(t => t.IdEmpresa == idEmpresa
+                    && t.DataSituacao > dataUltimaSincronizacao
+                    && (t.CampoExcluido == null || t.CampoExcluido == 0))
                 .ToListAsync();
 
             if (idEmpresa == 196)
@@ -105,8 +129,18 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
                 .ToListAsync();
             var overriddenIdsSet = allOverriddenIds.ToHashSet();
 
+            var excludedDefaultIds = await _contextBase.TipoDeFormulacao
+                .Where(t => t.IdEmpresa == idEmpresa && t.IdRef != null && t.CampoExcluido == 1)
+                .Select(t => t.IdRef.Value)
+                .ToListAsync();
+            foreach (var eid in excludedDefaultIds)
+                overriddenIdsSet.Add(eid);
+
             var defaultRecords = await _contextBase.TipoDeFormulacao
-                .Where(t => t.IdEmpresa == 196 && t.DataSituacao > dataUltimaSincronizacao && !overriddenIdsSet.Contains(t.Id))
+                .Where(t => t.IdEmpresa == 196
+                    && t.DataSituacao > dataUltimaSincronizacao
+                    && !overriddenIdsSet.Contains(t.Id)
+                    && (t.CampoExcluido == null || t.CampoExcluido == 0))
                 .ToListAsync();
 
             return empresaRecords.Concat(defaultRecords).OrderBy(t => t.NomeFormulacao).ToList();
