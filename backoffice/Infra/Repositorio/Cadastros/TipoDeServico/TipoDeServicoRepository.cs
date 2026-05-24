@@ -37,7 +37,9 @@ namespace Infra.Repositorio.Cadastros.TipoDeServico
 
         public async Task<IEnumerable<Domain.Entidades.Cadastros.TipoDeServico.TipoDeServico>> GetAllAsync()
         {
-            var entities = await _contextBase.TipoDeServico.ToListAsync();
+            var entities = await _contextBase.TipoDeServico
+                .OrderBy(t => t.NomeServico)
+                .ToListAsync();
             return entities;
         }
 
@@ -45,6 +47,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeServico
         {
             var entities = await _contextBase.TipoDeServico
                 .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+                .OrderBy(t => t.NomeServico)
                 .ToListAsync();
             return entities;
         }
