@@ -81,6 +81,7 @@ public class AlvoBiologicoService : IAlvoBiologicoService
         var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapAlvoBiologico = _mapper.Map<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico>(obj);
         mapAlvoBiologico.IdEmpresa = idEmpresaInt;
+        mapAlvoBiologico.CampoExcluido = 0;
         await _alvoBiologicoRepository.AddAsync(mapAlvoBiologico);
     }
 

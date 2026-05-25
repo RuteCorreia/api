@@ -169,7 +169,7 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
 
     public async Task<Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico> GetByNameAsync(string name, int? idEmpresa)
     {
-        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefault();
+        var obj = _contextBase.AlvoBiologico.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196) && (x.CampoExcluido == null || x.CampoExcluido == 0)).FirstOrDefault();
         return obj;
     }
 
@@ -196,7 +196,8 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
                 IdCultura = obj.IdCultura,
                 IdTipoDeUnidade = obj.IdTipoDeUnidade,
                 IdEmpresa = idEmpresa,
-                IdRef = objeto.Id
+                IdRef = objeto.Id,
+                CampoExcluido = 0
             };
             await _contextBase.AddAsync(overrideRecord);
             await _contextBase.SaveChangesAsync();
