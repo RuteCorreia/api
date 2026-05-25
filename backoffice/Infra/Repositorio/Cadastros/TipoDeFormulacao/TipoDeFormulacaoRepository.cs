@@ -78,7 +78,7 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
 
         public async Task<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao> GetByNameAsync(string name, int? idEmpresa)
         {
-            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefault();
+            var obj = _contextBase.TipoDeFormulacao.Where(x => x.NomeFormulacao == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196) && (x.CampoExcluido == null || x.CampoExcluido == 0)).FirstOrDefault();
             return obj;
         }
 
@@ -105,7 +105,8 @@ namespace Infra.Repositorio.Cadastros.TipoDeFormulacao
                 {
                     NomeFormulacao = obj.NomeFormulacao,
                     IdEmpresa = idEmpresa,
-                    IdRef = objeto.Id
+                    IdRef = objeto.Id,
+                    CampoExcluido = 0
                 };
                 await _contextBase.AddAsync(overrideRecord);
                 await _contextBase.SaveChangesAsync();

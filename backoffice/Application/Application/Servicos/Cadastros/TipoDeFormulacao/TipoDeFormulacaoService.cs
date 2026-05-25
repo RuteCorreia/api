@@ -47,6 +47,7 @@ namespace Application.Application.Servicos.Cadastros.TipoDeFormulacao
             var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapTipoDeFormulacao = _mapper.Map<Domain.Entidades.Cadastros.TipoDeFormulacao.TipoDeFormulacao>(obj);
             mapTipoDeFormulacao.IdEmpresa = idEmpresaInt;
+            mapTipoDeFormulacao.CampoExcluido = 0;
             await _tipoDeFormulacaoRepository.AddAsync(mapTipoDeFormulacao);
         }
 
