@@ -87,10 +87,6 @@ public class AlvoBiologicoRepository : IAlvoBiologicoRepository
             var overrideRecord = new Domain.Entidades.Cadastros.Alvo_Biologico.AlvoBiologico
             {
                 Nome = entityToRemove.Nome,
-                IdProduto = entityToRemove.IdProduto,
-                IdCultura = entityToRemove.IdCultura,
-                DoseProdutoPorHectare = entityToRemove.DoseProdutoPorHectare,
-                IdTipoDeUnidade = entityToRemove.IdTipoDeUnidade,
                 IdEmpresa = idEmpresa,
                 IdRef = entityToRemove.Id,
                 CampoExcluido = 1
