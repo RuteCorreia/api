@@ -16,6 +16,7 @@ namespace Infra.Repositorio.Cadastros.Classe
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetAllAsync()
         {
             return await _contextBase.Classe
+                .Where(c => c.CampoExcluido == null || c.CampoExcluido == 0)
                 .OrderBy(c => c.Descricao)
                 .ToListAsync();
         }
@@ -23,7 +24,7 @@ namespace Infra.Repositorio.Cadastros.Classe
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetByTipoServicoAsync(int idTipoDeServico)
         {
             return await _contextBase.Classe
-                .Where(c => c.IdTipoDeServico == idTipoDeServico)
+                .Where(c => c.IdTipoDeServico == idTipoDeServico && (c.CampoExcluido == null || c.CampoExcluido == 0))
                 .OrderBy(c => c.Descricao)
                 .ToListAsync();
         }
@@ -38,7 +39,8 @@ namespace Infra.Repositorio.Cadastros.Classe
             var query = _contextBase.Classe
                 .Where(c => c.Descricao != null
                     && c.Descricao.ToUpper() == descricao.ToUpper()
-                    && c.IdTipoDeServico == idTipoDeServico);
+                    && c.IdTipoDeServico == idTipoDeServico
+                    && (c.CampoExcluido == null || c.CampoExcluido == 0));
 
             if (excludeId.HasValue)
                 query = query.Where(c => c.Id != excludeId.Value);
@@ -61,7 +63,8 @@ namespace Infra.Repositorio.Cadastros.Classe
 
         public async Task DeleteAsync(Domain.Entidades.Cadastros.Classe.Classe obj)
         {
-            _contextBase.Classe.Remove(obj);
+            obj.CampoExcluido = 1;
+            _contextBase.Classe.Update(obj);
             await _contextBase.SaveChangesAsync();
         }
 

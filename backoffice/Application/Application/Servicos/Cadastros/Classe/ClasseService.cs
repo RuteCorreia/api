@@ -39,6 +39,7 @@ namespace Application.Application.Servicos.Cadastros.Classe
             var entity = _mapper.Map<Domain.Entidades.Cadastros.Classe.Classe>(obj);
             entity.ClassePublica = "S";
             entity.IdEmpresa = obj.IdEmpresa;
+            entity.CampoExcluido = 0;
             var created = await _classeRepository.AddAsync(entity);
             return _mapper.Map<ClasseViewModel>(created);
         }
@@ -62,12 +63,6 @@ namespace Application.Application.Servicos.Cadastros.Classe
             var existing = await _classeRepository.GetByIdAsync(id);
             if (existing == null)
                 return "Classe não encontrada";
-
-            if (existing.ClassePublica != "S")
-                return "Classes padrão do sistema não podem ser excluídas";
-
-            if (await _classeRepository.HasProdutoVinculadoAsync(id))
-                return "Classe não pode ser excluída pois está vinculada a produtos";
 
             await _classeRepository.DeleteAsync(existing);
             return null;

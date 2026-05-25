@@ -14,6 +14,7 @@ namespace Domain.Entidades.Cadastros.Classe
         public int IdTipoDeServico { get; set; }
         public string ClassePublica { get; set; } = "N";
         public int? IdEmpresa { get; set; }
+        public int? CampoExcluido { get; set; }
 
         [NotMapped]
         public DateTime DataCadastro { get; set; } = DateTime.Now;
