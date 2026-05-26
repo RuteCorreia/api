@@ -91,6 +91,7 @@ public class ProdutoAplicadoRepository : IProdutoAplicadoRepository
         objeto.DosagemProdutoAplicado = obj.DosagemProdutoAplicado;
         objeto.UnidadeProdutoAplicado = obj.UnidadeProdutoAplicado;
         objeto.TipoServico = obj.TipoServico;
+        objeto.TipoFormulacao = obj.TipoFormulacao;
 
         _contextBase.ProdutoAplicado.Update(objeto);
         await _contextBase.SaveChangesAsync();
