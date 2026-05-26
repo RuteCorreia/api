@@ -35,6 +35,7 @@ public class CulturaService : ICulturaService
         var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
         var mapCultura = _mapper.Map<Domain.Entidades.Cadastros.Cultura.Cultura>(obj);
         mapCultura.IdEmpresa = idEmpresaInt;
+        mapCultura.Status ??= "S";
         await _culturaRepository.AddAsync(mapCultura);
     }
 

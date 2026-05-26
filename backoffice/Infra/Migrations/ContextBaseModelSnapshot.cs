@@ -1461,6 +1461,9 @@ namespace Infra.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("IdCultura");
 
                     b.HasIndex("IdEmpresa");

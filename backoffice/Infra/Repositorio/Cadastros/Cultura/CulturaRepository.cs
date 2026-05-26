@@ -19,7 +19,7 @@ public class CulturaRepository : ICulturaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetByDateAsync(int idEmpresa, DateTime dataUltimaSincronizacao)
     {
         var entities = await _contextBase.Cultura
-             .Where(c => (c.IdEmpresa == idEmpresa || c.IdEmpresa == 196) && c.DataSituacao > dataUltimaSincronizacao)
+             .Where(c => (c.IdEmpresa == idEmpresa || c.IdEmpresa == 196) && c.DataSituacao > dataUltimaSincronizacao && c.Status != "N")
              .OrderBy(c => c.Nome)
              .ToListAsync();
         return entities;
@@ -44,7 +44,7 @@ public class CulturaRepository : ICulturaRepository
     public async Task<IEnumerable<Domain.Entidades.Cadastros.Cultura.Cultura>> GetAllAsync(int idEmpresa)
     {
         var entities = await _contextBase.Cultura
-         .Where(c => c.IdEmpresa == idEmpresa || c.IdEmpresa == 196)
+         .Where(c => (c.IdEmpresa == idEmpresa || c.IdEmpresa == 196) && c.Status != "N")
          .OrderBy(c => c.Nome)
          .ToListAsync();
         return entities;
@@ -58,7 +58,7 @@ public class CulturaRepository : ICulturaRepository
 
     public async Task<Domain.Entidades.Cadastros.Cultura.Cultura> GetByNameAsync(string name, int idEmpresa)
     {
-        var obj = await _contextBase.Cultura.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196)).FirstOrDefaultAsync();
+        var obj = await _contextBase.Cultura.Where(x => x.Nome == name && (x.IdEmpresa == idEmpresa || x.IdEmpresa == 196) && x.Status != "N").FirstOrDefaultAsync();
         return obj;
     }
 

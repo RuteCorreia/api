@@ -12,6 +12,7 @@ public class Cultura
     public string? AlvoBiologico { get; set; }
     [ForeignKey("Empresa")]
     public int? IdEmpresa { get; set; }
+    public string? Status { get; set; }
 
     [JsonIgnore]
     public virtual Empresa.Empresa? Empresa { get; set; }
