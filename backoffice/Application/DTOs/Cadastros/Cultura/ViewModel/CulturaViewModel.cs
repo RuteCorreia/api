@@ -12,4 +12,5 @@ public class CulturaViewModel
     public string? Nome { get; set; }
     public string? AlvoBiologico { get; set; }
     public int? IdEmpresa { get; set; }
+    public string? Status { get; set; }
 }
