@@ -3,6 +3,7 @@ using Application.DTOs.Cadastros.Classe.ViewModel;
 using Application.DTOs.Log.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.HttpRequestInfo;
 
 namespace WebApi.Controllers.APIs
 {
@@ -15,11 +16,13 @@ namespace WebApi.Controllers.APIs
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class ClasseController : ControllerBase
     {
+        private readonly LoggedUserInfoService _loggedUserInfoService;
         private readonly IClasseService _classeService;
         private readonly ILogService _logService;
 
-        public ClasseController(IClasseService classeService, ILogService logService)
+        public ClasseController(LoggedUserInfoService loggedUserInfoService, IClasseService classeService, ILogService logService)
         {
+            _loggedUserInfoService = loggedUserInfoService;
             _classeService = classeService;
             _logService = logService;
         }
@@ -29,10 +32,11 @@ namespace WebApi.Controllers.APIs
         {
             try
             {
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
                 IEnumerable<ClasseViewModel> classes;
                 if (tipoServico.HasValue && tipoServico.Value > 0)
                 {
-                    classes = await _classeService.GetByTipoServicoAsync(tipoServico.Value);
+                    classes = await _classeService.GetByTipoServicoAsync(tipoServico.Value, loggedUser.Item3);
                 }
                 else
                 {
@@ -64,7 +68,8 @@ namespace WebApi.Controllers.APIs
                     return StatusCode(StatusCodes.Status400BadRequest, "Nome da classe não pode ser vazio");
                 }
 
-                var duplicate = await _classeService.GetByTipoServicoAsync(obj.IdTipoDeServico);
+                var loggedUser = _loggedUserInfoService.GetLoggedUserIdentityIdAndRole();
+                var duplicate = await _classeService.GetByTipoServicoAsync(obj.IdTipoDeServico, loggedUser.Item3);
                 if (duplicate.Any(c => c.Descricao != null && c.Descricao.Trim().ToUpper() == obj.Descricao.Trim().ToUpper()))
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "Já existe uma classe com esta descrição para o mesmo tipo de serviço");

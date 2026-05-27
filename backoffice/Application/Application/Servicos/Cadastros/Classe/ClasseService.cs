@@ -2,6 +2,7 @@ using Application.DTOs.Cadastros.Classe.Interface;
 using Application.DTOs.Cadastros.Classe.ViewModel;
 using AutoMapper;
 using Domain.Interfaces.Cadastros.Classe;
+using Helpers;
 
 namespace Application.Application.Servicos.Cadastros.Classe
 {
@@ -22,9 +23,10 @@ namespace Application.Application.Servicos.Cadastros.Classe
             return _mapper.Map<IEnumerable<ClasseViewModel>>(list);
         }
 
-        public async Task<IEnumerable<ClasseViewModel>> GetByTipoServicoAsync(int idTipoDeServico)
+        public async Task<IEnumerable<ClasseViewModel>> GetByTipoServicoAsync(int idTipoDeServico, string? idEmpresa)
         {
-            var list = await _classeRepository.GetByTipoServicoAsync(idTipoDeServico);
+            var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
+            var list = await _classeRepository.GetByTipoServicoAsync(idTipoDeServico, idEmpresaInt);
             return _mapper.Map<IEnumerable<ClasseViewModel>>(list);
         }
 
