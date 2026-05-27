@@ -21,10 +21,12 @@ namespace Infra.Repositorio.Cadastros.Classe
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetByTipoServicoAsync(int idTipoDeServico)
+        public async Task<IEnumerable<Domain.Entidades.Cadastros.Classe.Classe>> GetByTipoServicoAsync(int idTipoDeServico, int idEmpresa)
         {
             return await _contextBase.Classe
-                .Where(c => c.IdTipoDeServico == idTipoDeServico && (c.CampoExcluido == null || c.CampoExcluido == 0))
+                .Where(c => c.IdTipoDeServico == idTipoDeServico
+                    && (c.CampoExcluido == null || c.CampoExcluido == 0)
+                    && (idEmpresa == 0 ? c.IdEmpresa == null : c.IdEmpresa == idEmpresa))
                 .OrderBy(c => c.Descricao)
                 .ToListAsync();
         }
