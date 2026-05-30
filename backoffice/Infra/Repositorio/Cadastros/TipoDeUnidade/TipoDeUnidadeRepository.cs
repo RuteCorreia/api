@@ -14,15 +14,19 @@ namespace Infra.Repositorio.Cadastros.TipoDeUnidade
         }
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade>> GetAllAsync()
         {
-            var entities = await _contextBase.TipoDeUnidade.ToListAsync();
+            var entities = await _contextBase.TipoDeUnidade
+                .Where(e => e.Status == "A")
+                .ToListAsync();
+
             return entities;
         }
-
         public async Task<IEnumerable<Domain.Entidades.Cadastros.Alvo_Biologico.TipoDeUnidade>> GetByDateAsync(DateTime dataUltimaSincronizacao)
         {
             var entities = await _contextBase.TipoDeUnidade
-                .Where(e => e.DataSituacao > dataUltimaSincronizacao)
+                .Where(e => e.DataSituacao > dataUltimaSincronizacao
+                         && e.Status == "A")
                 .ToListAsync();
+
             return entities;
         }
 

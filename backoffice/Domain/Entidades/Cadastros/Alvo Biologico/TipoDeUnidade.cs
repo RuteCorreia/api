@@ -9,5 +9,7 @@ namespace Domain.Entidades.Cadastros.Alvo_Biologico
         public string? NomeUnidade { get; set; }
         public DateTime DataSituacao { get; private set; } =
             TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+
+        public string? Status { get; set; }
     }
 }
