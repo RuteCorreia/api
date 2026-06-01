@@ -175,7 +175,7 @@ namespace Infra.Repositorio.Cadastros.Dashboard
 	                        ra.Piloto AS Piloto,
 	                        ra.Executor AS Executor,
 	                        c.Nome as Cliente,
-	                        CONVERT(DATE, ra.DataCriacao) AS DataCriacao,
+	                        COALESCE(TRY_CONVERT(DATE, dr.Data, 103), CONVERT(DATE, ra.DataCriacao)) AS DataCriacao,
 	                        LEFT(ar.NomeAeronave, 
 		                        CASE 
 			                        WHEN CHARINDEX(' - ', ar.NomeAeronave) > 0 
@@ -201,6 +201,8 @@ namespace Infra.Repositorio.Cadastros.Dashboard
                             AplicacaoRelatorio are ON ra.AplicacaoRelatorioId = are.Id
                         JOIN
                             Contratante c ON ra.ContratanteId = c.Id
+                        LEFT JOIN
+                            DadosResponsavel dr ON ra.DadosResponsavelId = dr.Id
                         WHERE
                             ra.IdEmpresa = @IdEmpresa
                             AND ra.StatusEnvio = 0
