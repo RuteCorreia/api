@@ -73,8 +73,8 @@ public class BulaService : IBulaService
             var recomendacao = new RecomendacaoViewModel
             {
                 IdBula = item.IdBula,
-                IdCultura = item.IdCultura ?? 0, 
-                IdAlvoBiologico = item.IdAlvoBiologico ?? 0, 
+                IdCultura = item.IdCultura, 
+                IdAlvoBiologico = item.IdAlvoBiologico, 
                 DoseProdutoComercial = item.DoseProdutoComercial ?? string.Empty,
                 IdTipoDeUnidade = item.IdTipoDeUnidade
             };
@@ -93,8 +93,8 @@ public class BulaService : IBulaService
             var idEmpresaInt = ConvertTypes.ConvertStringToInt(idEmpresa);
             var mapBula = _mapper.Map<Domain.Entidades.Cadastros.Empresa.Bula>(obj);
             mapBula.IdEmpresa = idEmpresaInt;
-            mapBula.IdCultura = item.IdCultura;
-            mapBula.IdAlvoBiologico = item.IdAlvoBiologico;
+            mapBula.IdCultura = item.IdCultura == 0 ? null : item.IdCultura;
+            mapBula.IdAlvoBiologico = item.IdAlvoBiologico == 0 ? null : item.IdAlvoBiologico;
             mapBula.DoseProdutoComercial = item.DoseProdutoComercial;
             mapBula.IdTipoDeUnidade = item.IdTipoDeUnidade;
             if (item.IdBula == null || item.IdBula == 0)
