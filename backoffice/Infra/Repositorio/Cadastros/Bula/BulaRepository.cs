@@ -107,8 +107,8 @@ public class BulaRepository : IBulaRepository
     public async Task UpdateAsync(Domain.Entidades.Cadastros.Empresa.Bula obj)
     {
         var objeto = await _contextBase.Bula.FindAsync(obj.IdBula);
-        objeto.IdCultura = obj.IdCultura;
-        objeto.IdAlvoBiologico = obj.IdAlvoBiologico;
+        objeto.IdCultura = obj.IdCultura == 0 ? null : obj.IdCultura;
+        objeto.IdAlvoBiologico = obj.IdAlvoBiologico == 0 ? null : obj.IdAlvoBiologico;
         objeto.DoseProdutoComercial = obj.DoseProdutoComercial;
         objeto.IdTipoDeUnidade = obj.IdTipoDeUnidade;
         _contextBase.Bula.Update(objeto);
